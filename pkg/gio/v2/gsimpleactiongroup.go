@@ -101,7 +101,7 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 	var _arg2 C.gint
 	var _arg3 C.gpointer // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	_arg2 = (C.gint)(len(entries))
 	_arg1 = (*C.GActionEntry)(C.calloc(C.size_t(len(entries)), C.size_t(C.sizeof_GActionEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -136,8 +136,8 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
 	runtime.KeepAlive(simple)
@@ -163,7 +163,7 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -208,7 +208,7 @@ func (simple *SimpleActionGroup) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 

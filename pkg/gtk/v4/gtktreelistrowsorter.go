@@ -86,8 +86,8 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 	var _cret *C.GtkTreeListRowSorter // in
 
 	if sorter != nil {
-		_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
-		C.g_object_ref(C.gpointer(sorter.Native()))
+		_arg1 = (*C.GtkSorter)(unsafe.Pointer(externglib.InternObject(sorter).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(sorter).Native()))
 	}
 
 	_cret = C.gtk_tree_list_row_sorter_new(_arg1)
@@ -110,7 +110,7 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _cret *C.GtkSorter            // in
 
-	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_sorter_get_sorter(_arg0)
 	runtime.KeepAlive(self)
@@ -137,9 +137,9 @@ func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	var _arg0 *C.GtkTreeListRowSorter // out
 	var _arg1 *C.GtkSorter            // out
 
-	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if sorter != nil {
-		_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+		_arg1 = (*C.GtkSorter)(unsafe.Pointer(externglib.InternObject(sorter).Native()))
 	}
 
 	C.gtk_tree_list_row_sorter_set_sorter(_arg0, _arg1)

@@ -104,7 +104,7 @@ func (t TargetFlags) Has(other TargetFlags) bool {
 func SelectionRemoveAll(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_selection_remove_all(_arg1)
 	runtime.KeepAlive(widget)
@@ -352,7 +352,7 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 	if deserializable {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(list)

@@ -238,7 +238,7 @@ func (text *EditableText) CopyText(startPos, endPos int) {
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -261,7 +261,7 @@ func (text *EditableText) CutText(startPos, endPos int) {
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -283,7 +283,7 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -309,7 +309,7 @@ func (text *EditableText) InsertText(str string, length int, position *int) {
 	var _arg2 C.gint             // out
 	var _arg3 *C.gint            // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
@@ -332,7 +332,7 @@ func (text *EditableText) PasteText(position int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(position)
 
 	C.atk_editable_text_paste_text(_arg0, _arg1)
@@ -350,7 +350,7 @@ func (text *EditableText) SetTextContents(str string) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 

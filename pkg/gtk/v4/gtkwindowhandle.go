@@ -110,7 +110,7 @@ func (self *WindowHandle) Child() Widgetter {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -147,9 +147,9 @@ func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_window_handle_set_child(_arg0, _arg1)

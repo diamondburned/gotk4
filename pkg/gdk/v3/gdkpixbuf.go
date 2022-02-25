@@ -124,7 +124,7 @@ func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int) *gdkpix
 	var _arg5 C.gint       // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	_arg2 = C.gint(srcX)
 	_arg3 = C.gint(srcY)
 	_arg4 = C.gint(width)

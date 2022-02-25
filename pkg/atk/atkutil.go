@@ -139,7 +139,7 @@ func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret 
 func FocusTrackerNotify(object *ObjectClass) {
 	var _arg1 *C.AtkObject // out
 
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 
 	C.atk_focus_tracker_notify(_arg1)
 	runtime.KeepAlive(object)

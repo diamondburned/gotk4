@@ -157,7 +157,7 @@ func NewPictureForFile(file gio.Filer) *Picture {
 	var _cret *C.GtkWidget // in
 
 	if file != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 
 	_cret = C.gtk_picture_new_for_file(_arg1)
@@ -220,7 +220,7 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	var _cret *C.GtkWidget    // in
 
 	if paintable != nil {
-		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 	}
 
 	_cret = C.gtk_picture_new_for_paintable(_arg1)
@@ -253,7 +253,7 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 	var _cret *C.GtkWidget // in
 
 	if pixbuf != nil {
-		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	}
 
 	_cret = C.gtk_picture_new_for_pixbuf(_arg1)
@@ -312,7 +312,7 @@ func (self *Picture) AlternativeText() string {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_picture_get_alternative_text(_arg0)
 	runtime.KeepAlive(self)
@@ -336,7 +336,7 @@ func (self *Picture) CanShrink() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_picture_get_can_shrink(_arg0)
 	runtime.KeepAlive(self)
@@ -363,7 +363,7 @@ func (self *Picture) File() gio.Filer {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.GFile      // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_picture_get_file(_arg0)
 	runtime.KeepAlive(self)
@@ -401,7 +401,7 @@ func (self *Picture) KeepAspectRatio() bool {
 	var _arg0 *C.GtkPicture // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
 	runtime.KeepAlive(self)
@@ -426,7 +426,7 @@ func (self *Picture) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkPicture   // out
 	var _cret *C.GdkPaintable // in
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_picture_get_paintable(_arg0)
 	runtime.KeepAlive(self)
@@ -470,7 +470,7 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if alternativeText != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(alternativeText)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -500,7 +500,7 @@ func (self *Picture) SetCanShrink(canShrink bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if canShrink {
 		_arg1 = C.TRUE
 	}
@@ -522,9 +522,9 @@ func (self *Picture) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GFile      // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if file != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 
 	C.gtk_picture_set_file(_arg0, _arg1)
@@ -544,7 +544,7 @@ func (self *Picture) SetFilename(filename string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if filename != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -572,7 +572,7 @@ func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if keepAspectRatio {
 		_arg1 = C.TRUE
 	}
@@ -596,9 +596,9 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkPicture   // out
 	var _arg1 *C.GdkPaintable // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if paintable != nil {
-		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 	}
 
 	C.gtk_picture_set_paintable(_arg0, _arg1)
@@ -620,9 +620,9 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GdkPixbuf  // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if pixbuf != nil {
-		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	}
 
 	C.gtk_picture_set_pixbuf(_arg0, _arg1)
@@ -643,7 +643,7 @@ func (self *Picture) SetResource(resourcePath string) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkPicture)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if resourcePath != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))

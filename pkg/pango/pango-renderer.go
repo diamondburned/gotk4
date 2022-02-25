@@ -554,7 +554,7 @@ func BaseRenderer(obj Rendererer) *Renderer {
 func (renderer *Renderer) Activate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	C.pango_renderer_activate(_arg0)
 	runtime.KeepAlive(renderer)
@@ -566,7 +566,7 @@ func (renderer *Renderer) Activate() {
 func (renderer *Renderer) Deactivate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	C.pango_renderer_deactivate(_arg0)
 	runtime.KeepAlive(renderer)
@@ -595,7 +595,7 @@ func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 	var _arg3 C.int            // out
 	var _arg4 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 	_arg3 = C.int(width)
@@ -625,8 +625,8 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	var _arg3 C.double         // out
 	var _arg4 C.double         // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 	_arg2 = C.guint32(glyph)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -669,7 +669,7 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 	var _arg3 C.int             // out
 	var _arg4 C.int             // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	if text != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -704,8 +704,8 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 	var _arg3 C.int               // out
 	var _arg4 C.int               // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 	_arg2 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)
@@ -734,8 +734,8 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
 
@@ -762,7 +762,7 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 	var _arg2 C.int              // out
 	var _arg3 C.int              // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
@@ -798,7 +798,7 @@ func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int
 	var _arg4 C.int             // out
 	var _arg5 C.int             // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
@@ -837,7 +837,7 @@ func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, 
 	var _arg6 C.double          // out
 	var _arg7 C.double          // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	_arg2 = C.double(y1)
 	_arg3 = C.double(x11)
@@ -873,7 +873,7 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	var _arg1 C.PangoRenderPart // out
 	var _cret C.guint16         // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_alpha(_arg0, _arg1)
@@ -903,7 +903,7 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 	var _arg1 C.PangoRenderPart // out
 	var _cret *C.PangoColor     // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_color(_arg0, _arg1)
@@ -935,7 +935,7 @@ func (renderer *Renderer) Layout() *Layout {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.pango_renderer_get_layout(_arg0)
 	runtime.KeepAlive(renderer)
@@ -965,7 +965,7 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _arg0 *C.PangoRenderer   // out
 	var _cret *C.PangoLayoutLine // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.pango_renderer_get_layout_line(_arg0)
 	runtime.KeepAlive(renderer)
@@ -1000,7 +1000,7 @@ func (renderer *Renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.pango_renderer_get_matrix(_arg0)
 	runtime.KeepAlive(renderer)
@@ -1037,7 +1037,7 @@ func (renderer *Renderer) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 
 	C.pango_renderer_part_changed(_arg0, _arg1)
@@ -1060,7 +1060,7 @@ func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.guint16         // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	_arg2 = C.guint16(alpha)
 
@@ -1084,7 +1084,7 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 *C.PangoColor     // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	if color != nil {
 		_arg2 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
@@ -1107,7 +1107,7 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	if matrix != nil {
 		_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}

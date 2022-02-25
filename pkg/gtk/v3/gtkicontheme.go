@@ -209,8 +209,8 @@ func NewIconInfoForPixbuf(iconTheme *IconTheme, pixbuf *gdkpixbuf.Pixbuf) *IconI
 	var _arg2 *C.GdkPixbuf    // out
 	var _cret *C.GtkIconInfo  // in
 
-	_arg1 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 
 	_cret = C.gtk_icon_info_new_for_pixbuf(_arg1, _arg2)
 	runtime.KeepAlive(iconTheme)
@@ -239,7 +239,7 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 	var _arg2 C.gint         // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_get_attach_points(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconInfo)
@@ -283,7 +283,7 @@ func (iconInfo *IconInfo) BaseScale() int {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_get_base_scale(_arg0)
 	runtime.KeepAlive(iconInfo)
@@ -311,7 +311,7 @@ func (iconInfo *IconInfo) BaseSize() int {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_get_base_size(_arg0)
 	runtime.KeepAlive(iconInfo)
@@ -340,7 +340,7 @@ func (iconInfo *IconInfo) BuiltinPixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret *C.GdkPixbuf   // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_get_builtin_pixbuf(_arg0)
 	runtime.KeepAlive(iconInfo)
@@ -376,7 +376,7 @@ func (iconInfo *IconInfo) DisplayName() string {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_get_display_name(_arg0)
 	runtime.KeepAlive(iconInfo)
@@ -403,7 +403,7 @@ func (iconInfo *IconInfo) EmbeddedRect() (*gdk.Rectangle, bool) {
 	var _arg1 C.GdkRectangle // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, &_arg1)
 	runtime.KeepAlive(iconInfo)
@@ -434,7 +434,7 @@ func (iconInfo *IconInfo) Filename() string {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_get_filename(_arg0)
 	runtime.KeepAlive(iconInfo)
@@ -460,7 +460,7 @@ func (iconInfo *IconInfo) IsSymbolic() bool {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_is_symbolic(_arg0)
 	runtime.KeepAlive(iconInfo)
@@ -496,7 +496,7 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 	var _cret *C.GdkPixbuf   // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 
 	_cret = C.gtk_icon_info_load_icon(_arg0, &_cerr)
 	runtime.KeepAlive(iconInfo)
@@ -539,7 +539,7 @@ func (iconInfo *IconInfo) LoadIconAsync(ctx context.Context, callback gio.AsyncR
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -575,8 +575,8 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 	var _cret *C.GdkPixbuf    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.gtk_icon_info_load_icon_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(iconInfo)
@@ -630,9 +630,9 @@ func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, e
 	var _cret *C.cairo_surface_t // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 	if forWindow != nil {
-		_arg1 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(forWindow).Native()))
 	}
 
 	_cret = C.gtk_icon_info_load_surface(_arg0, _arg1, &_cerr)
@@ -697,7 +697,7 @@ func (iconInfo *IconInfo) LoadSymbolic(fg, successColor, warningColor, errorColo
 	var _cret *C.GdkPixbuf   // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(fg)))
 	if successColor != nil {
 		_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
@@ -769,7 +769,7 @@ func (iconInfo *IconInfo) LoadSymbolicAsync(ctx context.Context, fg, successColo
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -822,8 +822,8 @@ func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkp
 	var _cret *C.GdkPixbuf    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(iconInfo)
@@ -882,8 +882,8 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context *StyleContext) (bool, *
 	var _cret *C.GdkPixbuf       // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_for_context(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(iconInfo)
@@ -934,13 +934,13 @@ func (iconInfo *IconInfo) LoadSymbolicForContextAsync(ctx context.Context, conte
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if callback != nil {
 		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg4 = C.gpointer(gbox.AssignOnce(callback))
@@ -975,8 +975,8 @@ func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (b
 	var _cret *C.GdkPixbuf    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.gtk_icon_info_load_symbolic_for_context_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(iconInfo)
@@ -1037,8 +1037,8 @@ func (iconInfo *IconInfo) LoadSymbolicForStyle(style *Style, state StateType) (b
 	var _cret *C.GdkPixbuf   // in
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
 	_arg2 = C.GtkStateType(state)
 
 	_cret = C.gtk_icon_info_load_symbolic_for_style(_arg0, _arg1, _arg2, &_arg3, &_cerr)
@@ -1098,7 +1098,7 @@ func (iconInfo *IconInfo) SetRawCoordinates(rawCoordinates bool) {
 	var _arg0 *C.GtkIconInfo // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(externglib.InternObject(iconInfo).Native()))
 	if rawCoordinates {
 		_arg1 = C.TRUE
 	}
@@ -1278,7 +1278,7 @@ func (iconTheme *IconTheme) AddResourcePath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1298,7 +1298,7 @@ func (iconTheme *IconTheme) AppendSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1333,7 +1333,7 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconL
 	var _arg3 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconInfo       // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	{
 		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(iconNames) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1394,7 +1394,7 @@ func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size, scale i
 	var _arg4 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconInfo       // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	{
 		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(iconNames) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1440,7 +1440,7 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_get_example_icon_name(_arg0)
 	runtime.KeepAlive(iconTheme)
@@ -1474,7 +1474,7 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 	var _arg1 *C.gchar        // out
 	var _cret *C.gint         // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1515,7 +1515,7 @@ func (iconTheme *IconTheme) SearchPath() []string {
 	var _arg1 **C.gchar       // in
 	var _arg2 C.gint          // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 
 	C.gtk_icon_theme_get_search_path(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconTheme)
@@ -1552,7 +1552,7 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 	var _arg1 *C.gchar        // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1582,7 +1582,7 @@ func (iconTheme *IconTheme) ListContexts() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.GList        // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_list_contexts(_arg0)
 	runtime.KeepAlive(iconTheme)
@@ -1627,7 +1627,7 @@ func (iconTheme *IconTheme) ListIcons(context string) []string {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GList        // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	if context != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(context)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1685,7 +1685,7 @@ func (iconTheme *IconTheme) LoadIcon(iconName string, size int, flags IconLookup
 	var _cret *C.GdkPixbuf         // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
@@ -1756,7 +1756,7 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size, scale int, f
 	var _cret *C.GdkPixbuf         // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
@@ -1827,13 +1827,13 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size, scale int, forWin
 	var _cret *C.cairo_surface_t   // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
 	if forWindow != nil {
-		_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+		_arg4 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(forWindow).Native()))
 	}
 	_arg5 = C.GtkIconLookupFlags(flags)
 
@@ -1889,8 +1889,8 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags Icon
 	var _arg3 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconInfo       // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	_arg2 = C.gint(size)
 	_arg3 = C.GtkIconLookupFlags(flags)
 
@@ -1933,8 +1933,8 @@ func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size, scale 
 	var _arg4 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconInfo       // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	_arg2 = C.gint(size)
 	_arg3 = C.gint(scale)
 	_arg4 = C.GtkIconLookupFlags(flags)
@@ -1984,7 +1984,7 @@ func (iconTheme *IconTheme) LookupIcon(iconName string, size int, flags IconLook
 	var _arg3 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconInfo       // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
@@ -2031,7 +2031,7 @@ func (iconTheme *IconTheme) LookupIconForScale(iconName string, size, scale int,
 	var _arg4 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconInfo       // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
@@ -2065,7 +2065,7 @@ func (iconTheme *IconTheme) PrependSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -2086,7 +2086,7 @@ func (iconTheme *IconTheme) RescanIfNeeded() bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 
 	_cret = C.gtk_icon_theme_rescan_if_needed(_arg0)
 	runtime.KeepAlive(iconTheme)
@@ -2114,7 +2114,7 @@ func (iconTheme *IconTheme) SetCustomTheme(themeName string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	if themeName != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -2137,8 +2137,8 @@ func (iconTheme *IconTheme) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.GdkScreen    // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 
 	C.gtk_icon_theme_set_screen(_arg0, _arg1)
 	runtime.KeepAlive(iconTheme)
@@ -2167,7 +2167,7 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 	var _arg1 **C.gchar       // out
 	var _arg2 C.gint
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(iconTheme).Native()))
 	_arg2 = (C.gint)(len(path))
 	_arg1 = (**C.gchar)(C.calloc(C.size_t(len(path)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -2214,7 +2214,7 @@ func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(size)
-	_arg3 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg3 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 
 	C.gtk_icon_theme_add_builtin_icon(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(iconName)
@@ -2265,7 +2265,7 @@ func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.GtkIconTheme // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 
 	_cret = C.gtk_icon_theme_get_for_screen(_arg1)
 	runtime.KeepAlive(screen)

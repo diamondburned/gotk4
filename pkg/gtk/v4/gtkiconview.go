@@ -456,7 +456,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_icon_view_new_with_area(_arg1)
 	runtime.KeepAlive(area)
@@ -482,7 +482,7 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 
 	_cret = C.gtk_icon_view_new_with_model(_arg1)
 	runtime.KeepAlive(model)
@@ -510,7 +510,7 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
 	var _arg1 *C.GtkTreePath  // out
 	var _cret *C.GdkPaintable // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_icon_view_create_drag_icon(_arg0, _arg1)
@@ -553,7 +553,7 @@ func (iconView *IconView) EnableModelDragDest(formats *gdk.ContentFormats, actio
 	var _arg1 *C.GdkContentFormats // out
 	var _arg2 C.GdkDragAction      // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 	_arg2 = C.GdkDragAction(actions)
 
@@ -578,7 +578,7 @@ func (iconView *IconView) EnableModelDragSource(startButtonMask gdk.ModifierType
 	var _arg2 *C.GdkContentFormats // out
 	var _arg3 C.GdkDragAction      // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg2 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 	_arg3 = C.GdkDragAction(actions)
@@ -601,7 +601,7 @@ func (iconView *IconView) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_activate_on_single_click(_arg0)
 	runtime.KeepAlive(iconView)
@@ -637,10 +637,10 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Re
 	var _arg3 C.GdkRectangle     // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	if cell != nil {
-		_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+		_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 	}
 
 	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, &_arg3)
@@ -669,7 +669,7 @@ func (iconView *IconView) ColumnSpacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_column_spacing(_arg0)
 	runtime.KeepAlive(iconView)
@@ -691,7 +691,7 @@ func (iconView *IconView) Columns() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_columns(_arg0)
 	runtime.KeepAlive(iconView)
@@ -721,7 +721,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	var _arg2 *C.GtkCellRenderer // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_cursor(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconView)
@@ -783,7 +783,7 @@ func (iconView *IconView) DestItemAtPos(dragX, dragY int) (*TreePath, IconViewDr
 	var _arg4 C.GtkIconViewDropPosition // in
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(dragX)
 	_arg2 = C.int(dragY)
 
@@ -827,7 +827,7 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 	var _arg1 *C.GtkTreePath            // in
 	var _arg2 C.GtkIconViewDropPosition // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	C.gtk_icon_view_get_drag_dest_item(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconView)
@@ -871,7 +871,7 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) 
 	var _arg4 *C.GtkCellRenderer // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -932,7 +932,7 @@ func (iconView *IconView) ItemColumn(path *TreePath) int {
 	var _arg1 *C.GtkTreePath // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_icon_view_get_item_column(_arg0, _arg1)
@@ -957,7 +957,7 @@ func (iconView *IconView) ItemOrientation() Orientation {
 	var _arg0 *C.GtkIconView   // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_item_orientation(_arg0)
 	runtime.KeepAlive(iconView)
@@ -979,7 +979,7 @@ func (iconView *IconView) ItemPadding() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_item_padding(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1007,7 +1007,7 @@ func (iconView *IconView) ItemRow(path *TreePath) int {
 	var _arg1 *C.GtkTreePath // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_icon_view_get_item_row(_arg0, _arg1)
@@ -1031,7 +1031,7 @@ func (iconView *IconView) ItemWidth() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_item_width(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1053,7 +1053,7 @@ func (iconView *IconView) Margin() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_margin(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1075,7 +1075,7 @@ func (iconView *IconView) MarkupColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_markup_column(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1098,7 +1098,7 @@ func (iconView *IconView) Model() TreeModeller {
 	var _arg0 *C.GtkIconView  // out
 	var _cret *C.GtkTreeModel // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_model(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1143,7 +1143,7 @@ func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 	var _arg2 C.int          // out
 	var _cret *C.GtkTreePath // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -1177,7 +1177,7 @@ func (iconView *IconView) PixbufColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_pixbuf_column(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1200,7 +1200,7 @@ func (iconView *IconView) Reorderable() bool {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_reorderable(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1224,7 +1224,7 @@ func (iconView *IconView) RowSpacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_row_spacing(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1253,7 +1253,7 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 	var _arg0 *C.GtkIconView // out
 	var _cret *C.GList       // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_selected_items(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1287,7 +1287,7 @@ func (iconView *IconView) SelectionMode() SelectionMode {
 	var _arg0 *C.GtkIconView     // out
 	var _cret C.GtkSelectionMode // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_selection_mode(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1309,7 +1309,7 @@ func (iconView *IconView) Spacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_spacing(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1331,7 +1331,7 @@ func (iconView *IconView) TextColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_text_column(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1355,7 +1355,7 @@ func (iconView *IconView) TooltipColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_tooltip_column(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1401,7 +1401,7 @@ func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModell
 	var _arg6 C.GtkTreeIter   // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 	if keyboardTip {
@@ -1469,7 +1469,7 @@ func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath
 	var _arg2 *C.GtkTreePath // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	_cret = C.gtk_icon_view_get_visible_range(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconView)
@@ -1513,7 +1513,7 @@ func (iconView *IconView) ItemActivated(path *TreePath) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_icon_view_item_activated(_arg0, _arg1)
@@ -1537,7 +1537,7 @@ func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 	var _arg1 *C.GtkTreePath // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_icon_view_path_is_selected(_arg0, _arg1)
@@ -1581,7 +1581,7 @@ func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign, 
 	var _arg3 C.float        // out
 	var _arg4 C.float        // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	if useAlign {
 		_arg2 = C.TRUE
@@ -1602,7 +1602,7 @@ func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign, 
 func (iconView *IconView) SelectAll() {
 	var _arg0 *C.GtkIconView // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	C.gtk_icon_view_select_all(_arg0)
 	runtime.KeepAlive(iconView)
@@ -1618,7 +1618,7 @@ func (iconView *IconView) SelectPath(path *TreePath) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_icon_view_select_path(_arg0, _arg1)
@@ -1638,7 +1638,7 @@ func (iconView *IconView) SelectedForEach(fn IconViewForEachFunc) {
 	var _arg1 C.GtkIconViewForeachFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gtk4_IconViewForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
@@ -1659,7 +1659,7 @@ func (iconView *IconView) SetActivateOnSingleClick(single bool) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	if single {
 		_arg1 = C.TRUE
 	}
@@ -1680,7 +1680,7 @@ func (iconView *IconView) SetColumnSpacing(columnSpacing int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(columnSpacing)
 
 	C.gtk_icon_view_set_column_spacing(_arg0, _arg1)
@@ -1700,7 +1700,7 @@ func (iconView *IconView) SetColumns(columns int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(columns)
 
 	C.gtk_icon_view_set_columns(_arg0, _arg1)
@@ -1730,10 +1730,10 @@ func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEd
 	var _arg2 *C.GtkCellRenderer // out
 	var _arg3 C.gboolean         // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	if cell != nil {
-		_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+		_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 	}
 	if startEditing {
 		_arg3 = C.TRUE
@@ -1758,7 +1758,7 @@ func (iconView *IconView) SetDragDestItem(path *TreePath, pos IconViewDropPositi
 	var _arg1 *C.GtkTreePath            // out
 	var _arg2 C.GtkIconViewDropPosition // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	if path != nil {
 		_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	}
@@ -1781,7 +1781,7 @@ func (iconView *IconView) SetItemOrientation(orientation Orientation) {
 	var _arg0 *C.GtkIconView   // out
 	var _arg1 C.GtkOrientation // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_icon_view_set_item_orientation(_arg0, _arg1)
@@ -1800,7 +1800,7 @@ func (iconView *IconView) SetItemPadding(itemPadding int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(itemPadding)
 
 	C.gtk_icon_view_set_item_padding(_arg0, _arg1)
@@ -1820,7 +1820,7 @@ func (iconView *IconView) SetItemWidth(itemWidth int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(itemWidth)
 
 	C.gtk_icon_view_set_item_width(_arg0, _arg1)
@@ -1839,7 +1839,7 @@ func (iconView *IconView) SetMargin(margin int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(margin)
 
 	C.gtk_icon_view_set_margin(_arg0, _arg1)
@@ -1860,7 +1860,7 @@ func (iconView *IconView) SetMarkupColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_markup_column(_arg0, _arg1)
@@ -1880,9 +1880,9 @@ func (iconView *IconView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 *C.GtkTreeModel // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	if model != nil {
-		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_icon_view_set_model(_arg0, _arg1)
@@ -1901,7 +1901,7 @@ func (iconView *IconView) SetPixbufColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_pixbuf_column(_arg0, _arg1)
@@ -1930,7 +1930,7 @@ func (iconView *IconView) SetReorderable(reorderable bool) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	if reorderable {
 		_arg1 = C.TRUE
 	}
@@ -1951,7 +1951,7 @@ func (iconView *IconView) SetRowSpacing(rowSpacing int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(rowSpacing)
 
 	C.gtk_icon_view_set_row_spacing(_arg0, _arg1)
@@ -1969,7 +1969,7 @@ func (iconView *IconView) SetSelectionMode(mode SelectionMode) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 C.GtkSelectionMode // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.GtkSelectionMode(mode)
 
 	C.gtk_icon_view_set_selection_mode(_arg0, _arg1)
@@ -1988,7 +1988,7 @@ func (iconView *IconView) SetSpacing(spacing int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(spacing)
 
 	C.gtk_icon_view_set_spacing(_arg0, _arg1)
@@ -2007,7 +2007,7 @@ func (iconView *IconView) SetTextColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_text_column(_arg0, _arg1)
@@ -2032,11 +2032,11 @@ func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell 
 	var _arg2 *C.GtkTreePath     // out
 	var _arg3 *C.GtkCellRenderer // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
+	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	if cell != nil {
-		_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+		_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 	}
 
 	C.gtk_icon_view_set_tooltip_cell(_arg0, _arg1, _arg2, _arg3)
@@ -2065,7 +2065,7 @@ func (iconView *IconView) SetTooltipColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = C.int(column)
 
 	C.gtk_icon_view_set_tooltip_column(_arg0, _arg1)
@@ -2087,8 +2087,8 @@ func (iconView *IconView) SetTooltipItem(tooltip *Tooltip, path *TreePath) {
 	var _arg1 *C.GtkTooltip  // out
 	var _arg2 *C.GtkTreePath // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
+	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_icon_view_set_tooltip_item(_arg0, _arg1, _arg2)
@@ -2101,7 +2101,7 @@ func (iconView *IconView) SetTooltipItem(tooltip *Tooltip, path *TreePath) {
 func (iconView *IconView) UnselectAll() {
 	var _arg0 *C.GtkIconView // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	C.gtk_icon_view_unselect_all(_arg0)
 	runtime.KeepAlive(iconView)
@@ -2117,7 +2117,7 @@ func (iconView *IconView) UnselectPath(path *TreePath) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_icon_view_unselect_path(_arg0, _arg1)
@@ -2131,7 +2131,7 @@ func (iconView *IconView) UnselectPath(path *TreePath) {
 func (iconView *IconView) UnsetModelDragDest() {
 	var _arg0 *C.GtkIconView // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	C.gtk_icon_view_unset_model_drag_dest(_arg0)
 	runtime.KeepAlive(iconView)
@@ -2143,7 +2143,7 @@ func (iconView *IconView) UnsetModelDragDest() {
 func (iconView *IconView) UnsetModelDragSource() {
 	var _arg0 *C.GtkIconView // out
 
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(externglib.InternObject(iconView).Native()))
 
 	C.gtk_icon_view_unset_model_drag_source(_arg0)
 	runtime.KeepAlive(iconView)

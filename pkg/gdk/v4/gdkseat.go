@@ -294,7 +294,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
 	runtime.KeepAlive(seat)
@@ -322,7 +322,7 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	var _arg1 C.GdkSeatCapabilities // out
 	var _cret *C.GList              // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 	_arg1 = C.GdkSeatCapabilities(capabilities)
 
 	_cret = C.gdk_seat_get_devices(_arg0, _arg1)
@@ -368,7 +368,7 @@ func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_display(_arg0)
 	runtime.KeepAlive(seat)
@@ -391,7 +391,7 @@ func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 	runtime.KeepAlive(seat)
@@ -429,7 +429,7 @@ func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 	runtime.KeepAlive(seat)
@@ -466,7 +466,7 @@ func (seat *Seat) Tools() []DeviceTool {
 	var _arg0 *C.GdkSeat // out
 	var _cret *C.GList   // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_tools(_arg0)
 	runtime.KeepAlive(seat)

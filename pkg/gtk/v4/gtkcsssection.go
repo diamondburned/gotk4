@@ -53,7 +53,7 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	var _cret *C.GtkCssSection  // in
 
 	if file != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 	_arg2 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(end)))

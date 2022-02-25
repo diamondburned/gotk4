@@ -218,7 +218,7 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	_cret = C.gtk_image_new_from_gicon(_arg1)
 	runtime.KeepAlive(icon)
@@ -286,7 +286,7 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	var _cret *C.GtkWidget    // in
 
 	if paintable != nil {
-		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 	}
 
 	_cret = C.gtk_image_new_from_paintable(_arg1)
@@ -325,7 +325,7 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _cret *C.GtkWidget // in
 
 	if pixbuf != nil {
-		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	}
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
@@ -381,7 +381,7 @@ func NewImageFromResource(resourcePath string) *Image {
 func (image *Image) Clear() {
 	var _arg0 *C.GtkImage // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	C.gtk_image_clear(_arg0)
 	runtime.KeepAlive(image)
@@ -401,7 +401,7 @@ func (image *Image) GIcon() gio.Iconner {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.GIcon    // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	_cret = C.gtk_image_get_gicon(_arg0)
 	runtime.KeepAlive(image)
@@ -442,7 +442,7 @@ func (image *Image) IconName() string {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	_cret = C.gtk_image_get_icon_name(_arg0)
 	runtime.KeepAlive(image)
@@ -466,7 +466,7 @@ func (image *Image) IconSize() IconSize {
 	var _arg0 *C.GtkImage   // out
 	var _cret C.GtkIconSize // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	_cret = C.gtk_image_get_icon_size(_arg0)
 	runtime.KeepAlive(image)
@@ -492,7 +492,7 @@ func (image *Image) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkImage     // out
 	var _cret *C.GdkPaintable // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	_cret = C.gtk_image_get_paintable(_arg0)
 	runtime.KeepAlive(image)
@@ -529,7 +529,7 @@ func (image *Image) PixelSize() int {
 	var _arg0 *C.GtkImage // out
 	var _cret C.int       // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	_cret = C.gtk_image_get_pixel_size(_arg0)
 	runtime.KeepAlive(image)
@@ -554,7 +554,7 @@ func (image *Image) StorageType() ImageType {
 	var _arg0 *C.GtkImage    // out
 	var _cret C.GtkImageType // in
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	_cret = C.gtk_image_get_storage_type(_arg0)
 	runtime.KeepAlive(image)
@@ -578,7 +578,7 @@ func (image *Image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 	if filename != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -601,8 +601,8 @@ func (image *Image) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	C.gtk_image_set_from_gicon(_arg0, _arg1)
 	runtime.KeepAlive(image)
@@ -621,7 +621,7 @@ func (image *Image) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -644,9 +644,9 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkImage     // out
 	var _arg1 *C.GdkPaintable // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 	if paintable != nil {
-		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 	}
 
 	C.gtk_image_set_from_paintable(_arg0, _arg1)
@@ -669,9 +669,9 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 	if pixbuf != nil {
-		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	}
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
@@ -691,7 +691,7 @@ func (image *Image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 	if resourcePath != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -712,7 +712,7 @@ func (image *Image) SetIconSize(iconSize IconSize) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 	_arg1 = C.GtkIconSize(iconSize)
 
 	C.gtk_image_set_icon_size(_arg0, _arg1)
@@ -733,7 +733,7 @@ func (image *Image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.int       // out
 
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(externglib.InternObject(image).Native()))
 	_arg1 = C.int(pixelSize)
 
 	C.gtk_image_set_pixel_size(_arg0, _arg1)

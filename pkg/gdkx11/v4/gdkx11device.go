@@ -5,6 +5,8 @@ package gdkx11
 import (
 	"runtime"
 	"unsafe"
+
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -25,7 +27,7 @@ func X11DeviceGetID(device *X11DeviceXI2) int {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.int        // in
 
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_x11_device_get_id(_arg1)
 	runtime.KeepAlive(device)

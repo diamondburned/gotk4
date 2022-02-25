@@ -84,8 +84,8 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 	var _cret *C.GtkSingleSelection // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 
 	_cret = C.gtk_single_selection_new(_arg1)
@@ -109,7 +109,7 @@ func (self *SingleSelection) Autoselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_single_selection_get_autoselect(_arg0)
 	runtime.KeepAlive(self)
@@ -134,7 +134,7 @@ func (self *SingleSelection) CanUnselect() bool {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_single_selection_get_can_unselect(_arg0)
 	runtime.KeepAlive(self)
@@ -158,7 +158,7 @@ func (self *SingleSelection) Model() gio.ListModeller {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret *C.GListModel         // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_single_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -198,7 +198,7 @@ func (self *SingleSelection) Selected() uint {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_single_selection_get_selected(_arg0)
 	runtime.KeepAlive(self)
@@ -222,7 +222,7 @@ func (self *SingleSelection) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.gpointer            // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_single_selection_get_selected_item(_arg0)
 	runtime.KeepAlive(self)
@@ -248,7 +248,7 @@ func (self *SingleSelection) SetAutoselect(autoselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if autoselect {
 		_arg1 = C.TRUE
 	}
@@ -273,7 +273,7 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if canUnselect {
 		_arg1 = C.TRUE
 	}
@@ -295,9 +295,9 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 *C.GListModel         // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_single_selection_set_model(_arg0, _arg1)
@@ -321,7 +321,7 @@ func (self *SingleSelection) SetSelected(position uint) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.guint               // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_single_selection_set_selected(_arg0, _arg1)

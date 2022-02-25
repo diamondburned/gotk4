@@ -68,7 +68,7 @@ func (accessible *ToplevelAccessible) Children() []Window {
 	var _arg0 *C.GtkToplevelAccessible // out
 	var _cret *C.GList                 // in
 
-	_arg0 = (*C.GtkToplevelAccessible)(unsafe.Pointer(accessible.Native()))
+	_arg0 = (*C.GtkToplevelAccessible)(unsafe.Pointer(externglib.InternObject(accessible).Native()))
 
 	_cret = C.gtk_toplevel_accessible_get_children(_arg0)
 	runtime.KeepAlive(accessible)

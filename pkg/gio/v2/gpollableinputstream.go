@@ -239,7 +239,7 @@ func (stream *PollableInputStream) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_pollable_input_stream_can_poll(_arg0)
 	runtime.KeepAlive(stream)
@@ -275,7 +275,7 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 	var _arg1 *C.GCancellable         // out
 	var _cret *C.GSource              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -317,7 +317,7 @@ func (stream *PollableInputStream) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_pollable_input_stream_is_readable(_arg0)
 	runtime.KeepAlive(stream)
@@ -360,7 +360,7 @@ func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer [
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)

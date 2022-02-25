@@ -39,7 +39,7 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 	var _arg0 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_connection_factory_create_connection(_arg0)
 	runtime.KeepAlive(socket)
@@ -112,13 +112,13 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 	var _arg1 *C.GSocketAddress    // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(connection)
@@ -155,13 +155,13 @@ func (connection *SocketConnection) ConnectAsync(ctx context.Context, address So
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	if callback != nil {
 		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg4 = C.gpointer(gbox.AssignOnce(callback))
@@ -185,8 +185,8 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult      // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_socket_connection_connect_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(connection)
@@ -213,7 +213,7 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _cret *C.GSocketAddress    // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 
 	_cret = C.g_socket_connection_get_local_address(_arg0, &_cerr)
 	runtime.KeepAlive(connection)
@@ -263,7 +263,7 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _cret *C.GSocketAddress    // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 
 	_cret = C.g_socket_connection_get_remote_address(_arg0, &_cerr)
 	runtime.KeepAlive(connection)
@@ -307,7 +307,7 @@ func (connection *SocketConnection) Socket() *Socket {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocket           // in
 
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 
 	_cret = C.g_socket_connection_get_socket(_arg0)
 	runtime.KeepAlive(connection)
@@ -330,7 +330,7 @@ func (connection *SocketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 
 	_cret = C.g_socket_connection_is_connected(_arg0)
 	runtime.KeepAlive(connection)

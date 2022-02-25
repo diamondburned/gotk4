@@ -127,7 +127,7 @@ func (coverage *Coverage) Copy() *Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(externglib.InternObject(coverage).Native()))
 
 	_cret = C.pango_coverage_copy(_arg0)
 	runtime.KeepAlive(coverage)
@@ -154,7 +154,7 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	var _arg1 C.int                // out
 	var _cret C.PangoCoverageLevel // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(externglib.InternObject(coverage).Native()))
 	_arg1 = C.int(index_)
 
 	_cret = C.pango_coverage_get(_arg0, _arg1)
@@ -182,8 +182,8 @@ func (coverage *Coverage) Max(other *Coverage) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
-	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(externglib.InternObject(coverage).Native()))
+	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(externglib.InternObject(other).Native()))
 
 	C.pango_coverage_max(_arg0, _arg1)
 	runtime.KeepAlive(coverage)
@@ -202,7 +202,7 @@ func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	var _arg1 C.int                // out
 	var _arg2 C.PangoCoverageLevel // out
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(externglib.InternObject(coverage).Native()))
 	_arg1 = C.int(index_)
 	_arg2 = C.PangoCoverageLevel(level)
 
@@ -225,7 +225,7 @@ func (coverage *Coverage) ToBytes() []byte {
 	var _arg1 *C.guchar        // in
 	var _arg2 C.int            // in
 
-	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(externglib.InternObject(coverage).Native()))
 
 	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(coverage)

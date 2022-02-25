@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
@@ -96,7 +97,7 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycod
 	var _cret *C.char           // in
 
 	if display != nil {
-		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	}
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
@@ -180,7 +181,7 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 	var _cret *C.char           // in
 
 	if display != nil {
-		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	}
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
@@ -290,7 +291,7 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if display != nil {
-		_arg2 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+		_arg2 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	}
 
 	_cret = C.gtk_accelerator_parse_with_keycode(_arg1, _arg2, &_arg3, &_arg4, &_arg5)

@@ -93,7 +93,7 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 	var _arg7 *C.gchar          // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(inetaddr.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(inetaddr).Native()))
 	_arg2 = C.guint16(port)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -137,7 +137,7 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_address_get_destination_hostname(_arg0)
 	runtime.KeepAlive(proxy)
@@ -161,7 +161,7 @@ func (proxy *ProxyAddress) DestinationPort() uint16 {
 	var _arg0 *C.GProxyAddress // out
 	var _cret C.guint16        // in
 
-	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_address_get_destination_port(_arg0)
 	runtime.KeepAlive(proxy)
@@ -184,7 +184,7 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_address_get_destination_protocol(_arg0)
 	runtime.KeepAlive(proxy)
@@ -206,7 +206,7 @@ func (proxy *ProxyAddress) Password() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_address_get_password(_arg0)
 	runtime.KeepAlive(proxy)
@@ -230,7 +230,7 @@ func (proxy *ProxyAddress) Protocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_address_get_protocol(_arg0)
 	runtime.KeepAlive(proxy)
@@ -252,7 +252,7 @@ func (proxy *ProxyAddress) URI() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_address_get_uri(_arg0)
 	runtime.KeepAlive(proxy)
@@ -276,7 +276,7 @@ func (proxy *ProxyAddress) Username() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_address_get_username(_arg0)
 	runtime.KeepAlive(proxy)

@@ -160,7 +160,7 @@ func (group *ToolItemGroup) Collapsed() bool {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	_cret = C.gtk_tool_item_group_get_collapsed(_arg0)
 	runtime.KeepAlive(group)
@@ -191,7 +191,7 @@ func (group *ToolItemGroup) DropItem(x, y int) *ToolItem {
 	var _arg2 C.gint              // out
 	var _cret *C.GtkToolItem      // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
@@ -217,7 +217,7 @@ func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolItemGroup  // out
 	var _cret C.PangoEllipsizeMode // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	_cret = C.gtk_tool_item_group_get_ellipsize(_arg0)
 	runtime.KeepAlive(group)
@@ -239,7 +239,7 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret C.GtkReliefStyle    // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	_cret = C.gtk_tool_item_group_get_header_relief(_arg0)
 	runtime.KeepAlive(group)
@@ -266,8 +266,8 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 	var _arg1 *C.GtkToolItem      // out
 	var _cret C.gint              // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 
 	_cret = C.gtk_tool_item_group_get_item_position(_arg0, _arg1)
 	runtime.KeepAlive(group)
@@ -292,7 +292,7 @@ func (group *ToolItemGroup) Label() string {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret *C.gchar            // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	_cret = C.gtk_tool_item_group_get_label(_arg0)
 	runtime.KeepAlive(group)
@@ -315,7 +315,7 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	_cret = C.gtk_tool_item_group_get_label_widget(_arg0)
 	runtime.KeepAlive(group)
@@ -353,7 +353,7 @@ func (group *ToolItemGroup) NItems() uint {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 
 	_cret = C.gtk_tool_item_group_get_n_items(_arg0)
 	runtime.KeepAlive(group)
@@ -380,7 +380,7 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 	var _arg1 C.guint             // out
 	var _cret *C.GtkToolItem      // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	_arg1 = C.guint(index)
 
 	_cret = C.gtk_tool_item_group_get_nth_item(_arg0, _arg1)
@@ -407,8 +407,8 @@ func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_insert(_arg0, _arg1, _arg2)
@@ -427,7 +427,7 @@ func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	if collapsed {
 		_arg1 = C.TRUE
 	}
@@ -448,7 +448,7 @@ func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
 	var _arg0 *C.GtkToolItemGroup  // out
 	var _arg1 C.PangoEllipsizeMode // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	_arg1 = C.PangoEllipsizeMode(ellipsize)
 
 	C.gtk_tool_item_group_set_ellipsize(_arg0, _arg1)
@@ -467,7 +467,7 @@ func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.GtkReliefStyle    // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	_arg1 = C.GtkReliefStyle(style)
 
 	C.gtk_tool_item_group_set_header_relief(_arg0, _arg1)
@@ -488,8 +488,8 @@ func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_set_item_position(_arg0, _arg1, _arg2)
@@ -509,7 +509,7 @@ func (group *ToolItemGroup) SetLabel(label string) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -529,8 +529,8 @@ func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkWidget        // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(labelWidget).Native()))
 
 	C.gtk_tool_item_group_set_label_widget(_arg0, _arg1)
 	runtime.KeepAlive(group)

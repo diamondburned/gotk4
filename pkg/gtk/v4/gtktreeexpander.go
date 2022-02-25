@@ -135,7 +135,7 @@ func (self *TreeExpander) Child() Widgetter {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkWidget       // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_expander_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -176,7 +176,7 @@ func (self *TreeExpander) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret C.gpointer         // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_expander_get_item(_arg0)
 	runtime.KeepAlive(self)
@@ -198,7 +198,7 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkTreeListRow  // in
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_expander_get_list_row(_arg0)
 	runtime.KeepAlive(self)
@@ -222,9 +222,9 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_tree_expander_set_child(_arg0, _arg1)
@@ -242,9 +242,9 @@ func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkTreeListRow  // out
 
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if listRow != nil {
-		_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(listRow.Native()))
+		_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(listRow).Native()))
 	}
 
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)

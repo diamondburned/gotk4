@@ -39,7 +39,7 @@ func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *D
 	var _arg3 *C.gchar           // out
 	var _cret *C.GDBusMenuModel  // in
 
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	if busName != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
 		defer C.free(unsafe.Pointer(_arg2))

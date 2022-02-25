@@ -242,7 +242,7 @@ func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolItem       // out
 	var _cret C.PangoEllipsizeMode // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_ellipsize_mode(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -265,7 +265,7 @@ func (toolItem *ToolItem) Expand() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_expand(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -290,7 +290,7 @@ func (toolItem *ToolItem) Homogeneous() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_homogeneous(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -316,7 +316,7 @@ func (toolItem *ToolItem) IconSize() int {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.GtkIconSize  // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_icon_size(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -339,7 +339,7 @@ func (toolItem *ToolItem) IsImportant() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_is_important(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -365,7 +365,7 @@ func (toolItem *ToolItem) Orientation() Orientation {
 	var _arg0 *C.GtkToolItem   // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_orientation(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -399,7 +399,7 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -442,7 +442,7 @@ func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolItem   // out
 	var _cret C.GtkReliefStyle // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_relief_style(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -466,7 +466,7 @@ func (toolItem *ToolItem) TextAlignment() float32 {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gfloat       // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_text_alignment(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -490,7 +490,7 @@ func (toolItem *ToolItem) TextOrientation() Orientation {
 	var _arg0 *C.GtkToolItem   // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_text_orientation(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -514,7 +514,7 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 	var _arg0 *C.GtkToolItem  // out
 	var _cret *C.GtkSizeGroup // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_text_size_group(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -551,7 +551,7 @@ func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 	var _arg0 *C.GtkToolItem    // out
 	var _cret C.GtkToolbarStyle // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_toolbar_style(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -574,7 +574,7 @@ func (toolItem *ToolItem) UseDragWindow() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_use_drag_window(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -600,7 +600,7 @@ func (toolItem *ToolItem) VisibleHorizontal() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_visible_horizontal(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -625,7 +625,7 @@ func (toolItem *ToolItem) VisibleVertical() bool {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_get_visible_vertical(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -648,7 +648,7 @@ func (toolItem *ToolItem) VisibleVertical() bool {
 func (toolItem *ToolItem) RebuildMenu() {
 	var _arg0 *C.GtkToolItem // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	C.gtk_tool_item_rebuild_menu(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -666,7 +666,7 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 	var _arg0 *C.GtkToolItem // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	_cret = C.gtk_tool_item_retrieve_proxy_menu_item(_arg0)
 	runtime.KeepAlive(toolItem)
@@ -707,7 +707,7 @@ func (toolItem *ToolItem) SetExpand(expand bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	if expand {
 		_arg1 = C.TRUE
 	}
@@ -730,7 +730,7 @@ func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -754,7 +754,7 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	if isImportant {
 		_arg1 = C.TRUE
 	}
@@ -780,11 +780,11 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if menuItem != nil {
-		_arg2 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+		_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	}
 
 	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
@@ -804,7 +804,7 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -824,7 +824,7 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -846,7 +846,7 @@ func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	if useDragWindow {
 		_arg1 = C.TRUE
 	}
@@ -867,7 +867,7 @@ func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	if visibleHorizontal {
 		_arg1 = C.TRUE
 	}
@@ -891,7 +891,7 @@ func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	if visibleVertical {
 		_arg1 = C.TRUE
 	}
@@ -907,7 +907,7 @@ func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
 func (toolItem *ToolItem) ToolbarReconfigured() {
 	var _arg0 *C.GtkToolItem // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
 	runtime.KeepAlive(toolItem)

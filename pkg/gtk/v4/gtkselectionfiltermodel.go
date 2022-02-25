@@ -78,7 +78,7 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 	var _cret *C.GtkSelectionFilterModel // in
 
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	_cret = C.gtk_selection_filter_model_new(_arg1)
@@ -101,7 +101,7 @@ func (self *SelectionFilterModel) Model() SelectionModeller {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _cret *C.GtkSelectionModel       // in
 
-	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_selection_filter_model_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -142,9 +142,9 @@ func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _arg1 *C.GtkSelectionModel       // out
 
-	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_selection_filter_model_set_model(_arg0, _arg1)

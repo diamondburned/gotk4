@@ -5,6 +5,8 @@ package gdkx11
 import (
 	"runtime"
 	"unsafe"
+
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -52,7 +54,7 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	var _arg5 C.int         // in
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -97,7 +99,7 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	var _arg5 C.int         // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 

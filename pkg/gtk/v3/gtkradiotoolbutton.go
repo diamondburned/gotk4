@@ -130,7 +130,7 @@ func NewRadioToolButton(group []RadioButton) *RadioToolButton {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioButton // out
-			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -171,7 +171,7 @@ func NewRadioToolButtonFromStock(group []RadioButton, stockId string) *RadioTool
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioButton // out
-			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -206,7 +206,7 @@ func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 	var _cret *C.GtkToolItem        // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+		_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	}
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
@@ -240,7 +240,7 @@ func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId strin
 	var _cret *C.GtkToolItem        // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
+		_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -266,7 +266,7 @@ func (button *RadioToolButton) Group() []RadioButton {
 	var _arg0 *C.GtkRadioToolButton // out
 	var _cret *C.GSList             // in
 
-	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_radio_tool_button_get_group(_arg0)
 	runtime.KeepAlive(button)
@@ -295,12 +295,12 @@ func (button *RadioToolButton) SetGroup(group []RadioButton) {
 	var _arg0 *C.GtkRadioToolButton // out
 	var _arg1 *C.GSList             // out
 
-	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioButton // out
-			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)

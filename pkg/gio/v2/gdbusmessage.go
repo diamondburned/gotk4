@@ -178,7 +178,7 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 	var _cret *C.GDBusMessage // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_copy(_arg0, &_cerr)
 	runtime.KeepAlive(message)
@@ -205,7 +205,7 @@ func (message *DBusMessage) Arg0() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_arg0(_arg0)
 	runtime.KeepAlive(message)
@@ -230,7 +230,7 @@ func (message *DBusMessage) Body() *glib.Variant {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GVariant     // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_body(_arg0)
 	runtime.KeepAlive(message)
@@ -261,7 +261,7 @@ func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 	var _arg0 *C.GDBusMessage         // out
 	var _cret C.GDBusMessageByteOrder // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_byte_order(_arg0)
 	runtime.KeepAlive(message)
@@ -284,7 +284,7 @@ func (message *DBusMessage) Destination() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_destination(_arg0)
 	runtime.KeepAlive(message)
@@ -309,7 +309,7 @@ func (message *DBusMessage) ErrorName() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_error_name(_arg0)
 	runtime.KeepAlive(message)
@@ -334,7 +334,7 @@ func (message *DBusMessage) Flags() DBusMessageFlags {
 	var _arg0 *C.GDBusMessage     // out
 	var _cret C.GDBusMessageFlags // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_flags(_arg0)
 	runtime.KeepAlive(message)
@@ -366,7 +366,7 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 	var _arg1 C.GDBusMessageHeaderField // out
 	var _cret *C.GVariant               // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.GDBusMessageHeaderField(headerField)
 
 	_cret = C.g_dbus_message_get_header(_arg0, _arg1)
@@ -401,7 +401,7 @@ func (message *DBusMessage) HeaderFields() []byte {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.guchar       // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_header_fields(_arg0)
 	runtime.KeepAlive(message)
@@ -436,7 +436,7 @@ func (message *DBusMessage) Interface() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_interface(_arg0)
 	runtime.KeepAlive(message)
@@ -462,7 +462,7 @@ func (message *DBusMessage) Locked() bool {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_locked(_arg0)
 	runtime.KeepAlive(message)
@@ -487,7 +487,7 @@ func (message *DBusMessage) Member() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_member(_arg0)
 	runtime.KeepAlive(message)
@@ -512,7 +512,7 @@ func (message *DBusMessage) MessageType() DBusMessageType {
 	var _arg0 *C.GDBusMessage    // out
 	var _cret C.GDBusMessageType // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_message_type(_arg0)
 	runtime.KeepAlive(message)
@@ -535,7 +535,7 @@ func (message *DBusMessage) Path() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_path(_arg0)
 	runtime.KeepAlive(message)
@@ -560,7 +560,7 @@ func (message *DBusMessage) ReplySerial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_reply_serial(_arg0)
 	runtime.KeepAlive(message)
@@ -583,7 +583,7 @@ func (message *DBusMessage) Sender() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_sender(_arg0)
 	runtime.KeepAlive(message)
@@ -607,7 +607,7 @@ func (message *DBusMessage) Serial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_serial(_arg0)
 	runtime.KeepAlive(message)
@@ -630,7 +630,7 @@ func (message *DBusMessage) Signature() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_dbus_message_get_signature(_arg0)
 	runtime.KeepAlive(message)
@@ -646,7 +646,7 @@ func (message *DBusMessage) Signature() string {
 func (message *DBusMessage) Lock() {
 	var _arg0 *C.GDBusMessage // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	C.g_dbus_message_lock(_arg0)
 	runtime.KeepAlive(message)
@@ -670,7 +670,7 @@ func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMess
 	var _arg2 *C.gchar        // out
 	var _cret *C.GDBusMessage // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(methodCallMessage.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(methodCallMessage).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
@@ -699,7 +699,7 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(methodCallMessage.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(methodCallMessage).Native()))
 
 	_cret = C.g_dbus_message_new_method_reply(_arg0)
 	runtime.KeepAlive(methodCallMessage)
@@ -756,7 +756,7 @@ func (message *DBusMessage) Print(indent uint) string {
 	var _arg1 C.guint         // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.guint(indent)
 
 	_cret = C.g_dbus_message_print(_arg0, _arg1)
@@ -785,7 +785,7 @@ func (message *DBusMessage) SetBody(body *glib.Variant) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GVariant     // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(body)))
 
 	C.g_dbus_message_set_body(_arg0, _arg1)
@@ -803,7 +803,7 @@ func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
 	var _arg1 C.GDBusMessageByteOrder // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.GDBusMessageByteOrder(byteOrder)
 
 	C.g_dbus_message_set_byte_order(_arg0, _arg1)
@@ -822,7 +822,7 @@ func (message *DBusMessage) SetDestination(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	if value != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -845,7 +845,7 @@ func (message *DBusMessage) SetErrorName(value string) {
 	var _arg1 *C.gchar        // out
 
 	if message != nil {
-		_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+		_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -866,7 +866,7 @@ func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
 	var _arg0 *C.GDBusMessage     // out
 	var _arg1 C.GDBusMessageFlags // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.GDBusMessageFlags(flags)
 
 	C.g_dbus_message_set_flags(_arg0, _arg1)
@@ -890,7 +890,7 @@ func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value 
 	var _arg1 C.GDBusMessageHeaderField // out
 	var _arg2 *C.GVariant               // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.GDBusMessageHeaderField(headerField)
 	if value != nil {
 		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
@@ -913,7 +913,7 @@ func (message *DBusMessage) SetInterface(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	if value != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -935,7 +935,7 @@ func (message *DBusMessage) SetMember(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	if value != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -957,7 +957,7 @@ func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 	var _arg0 *C.GDBusMessage    // out
 	var _arg1 C.GDBusMessageType // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.GDBusMessageType(typ)
 
 	C.g_dbus_message_set_message_type(_arg0, _arg1)
@@ -976,7 +976,7 @@ func (message *DBusMessage) SetPath(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	if value != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -998,7 +998,7 @@ func (message *DBusMessage) SetReplySerial(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.guint32(value)
 
 	C.g_dbus_message_set_reply_serial(_arg0, _arg1)
@@ -1017,7 +1017,7 @@ func (message *DBusMessage) SetSender(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	if value != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1038,7 +1038,7 @@ func (message *DBusMessage) SetSerial(serial uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = C.guint32(serial)
 
 	C.g_dbus_message_set_serial(_arg0, _arg1)
@@ -1057,7 +1057,7 @@ func (message *DBusMessage) SetSignature(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	if value != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1087,7 +1087,7 @@ func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, er
 	var _arg1 C.gsize                // in
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg2 = C.GDBusCapabilityFlags(capabilities)
 
 	_cret = C.g_dbus_message_to_blob(_arg0, &_arg1, _arg2, &_cerr)
@@ -1118,7 +1118,7 @@ func (message *DBusMessage) ToGError() error {
 	var _arg0 *C.GDBusMessage // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	C.g_dbus_message_to_gerror(_arg0, &_cerr)
 	runtime.KeepAlive(message)

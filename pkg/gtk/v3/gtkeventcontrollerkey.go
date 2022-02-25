@@ -231,7 +231,7 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_event_controller_key_new(_arg1)
 	runtime.KeepAlive(widget)
@@ -252,8 +252,8 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
 	runtime.KeepAlive(controller)
@@ -274,7 +274,7 @@ func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
 	runtime.KeepAlive(controller)
@@ -296,7 +296,7 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
 	runtime.KeepAlive(controller)
@@ -330,8 +330,8 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(controller.Native()))
-	_arg1 = (*C.GtkIMContext)(unsafe.Pointer(imContext.Native()))
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
+	_arg1 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(imContext).Native()))
 
 	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
 	runtime.KeepAlive(controller)

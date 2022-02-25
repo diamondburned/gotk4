@@ -180,7 +180,7 @@ func (dialog *MessageDialog) Image() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(dialog.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(externglib.InternObject(dialog).Native()))
 
 	_cret = C.gtk_message_dialog_get_image(_arg0)
 	runtime.KeepAlive(dialog)
@@ -222,7 +222,7 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(externglib.InternObject(messageDialog).Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 	runtime.KeepAlive(messageDialog)
@@ -262,8 +262,8 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(dialog.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(externglib.InternObject(dialog).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(image).Native()))
 
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
 	runtime.KeepAlive(dialog)
@@ -281,7 +281,7 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.gchar            // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(externglib.InternObject(messageDialog).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -296,7 +296,7 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 // from ResponseType.
 func NewMessageDialog(parent *Window, flags DialogFlags, typ MessageType, buttons ButtonsType) *MessageDialog {
 	w := C._gotk4_gtk_message_dialog_new2(
-		(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
+		(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
 		(C.GtkDialogFlags)(flags),
 		(C.GtkMessageType)(typ),
 		(C.GtkButtonsType)(buttons),

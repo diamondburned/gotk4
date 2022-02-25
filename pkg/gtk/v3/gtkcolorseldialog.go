@@ -113,7 +113,7 @@ func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
 
-	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(colorsel.Native()))
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 	runtime.KeepAlive(colorsel)

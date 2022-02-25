@@ -99,8 +99,8 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(externglib.InternObject(container).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 	runtime.KeepAlive(container)
@@ -115,7 +115,7 @@ func (container *ContainerCellAccessible) Children() []CellAccessible {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _cret *C.GList                      // in
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(externglib.InternObject(container).Native()))
 
 	_cret = C.gtk_container_cell_accessible_get_children(_arg0)
 	runtime.KeepAlive(container)
@@ -139,8 +139,8 @@ func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(externglib.InternObject(container).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 	runtime.KeepAlive(container)

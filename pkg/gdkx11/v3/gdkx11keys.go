@@ -74,7 +74,7 @@ func (keymap *X11Keymap) GroupForState(state uint) int {
 	var _arg1 C.guint      // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(externglib.InternObject(keymap).Native()))
 	_arg1 = C.guint(state)
 
 	_cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
@@ -107,7 +107,7 @@ func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(externglib.InternObject(keymap).Native()))
 	_arg1 = C.guint(keycode)
 
 	_cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)

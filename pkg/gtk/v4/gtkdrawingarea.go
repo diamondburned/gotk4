@@ -273,7 +273,7 @@ func (self *DrawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 	runtime.KeepAlive(self)
@@ -295,7 +295,7 @@ func (self *DrawingArea) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 	runtime.KeepAlive(self)
@@ -323,7 +323,7 @@ func (self *DrawingArea) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(height)
 
 	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
@@ -347,7 +347,7 @@ func (self *DrawingArea) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
@@ -380,7 +380,7 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if drawFunc != nil {
 		_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
 		_arg2 = C.gpointer(gbox.Assign(drawFunc))

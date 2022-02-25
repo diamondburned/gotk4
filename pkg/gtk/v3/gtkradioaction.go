@@ -190,7 +190,7 @@ func (action *RadioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
 	runtime.KeepAlive(action)
@@ -228,7 +228,7 @@ func (action *RadioAction) Group() []RadioAction {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret *C.GSList         // in
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.gtk_radio_action_get_group(_arg0)
 	runtime.KeepAlive(action)
@@ -276,9 +276,9 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	if groupSource != nil {
-		_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
+		_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject(groupSource).Native()))
 	}
 
 	C.gtk_radio_action_join_group(_arg0, _arg1)
@@ -299,7 +299,7 @@ func (action *RadioAction) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = C.gint(currentValue)
 
 	C.gtk_radio_action_set_current_value(_arg0, _arg1)
@@ -319,12 +319,12 @@ func (action *RadioAction) SetGroup(group []RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GSList         // out
 
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioAction // out
-			dst = (*C.GtkRadioAction)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)

@@ -181,7 +181,7 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _cret *C.GtkToolItem // in
 
 	if iconWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(iconWidget).Native()))
 	}
 	if label != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
@@ -240,7 +240,7 @@ func (button *MenuToolButton) Menu() Widgetter {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _cret *C.GtkWidget         // in
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_menu_tool_button_get_menu(_arg0)
 	runtime.KeepAlive(button)
@@ -280,7 +280,7 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -301,7 +301,7 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.gchar             // out
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -321,8 +321,8 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.GtkWidget         // out
 
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 	runtime.KeepAlive(button)

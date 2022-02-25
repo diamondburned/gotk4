@@ -69,7 +69,7 @@ func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlag
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
 	defer C.free(unsafe.Pointer(_arg3))
 	if observer != nil {
-		_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
+		_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
 	}
 
 	_cret = C.g_dbus_server_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
@@ -102,7 +102,7 @@ func (server *DBusServer) ClientAddress() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
+	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
 
 	_cret = C.g_dbus_server_get_client_address(_arg0)
 	runtime.KeepAlive(server)
@@ -124,7 +124,7 @@ func (server *DBusServer) Flags() DBusServerFlags {
 	var _arg0 *C.GDBusServer     // out
 	var _cret C.GDBusServerFlags // in
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
+	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
 
 	_cret = C.g_dbus_server_get_flags(_arg0)
 	runtime.KeepAlive(server)
@@ -146,7 +146,7 @@ func (server *DBusServer) GUID() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
+	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
 
 	_cret = C.g_dbus_server_get_guid(_arg0)
 	runtime.KeepAlive(server)
@@ -168,7 +168,7 @@ func (server *DBusServer) IsActive() bool {
 	var _arg0 *C.GDBusServer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
+	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
 
 	_cret = C.g_dbus_server_is_active(_arg0)
 	runtime.KeepAlive(server)
@@ -186,7 +186,7 @@ func (server *DBusServer) IsActive() bool {
 func (server *DBusServer) Start() {
 	var _arg0 *C.GDBusServer // out
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
+	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
 
 	C.g_dbus_server_start(_arg0)
 	runtime.KeepAlive(server)
@@ -196,7 +196,7 @@ func (server *DBusServer) Start() {
 func (server *DBusServer) Stop() {
 	var _arg0 *C.GDBusServer // out
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(server.Native()))
+	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
 
 	C.g_dbus_server_stop(_arg0)
 	runtime.KeepAlive(server)

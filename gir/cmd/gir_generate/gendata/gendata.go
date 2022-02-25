@@ -891,7 +891,7 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 
 			w := C.%s(
 				(*C.gchar)(unsafe.Pointer(ctitle)),
-				(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
+				(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
 				(C.GtkDialogFlags)(flags),
 			)
 			runtime.KeepAlive(parent)
@@ -928,7 +928,7 @@ func GtkNewMessageDialog(nsgen *girgen.NamespaceGenerator) error {
 		// from ResponseType.
 		func NewMessageDialog(parent *Window, flags DialogFlags, typ MessageType, buttons ButtonsType) *MessageDialog {
 			w := C._gotk4_gtk_message_dialog_new2(
-				(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
+				(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
 				(C.GtkDialogFlags)(flags),
 				(C.GtkMessageType)(typ),
 				(C.GtkButtonsType)(buttons),

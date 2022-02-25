@@ -101,10 +101,10 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	var _cret *C.GtkWidget     // in
 
 	if hadjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(hadjustment).Native()))
 	}
 	if vadjustment != nil {
-		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(vadjustment).Native()))
 	}
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
@@ -128,7 +128,7 @@ func (viewport *Viewport) Child() Widgetter {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
 
 	_cret = C.gtk_viewport_get_child(_arg0)
 	runtime.KeepAlive(viewport)
@@ -166,7 +166,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 	var _arg0 *C.GtkViewport // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
 
 	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
 	runtime.KeepAlive(viewport)
@@ -190,9 +190,9 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_viewport_set_child(_arg0, _arg1)
@@ -211,7 +211,7 @@ func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
 	if scrollToFocus {
 		_arg1 = C.TRUE
 	}

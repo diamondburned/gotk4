@@ -280,7 +280,7 @@ func (self *Filter) Changed(change FilterChange) {
 	var _arg0 *C.GtkFilter      // out
 	var _arg1 C.GtkFilterChange // out
 
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkFilterChange(change)
 
 	C.gtk_filter_changed(_arg0, _arg1)
@@ -304,7 +304,7 @@ func (self *Filter) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
 	var _cret C.GtkFilterMatch // in
 
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_filter_get_strictness(_arg0)
 	runtime.KeepAlive(self)
@@ -332,7 +332,7 @@ func (self *Filter) Match(item *externglib.Object) bool {
 	var _arg1 C.gpointer   // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_filter_match(_arg0, _arg1)

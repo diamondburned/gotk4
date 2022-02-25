@@ -236,7 +236,7 @@ func (volume *Volume) CanEject() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_can_eject(_arg0)
 	runtime.KeepAlive(volume)
@@ -260,7 +260,7 @@ func (volume *Volume) CanMount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_can_mount(_arg0)
 	runtime.KeepAlive(volume)
@@ -293,7 +293,7 @@ func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callba
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -327,8 +327,8 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(volume)
@@ -362,7 +362,7 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -370,7 +370,7 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -398,8 +398,8 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(volume)
@@ -427,7 +427,7 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
 	var _cret **C.char   // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_enumerate_identifiers(_arg0)
 	runtime.KeepAlive(volume)
@@ -476,7 +476,7 @@ func (volume *Volume) ActivationRoot() Filer {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GFile   // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_activation_root(_arg0)
 	runtime.KeepAlive(volume)
@@ -515,7 +515,7 @@ func (volume *Volume) Drive() Driver {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GDrive  // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_drive(_arg0)
 	runtime.KeepAlive(volume)
@@ -553,7 +553,7 @@ func (volume *Volume) Icon() Iconner {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_icon(_arg0)
 	runtime.KeepAlive(volume)
@@ -599,7 +599,7 @@ func (volume *Volume) Identifier(kind string) string {
 	var _arg1 *C.char    // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -628,7 +628,7 @@ func (volume *Volume) GetMount() Mounter {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_mount(_arg0)
 	runtime.KeepAlive(volume)
@@ -666,7 +666,7 @@ func (volume *Volume) Name() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_name(_arg0)
 	runtime.KeepAlive(volume)
@@ -690,7 +690,7 @@ func (volume *Volume) SortKey() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_sort_key(_arg0)
 	runtime.KeepAlive(volume)
@@ -715,7 +715,7 @@ func (volume *Volume) SymbolicIcon() Iconner {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(volume)
@@ -756,7 +756,7 @@ func (volume *Volume) UUID() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_get_uuid(_arg0)
 	runtime.KeepAlive(volume)
@@ -790,7 +790,7 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -798,7 +798,7 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 	}
 	_arg1 = C.GMountMountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -830,8 +830,8 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(volume)
@@ -856,7 +856,7 @@ func (volume *Volume) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
+	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_should_automount(_arg0)
 	runtime.KeepAlive(volume)

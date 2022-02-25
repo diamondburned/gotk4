@@ -124,7 +124,7 @@ func (gesture *GestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out
 	var _cret C.double            // in
 
-	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(gesture.Native()))
+	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 	runtime.KeepAlive(gesture)

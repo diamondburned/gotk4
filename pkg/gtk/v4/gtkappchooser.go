@@ -100,7 +100,7 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.GAppInfo      // in
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_get_app_info(_arg0)
 	runtime.KeepAlive(self)
@@ -138,7 +138,7 @@ func (self *AppChooser) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 	runtime.KeepAlive(self)
@@ -155,7 +155,7 @@ func (self *AppChooser) ContentType() string {
 func (self *AppChooser) Refresh() {
 	var _arg0 *C.GtkAppChooser // out
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_app_chooser_refresh(_arg0)
 	runtime.KeepAlive(self)

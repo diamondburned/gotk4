@@ -378,13 +378,13 @@ func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TL
 	var _cret C.GTlsInteractionResult // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 
 	_cret = C.g_tls_interaction_ask_password(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(interaction)
@@ -431,13 +431,13 @@ func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, passwor
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 	if callback != nil {
 		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg4 = C.gpointer(gbox.AssignOnce(callback))
@@ -475,8 +475,8 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 	var _cret C.GTlsInteractionResult // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_tls_interaction_ask_password_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(interaction)
@@ -528,13 +528,13 @@ func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, passwo
 	var _cret C.GTlsInteractionResult // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 
 	_cret = C.g_tls_interaction_invoke_ask_password(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(interaction)
@@ -591,13 +591,13 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context,
 	var _cret C.GTlsInteractionResult       // in
 	var _cerr *C.GError                     // in
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 
 	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -654,13 +654,13 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 	var _cret C.GTlsInteractionResult       // in
 	var _cerr *C.GError                     // in
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 
 	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -705,13 +705,13 @@ func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, 
 	var _arg4 C.GAsyncReadyCallback         // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -752,8 +752,8 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	var _cret C.GTlsInteractionResult // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_tls_interaction_request_certificate_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(interaction)

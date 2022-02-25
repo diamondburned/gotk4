@@ -82,9 +82,9 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	if emblem != nil {
-		_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+		_arg2 = (*C.GEmblem)(unsafe.Pointer(externglib.InternObject(emblem).Native()))
 	}
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
@@ -108,8 +108,8 @@ func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
-	_arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(externglib.InternObject(emblemed).Native()))
+	_arg1 = (*C.GEmblem)(unsafe.Pointer(externglib.InternObject(emblem).Native()))
 
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 	runtime.KeepAlive(emblemed)
@@ -120,7 +120,7 @@ func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 func (emblemed *EmblemedIcon) ClearEmblems() {
 	var _arg0 *C.GEmblemedIcon // out
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(externglib.InternObject(emblemed).Native()))
 
 	C.g_emblemed_icon_clear_emblems(_arg0)
 	runtime.KeepAlive(emblemed)
@@ -136,7 +136,7 @@ func (emblemed *EmblemedIcon) Emblems() []Emblem {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GList         // in
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(externglib.InternObject(emblemed).Native()))
 
 	_cret = C.g_emblemed_icon_get_emblems(_arg0)
 	runtime.KeepAlive(emblemed)
@@ -164,7 +164,7 @@ func (emblemed *EmblemedIcon) GetIcon() Iconner {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(externglib.InternObject(emblemed).Native()))
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 	runtime.KeepAlive(emblemed)

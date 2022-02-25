@@ -123,7 +123,7 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 
 	_arg1 = C.GtkOrientation(orientation)
 	if adjustment != nil {
-		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
 	}
 
 	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
@@ -147,7 +147,7 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScrollbar  // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_scrollbar_get_adjustment(_arg0)
 	runtime.KeepAlive(self)
@@ -169,9 +169,9 @@ func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if adjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
 	}
 
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)

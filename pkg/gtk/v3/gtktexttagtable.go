@@ -292,8 +292,8 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 	var _arg1 *C.GtkTextTag      // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 	runtime.KeepAlive(table)
@@ -321,7 +321,7 @@ func (table *TextTagTable) ForEach(fn TextTagTableForEach) {
 	var _arg1 C.GtkTextTagTableForeach // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextTagTableForEach)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
@@ -341,7 +341,7 @@ func (table *TextTagTable) Size() int {
 	var _arg0 *C.GtkTextTagTable // out
 	var _cret C.gint             // in
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 
 	_cret = C.gtk_text_tag_table_get_size(_arg0)
 	runtime.KeepAlive(table)
@@ -368,7 +368,7 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GtkTextTag      // in
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -397,8 +397,8 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 	runtime.KeepAlive(table)

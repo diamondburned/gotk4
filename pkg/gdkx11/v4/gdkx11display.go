@@ -143,7 +143,7 @@ func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 	runtime.KeepAlive(display)
@@ -162,7 +162,7 @@ func (display *X11Display) ErrorTrapPop() int {
 func (display *X11Display) ErrorTrapPopIgnored() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
 	runtime.KeepAlive(display)
@@ -176,7 +176,7 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 func (display *X11Display) ErrorTrapPush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_error_trap_push(_arg0)
 	runtime.KeepAlive(display)
@@ -194,7 +194,7 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_default_group(_arg0)
 	runtime.KeepAlive(display)
@@ -241,7 +241,7 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_primary_monitor(_arg0)
 	runtime.KeepAlive(display)
@@ -268,7 +268,7 @@ func (display *X11Display) Screen() *X11Screen {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkX11Screen // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_screen(_arg0)
 	runtime.KeepAlive(display)
@@ -290,7 +290,7 @@ func (display *X11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
 	runtime.KeepAlive(display)
@@ -314,7 +314,7 @@ func (display *X11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint32     // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
 	runtime.KeepAlive(display)
@@ -333,7 +333,7 @@ func (display *X11Display) UserTime() uint32 {
 func (display *X11Display) Grab() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_grab(_arg0)
 	runtime.KeepAlive(display)
@@ -359,7 +359,7 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	if theme != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(theme)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -394,7 +394,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -419,7 +419,7 @@ func (display *X11Display) SetSurfaceScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.int(scale)
 
 	C.gdk_x11_display_set_surface_scale(_arg0, _arg1)
@@ -431,7 +431,7 @@ func (display *X11Display) SetSurfaceScale(scale int) {
 func (display *X11Display) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_ungrab(_arg0)
 	runtime.KeepAlive(display)
@@ -489,7 +489,7 @@ func X11DisplaySetProgramClass(display *gdk.Display, programClass string) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.char       // out
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(programClass)))
 	defer C.free(unsafe.Pointer(_arg2))
 

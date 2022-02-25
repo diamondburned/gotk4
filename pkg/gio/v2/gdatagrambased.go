@@ -525,7 +525,7 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 	var _arg1 C.GIOCondition    // out
 	var _cret C.GIOCondition    // in
 
-	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(datagramBased).Native()))
 	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
@@ -560,7 +560,7 @@ func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition
 	var _arg2 C.gint64          // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(datagramBased).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -613,7 +613,7 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 	var _arg1 C.GIOCondition    // out
 	var _cret *C.GSource        // in
 
-	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(datagramBased).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -713,7 +713,7 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 	var _cret C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(datagramBased).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -814,7 +814,7 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 	var _cret C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(datagramBased).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)

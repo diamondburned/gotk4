@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
@@ -213,7 +214,7 @@ func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg3 C.guint32       // out
 	var _cret C.GdkGrabStatus // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
@@ -342,16 +343,16 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 	var _arg6 C.guint32       // out
 	var _cret C.GdkGrabStatus // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	if ownerEvents {
 		_arg2 = C.TRUE
 	}
 	_arg3 = C.GdkEventMask(eventMask)
 	if confineTo != nil {
-		_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
+		_arg4 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(confineTo).Native()))
 	}
 	if cursor != nil {
-		_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+		_arg5 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 	}
 	_arg6 = C.guint32(time_)
 

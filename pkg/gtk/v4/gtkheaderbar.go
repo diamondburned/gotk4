@@ -154,7 +154,7 @@ func (bar *HeaderBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 	runtime.KeepAlive(bar)
@@ -179,7 +179,7 @@ func (bar *HeaderBar) ShowTitleButtons() bool {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 
 	_cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
 	runtime.KeepAlive(bar)
@@ -206,7 +206,7 @@ func (bar *HeaderBar) TitleWidget() Widgetter {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 
 	_cret = C.gtk_header_bar_get_title_widget(_arg0)
 	runtime.KeepAlive(bar)
@@ -243,8 +243,8 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
 	runtime.KeepAlive(bar)
@@ -261,8 +261,8 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_header_bar_pack_start(_arg0, _arg1)
 	runtime.KeepAlive(bar)
@@ -282,8 +282,8 @@ func (bar *HeaderBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_header_bar_remove(_arg0, _arg1)
 	runtime.KeepAlive(bar)
@@ -315,7 +315,7 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 	if layout != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -337,7 +337,7 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -366,9 +366,9 @@ func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 	if titleWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(titleWidget).Native()))
 	}
 
 	C.gtk_header_bar_set_title_widget(_arg0, _arg1)

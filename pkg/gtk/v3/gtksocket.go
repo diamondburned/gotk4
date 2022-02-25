@@ -240,7 +240,7 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkSocket)(unsafe.Pointer(socket_.Native()))
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(externglib.InternObject(socket_).Native()))
 
 	_cret = C.gtk_socket_get_plug_window(_arg0)
 	runtime.KeepAlive(socket_)

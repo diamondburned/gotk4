@@ -149,7 +149,7 @@ func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if matchFunc != nil {
 		_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
 		_arg2 = C.gpointer(gbox.Assign(matchFunc))

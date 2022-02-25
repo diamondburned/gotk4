@@ -102,7 +102,7 @@ func NewSpinner() *Spinner {
 func (spinner *Spinner) Start() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
 
 	C.gtk_spinner_start(_arg0)
 	runtime.KeepAlive(spinner)
@@ -112,7 +112,7 @@ func (spinner *Spinner) Start() {
 func (spinner *Spinner) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
 
 	C.gtk_spinner_stop(_arg0)
 	runtime.KeepAlive(spinner)

@@ -141,8 +141,8 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 	var _cret *C.GtkMapListModel // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 	if mapFunc != nil {
 		_arg2 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
@@ -171,7 +171,7 @@ func (self *MapListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret *C.GListModel      // in
 
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_map_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -208,7 +208,7 @@ func (self *MapListModel) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
 	runtime.KeepAlive(self)
@@ -244,7 +244,7 @@ func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if mapFunc != nil {
 		_arg1 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
 		_arg2 = C.gpointer(gbox.Assign(mapFunc))
@@ -270,9 +270,9 @@ func (self *MapListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMapListModel // out
 	var _arg1 *C.GListModel      // out
 
-	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_map_list_model_set_model(_arg0, _arg1)

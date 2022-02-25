@@ -109,7 +109,7 @@ func (store *ListStore) Append(item *externglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	C.g_list_store_append(_arg0, _arg1)
@@ -140,7 +140,7 @@ func (store *ListStore) Find(item *externglib.Object) (uint, bool) {
 	var _arg2 C.guint       // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
@@ -177,7 +177,7 @@ func (store *ListStore) Insert(position uint, item *externglib.Object) {
 	var _arg1 C.guint       // out
 	var _arg2 C.gpointer    // out
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.gpointer(unsafe.Pointer(item.Native()))
 
@@ -212,7 +212,7 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 	var _arg3 C.gpointer
 	var _cret C.guint // in
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 	_arg3 = C.gpointer(gbox.Assign(compareFunc))
@@ -244,7 +244,7 @@ func (store *ListStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 	_arg1 = C.guint(position)
 
 	C.g_list_store_remove(_arg0, _arg1)
@@ -256,7 +256,7 @@ func (store *ListStore) Remove(position uint) {
 func (store *ListStore) RemoveAll() {
 	var _arg0 *C.GListStore // out
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 
 	C.g_list_store_remove_all(_arg0)
 	runtime.KeepAlive(store)
@@ -273,7 +273,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg1 C.GCompareDataFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 	_arg2 = C.gpointer(gbox.Assign(compareFunc))
 	defer gbox.Delete(uintptr(_arg2))
@@ -310,7 +310,7 @@ func (store *ListStore) Splice(position, nRemovals uint, additions []*externglib
 	var _arg3 *C.gpointer   // out
 	var _arg4 C.guint
 
-	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(externglib.InternObject(store).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nRemovals)
 	_arg4 = (C.guint)(len(additions))

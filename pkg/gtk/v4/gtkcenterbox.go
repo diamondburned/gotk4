@@ -139,7 +139,7 @@ func (self *CenterBox) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkCenterBox       // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_center_box_get_baseline_position(_arg0)
 	runtime.KeepAlive(self)
@@ -161,7 +161,7 @@ func (self *CenterBox) CenterWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_center_box_get_center_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -198,7 +198,7 @@ func (self *CenterBox) EndWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_center_box_get_end_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -235,7 +235,7 @@ func (self *CenterBox) StartWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_center_box_get_start_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -277,7 +277,7 @@ func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkCenterBox       // out
 	var _arg1 C.GtkBaselinePosition // out
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_center_box_set_baseline_position(_arg0, _arg1)
@@ -297,9 +297,9 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_center_box_set_center_widget(_arg0, _arg1)
@@ -319,9 +319,9 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_center_box_set_end_widget(_arg0, _arg1)
@@ -341,9 +341,9 @@ func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_center_box_set_start_widget(_arg0, _arg1)

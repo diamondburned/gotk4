@@ -543,7 +543,7 @@ func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -590,7 +590,7 @@ func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPr
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -629,8 +629,8 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -674,7 +674,7 @@ func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyF
 	var _cret *C.char          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -757,13 +757,13 @@ func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyF
 	var _arg5 C.gpointer
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(source.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(source).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(destination).Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 	if progressCallback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
@@ -808,13 +808,13 @@ func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags
 	var _arg2 C.GFileCopyFlags // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(source.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(source).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(destination).Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 
 	C.g_file_copy_attributes(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -843,8 +843,8 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	C.g_file_copy_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -893,7 +893,7 @@ func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -941,7 +941,7 @@ func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPrio
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -980,8 +980,8 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -1036,7 +1036,7 @@ func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*
 	var _cret *C.GFileIOStream   // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1084,7 +1084,7 @@ func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlag
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1123,8 +1123,8 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -1171,7 +1171,7 @@ func (file *File) Delete(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1208,7 +1208,7 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback Asyn
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1238,8 +1238,8 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_delete_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -1273,7 +1273,7 @@ func (file *File) Dup() Filer {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_dup(_arg0)
 	runtime.KeepAlive(file)
@@ -1324,7 +1324,7 @@ func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, c
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1357,8 +1357,8 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_eject_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -1397,7 +1397,7 @@ func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUn
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1405,7 +1405,7 @@ func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUn
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -1432,8 +1432,8 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_eject_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -1488,7 +1488,7 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 	var _cret *C.GFileEnumerator    // in
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1542,7 +1542,7 @@ func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string,
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1584,8 +1584,8 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 	var _cret *C.GFileEnumerator // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -1622,8 +1622,8 @@ func (file1 *File) Equal(file2 Filer) bool {
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file1.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file2.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file1).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file2).Native()))
 
 	_cret = C.g_file_equal(_arg0, _arg1)
 	runtime.KeepAlive(file1)
@@ -1663,7 +1663,7 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	var _cret *C.GMount       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1722,7 +1722,7 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, c
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1759,8 +1759,8 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	var _cret *C.GMount       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -1818,7 +1818,7 @@ func (file *File) Basename() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_get_basename(_arg0)
 	runtime.KeepAlive(file)
@@ -1855,7 +1855,7 @@ func (file *File) Child(name string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1909,7 +1909,7 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 	var _cret *C.GFile  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1958,7 +1958,7 @@ func (file *File) Parent() Filer {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_get_parent(_arg0)
 	runtime.KeepAlive(file)
@@ -2007,7 +2007,7 @@ func (file *File) ParseName() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_get_parse_name(_arg0)
 	runtime.KeepAlive(file)
@@ -2035,7 +2035,7 @@ func (file *File) Path() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_get_path(_arg0)
 	runtime.KeepAlive(file)
@@ -2069,8 +2069,8 @@ func (parent *File) RelativePath(descendant Filer) string {
 	var _arg1 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(descendant.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(descendant).Native()))
 
 	_cret = C.g_file_get_relative_path(_arg0, _arg1)
 	runtime.KeepAlive(parent)
@@ -2100,7 +2100,7 @@ func (file *File) URI() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_get_uri(_arg0)
 	runtime.KeepAlive(file)
@@ -2135,7 +2135,7 @@ func (file *File) URIScheme() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_get_uri_scheme(_arg0)
 	runtime.KeepAlive(file)
@@ -2170,9 +2170,9 @@ func (file *File) HasParent(parent Filer) bool {
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	if parent != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(parent.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 
 	_cret = C.g_file_has_parent(_arg0, _arg1)
@@ -2215,8 +2215,8 @@ func (file *File) HasPrefix(prefix Filer) bool {
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(prefix.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(prefix).Native()))
 
 	_cret = C.g_file_has_prefix(_arg0, _arg1)
 	runtime.KeepAlive(file)
@@ -2249,7 +2249,7 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -2280,7 +2280,7 @@ func (file *File) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(file.Native()))
+	_arg0 = C.gconstpointer(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_hash(_arg0)
 	runtime.KeepAlive(file)
@@ -2312,7 +2312,7 @@ func (file *File) IsNative() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_is_native(_arg0)
 	runtime.KeepAlive(file)
@@ -2355,7 +2355,7 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	var _cret *C.GBytes       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2410,7 +2410,7 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2455,8 +2455,8 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 	var _cret *C.GBytes       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_file_load_bytes_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(file)
@@ -2510,7 +2510,7 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	var _arg4 *C.char         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2563,7 +2563,7 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2604,8 +2604,8 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	var _arg4 *C.char         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(file)
@@ -2652,8 +2652,8 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	var _arg4 *C.char         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(file)
@@ -2701,7 +2701,7 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2736,7 +2736,7 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callba
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2767,8 +2767,8 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_make_directory_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -2806,7 +2806,7 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2844,7 +2844,7 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 	var _arg1 *C.char         // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2889,8 +2889,8 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64
 	var _arg4 C.guint64       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_measure_disk_usage_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(file)
@@ -2935,7 +2935,7 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 	var _cret *C.GFileMonitor     // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3005,7 +3005,7 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 	var _cret *C.GFileMonitor     // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3076,7 +3076,7 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 	var _cret *C.GFileMonitor     // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3142,7 +3142,7 @@ func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMount
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(location.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(location).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3150,7 +3150,7 @@ func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMount
 	}
 	_arg1 = C.GMountMountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -3177,8 +3177,8 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(location.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(location).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_mount_enclosing_volume_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(location)
@@ -3219,7 +3219,7 @@ func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mou
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3227,7 +3227,7 @@ func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mou
 	}
 	_arg1 = C.GMountMountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -3262,8 +3262,8 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	var _cret *C.GFile        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -3346,13 +3346,13 @@ func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyF
 	var _arg5 C.gpointer
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(source.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(source).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFile)(unsafe.Pointer(destination.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(destination).Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 	if progressCallback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
@@ -3405,7 +3405,7 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3448,7 +3448,7 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callba
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3485,8 +3485,8 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -3519,7 +3519,7 @@ func (file *File) PeekPath() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_peek_path(_arg0)
 	runtime.KeepAlive(file)
@@ -3553,7 +3553,7 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3585,8 +3585,8 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_poll_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -3623,7 +3623,7 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	var _cret *C.GAppInfo     // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3676,7 +3676,7 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, 
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3713,8 +3713,8 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 	var _cret *C.GAppInfo     // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -3785,7 +3785,7 @@ func (file *File) QueryExists(ctx context.Context) bool {
 	var _arg1 *C.GCancellable // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3826,7 +3826,7 @@ func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) F
 	var _arg1 C.GFileQueryInfoFlags // out
 	var _cret C.GFileType           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3886,7 +3886,7 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 	var _cret *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3936,7 +3936,7 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -3976,8 +3976,8 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 	var _cret *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -4040,7 +4040,7 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 	var _cret *C.GFileInfo          // in
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4094,7 +4094,7 @@ func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags F
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4136,8 +4136,8 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _cret *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -4180,7 +4180,7 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 	var _cret *C.GFileAttributeInfoList // in
 	var _cerr *C.GError                 // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4231,7 +4231,7 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 	var _cret *C.GFileAttributeInfoList // in
 	var _cerr *C.GError                 // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4286,7 +4286,7 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 	var _cret *C.GFileInputStream // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4329,7 +4329,7 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncR
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4366,8 +4366,8 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	var _cret *C.GFileInputStream // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -4444,7 +4444,7 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4506,7 +4506,7 @@ func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4578,7 +4578,7 @@ func (file *File) ReplaceContents(ctx context.Context, contents, etag string, ma
 	var _arg6 *C.char            // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4658,7 +4658,7 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag strin
 	var _arg7 C.GAsyncReadyCallback // out
 	var _arg8 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4719,7 +4719,7 @@ func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4769,8 +4769,8 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	var _arg2 *C.char         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	C.g_file_replace_contents_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(file)
@@ -4808,8 +4808,8 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _cret *C.GFileOutputStream // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -4859,7 +4859,7 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 	var _cret *C.GFileIOStream   // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4921,7 +4921,7 @@ func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBa
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -4969,8 +4969,8 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 	var _cret *C.GFileIOStream // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -5005,7 +5005,7 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(relativePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -5064,7 +5064,7 @@ func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAt
 	var _arg4 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5116,7 +5116,7 @@ func (file *File) SetAttributeByteString(ctx context.Context, attribute, value s
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5166,7 +5166,7 @@ func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5215,7 +5215,7 @@ func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5264,7 +5264,7 @@ func (file *File) SetAttributeString(ctx context.Context, attribute, value strin
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5314,7 +5314,7 @@ func (file *File) SetAttributeUint32(ctx context.Context, attribute string, valu
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5363,7 +5363,7 @@ func (file *File) SetAttributeUint64(ctx context.Context, attribute string, valu
 	var _arg3 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5415,13 +5415,13 @@ func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags 
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	if callback != nil {
@@ -5455,8 +5455,8 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg2 *C.GFileInfo    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_set_attributes_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(file)
@@ -5498,13 +5498,13 @@ func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, fla
 	var _arg2 C.GFileQueryInfoFlags // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 
 	C.g_file_set_attributes_from_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -5555,7 +5555,7 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 	var _cret *C.GFile        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5619,7 +5619,7 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5658,8 +5658,8 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	var _cret *C.GFile        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -5718,7 +5718,7 @@ func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, sta
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5726,7 +5726,7 @@ func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, sta
 	}
 	_arg1 = C.GDriveStartFlags(flags)
 	if startOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(startOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(startOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -5756,8 +5756,8 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_start_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -5796,7 +5796,7 @@ func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mo
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5804,7 +5804,7 @@ func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mo
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -5834,8 +5834,8 @@ func (file *File) StopMountableFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_stop_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -5863,7 +5863,7 @@ func (file *File) SupportsThreadContexts() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.g_file_supports_thread_contexts(_arg0)
 	runtime.KeepAlive(file)
@@ -5897,7 +5897,7 @@ func (file *File) Trash(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5932,7 +5932,7 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback Async
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -5963,8 +5963,8 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_trash_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -6003,7 +6003,7 @@ func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags,
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -6039,8 +6039,8 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_unmount_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -6079,7 +6079,7 @@ func (file *File) UnmountMountableWithOperation(ctx context.Context, flags Mount
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -6087,7 +6087,7 @@ func (file *File) UnmountMountableWithOperation(ctx context.Context, flags Mount
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -6117,8 +6117,8 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_unmount_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)

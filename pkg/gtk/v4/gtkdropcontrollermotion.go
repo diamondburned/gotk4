@@ -173,7 +173,7 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 	runtime.KeepAlive(self)
@@ -198,7 +198,7 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret *C.GdkDrop                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 	runtime.KeepAlive(self)
@@ -237,7 +237,7 @@ func (self *DropControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
 	runtime.KeepAlive(self)

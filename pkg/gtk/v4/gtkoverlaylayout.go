@@ -129,7 +129,7 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
 	runtime.KeepAlive(child)
@@ -153,7 +153,7 @@ func (child *OverlayLayoutChild) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
 	runtime.KeepAlive(child)
@@ -177,7 +177,7 @@ func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if clipOverlay {
 		_arg1 = C.TRUE
 	}
@@ -197,7 +197,7 @@ func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if measure {
 		_arg1 = C.TRUE
 	}

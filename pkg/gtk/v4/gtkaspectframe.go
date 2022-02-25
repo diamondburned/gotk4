@@ -118,7 +118,7 @@ func (self *AspectFrame) Child() Widgetter {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_aspect_frame_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -156,7 +156,7 @@ func (self *AspectFrame) ObeyChild() bool {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_aspect_frame_get_obey_child(_arg0)
 	runtime.KeepAlive(self)
@@ -180,7 +180,7 @@ func (self *AspectFrame) Ratio() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_aspect_frame_get_ratio(_arg0)
 	runtime.KeepAlive(self)
@@ -203,7 +203,7 @@ func (self *AspectFrame) XAlign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_aspect_frame_get_xalign(_arg0)
 	runtime.KeepAlive(self)
@@ -226,7 +226,7 @@ func (self *AspectFrame) YAlign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_aspect_frame_get_yalign(_arg0)
 	runtime.KeepAlive(self)
@@ -248,9 +248,9 @@ func (self *AspectFrame) SetChild(child Widgetter) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 *C.GtkWidget      // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_aspect_frame_set_child(_arg0, _arg1)
@@ -270,7 +270,7 @@ func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if obeyChild {
 		_arg1 = C.TRUE
 	}
@@ -290,7 +290,7 @@ func (self *AspectFrame) SetRatio(ratio float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.float(ratio)
 
 	C.gtk_aspect_frame_set_ratio(_arg0, _arg1)
@@ -310,7 +310,7 @@ func (self *AspectFrame) SetXAlign(xalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.float(xalign)
 
 	C.gtk_aspect_frame_set_xalign(_arg0, _arg1)
@@ -330,7 +330,7 @@ func (self *AspectFrame) SetYAlign(yalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.float(yalign)
 
 	C.gtk_aspect_frame_set_yalign(_arg0, _arg1)

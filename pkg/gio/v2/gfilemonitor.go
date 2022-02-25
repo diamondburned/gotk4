@@ -276,7 +276,7 @@ func (monitor *FileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
 
 	_cret = C.g_file_monitor_cancel(_arg0)
 	runtime.KeepAlive(monitor)
@@ -309,9 +309,9 @@ func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMoni
 	var _arg2 *C.GFile            // out
 	var _arg3 C.GFileMonitorEvent // out
 
-	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.GFile)(unsafe.Pointer(otherFile.Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg2 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(otherFile).Native()))
 	_arg3 = C.GFileMonitorEvent(eventType)
 
 	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
@@ -331,7 +331,7 @@ func (monitor *FileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
 
 	_cret = C.g_file_monitor_is_cancelled(_arg0)
 	runtime.KeepAlive(monitor)
@@ -357,7 +357,7 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 
-	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
 	_arg1 = C.gint(limitMsecs)
 
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)

@@ -103,14 +103,14 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 	var _cret *C.GIOStream     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxyAddress).Native()))
 
 	_cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(proxy)
@@ -162,14 +162,14 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
-	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(externglib.InternObject(proxyAddress).Native()))
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg5 = C.gpointer(gbox.AssignOnce(callback))
@@ -199,8 +199,8 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _cret *C.GIOStream    // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(proxy)
@@ -248,7 +248,7 @@ func (proxy *Proxy) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GProxy)(unsafe.Pointer(proxy.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
 
 	_cret = C.g_proxy_supports_hostname(_arg0)
 	runtime.KeepAlive(proxy)

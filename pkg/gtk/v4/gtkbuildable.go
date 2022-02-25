@@ -340,7 +340,7 @@ func (buildable *Buildable) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
 
 	_cret = C.gtk_buildable_get_buildable_id(_arg0)
 	runtime.KeepAlive(buildable)

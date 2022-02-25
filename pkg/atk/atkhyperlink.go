@@ -260,7 +260,7 @@ func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (c
 
 	object := iface.GetObject(_i)
 
-	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 
 	return cret
 }
@@ -386,7 +386,7 @@ func (link_ *Hyperlink) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 
 	_cret = C.atk_hyperlink_get_end_index(_arg0)
 	runtime.KeepAlive(link_)
@@ -408,7 +408,7 @@ func (link_ *Hyperlink) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 
 	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
 	runtime.KeepAlive(link_)
@@ -439,7 +439,7 @@ func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
@@ -464,7 +464,7 @@ func (link_ *Hyperlink) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 
 	_cret = C.atk_hyperlink_get_start_index(_arg0)
 	runtime.KeepAlive(link_)
@@ -493,7 +493,7 @@ func (link_ *Hyperlink) URI(i int) string {
 	var _arg1 C.gint          // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_hyperlink_get_uri(_arg0, _arg1)
@@ -520,7 +520,7 @@ func (link_ *Hyperlink) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 
 	_cret = C.atk_hyperlink_is_inline(_arg0)
 	runtime.KeepAlive(link_)
@@ -547,7 +547,7 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 
 	_cret = C.atk_hyperlink_is_selected_link(_arg0)
 	runtime.KeepAlive(link_)
@@ -573,7 +573,7 @@ func (link_ *Hyperlink) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(link_).Native()))
 
 	_cret = C.atk_hyperlink_is_valid(_arg0)
 	runtime.KeepAlive(link_)

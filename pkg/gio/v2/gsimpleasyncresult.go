@@ -364,7 +364,7 @@ func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback Asy
 func (simple *SimpleAsyncResult) Complete() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 
 	C.g_simple_async_result_complete(_arg0)
 	runtime.KeepAlive(simple)
@@ -382,7 +382,7 @@ func (simple *SimpleAsyncResult) Complete() {
 func (simple *SimpleAsyncResult) CompleteInIdle() {
 	var _arg0 *C.GSimpleAsyncResult // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 
 	C.g_simple_async_result_complete_in_idle(_arg0)
 	runtime.KeepAlive(simple)
@@ -402,7 +402,7 @@ func (simple *SimpleAsyncResult) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
 	runtime.KeepAlive(simple)
@@ -428,7 +428,7 @@ func (simple *SimpleAsyncResult) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gssize              // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 
 	_cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
 	runtime.KeepAlive(simple)
@@ -452,7 +452,7 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 
 	C.g_simple_async_result_propagate_error(_arg0, &_cerr)
 	runtime.KeepAlive(simple)
@@ -492,7 +492,7 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -516,7 +516,7 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	if err != nil {
 		_arg1 = (*C.GError)(gerror.New(err))
 	}
@@ -543,7 +543,7 @@ func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) 
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	if handleCancellation {
 		_arg1 = C.TRUE
 	}
@@ -566,7 +566,7 @@ func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	if opRes {
 		_arg1 = C.TRUE
 	}
@@ -589,7 +589,7 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	_arg1 = C.gssize(opRes)
 
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)
@@ -626,7 +626,7 @@ func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, s
 	var _arg3 C.gpointer      // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 	if source != nil {
 		_arg2 = (*C.GObject)(unsafe.Pointer(source.Native()))
 	}

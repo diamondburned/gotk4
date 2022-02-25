@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -39,7 +40,7 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 	var _cerr *C.GError    // in
 
 	if screen != nil {
-		_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+		_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -90,7 +91,7 @@ func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 	var _cerr *C.GError    // in
 
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg2))

@@ -214,7 +214,7 @@ func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) externglib.Signa
 func (cellEditable *CellEditable) EditingDone() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(externglib.InternObject(cellEditable).Native()))
 
 	C.gtk_cell_editable_editing_done(_arg0)
 	runtime.KeepAlive(cellEditable)
@@ -224,7 +224,7 @@ func (cellEditable *CellEditable) EditingDone() {
 func (cellEditable *CellEditable) RemoveWidget() {
 	var _arg0 *C.GtkCellEditable // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(externglib.InternObject(cellEditable).Native()))
 
 	C.gtk_cell_editable_remove_widget(_arg0)
 	runtime.KeepAlive(cellEditable)
@@ -250,7 +250,7 @@ func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
 	var _arg0 *C.GtkCellEditable // out
 	var _arg1 *C.GdkEvent        // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(cellEditable.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(externglib.InternObject(cellEditable).Native()))
 	if event != nil {
 		_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 	}

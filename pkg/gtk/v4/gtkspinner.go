@@ -99,7 +99,7 @@ func (spinner *Spinner) Spinning() bool {
 	var _arg0 *C.GtkSpinner // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
 
 	_cret = C.gtk_spinner_get_spinning(_arg0)
 	runtime.KeepAlive(spinner)
@@ -123,7 +123,7 @@ func (spinner *Spinner) SetSpinning(spinning bool) {
 	var _arg0 *C.GtkSpinner // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
 	if spinning {
 		_arg1 = C.TRUE
 	}
@@ -137,7 +137,7 @@ func (spinner *Spinner) SetSpinning(spinning bool) {
 func (spinner *Spinner) Start() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
 
 	C.gtk_spinner_start(_arg0)
 	runtime.KeepAlive(spinner)
@@ -147,7 +147,7 @@ func (spinner *Spinner) Start() {
 func (spinner *Spinner) Stop() {
 	var _arg0 *C.GtkSpinner // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(spinner.Native()))
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
 
 	C.gtk_spinner_stop(_arg0)
 	runtime.KeepAlive(spinner)

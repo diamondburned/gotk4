@@ -207,7 +207,7 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -235,7 +235,7 @@ func (appinfo *AppInfo) CanDelete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_can_delete(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -261,7 +261,7 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_can_remove_supports_type(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -289,7 +289,7 @@ func (appinfo *AppInfo) Delete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_delete(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -313,7 +313,7 @@ func (appinfo *AppInfo) Dup() AppInfor {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_dup(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -360,8 +360,8 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	var _arg1 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo1.Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer(appinfo2.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo1).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo2).Native()))
 
 	_cret = C.g_app_info_equal(_arg0, _arg1)
 	runtime.KeepAlive(appinfo1)
@@ -387,7 +387,7 @@ func (appinfo *AppInfo) Commandline() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_commandline(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -412,7 +412,7 @@ func (appinfo *AppInfo) Description() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_description(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -438,7 +438,7 @@ func (appinfo *AppInfo) DisplayName() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_display_name(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -460,7 +460,7 @@ func (appinfo *AppInfo) Executable() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_executable(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -483,7 +483,7 @@ func (appinfo *AppInfo) Icon() Iconner {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_icon(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -525,7 +525,7 @@ func (appinfo *AppInfo) ID() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_id(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -549,7 +549,7 @@ func (appinfo *AppInfo) Name() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_name(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -575,7 +575,7 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
 	var _cret **C.char    // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_get_supported_types(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -637,18 +637,18 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	var _arg2 *C.GAppLaunchContext // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	if files != nil {
 		for i := len(files) - 1; i >= 0; i-- {
 			src := files[i]
 			var dst *C.GFile // out
-			dst = (*C.GFile)(unsafe.Pointer(src.Native()))
+			dst = (*C.GFile)(unsafe.Pointer(externglib.InternObject(src).Native()))
 			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_list_free(_arg1)
 	}
 	if context != nil {
-		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	}
 
 	C.g_app_info_launch(_arg0, _arg1, _arg2, &_cerr)
@@ -687,7 +687,7 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	var _arg2 *C.GAppLaunchContext // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	if uris != nil {
 		for i := len(uris) - 1; i >= 0; i-- {
 			src := uris[i]
@@ -699,7 +699,7 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 		defer C.g_list_free(_arg1)
 	}
 	if context != nil {
-		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	}
 
 	C.g_app_info_launch_uris(_arg0, _arg1, _arg2, &_cerr)
@@ -738,7 +738,7 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -755,7 +755,7 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 		defer C.g_list_free(_arg1)
 	}
 	if context != nil {
-		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -781,8 +781,8 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_app_info_launch_uris_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(appinfo)
@@ -808,7 +808,7 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -837,7 +837,7 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(extension)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -866,7 +866,7 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -897,7 +897,7 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg1 *C.char     // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -925,7 +925,7 @@ func (appinfo *AppInfo) ShouldShow() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_should_show(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -949,7 +949,7 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_supports_files(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -974,7 +974,7 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_supports_uris(_arg0)
 	runtime.KeepAlive(appinfo)
@@ -1368,7 +1368,7 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if context != nil {
-		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	}
 
 	C.g_app_info_launch_default_for_uri(_arg1, _arg2, &_cerr)
@@ -1417,7 +1417,7 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if context != nil {
-		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -1442,7 +1442,7 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_app_info_launch_default_for_uri_finish(_arg1, &_cerr)
 	runtime.KeepAlive(result)
@@ -1900,12 +1900,12 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	var _arg2 *C.GList             // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer(info.Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
 	for i := len(files) - 1; i >= 0; i-- {
 		src := files[i]
 		var dst *C.GFile // out
-		dst = (*C.GFile)(unsafe.Pointer(src.Native()))
+		dst = (*C.GFile)(unsafe.Pointer(externglib.InternObject(src).Native()))
 		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg2)
@@ -1937,7 +1937,7 @@ func (context *AppLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _cret **C.char             // in
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.g_app_launch_context_get_environment(_arg0)
 	runtime.KeepAlive(context)
@@ -1986,12 +1986,12 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 	var _arg2 *C.GList             // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GAppInfo)(unsafe.Pointer(info.Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
 	for i := len(files) - 1; i >= 0; i-- {
 		src := files[i]
 		var dst *C.GFile // out
-		dst = (*C.GFile)(unsafe.Pointer(src.Native()))
+		dst = (*C.GFile)(unsafe.Pointer(externglib.InternObject(src).Native()))
 		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg2)
@@ -2024,7 +2024,7 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupNotifyId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -2046,7 +2046,7 @@ func (context *AppLaunchContext) Setenv(variable, value string) {
 	var _arg1 *C.char              // out
 	var _arg2 *C.char              // out
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
@@ -2069,7 +2069,7 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
 	defer C.free(unsafe.Pointer(_arg1))
 

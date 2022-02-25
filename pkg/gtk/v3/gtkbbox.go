@@ -172,8 +172,8 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
 	runtime.KeepAlive(widget)
@@ -204,8 +204,8 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
 	runtime.KeepAlive(widget)
@@ -231,7 +231,7 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 	var _arg0 *C.GtkButtonBox     // out
 	var _cret C.GtkButtonBoxStyle // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_button_box_get_layout(_arg0)
 	runtime.KeepAlive(widget)
@@ -256,8 +256,8 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if nonHomogeneous {
 		_arg2 = C.TRUE
 	}
@@ -291,8 +291,8 @@ func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if isSecondary {
 		_arg2 = C.TRUE
 	}
@@ -313,7 +313,7 @@ func (widget *ButtonBox) SetLayout(layoutStyle ButtonBoxStyle) {
 	var _arg0 *C.GtkButtonBox     // out
 	var _arg1 C.GtkButtonBoxStyle // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = C.GtkButtonBoxStyle(layoutStyle)
 
 	C.gtk_button_box_set_layout(_arg0, _arg1)

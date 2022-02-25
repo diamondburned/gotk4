@@ -138,7 +138,7 @@ func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(childModel.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(childModel).Native()))
 
 	_cret = C.gtk_tree_model_sort_new_with_model(_arg1)
 	runtime.KeepAlive(childModel)
@@ -159,7 +159,7 @@ func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 func (treeModelSort *TreeModelSort) ClearCache() {
 	var _arg0 *C.GtkTreeModelSort // out
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModelSort).Native()))
 
 	C.gtk_tree_model_sort_clear_cache(_arg0)
 	runtime.KeepAlive(treeModelSort)
@@ -185,7 +185,7 @@ func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) 
 	var _arg2 *C.GtkTreeIter      // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModelSort).Native()))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(childIter)))
 
 	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
@@ -221,7 +221,7 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 	var _arg1 *C.GtkTreePath      // out
 	var _cret *C.GtkTreePath      // in
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModelSort).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(childPath)))
 
 	_cret = C.gtk_tree_model_sort_convert_child_path_to_path(_arg0, _arg1)
@@ -259,7 +259,7 @@ func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter)
 	var _arg1 C.GtkTreeIter       // in
 	var _arg2 *C.GtkTreeIter      // out
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModelSort).Native()))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(sortedIter)))
 
 	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
@@ -292,7 +292,7 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 	var _arg1 *C.GtkTreePath      // out
 	var _cret *C.GtkTreePath      // in
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModelSort).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(sortedPath)))
 
 	_cret = C.gtk_tree_model_sort_convert_path_to_child_path(_arg0, _arg1)
@@ -324,7 +324,7 @@ func (treeModel *TreeModelSort) Model() TreeModeller {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _cret *C.GtkTreeModel     // in
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 
 	_cret = C.gtk_tree_model_sort_get_model(_arg0)
 	runtime.KeepAlive(treeModel)
@@ -370,7 +370,7 @@ func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 	var _arg1 *C.GtkTreeIter      // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModelSort).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_sort_iter_is_valid(_arg0, _arg1)
@@ -393,7 +393,7 @@ func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 func (treeModelSort *TreeModelSort) ResetDefaultSortFunc() {
 	var _arg0 *C.GtkTreeModelSort // out
 
-	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(externglib.InternObject(treeModelSort).Native()))
 
 	C.gtk_tree_model_sort_reset_default_sort_func(_arg0)
 	runtime.KeepAlive(treeModelSort)

@@ -179,7 +179,7 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(ctx)
@@ -215,7 +215,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(asyncResult).Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
 	runtime.KeepAlive(asyncResult)
@@ -243,7 +243,7 @@ func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 	runtime.KeepAlive(animation)
@@ -299,7 +299,7 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 	var _arg1 *C.GTimeVal               // out
 	var _cret *C.GdkPixbufAnimationIter // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
 	if startTime != nil {
 		_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(startTime)))
 	}
@@ -334,7 +334,7 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret *C.GdkPixbuf          // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_static_image(_arg0)
 	runtime.KeepAlive(animation)
@@ -356,7 +356,7 @@ func (animation *PixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 	runtime.KeepAlive(animation)
@@ -382,7 +382,7 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
 	runtime.KeepAlive(animation)
@@ -424,7 +424,7 @@ func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStre
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	if callback != nil {
 		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg4 = C.gpointer(gbox.AssignOnce(callback))
@@ -490,7 +490,7 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg1 *C.GTimeVal               // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(iter.Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
 	if currentTime != nil {
 		_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(currentTime)))
 	}
@@ -526,7 +526,7 @@ func (iter *PixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.int                     // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(iter.Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 	runtime.KeepAlive(iter)
@@ -562,7 +562,7 @@ func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret *C.GdkPixbuf              // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(iter.Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_get_pixbuf(_arg0)
 	runtime.KeepAlive(iter)
@@ -589,7 +589,7 @@ func (iter *PixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(iter.Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
 	runtime.KeepAlive(iter)

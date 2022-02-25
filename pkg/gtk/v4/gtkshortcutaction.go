@@ -400,7 +400,7 @@ func (self *NamedAction) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_named_action_get_action_name(_arg0)
 	runtime.KeepAlive(self)
@@ -613,9 +613,9 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 	var _arg3 *C.GVariant              // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkShortcutActionFlags(flags)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	if args != nil {
 		_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 	}
@@ -648,7 +648,7 @@ func (self *ShortcutAction) String() string {
 	var _arg0 *C.GtkShortcutAction // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_shortcut_action_to_string(_arg0)
 	runtime.KeepAlive(self)
@@ -738,7 +738,7 @@ func (self *SignalAction) SignalName() string {
 	var _arg0 *C.GtkSignalAction // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_signal_action_get_signal_name(_arg0)
 	runtime.KeepAlive(self)

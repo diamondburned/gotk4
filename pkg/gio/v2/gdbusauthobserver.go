@@ -47,7 +47,7 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var _arg1 *C.gchar             // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
+	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mechanism)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -82,10 +82,10 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	var _arg2 *C.GCredentials      // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	if credentials != nil {
-		_arg2 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
+		_arg2 = (*C.GCredentials)(unsafe.Pointer(externglib.InternObject(credentials).Native()))
 	}
 
 	_cret = C.g_dbus_auth_observer_authorize_authenticated_peer(_arg0, _arg1, _arg2)

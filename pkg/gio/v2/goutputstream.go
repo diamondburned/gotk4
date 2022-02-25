@@ -510,7 +510,7 @@ func BaseOutputStream(obj OutputStreamer) *OutputStream {
 func (stream *OutputStream) ClearPending() {
 	var _arg0 *C.GOutputStream // out
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	C.g_output_stream_clear_pending(_arg0)
 	runtime.KeepAlive(stream)
@@ -554,7 +554,7 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -598,7 +598,7 @@ func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -628,8 +628,8 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_output_stream_close_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
@@ -663,7 +663,7 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -702,7 +702,7 @@ func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -732,8 +732,8 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_output_stream_flush_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
@@ -758,7 +758,7 @@ func (stream *OutputStream) HasPending() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_output_stream_has_pending(_arg0)
 	runtime.KeepAlive(stream)
@@ -782,7 +782,7 @@ func (stream *OutputStream) IsClosed() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_output_stream_is_closed(_arg0)
 	runtime.KeepAlive(stream)
@@ -808,7 +808,7 @@ func (stream *OutputStream) IsClosing() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_output_stream_is_closing(_arg0)
 	runtime.KeepAlive(stream)
@@ -828,7 +828,7 @@ func (stream *OutputStream) SetPending() error {
 	var _arg0 *C.GOutputStream // out
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	C.g_output_stream_set_pending(_arg0, &_cerr)
 	runtime.KeepAlive(stream)
@@ -865,13 +865,13 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 	var _cret C.gssize                   // in
 	var _cerr *C.GError                  // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(source).Native()))
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 
 	_cret = C.g_output_stream_splice(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -915,13 +915,13 @@ func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreame
 	var _arg5 C.GAsyncReadyCallback      // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(source.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(source).Native()))
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 	_arg3 = C.int(ioPriority)
 	if callback != nil {
@@ -956,8 +956,8 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_output_stream_splice_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
@@ -1011,7 +1011,7 @@ func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, erro
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1075,7 +1075,7 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1134,7 +1134,7 @@ func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, io
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1183,8 +1183,8 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_output_stream_write_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(stream)
@@ -1252,7 +1252,7 @@ func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPri
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1303,7 +1303,7 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1355,7 +1355,7 @@ func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Byt
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1392,8 +1392,8 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_output_stream_write_bytes_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
@@ -1426,8 +1426,8 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	var _cret C.gssize         // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_output_stream_write_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
@@ -1486,7 +1486,7 @@ func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) 
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1558,7 +1558,7 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 	var _arg3 C.gsize   // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1623,7 +1623,7 @@ func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []Output
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1677,8 +1677,8 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_output_stream_writev_all_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(stream)
@@ -1742,7 +1742,7 @@ func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVec
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1788,8 +1788,8 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	var _arg2 C.gsize          // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_output_stream_writev_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(stream)

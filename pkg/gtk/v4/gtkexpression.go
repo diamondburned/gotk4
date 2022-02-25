@@ -156,7 +156,7 @@ func ValueSetExpression(value *externglib.Value, expression Expressioner) {
 	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg2 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 
 	C.gtk_value_set_expression(_arg1, _arg2)
 	runtime.KeepAlive(value)
@@ -178,8 +178,8 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 	if expression != nil {
-		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref(C.gpointer(expression.Native()))
+		_arg2 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
 	}
 
 	C.gtk_value_take_expression(_arg1, _arg2)
@@ -291,7 +291,7 @@ func (expression *ConstantExpression) Value() *externglib.Value {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GValue        // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 
 	_cret = C.gtk_constant_expression_get_value(_arg0)
 	runtime.KeepAlive(expression)
@@ -492,8 +492,8 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 	var _arg3 C.gpointer            // out
 	var _cret *C.GtkExpressionWatch // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
-	C.g_object_ref(C.gpointer(self.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(self).Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -543,7 +543,7 @@ func (self *Expression) Evaluate(this_ *externglib.Object, value *externglib.Val
 	var _arg2 *C.GValue        // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(this_.Native()))
 	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
@@ -574,7 +574,7 @@ func (self *Expression) ValueType() externglib.Type {
 	var _arg0 *C.GtkExpression // out
 	var _cret C.GType          // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_expression_get_value_type(_arg0)
 	runtime.KeepAlive(self)
@@ -602,7 +602,7 @@ func (self *Expression) IsStatic() bool {
 	var _arg0 *C.GtkExpression // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_expression_is_static(_arg0)
 	runtime.KeepAlive(self)
@@ -644,7 +644,7 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 	var _arg4 C.GDestroyNotify
 	var _cret *C.GtkExpressionWatch // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(this_.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gtk4_ExpressionNotify)
 	_arg3 = C.gpointer(gbox.Assign(notify))
@@ -734,7 +734,7 @@ func (expression *ObjectExpression) Object() *externglib.Object {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GObject       // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 
 	_cret = C.gtk_object_expression_get_object(_arg0)
 	runtime.KeepAlive(expression)
@@ -798,8 +798,8 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 
 	_arg1 = C.GType(thisType)
 	if expression != nil {
-		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref(C.gpointer(expression.Native()))
+		_arg2 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
 	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -827,7 +827,7 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 
 	_cret = C.gtk_property_expression_get_expression(_arg0)
 	runtime.KeepAlive(expression)

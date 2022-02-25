@@ -235,7 +235,7 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycod
 	var _cret *C.gchar          // in
 
 	if display != nil {
-		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	}
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
@@ -316,7 +316,7 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 	var _cret *C.gchar          // in
 
 	if display != nil {
-		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+		_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	}
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
@@ -625,7 +625,7 @@ func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *ext
 	var _arg4 C.GdkModifierType // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 	_arg1 = C.guint32(accelQuark)
 	_arg2 = (*C.GObject)(unsafe.Pointer(acceleratable.Native()))
 	_arg3 = C.guint(accelKey)
@@ -671,7 +671,7 @@ func (accelGroup *AccelGroup) ConnectAccelGroup(accelKey uint, accelMods gdk.Mod
 	var _arg3 C.GtkAccelFlags   // out
 	var _arg4 *C.GClosure       // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 	_arg1 = C.guint(accelKey)
 	_arg2 = C.GdkModifierType(accelMods)
 	_arg3 = C.GtkAccelFlags(accelFlags)
@@ -708,7 +708,7 @@ func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure externglib
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GClosure      // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(accelGroup), closure))
@@ -738,7 +738,7 @@ func (accelGroup *AccelGroup) Disconnect(closure externglib.AnyClosure) bool {
 	var _arg1 *C.GClosure      // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 	_arg1 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(accelGroup), closure))
 
 	_cret = C.gtk_accel_group_disconnect(_arg0, _arg1)
@@ -773,7 +773,7 @@ func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.Modifie
 	var _arg2 C.GdkModifierType // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 	_arg1 = C.guint(accelKey)
 	_arg2 = C.GdkModifierType(accelMods)
 
@@ -803,7 +803,7 @@ func (accelGroup *AccelGroup) IsLocked() bool {
 	var _arg0 *C.GtkAccelGroup // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 
 	_cret = C.gtk_accel_group_get_is_locked(_arg0)
 	runtime.KeepAlive(accelGroup)
@@ -828,7 +828,7 @@ func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 	var _arg0 *C.GtkAccelGroup  // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 
 	_cret = C.gtk_accel_group_get_modifier_mask(_arg0)
 	runtime.KeepAlive(accelGroup)
@@ -851,7 +851,7 @@ func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 func (accelGroup *AccelGroup) Lock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 
 	C.gtk_accel_group_lock(_arg0)
 	runtime.KeepAlive(accelGroup)
@@ -877,7 +877,7 @@ func (accelGroup *AccelGroup) Query(accelKey uint, accelMods gdk.ModifierType) [
 	var _cret *C.GtkAccelGroupEntry // in
 	var _arg3 C.guint               // in
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 	_arg1 = C.guint(accelKey)
 	_arg2 = C.GdkModifierType(accelMods)
 
@@ -905,7 +905,7 @@ func (accelGroup *AccelGroup) Query(accelKey uint, accelMods gdk.ModifierType) [
 func (accelGroup *AccelGroup) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out
 
-	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 
 	C.gtk_accel_group_unlock(_arg0)
 	runtime.KeepAlive(accelGroup)

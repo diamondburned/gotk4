@@ -96,7 +96,7 @@ func (set *StateSet) AddState(typ StateType) bool {
 	var _arg1 C.AtkStateType // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.AtkStateType(typ)
 
 	_cret = C.atk_state_set_add_state(_arg0, _arg1)
@@ -128,7 +128,7 @@ func (set *StateSet) AddStates(types []StateType) {
 	var _arg1 *C.AtkStateType // out
 	var _arg2 C.gint
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg2 = (C.gint)(len(types))
 	if len(types) > 0 {
 		_arg1 = (*C.AtkStateType)(unsafe.Pointer(&types[0]))
@@ -155,8 +155,8 @@ func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(compareSet).Native()))
 
 	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
 	runtime.KeepAlive(set)
@@ -173,7 +173,7 @@ func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 func (set *StateSet) ClearStates() {
 	var _arg0 *C.AtkStateSet // out
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 
 	C.atk_state_set_clear_states(_arg0)
 	runtime.KeepAlive(set)
@@ -195,7 +195,7 @@ func (set *StateSet) ContainsState(typ StateType) bool {
 	var _arg1 C.AtkStateType // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.AtkStateType(typ)
 
 	_cret = C.atk_state_set_contains_state(_arg0, _arg1)
@@ -228,7 +228,7 @@ func (set *StateSet) ContainsStates(types []StateType) bool {
 	var _arg2 C.gint
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg2 = (C.gint)(len(types))
 	if len(types) > 0 {
 		_arg1 = (*C.AtkStateType)(unsafe.Pointer(&types[0]))
@@ -257,7 +257,7 @@ func (set *StateSet) IsEmpty() bool {
 	var _arg0 *C.AtkStateSet // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 
 	_cret = C.atk_state_set_is_empty(_arg0)
 	runtime.KeepAlive(set)
@@ -287,8 +287,8 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(compareSet).Native()))
 
 	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
 	runtime.KeepAlive(set)
@@ -323,7 +323,7 @@ func (set *StateSet) RemoveState(typ StateType) bool {
 	var _arg1 C.AtkStateType // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.AtkStateType(typ)
 
 	_cret = C.atk_state_set_remove_state(_arg0, _arg1)
@@ -357,8 +357,8 @@ func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
-	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(externglib.InternObject(compareSet).Native()))
 
 	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
 	runtime.KeepAlive(set)

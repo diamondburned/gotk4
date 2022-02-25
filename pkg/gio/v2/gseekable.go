@@ -91,7 +91,7 @@ func (seekable *Seekable) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(externglib.InternObject(seekable).Native()))
 
 	_cret = C.g_seekable_can_seek(_arg0)
 	runtime.KeepAlive(seekable)
@@ -116,7 +116,7 @@ func (seekable *Seekable) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(externglib.InternObject(seekable).Native()))
 
 	_cret = C.g_seekable_can_truncate(_arg0)
 	runtime.KeepAlive(seekable)
@@ -158,7 +158,7 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 	var _arg2 C.GSeekType     // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(externglib.InternObject(seekable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -192,7 +192,7 @@ func (seekable *Seekable) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(externglib.InternObject(seekable).Native()))
 
 	_cret = C.g_seekable_tell(_arg0)
 	runtime.KeepAlive(seekable)
@@ -225,7 +225,7 @@ func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 	var _arg1 C.goffset       // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(externglib.InternObject(seekable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)

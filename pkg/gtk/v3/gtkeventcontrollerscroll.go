@@ -285,7 +285,7 @@ func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags
 	var _arg2 C.GtkEventControllerScrollFlags // out
 	var _cret *C.GtkEventController           // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = C.GtkEventControllerScrollFlags(flags)
 
 	_cret = C.gtk_event_controller_scroll_new(_arg1, _arg2)
@@ -309,7 +309,7 @@ func (controller *EventControllerScroll) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _cret C.GtkEventControllerScrollFlags // in
 
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
 	runtime.KeepAlive(controller)
@@ -331,7 +331,7 @@ func (controller *EventControllerScroll) SetFlags(flags EventControllerScrollFla
 	var _arg0 *C.GtkEventControllerScroll     // out
 	var _arg1 C.GtkEventControllerScrollFlags // out
 
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg1 = C.GtkEventControllerScrollFlags(flags)
 
 	C.gtk_event_controller_scroll_set_flags(_arg0, _arg1)

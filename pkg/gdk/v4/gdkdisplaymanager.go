@@ -165,7 +165,7 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gdk_display_manager_get_default_display(_arg0)
 	runtime.KeepAlive(manager)
@@ -190,7 +190,7 @@ func (manager *DisplayManager) ListDisplays() []Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GSList            // in
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gdk_display_manager_list_displays(_arg0)
 	runtime.KeepAlive(manager)
@@ -224,7 +224,7 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _arg1 *C.char              // out
 	var _cret *C.GdkDisplay        // in
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -251,8 +251,8 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 
-	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 	runtime.KeepAlive(manager)

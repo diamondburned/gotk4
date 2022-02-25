@@ -322,8 +322,8 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x, y float64, ti
 	var _arg4 C.double       // out
 	var _arg5 C.guint32      // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 	_arg2 = C.int(button)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -360,10 +360,10 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 	var _arg5 C.double         // out
 	var _arg6 C.guint32        // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = C.GdkSurfaceEdge(edge)
 	if device != nil {
-		_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+		_arg2 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 	}
 	_arg3 = C.int(button)
 	_arg4 = C.double(x)
@@ -393,7 +393,7 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.guint32      // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_toplevel_focus(_arg0, _arg1)
@@ -412,7 +412,7 @@ func (toplevel *Toplevel) State() ToplevelState {
 	var _arg0 *C.GdkToplevel     // out
 	var _cret C.GdkToplevelState // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 
 	_cret = C.gdk_toplevel_get_state(_arg0)
 	runtime.KeepAlive(toplevel)
@@ -454,9 +454,9 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkEvent    // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	if event != nil {
-		_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+		_arg1 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 	}
 
 	C.gdk_toplevel_inhibit_system_shortcuts(_arg0, _arg1)
@@ -476,7 +476,7 @@ func (toplevel *Toplevel) Lower() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 
 	_cret = C.gdk_toplevel_lower(_arg0)
 	runtime.KeepAlive(toplevel)
@@ -502,7 +502,7 @@ func (toplevel *Toplevel) Minimize() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 
 	_cret = C.gdk_toplevel_minimize(_arg0)
 	runtime.KeepAlive(toplevel)
@@ -535,7 +535,7 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 	var _arg0 *C.GdkToplevel       // out
 	var _arg1 *C.GdkToplevelLayout // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_toplevel_present(_arg0, _arg1)
@@ -550,7 +550,7 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 func (toplevel *Toplevel) RestoreSystemShortcuts() {
 	var _arg0 *C.GdkToplevel // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 
 	C.gdk_toplevel_restore_system_shortcuts(_arg0)
 	runtime.KeepAlive(toplevel)
@@ -570,7 +570,7 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	if decorated {
 		_arg1 = C.TRUE
 	}
@@ -593,7 +593,7 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	if deletable {
 		_arg1 = C.TRUE
 	}
@@ -620,11 +620,11 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GList       // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	for i := len(surfaces) - 1; i >= 0; i-- {
 		src := surfaces[i]
 		var dst *C.GdkTexture // out
-		dst = (*C.GdkTexture)(unsafe.Pointer(src.Native()))
+		dst = (*C.GdkTexture)(unsafe.Pointer(externglib.InternObject(src).Native()))
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
@@ -651,7 +651,7 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -674,7 +674,7 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -695,7 +695,7 @@ func (toplevel *Toplevel) SetTitle(title string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -720,8 +720,8 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkSurface  // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(parent.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 
 	C.gdk_toplevel_set_transient_for(_arg0, _arg1)
 	runtime.KeepAlive(toplevel)
@@ -748,8 +748,8 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	var _arg1 *C.GdkEvent    // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
 	runtime.KeepAlive(toplevel)
@@ -775,7 +775,7 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	var _arg0 *C.GdkToplevel // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 
 	_cret = C.gdk_toplevel_supports_edge_constraints(_arg0)
 	runtime.KeepAlive(toplevel)

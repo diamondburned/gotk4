@@ -329,7 +329,7 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -364,7 +364,7 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -396,8 +396,8 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(permission)
@@ -424,7 +424,7 @@ func (permission *Permission) Allowed() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 
 	_cret = C.g_permission_get_allowed(_arg0)
 	runtime.KeepAlive(permission)
@@ -450,7 +450,7 @@ func (permission *Permission) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 
 	_cret = C.g_permission_get_can_acquire(_arg0)
 	runtime.KeepAlive(permission)
@@ -476,7 +476,7 @@ func (permission *Permission) CanRelease() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 
 	_cret = C.g_permission_get_can_release(_arg0)
 	runtime.KeepAlive(permission)
@@ -508,7 +508,7 @@ func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 	var _arg2 C.gboolean     // out
 	var _arg3 C.gboolean     // out
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 	if allowed {
 		_arg1 = C.TRUE
 	}
@@ -551,7 +551,7 @@ func (permission *Permission) Release(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -586,7 +586,7 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -618,8 +618,8 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(permission)

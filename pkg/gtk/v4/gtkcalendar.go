@@ -236,7 +236,7 @@ func NewCalendar() *Calendar {
 func (calendar *Calendar) ClearMarks() {
 	var _arg0 *C.GtkCalendar // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(calendar).Native()))
 
 	C.gtk_calendar_clear_marks(_arg0)
 	runtime.KeepAlive(calendar)
@@ -254,7 +254,7 @@ func (self *Calendar) Date() *glib.DateTime {
 	var _arg0 *C.GtkCalendar // out
 	var _cret *C.GDateTime   // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_calendar_get_date(_arg0)
 	runtime.KeepAlive(self)
@@ -287,7 +287,7 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg1 C.guint        // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(calendar).Native()))
 	_arg1 = C.guint(day)
 
 	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
@@ -316,7 +316,7 @@ func (self *Calendar) ShowDayNames() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_calendar_get_show_day_names(_arg0)
 	runtime.KeepAlive(self)
@@ -342,7 +342,7 @@ func (self *Calendar) ShowHeading() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_calendar_get_show_heading(_arg0)
 	runtime.KeepAlive(self)
@@ -368,7 +368,7 @@ func (self *Calendar) ShowWeekNumbers() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_calendar_get_show_week_numbers(_arg0)
 	runtime.KeepAlive(self)
@@ -392,7 +392,7 @@ func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(calendar).Native()))
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_mark_day(_arg0, _arg1)
@@ -410,7 +410,7 @@ func (self *Calendar) SelectDay(date *glib.DateTime) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 *C.GDateTime   // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(date)))
 
 	C.gtk_calendar_select_day(_arg0, _arg1)
@@ -428,7 +428,7 @@ func (self *Calendar) SetShowDayNames(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if value {
 		_arg1 = C.TRUE
 	}
@@ -451,7 +451,7 @@ func (self *Calendar) SetShowHeading(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if value {
 		_arg1 = C.TRUE
 	}
@@ -471,7 +471,7 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if value {
 		_arg1 = C.TRUE
 	}
@@ -491,7 +491,7 @@ func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(externglib.InternObject(calendar).Native()))
 	_arg1 = C.guint(day)
 
 	C.gtk_calendar_unmark_day(_arg0, _arg1)

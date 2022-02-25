@@ -430,7 +430,7 @@ func (toolbar *Toolbar) DropIndex(x, y int) int {
 	var _arg2 C.gint        // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
@@ -457,7 +457,7 @@ func (toolbar *Toolbar) IconSize() IconSize {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.GtkIconSize // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 
 	_cret = C.gtk_toolbar_get_icon_size(_arg0)
 	runtime.KeepAlive(toolbar)
@@ -485,8 +485,8 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	var _arg1 *C.GtkToolItem // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
 	runtime.KeepAlive(toolbar)
@@ -509,7 +509,7 @@ func (toolbar *Toolbar) NItems() int {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
 	runtime.KeepAlive(toolbar)
@@ -538,7 +538,7 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	var _arg1 C.gint         // out
 	var _cret *C.GtkToolItem // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 	_arg1 = C.gint(n)
 
 	_cret = C.gtk_toolbar_get_nth_item(_arg0, _arg1)
@@ -565,7 +565,7 @@ func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolbar    // out
 	var _cret C.GtkReliefStyle // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 
 	_cret = C.gtk_toolbar_get_relief_style(_arg0)
 	runtime.KeepAlive(toolbar)
@@ -588,7 +588,7 @@ func (toolbar *Toolbar) ShowArrow() bool {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 
 	_cret = C.gtk_toolbar_get_show_arrow(_arg0)
 	runtime.KeepAlive(toolbar)
@@ -613,7 +613,7 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolbar     // out
 	var _cret C.GtkToolbarStyle // in
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 
 	_cret = C.gtk_toolbar_get_style(_arg0)
 	runtime.KeepAlive(toolbar)
@@ -639,8 +639,8 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 	_arg2 = C.gint(pos)
 
 	C.gtk_toolbar_insert(_arg0, _arg1, _arg2)
@@ -667,9 +667,9 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 	if toolItem != nil {
-		_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
+		_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
 	}
 	_arg2 = C.gint(index_)
 
@@ -694,7 +694,7 @@ func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 	_arg1 = C.GtkIconSize(iconSize)
 
 	C.gtk_toolbar_set_icon_size(_arg0, _arg1)
@@ -718,7 +718,7 @@ func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 	if showArrow {
 		_arg1 = C.TRUE
 	}
@@ -739,7 +739,7 @@ func (toolbar *Toolbar) SetStyle(style ToolbarStyle) {
 	var _arg0 *C.GtkToolbar     // out
 	var _arg1 C.GtkToolbarStyle // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 	_arg1 = C.GtkToolbarStyle(style)
 
 	C.gtk_toolbar_set_style(_arg0, _arg1)
@@ -752,7 +752,7 @@ func (toolbar *Toolbar) SetStyle(style ToolbarStyle) {
 func (toolbar *Toolbar) UnsetIconSize() {
 	var _arg0 *C.GtkToolbar // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 
 	C.gtk_toolbar_unset_icon_size(_arg0)
 	runtime.KeepAlive(toolbar)
@@ -763,7 +763,7 @@ func (toolbar *Toolbar) UnsetIconSize() {
 func (toolbar *Toolbar) UnsetStyle() {
 	var _arg0 *C.GtkToolbar // out
 
-	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(externglib.InternObject(toolbar).Native()))
 
 	C.gtk_toolbar_unset_style(_arg0)
 	runtime.KeepAlive(toolbar)

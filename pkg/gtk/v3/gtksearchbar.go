@@ -130,8 +130,8 @@ func (bar *SearchBar) ConnectEntry(entry *Entry) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEntry     // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 	runtime.KeepAlive(bar)
@@ -148,7 +148,7 @@ func (bar *SearchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 
 	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 	runtime.KeepAlive(bar)
@@ -172,7 +172,7 @@ func (bar *SearchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 
 	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 	runtime.KeepAlive(bar)
@@ -237,7 +237,7 @@ func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
 	var _arg1 *C.GdkEvent     // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_search_bar_handle_event(_arg0, _arg1)
@@ -263,7 +263,7 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 	if searchMode {
 		_arg1 = C.TRUE
 	}
@@ -285,7 +285,7 @@ func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}

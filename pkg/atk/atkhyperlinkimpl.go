@@ -91,8 +91,8 @@ func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.AtkHyperlinkImpl) (cre
 
 	hyperlink := iface.Hyperlink()
 
-	cret = (*C.AtkHyperlink)(unsafe.Pointer(hyperlink.Native()))
-	C.g_object_ref(C.gpointer(hyperlink.Native()))
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(hyperlink).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(hyperlink).Native()))
 
 	return cret
 }
@@ -118,7 +118,7 @@ func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
 
-	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(impl.Native()))
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(externglib.InternObject(impl).Native()))
 
 	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
 	runtime.KeepAlive(impl)

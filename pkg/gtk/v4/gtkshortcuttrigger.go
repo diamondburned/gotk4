@@ -92,10 +92,10 @@ func NewAlternativeTrigger(first, second ShortcutTriggerer) *AlternativeTrigger 
 	var _arg2 *C.GtkShortcutTrigger // out
 	var _cret *C.GtkShortcutTrigger // in
 
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(first.Native()))
-	C.g_object_ref(C.gpointer(first.Native()))
-	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(second.Native()))
-	C.g_object_ref(C.gpointer(second.Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(externglib.InternObject(first).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(first).Native()))
+	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(externglib.InternObject(second).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(second).Native()))
 
 	_cret = C.gtk_alternative_trigger_new(_arg1, _arg2)
 	runtime.KeepAlive(first)
@@ -120,7 +120,7 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
-	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_alternative_trigger_get_first(_arg0)
 	runtime.KeepAlive(self)
@@ -160,7 +160,7 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
-	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_alternative_trigger_get_second(_arg0)
 	runtime.KeepAlive(self)
@@ -264,7 +264,7 @@ func (self *KeyvalTrigger) Keyval() uint {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.guint             // in
 
-	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
@@ -286,7 +286,7 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.GdkModifierType   // in
 
-	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_keyval_trigger_get_modifiers(_arg0)
 	runtime.KeepAlive(self)
@@ -376,7 +376,7 @@ func (self *MnemonicTrigger) Keyval() uint {
 	var _arg0 *C.GtkMnemonicTrigger // out
 	var _cret C.guint               // in
 
-	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
@@ -570,8 +570,8 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	var _arg1 C.gconstpointer // out
 	var _cret C.int           // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(trigger1.Native()))
-	_arg1 = C.gconstpointer(unsafe.Pointer(trigger2.Native()))
+	_arg0 = C.gconstpointer(unsafe.Pointer(externglib.InternObject(trigger1).Native()))
+	_arg1 = C.gconstpointer(unsafe.Pointer(externglib.InternObject(trigger2).Native()))
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 	runtime.KeepAlive(trigger1)
@@ -602,8 +602,8 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(trigger1.Native()))
-	_arg1 = C.gconstpointer(unsafe.Pointer(trigger2.Native()))
+	_arg0 = C.gconstpointer(unsafe.Pointer(externglib.InternObject(trigger1).Native()))
+	_arg1 = C.gconstpointer(unsafe.Pointer(externglib.InternObject(trigger2).Native()))
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
 	runtime.KeepAlive(trigger1)
@@ -636,7 +636,7 @@ func (trigger *ShortcutTrigger) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(trigger.Native()))
+	_arg0 = C.gconstpointer(unsafe.Pointer(externglib.InternObject(trigger).Native()))
 
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 	runtime.KeepAlive(trigger)
@@ -672,8 +672,8 @@ func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
 	var _arg1 *C.GdkDisplay         // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -700,7 +700,7 @@ func (self *ShortcutTrigger) String() string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_string(_arg0)
 	runtime.KeepAlive(self)
@@ -732,8 +732,8 @@ func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gd
 	var _arg2 C.gboolean            // out
 	var _cret C.GdkKeyMatch         // in
 
-	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 	if enableMnemonics {
 		_arg2 = C.TRUE
 	}

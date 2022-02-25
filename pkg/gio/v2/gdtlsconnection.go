@@ -251,7 +251,7 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -287,7 +287,7 @@ func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -318,8 +318,8 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_dtls_connection_close_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(conn)
@@ -353,8 +353,8 @@ func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, erro
 	var _arg2 C.GTlsCertificateFlags // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(peerCert.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(externglib.InternObject(peerCert).Native()))
 	_arg2 = C.GTlsCertificateFlags(errors)
 
 	_cret = C.g_dtls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
@@ -382,7 +382,7 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsCertificate // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_certificate(_arg0)
 	runtime.KeepAlive(conn)
@@ -437,7 +437,7 @@ func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byt
 	var _arg2 C.GByteArray             // in
 	var _cerr *C.GError                // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	_arg1 = C.GTlsChannelBindingType(typ)
 
 	C.g_dtls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
@@ -467,7 +467,7 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsDatabase    // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_database(_arg0)
 	runtime.KeepAlive(conn)
@@ -506,7 +506,7 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsInteraction // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_interaction(_arg0)
 	runtime.KeepAlive(conn)
@@ -536,7 +536,7 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_negotiated_protocol(_arg0)
 	runtime.KeepAlive(conn)
@@ -562,7 +562,7 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsCertificate // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_peer_certificate(_arg0)
 	runtime.KeepAlive(conn)
@@ -601,7 +601,7 @@ func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GDtlsConnection     // out
 	var _cret C.GTlsCertificateFlags // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_peer_certificate_errors(_arg0)
 	runtime.KeepAlive(conn)
@@ -628,7 +628,7 @@ func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	var _arg0 *C.GDtlsConnection    // out
 	var _cret C.GTlsRehandshakeMode // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_rehandshake_mode(_arg0)
 	runtime.KeepAlive(conn)
@@ -652,7 +652,7 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_connection_get_require_close_notify(_arg0)
 	runtime.KeepAlive(conn)
@@ -700,7 +700,7 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -736,7 +736,7 @@ func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, 
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -767,8 +767,8 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_dtls_connection_handshake_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(conn)
@@ -804,7 +804,7 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 **C.gchar          // out
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	{
 		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -848,8 +848,8 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsCertificate // out
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(externglib.InternObject(certificate).Native()))
 
 	C.g_dtls_connection_set_certificate(_arg0, _arg1)
 	runtime.KeepAlive(conn)
@@ -872,9 +872,9 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsDatabase    // out
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	if database != nil {
-		_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+		_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(externglib.InternObject(database).Native()))
 	}
 
 	C.g_dtls_connection_set_database(_arg0, _arg1)
@@ -897,9 +897,9 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsInteraction // out
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	if interaction != nil {
-		_arg1 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+		_arg1 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
 	}
 
 	C.g_dtls_connection_set_interaction(_arg0, _arg1)
@@ -924,7 +924,7 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg1 C.GTlsRehandshakeMode // out
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	_arg1 = C.GTlsRehandshakeMode(mode)
 
 	C.g_dtls_connection_set_rehandshake_mode(_arg0, _arg1)
@@ -962,7 +962,7 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	if requireCloseNotify {
 		_arg1 = C.TRUE
 	}
@@ -1002,7 +1002,7 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 	var _arg2 C.gboolean         // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1050,7 +1050,7 @@ func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shu
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1089,8 +1089,8 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_dtls_connection_shutdown_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(conn)

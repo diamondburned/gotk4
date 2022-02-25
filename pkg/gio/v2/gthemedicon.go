@@ -181,7 +181,7 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -200,7 +200,7 @@ func (icon *ThemedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar      // in
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	_cret = C.g_themed_icon_get_names(_arg0)
 	runtime.KeepAlive(icon)
@@ -237,7 +237,7 @@ func (icon *ThemedIcon) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
 

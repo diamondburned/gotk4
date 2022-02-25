@@ -38,7 +38,7 @@ func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 	var _arg2 C.int         // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(display)

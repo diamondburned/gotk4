@@ -152,7 +152,7 @@ func (self *EditableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_editable_label_get_editing(_arg0)
 	runtime.KeepAlive(self)
@@ -170,7 +170,7 @@ func (self *EditableLabel) Editing() bool {
 func (self *EditableLabel) StartEditing() {
 	var _arg0 *C.GtkEditableLabel // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_editable_label_start_editing(_arg0)
 	runtime.KeepAlive(self)
@@ -190,7 +190,7 @@ func (self *EditableLabel) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if commit {
 		_arg1 = C.TRUE
 	}

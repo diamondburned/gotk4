@@ -114,7 +114,7 @@ func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _cret C.GtkBaselinePosition // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
 
 	_cret = C.gtk_box_layout_get_baseline_position(_arg0)
 	runtime.KeepAlive(boxLayout)
@@ -136,7 +136,7 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
 
 	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
 	runtime.KeepAlive(boxLayout)
@@ -160,7 +160,7 @@ func (boxLayout *BoxLayout) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
 
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
 	runtime.KeepAlive(boxLayout)
@@ -187,7 +187,7 @@ func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _arg1 C.GtkBaselinePosition // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
 	_arg1 = C.GtkBaselinePosition(position)
 
 	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
@@ -206,7 +206,7 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
@@ -226,7 +226,7 @@ func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
 	_arg1 = C.guint(spacing)
 
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)

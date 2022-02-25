@@ -118,8 +118,8 @@ func _gotk4_gio2_DBusObjectIface_get_interface(arg0 *C.GDBusObject, arg1 *C.gcha
 	dBusInterface := iface.Interface(_interfaceName)
 
 	if dBusInterface != nil {
-		cret = (*C.GDBusInterface)(unsafe.Pointer(dBusInterface.Native()))
-		C.g_object_ref(C.gpointer(dBusInterface.Native()))
+		cret = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(dBusInterface).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(dBusInterface).Native()))
 	}
 
 	return cret
@@ -135,8 +135,8 @@ func _gotk4_gio2_DBusObjectIface_get_interfaces(arg0 *C.GDBusObject) (cret *C.GL
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GDBusInterface // out
-		dst = (*C.GDBusInterface)(unsafe.Pointer(src.Native()))
-		C.g_object_ref(C.gpointer(src.Native()))
+		dst = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 
@@ -321,7 +321,7 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -362,7 +362,7 @@ func (object *DBusObject) Interfaces() []DBusInterfacer {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.GList       // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 
 	_cret = C.g_dbus_object_get_interfaces(_arg0)
 	runtime.KeepAlive(object)
@@ -406,7 +406,7 @@ func (object *DBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 
 	_cret = C.g_dbus_object_get_object_path(_arg0)
 	runtime.KeepAlive(object)

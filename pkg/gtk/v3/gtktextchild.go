@@ -95,7 +95,7 @@ func (anchor *TextChildAnchor) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(externglib.InternObject(anchor).Native()))
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 	runtime.KeepAlive(anchor)
@@ -120,7 +120,7 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	var _arg0 *C.GtkTextChildAnchor // out
 	var _cret *C.GList              // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(externglib.InternObject(anchor).Native()))
 
 	_cret = C.gtk_text_child_anchor_get_widgets(_arg0)
 	runtime.KeepAlive(anchor)

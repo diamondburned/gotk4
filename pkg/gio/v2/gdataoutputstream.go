@@ -82,7 +82,7 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
 	var _cret *C.GDataOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(baseStream).Native()))
 
 	_cret = C.g_data_output_stream_new(_arg1)
 	runtime.KeepAlive(baseStream)
@@ -104,7 +104,7 @@ func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataOutputStream   // out
 	var _cret C.GDataStreamByteOrder // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_data_output_stream_get_byte_order(_arg0)
 	runtime.KeepAlive(stream)
@@ -129,7 +129,7 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	var _arg1 C.guchar             // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -164,7 +164,7 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 	var _arg1 C.gint16             // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -199,7 +199,7 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 	var _arg1 C.gint32             // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -234,7 +234,7 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 	var _arg1 C.gint64             // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -269,7 +269,7 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 	var _arg1 *C.char              // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -305,7 +305,7 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 	var _arg1 C.guint16            // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -340,7 +340,7 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 	var _arg1 C.guint32            // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -375,7 +375,7 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 	var _arg1 C.guint64            // out
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -407,7 +407,7 @@ func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataOutputStream   // out
 	var _arg1 C.GDataStreamByteOrder // out
 
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	_arg1 = C.GDataStreamByteOrder(order)
 
 	C.g_data_output_stream_set_byte_order(_arg0, _arg1)

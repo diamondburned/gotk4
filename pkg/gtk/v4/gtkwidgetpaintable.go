@@ -94,7 +94,7 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _cret *C.GdkPaintable // in
 
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	}
 
 	_cret = C.gtk_widget_paintable_new(_arg1)
@@ -117,7 +117,7 @@ func (self *WidgetPaintable) Widget() Widgetter {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -154,9 +154,9 @@ func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	}
 
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)

@@ -291,7 +291,7 @@ func (fontchooser *FontChooser) Font() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_font(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -325,7 +325,7 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 	var _arg0 *C.GtkFontChooser       // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_font_desc(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -360,7 +360,7 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontFace  // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_font_face(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -403,7 +403,7 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 	var _arg0 *C.GtkFontChooser  // out
 	var _cret *C.PangoFontFamily // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_font_family(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -440,7 +440,7 @@ func (fontchooser *FontChooser) FontFeatures() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_font_features(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -464,7 +464,7 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontMap   // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_font_map(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -502,7 +502,7 @@ func (fontchooser *FontChooser) FontSize() int {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret C.int             // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_font_size(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -524,7 +524,7 @@ func (fontchooser *FontChooser) Language() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_language(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -547,7 +547,7 @@ func (fontchooser *FontChooser) Level() FontChooserLevel {
 	var _arg0 *C.GtkFontChooser     // out
 	var _cret C.GtkFontChooserLevel // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_level(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -569,7 +569,7 @@ func (fontchooser *FontChooser) PreviewText() string {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_preview_text(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -592,7 +592,7 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 
 	_cret = C.gtk_font_chooser_get_show_preview_entry(_arg0)
 	runtime.KeepAlive(fontchooser)
@@ -619,7 +619,7 @@ func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	if filter != nil {
 		_arg1 = (*[0]byte)(C._gotk4_gtk4_FontFilterFunc)
 		_arg2 = C.gpointer(gbox.Assign(filter))
@@ -641,7 +641,7 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fontname)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -660,7 +660,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkFontChooser       // out
 	var _arg1 *C.PangoFontDescription // out
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 
 	C.gtk_font_chooser_set_font_desc(_arg0, _arg1)
@@ -699,9 +699,9 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.PangoFontMap   // out
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	if fontmap != nil {
-		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
+		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(externglib.InternObject(fontmap).Native()))
 	}
 
 	C.gtk_font_chooser_set_font_map(_arg0, _arg1)
@@ -719,7 +719,7 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(language)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -738,7 +738,7 @@ func (fontchooser *FontChooser) SetLevel(level FontChooserLevel) {
 	var _arg0 *C.GtkFontChooser     // out
 	var _arg1 C.GtkFontChooserLevel // out
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	_arg1 = C.GtkFontChooserLevel(level)
 
 	C.gtk_font_chooser_set_level(_arg0, _arg1)
@@ -758,7 +758,7 @@ func (fontchooser *FontChooser) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -777,7 +777,7 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(externglib.InternObject(fontchooser).Native()))
 	if showPreviewEntry {
 		_arg1 = C.TRUE
 	}

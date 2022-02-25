@@ -171,7 +171,7 @@ func (button *ColorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_color_button_get_modal(_arg0)
 	runtime.KeepAlive(button)
@@ -195,7 +195,7 @@ func (button *ColorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 	runtime.KeepAlive(button)
@@ -217,7 +217,7 @@ func (button *ColorButton) SetModal(modal bool) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -237,7 +237,7 @@ func (button *ColorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 

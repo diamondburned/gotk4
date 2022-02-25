@@ -523,7 +523,7 @@ func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	}
 
 	_cret = C.gtk_text_iter_backward_to_tag_toggle(_arg0, _arg1)
@@ -808,7 +808,7 @@ func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	}
 
 	_cret = C.gtk_text_iter_begins_tag(_arg0, _arg1)
@@ -1047,7 +1047,7 @@ func (iter *TextIter) EndsTag(tag *TextTag) bool {
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	}
 
 	_cret = C.gtk_text_iter_ends_tag(_arg0, _arg1)
@@ -1539,7 +1539,7 @@ func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	}
 
 	_cret = C.gtk_text_iter_forward_to_tag_toggle(_arg0, _arg1)
@@ -2412,7 +2412,7 @@ func (iter *TextIter) HasTag(tag *TextTag) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 
 	_cret = C.gtk_text_iter_has_tag(_arg0, _arg1)
 	runtime.KeepAlive(iter)
@@ -2818,7 +2818,7 @@ func (iter *TextIter) StartsTag(tag *TextTag) bool {
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	}
 
 	_cret = C.gtk_text_iter_starts_tag(_arg0, _arg1)
@@ -2879,7 +2879,7 @@ func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 
 	_arg0 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+		_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	}
 
 	_cret = C.gtk_text_iter_toggles_tag(_arg0, _arg1)

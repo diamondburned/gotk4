@@ -5,6 +5,8 @@ package gdk
 import (
 	"runtime"
 	"unsafe"
+
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -24,7 +26,7 @@ import "C"
 func TestRenderSync(window Windower) {
 	var _arg1 *C.GdkWindow // out
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 
 	C.gdk_test_render_sync(_arg1)
 	runtime.KeepAlive(window)
@@ -65,7 +67,7 @@ func TestSimulateButton(window Windower, x, y int, button uint, modifiers Modifi
 	var _arg6 C.GdkEventType    // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 	_arg4 = C.guint(button)
@@ -127,7 +129,7 @@ func TestSimulateKey(window Windower, x, y int, keyval uint, modifiers ModifierT
 	var _arg6 C.GdkEventType    // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 	_arg4 = C.guint(keyval)

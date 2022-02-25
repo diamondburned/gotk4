@@ -30,8 +30,8 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 	var _arg2 *C.GOutputStream // out
 	var _cret *C.GIOStream     // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(inputStream.Native()))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer(outputStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(inputStream).Native()))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(outputStream).Native()))
 
 	_cret = C.g_simple_io_stream_new(_arg1, _arg2)
 	runtime.KeepAlive(inputStream)

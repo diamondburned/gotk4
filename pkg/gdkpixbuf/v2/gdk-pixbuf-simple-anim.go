@@ -102,8 +102,8 @@ func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(animation.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 	runtime.KeepAlive(animation)
@@ -120,7 +120,7 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(animation.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(externglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
 	runtime.KeepAlive(animation)
@@ -145,7 +145,7 @@ func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(animation.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(externglib.InternObject(animation).Native()))
 	if loop {
 		_arg1 = C.TRUE
 	}

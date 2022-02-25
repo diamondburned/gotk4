@@ -98,7 +98,7 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) 
 	var _cret *C.GtkListItemFactory // in
 
 	if scope != nil {
-		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(externglib.InternObject(scope).Native()))
 	}
 	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
@@ -132,7 +132,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 	var _cret *C.GtkListItemFactory // in
 
 	if scope != nil {
-		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(externglib.InternObject(scope).Native()))
 	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -159,7 +159,7 @@ func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GBytes                    // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_bytes(_arg0)
 	runtime.KeepAlive(self)
@@ -188,7 +188,7 @@ func (self *BuilderListItemFactory) Resource() string {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.char                      // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
 	runtime.KeepAlive(self)
@@ -212,7 +212,7 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
 	runtime.KeepAlive(self)

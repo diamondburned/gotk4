@@ -112,7 +112,7 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 	var _arg0 *C.GtkActionBar // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
 
 	_cret = C.gtk_action_bar_get_center_widget(_arg0)
 	runtime.KeepAlive(actionBar)
@@ -150,8 +150,8 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
@@ -169,8 +169,8 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_action_bar_pack_start(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
@@ -187,9 +187,9 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(actionBar.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
 	if centerWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(centerWidget).Native()))
 	}
 
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)

@@ -225,7 +225,7 @@ func (streamable *StreamableContent) MIMEType(i int) string {
 	var _arg1 C.gint                  // out
 	var _cret *C.gchar                // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(externglib.InternObject(streamable).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_streamable_content_get_mime_type(_arg0, _arg1)
@@ -249,7 +249,7 @@ func (streamable *StreamableContent) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(externglib.InternObject(streamable).Native()))
 
 	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
 	runtime.KeepAlive(streamable)
@@ -276,7 +276,7 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _arg1 *C.gchar                // out
 	var _cret *C.GIOChannel           // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(externglib.InternObject(streamable).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -320,7 +320,7 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 	var _arg1 *C.gchar                // out
 	var _cret *C.gchar                // in
 
-	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(streamable.Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(externglib.InternObject(streamable).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
 

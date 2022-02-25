@@ -112,7 +112,7 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
 
 	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 	runtime.KeepAlive(converter)
@@ -134,7 +134,7 @@ func (converter *CharsetConverter) UseFallback() bool {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
 
 	_cret = C.g_charset_converter_get_use_fallback(_arg0)
 	runtime.KeepAlive(converter)
@@ -158,7 +158,7 @@ func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(converter.Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
 	if useFallback {
 		_arg1 = C.TRUE
 	}

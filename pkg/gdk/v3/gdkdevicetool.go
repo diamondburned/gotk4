@@ -93,7 +93,7 @@ func (tool *DeviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(externglib.InternObject(tool).Native()))
 
 	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
 	runtime.KeepAlive(tool)
@@ -116,7 +116,7 @@ func (tool *DeviceTool) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(externglib.InternObject(tool).Native()))
 
 	_cret = C.gdk_device_tool_get_serial(_arg0)
 	runtime.KeepAlive(tool)
@@ -139,7 +139,7 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(tool.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(externglib.InternObject(tool).Native()))
 
 	_cret = C.gdk_device_tool_get_tool_type(_arg0)
 	runtime.KeepAlive(tool)

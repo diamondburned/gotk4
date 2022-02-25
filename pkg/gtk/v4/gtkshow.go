@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -33,7 +34,7 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 	var _arg3 C.guint32    // out
 
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -76,7 +77,7 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -107,8 +108,8 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	var _arg2 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(parent)

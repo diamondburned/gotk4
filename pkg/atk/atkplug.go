@@ -123,7 +123,7 @@ func (plug *Plug) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(plug.Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
 
 	_cret = C.atk_plug_get_id(_arg0)
 	runtime.KeepAlive(plug)
@@ -154,8 +154,8 @@ func (plug *Plug) SetChild(child *ObjectClass) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(plug.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)
 	runtime.KeepAlive(plug)

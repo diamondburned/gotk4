@@ -116,7 +116,7 @@ func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if sortFunc != nil {
 		_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 		_arg2 = C.gpointer(gbox.Assign(sortFunc))

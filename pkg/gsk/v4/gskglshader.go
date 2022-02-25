@@ -240,8 +240,8 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 	var _arg1 *C.GskRenderer // out
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	_arg1 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
+	_arg1 = (*C.GskRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	C.gsk_gl_shader_compile(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(shader)
@@ -272,7 +272,7 @@ func (shader *GLShader) FindUniformByName(name string) int {
 	var _arg1 *C.char        // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -306,7 +306,7 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 	var _arg2 C.int          // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
@@ -343,7 +343,7 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 	var _arg2 C.int          // out
 	var _cret C.float        // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
@@ -378,7 +378,7 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 	var _arg2 C.int          // out
 	var _cret C.gint32       // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
@@ -413,7 +413,7 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 	var _arg2 C.int          // out
 	var _cret C.guint32      // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 
@@ -445,7 +445,7 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Ve
 	var _arg2 C.int              // out
 	var _arg3 *C.graphene_vec2_t // out
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(outValue)))
@@ -473,7 +473,7 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Ve
 	var _arg2 C.int              // out
 	var _arg3 *C.graphene_vec3_t // out
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(outValue)))
@@ -501,7 +501,7 @@ func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Ve
 	var _arg2 C.int              // out
 	var _arg3 *C.graphene_vec4_t // out
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(outValue)))
@@ -524,7 +524,7 @@ func (shader *GLShader) ArgsSize() uint {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.gsize        // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 
 	_cret = C.gsk_gl_shader_get_args_size(_arg0)
 	runtime.KeepAlive(shader)
@@ -550,7 +550,7 @@ func (shader *GLShader) NTextures() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 
 	_cret = C.gsk_gl_shader_get_n_textures(_arg0)
 	runtime.KeepAlive(shader)
@@ -572,7 +572,7 @@ func (shader *GLShader) NUniforms() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 
 	_cret = C.gsk_gl_shader_get_n_uniforms(_arg0)
 	runtime.KeepAlive(shader)
@@ -595,7 +595,7 @@ func (shader *GLShader) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 
 	_cret = C.gsk_gl_shader_get_resource(_arg0)
 	runtime.KeepAlive(shader)
@@ -617,7 +617,7 @@ func (shader *GLShader) Source() *glib.Bytes {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.GBytes      // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 
 	_cret = C.gsk_gl_shader_get_source(_arg0)
 	runtime.KeepAlive(shader)
@@ -652,7 +652,7 @@ func (shader *GLShader) UniformName(idx int) string {
 	var _arg1 C.int          // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_uniform_name(_arg0, _arg1)
@@ -682,7 +682,7 @@ func (shader *GLShader) UniformOffset(idx int) int {
 	var _arg1 C.int          // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_uniform_offset(_arg0, _arg1)
@@ -712,7 +712,7 @@ func (shader *GLShader) UniformType(idx int) GLUniformType {
 	var _arg1 C.int              // out
 	var _cret C.GskGLUniformType // in
 
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg0 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	_arg1 = C.int(idx)
 
 	_cret = C.gsk_gl_shader_get_uniform_type(_arg0, _arg1)
@@ -749,7 +749,7 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 	var _arg2 *C.GBytes               // out
 	var _cret *C.GskShaderArgsBuilder // in
 
-	_arg1 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
+	_arg1 = (*C.GskGLShader)(unsafe.Pointer(externglib.InternObject(shader).Native()))
 	if initialValues != nil {
 		_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(initialValues)))
 	}

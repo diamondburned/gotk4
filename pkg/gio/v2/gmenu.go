@@ -49,7 +49,7 @@ func (menu *Menu) Append(label, detailedAction string) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	if label != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -77,8 +77,8 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GMenuItem)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg1 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 
 	C.g_menu_append_item(_arg0, _arg1)
 	runtime.KeepAlive(menu)
@@ -99,12 +99,12 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	if label != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(section).Native()))
 
 	C.g_menu_append_section(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
@@ -126,12 +126,12 @@ func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	if label != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(submenu).Native()))
 
 	C.g_menu_append_submenu(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
@@ -149,7 +149,7 @@ func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 func (menu *Menu) Freeze() {
 	var _arg0 *C.GMenu // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 
 	C.g_menu_freeze(_arg0)
 	runtime.KeepAlive(menu)
@@ -171,7 +171,7 @@ func (menu *Menu) Insert(position int, label, detailedAction string) {
 	var _arg2 *C.gchar // out
 	var _arg3 *C.gchar // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	_arg1 = C.gint(position)
 	if label != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
@@ -216,9 +216,9 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 	var _arg1 C.gint       // out
 	var _arg2 *C.GMenuItem // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	_arg1 = C.gint(position)
-	_arg2 = (*C.GMenuItem)(unsafe.Pointer(item.Native()))
+	_arg2 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 
 	C.g_menu_insert_item(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
@@ -242,13 +242,13 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 	var _arg2 *C.gchar      // out
 	var _arg3 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	_arg1 = C.gint(position)
 	if label != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_arg3 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(section).Native()))
 
 	C.g_menu_insert_section(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(menu)
@@ -273,13 +273,13 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 	var _arg2 *C.gchar      // out
 	var _arg3 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	_arg1 = C.gint(position)
 	if label != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_arg3 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(submenu).Native()))
 
 	C.g_menu_insert_submenu(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(menu)
@@ -302,7 +302,7 @@ func (menu *Menu) Prepend(label, detailedAction string) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	if label != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -330,8 +330,8 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GMenuItem)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg1 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
 
 	C.g_menu_prepend_item(_arg0, _arg1)
 	runtime.KeepAlive(menu)
@@ -352,12 +352,12 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	if label != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(section).Native()))
 
 	C.g_menu_prepend_section(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
@@ -379,12 +379,12 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	if label != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(submenu).Native()))
 
 	C.g_menu_prepend_submenu(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
@@ -411,7 +411,7 @@ func (menu *Menu) Remove(position int) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 	_arg1 = C.gint(position)
 
 	C.g_menu_remove(_arg0, _arg1)
@@ -423,7 +423,7 @@ func (menu *Menu) Remove(position int) {
 func (menu *Menu) RemoveAll() {
 	var _arg0 *C.GMenu // out
 
-	_arg0 = (*C.GMenu)(unsafe.Pointer(menu.Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 
 	C.g_menu_remove_all(_arg0)
 	runtime.KeepAlive(menu)
@@ -491,7 +491,7 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg2 = C.gint(itemIndex)
 
 	_cret = C.g_menu_item_new_from_model(_arg1, _arg2)
@@ -581,7 +581,7 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(section).Native()))
 
 	_cret = C.g_menu_item_new_section(_arg1, _arg2)
 	runtime.KeepAlive(label)
@@ -617,7 +617,7 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(submenu).Native()))
 
 	_cret = C.g_menu_item_new_submenu(_arg1, _arg2)
 	runtime.KeepAlive(label)
@@ -650,7 +650,7 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if expectedType != nil {
@@ -692,7 +692,7 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GMenuModel // in
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -768,7 +768,7 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	if action != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -811,7 +811,7 @@ func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Varian
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GVariant  // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if value != nil {
@@ -845,7 +845,7 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -873,8 +873,8 @@ func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	C.g_menu_item_set_icon(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
@@ -894,7 +894,7 @@ func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	if label != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -926,11 +926,11 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if model != nil {
-		_arg2 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+		_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.g_menu_item_set_link(_arg0, _arg1, _arg2)
@@ -954,9 +954,9 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	if section != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(section).Native()))
 	}
 
 	C.g_menu_item_set_section(_arg0, _arg1)
@@ -980,9 +980,9 @@ func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
-	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
 	if submenu != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(submenu).Native()))
 	}
 
 	C.g_menu_item_set_submenu(_arg0, _arg1)

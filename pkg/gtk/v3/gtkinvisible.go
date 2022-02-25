@@ -106,7 +106,7 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	var _arg1 *C.GdkScreen // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 
 	_cret = C.gtk_invisible_new_for_screen(_arg1)
 	runtime.KeepAlive(screen)
@@ -128,7 +128,7 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 	var _arg0 *C.GtkInvisible // out
 	var _cret *C.GdkScreen    // in
 
-	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(invisible.Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(externglib.InternObject(invisible).Native()))
 
 	_cret = C.gtk_invisible_get_screen(_arg0)
 	runtime.KeepAlive(invisible)
@@ -155,8 +155,8 @@ func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkInvisible // out
 	var _arg1 *C.GdkScreen    // out
 
-	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(invisible.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(externglib.InternObject(invisible).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 
 	C.gtk_invisible_set_screen(_arg0, _arg1)
 	runtime.KeepAlive(invisible)

@@ -256,7 +256,7 @@ func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
 	var _arg3 C.gpointer
 	var _arg4 C.GDestroyNotify
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = C.GtkFileFilterFlags(needed)
 	_arg2 = (*[0]byte)(C._gotk4_gtk3_FileFilterFunc)
 	_arg3 = C.gpointer(gbox.Assign(fn))
@@ -278,7 +278,7 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -297,7 +297,7 @@ func (filter *FileFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -311,7 +311,7 @@ func (filter *FileFilter) AddPattern(pattern string) {
 func (filter *FileFilter) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 	runtime.KeepAlive(filter)
@@ -337,7 +337,7 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	var _arg1 *C.GtkFileFilterInfo // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.GtkFileFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
@@ -365,7 +365,7 @@ func (filter *FileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 	runtime.KeepAlive(filter)
@@ -394,7 +394,7 @@ func (filter *FileFilter) Needed() FileFilterFlags {
 	var _arg0 *C.GtkFileFilter     // out
 	var _cret C.GtkFileFilterFlags // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 
 	_cret = C.gtk_file_filter_get_needed(_arg0)
 	runtime.KeepAlive(filter)
@@ -418,7 +418,7 @@ func (filter *FileFilter) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	if name != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -439,7 +439,7 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 
 	_cret = C.gtk_file_filter_to_gvariant(_arg0)
 	runtime.KeepAlive(filter)

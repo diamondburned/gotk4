@@ -238,7 +238,7 @@ func (actionable *Actionable) ActionName() string {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(externglib.InternObject(actionable).Native()))
 
 	_cret = C.gtk_actionable_get_action_name(_arg0)
 	runtime.KeepAlive(actionable)
@@ -264,7 +264,7 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
 	var _cret *C.GVariant      // in
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(externglib.InternObject(actionable).Native()))
 
 	_cret = C.gtk_actionable_get_action_target_value(_arg0)
 	runtime.KeepAlive(actionable)
@@ -302,7 +302,7 @@ func (actionable *Actionable) SetActionName(actionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(externglib.InternObject(actionable).Native()))
 	if actionName != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -339,7 +339,7 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.GVariant      // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(externglib.InternObject(actionable).Native()))
 	if targetValue != nil {
 		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
@@ -368,7 +368,7 @@ func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(actionable.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(externglib.InternObject(actionable).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 

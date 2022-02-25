@@ -118,12 +118,12 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _cret *C.GtkWidget     // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 	if expression != nil {
-		_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref(C.gpointer(expression.Native()))
+		_arg2 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
 	}
 
 	_cret = C.gtk_drop_down_new(_arg1, _arg2)
@@ -186,7 +186,7 @@ func (self *DropDown) EnableSearch() bool {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_down_get_enable_search(_arg0)
 	runtime.KeepAlive(self)
@@ -212,7 +212,7 @@ func (self *DropDown) Expression() Expressioner {
 	var _arg0 *C.GtkDropDown   // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
 	runtime.KeepAlive(self)
@@ -253,7 +253,7 @@ func (self *DropDown) Factory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_down_get_factory(_arg0)
 	runtime.KeepAlive(self)
@@ -278,7 +278,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_down_get_list_factory(_arg0)
 	runtime.KeepAlive(self)
@@ -302,7 +302,7 @@ func (self *DropDown) Model() gio.ListModeller {
 	var _arg0 *C.GtkDropDown // out
 	var _cret *C.GListModel  // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_down_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -340,7 +340,7 @@ func (self *DropDown) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_down_get_selected(_arg0)
 	runtime.KeepAlive(self)
@@ -363,7 +363,7 @@ func (self *DropDown) SelectedItem() *externglib.Object {
 	var _arg0 *C.GtkDropDown // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_down_get_selected_item(_arg0)
 	runtime.KeepAlive(self)
@@ -388,7 +388,7 @@ func (self *DropDown) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if enableSearch {
 		_arg1 = C.TRUE
 	}
@@ -412,9 +412,9 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkDropDown   // out
 	var _arg1 *C.GtkExpression // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 	}
 
 	C.gtk_drop_down_set_expression(_arg0, _arg1)
@@ -432,9 +432,9 @@ func (self *DropDown) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	}
 
 	C.gtk_drop_down_set_factory(_arg0, _arg1)
@@ -453,9 +453,9 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	}
 
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
@@ -473,9 +473,9 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 *C.GListModel  // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_drop_down_set_model(_arg0, _arg1)
@@ -493,7 +493,7 @@ func (self *DropDown) SetSelected(position uint) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_drop_down_set_selected(_arg0, _arg1)

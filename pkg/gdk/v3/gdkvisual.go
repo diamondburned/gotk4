@@ -208,7 +208,7 @@ func (visual *Visual) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 	runtime.KeepAlive(visual)
@@ -239,7 +239,7 @@ func (visual *Visual) BluePixelDetails() (mask uint32, shift int, precision int)
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
@@ -270,7 +270,7 @@ func (visual *Visual) ByteOrder() ByteOrder {
 	var _arg0 *C.GdkVisual   // out
 	var _cret C.GdkByteOrder // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	_cret = C.gdk_visual_get_byte_order(_arg0)
 	runtime.KeepAlive(visual)
@@ -297,7 +297,7 @@ func (visual *Visual) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
 	runtime.KeepAlive(visual)
@@ -319,7 +319,7 @@ func (visual *Visual) Depth() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	_cret = C.gdk_visual_get_depth(_arg0)
 	runtime.KeepAlive(visual)
@@ -350,7 +350,7 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift int, precision int
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
@@ -384,7 +384,7 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift int, precision int) 
 	var _arg2 C.gint       // in
 	var _arg3 C.gint       // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
@@ -410,7 +410,7 @@ func (visual *Visual) Screen() *Screen {
 	var _arg0 *C.GdkVisual // out
 	var _cret *C.GdkScreen // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	_cret = C.gdk_visual_get_screen(_arg0)
 	runtime.KeepAlive(visual)
@@ -432,7 +432,7 @@ func (visual *Visual) VisualType() VisualType {
 	var _arg0 *C.GdkVisual    // out
 	var _cret C.GdkVisualType // in
 
-	_arg0 = (*C.GdkVisual)(unsafe.Pointer(visual.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(externglib.InternObject(visual).Native()))
 
 	_cret = C.gdk_visual_get_visual_type(_arg0)
 	runtime.KeepAlive(visual)

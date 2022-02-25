@@ -119,7 +119,7 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if fallback != nil {
-		_arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+		_arg2 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(fallback).Native()))
 	}
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
@@ -156,11 +156,11 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int, fallback *Cu
 	var _arg4 *C.GdkCursor  // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(externglib.InternObject(texture).Native()))
 	_arg2 = C.int(hotspotX)
 	_arg3 = C.int(hotspotY)
 	if fallback != nil {
-		_arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
+		_arg4 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(fallback).Native()))
 	}
 
 	_cret = C.gdk_cursor_new_from_texture(_arg1, _arg2, _arg3, _arg4)
@@ -193,7 +193,7 @@ func (cursor *Cursor) Fallback() *Cursor {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_fallback(_arg0)
 	runtime.KeepAlive(cursor)
@@ -223,7 +223,7 @@ func (cursor *Cursor) HotspotX() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_hotspot_x(_arg0)
 	runtime.KeepAlive(cursor)
@@ -251,7 +251,7 @@ func (cursor *Cursor) HotspotY() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_hotspot_y(_arg0)
 	runtime.KeepAlive(cursor)
@@ -275,7 +275,7 @@ func (cursor *Cursor) Name() string {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_name(_arg0)
 	runtime.KeepAlive(cursor)
@@ -301,7 +301,7 @@ func (cursor *Cursor) Texture() Texturer {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkTexture // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_texture(_arg0)
 	runtime.KeepAlive(cursor)

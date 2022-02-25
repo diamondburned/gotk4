@@ -39,7 +39,7 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 	var _arg1 *C.GdkSurface // out
 	var _cret C.guint32     // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 	runtime.KeepAlive(surface)
@@ -94,7 +94,7 @@ func (surface *X11Surface) Desktop() uint32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.guint32     // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	_cret = C.gdk_x11_surface_get_desktop(_arg0)
 	runtime.KeepAlive(surface)
@@ -116,7 +116,7 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	_cret = C.gdk_x11_surface_get_group(_arg0)
 	runtime.KeepAlive(surface)
@@ -152,7 +152,7 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 func (surface *X11Surface) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	C.gdk_x11_surface_move_to_current_desktop(_arg0)
 	runtime.KeepAlive(surface)
@@ -171,7 +171,7 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	_arg1 = C.guint32(desktop)
 
 	C.gdk_x11_surface_move_to_desktop(_arg0, _arg1)
@@ -194,7 +194,7 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	if frameSyncEnabled {
 		_arg1 = C.TRUE
 	}
@@ -215,8 +215,8 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkSurface // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(leader.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(leader).Native()))
 
 	C.gdk_x11_surface_set_group(_arg0, _arg1)
 	runtime.KeepAlive(surface)
@@ -234,7 +234,7 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	if skipsPager {
 		_arg1 = C.TRUE
 	}
@@ -255,7 +255,7 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	if skipsTaskbar {
 		_arg1 = C.TRUE
 	}
@@ -282,7 +282,7 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variant)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -302,7 +302,7 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.gboolean    // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	if urgent {
 		_arg1 = C.TRUE
 	}
@@ -331,7 +331,7 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_x11_surface_set_user_time(_arg0, _arg1)
@@ -353,7 +353,7 @@ func (surface *X11Surface) SetUTF8Property(name, value string) {
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // out
 
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if value != "" {

@@ -307,7 +307,7 @@ func BaseMediaStream(obj MediaStreamer) *MediaStream {
 func (self *MediaStream) Ended() {
 	var _arg0 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_media_stream_ended(_arg0)
 	runtime.KeepAlive(self)
@@ -333,7 +333,7 @@ func (self *MediaStream) GError(err error) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GError         // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if err != nil {
 		_arg1 = (*C.GError)(gerror.New(err))
 	}
@@ -355,7 +355,7 @@ func (self *MediaStream) Duration() int64 {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gint64          // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_duration(_arg0)
 	runtime.KeepAlive(self)
@@ -377,7 +377,7 @@ func (self *MediaStream) GetEnded() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_ended(_arg0)
 	runtime.KeepAlive(self)
@@ -413,7 +413,7 @@ func (self *MediaStream) Error() error {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret *C.GError         // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_error(_arg0)
 	runtime.KeepAlive(self)
@@ -439,7 +439,7 @@ func (self *MediaStream) Loop() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_loop(_arg0)
 	runtime.KeepAlive(self)
@@ -465,7 +465,7 @@ func (self *MediaStream) Muted() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_muted(_arg0)
 	runtime.KeepAlive(self)
@@ -489,7 +489,7 @@ func (self *MediaStream) Playing() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_playing(_arg0)
 	runtime.KeepAlive(self)
@@ -513,7 +513,7 @@ func (self *MediaStream) Timestamp() int64 {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gint64          // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_timestamp(_arg0)
 	runtime.KeepAlive(self)
@@ -537,7 +537,7 @@ func (self *MediaStream) Volume() float64 {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.double          // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_get_volume(_arg0)
 	runtime.KeepAlive(self)
@@ -559,7 +559,7 @@ func (self *MediaStream) HasAudio() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_has_audio(_arg0)
 	runtime.KeepAlive(self)
@@ -583,7 +583,7 @@ func (self *MediaStream) HasVideo() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_has_video(_arg0)
 	runtime.KeepAlive(self)
@@ -609,7 +609,7 @@ func (self *MediaStream) IsPrepared() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_is_prepared(_arg0)
 	runtime.KeepAlive(self)
@@ -641,7 +641,7 @@ func (self *MediaStream) IsSeekable() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_is_seekable(_arg0)
 	runtime.KeepAlive(self)
@@ -665,7 +665,7 @@ func (self *MediaStream) IsSeeking() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_stream_is_seeking(_arg0)
 	runtime.KeepAlive(self)
@@ -685,7 +685,7 @@ func (self *MediaStream) IsSeeking() bool {
 func (self *MediaStream) Pause() {
 	var _arg0 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_media_stream_pause(_arg0)
 	runtime.KeepAlive(self)
@@ -697,7 +697,7 @@ func (self *MediaStream) Pause() {
 func (self *MediaStream) Play() {
 	var _arg0 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_media_stream_play(_arg0)
 	runtime.KeepAlive(self)
@@ -728,7 +728,7 @@ func (self *MediaStream) Prepared(hasAudio, hasVideo, seekable bool, duration in
 	var _arg3 C.gboolean        // out
 	var _arg4 C.gint64          // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if hasAudio {
 		_arg1 = C.TRUE
 	}
@@ -773,8 +773,8 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GdkSurface     // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	C.gtk_media_stream_realize(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -799,7 +799,7 @@ func (self *MediaStream) Seek(timestamp int64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gint64          // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.gint64(timestamp)
 
 	C.gtk_media_stream_seek(_arg0, _arg1)
@@ -817,7 +817,7 @@ func (self *MediaStream) Seek(timestamp int64) {
 func (self *MediaStream) SeekFailed() {
 	var _arg0 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_media_stream_seek_failed(_arg0)
 	runtime.KeepAlive(self)
@@ -832,7 +832,7 @@ func (self *MediaStream) SeekFailed() {
 func (self *MediaStream) SeekSuccess() {
 	var _arg0 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_media_stream_seek_success(_arg0)
 	runtime.KeepAlive(self)
@@ -854,7 +854,7 @@ func (self *MediaStream) SetLoop(loop bool) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if loop {
 		_arg1 = C.TRUE
 	}
@@ -881,7 +881,7 @@ func (self *MediaStream) SetMuted(muted bool) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if muted {
 		_arg1 = C.TRUE
 	}
@@ -901,7 +901,7 @@ func (self *MediaStream) SetPlaying(playing bool) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if playing {
 		_arg1 = C.TRUE
 	}
@@ -930,7 +930,7 @@ func (self *MediaStream) SetVolume(volume float64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.double          // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.double(volume)
 
 	C.gtk_media_stream_set_volume(_arg0, _arg1)
@@ -946,7 +946,7 @@ func (self *MediaStream) SetVolume(volume float64) {
 func (self *MediaStream) Unprepared() {
 	var _arg0 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_media_stream_unprepared(_arg0)
 	runtime.KeepAlive(self)
@@ -965,8 +965,8 @@ func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GdkSurface     // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	C.gtk_media_stream_unrealize(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -989,7 +989,7 @@ func (self *MediaStream) Update(timestamp int64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gint64          // out
 
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.gint64(timestamp)
 
 	C.gtk_media_stream_update(_arg0, _arg1)

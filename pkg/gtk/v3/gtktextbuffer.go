@@ -902,7 +902,7 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	var _cret *C.GtkTextBuffer   // in
 
 	if table != nil {
-		_arg1 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
+		_arg1 = (*C.GtkTextTagTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	}
 
 	_cret = C.gtk_text_buffer_new(_arg1)
@@ -932,8 +932,8 @@ func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
 	var _arg1 *C.GtkTextMark   // out
 	var _arg2 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_add_mark(_arg0, _arg1, _arg2)
@@ -954,8 +954,8 @@ func (buffer *TextBuffer) AddSelectionClipboard(clipboard *Clipboard) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkClipboard  // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 
 	C.gtk_text_buffer_add_selection_clipboard(_arg0, _arg1)
 	runtime.KeepAlive(buffer)
@@ -978,8 +978,8 @@ func (buffer *TextBuffer) ApplyTag(tag *TextTag, start, end *TextIter) {
 	var _arg2 *C.GtkTextIter   // out
 	var _arg3 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -1005,7 +1005,7 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	var _arg2 *C.GtkTextIter   // out
 	var _arg3 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
@@ -1045,7 +1045,7 @@ func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable
 	var _arg3 C.gboolean       // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if interactive {
 		_arg2 = C.TRUE
@@ -1087,7 +1087,7 @@ func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable
 func (buffer *TextBuffer) BeginUserAction() {
 	var _arg0 *C.GtkTextBuffer // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	C.gtk_text_buffer_begin_user_action(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1103,8 +1103,8 @@ func (buffer *TextBuffer) CopyClipboard(clipboard *Clipboard) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkClipboard  // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 
 	C.gtk_text_buffer_copy_clipboard(_arg0, _arg1)
 	runtime.KeepAlive(buffer)
@@ -1130,7 +1130,7 @@ func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 	var _arg1 *C.GtkTextIter        // out
 	var _cret *C.GtkTextChildAnchor // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_buffer_create_child_anchor(_arg0, _arg1)
@@ -1177,7 +1177,7 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 	var _arg3 C.gboolean       // out
 	var _cret *C.GtkTextMark   // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	if markName != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1213,8 +1213,8 @@ func (buffer *TextBuffer) CutClipboard(clipboard *Clipboard, defaultEditable boo
 	var _arg1 *C.GtkClipboard  // out
 	var _arg2 C.gboolean       // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	if defaultEditable {
 		_arg2 = C.TRUE
 	}
@@ -1242,7 +1242,7 @@ func (buffer *TextBuffer) Delete(start, end *TextIter) {
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -1274,7 +1274,7 @@ func (buffer *TextBuffer) DeleteInteractive(startIter, endIter *TextIter, defaul
 	var _arg3 C.gboolean       // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(startIter)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(endIter)))
 	if defaultEditable {
@@ -1313,8 +1313,8 @@ func (buffer *TextBuffer) DeleteMark(mark *TextMark) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextMark   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 
 	C.gtk_text_buffer_delete_mark(_arg0, _arg1)
 	runtime.KeepAlive(buffer)
@@ -1332,7 +1332,7 @@ func (buffer *TextBuffer) DeleteMarkByName(name string) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1361,7 +1361,7 @@ func (buffer *TextBuffer) DeleteSelection(interactive, defaultEditable bool) boo
 	var _arg2 C.gboolean       // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	if interactive {
 		_arg1 = C.TRUE
 	}
@@ -1389,7 +1389,7 @@ func (buffer *TextBuffer) DeleteSelection(interactive, defaultEditable bool) boo
 func (buffer *TextBuffer) EndUserAction() {
 	var _arg0 *C.GtkTextBuffer // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	C.gtk_text_buffer_end_user_action(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1408,7 +1408,7 @@ func (buffer *TextBuffer) Bounds() (start *TextIter, end *TextIter) {
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.GtkTextIter    // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	C.gtk_text_buffer_get_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(buffer)
@@ -1435,7 +1435,7 @@ func (buffer *TextBuffer) CharCount() int {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gint           // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_char_count(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1461,7 +1461,7 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_copy_target_list(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1495,7 +1495,7 @@ func (buffer *TextBuffer) EndIter() *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	C.gtk_text_buffer_get_end_iter(_arg0, &_arg1)
 	runtime.KeepAlive(buffer)
@@ -1517,7 +1517,7 @@ func (buffer *TextBuffer) HasSelection() bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_has_selection(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1543,7 +1543,7 @@ func (buffer *TextBuffer) GetInsert() *TextMark {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret *C.GtkTextMark   // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_insert(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1570,8 +1570,8 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 	var _arg1 C.GtkTextIter         // in
 	var _arg2 *C.GtkTextChildAnchor // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(externglib.InternObject(anchor).Native()))
 
 	C.gtk_text_buffer_get_iter_at_child_anchor(_arg0, &_arg1, _arg2)
 	runtime.KeepAlive(buffer)
@@ -1600,7 +1600,7 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int) *TextIter {
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg2 = C.gint(lineNumber)
 
 	C.gtk_text_buffer_get_iter_at_line(_arg0, &_arg1, _arg2)
@@ -1639,7 +1639,7 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) *TextIter {
 	var _arg2 C.gint           // out
 	var _arg3 C.gint           // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg2 = C.gint(lineNumber)
 	_arg3 = C.gint(byteIndex)
 
@@ -1680,7 +1680,7 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) *TextIter
 	var _arg2 C.gint           // out
 	var _arg3 C.gint           // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg2 = C.gint(lineNumber)
 	_arg3 = C.gint(charOffset)
 
@@ -1711,8 +1711,8 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 *C.GtkTextMark   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg2 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg2 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 
 	C.gtk_text_buffer_get_iter_at_mark(_arg0, &_arg1, _arg2)
 	runtime.KeepAlive(buffer)
@@ -1743,7 +1743,7 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int) *TextIter {
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg2 = C.gint(charOffset)
 
 	C.gtk_text_buffer_get_iter_at_offset(_arg0, &_arg1, _arg2)
@@ -1768,7 +1768,7 @@ func (buffer *TextBuffer) LineCount() int {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gint           // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_line_count(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1796,7 +1796,7 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GtkTextMark   // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1825,7 +1825,7 @@ func (buffer *TextBuffer) Modified() bool {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_modified(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1853,7 +1853,7 @@ func (buffer *TextBuffer) PasteTargetList() *TargetList {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_paste_target_list(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1892,7 +1892,7 @@ func (buffer *TextBuffer) SelectionBound() *TextMark {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret *C.GtkTextMark   // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_selection_bound(_arg0)
 	runtime.KeepAlive(buffer)
@@ -1922,7 +1922,7 @@ func (buffer *TextBuffer) SelectionBounds() (start *TextIter, end *TextIter, ok 
 	var _arg2 C.GtkTextIter    // in
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(buffer)
@@ -1966,7 +1966,7 @@ func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) s
 	var _arg3 C.gboolean       // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 	if includeHiddenChars {
@@ -1999,7 +1999,7 @@ func (buffer *TextBuffer) StartIter() *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	C.gtk_text_buffer_get_start_iter(_arg0, &_arg1)
 	runtime.KeepAlive(buffer)
@@ -2021,7 +2021,7 @@ func (buffer *TextBuffer) TagTable() *TextTagTable {
 	var _arg0 *C.GtkTextBuffer   // out
 	var _cret *C.GtkTextTagTable // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_text_buffer_get_tag_table(_arg0)
 	runtime.KeepAlive(buffer)
@@ -2057,7 +2057,7 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 	var _arg3 C.gboolean       // out
 	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 	if includeHiddenChars {
@@ -2096,7 +2096,7 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 	var _arg2 *C.char          // out
 	var _arg3 C.gint
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.gint)(len(text))
 	_arg2 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
@@ -2121,7 +2121,7 @@ func (buffer *TextBuffer) InsertAtCursor(text string) {
 	var _arg1 *C.char          // out
 	var _arg2 C.gint
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg2 = (C.gint)(len(text))
 	_arg1 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
@@ -2153,9 +2153,9 @@ func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnc
 	var _arg1 *C.GtkTextIter        // out
 	var _arg2 *C.GtkTextChildAnchor // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
+	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(externglib.InternObject(anchor).Native()))
 
 	C.gtk_text_buffer_insert_child_anchor(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
@@ -2190,7 +2190,7 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, default
 	var _arg4 C.gboolean // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.gint)(len(text))
 	_arg2 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
@@ -2238,7 +2238,7 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 	var _arg3 C.gboolean // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg2 = (C.gint)(len(text))
 	_arg1 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
@@ -2279,7 +2279,7 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	var _arg2 *C.char          // out
 	var _arg3 C.gint
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg3 = (C.gint)(len(markup))
 	_arg2 = (*C.char)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
@@ -2310,9 +2310,9 @@ func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GdkPixbuf     // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 
 	C.gtk_text_buffer_insert_pixbuf(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
@@ -2341,7 +2341,7 @@ func (buffer *TextBuffer) InsertRange(iter, start, end *TextIter) {
 	var _arg2 *C.GtkTextIter   // out
 	var _arg3 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
@@ -2378,7 +2378,7 @@ func (buffer *TextBuffer) InsertRangeInteractive(iter, start, end *TextIter, def
 	var _arg4 C.gboolean       // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
@@ -2415,8 +2415,8 @@ func (buffer *TextBuffer) MoveMark(mark *TextMark, where *TextIter) {
 	var _arg1 *C.GtkTextMark   // out
 	var _arg2 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_move_mark(_arg0, _arg1, _arg2)
@@ -2438,7 +2438,7 @@ func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
@@ -2469,8 +2469,8 @@ func (buffer *TextBuffer) PasteClipboard(clipboard *Clipboard, overrideLocation 
 	var _arg2 *C.GtkTextIter   // out
 	var _arg3 C.gboolean       // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	if overrideLocation != nil {
 		_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(overrideLocation)))
 	}
@@ -2500,7 +2500,7 @@ func (buffer *TextBuffer) PlaceCursor(where *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
 
 	C.gtk_text_buffer_place_cursor(_arg0, _arg1)
@@ -2523,7 +2523,7 @@ func (buffer *TextBuffer) RemoveAllTags(start, end *TextIter) {
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -2544,8 +2544,8 @@ func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard *Clipboard) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkClipboard  // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 
 	C.gtk_text_buffer_remove_selection_clipboard(_arg0, _arg1)
 	runtime.KeepAlive(buffer)
@@ -2568,8 +2568,8 @@ func (buffer *TextBuffer) RemoveTag(tag *TextTag, start, end *TextIter) {
 	var _arg2 *C.GtkTextIter   // out
 	var _arg3 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(externglib.InternObject(tag).Native()))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -2595,7 +2595,7 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	var _arg2 *C.GtkTextIter   // out
 	var _arg3 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
@@ -2625,7 +2625,7 @@ func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GtkTextIter   // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(ins)))
 	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(bound)))
 
@@ -2649,7 +2649,7 @@ func (buffer *TextBuffer) SetModified(setting bool) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -2671,7 +2671,7 @@ func (buffer *TextBuffer) SetText(text string) {
 	var _arg1 *C.char          // out
 	var _arg2 C.gint
 
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 	_arg2 = (C.gint)(len(text))
 	_arg1 = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)

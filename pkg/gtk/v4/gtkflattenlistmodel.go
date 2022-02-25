@@ -80,8 +80,8 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	var _cret *C.GtkFlattenListModel // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 
 	_cret = C.gtk_flatten_list_model_new(_arg1)
@@ -104,7 +104,7 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _cret *C.GListModel          // in
 
-	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_flatten_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -146,7 +146,7 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 	var _arg1 C.guint                // out
 	var _cret *C.GListModel          // in
 
-	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_flatten_list_model_get_model_for_item(_arg0, _arg1)
@@ -186,9 +186,9 @@ func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 *C.GListModel          // out
 
-	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_flatten_list_model_set_model(_arg0, _arg1)

@@ -258,7 +258,7 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkAdjustment  // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_scale_button_get_adjustment(_arg0)
 	runtime.KeepAlive(button)
@@ -280,7 +280,7 @@ func (button *ScaleButton) MinusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_scale_button_get_minus_button(_arg0)
 	runtime.KeepAlive(button)
@@ -302,7 +302,7 @@ func (button *ScaleButton) PlusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_scale_button_get_plus_button(_arg0)
 	runtime.KeepAlive(button)
@@ -324,7 +324,7 @@ func (button *ScaleButton) Popup() Widgetter {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_scale_button_get_popup(_arg0)
 	runtime.KeepAlive(button)
@@ -362,7 +362,7 @@ func (button *ScaleButton) Value() float64 {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret C.double          // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 
 	_cret = C.gtk_scale_button_get_value(_arg0)
 	runtime.KeepAlive(button)
@@ -387,8 +387,8 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 *C.GtkAdjustment  // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
 
 	C.gtk_scale_button_set_adjustment(_arg0, _arg1)
 	runtime.KeepAlive(button)
@@ -405,7 +405,7 @@ func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 **C.char          // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 	{
 		_arg1 = (**C.char)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -441,7 +441,7 @@ func (button *ScaleButton) SetValue(value float64) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 C.double          // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
 	_arg1 = C.double(value)
 
 	C.gtk_scale_button_set_value(_arg0, _arg1)

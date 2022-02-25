@@ -187,7 +187,7 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	var _arg1 *C.char         // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(externglib.InternObject(statusbar).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextDescription)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -216,7 +216,7 @@ func (statusbar *Statusbar) Pop(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(externglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_pop(_arg0, _arg1)
@@ -242,7 +242,7 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	var _arg2 *C.char         // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(externglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -272,7 +272,7 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint) {
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(externglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
 	_arg2 = C.guint(messageId)
 
@@ -293,7 +293,7 @@ func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(externglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_remove_all(_arg0, _arg1)

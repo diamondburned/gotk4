@@ -234,8 +234,8 @@ func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.
 	fileInfo, _goerr := iface.NextFile(_cancellable)
 
 	if fileInfo != nil {
-		cret = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
-		C.g_object_ref(C.gpointer(fileInfo.Native()))
+		cret = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(fileInfo).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(fileInfo).Native()))
 	}
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
@@ -276,8 +276,8 @@ func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GFileInfo // out
-		dst = (*C.GFileInfo)(unsafe.Pointer((&src).Native()))
-		C.g_object_ref(C.gpointer((&src).Native()))
+		dst = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -313,7 +313,7 @@ func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -353,7 +353,7 @@ func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -393,8 +393,8 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_file_enumerator_close_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(enumerator)
@@ -432,8 +432,8 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 	var _arg1 *C.GFileInfo       // out
 	var _cret *C.GFile           // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
 
 	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
 	runtime.KeepAlive(enumerator)
@@ -472,7 +472,7 @@ func (enumerator *FileEnumerator) Container() Filer {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret *C.GFile           // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 
 	_cret = C.g_file_enumerator_get_container(_arg0)
 	runtime.KeepAlive(enumerator)
@@ -510,7 +510,7 @@ func (enumerator *FileEnumerator) HasPending() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 
 	_cret = C.g_file_enumerator_has_pending(_arg0)
 	runtime.KeepAlive(enumerator)
@@ -534,7 +534,7 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 
 	_cret = C.g_file_enumerator_is_closed(_arg0)
 	runtime.KeepAlive(enumerator)
@@ -598,7 +598,7 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 	var _arg2 *C.GFile           // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(direnum.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(direnum).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -665,7 +665,7 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 	var _cret *C.GFileInfo       // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -724,7 +724,7 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, 
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -763,8 +763,8 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileI
 	var _cret *C.GList           // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_file_enumerator_next_files_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(enumerator)
@@ -797,7 +797,7 @@ func (enumerator *FileEnumerator) SetPending(pending bool) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 	if pending {
 		_arg1 = C.TRUE
 	}

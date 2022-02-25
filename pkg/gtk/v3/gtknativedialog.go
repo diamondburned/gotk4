@@ -197,7 +197,7 @@ func (self *NativeDialog) ConnectResponse(f func(responseId int)) externglib.Sig
 func (self *NativeDialog) Destroy() {
 	var _arg0 *C.GtkNativeDialog // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_native_dialog_destroy(_arg0)
 	runtime.KeepAlive(self)
@@ -213,7 +213,7 @@ func (self *NativeDialog) Modal() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_native_dialog_get_modal(_arg0)
 	runtime.KeepAlive(self)
@@ -239,7 +239,7 @@ func (self *NativeDialog) Title() string {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_native_dialog_get_title(_arg0)
 	runtime.KeepAlive(self)
@@ -265,7 +265,7 @@ func (self *NativeDialog) TransientFor() *Window {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret *C.GtkWindow       // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
 	runtime.KeepAlive(self)
@@ -289,7 +289,7 @@ func (self *NativeDialog) Visible() bool {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_native_dialog_get_visible(_arg0)
 	runtime.KeepAlive(self)
@@ -311,7 +311,7 @@ func (self *NativeDialog) Visible() bool {
 func (self *NativeDialog) Hide() {
 	var _arg0 *C.GtkNativeDialog // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_native_dialog_hide(_arg0)
 	runtime.KeepAlive(self)
@@ -354,7 +354,7 @@ func (self *NativeDialog) Run() int {
 	var _arg0 *C.GtkNativeDialog // out
 	var _cret C.gint             // in
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_native_dialog_run(_arg0)
 	runtime.KeepAlive(self)
@@ -380,7 +380,7 @@ func (self *NativeDialog) SetModal(modal bool) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -400,7 +400,7 @@ func (self *NativeDialog) SetTitle(title string) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.char            // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -424,9 +424,9 @@ func (self *NativeDialog) SetTransientFor(parent *Window) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.GtkWindow       // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 
 	C.gtk_native_dialog_set_transient_for(_arg0, _arg1)
@@ -442,7 +442,7 @@ func (self *NativeDialog) SetTransientFor(parent *Window) {
 func (self *NativeDialog) Show() {
 	var _arg0 *C.GtkNativeDialog // out
 
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_native_dialog_show(_arg0)
 	runtime.KeepAlive(self)

@@ -185,7 +185,7 @@ func (sortable *TreeSortable) SortColumnID() (int, SortType, bool) {
 	var _arg2 C.GtkSortType      // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(externglib.InternObject(sortable).Native()))
 
 	_cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(sortable)
@@ -215,7 +215,7 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 	var _arg0 *C.GtkTreeSortable // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(externglib.InternObject(sortable).Native()))
 
 	_cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
 	runtime.KeepAlive(sortable)
@@ -249,7 +249,7 @@ func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(externglib.InternObject(sortable).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
 	_arg2 = C.gpointer(gbox.Assign(sortFunc))
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -279,7 +279,7 @@ func (sortable *TreeSortable) SetSortColumnID(sortColumnId int, order SortType) 
 	var _arg1 C.int              // out
 	var _arg2 C.GtkSortType      // out
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(externglib.InternObject(sortable).Native()))
 	_arg1 = C.int(sortColumnId)
 	_arg2 = C.GtkSortType(order)
 
@@ -305,7 +305,7 @@ func (sortable *TreeSortable) SetSortFunc(sortColumnId int, sortFunc TreeIterCom
 	var _arg3 C.gpointer
 	var _arg4 C.GDestroyNotify
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(externglib.InternObject(sortable).Native()))
 	_arg1 = C.int(sortColumnId)
 	_arg2 = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
 	_arg3 = C.gpointer(gbox.Assign(sortFunc))
@@ -322,7 +322,7 @@ func (sortable *TreeSortable) SetSortFunc(sortColumnId int, sortFunc TreeIterCom
 func (sortable *TreeSortable) SortColumnChanged() {
 	var _arg0 *C.GtkTreeSortable // out
 
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(externglib.InternObject(sortable).Native()))
 
 	C.gtk_tree_sortable_sort_column_changed(_arg0)
 	runtime.KeepAlive(sortable)

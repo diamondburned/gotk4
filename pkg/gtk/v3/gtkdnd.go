@@ -39,7 +39,7 @@ import "C"
 func DragCancel(context *gdk.DragContext) {
 	var _arg1 *C.GdkDragContext // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_drag_cancel(_arg1)
 	runtime.KeepAlive(context)
@@ -62,7 +62,7 @@ func DragFinish(context *gdk.DragContext, success, del bool, time_ uint32) {
 	var _arg3 C.gboolean        // out
 	var _arg4 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -93,7 +93,7 @@ func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
 	var _arg1 *C.GdkDragContext // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
 	runtime.KeepAlive(context)
@@ -130,7 +130,7 @@ func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
 func DragSetIconDefault(context *gdk.DragContext) {
 	var _arg1 *C.GdkDragContext // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_drag_set_icon_default(_arg1)
 	runtime.KeepAlive(context)
@@ -154,8 +154,8 @@ func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -185,7 +185,7 @@ func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int) 
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
@@ -214,8 +214,8 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX,
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -244,7 +244,7 @@ func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int) 
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
@@ -275,7 +275,7 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 	var _arg1 *C.GdkDragContext  // out
 	var _arg2 *C.cairo_surface_t // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_drag_set_icon_surface(_arg1, _arg2)
@@ -301,8 +301,8 @@ func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY in
 	var _arg3 C.gint            // out
 	var _arg4 C.gint            // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -338,7 +338,7 @@ func (widget *Widget) DragBegin(targets *TargetList, actions gdk.DragAction, but
 	var _arg4 *C.GdkEvent       // out
 	var _cret *C.GdkDragContext // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targets)))
 	_arg2 = C.GdkDragAction(actions)
 	_arg3 = C.gint(button)
@@ -419,7 +419,7 @@ func (widget *Widget) DragBeginWithCoordinates(targets *TargetList, actions gdk.
 	var _arg6 C.gint            // out
 	var _cret *C.GdkDragContext // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targets)))
 	_arg2 = C.GdkDragAction(actions)
 	_arg3 = C.gint(button)
@@ -474,7 +474,7 @@ func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int)
 	var _arg4 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = C.gint(startX)
 	_arg2 = C.gint(startY)
 	_arg3 = C.gint(currentX)
@@ -502,7 +502,7 @@ func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int)
 func (widget *Widget) DragHighlight() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_highlight(_arg0)
 	runtime.KeepAlive(widget)
@@ -513,7 +513,7 @@ func (widget *Widget) DragHighlight() {
 func (widget *Widget) DragUnhighlight() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_unhighlight(_arg0)
 	runtime.KeepAlive(widget)

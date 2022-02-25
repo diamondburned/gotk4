@@ -466,8 +466,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer((&src).Native()))
-		C.g_object_ref(C.gpointer((&src).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -509,8 +509,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer((&src).Native()))
-		C.g_object_ref(C.gpointer((&src).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -542,8 +542,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer((&src).Native()))
-		C.g_object_ref(C.gpointer((&src).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -585,8 +585,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.GResolve
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer((&src).Native()))
-		C.g_object_ref(C.gpointer((&src).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -788,13 +788,13 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 	var _cret *C.gchar        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(resolver)
@@ -830,13 +830,13 @@ func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *Ine
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	if callback != nil {
 		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_arg4 = C.gpointer(gbox.AssignOnce(callback))
@@ -871,8 +871,8 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	var _cret *C.gchar        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(resolver)
@@ -929,7 +929,7 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 	var _cret *C.GList        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -978,7 +978,7 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1020,8 +1020,8 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 	var _cret *C.GList        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_resolver_lookup_by_name_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(resolver)
@@ -1068,7 +1068,7 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 	var _cret *C.GList                   // in
 	var _cerr *C.GError                  // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1121,7 +1121,7 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 	var _arg4 C.GAsyncReadyCallback      // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1165,8 +1165,8 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 	var _cret *C.GList        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_resolver_lookup_by_name_with_flags_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(resolver)
@@ -1219,7 +1219,7 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 	var _cret *C.GList              // in
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1278,7 +1278,7 @@ func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string,
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1324,8 +1324,8 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	var _cret *C.GList        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_resolver_lookup_records_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(resolver)
@@ -1395,7 +1395,7 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 	var _cret *C.GList        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1460,7 +1460,7 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, proto
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1508,8 +1508,8 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 	var _cret *C.GList        // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_resolver_lookup_service_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(resolver)
@@ -1550,7 +1550,7 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 func (resolver *Resolver) SetDefault() {
 	var _arg0 *C.GResolver // out
 
-	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 
 	C.g_resolver_set_default(_arg0)
 	runtime.KeepAlive(resolver)

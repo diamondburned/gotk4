@@ -82,8 +82,8 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 	var _cret *C.GtkNoSelection // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 
 	_cret = C.gtk_no_selection_new(_arg1)
@@ -106,7 +106,7 @@ func (self *NoSelection) Model() gio.ListModeller {
 	var _arg0 *C.GtkNoSelection // out
 	var _cret *C.GListModel     // in
 
-	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_no_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -146,9 +146,9 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkNoSelection // out
 	var _arg1 *C.GListModel     // out
 
-	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_no_selection_set_model(_arg0, _arg1)

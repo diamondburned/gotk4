@@ -125,7 +125,7 @@ func (switcher *StackSwitcher) Stack() *Stack {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _cret *C.GtkStack         // in
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(switcher.Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(externglib.InternObject(switcher).Native()))
 
 	_cret = C.gtk_stack_switcher_get_stack(_arg0)
 	runtime.KeepAlive(switcher)
@@ -149,9 +149,9 @@ func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(switcher.Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(externglib.InternObject(switcher).Native()))
 	if stack != nil {
-		_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+		_arg1 = (*C.GtkStack)(unsafe.Pointer(externglib.InternObject(stack).Native()))
 	}
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)

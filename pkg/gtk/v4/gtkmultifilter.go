@@ -245,9 +245,9 @@ func (self *MultiFilter) Append(filter *Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
-	C.g_object_ref(C.gpointer(filter.Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(filter).Native()))
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -268,7 +268,7 @@ func (self *MultiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_filter_remove(_arg0, _arg1)

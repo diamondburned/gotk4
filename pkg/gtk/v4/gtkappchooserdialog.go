@@ -139,10 +139,10 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 	var _cret *C.GtkWidget     // in
 
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 	_arg2 = C.GtkDialogFlags(flags)
-	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg3 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(parent)
@@ -178,7 +178,7 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 	var _cret *C.GtkWidget     // in
 
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
@@ -207,7 +207,7 @@ func (self *AppChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.char                // in
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
 	runtime.KeepAlive(self)
@@ -231,7 +231,7 @@ func (self *AppChooserDialog) Widget() Widgetter {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.GtkWidget           // in
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
 	runtime.KeepAlive(self)
@@ -271,7 +271,7 @@ func (self *AppChooserDialog) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_arg1))
 

@@ -173,7 +173,7 @@ func (action *ToggleAction) Active() bool {
 	var _arg0 *C.GtkToggleAction // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.gtk_toggle_action_get_active(_arg0)
 	runtime.KeepAlive(action)
@@ -200,7 +200,7 @@ func (action *ToggleAction) DrawAsRadio() bool {
 	var _arg0 *C.GtkToggleAction // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
 	runtime.KeepAlive(action)
@@ -226,7 +226,7 @@ func (action *ToggleAction) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -249,7 +249,7 @@ func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkToggleAction // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	if drawAsRadio {
 		_arg1 = C.TRUE
 	}
@@ -265,7 +265,7 @@ func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 func (action *ToggleAction) Toggled() {
 	var _arg0 *C.GtkToggleAction // out
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	C.gtk_toggle_action_toggled(_arg0)
 	runtime.KeepAlive(action)

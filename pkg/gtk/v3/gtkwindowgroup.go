@@ -100,8 +100,8 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
 	runtime.KeepAlive(windowGroup)
@@ -124,8 +124,8 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 	var _arg1 *C.GdkDevice      // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
 	runtime.KeepAlive(windowGroup)
@@ -164,7 +164,7 @@ func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GtkWidget      // in
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
 
 	_cret = C.gtk_window_group_get_current_grab(_arg0)
 	runtime.KeepAlive(windowGroup)
@@ -202,7 +202,7 @@ func (windowGroup *WindowGroup) ListWindows() []Window {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GList          // in
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
 
 	_cret = C.gtk_window_group_list_windows(_arg0)
 	runtime.KeepAlive(windowGroup)
@@ -230,8 +230,8 @@ func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 
 	C.gtk_window_group_remove_window(_arg0, _arg1)
 	runtime.KeepAlive(windowGroup)

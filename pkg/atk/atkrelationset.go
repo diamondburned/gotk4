@@ -91,8 +91,8 @@ func (set *RelationSet) Add(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(externglib.InternObject(relation).Native()))
 
 	C.atk_relation_set_add(_arg0, _arg1)
 	runtime.KeepAlive(set)
@@ -114,9 +114,9 @@ func (set *RelationSet) AddRelationByType(relationship RelationType, target *Obj
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(target).Native()))
 
 	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(set)
@@ -141,7 +141,7 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 	var _arg1 C.AtkRelationType // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.AtkRelationType(relationship)
 
 	_cret = C.atk_relation_set_contains(_arg0, _arg1)
@@ -176,9 +176,9 @@ func (set *RelationSet) ContainsTarget(relationship RelationType, target *Object
 	var _arg2 *C.AtkObject      // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(target).Native()))
 
 	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(set)
@@ -204,7 +204,7 @@ func (set *RelationSet) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 
 	_cret = C.atk_relation_set_get_n_relations(_arg0)
 	runtime.KeepAlive(set)
@@ -232,7 +232,7 @@ func (set *RelationSet) Relation(i int) *Relation {
 	var _arg1 C.gint            // out
 	var _cret *C.AtkRelation    // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
@@ -261,7 +261,7 @@ func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 	var _arg1 C.AtkRelationType // out
 	var _cret *C.AtkRelation    // in
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
 	_arg1 = C.AtkRelationType(relationship)
 
 	_cret = C.atk_relation_set_get_relation_by_type(_arg0, _arg1)
@@ -286,8 +286,8 @@ func (set *RelationSet) Remove(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
-	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(externglib.InternObject(relation).Native()))
 
 	C.atk_relation_set_remove(_arg0, _arg1)
 	runtime.KeepAlive(set)

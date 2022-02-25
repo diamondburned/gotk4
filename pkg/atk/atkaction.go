@@ -361,7 +361,7 @@ func (action *Action) DoAction(i int) bool {
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_do_action(_arg0, _arg1)
@@ -393,7 +393,7 @@ func (action *Action) Description(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_description(_arg0, _arg1)
@@ -448,7 +448,7 @@ func (action *Action) Keybinding(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_keybinding(_arg0, _arg1)
@@ -481,7 +481,7 @@ func (action *Action) LocalizedName(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_localized_name(_arg0, _arg1)
@@ -510,7 +510,7 @@ func (action *Action) NActions() int {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.atk_action_get_n_actions(_arg0)
 	runtime.KeepAlive(action)
@@ -549,7 +549,7 @@ func (action *Action) Name(i int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_action_get_name(_arg0, _arg1)
@@ -582,7 +582,7 @@ func (action *Action) SetDescription(i int, desc string) bool {
 	var _arg2 *C.gchar     // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.AtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(desc)))
 	defer C.free(unsafe.Pointer(_arg2))

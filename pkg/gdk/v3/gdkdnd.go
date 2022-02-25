@@ -197,7 +197,7 @@ func DragAbort(context *DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_abort(_arg1, _arg2)
@@ -221,7 +221,7 @@ func DragDrop(context *DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_drop(_arg1, _arg2)
@@ -248,7 +248,7 @@ func DragDropDone(context *DragContext, success bool) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 C.gboolean        // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -274,7 +274,7 @@ func DragDropSucceeded(context *DragContext) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_drop_succeeded(_arg1)
 	runtime.KeepAlive(context)
@@ -317,9 +317,9 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	var _arg6 *C.GdkWindow      // in
 	var _arg7 C.GdkDragProtocol // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
-	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(dragWindow).Native()))
+	_arg3 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 	_arg4 = C.gint(xRoot)
 	_arg5 = C.gint(yRoot)
 
@@ -387,8 +387,8 @@ func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol
 	var _arg8 C.guint32         // out
 	var _cret C.gboolean        // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(destWindow.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(destWindow).Native()))
 	_arg3 = C.GdkDragProtocol(protocol)
 	_arg4 = C.gint(xRoot)
 	_arg5 = C.gint(yRoot)
@@ -432,7 +432,7 @@ func DragStatus(context *DragContext, action DragAction, time_ uint32) {
 	var _arg2 C.GdkDragAction   // out
 	var _arg3 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg2 = C.GdkDragAction(action)
 	_arg3 = C.guint32(time_)
 
@@ -457,7 +457,7 @@ func DropFinish(context *DragContext, success bool, time_ uint32) {
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if success {
 		_arg2 = C.TRUE
 	}
@@ -485,7 +485,7 @@ func DropReply(context *DragContext, accepted bool, time_ uint32) {
 	var _arg2 C.gboolean        // out
 	var _arg3 C.guint32         // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if accepted {
 		_arg2 = C.TRUE
 	}
@@ -508,7 +508,7 @@ func (context *DragContext) Actions() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_actions(_arg0)
 	runtime.KeepAlive(context)
@@ -530,7 +530,7 @@ func (context *DragContext) DestWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_dest_window(_arg0)
 	runtime.KeepAlive(context)
@@ -568,7 +568,7 @@ func (context *DragContext) Device() Devicer {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkDevice      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_device(_arg0)
 	runtime.KeepAlive(context)
@@ -610,7 +610,7 @@ func (context *DragContext) DragWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_drag_window(_arg0)
 	runtime.KeepAlive(context)
@@ -647,7 +647,7 @@ func (context *DragContext) Protocol() DragProtocol {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragProtocol // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_protocol(_arg0)
 	runtime.KeepAlive(context)
@@ -669,7 +669,7 @@ func (context *DragContext) SelectedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_selected_action(_arg0)
 	runtime.KeepAlive(context)
@@ -691,7 +691,7 @@ func (context *DragContext) SourceWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_source_window(_arg0)
 	runtime.KeepAlive(context)
@@ -729,7 +729,7 @@ func (context *DragContext) SuggestedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
 	var _cret C.GdkDragAction   // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
 	runtime.KeepAlive(context)
@@ -777,8 +777,8 @@ func (context *DragContext) ManageDND(ipcWindow Windower, actions DragAction) bo
 	var _arg2 C.GdkDragAction   // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(ipcWindow.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(ipcWindow).Native()))
 	_arg2 = C.GdkDragAction(actions)
 
 	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
@@ -806,8 +806,8 @@ func (context *DragContext) SetDevice(device Devicer) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkDevice      // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	C.gdk_drag_context_set_device(_arg0, _arg1)
 	runtime.KeepAlive(context)
@@ -828,7 +828,7 @@ func (context *DragContext) SetHotspot(hotX, hotY int) {
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.gint(hotX)
 	_arg2 = C.gint(hotY)
 

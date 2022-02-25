@@ -105,7 +105,7 @@ func (settings *Settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -128,7 +128,7 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 	var _arg2 C.gdouble      // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(vDouble)
@@ -156,7 +156,7 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 	var _arg2 C.glong        // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(vLong)
@@ -182,7 +182,7 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.GtkSettingsValue // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkSettingsValue)(gextras.StructNative(unsafe.Pointer(svalue)))
@@ -207,7 +207,7 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	var _arg2 *C.gchar       // out
 	var _arg3 *C.gchar       // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(vString)))
@@ -259,7 +259,7 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	var _arg1 *C.GdkScreen   // out
 	var _cret *C.GtkSettings // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 
 	_cret = C.gtk_settings_get_for_screen(_arg1)
 	runtime.KeepAlive(screen)

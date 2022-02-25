@@ -115,7 +115,7 @@ func NewVideoForFile(file gio.Filer) *Video {
 	var _cret *C.GtkWidget // in
 
 	if file != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 
 	_cret = C.gtk_video_new_for_file(_arg1)
@@ -175,7 +175,7 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	var _cret *C.GtkWidget      // in
 
 	if stream != nil {
-		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	}
 
 	_cret = C.gtk_video_new_for_media_stream(_arg1)
@@ -230,7 +230,7 @@ func (self *Video) Autoplay() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_video_get_autoplay(_arg0)
 	runtime.KeepAlive(self)
@@ -254,7 +254,7 @@ func (self *Video) File() gio.Filer {
 	var _arg0 *C.GtkVideo // out
 	var _cret *C.GFile    // in
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_video_get_file(_arg0)
 	runtime.KeepAlive(self)
@@ -291,7 +291,7 @@ func (self *Video) Loop() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_video_get_loop(_arg0)
 	runtime.KeepAlive(self)
@@ -315,7 +315,7 @@ func (self *Video) MediaStream() MediaStreamer {
 	var _arg0 *C.GtkVideo       // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_video_get_media_stream(_arg0)
 	runtime.KeepAlive(self)
@@ -353,7 +353,7 @@ func (self *Video) SetAutoplay(autoplay bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if autoplay {
 		_arg1 = C.TRUE
 	}
@@ -373,9 +373,9 @@ func (self *Video) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.GFile    // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if file != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 
 	C.gtk_video_set_file(_arg0, _arg1)
@@ -395,7 +395,7 @@ func (self *Video) SetFilename(filename string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if filename != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -416,7 +416,7 @@ func (self *Video) SetLoop(loop bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if loop {
 		_arg1 = C.TRUE
 	}
@@ -441,9 +441,9 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkVideo       // out
 	var _arg1 *C.GtkMediaStream // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if stream != nil {
-		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	}
 
 	C.gtk_video_set_media_stream(_arg0, _arg1)
@@ -463,7 +463,7 @@ func (self *Video) SetResource(resourcePath string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out
 
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkVideo)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if resourcePath != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))

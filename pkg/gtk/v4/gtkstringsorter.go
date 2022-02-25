@@ -82,8 +82,8 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 	var _cret *C.GtkStringSorter // in
 
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref(C.gpointer(expression.Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
 	}
 
 	_cret = C.gtk_string_sorter_new(_arg1)
@@ -107,7 +107,7 @@ func (self *StringSorter) Expression() Expressioner {
 	var _arg0 *C.GtkStringSorter // out
 	var _cret *C.GtkExpression   // in
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_string_sorter_get_expression(_arg0)
 	runtime.KeepAlive(self)
@@ -144,7 +144,7 @@ func (self *StringSorter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringSorter // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
 	runtime.KeepAlive(self)
@@ -171,9 +171,9 @@ func (self *StringSorter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 *C.GtkExpression   // out
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 	}
 
 	C.gtk_string_sorter_set_expression(_arg0, _arg1)
@@ -191,7 +191,7 @@ func (self *StringSorter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringSorter // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if ignoreCase {
 		_arg1 = C.TRUE
 	}

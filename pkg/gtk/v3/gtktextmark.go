@@ -137,7 +137,7 @@ func (mark *TextMark) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextMark   // out
 	var _cret *C.GtkTextBuffer // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 
 	_cret = C.gtk_text_mark_get_buffer(_arg0)
 	runtime.KeepAlive(mark)
@@ -161,7 +161,7 @@ func (mark *TextMark) Deleted() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 
 	_cret = C.gtk_text_mark_get_deleted(_arg0)
 	runtime.KeepAlive(mark)
@@ -185,7 +185,7 @@ func (mark *TextMark) LeftGravity() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 
 	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
 	runtime.KeepAlive(mark)
@@ -209,7 +209,7 @@ func (mark *TextMark) Name() string {
 	var _arg0 *C.GtkTextMark // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 
 	_cret = C.gtk_text_mark_get_name(_arg0)
 	runtime.KeepAlive(mark)
@@ -234,7 +234,7 @@ func (mark *TextMark) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 
 	_cret = C.gtk_text_mark_get_visible(_arg0)
 	runtime.KeepAlive(mark)
@@ -261,7 +261,7 @@ func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(mark.Native()))
+	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

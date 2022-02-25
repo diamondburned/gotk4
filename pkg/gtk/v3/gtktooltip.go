@@ -96,9 +96,9 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	if customWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(customWidget).Native()))
 	}
 
 	C.gtk_tooltip_set_custom(_arg0, _arg1)
@@ -117,9 +117,9 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GdkPixbuf  // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	if pixbuf != nil {
-		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	}
 
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
@@ -141,9 +141,9 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	if gicon != nil {
-		_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+		_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(gicon).Native()))
 	}
 	_arg2 = C.GtkIconSize(size)
 
@@ -167,7 +167,7 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	if iconName != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -196,7 +196,7 @@ func (tooltip *Tooltip) SetIconFromStock(stockId string, size int) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	if stockId != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -222,7 +222,7 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	if markup != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -244,7 +244,7 @@ func (tooltip *Tooltip) SetText(text string) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	if text != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -271,7 +271,7 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkTooltip   // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(externglib.InternObject(tooltip).Native()))
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
@@ -291,7 +291,7 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 func TooltipTriggerTooltipQuery(display *gdk.Display) {
 	var _arg1 *C.GdkDisplay // out
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gtk_tooltip_trigger_tooltip_query(_arg1)
 	runtime.KeepAlive(display)

@@ -259,7 +259,7 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	var _arg2 *C.GtkRecentData    // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkRecentData)(gextras.StructNative(unsafe.Pointer(recentData)))
@@ -302,7 +302,7 @@ func (manager *RecentManager) AddItem(uri string) bool {
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -331,7 +331,7 @@ func (manager *RecentManager) Items() []*RecentInfo {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret *C.GList            // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_recent_manager_get_items(_arg0)
 	runtime.KeepAlive(manager)
@@ -371,7 +371,7 @@ func (manager *RecentManager) HasItem(uri string) bool {
 	var _arg1 *C.gchar            // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -408,7 +408,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _cret *C.GtkRecentInfo    // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -453,7 +453,7 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 	var _arg2 *C.gchar            // out
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if newUri != "" {
@@ -487,7 +487,7 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 	var _cret C.gint              // in
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
 	runtime.KeepAlive(manager)
@@ -515,7 +515,7 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	var _arg1 *C.gchar            // out
 	var _cerr *C.GError           // in
 
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 

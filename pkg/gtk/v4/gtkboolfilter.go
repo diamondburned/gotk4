@@ -73,8 +73,8 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 	var _cret *C.GtkBoolFilter // in
 
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-		C.g_object_ref(C.gpointer(expression.Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
 	}
 
 	_cret = C.gtk_bool_filter_new(_arg1)
@@ -98,7 +98,7 @@ func (self *BoolFilter) Expression() Expressioner {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret *C.GtkExpression // in
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
 	runtime.KeepAlive(self)
@@ -135,7 +135,7 @@ func (self *BoolFilter) Invert() bool {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_bool_filter_get_invert(_arg0)
 	runtime.KeepAlive(self)
@@ -162,9 +162,9 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 *C.GtkExpression // out
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
 	}
 
 	C.gtk_bool_filter_set_expression(_arg0, _arg1)
@@ -182,7 +182,7 @@ func (self *BoolFilter) SetInvert(invert bool) {
 	var _arg0 *C.GtkBoolFilter // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if invert {
 		_arg1 = C.TRUE
 	}

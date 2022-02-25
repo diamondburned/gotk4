@@ -29,7 +29,7 @@ func NewDialogWithFlags(title string, parent *Window, flags DialogFlags) *Dialog
 
 	w := C._gotk4_gtk3_dialog_new2(
 		(*C.gchar)(unsafe.Pointer(ctitle)),
-		(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
+		(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
 		(C.GtkDialogFlags)(flags),
 	)
 	runtime.KeepAlive(parent)

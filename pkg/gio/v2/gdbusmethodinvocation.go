@@ -47,7 +47,7 @@ func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusConnection       // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_connection(_arg0)
 	runtime.KeepAlive(invocation)
@@ -73,7 +73,7 @@ func (invocation *DBusMethodInvocation) InterfaceName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_interface_name(_arg0)
 	runtime.KeepAlive(invocation)
@@ -101,7 +101,7 @@ func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMessage          // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_message(_arg0)
 	runtime.KeepAlive(invocation)
@@ -129,7 +129,7 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMethodInfo       // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_method_info(_arg0)
 	runtime.KeepAlive(invocation)
@@ -160,7 +160,7 @@ func (invocation *DBusMethodInvocation) MethodName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_method_name(_arg0)
 	runtime.KeepAlive(invocation)
@@ -182,7 +182,7 @@ func (invocation *DBusMethodInvocation) ObjectPath() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_object_path(_arg0)
 	runtime.KeepAlive(invocation)
@@ -206,7 +206,7 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GVariant              // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_parameters(_arg0)
 	runtime.KeepAlive(invocation)
@@ -245,7 +245,7 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusPropertyInfo     // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_property_info(_arg0)
 	runtime.KeepAlive(invocation)
@@ -276,7 +276,7 @@ func (invocation *DBusMethodInvocation) Sender() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
 
 	_cret = C.g_dbus_method_invocation_get_sender(_arg0)
 	runtime.KeepAlive(invocation)
@@ -303,8 +303,8 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage 
 	var _arg1 *C.gchar                 // out
 	var _arg2 *C.gchar                 // out
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-	C.g_object_ref(C.gpointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(invocation).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
@@ -334,8 +334,8 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 	var _arg2 C.gint                   // out
 	var _arg3 *C.gchar                 // out
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-	C.g_object_ref(C.gpointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(invocation).Native()))
 	_arg1 = C.guint32(domain)
 	_arg2 = C.gint(code)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
@@ -362,8 +362,8 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GError                // out
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-	C.g_object_ref(C.gpointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(invocation).Native()))
 	if err != nil {
 		_arg1 = (*C.GError)(gerror.New(err))
 	}
@@ -411,8 +411,8 @@ func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
 
-	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-	C.g_object_ref(C.gpointer(invocation.Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(externglib.InternObject(invocation).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(invocation).Native()))
 	if parameters != nil {
 		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}

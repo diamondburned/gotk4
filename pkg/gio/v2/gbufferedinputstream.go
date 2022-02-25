@@ -224,7 +224,7 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(baseStream).Native()))
 
 	_cret = C.g_buffered_input_stream_new(_arg1)
 	runtime.KeepAlive(baseStream)
@@ -253,7 +253,7 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 	var _arg2 C.gsize         // out
 	var _cret *C.GInputStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(baseStream).Native()))
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_input_stream_new_sized(_arg1, _arg2)
@@ -309,7 +309,7 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 	var _cret C.gssize                // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -355,7 +355,7 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPrior
 	var _arg4 C.GAsyncReadyCallback   // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -392,8 +392,8 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 	var _cret C.gssize                // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_buffered_input_stream_fill_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
@@ -420,7 +420,7 @@ func (stream *BufferedInputStream) Available() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_buffered_input_stream_get_available(_arg0)
 	runtime.KeepAlive(stream)
@@ -442,7 +442,7 @@ func (stream *BufferedInputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_buffered_input_stream_get_buffer_size(_arg0)
 	runtime.KeepAlive(stream)
@@ -473,7 +473,7 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _arg2 C.gsize // out
 	var _cret C.gsize // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
@@ -505,7 +505,7 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 	var _cret unsafe.Pointer          // in
 	var _arg1 C.gsize                 // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_buffered_input_stream_peek_buffer(_arg0, &_arg1)
 	runtime.KeepAlive(stream)
@@ -546,7 +546,7 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _cret C.int                   // in
 	var _cerr *C.GError               // in
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -580,7 +580,7 @@ func (stream *BufferedInputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gsize                 // out
 
-	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	_arg1 = C.gsize(size)
 
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)

@@ -118,7 +118,7 @@ func (box *CellAreaBox) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _cret C.gint            // in
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
 
 	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 	runtime.KeepAlive(box)
@@ -150,8 +150,8 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bo
 	var _arg3 C.gboolean         // out
 	var _arg4 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -190,8 +190,8 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed 
 	var _arg3 C.gboolean         // out
 	var _arg4 C.gboolean         // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -220,7 +220,7 @@ func (box *CellAreaBox) SetSpacing(spacing int) {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _arg1 C.gint            // out
 
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(box.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
 	_arg1 = C.gint(spacing)
 
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)

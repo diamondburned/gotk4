@@ -108,7 +108,7 @@ func (bin *Bin) Child() Widgetter {
 	var _arg0 *C.GtkBin    // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkBin)(unsafe.Pointer(bin.Native()))
+	_arg0 = (*C.GtkBin)(unsafe.Pointer(externglib.InternObject(bin).Native()))
 
 	_cret = C.gtk_bin_get_child(_arg0)
 	runtime.KeepAlive(bin)

@@ -166,7 +166,7 @@ func NewIconPaintableForFile(file gio.Filer, size, scale int) *IconPaintable {
 	var _arg3 C.int               // out
 	var _cret *C.GtkIconPaintable // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	_arg2 = C.int(size)
 	_arg3 = C.int(scale)
 
@@ -194,7 +194,7 @@ func (self *IconPaintable) File() gio.Filer {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret *C.GFile            // in
 
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_paintable_get_file(_arg0)
 	runtime.KeepAlive(self)
@@ -239,7 +239,7 @@ func (self *IconPaintable) IconName() string {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_paintable_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
@@ -269,7 +269,7 @@ func (self *IconPaintable) IsSymbolic() bool {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_paintable_is_symbolic(_arg0)
 	runtime.KeepAlive(self)
@@ -395,7 +395,7 @@ func (self *IconTheme) AddResourcePath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -416,7 +416,7 @@ func (self *IconTheme) AddSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -435,7 +435,7 @@ func (self *IconTheme) Display() *gdk.Display {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.GdkDisplay   // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_theme_get_display(_arg0)
 	runtime.KeepAlive(self)
@@ -465,7 +465,7 @@ func (self *IconTheme) IconNames() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char        // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_theme_get_icon_names(_arg0)
 	runtime.KeepAlive(self)
@@ -512,7 +512,7 @@ func (self *IconTheme) IconSizes(iconName string) []int {
 	var _arg1 *C.char         // out
 	var _cret *C.int          // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -553,7 +553,7 @@ func (self *IconTheme) ResourcePath() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char        // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_theme_get_resource_path(_arg0)
 	runtime.KeepAlive(self)
@@ -594,7 +594,7 @@ func (self *IconTheme) SearchPath() []string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret **C.char        // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_theme_get_search_path(_arg0)
 	runtime.KeepAlive(self)
@@ -632,7 +632,7 @@ func (self *IconTheme) ThemeName() string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_icon_theme_get_theme_name(_arg0)
 	runtime.KeepAlive(self)
@@ -661,8 +661,8 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _arg1 *C.GIcon        // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(gicon).Native()))
 
 	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -692,7 +692,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 	var _arg1 *C.char         // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -736,8 +736,8 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, directio
 	var _arg5 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconPaintable  // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	_arg2 = C.int(size)
 	_arg3 = C.int(scale)
 	_arg4 = C.GtkTextDirection(direction)
@@ -798,7 +798,7 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, sca
 	var _arg6 C.GtkIconLookupFlags // out
 	var _cret *C.GtkIconPaintable  // in
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -859,7 +859,7 @@ func (self *IconTheme) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 **C.char        // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	{
 		_arg1 = (**C.char)(C.calloc(C.size_t((len(path) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -894,7 +894,7 @@ func (self *IconTheme) SetThemeName(themeName string) {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if themeName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(themeName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -928,7 +928,7 @@ func IconThemeGetForDisplay(display *gdk.Display) *IconTheme {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.GtkIconTheme // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gtk_icon_theme_get_for_display(_arg1)
 	runtime.KeepAlive(display)

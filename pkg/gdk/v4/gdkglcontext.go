@@ -128,7 +128,7 @@ func (context *GLContext) DebugEnabled() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_gl_context_get_debug_enabled(_arg0)
 	runtime.KeepAlive(context)
@@ -152,7 +152,7 @@ func (context *GLContext) Display() *Display {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkDisplay   // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_gl_context_get_display(_arg0)
 	runtime.KeepAlive(context)
@@ -178,7 +178,7 @@ func (context *GLContext) ForwardCompatible() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_gl_context_get_forward_compatible(_arg0)
 	runtime.KeepAlive(context)
@@ -206,7 +206,7 @@ func (context *GLContext) RequiredVersion() (major int, minor int) {
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gdk_gl_context_get_required_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
@@ -230,7 +230,7 @@ func (context *GLContext) SharedContext() GLContexter {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkGLContext // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_gl_context_get_shared_context(_arg0)
 	runtime.KeepAlive(context)
@@ -267,7 +267,7 @@ func (context *GLContext) Surface() Surfacer {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkSurface   // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_gl_context_get_surface(_arg0)
 	runtime.KeepAlive(context)
@@ -304,7 +304,7 @@ func (context *GLContext) UseES() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_gl_context_get_use_es(_arg0)
 	runtime.KeepAlive(context)
@@ -332,7 +332,7 @@ func (context *GLContext) Version() (major int, minor int) {
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gdk_gl_context_get_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
@@ -371,7 +371,7 @@ func (context *GLContext) IsLegacy() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_gl_context_is_legacy(_arg0)
 	runtime.KeepAlive(context)
@@ -389,7 +389,7 @@ func (context *GLContext) IsLegacy() bool {
 func (context *GLContext) MakeCurrent() {
 	var _arg0 *C.GdkGLContext // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gdk_gl_context_make_current(_arg0)
 	runtime.KeepAlive(context)
@@ -402,7 +402,7 @@ func (context *GLContext) Realize() error {
 	var _arg0 *C.GdkGLContext // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gdk_gl_context_realize(_arg0, &_cerr)
 	runtime.KeepAlive(context)
@@ -432,7 +432,7 @@ func (context *GLContext) SetDebugEnabled(enabled bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if enabled {
 		_arg1 = C.TRUE
 	}
@@ -461,7 +461,7 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if compatible {
 		_arg1 = C.TRUE
 	}
@@ -488,7 +488,7 @@ func (context *GLContext) SetRequiredVersion(major, minor int) {
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.int(major)
 	_arg2 = C.int(minor)
 
@@ -521,7 +521,7 @@ func (context *GLContext) SetUseES(useEs int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.int(useEs)
 
 	C.gdk_gl_context_set_use_es(_arg0, _arg1)

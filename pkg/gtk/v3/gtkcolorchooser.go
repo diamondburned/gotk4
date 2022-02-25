@@ -245,7 +245,7 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 	var _arg4 *C.GdkRGBA         // out
 	var _arg3 C.gint
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
 	_arg1 = C.GtkOrientation(orientation)
 	_arg2 = C.gint(colorsPerLine)
 	_arg3 = (C.gint)(len(colors))
@@ -275,7 +275,7 @@ func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GdkRGBA          // in
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
 
 	C.gtk_color_chooser_get_rgba(_arg0, &_arg1)
 	runtime.KeepAlive(chooser)
@@ -297,7 +297,7 @@ func (chooser *ColorChooser) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
 	runtime.KeepAlive(chooser)
@@ -321,7 +321,7 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 *C.GdkRGBA         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
@@ -340,7 +340,7 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
 	if useAlpha {
 		_arg1 = C.TRUE
 	}

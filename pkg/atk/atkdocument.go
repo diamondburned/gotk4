@@ -203,7 +203,7 @@ func (document *Document) AttributeValue(attributeName string) string {
 	var _arg1 *C.gchar       // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -231,7 +231,7 @@ func (document *Document) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
 
 	_cret = C.atk_document_get_current_page_number(_arg0)
 	runtime.KeepAlive(document)
@@ -258,7 +258,7 @@ func (document *Document) Document() cgo.Handle {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
 
 	_cret = C.atk_document_get_document(_arg0)
 	runtime.KeepAlive(document)
@@ -283,7 +283,7 @@ func (document *Document) DocumentType() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
 
 	_cret = C.atk_document_get_document_type(_arg0)
 	runtime.KeepAlive(document)
@@ -312,7 +312,7 @@ func (document *Document) Locale() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
 
 	_cret = C.atk_document_get_locale(_arg0)
 	runtime.KeepAlive(document)
@@ -335,7 +335,7 @@ func (document *Document) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
 
 	_cret = C.atk_document_get_page_count(_arg0)
 	runtime.KeepAlive(document)
@@ -368,7 +368,7 @@ func (document *Document) SetAttributeValue(attributeName, attributeValue string
 	var _arg2 *C.gchar       // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(document.Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))

@@ -48,7 +48,7 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg2 = C.gint(eventBase)
 	_arg3 = C.gint(nEvents)
 
@@ -132,7 +132,7 @@ func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 	runtime.KeepAlive(display)
@@ -153,7 +153,7 @@ func (display *X11Display) ErrorTrapPop() int {
 func (display *X11Display) ErrorTrapPopIgnored() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
 	runtime.KeepAlive(display)
@@ -169,7 +169,7 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 func (display *X11Display) ErrorTrapPush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_error_trap_push(_arg0)
 	runtime.KeepAlive(display)
@@ -185,7 +185,7 @@ func (display *X11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
 	runtime.KeepAlive(display)
@@ -209,7 +209,7 @@ func (display *X11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint32     // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_x11_display_get_user_time(_arg0)
 	runtime.KeepAlive(display)
@@ -228,7 +228,7 @@ func (display *X11Display) UserTime() uint32 {
 func (display *X11Display) Grab() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_grab(_arg0)
 	runtime.KeepAlive(display)
@@ -255,7 +255,7 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	if theme != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(theme)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -290,7 +290,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -315,7 +315,7 @@ func (display *X11Display) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.gint(scale)
 
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
@@ -327,7 +327,7 @@ func (display *X11Display) SetWindowScale(scale int) {
 func (display *X11Display) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_x11_display_ungrab(_arg0)
 	runtime.KeepAlive(display)

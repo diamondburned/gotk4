@@ -100,7 +100,7 @@ func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibDecompressor // out
 	var _cret *C.GFileInfo         // in
 
-	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(decompressor.Native()))
+	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(externglib.InternObject(decompressor).Native()))
 
 	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
 	runtime.KeepAlive(decompressor)

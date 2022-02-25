@@ -208,10 +208,10 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _cret C.gboolean // in
 
 	if icon1 != nil {
-		_arg0 = (*C.GIcon)(unsafe.Pointer(icon1.Native()))
+		_arg0 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon1).Native()))
 	}
 	if icon2 != nil {
-		_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
+		_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon2).Native()))
 	}
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
@@ -242,7 +242,7 @@ func (icon *Icon) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	_cret = C.g_icon_serialize(_arg0)
 	runtime.KeepAlive(icon)
@@ -287,7 +287,7 @@ func (icon *Icon) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	_cret = C.g_icon_to_string(_arg0)
 	runtime.KeepAlive(icon)

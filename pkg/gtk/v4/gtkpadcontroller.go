@@ -167,9 +167,9 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg2 *C.GdkDevice        // out
 	var _cret *C.GtkPadController // in
 
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GActionGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	if pad != nil {
-		_arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
+		_arg2 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(pad).Native()))
 	}
 
 	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
@@ -210,7 +210,7 @@ func (controller *PadController) SetAction(typ PadActionType, index, mode int, l
 	var _arg4 *C.char             // out
 	var _arg5 *C.char             // out
 
-	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg1 = C.GtkPadActionType(typ)
 	_arg2 = C.int(index)
 	_arg3 = C.int(mode)
@@ -242,7 +242,7 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 	var _arg1 *C.GtkPadActionEntry // out
 	var _arg2 C.int
 
-	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg2 = (C.int)(len(entries))
 	_arg1 = (*C.GtkPadActionEntry)(C.calloc(C.size_t(len(entries)), C.size_t(C.sizeof_GtkPadActionEntry)))
 	defer C.free(unsafe.Pointer(_arg1))

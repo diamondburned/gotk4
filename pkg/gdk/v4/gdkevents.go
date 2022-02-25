@@ -489,8 +489,8 @@ func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
 	var _arg3 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
-	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event1).Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event2).Native()))
 
 	_cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(event1)
@@ -530,8 +530,8 @@ func EventsGetCenter(event1, event2 Eventer) (x float64, y float64, ok bool) {
 	var _arg4 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
-	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event1).Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event2).Native()))
 
 	_cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(event1)
@@ -571,8 +571,8 @@ func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
 	var _arg3 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
-	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event1).Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event2).Native()))
 
 	_cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(event1)
@@ -621,7 +621,7 @@ func (event *ButtonEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_button_event_get_button(_arg0)
 	runtime.KeepAlive(event)
@@ -665,7 +665,7 @@ func (event *CrossingEvent) Detail() NotifyType {
 	var _arg0 *C.GdkEvent     // out
 	var _cret C.GdkNotifyType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_crossing_event_get_detail(_arg0)
 	runtime.KeepAlive(event)
@@ -687,7 +687,7 @@ func (event *CrossingEvent) Focus() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_crossing_event_get_focus(_arg0)
 	runtime.KeepAlive(event)
@@ -711,7 +711,7 @@ func (event *CrossingEvent) Mode() CrossingMode {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkCrossingMode // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_crossing_event_get_mode(_arg0)
 	runtime.KeepAlive(event)
@@ -755,7 +755,7 @@ func (event *DNDEvent) Drop() Dropper {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_dnd_event_get_drop(_arg0)
 	runtime.KeepAlive(event)
@@ -862,7 +862,7 @@ func (event *Event) Axes() ([]float64, bool) {
 	var _arg2 C.guint     // in
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_axes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
@@ -897,7 +897,7 @@ func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
 	var _arg2 C.double     // in
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 	_arg1 = C.GdkAxisUse(axisUse)
 
 	_cret = C.gdk_event_get_axis(_arg0, _arg1, &_arg2)
@@ -925,7 +925,7 @@ func (event *Event) Device() Devicer {
 	var _arg0 *C.GdkEvent  // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_device(_arg0)
 	runtime.KeepAlive(event)
@@ -970,7 +970,7 @@ func (event *Event) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkEvent      // out
 	var _cret *C.GdkDeviceTool // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_device_tool(_arg0)
 	runtime.KeepAlive(event)
@@ -994,7 +994,7 @@ func (event *Event) Display() *Display {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_display(_arg0)
 	runtime.KeepAlive(event)
@@ -1021,7 +1021,7 @@ func (event *Event) EventSequence() *EventSequence {
 	var _arg0 *C.GdkEvent         // out
 	var _cret *C.GdkEventSequence // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_event_sequence(_arg0)
 	runtime.KeepAlive(event)
@@ -1043,7 +1043,7 @@ func (event *Event) EventType() EventType {
 	var _arg0 *C.GdkEvent    // out
 	var _cret C.GdkEventType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_event_type(_arg0)
 	runtime.KeepAlive(event)
@@ -1073,7 +1073,7 @@ func (event *Event) History() []TimeCoord {
 	var _cret *C.GdkTimeCoord // in
 	var _arg1 C.guint         // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_history(_arg0, &_arg1)
 	runtime.KeepAlive(event)
@@ -1104,7 +1104,7 @@ func (event *Event) ModifierState() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_modifier_state(_arg0)
 	runtime.KeepAlive(event)
@@ -1128,7 +1128,7 @@ func (event *Event) PointerEmulated() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_pointer_emulated(_arg0)
 	runtime.KeepAlive(event)
@@ -1156,7 +1156,7 @@ func (event *Event) Position() (x float64, y float64, ok bool) {
 	var _arg2 C.double    // in
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
@@ -1184,7 +1184,7 @@ func (event *Event) Seat() Seater {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkSeat  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_seat(_arg0)
 	runtime.KeepAlive(event)
@@ -1221,7 +1221,7 @@ func (event *Event) Surface() Surfacer {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_surface(_arg0)
 	runtime.KeepAlive(event)
@@ -1262,7 +1262,7 @@ func (event *Event) Time() uint32 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint32   // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_get_time(_arg0)
 	runtime.KeepAlive(event)
@@ -1290,7 +1290,7 @@ func (event *Event) TriggersContextMenu() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_event_triggers_context_menu(_arg0)
 	runtime.KeepAlive(event)
@@ -1337,7 +1337,7 @@ func (event *FocusEvent) In() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_focus_event_get_in(_arg0)
 	runtime.KeepAlive(event)
@@ -1383,7 +1383,7 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_grab_broken_event_get_grab_surface(_arg0)
 	runtime.KeepAlive(event)
@@ -1421,7 +1421,7 @@ func (event *GrabBrokenEvent) Implicit() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_grab_broken_event_get_implicit(_arg0)
 	runtime.KeepAlive(event)
@@ -1467,7 +1467,7 @@ func (event *KeyEvent) ConsumedModifiers() ModifierType {
 	var _arg0 *C.GdkEvent       // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_key_event_get_consumed_modifiers(_arg0)
 	runtime.KeepAlive(event)
@@ -1489,7 +1489,7 @@ func (event *KeyEvent) Keycode() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_key_event_get_keycode(_arg0)
 	runtime.KeepAlive(event)
@@ -1511,7 +1511,7 @@ func (event *KeyEvent) Keyval() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_key_event_get_keyval(_arg0)
 	runtime.KeepAlive(event)
@@ -1533,7 +1533,7 @@ func (event *KeyEvent) Layout() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_key_event_get_layout(_arg0)
 	runtime.KeepAlive(event)
@@ -1555,7 +1555,7 @@ func (event *KeyEvent) Level() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_key_event_get_level(_arg0)
 	runtime.KeepAlive(event)
@@ -1583,7 +1583,7 @@ func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 	var _arg2 C.GdkModifierType // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_key_event_get_match(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
@@ -1611,7 +1611,7 @@ func (event *KeyEvent) IsModifier() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_key_event_is_modifier(_arg0)
 	runtime.KeepAlive(event)
@@ -1649,7 +1649,7 @@ func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 	var _arg2 C.GdkModifierType // out
 	var _cret C.GdkKeyMatch     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 	_arg1 = C.guint(keyval)
 	_arg2 = C.GdkModifierType(modifiers)
 
@@ -1721,7 +1721,7 @@ func (event *PadEvent) AxisValue() (uint, float64) {
 	var _arg1 C.guint     // in
 	var _arg2 C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	C.gdk_pad_event_get_axis_value(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
@@ -1745,7 +1745,7 @@ func (event *PadEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_pad_event_get_button(_arg0)
 	runtime.KeepAlive(event)
@@ -1769,7 +1769,7 @@ func (event *PadEvent) GroupMode() (group uint, mode uint) {
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	C.gdk_pad_event_get_group_mode(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
@@ -1841,7 +1841,7 @@ func (event *ScrollEvent) Deltas() (deltaX float64, deltaY float64) {
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	C.gdk_scroll_event_get_deltas(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
@@ -1865,7 +1865,7 @@ func (event *ScrollEvent) Direction() ScrollDirection {
 	var _arg0 *C.GdkEvent          // out
 	var _cret C.GdkScrollDirection // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_scroll_event_get_direction(_arg0)
 	runtime.KeepAlive(event)
@@ -1894,7 +1894,7 @@ func (event *ScrollEvent) IsStop() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_scroll_event_is_stop(_arg0)
 	runtime.KeepAlive(event)
@@ -1940,7 +1940,7 @@ func (event *TouchEvent) EmulatingPointer() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_touch_event_get_emulating_pointer(_arg0)
 	runtime.KeepAlive(event)
@@ -1993,7 +1993,7 @@ func (event *TouchpadEvent) Deltas() (dx float64, dy float64) {
 	var _arg1 C.double    // in
 	var _arg2 C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	C.gdk_touchpad_event_get_deltas(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
@@ -2017,7 +2017,7 @@ func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
 	var _arg0 *C.GdkEvent               // out
 	var _cret C.GdkTouchpadGesturePhase // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_touchpad_event_get_gesture_phase(_arg0)
 	runtime.KeepAlive(event)
@@ -2039,7 +2039,7 @@ func (event *TouchpadEvent) NFingers() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_touchpad_event_get_n_fingers(_arg0)
 	runtime.KeepAlive(event)
@@ -2061,7 +2061,7 @@ func (event *TouchpadEvent) PinchAngleDelta() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_touchpad_event_get_pinch_angle_delta(_arg0)
 	runtime.KeepAlive(event)
@@ -2083,7 +2083,7 @@ func (event *TouchpadEvent) PinchScale() float64 {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.double    // in
 
-	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(externglib.InternObject(event).Native()))
 
 	_cret = C.gdk_touchpad_event_get_pinch_scale(_arg0)
 	runtime.KeepAlive(event)

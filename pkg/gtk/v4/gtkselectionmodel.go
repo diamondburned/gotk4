@@ -514,7 +514,7 @@ func (model *SelectionModel) Selection() *Bitset {
 	var _arg0 *C.GtkSelectionModel // out
 	var _cret *C.GtkBitset         // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 
 	_cret = C.gtk_selection_model_get_selection(_arg0)
 	runtime.KeepAlive(model)
@@ -554,7 +554,7 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 	var _arg2 C.guint              // out
 	var _cret *C.GtkBitset         // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 
@@ -591,7 +591,7 @@ func (model *SelectionModel) IsSelected(position uint) bool {
 	var _arg1 C.guint              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_selection_model_is_selected(_arg0, _arg1)
@@ -618,7 +618,7 @@ func (model *SelectionModel) SelectAll() bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 
 	_cret = C.gtk_selection_model_select_all(_arg0)
 	runtime.KeepAlive(model)
@@ -650,7 +650,7 @@ func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 	var _arg2 C.gboolean           // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	if unselectRest {
 		_arg2 = C.TRUE
@@ -690,7 +690,7 @@ func (model *SelectionModel) SelectRange(position, nItems uint, unselectRest boo
 	var _arg3 C.gboolean           // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 	if unselectRest {
@@ -727,7 +727,7 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint) {
 	var _arg1 C.guint              // out
 	var _arg2 C.guint              // out
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 
@@ -785,7 +785,7 @@ func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 	var _arg2 *C.GtkBitset         // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(selected)))
 	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(mask)))
 
@@ -814,7 +814,7 @@ func (model *SelectionModel) UnselectAll() bool {
 	var _arg0 *C.GtkSelectionModel // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 
 	_cret = C.gtk_selection_model_unselect_all(_arg0)
 	runtime.KeepAlive(model)
@@ -844,7 +844,7 @@ func (model *SelectionModel) UnselectItem(position uint) bool {
 	var _arg1 C.guint              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_selection_model_unselect_item(_arg0, _arg1)
@@ -878,7 +878,7 @@ func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 	var _arg2 C.guint              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 

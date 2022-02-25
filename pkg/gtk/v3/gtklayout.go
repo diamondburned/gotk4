@@ -110,10 +110,10 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 	var _cret *C.GtkWidget     // in
 
 	if hadjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(hadjustment).Native()))
 	}
 	if vadjustment != nil {
-		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(vadjustment).Native()))
 	}
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
@@ -137,7 +137,7 @@ func (layout *Layout) BinWindow() gdk.Windower {
 	var _arg0 *C.GtkLayout // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
 	runtime.KeepAlive(layout)
@@ -182,7 +182,7 @@ func (layout *Layout) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 
 	_cret = C.gtk_layout_get_hadjustment(_arg0)
 	runtime.KeepAlive(layout)
@@ -207,7 +207,7 @@ func (layout *Layout) Size() (width uint, height uint) {
 	var _arg1 C.guint      // in
 	var _arg2 C.guint      // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
@@ -238,7 +238,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 
 	_cret = C.gtk_layout_get_vadjustment(_arg0)
 	runtime.KeepAlive(layout)
@@ -264,8 +264,8 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(childWidget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -291,8 +291,8 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(childWidget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -317,9 +317,9 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 	if adjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
 	}
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
@@ -339,7 +339,7 @@ func (layout *Layout) SetSize(width, height uint) {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 	_arg1 = C.guint(width)
 	_arg2 = C.guint(height)
 
@@ -363,9 +363,9 @@ func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 	if adjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
 	}
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)

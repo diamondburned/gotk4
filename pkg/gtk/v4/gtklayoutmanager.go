@@ -285,8 +285,8 @@ func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.GtkLayoutManager
 
 	layoutChild := iface.CreateLayoutChild(_widget, _forChild)
 
-	cret = (*C.GtkLayoutChild)(unsafe.Pointer(layoutChild.Native()))
-	C.g_object_ref(C.gpointer(layoutChild.Native()))
+	cret = (*C.GtkLayoutChild)(unsafe.Pointer(externglib.InternObject(layoutChild).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(layoutChild).Native()))
 
 	return cret
 }
@@ -417,8 +417,8 @@ func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline
 	var _arg3 C.int               // out
 	var _arg4 C.int               // out
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 	_arg4 = C.int(baseline)
@@ -453,8 +453,8 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkLayoutChild   // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.gtk_layout_manager_get_layout_child(_arg0, _arg1)
 	runtime.KeepAlive(manager)
@@ -493,7 +493,7 @@ func (manager *LayoutManager) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkLayoutManager  // out
 	var _cret C.GtkSizeRequestMode // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_layout_manager_get_request_mode(_arg0)
 	runtime.KeepAlive(manager)
@@ -515,7 +515,7 @@ func (manager *LayoutManager) Widget() Widgetter {
 	var _arg0 *C.GtkLayoutManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_layout_manager_get_widget(_arg0)
 	runtime.KeepAlive(manager)
@@ -549,7 +549,7 @@ func (manager *LayoutManager) Widget() Widgetter {
 func (manager *LayoutManager) LayoutChanged() {
 	var _arg0 *C.GtkLayoutManager // out
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	C.gtk_layout_manager_layout_changed(_arg0)
 	runtime.KeepAlive(manager)
@@ -588,8 +588,8 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	var _arg6 C.int               // in
 	var _arg7 C.int               // in
 
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = C.GtkOrientation(orientation)
 	_arg3 = C.int(forSize)
 

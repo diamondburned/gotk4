@@ -207,7 +207,7 @@ func (message *SocketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_socket_control_message_get_level(_arg0)
 	runtime.KeepAlive(message)
@@ -230,7 +230,7 @@ func (message *SocketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 	runtime.KeepAlive(message)
@@ -253,7 +253,7 @@ func (message *SocketControlMessage) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 
 	_cret = C.g_socket_control_message_get_size(_arg0)
 	runtime.KeepAlive(message)
@@ -278,7 +278,7 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
 
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(message.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)

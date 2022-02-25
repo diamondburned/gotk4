@@ -402,8 +402,8 @@ func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.GVolumeMonitor)
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GDrive // out
-		dst = (*C.GDrive)(unsafe.Pointer(src.Native()))
-		C.g_object_ref(C.gpointer(src.Native()))
+		dst = (*C.GDrive)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 
@@ -422,8 +422,8 @@ func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.GVolumeMonitor, a
 	mount := iface.MountForUUID(_uuid)
 
 	if mount != nil {
-		cret = (*C.GMount)(unsafe.Pointer(mount.Native()))
-		C.g_object_ref(C.gpointer(mount.Native()))
+		cret = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(mount).Native()))
 	}
 
 	return cret
@@ -439,8 +439,8 @@ func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.GVolumeMonitor) (cret *C.
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GMount // out
-		dst = (*C.GMount)(unsafe.Pointer(src.Native()))
-		C.g_object_ref(C.gpointer(src.Native()))
+		dst = (*C.GMount)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 
@@ -459,8 +459,8 @@ func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.GVolumeMonitor, 
 	volume := iface.VolumeForUUID(_uuid)
 
 	if volume != nil {
-		cret = (*C.GVolume)(unsafe.Pointer(volume.Native()))
-		C.g_object_ref(C.gpointer(volume.Native()))
+		cret = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(volume).Native()))
 	}
 
 	return cret
@@ -476,8 +476,8 @@ func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.GVolumeMonitor) (cret *C
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GVolume // out
-		dst = (*C.GVolume)(unsafe.Pointer(src.Native()))
-		C.g_object_ref(C.gpointer(src.Native()))
+		dst = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 
@@ -1200,7 +1200,7 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(externglib.InternObject(volumeMonitor).Native()))
 
 	_cret = C.g_volume_monitor_get_connected_drives(_arg0)
 	runtime.KeepAlive(volumeMonitor)
@@ -1250,7 +1250,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 	var _arg1 *C.char           // out
 	var _cret *C.GMount         // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(externglib.InternObject(volumeMonitor).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uuid)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1293,7 +1293,7 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(externglib.InternObject(volumeMonitor).Native()))
 
 	_cret = C.g_volume_monitor_get_mounts(_arg0)
 	runtime.KeepAlive(volumeMonitor)
@@ -1343,7 +1343,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 	var _arg1 *C.char           // out
 	var _cret *C.GVolume        // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(externglib.InternObject(volumeMonitor).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uuid)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1386,7 +1386,7 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
-	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(externglib.InternObject(volumeMonitor).Native()))
 
 	_cret = C.g_volume_monitor_get_volumes(_arg0)
 	runtime.KeepAlive(volumeMonitor)
@@ -1467,7 +1467,7 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 	var _arg1 *C.GMount  // out
 	var _cret *C.GVolume // in
 
-	_arg1 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg1 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_volume_monitor_adopt_orphan_mount(_arg1)
 	runtime.KeepAlive(mount)

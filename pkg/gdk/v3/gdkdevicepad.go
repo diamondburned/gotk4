@@ -137,7 +137,7 @@ func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int
 	var _arg2 C.gint                // out
 	var _cret C.gint                // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(pad.Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(externglib.InternObject(pad).Native()))
 	_arg1 = C.GdkDevicePadFeature(feature)
 	_arg2 = C.gint(featureIdx)
 
@@ -168,7 +168,7 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(pad.Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(externglib.InternObject(pad).Native()))
 	_arg1 = C.gint(groupIdx)
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
@@ -197,7 +197,7 @@ func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 	var _arg1 C.GdkDevicePadFeature // out
 	var _cret C.gint                // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(pad.Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(externglib.InternObject(pad).Native()))
 	_arg1 = C.GdkDevicePadFeature(feature)
 
 	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
@@ -223,7 +223,7 @@ func (pad *DevicePad) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(pad.Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(externglib.InternObject(pad).Native()))
 
 	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 	runtime.KeepAlive(pad)

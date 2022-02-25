@@ -110,7 +110,7 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	if enabled {
 		_arg1 = C.TRUE
 	}
@@ -138,7 +138,7 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
 
-	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_simple_action_set_state(_arg0, _arg1)
@@ -158,7 +158,7 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
 
-	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(simple.Native()))
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(externglib.InternObject(simple).Native()))
 	if stateHint != nil {
 		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(stateHint)))
 	}

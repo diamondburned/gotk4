@@ -375,7 +375,7 @@ func (action *Action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	if parameter != nil {
 		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
@@ -404,7 +404,7 @@ func (action *Action) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_action_change_state(_arg0, _arg1)
@@ -425,7 +425,7 @@ func (action *Action) Enabled() bool {
 	var _arg0 *C.GAction // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.g_action_get_enabled(_arg0)
 	runtime.KeepAlive(action)
@@ -449,7 +449,7 @@ func (action *Action) Name() string {
 	var _arg0 *C.GAction // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.g_action_get_name(_arg0)
 	runtime.KeepAlive(action)
@@ -478,7 +478,7 @@ func (action *Action) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.g_action_get_parameter_type(_arg0)
 	runtime.KeepAlive(action)
@@ -509,7 +509,7 @@ func (action *Action) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.g_action_get_state(_arg0)
 	runtime.KeepAlive(action)
@@ -555,7 +555,7 @@ func (action *Action) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.g_action_get_state_hint(_arg0)
 	runtime.KeepAlive(action)
@@ -595,7 +595,7 @@ func (action *Action) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.g_action_get_state_type(_arg0)
 	runtime.KeepAlive(action)

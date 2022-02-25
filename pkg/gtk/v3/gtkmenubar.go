@@ -117,7 +117,7 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 
 	_cret = C.gtk_menu_bar_new_from_model(_arg1)
 	runtime.KeepAlive(model)
@@ -140,7 +140,7 @@ func (menubar *MenuBar) ChildPackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(externglib.InternObject(menubar).Native()))
 
 	_cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
 	runtime.KeepAlive(menubar)
@@ -163,7 +163,7 @@ func (menubar *MenuBar) PackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
 	var _cret C.GtkPackDirection // in
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(externglib.InternObject(menubar).Native()))
 
 	_cret = C.gtk_menu_bar_get_pack_direction(_arg0)
 	runtime.KeepAlive(menubar)
@@ -186,7 +186,7 @@ func (menubar *MenuBar) SetChildPackDirection(childPackDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out
 	var _arg1 C.GtkPackDirection // out
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(externglib.InternObject(menubar).Native()))
 	_arg1 = C.GtkPackDirection(childPackDir)
 
 	C.gtk_menu_bar_set_child_pack_direction(_arg0, _arg1)
@@ -204,7 +204,7 @@ func (menubar *MenuBar) SetPackDirection(packDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out
 	var _arg1 C.GtkPackDirection // out
 
-	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(externglib.InternObject(menubar).Native()))
 	_arg1 = C.GtkPackDirection(packDir)
 
 	C.gtk_menu_bar_set_pack_direction(_arg0, _arg1)

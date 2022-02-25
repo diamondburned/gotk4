@@ -97,7 +97,7 @@ func (factory *ObjectFactory) CreateAccessible(obj *externglib.Object) *ObjectCl
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
@@ -123,7 +123,7 @@ func (factory *ObjectFactory) AccessibleType() externglib.Type {
 	var _arg0 *C.AtkObjectFactory // out
 	var _cret C.GType             // in
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 
 	_cret = C.atk_object_factory_get_accessible_type(_arg0)
 	runtime.KeepAlive(factory)
@@ -142,7 +142,7 @@ func (factory *ObjectFactory) AccessibleType() externglib.Type {
 func (factory *ObjectFactory) Invalidate() {
 	var _arg0 *C.AtkObjectFactory // out
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 
 	C.atk_object_factory_invalidate(_arg0)
 	runtime.KeepAlive(factory)

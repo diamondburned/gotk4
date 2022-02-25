@@ -80,7 +80,7 @@ func (orientable *Orientable) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
 	var _cret C.GtkOrientation // in
 
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(orientable.Native()))
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(externglib.InternObject(orientable).Native()))
 
 	_cret = C.gtk_orientable_get_orientation(_arg0)
 	runtime.KeepAlive(orientable)
@@ -102,7 +102,7 @@ func (orientable *Orientable) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkOrientable // out
 	var _arg1 C.GtkOrientation // out
 
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(orientable.Native()))
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(externglib.InternObject(orientable).Native()))
 	_arg1 = C.GtkOrientation(orientation)
 
 	C.gtk_orientable_set_orientation(_arg0, _arg1)

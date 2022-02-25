@@ -64,7 +64,7 @@ func (notification *Notification) AddButton(label, detailedAction string) {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.gchar         // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
@@ -94,7 +94,7 @@ func (notification *Notification) AddButtonWithTarget(label, action string, targ
 	var _arg2 *C.gchar         // out
 	var _arg3 *C.GVariant      // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
@@ -120,7 +120,7 @@ func (notification *Notification) SetBody(body string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	if body != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(body)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -151,7 +151,7 @@ func (notification *Notification) SetDefaultAction(detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -179,7 +179,7 @@ func (notification *Notification) SetDefaultActionAndTarget(action string, targe
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariant      // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if target != nil {
@@ -202,8 +202,8 @@ func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	C.g_notification_set_icon(_arg0, _arg1)
 	runtime.KeepAlive(notification)
@@ -221,7 +221,7 @@ func (notification *Notification) SetPriority(priority NotificationPriority) {
 	var _arg0 *C.GNotification        // out
 	var _arg1 C.GNotificationPriority // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	_arg1 = C.GNotificationPriority(priority)
 
 	C.g_notification_set_priority(_arg0, _arg1)
@@ -239,7 +239,7 @@ func (notification *Notification) SetTitle(title string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -261,7 +261,7 @@ func (notification *Notification) SetUrgent(urgent bool) {
 	var _arg0 *C.GNotification // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
+	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
 	if urgent {
 		_arg1 = C.TRUE
 	}

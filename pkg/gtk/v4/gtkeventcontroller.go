@@ -98,7 +98,7 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkEvent           // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event(_arg0)
 	runtime.KeepAlive(controller)
@@ -136,7 +136,7 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkDevice          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_device(_arg0)
 	runtime.KeepAlive(controller)
@@ -175,7 +175,7 @@ func (controller *EventController) CurrentEventState() gdk.ModifierType {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GdkModifierType     // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_state(_arg0)
 	runtime.KeepAlive(controller)
@@ -198,7 +198,7 @@ func (controller *EventController) CurrentEventTime() uint32 {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.guint32             // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_current_event_time(_arg0)
 	runtime.KeepAlive(controller)
@@ -218,7 +218,7 @@ func (controller *EventController) Name() string {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_name(_arg0)
 	runtime.KeepAlive(controller)
@@ -240,7 +240,7 @@ func (controller *EventController) PropagationLimit() PropagationLimit {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationLimit // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_limit(_arg0)
 	runtime.KeepAlive(controller)
@@ -263,7 +263,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 	runtime.KeepAlive(controller)
@@ -285,7 +285,7 @@ func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 	runtime.KeepAlive(controller)
@@ -317,7 +317,7 @@ func (controller *EventController) Widget() Widgetter {
 func (controller *EventController) Reset() {
 	var _arg0 *C.GtkEventController // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	C.gtk_event_controller_reset(_arg0)
 	runtime.KeepAlive(controller)
@@ -333,7 +333,7 @@ func (controller *EventController) SetName(name string) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -355,7 +355,7 @@ func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationLimit // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg1 = C.GtkPropagationLimit(limit)
 
 	C.gtk_event_controller_set_propagation_limit(_arg0, _arg1)
@@ -377,7 +377,7 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationPhase // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg1 = C.GtkPropagationPhase(phase)
 
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)

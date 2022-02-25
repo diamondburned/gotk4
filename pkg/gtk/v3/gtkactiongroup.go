@@ -142,7 +142,7 @@ func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.GtkActionGroup, arg1 *C.gch
 
 	action := iface.Action(_actionName)
 
-	cret = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	cret = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	return cret
 }
@@ -363,8 +363,8 @@ func (actionGroup *ActionGroup) AddAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	C.gtk_action_group_add_action(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
@@ -393,8 +393,8 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator s
 	var _arg1 *C.GtkAction      // out
 	var _arg2 *C.gchar          // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	if accelerator != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -419,7 +419,7 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GtkAccelGroup  // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_accel_group(_arg0)
 	runtime.KeepAlive(actionGroup)
@@ -448,7 +448,7 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkAction      // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -475,7 +475,7 @@ func (actionGroup *ActionGroup) Name() string {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_name(_arg0)
 	runtime.KeepAlive(actionGroup)
@@ -501,7 +501,7 @@ func (actionGroup *ActionGroup) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_sensitive(_arg0)
 	runtime.KeepAlive(actionGroup)
@@ -529,7 +529,7 @@ func (actionGroup *ActionGroup) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 
 	_cret = C.gtk_action_group_get_visible(_arg0)
 	runtime.KeepAlive(actionGroup)
@@ -555,7 +555,7 @@ func (actionGroup *ActionGroup) ListActions() []Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GList          // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 
 	_cret = C.gtk_action_group_list_actions(_arg0)
 	runtime.KeepAlive(actionGroup)
@@ -585,8 +585,8 @@ func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	C.gtk_action_group_remove_action(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
@@ -606,9 +606,9 @@ func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	if accelGroup != nil {
-		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
 	}
 
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
@@ -628,7 +628,7 @@ func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	if sensitive {
 		_arg1 = C.TRUE
 	}
@@ -656,7 +656,7 @@ func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -684,7 +684,7 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	if domain != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -707,7 +707,7 @@ func (actionGroup *ActionGroup) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -736,7 +736,7 @@ func (actionGroup *ActionGroup) TranslateString(str string) string {
 	var _arg1 *C.gchar          // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 

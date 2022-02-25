@@ -519,8 +519,8 @@ func (paned *Paned) Add1(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_paned_add1(_arg0, _arg1)
 	runtime.KeepAlive(paned)
@@ -538,8 +538,8 @@ func (paned *Paned) Add2(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	C.gtk_paned_add2(_arg0, _arg1)
 	runtime.KeepAlive(paned)
@@ -556,7 +556,7 @@ func (paned *Paned) Child1() Widgetter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
 
 	_cret = C.gtk_paned_get_child1(_arg0)
 	runtime.KeepAlive(paned)
@@ -593,7 +593,7 @@ func (paned *Paned) Child2() Widgetter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
 
 	_cret = C.gtk_paned_get_child2(_arg0)
 	runtime.KeepAlive(paned)
@@ -632,7 +632,7 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
 
 	_cret = C.gtk_paned_get_handle_window(_arg0)
 	runtime.KeepAlive(paned)
@@ -670,7 +670,7 @@ func (paned *Paned) Position() int {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
 
 	_cret = C.gtk_paned_get_position(_arg0)
 	runtime.KeepAlive(paned)
@@ -692,7 +692,7 @@ func (paned *Paned) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
 	runtime.KeepAlive(paned)
@@ -720,8 +720,8 @@ func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}
@@ -750,8 +750,8 @@ func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 	var _arg2 C.gboolean   // out
 	var _arg3 C.gboolean   // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	if resize {
 		_arg2 = C.TRUE
 	}
@@ -777,7 +777,7 @@ func (paned *Paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
 	_arg1 = C.gint(position)
 
 	C.gtk_paned_set_position(_arg0, _arg1)
@@ -795,7 +795,7 @@ func (paned *Paned) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(paned.Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(externglib.InternObject(paned).Native()))
 	if wide {
 		_arg1 = C.TRUE
 	}

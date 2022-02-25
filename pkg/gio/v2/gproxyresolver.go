@@ -91,7 +91,7 @@ func (resolver *ProxyResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 
 	_cret = C.g_proxy_resolver_is_supported(_arg0)
 	runtime.KeepAlive(resolver)
@@ -135,7 +135,7 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	var _cret **C.gchar         // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -190,7 +190,7 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -229,8 +229,8 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	var _cret **C.gchar         // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(resolver)

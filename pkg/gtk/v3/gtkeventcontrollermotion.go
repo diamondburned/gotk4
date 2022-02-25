@@ -155,7 +155,7 @@ func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_event_controller_motion_new(_arg1)
 	runtime.KeepAlive(widget)

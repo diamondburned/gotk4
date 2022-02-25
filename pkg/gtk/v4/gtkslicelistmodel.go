@@ -87,8 +87,8 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListMode
 	var _cret *C.GtkSliceListModel // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 	_arg2 = C.guint(offset)
 	_arg3 = C.guint(size)
@@ -115,7 +115,7 @@ func (self *SliceListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret *C.GListModel        // in
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_slice_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -152,7 +152,7 @@ func (self *SliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_slice_list_model_get_offset(_arg0)
 	runtime.KeepAlive(self)
@@ -174,7 +174,7 @@ func (self *SliceListModel) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_slice_list_model_get_size(_arg0)
 	runtime.KeepAlive(self)
@@ -198,9 +198,9 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 *C.GListModel        // out
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_slice_list_model_set_model(_arg0, _arg1)
@@ -220,7 +220,7 @@ func (self *SliceListModel) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(offset)
 
 	C.gtk_slice_list_model_set_offset(_arg0, _arg1)
@@ -241,7 +241,7 @@ func (self *SliceListModel) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(size)
 
 	C.gtk_slice_list_model_set_size(_arg0, _arg1)

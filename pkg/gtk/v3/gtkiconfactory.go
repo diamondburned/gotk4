@@ -155,7 +155,7 @@ func IconSizeLookupForSettings(settings *Settings, size int) (width int, height 
 	var _arg4 C.gint         // in
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_size_lookup_for_settings(_arg1, _arg2, &_arg3, &_arg4)
@@ -391,7 +391,7 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkIconSet     // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
@@ -412,7 +412,7 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 func (factory *IconFactory) AddDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 
 	C.gtk_icon_factory_add_default(_arg0)
 	runtime.KeepAlive(factory)
@@ -439,7 +439,7 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	var _arg1 *C.gchar          // out
 	var _cret *C.GtkIconSet     // in
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -469,7 +469,7 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 func (factory *IconFactory) RemoveDefault() {
 	var _arg0 *C.GtkIconFactory // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 
 	C.gtk_icon_factory_remove_default(_arg0)
 	runtime.KeepAlive(factory)

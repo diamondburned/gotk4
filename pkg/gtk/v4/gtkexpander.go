@@ -245,7 +245,7 @@ func (expander *Expander) Child() Widgetter {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 
 	_cret = C.gtk_expander_get_child(_arg0)
 	runtime.KeepAlive(expander)
@@ -284,7 +284,7 @@ func (expander *Expander) Expanded() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 
 	_cret = C.gtk_expander_get_expanded(_arg0)
 	runtime.KeepAlive(expander)
@@ -314,7 +314,7 @@ func (expander *Expander) Label() string {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 
 	_cret = C.gtk_expander_get_label(_arg0)
 	runtime.KeepAlive(expander)
@@ -338,7 +338,7 @@ func (expander *Expander) LabelWidget() Widgetter {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 
 	_cret = C.gtk_expander_get_label_widget(_arg0)
 	runtime.KeepAlive(expander)
@@ -376,7 +376,7 @@ func (expander *Expander) ResizeToplevel() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 
 	_cret = C.gtk_expander_get_resize_toplevel(_arg0)
 	runtime.KeepAlive(expander)
@@ -400,7 +400,7 @@ func (expander *Expander) UseMarkup() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 
 	_cret = C.gtk_expander_get_use_markup(_arg0)
 	runtime.KeepAlive(expander)
@@ -425,7 +425,7 @@ func (expander *Expander) UseUnderline() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 
 	_cret = C.gtk_expander_get_use_underline(_arg0)
 	runtime.KeepAlive(expander)
@@ -449,9 +449,9 @@ func (expander *Expander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_expander_set_child(_arg0, _arg1)
@@ -472,7 +472,7 @@ func (expander *Expander) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 	if expanded {
 		_arg1 = C.TRUE
 	}
@@ -494,7 +494,7 @@ func (expander *Expander) SetLabel(label string) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 	if label != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -517,9 +517,9 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 	if labelWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(labelWidget).Native()))
 	}
 
 	C.gtk_expander_set_label_widget(_arg0, _arg1)
@@ -538,7 +538,7 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 	if resizeToplevel {
 		_arg1 = C.TRUE
 	}
@@ -558,7 +558,7 @@ func (expander *Expander) SetUseMarkup(useMarkup bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 	if useMarkup {
 		_arg1 = C.TRUE
 	}
@@ -578,7 +578,7 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
+	_arg0 = (*C.GtkExpander)(unsafe.Pointer(externglib.InternObject(expander).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}

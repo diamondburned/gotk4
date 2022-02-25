@@ -92,7 +92,7 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(baseStream).Native()))
 
 	_cret = C.g_buffered_output_stream_new(_arg1)
 	runtime.KeepAlive(baseStream)
@@ -121,7 +121,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 	var _arg2 C.gsize          // out
 	var _cret *C.GOutputStream // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(baseStream).Native()))
 	_arg2 = C.gsize(size)
 
 	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
@@ -145,7 +145,7 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
 	runtime.KeepAlive(stream)
@@ -169,7 +169,7 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gsize                  // in
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
 	runtime.KeepAlive(stream)
@@ -194,7 +194,7 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	if autoGrow {
 		_arg1 = C.TRUE
 	}
@@ -214,7 +214,7 @@ func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	_arg1 = C.gsize(size)
 
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)

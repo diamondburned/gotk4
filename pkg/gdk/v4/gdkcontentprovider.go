@@ -302,7 +302,7 @@ func (provider *ContentProvider) ConnectContentChanged(f func()) externglib.Sign
 func (provider *ContentProvider) ContentChanged() {
 	var _arg0 *C.GdkContentProvider // out
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 
 	C.gdk_content_provider_content_changed(_arg0)
 	runtime.KeepAlive(provider)
@@ -325,7 +325,7 @@ func (provider *ContentProvider) Value(value *externglib.Value) error {
 	var _arg1 *C.GValue             // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
@@ -352,7 +352,7 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 
 	_cret = C.gdk_content_provider_ref_formats(_arg0)
 	runtime.KeepAlive(provider)
@@ -385,7 +385,7 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 
 	_cret = C.gdk_content_provider_ref_storable_formats(_arg0)
 	runtime.KeepAlive(provider)
@@ -432,7 +432,7 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -440,7 +440,7 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	_arg3 = C.int(ioPriority)
 	if callback != nil {
 		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -469,8 +469,8 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 	var _arg1 *C.GAsyncResult       // out
 	var _cerr *C.GError             // in
 
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(provider)

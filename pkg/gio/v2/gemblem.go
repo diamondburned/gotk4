@@ -78,7 +78,7 @@ func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	_cret = C.g_emblem_new(_arg1)
 	runtime.KeepAlive(icon)
@@ -106,7 +106,7 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 	var _arg2 C.GEmblemOrigin // out
 	var _cret *C.GEmblem      // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	_arg2 = C.GEmblemOrigin(origin)
 
 	_cret = C.g_emblem_new_with_origin(_arg1, _arg2)
@@ -131,7 +131,7 @@ func (emblem *Emblem) GetIcon() Iconner {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(externglib.InternObject(emblem).Native()))
 
 	_cret = C.g_emblem_get_icon(_arg0)
 	runtime.KeepAlive(emblem)
@@ -169,7 +169,7 @@ func (emblem *Emblem) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out
 	var _cret C.GEmblemOrigin // in
 
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(externglib.InternObject(emblem).Native()))
 
 	_cret = C.g_emblem_get_origin(_arg0)
 	runtime.KeepAlive(emblem)

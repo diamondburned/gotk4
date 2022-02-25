@@ -110,7 +110,7 @@ func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(contextSimple.Native()))
+	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(externglib.InternObject(contextSimple).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(composeFile)))
 	defer C.free(unsafe.Pointer(_arg1))
 

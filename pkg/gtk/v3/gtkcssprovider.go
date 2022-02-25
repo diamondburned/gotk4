@@ -251,7 +251,7 @@ func (cssProvider *CSSProvider) LoadFromData(data string) error {
 	var _arg2 C.gssize
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(externglib.InternObject(cssProvider).Native()))
 	_arg2 = (C.gssize)(len(data))
 	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(data) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(data)), data)
@@ -282,8 +282,8 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(externglib.InternObject(cssProvider).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(cssProvider)
@@ -310,7 +310,7 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	var _arg1 *C.gchar          // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(externglib.InternObject(cssProvider).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -341,7 +341,7 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(externglib.InternObject(cssProvider).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -364,7 +364,7 @@ func (provider *CSSProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
 	runtime.KeepAlive(provider)

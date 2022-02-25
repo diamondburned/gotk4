@@ -84,14 +84,15 @@ static GObjectClass *_g_object_get_class(GObject *object) {
  * Closure support
  */
 
-extern void removeSourceFunc(gpointer data);
-extern gboolean sourceFunc(gpointer data);
+extern void _gotk4_removeSourceFunc(gpointer data);
+extern gboolean _gotk4_sourceFunc(gpointer data);
 
-extern void goMarshal(GClosure *, GValue *, guint, GValue *, gpointer,
-                      GObject *);
+extern void _gotk4_goMarshal(GClosure *, GValue *, guint, GValue *, gpointer,
+                             GObject *);
+extern void _gotk4_notifyHandlerTramp(gpointer, guintptr);
 
-extern void removeClosure(GObject *, GClosure *);
-extern void removeGeneratedClosure(guintptr, GClosure *);
+extern void _gotk4_removeClosure(GObject *, GClosure *);
+extern void _gotk4_removeGeneratedClosure(guintptr, GClosure *);
 
 static inline guint _g_signal_new(const gchar *name) {
   return g_signal_new(name, G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,

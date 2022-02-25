@@ -145,7 +145,7 @@ func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gc
 	action := iface.LookupAction(_actionName)
 
 	if action != nil {
-		cret = (*C.GAction)(unsafe.Pointer(action.Native()))
+		cret = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	}
 
 	return cret
@@ -188,8 +188,8 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
 	runtime.KeepAlive(actionMap)
@@ -243,7 +243,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 	var _arg2 C.gint
 	var _arg3 C.gpointer // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
 	_arg2 = (C.gint)(len(entries))
 	_arg1 = (*C.GActionEntry)(C.calloc(C.size_t(len(entries)), C.size_t(C.sizeof_GActionEntry)))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -278,7 +278,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -320,7 +320,7 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(actionMap.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 

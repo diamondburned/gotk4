@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -41,10 +42,10 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	var _cret C.guint            // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(menu).Native()))
 
 	_cret = C.g_dbus_connection_export_menu_model(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(connection)
@@ -77,7 +78,7 @@ func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	_arg1 = C.guint(exportId)
 
 	C.g_dbus_connection_unexport_menu_model(_arg0, _arg1)

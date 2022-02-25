@@ -349,7 +349,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_capabilities(_arg0)
 	runtime.KeepAlive(seat)
@@ -371,7 +371,7 @@ func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_display(_arg0)
 	runtime.KeepAlive(seat)
@@ -394,7 +394,7 @@ func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 	runtime.KeepAlive(seat)
@@ -432,7 +432,7 @@ func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 	runtime.KeepAlive(seat)
@@ -475,7 +475,7 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	var _arg1 C.GdkSeatCapabilities // out
 	var _cret *C.GList              // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 	_arg1 = C.GdkSeatCapabilities(capabilities)
 
 	_cret = C.gdk_seat_get_slaves(_arg0, _arg1)
@@ -568,14 +568,14 @@ func (seat *Seat) Grab(window Windower, capabilities SeatCapabilities, ownerEven
 	var _arg7 C.gpointer
 	var _cret C.GdkGrabStatus // in
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	_arg2 = C.GdkSeatCapabilities(capabilities)
 	if ownerEvents {
 		_arg3 = C.TRUE
 	}
 	if cursor != nil {
-		_arg4 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+		_arg4 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 	}
 	if event != nil {
 		_arg5 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
@@ -606,7 +606,7 @@ func (seat *Seat) Grab(window Windower, capabilities SeatCapabilities, ownerEven
 func (seat *Seat) Ungrab() {
 	var _arg0 *C.GdkSeat // out
 
-	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(externglib.InternObject(seat).Native()))
 
 	C.gdk_seat_ungrab(_arg0)
 	runtime.KeepAlive(seat)

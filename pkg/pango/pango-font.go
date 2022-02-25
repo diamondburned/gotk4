@@ -509,8 +509,8 @@ func _gotk4_pango1_FontClass_get_coverage(arg0 *C.PangoFont, arg1 *C.PangoLangua
 
 	coverage := iface.Coverage(_language)
 
-	cret = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
-	C.g_object_ref(C.gpointer(coverage.Native()))
+	cret = (*C.PangoCoverage)(unsafe.Pointer(externglib.InternObject(coverage).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(coverage).Native()))
 
 	return cret
 }
@@ -523,7 +523,7 @@ func _gotk4_pango1_FontClass_get_font_map(arg0 *C.PangoFont) (cret *C.PangoFontM
 	fontMap := iface.FontMap()
 
 	if fontMap != nil {
-		cret = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+		cret = (*C.PangoFontMap)(unsafe.Pointer(externglib.InternObject(fontMap).Native()))
 	}
 
 	return cret
@@ -606,7 +606,7 @@ func (font *Font) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 
 	_cret = C.pango_font_describe(_arg0)
 	runtime.KeepAlive(font)
@@ -637,7 +637,7 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 
 	_cret = C.pango_font_describe_with_absolute_size(_arg0)
 	runtime.KeepAlive(font)
@@ -670,7 +670,7 @@ func (font *Font) Coverage(language *Language) *Coverage {
 	var _arg1 *C.PangoLanguage // out
 	var _cret *C.PangoCoverage // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_font_get_coverage(_arg0, _arg1)
@@ -694,7 +694,7 @@ func (font *Font) Face() FontFacer {
 	var _arg0 *C.PangoFont     // out
 	var _cret *C.PangoFontFace // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 
 	_cret = C.pango_font_get_face(_arg0)
 	runtime.KeepAlive(font)
@@ -742,7 +742,7 @@ func (font *Font) FontMap() FontMapper {
 	var _cret *C.PangoFontMap // in
 
 	if font != nil {
-		_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 	}
 
 	_cret = C.pango_font_get_font_map(_arg0)
@@ -800,7 +800,7 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect *Rectangle, logicalRect *Re
 	var _arg3 C.PangoRectangle // in
 
 	if font != nil {
-		_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 	}
 	_arg1 = C.guint32(glyph)
 
@@ -842,7 +842,7 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _cret *C.PangoFontMetrics // in
 
 	if font != nil {
-		_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 	}
 	if language != nil {
 		_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
@@ -880,7 +880,7 @@ func (font *Font) HasChar(wc uint32) bool {
 	var _arg1 C.gunichar   // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
 	_arg1 = C.gunichar(wc)
 
 	_cret = C.pango_font_has_char(_arg0, _arg1)
@@ -1037,7 +1037,7 @@ func _gotk4_pango1_FontFaceClass_get_family(arg0 *C.PangoFontFace) (cret *C.Pang
 
 	fontFamily := iface.Family()
 
-	cret = (*C.PangoFontFamily)(unsafe.Pointer(fontFamily.Native()))
+	cret = (*C.PangoFontFamily)(unsafe.Pointer(externglib.InternObject(fontFamily).Native()))
 
 	return cret
 }
@@ -1106,7 +1106,7 @@ func (face *FontFace) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(face.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(externglib.InternObject(face).Native()))
 
 	_cret = C.pango_font_face_describe(_arg0)
 	runtime.KeepAlive(face)
@@ -1137,7 +1137,7 @@ func (face *FontFace) FaceName() string {
 	var _arg0 *C.PangoFontFace // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(face.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(externglib.InternObject(face).Native()))
 
 	_cret = C.pango_font_face_get_face_name(_arg0)
 	runtime.KeepAlive(face)
@@ -1159,7 +1159,7 @@ func (face *FontFace) Family() FontFamilier {
 	var _arg0 *C.PangoFontFace   // out
 	var _cret *C.PangoFontFamily // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(face.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(externglib.InternObject(face).Native()))
 
 	_cret = C.pango_font_face_get_family(_arg0)
 	runtime.KeepAlive(face)
@@ -1199,7 +1199,7 @@ func (face *FontFace) IsSynthesized() bool {
 	var _arg0 *C.PangoFontFace // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(face.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(externglib.InternObject(face).Native()))
 
 	_cret = C.pango_font_face_is_synthesized(_arg0)
 	runtime.KeepAlive(face)
@@ -1229,7 +1229,7 @@ func (face *FontFace) ListSizes() []int {
 	var _arg1 *C.int           // in
 	var _arg2 C.int            // in
 
-	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(face.Native()))
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(externglib.InternObject(face).Native()))
 
 	C.pango_font_face_list_sizes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(face)
@@ -1389,7 +1389,7 @@ func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.PangoFontFamily, arg1 *C.cha
 	fontFace := iface.Face(_name)
 
 	if fontFace != nil {
-		cret = (*C.PangoFontFace)(unsafe.Pointer(fontFace.Native()))
+		cret = (*C.PangoFontFace)(unsafe.Pointer(externglib.InternObject(fontFace).Native()))
 	}
 
 	return cret
@@ -1449,7 +1449,7 @@ func _gotk4_pango1_FontFamilyClass_list_faces(arg0 *C.PangoFontFamily, arg1 ***C
 		{
 			out := unsafe.Slice((**C.PangoFontFace)(*arg1), len(faces))
 			for i := range faces {
-				out[i] = (*C.PangoFontFace)(unsafe.Pointer(faces[i].Native()))
+				out[i] = (*C.PangoFontFace)(unsafe.Pointer(externglib.InternObject(faces[i]).Native()))
 			}
 		}
 	}
@@ -1491,7 +1491,7 @@ func (family *FontFamily) Face(name string) FontFacer {
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFace   // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(externglib.InternObject(family).Native()))
 	if name != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1537,7 +1537,7 @@ func (family *FontFamily) Name() string {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret *C.char            // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(externglib.InternObject(family).Native()))
 
 	_cret = C.pango_font_family_get_name(_arg0)
 	runtime.KeepAlive(family)
@@ -1571,7 +1571,7 @@ func (family *FontFamily) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(externglib.InternObject(family).Native()))
 
 	_cret = C.pango_font_family_is_monospace(_arg0)
 	runtime.KeepAlive(family)
@@ -1596,7 +1596,7 @@ func (family *FontFamily) IsVariable() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(externglib.InternObject(family).Native()))
 
 	_cret = C.pango_font_family_is_variable(_arg0)
 	runtime.KeepAlive(family)
@@ -1626,7 +1626,7 @@ func (family *FontFamily) ListFaces() []FontFacer {
 	var _arg1 **C.PangoFontFace  // in
 	var _arg2 C.int              // in
 
-	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(externglib.InternObject(family).Native()))
 
 	C.pango_font_family_list_faces(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(family)

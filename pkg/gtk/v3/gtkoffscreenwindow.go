@@ -123,7 +123,7 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.GdkPixbuf          // in
 
-	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(offscreen.Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(externglib.InternObject(offscreen).Native()))
 
 	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
 	runtime.KeepAlive(offscreen)
@@ -159,7 +159,7 @@ func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out
 	var _cret *C.cairo_surface_t    // in
 
-	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(offscreen.Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(externglib.InternObject(offscreen).Native()))
 
 	_cret = C.gtk_offscreen_window_get_surface(_arg0)
 	runtime.KeepAlive(offscreen)

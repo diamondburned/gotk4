@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -25,7 +26,7 @@ import "C"
 func (widget *Widget) DragSourceAddImageTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_source_add_image_targets(_arg0)
 	runtime.KeepAlive(widget)
@@ -38,7 +39,7 @@ func (widget *Widget) DragSourceAddImageTargets() {
 func (widget *Widget) DragSourceAddTextTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_source_add_text_targets(_arg0)
 	runtime.KeepAlive(widget)
@@ -51,7 +52,7 @@ func (widget *Widget) DragSourceAddTextTargets() {
 func (widget *Widget) DragSourceAddURITargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_source_add_uri_targets(_arg0)
 	runtime.KeepAlive(widget)
@@ -68,7 +69,7 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_drag_source_get_target_list(_arg0)
 	runtime.KeepAlive(widget)
@@ -106,7 +107,7 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 	var _arg3 C.gint
 	var _arg4 C.GdkDragAction // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg3 = (C.gint)(len(targets))
 	_arg2 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
@@ -137,8 +138,8 @@ func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GIcon     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	C.gtk_drag_source_set_icon_gicon(_arg0, _arg1)
 	runtime.KeepAlive(widget)
@@ -157,7 +158,7 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -178,8 +179,8 @@ func (widget *Widget) DragSourceSetIconPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkPixbuf // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 
 	C.gtk_drag_source_set_icon_pixbuf(_arg0, _arg1)
 	runtime.KeepAlive(widget)
@@ -199,7 +200,7 @@ func (widget *Widget) DragSourceSetIconStock(stockId string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -220,7 +221,7 @@ func (widget *Widget) DragSourceSetTargetList(targetList *TargetList) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkTargetList // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	if targetList != nil {
 		_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
 	}
@@ -234,7 +235,7 @@ func (widget *Widget) DragSourceSetTargetList(targetList *TargetList) {
 func (widget *Widget) DragSourceUnset() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_source_unset(_arg0)
 	runtime.KeepAlive(widget)

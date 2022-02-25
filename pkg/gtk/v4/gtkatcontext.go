@@ -127,8 +127,8 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 	var _cret *C.GtkATContext     // in
 
 	_arg1 = C.GtkAccessibleRole(accessibleRole)
-	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(accessible).Native()))
+	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(accessibleRole)
@@ -154,7 +154,7 @@ func (self *ATContext) Accessible() Accessibler {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 	runtime.KeepAlive(self)
@@ -192,7 +192,7 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out
 	var _cret C.GtkAccessibleRole // in
 
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_at_context_get_accessible_role(_arg0)
 	runtime.KeepAlive(self)

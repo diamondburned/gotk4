@@ -79,8 +79,8 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 	var _cret *C.GtkMultiSelection // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 
 	_cret = C.gtk_multi_selection_new(_arg1)
@@ -103,7 +103,7 @@ func (self *MultiSelection) Model() gio.ListModeller {
 	var _arg0 *C.GtkMultiSelection // out
 	var _cret *C.GListModel        // in
 
-	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_multi_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -143,9 +143,9 @@ func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMultiSelection // out
 	var _arg1 *C.GListModel        // out
 
-	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_multi_selection_set_model(_arg0, _arg1)

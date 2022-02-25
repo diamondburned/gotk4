@@ -70,7 +70,7 @@ func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
 
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
 
 	C.gdk_x11_monitor_get_workarea(_arg0, &_arg1)
 	runtime.KeepAlive(monitor)

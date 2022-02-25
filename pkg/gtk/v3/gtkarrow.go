@@ -134,7 +134,7 @@ func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {
 	var _arg1 C.GtkArrowType  // out
 	var _arg2 C.GtkShadowType // out
 
-	_arg0 = (*C.GtkArrow)(unsafe.Pointer(arrow.Native()))
+	_arg0 = (*C.GtkArrow)(unsafe.Pointer(externglib.InternObject(arrow).Native()))
 	_arg1 = C.GtkArrowType(arrowType)
 	_arg2 = C.GtkShadowType(shadowType)
 

@@ -258,7 +258,7 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 		_arg1 = C.TRUE
 	}
 	if monitor != nil {
-		_arg2 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
+		_arg2 = (*C.GdkMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
 	}
 
 	C.gdk_toplevel_layout_set_fullscreen(_arg0, _arg1, _arg2)

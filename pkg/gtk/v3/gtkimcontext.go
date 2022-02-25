@@ -764,7 +764,7 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg2 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.gint(nChars)
 
@@ -799,7 +799,7 @@ func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 	var _arg1 *C.GdkEventKey  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
@@ -821,7 +821,7 @@ func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 func (context *IMContext) FocusIn() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_im_context_focus_in(_arg0)
 	runtime.KeepAlive(context)
@@ -833,7 +833,7 @@ func (context *IMContext) FocusIn() {
 func (context *IMContext) FocusOut() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_im_context_focus_out(_arg0)
 	runtime.KeepAlive(context)
@@ -858,7 +858,7 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 	var _arg2 *C.PangoAttrList // in
 	var _arg3 C.gint           // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(context)
@@ -909,7 +909,7 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 	var _arg2 C.gint          // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
@@ -934,7 +934,7 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 func (context *IMContext) Reset() {
 	var _arg0 *C.GtkIMContext // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_im_context_reset(_arg0)
 	runtime.KeepAlive(context)
@@ -954,9 +954,9 @@ func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkWindow    // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if window != nil {
-		_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	}
 
 	C.gtk_im_context_set_client_window(_arg0, _arg1)
@@ -975,7 +975,7 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkRectangle // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
 
 	C.gtk_im_context_set_cursor_location(_arg0, _arg1)
@@ -1001,7 +1001,7 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	var _arg2 C.gint          // out
 	var _arg3 C.gint          // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
@@ -1027,7 +1027,7 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if usePreedit {
 		_arg1 = C.TRUE
 	}

@@ -156,8 +156,8 @@ func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.GDBusObjectManager
 
 	dBusInterface := iface.Interface(_objectPath, _interfaceName)
 
-	cret = (*C.GDBusInterface)(unsafe.Pointer(dBusInterface.Native()))
-	C.g_object_ref(C.gpointer(dBusInterface.Native()))
+	cret = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(dBusInterface).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(dBusInterface).Native()))
 
 	return cret
 }
@@ -173,8 +173,8 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.GDBusObjectManager, a
 
 	dBusObject := iface.GetObject(_objectPath)
 
-	cret = (*C.GDBusObject)(unsafe.Pointer(dBusObject.Native()))
-	C.g_object_ref(C.gpointer(dBusObject.Native()))
+	cret = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(dBusObject).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(dBusObject).Native()))
 
 	return cret
 }
@@ -202,8 +202,8 @@ func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.GDBusObjectManager) 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GDBusObject // out
-		dst = (*C.GDBusObject)(unsafe.Pointer(src.Native()))
-		C.g_object_ref(C.gpointer(src.Native()))
+		dst = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 
@@ -591,7 +591,7 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DB
 	var _arg2 *C.gchar              // out
 	var _cret *C.GDBusInterface     // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
@@ -640,7 +640,7 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusObject        // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -681,7 +681,7 @@ func (manager *DBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
 	runtime.KeepAlive(manager)
@@ -704,7 +704,7 @@ func (manager *DBusObjectManager) Objects() []DBusObjector {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.GList              // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.g_dbus_object_manager_get_objects(_arg0)
 	runtime.KeepAlive(manager)

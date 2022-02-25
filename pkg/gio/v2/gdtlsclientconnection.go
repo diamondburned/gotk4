@@ -85,7 +85,7 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 	runtime.KeepAlive(conn)
@@ -123,7 +123,7 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 
 	_cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
 	runtime.KeepAlive(conn)
@@ -148,8 +148,8 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(identity).Native()))
 
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 	runtime.KeepAlive(conn)
@@ -168,7 +168,7 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 C.GTlsCertificateFlags   // out
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
 	_arg1 = C.GTlsCertificateFlags(flags)
 
 	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
@@ -195,9 +195,9 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	var _cret *C.GDatagramBased     // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(baseSocket.Native()))
+	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(baseSocket).Native()))
 	if serverIdentity != nil {
-		_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(serverIdentity.Native()))
+		_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(serverIdentity).Native()))
 	}
 
 	_cret = C.g_dtls_client_connection_new(_arg1, _arg2, &_cerr)

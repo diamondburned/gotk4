@@ -164,7 +164,7 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 	{
 		out := unsafe.Slice((**C.AtkObject)(_arg1), len(targets))
 		for i := range targets {
-			out[i] = (*C.AtkObject)(unsafe.Pointer(targets[i].Native()))
+			out[i] = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(targets[i]).Native()))
 		}
 	}
 	_arg3 = C.AtkRelationType(relationship)
@@ -191,8 +191,8 @@ func (relation *Relation) AddTarget(target *ObjectClass) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(externglib.InternObject(relation).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(target).Native()))
 
 	C.atk_relation_add_target(_arg0, _arg1)
 	runtime.KeepAlive(relation)
@@ -209,7 +209,7 @@ func (relation *Relation) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(externglib.InternObject(relation).Native()))
 
 	_cret = C.atk_relation_get_relation_type(_arg0)
 	runtime.KeepAlive(relation)
@@ -237,8 +237,8 @@ func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(externglib.InternObject(relation).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(target).Native()))
 
 	_cret = C.atk_relation_remove_target(_arg0, _arg1)
 	runtime.KeepAlive(relation)

@@ -171,7 +171,7 @@ func (revealer *Revealer) Child() Widgetter {
 	var _arg0 *C.GtkRevealer // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 
 	_cret = C.gtk_revealer_get_child(_arg0)
 	runtime.KeepAlive(revealer)
@@ -211,7 +211,7 @@ func (revealer *Revealer) ChildRevealed() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 
 	_cret = C.gtk_revealer_get_child_revealed(_arg0)
 	runtime.KeepAlive(revealer)
@@ -239,7 +239,7 @@ func (revealer *Revealer) RevealChild() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 
 	_cret = C.gtk_revealer_get_reveal_child(_arg0)
 	runtime.KeepAlive(revealer)
@@ -264,7 +264,7 @@ func (revealer *Revealer) TransitionDuration() uint {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 
 	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 	runtime.KeepAlive(revealer)
@@ -287,7 +287,7 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 	var _arg0 *C.GtkRevealer              // out
 	var _cret C.GtkRevealerTransitionType // in
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 
 	_cret = C.gtk_revealer_get_transition_type(_arg0)
 	runtime.KeepAlive(revealer)
@@ -309,9 +309,9 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_revealer_set_child(_arg0, _arg1)
@@ -331,7 +331,7 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 	if revealChild {
 		_arg1 = C.TRUE
 	}
@@ -351,7 +351,7 @@ func (revealer *Revealer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.guint        // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 	_arg1 = C.guint(duration)
 
 	C.gtk_revealer_set_transition_duration(_arg0, _arg1)
@@ -372,7 +372,7 @@ func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
 	var _arg0 *C.GtkRevealer              // out
 	var _arg1 C.GtkRevealerTransitionType // out
 
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(externglib.InternObject(revealer).Native()))
 	_arg1 = C.GtkRevealerTransitionType(transition)
 
 	C.gtk_revealer_set_transition_type(_arg0, _arg1)

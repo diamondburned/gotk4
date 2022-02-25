@@ -212,7 +212,7 @@ func (linkButton *LinkButton) URI() string {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
 
 	_cret = C.gtk_link_button_get_uri(_arg0)
 	runtime.KeepAlive(linkButton)
@@ -239,7 +239,7 @@ func (linkButton *LinkButton) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
 
 	_cret = C.gtk_link_button_get_visited(_arg0)
 	runtime.KeepAlive(linkButton)
@@ -265,7 +265,7 @@ func (linkButton *LinkButton) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.char          // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -286,7 +286,7 @@ func (linkButton *LinkButton) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
 	if visited {
 		_arg1 = C.TRUE
 	}

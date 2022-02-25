@@ -211,7 +211,7 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, ca
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(externglib.InternObject(initable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -242,8 +242,8 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 	var _arg1 *C.GAsyncResult   // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(externglib.InternObject(initable).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(initable)
@@ -276,8 +276,8 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object,
 	var _cret *C.GObject        // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(externglib.InternObject(initable).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(initable)

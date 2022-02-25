@@ -80,7 +80,7 @@ func (device *WaylandDevice) NodePath() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_wayland_device_get_node_path(_arg0)
 	runtime.KeepAlive(device)

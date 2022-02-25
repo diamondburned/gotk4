@@ -142,8 +142,8 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumera
 
 	socketAddress, _goerr := iface.Next(_cancellable)
 
-	cret = (*C.GSocketAddress)(unsafe.Pointer(socketAddress.Native()))
-	C.g_object_ref(C.gpointer(socketAddress.Native()))
+	cret = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(socketAddress).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddress).Native()))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -180,8 +180,8 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddress
 
 	socketAddress, _goerr := iface.NextFinish(_result)
 
-	cret = (*C.GSocketAddress)(unsafe.Pointer(socketAddress.Native()))
-	C.g_object_ref(C.gpointer(socketAddress.Native()))
+	cret = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(socketAddress).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddress).Native()))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -235,7 +235,7 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 	var _cret *C.GSocketAddress           // in
 	var _cerr *C.GError                   // in
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -291,7 +291,7 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 	var _arg2 C.GAsyncReadyCallback       // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -327,8 +327,8 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	var _cret *C.GSocketAddress           // in
 	var _cerr *C.GError                   // in
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(enumerator)

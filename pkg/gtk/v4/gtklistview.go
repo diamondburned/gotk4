@@ -225,12 +225,12 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _cret *C.GtkWidget          // in
 
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-		C.g_object_ref(C.gpointer(model.Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
 	}
 	if factory != nil {
-		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-		C.g_object_ref(C.gpointer(factory.Native()))
+		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(factory).Native()))
 	}
 
 	_cret = C.gtk_list_view_new(_arg1, _arg2)
@@ -255,7 +255,7 @@ func (self *ListView) EnableRubberband() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
 	runtime.KeepAlive(self)
@@ -279,7 +279,7 @@ func (self *ListView) Factory() *ListItemFactory {
 	var _arg0 *C.GtkListView        // out
 	var _cret *C.GtkListItemFactory // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_view_get_factory(_arg0)
 	runtime.KeepAlive(self)
@@ -303,7 +303,7 @@ func (self *ListView) Model() SelectionModeller {
 	var _arg0 *C.GtkListView       // out
 	var _cret *C.GtkSelectionModel // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_view_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -341,7 +341,7 @@ func (self *ListView) ShowSeparators() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_view_get_show_separators(_arg0)
 	runtime.KeepAlive(self)
@@ -366,7 +366,7 @@ func (self *ListView) SingleClickActivate() bool {
 	var _arg0 *C.GtkListView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
 	runtime.KeepAlive(self)
@@ -391,7 +391,7 @@ func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if enableRubberband {
 		_arg1 = C.TRUE
 	}
@@ -411,9 +411,9 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkListView        // out
 	var _arg1 *C.GtkListItemFactory // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
 	}
 
 	C.gtk_list_view_set_factory(_arg0, _arg1)
@@ -433,9 +433,9 @@ func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkListView       // out
 	var _arg1 *C.GtkSelectionModel // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_list_view_set_model(_arg0, _arg1)
@@ -454,7 +454,7 @@ func (self *ListView) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if showSeparators {
 		_arg1 = C.TRUE
 	}
@@ -475,7 +475,7 @@ func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkListView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if singleClickActivate {
 		_arg1 = C.TRUE
 	}

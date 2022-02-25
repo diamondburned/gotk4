@@ -340,7 +340,7 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_entry_completion_new_with_area(_arg1)
 	runtime.KeepAlive(area)
@@ -359,7 +359,7 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 func (completion *EntryCompletion) Complete() {
 	var _arg0 *C.GtkEntryCompletion // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	C.gtk_entry_completion_complete(_arg0)
 	runtime.KeepAlive(completion)
@@ -386,7 +386,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 	var _arg1 *C.char               // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -415,7 +415,7 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_completion_prefix(_arg0)
 	runtime.KeepAlive(completion)
@@ -439,7 +439,7 @@ func (completion *EntryCompletion) Entry() Widgetter {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_entry(_arg0)
 	runtime.KeepAlive(completion)
@@ -478,7 +478,7 @@ func (completion *EntryCompletion) InlineCompletion() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_inline_completion(_arg0)
 	runtime.KeepAlive(completion)
@@ -502,7 +502,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_inline_selection(_arg0)
 	runtime.KeepAlive(completion)
@@ -526,7 +526,7 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 	runtime.KeepAlive(completion)
@@ -550,7 +550,7 @@ func (completion *EntryCompletion) Model() TreeModeller {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkTreeModel       // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_model(_arg0)
 	runtime.KeepAlive(completion)
@@ -588,7 +588,7 @@ func (completion *EntryCompletion) PopupCompletion() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_popup_completion(_arg0)
 	runtime.KeepAlive(completion)
@@ -613,7 +613,7 @@ func (completion *EntryCompletion) PopupSetWidth() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_popup_set_width(_arg0)
 	runtime.KeepAlive(completion)
@@ -639,7 +639,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_popup_single_match(_arg0)
 	runtime.KeepAlive(completion)
@@ -663,7 +663,7 @@ func (completion *EntryCompletion) TextColumn() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 	runtime.KeepAlive(completion)
@@ -679,7 +679,7 @@ func (completion *EntryCompletion) TextColumn() int {
 func (completion *EntryCompletion) InsertPrefix() {
 	var _arg0 *C.GtkEntryCompletion // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 
 	C.gtk_entry_completion_insert_prefix(_arg0)
 	runtime.KeepAlive(completion)
@@ -696,7 +696,7 @@ func (completion *EntryCompletion) SetInlineCompletion(inlineCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	if inlineCompletion {
 		_arg1 = C.TRUE
 	}
@@ -717,7 +717,7 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	if inlineSelection {
 		_arg1 = C.TRUE
 	}
@@ -742,7 +742,7 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 	var _arg2 C.gpointer
 	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gtk4_EntryCompletionMatchFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -767,7 +767,7 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	_arg1 = C.int(length)
 
 	C.gtk_entry_completion_set_minimum_key_length(_arg0, _arg1)
@@ -788,9 +788,9 @@ func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	if model != nil {
-		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_entry_completion_set_model(_arg0, _arg1)
@@ -809,7 +809,7 @@ func (completion *EntryCompletion) SetPopupCompletion(popupCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	if popupCompletion {
 		_arg1 = C.TRUE
 	}
@@ -830,7 +830,7 @@ func (completion *EntryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	if popupSetWidth {
 		_arg1 = C.TRUE
 	}
@@ -855,7 +855,7 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	if popupSingleMatch {
 		_arg1 = C.TRUE
 	}
@@ -885,7 +885,7 @@ func (completion *EntryCompletion) SetTextColumn(column int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	_arg1 = C.int(column)
 
 	C.gtk_entry_completion_set_text_column(_arg0, _arg1)

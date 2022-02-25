@@ -268,9 +268,9 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
-	C.g_object_ref(C.gpointer(constraint.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(externglib.InternObject(constraint).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(constraint).Native()))
 
 	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
 	runtime.KeepAlive(layout)
@@ -378,7 +378,7 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 	var _cret *C.GList      // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 	_arg2 = (C.gsize)(len(lines))
 	_arg1 = (**C.char)(C.calloc(C.size_t(len(lines)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -397,7 +397,7 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 		var vdst *C.GtkConstraintTarget // out
 		kdst = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
 		defer C.free(unsafe.Pointer(kdst))
-		vdst = (*C.GtkConstraintTarget)(unsafe.Pointer(vsrc.Native()))
+		vdst = (*C.GtkConstraintTarget)(unsafe.Pointer(externglib.InternObject(vsrc).Native()))
 		C.g_hash_table_insert(_arg5, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg5)
@@ -441,9 +441,9 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
-	C.g_object_ref(C.gpointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(guide).Native()))
 
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
 	runtime.KeepAlive(layout)
@@ -468,7 +468,7 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 
 	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
 	runtime.KeepAlive(layout)
@@ -514,7 +514,7 @@ func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 
 	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
 	runtime.KeepAlive(layout)
@@ -546,7 +546,7 @@ func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
 func (layout *ConstraintLayout) RemoveAllConstraints() {
 	var _arg0 *C.GtkConstraintLayout // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
 
 	C.gtk_constraint_layout_remove_all_constraints(_arg0)
 	runtime.KeepAlive(layout)
@@ -563,8 +563,8 @@ func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(externglib.InternObject(constraint).Native()))
 
 	C.gtk_constraint_layout_remove_constraint(_arg0, _arg1)
 	runtime.KeepAlive(layout)
@@ -582,8 +582,8 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 
 	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
 	runtime.KeepAlive(layout)

@@ -46,7 +46,7 @@ func CairoCreate(window Windower) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.cairo_t   // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 
 	_cret = C.gdk_cairo_create(_arg1)
 	runtime.KeepAlive(window)
@@ -101,7 +101,7 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, buf
 	var _arg9 C.int        // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)
@@ -300,7 +300,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	_arg3 = C.gdouble(pixbufX)
 	_arg4 = C.gdouble(pixbufY)
 
@@ -353,7 +353,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 
@@ -383,10 +383,10 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 	var _arg3 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	_arg2 = C.int(scale)
 	if forWindow != nil {
-		_arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+		_arg3 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(forWindow).Native()))
 	}
 
 	_cret = C.gdk_cairo_surface_create_from_pixbuf(_arg1, _arg2, _arg3)

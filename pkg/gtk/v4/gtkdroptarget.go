@@ -301,7 +301,7 @@ func (self *DropTarget) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.GdkDragAction  // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_target_get_actions(_arg0)
 	runtime.KeepAlive(self)
@@ -325,7 +325,7 @@ func (self *DropTarget) Drop() gdk.Dropper {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GdkDrop       // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_target_get_drop(_arg0)
 	runtime.KeepAlive(self)
@@ -364,7 +364,7 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_target_get_formats(_arg0)
 	runtime.KeepAlive(self)
@@ -398,7 +398,7 @@ func (self *DropTarget) GTypes() []externglib.Type {
 	var _cret *C.GType         // in
 	var _arg1 C.gsize          // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_target_get_gtypes(_arg0, &_arg1)
 	runtime.KeepAlive(self)
@@ -428,7 +428,7 @@ func (self *DropTarget) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_target_get_preload(_arg0)
 	runtime.KeepAlive(self)
@@ -452,7 +452,7 @@ func (self *DropTarget) Value() *externglib.Value {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GValue        // in
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drop_target_get_value(_arg0)
 	runtime.KeepAlive(self)
@@ -476,7 +476,7 @@ func (self *DropTarget) Value() *externglib.Value {
 func (self *DropTarget) Reject() {
 	var _arg0 *C.GtkDropTarget // out
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_drop_target_reject(_arg0)
 	runtime.KeepAlive(self)
@@ -492,7 +492,7 @@ func (self *DropTarget) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.GdkDragAction  // out
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GdkDragAction(actions)
 
 	C.gtk_drop_target_set_actions(_arg0, _arg1)
@@ -511,7 +511,7 @@ func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	var _arg1 *C.GType         // out
 	var _arg2 C.gsize
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg2 = (C.gsize)(len(types))
 	_arg1 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -537,7 +537,7 @@ func (self *DropTarget) SetPreload(preload bool) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 C.gboolean       // out
 
-	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if preload {
 		_arg1 = C.TRUE
 	}

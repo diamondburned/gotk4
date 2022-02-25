@@ -90,7 +90,7 @@ func (context *IMMulticontext) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 	runtime.KeepAlive(context)
@@ -115,7 +115,7 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextId)))
 	defer C.free(unsafe.Pointer(_arg1))
 

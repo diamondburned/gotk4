@@ -170,7 +170,7 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 		defer C.free(unsafe.Pointer(_arg4))
 	}
 	if manager != nil {
-		_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+		_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	}
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -200,7 +200,7 @@ func (action *RecentAction) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
 	runtime.KeepAlive(action)
@@ -229,7 +229,7 @@ func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentAction // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 	if showNumbers {
 		_arg1 = C.TRUE
 	}

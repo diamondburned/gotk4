@@ -78,7 +78,7 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 	var _arg3 C.GDestroyNotify
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gdkwayland4_WaylandToplevelExported)
 	_arg2 = C.gpointer(gbox.Assign(callback))
 	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
@@ -106,7 +106,7 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(applicationId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -138,7 +138,7 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 	var _arg1 *C.char        // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parentHandleStr)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -166,7 +166,7 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 func (toplevel *WaylandToplevel) UnexportHandle() {
 	var _arg0 *C.GdkToplevel // out
 
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(externglib.InternObject(toplevel).Native()))
 
 	C.gdk_wayland_toplevel_unexport_handle(_arg0)
 	runtime.KeepAlive(toplevel)

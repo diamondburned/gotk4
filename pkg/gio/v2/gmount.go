@@ -230,7 +230,7 @@ func (mount *Mount) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_can_eject(_arg0)
 	runtime.KeepAlive(mount)
@@ -254,7 +254,7 @@ func (mount *Mount) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_can_unmount(_arg0)
 	runtime.KeepAlive(mount)
@@ -287,7 +287,7 @@ func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -321,8 +321,8 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
@@ -356,7 +356,7 @@ func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -364,7 +364,7 @@ func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -392,8 +392,8 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
@@ -421,7 +421,7 @@ func (mount *Mount) DefaultLocation() Filer {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_default_location(_arg0)
 	runtime.KeepAlive(mount)
@@ -464,7 +464,7 @@ func (mount *Mount) Drive() Driver {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_drive(_arg0)
 	runtime.KeepAlive(mount)
@@ -502,7 +502,7 @@ func (mount *Mount) Icon() Iconner {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_icon(_arg0)
 	runtime.KeepAlive(mount)
@@ -541,7 +541,7 @@ func (mount *Mount) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_name(_arg0)
 	runtime.KeepAlive(mount)
@@ -565,7 +565,7 @@ func (mount *Mount) Root() Filer {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_root(_arg0)
 	runtime.KeepAlive(mount)
@@ -604,7 +604,7 @@ func (mount *Mount) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_sort_key(_arg0)
 	runtime.KeepAlive(mount)
@@ -629,7 +629,7 @@ func (mount *Mount) SymbolicIcon() Iconner {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(mount)
@@ -670,7 +670,7 @@ func (mount *Mount) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_uuid(_arg0)
 	runtime.KeepAlive(mount)
@@ -697,7 +697,7 @@ func (mount *Mount) Volume() Volumer {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_get_volume(_arg0)
 	runtime.KeepAlive(mount)
@@ -750,7 +750,7 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -791,8 +791,8 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	var _cret **C.gchar       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
@@ -851,7 +851,7 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 	var _cret **C.gchar       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -920,7 +920,7 @@ func (mount *Mount) IsShadowed() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	_cret = C.g_mount_is_shadowed(_arg0)
 	runtime.KeepAlive(mount)
@@ -958,7 +958,7 @@ func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOpe
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -966,7 +966,7 @@ func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOpe
 	}
 	_arg1 = C.GMountMountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -994,8 +994,8 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_mount_remount_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
@@ -1017,7 +1017,7 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 func (mount *Mount) Shadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	C.g_mount_shadow(_arg0)
 	runtime.KeepAlive(mount)
@@ -1042,7 +1042,7 @@ func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callba
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1076,8 +1076,8 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_mount_unmount_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
@@ -1111,7 +1111,7 @@ func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmount
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1119,7 +1119,7 @@ func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmount
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
 	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
 	}
 	if callback != nil {
 		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -1147,8 +1147,8 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
@@ -1170,7 +1170,7 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 func (mount *Mount) Unshadow() {
 	var _arg0 *C.GMount // out
 
-	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
+	_arg0 = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
 
 	C.g_mount_unshadow(_arg0)
 	runtime.KeepAlive(mount)

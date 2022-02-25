@@ -544,8 +544,8 @@ func _gotk4_atk1_ComponentIface_ref_accessible_at_point(arg0 *C.AtkComponent, ar
 	object := iface.RefAccessibleAtPoint(_x, _y, _coordType)
 
 	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
-		C.g_object_ref(C.gpointer(object.Native()))
+		cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(object).Native()))
 	}
 
 	return cret
@@ -732,7 +732,7 @@ func (component *Component) Contains(x, y int, coordType CoordType) bool {
 	var _arg3 C.AtkCoordType  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	_arg3 = C.AtkCoordType(coordType)
@@ -763,7 +763,7 @@ func (component *Component) Alpha() float64 {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gdouble       // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 
 	_cret = C.atk_component_get_alpha(_arg0)
 	runtime.KeepAlive(component)
@@ -800,7 +800,7 @@ func (component *Component) Extents(coordType CoordType) (x int, y int, width in
 	var _arg4 C.gint          // in
 	var _arg5 C.AtkCoordType  // out
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg5 = C.AtkCoordType(coordType)
 
 	C.atk_component_get_extents(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, _arg5)
@@ -830,7 +830,7 @@ func (component *Component) Layer() Layer {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.AtkLayer      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 
 	_cret = C.atk_component_get_layer(_arg0)
 	runtime.KeepAlive(component)
@@ -855,7 +855,7 @@ func (component *Component) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 
 	_cret = C.atk_component_get_mdi_zorder(_arg0)
 	runtime.KeepAlive(component)
@@ -891,7 +891,7 @@ func (component *Component) Position(coordType CoordType) (x int, y int) {
 	var _arg2 C.gint          // in
 	var _arg3 C.AtkCoordType  // out
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg3 = C.AtkCoordType(coordType)
 
 	C.atk_component_get_position(_arg0, &_arg1, &_arg2, _arg3)
@@ -924,7 +924,7 @@ func (component *Component) Size() (width int, height int) {
 	var _arg1 C.gint          // in
 	var _arg2 C.gint          // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 
 	C.atk_component_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(component)
@@ -948,7 +948,7 @@ func (component *Component) GrabFocus() bool {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 
 	_cret = C.atk_component_grab_focus(_arg0)
 	runtime.KeepAlive(component)
@@ -983,7 +983,7 @@ func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) 
 	var _arg3 C.AtkCoordType  // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	_arg3 = C.AtkCoordType(coordType)
@@ -1018,7 +1018,7 @@ func (component *Component) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.guint(handlerId)
 
 	C.atk_component_remove_focus_handler(_arg0, _arg1)
@@ -1046,7 +1046,7 @@ func (component *Component) ScrollTo(typ ScrollType) bool {
 	var _arg1 C.AtkScrollType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.AtkScrollType(typ)
 
 	_cret = C.atk_component_scroll_to(_arg0, _arg1)
@@ -1083,7 +1083,7 @@ func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 	var _arg3 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.AtkCoordType(coords)
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
@@ -1127,7 +1127,7 @@ func (component *Component) SetExtents(x, y, width, height int, coordType CoordT
 	var _arg5 C.AtkCoordType  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	_arg3 = C.gint(width)
@@ -1174,7 +1174,7 @@ func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 	var _arg3 C.AtkCoordType  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	_arg3 = C.AtkCoordType(coordType)
@@ -1211,7 +1211,7 @@ func (component *Component) SetSize(width, height int) bool {
 	var _arg2 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 

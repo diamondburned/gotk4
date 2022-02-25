@@ -100,7 +100,7 @@ func (guide *ConstraintGuide) MaxSize(width, height *int) {
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	if width != nil {
 		_arg1 = (*C.int)(unsafe.Pointer(width))
 	}
@@ -126,7 +126,7 @@ func (guide *ConstraintGuide) MinSize(width, height *int) {
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	if width != nil {
 		_arg1 = (*C.int)(unsafe.Pointer(width))
 	}
@@ -150,7 +150,7 @@ func (guide *ConstraintGuide) Name() string {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _cret *C.char               // in
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 
 	_cret = C.gtk_constraint_guide_get_name(_arg0)
 	runtime.KeepAlive(guide)
@@ -176,7 +176,7 @@ func (guide *ConstraintGuide) NatSize(width, height *int) {
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	if width != nil {
 		_arg1 = (*C.int)(unsafe.Pointer(width))
 	}
@@ -201,7 +201,7 @@ func (guide *ConstraintGuide) Strength() ConstraintStrength {
 	var _arg0 *C.GtkConstraintGuide   // out
 	var _cret C.GtkConstraintStrength // in
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 
 	_cret = C.gtk_constraint_guide_get_strength(_arg0)
 	runtime.KeepAlive(guide)
@@ -228,7 +228,7 @@ func (guide *ConstraintGuide) SetMaxSize(width, height int) {
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -253,7 +253,7 @@ func (guide *ConstraintGuide) SetMinSize(width, height int) {
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -275,7 +275,7 @@ func (guide *ConstraintGuide) SetName(name string) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.char               // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	if name != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -301,7 +301,7 @@ func (guide *ConstraintGuide) SetNatSize(width, height int) {
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -322,7 +322,7 @@ func (guide *ConstraintGuide) SetStrength(strength ConstraintStrength) {
 	var _arg0 *C.GtkConstraintGuide   // out
 	var _arg1 C.GtkConstraintStrength // out
 
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
 	_arg1 = C.GtkConstraintStrength(strength)
 
 	C.gtk_constraint_guide_set_strength(_arg0, _arg1)

@@ -162,8 +162,8 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight i
 	var _arg10 C.GdkInterpType // out
 	var _arg11 C.int           // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(dest.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(dest).Native()))
 	_arg2 = C.int(destX)
 	_arg3 = C.int(destY)
 	_arg4 = C.int(destWidth)
@@ -241,8 +241,8 @@ func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHei
 	var _arg15 C.guint32       // out
 	var _arg16 C.guint32       // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(dest.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(dest).Native()))
 	_arg2 = C.int(destX)
 	_arg3 = C.int(destY)
 	_arg4 = C.int(destWidth)
@@ -308,7 +308,7 @@ func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType In
 	var _arg7 C.guint32       // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
 	_arg1 = C.int(destWidth)
 	_arg2 = C.int(destHeight)
 	_arg3 = C.GdkInterpType(interpType)
@@ -352,7 +352,7 @@ func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	var _arg1 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
 	if horizontal {
 		_arg1 = C.TRUE
 	}
@@ -388,7 +388,7 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	var _arg1 C.GdkPixbufRotation // out
 	var _cret *C.GdkPixbuf        // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
 	_arg1 = C.GdkPixbufRotation(angle)
 
 	_cret = C.gdk_pixbuf_rotate_simple(_arg0, _arg1)
@@ -443,8 +443,8 @@ func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, 
 	var _arg9 C.double         // out
 	var _arg10 C.GdkInterpType // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(dest.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(dest).Native()))
 	_arg2 = C.int(destX)
 	_arg3 = C.int(destY)
 	_arg4 = C.int(destWidth)
@@ -505,7 +505,7 @@ func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType)
 	var _arg3 C.GdkInterpType // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(src.Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
 	_arg1 = C.int(destWidth)
 	_arg2 = C.int(destHeight)
 	_arg3 = C.GdkInterpType(interpType)

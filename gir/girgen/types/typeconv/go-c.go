@@ -604,15 +604,19 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case *gir.Class, *gir.Interface:
 		value.header.Import("unsafe")
+		value.header.NeedsExternGLib()
 		value.p.Linef(
-			"%s = %s(unsafe.Pointer(%s.Native()))",
+			"%s = %s(unsafe.Pointer(externglib.InternObject(%s).Native()))",
 			value.Out.Set, value.OutCast(1), value.InNamePtrPubl(1),
 		)
 
 		if !value.ShouldFree() {
 			// Caller is taking ownership, which means it will steal our
 			// reference. Ensure that we take our own.
-			value.vtmpl("C.g_object_ref(C.gpointer(<.InNamePtrPubl 1>.Native()))")
+			value.p.Linef(
+				"C.g_object_ref(C.gpointer(externglib.InternObject(%s).Native()))",
+				value.InNamePtrPubl(1),
+			)
 		}
 
 		return true

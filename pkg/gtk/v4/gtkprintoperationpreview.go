@@ -253,7 +253,7 @@ func (preview *PrintOperationPreview) ConnectReady(f func(context *PrintContext)
 func (preview *PrintOperationPreview) EndPreview() {
 	var _arg0 *C.GtkPrintOperationPreview // out
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(externglib.InternObject(preview).Native()))
 
 	C.gtk_print_operation_preview_end_preview(_arg0)
 	runtime.KeepAlive(preview)
@@ -275,7 +275,7 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	var _arg1 C.int                       // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(externglib.InternObject(preview).Native()))
 	_arg1 = C.int(pageNr)
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
@@ -310,7 +310,7 @@ func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(preview.Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(externglib.InternObject(preview).Native()))
 	_arg1 = C.int(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)

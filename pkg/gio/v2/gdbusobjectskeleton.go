@@ -222,8 +222,8 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
 
 	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 	runtime.KeepAlive(object)
@@ -235,7 +235,7 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 func (object *DBusObjectSkeleton) Flush() {
 	var _arg0 *C.GDBusObjectSkeleton // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
 
 	C.g_dbus_object_skeleton_flush(_arg0)
 	runtime.KeepAlive(object)
@@ -251,8 +251,8 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
 
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 	runtime.KeepAlive(object)
@@ -273,7 +273,7 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -292,7 +292,7 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 

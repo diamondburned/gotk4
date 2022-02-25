@@ -364,7 +364,7 @@ func (frameClock *FrameClock) ConnectUpdate(f func()) externglib.SignalHandle {
 func (frameClock *FrameClock) BeginUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 
 	C.gdk_frame_clock_begin_updating(_arg0)
 	runtime.KeepAlive(frameClock)
@@ -375,7 +375,7 @@ func (frameClock *FrameClock) BeginUpdating() {
 func (frameClock *FrameClock) EndUpdating() {
 	var _arg0 *C.GdkFrameClock // out
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 
 	C.gdk_frame_clock_end_updating(_arg0)
 	runtime.KeepAlive(frameClock)
@@ -393,7 +393,7 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _cret *C.GdkFrameTimings // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 
 	_cret = C.gdk_frame_clock_get_current_timings(_arg0)
 	runtime.KeepAlive(frameClock)
@@ -426,7 +426,7 @@ func (frameClock *FrameClock) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 
 	_cret = C.gdk_frame_clock_get_frame_counter(_arg0)
 	runtime.KeepAlive(frameClock)
@@ -453,7 +453,7 @@ func (frameClock *FrameClock) FrameTime() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 
 	_cret = C.gdk_frame_clock_get_frame_time(_arg0)
 	runtime.KeepAlive(frameClock)
@@ -480,7 +480,7 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 	var _arg0 *C.GdkFrameClock // out
 	var _cret C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 
 	_cret = C.gdk_frame_clock_get_history_start(_arg0)
 	runtime.KeepAlive(frameClock)
@@ -517,7 +517,7 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 	var _arg2 C.gint64         // in
 	var _arg3 C.gint64         // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 	_arg1 = C.gint64(baseTime)
 
 	C.gdk_frame_clock_get_refresh_info(_arg0, _arg1, &_arg2, &_arg3)
@@ -551,7 +551,7 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	var _arg1 C.gint64           // out
 	var _cret *C.GdkFrameTimings // in
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 	_arg1 = C.gint64(frameCounter)
 
 	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)
@@ -591,7 +591,7 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	var _arg0 *C.GdkFrameClock     // out
 	var _arg1 C.GdkFrameClockPhase // out
 
-	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(externglib.InternObject(frameClock).Native()))
 	_arg1 = C.GdkFrameClockPhase(phase)
 
 	C.gdk_frame_clock_request_phase(_arg0, _arg1)

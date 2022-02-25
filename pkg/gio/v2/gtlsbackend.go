@@ -117,8 +117,8 @@ func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.GTlsBackend) (
 
 	tlsDatabase := iface.DefaultDatabase()
 
-	cret = (*C.GTlsDatabase)(unsafe.Pointer(tlsDatabase.Native()))
-	C.g_object_ref(C.gpointer(tlsDatabase.Native()))
+	cret = (*C.GTlsDatabase)(unsafe.Pointer(externglib.InternObject(tlsDatabase).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(tlsDatabase).Native()))
 
 	return cret
 }
@@ -171,7 +171,7 @@ func (backend *TLSBackend) CertificateType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_get_certificate_type(_arg0)
 	runtime.KeepAlive(backend)
@@ -194,7 +194,7 @@ func (backend *TLSBackend) ClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_get_client_connection_type(_arg0)
 	runtime.KeepAlive(backend)
@@ -216,7 +216,7 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	var _arg0 *C.GTlsBackend  // out
 	var _cret *C.GTlsDatabase // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_get_default_database(_arg0)
 	runtime.KeepAlive(backend)
@@ -256,7 +256,7 @@ func (backend *TLSBackend) DTLSClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_get_dtls_client_connection_type(_arg0)
 	runtime.KeepAlive(backend)
@@ -280,7 +280,7 @@ func (backend *TLSBackend) DTLSServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_get_dtls_server_connection_type(_arg0)
 	runtime.KeepAlive(backend)
@@ -302,7 +302,7 @@ func (backend *TLSBackend) FileDatabaseType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_get_file_database_type(_arg0)
 	runtime.KeepAlive(backend)
@@ -325,7 +325,7 @@ func (backend *TLSBackend) ServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_get_server_connection_type(_arg0)
 	runtime.KeepAlive(backend)
@@ -354,9 +354,9 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _arg0 *C.GTlsBackend  // out
 	var _arg1 *C.GTlsDatabase // out
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 	if database != nil {
-		_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(database.Native()))
+		_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(externglib.InternObject(database).Native()))
 	}
 
 	C.g_tls_backend_set_default_database(_arg0, _arg1)
@@ -375,7 +375,7 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_supports_dtls(_arg0)
 	runtime.KeepAlive(backend)
@@ -400,7 +400,7 @@ func (backend *TLSBackend) SupportsTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(backend.Native()))
+	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(externglib.InternObject(backend).Native()))
 
 	_cret = C.g_tls_backend_supports_tls(_arg0)
 	runtime.KeepAlive(backend)

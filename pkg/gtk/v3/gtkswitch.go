@@ -250,7 +250,7 @@ func (sw *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(sw).Native()))
 
 	_cret = C.gtk_switch_get_active(_arg0)
 	runtime.KeepAlive(sw)
@@ -274,7 +274,7 @@ func (sw *Switch) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(sw).Native()))
 
 	_cret = C.gtk_switch_get_state(_arg0)
 	runtime.KeepAlive(sw)
@@ -298,7 +298,7 @@ func (sw *Switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(sw).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -324,7 +324,7 @@ func (sw *Switch) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(sw.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(sw).Native()))
 	if state {
 		_arg1 = C.TRUE
 	}

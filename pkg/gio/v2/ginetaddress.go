@@ -193,8 +193,8 @@ func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 	var _arg1 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(otherAddress.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(otherAddress).Native()))
 
 	_cret = C.g_inet_address_equal(_arg0, _arg1)
 	runtime.KeepAlive(address)
@@ -219,7 +219,7 @@ func (address *InetAddress) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_family(_arg0)
 	runtime.KeepAlive(address)
@@ -241,7 +241,7 @@ func (address *InetAddress) IsAny() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_any(_arg0)
 	runtime.KeepAlive(address)
@@ -266,7 +266,7 @@ func (address *InetAddress) IsLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_link_local(_arg0)
 	runtime.KeepAlive(address)
@@ -290,7 +290,7 @@ func (address *InetAddress) IsLoopback() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_loopback(_arg0)
 	runtime.KeepAlive(address)
@@ -314,7 +314,7 @@ func (address *InetAddress) IsMcGlobal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_global(_arg0)
 	runtime.KeepAlive(address)
@@ -338,7 +338,7 @@ func (address *InetAddress) IsMcLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_link_local(_arg0)
 	runtime.KeepAlive(address)
@@ -362,7 +362,7 @@ func (address *InetAddress) IsMcNodeLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_node_local(_arg0)
 	runtime.KeepAlive(address)
@@ -387,7 +387,7 @@ func (address *InetAddress) IsMcOrgLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_org_local(_arg0)
 	runtime.KeepAlive(address)
@@ -411,7 +411,7 @@ func (address *InetAddress) IsMcSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_mc_site_local(_arg0)
 	runtime.KeepAlive(address)
@@ -435,7 +435,7 @@ func (address *InetAddress) IsMulticast() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_multicast(_arg0)
 	runtime.KeepAlive(address)
@@ -462,7 +462,7 @@ func (address *InetAddress) IsSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_is_site_local(_arg0)
 	runtime.KeepAlive(address)
@@ -487,7 +487,7 @@ func (address *InetAddress) NativeSize() uint {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gsize         // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_get_native_size(_arg0)
 	runtime.KeepAlive(address)
@@ -510,7 +510,7 @@ func (address *InetAddress) String() string {
 	var _arg0 *C.GInetAddress // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_inet_address_to_string(_arg0)
 	runtime.KeepAlive(address)

@@ -258,8 +258,8 @@ func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.AtkSelection, arg1 C.gint)
 	object := iface.RefSelection(_i)
 
 	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
-		C.g_object_ref(C.gpointer(object.Native()))
+		cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(object).Native()))
 	}
 
 	return cret
@@ -353,7 +353,7 @@ func (selection *Selection) AddSelection(i int) bool {
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(externglib.InternObject(selection).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_add_selection(_arg0, _arg1)
@@ -380,7 +380,7 @@ func (selection *Selection) ClearSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(externglib.InternObject(selection).Native()))
 
 	_cret = C.atk_selection_clear_selection(_arg0)
 	runtime.KeepAlive(selection)
@@ -409,7 +409,7 @@ func (selection *Selection) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(externglib.InternObject(selection).Native()))
 
 	_cret = C.atk_selection_get_selection_count(_arg0)
 	runtime.KeepAlive(selection)
@@ -441,7 +441,7 @@ func (selection *Selection) IsChildSelected(i int) bool {
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(externglib.InternObject(selection).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_is_child_selected(_arg0, _arg1)
@@ -478,7 +478,7 @@ func (selection *Selection) RefSelection(i int) *ObjectClass {
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(externglib.InternObject(selection).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
@@ -511,7 +511,7 @@ func (selection *Selection) RemoveSelection(i int) bool {
 	var _arg1 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(externglib.InternObject(selection).Native()))
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_selection_remove_selection(_arg0, _arg1)
@@ -538,7 +538,7 @@ func (selection *Selection) SelectAllSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkSelection)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(externglib.InternObject(selection).Native()))
 
 	_cret = C.atk_selection_select_all_selection(_arg0)
 	runtime.KeepAlive(selection)

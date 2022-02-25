@@ -234,7 +234,7 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 	var _cret *C.GSocket      // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -290,8 +290,8 @@ func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 	var _arg2 C.gboolean        // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	if allowReuse {
 		_arg2 = C.TRUE
 	}
@@ -317,7 +317,7 @@ func (socket *Socket) CheckConnectResult() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	C.g_socket_check_connect_result(_arg0, &_cerr)
 	runtime.KeepAlive(socket)
@@ -361,7 +361,7 @@ func (socket *Socket) Close() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	C.g_socket_close(_arg0, &_cerr)
 	runtime.KeepAlive(socket)
@@ -404,7 +404,7 @@ func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOConditio
 	var _arg1 C.GIOCondition // out
 	var _cret C.GIOCondition // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	_arg1 = C.GIOCondition(condition)
 
 	_cret = C.g_socket_condition_check(_arg0, _arg1)
@@ -446,7 +446,7 @@ func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOC
 	var _arg2 C.gint64        // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -491,7 +491,7 @@ func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondit
 	var _arg1 C.GIOCondition  // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -541,13 +541,13 @@ func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser
 	var _arg1 *C.GSocketAddress // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	C.g_socket_connect(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(socket)
@@ -584,7 +584,7 @@ func (socket *Socket) AvailableBytes() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.gssize   // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_available_bytes(_arg0)
 	runtime.KeepAlive(socket)
@@ -607,7 +607,7 @@ func (socket *Socket) Blocking() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_blocking(_arg0)
 	runtime.KeepAlive(socket)
@@ -632,7 +632,7 @@ func (socket *Socket) Broadcast() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_broadcast(_arg0)
 	runtime.KeepAlive(socket)
@@ -679,7 +679,7 @@ func (socket *Socket) Credentials() (*Credentials, error) {
 	var _cret *C.GCredentials // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_credentials(_arg0, &_cerr)
 	runtime.KeepAlive(socket)
@@ -705,7 +705,7 @@ func (socket *Socket) Family() SocketFamily {
 	var _arg0 *C.GSocket      // out
 	var _cret C.GSocketFamily // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_family(_arg0)
 	runtime.KeepAlive(socket)
@@ -730,7 +730,7 @@ func (socket *Socket) Fd() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.int      // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_fd(_arg0)
 	runtime.KeepAlive(socket)
@@ -753,7 +753,7 @@ func (socket *Socket) Keepalive() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_keepalive(_arg0)
 	runtime.KeepAlive(socket)
@@ -778,7 +778,7 @@ func (socket *Socket) ListenBacklog() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_listen_backlog(_arg0)
 	runtime.KeepAlive(socket)
@@ -804,7 +804,7 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 	var _cret *C.GSocketAddress // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_local_address(_arg0, &_cerr)
 	runtime.KeepAlive(socket)
@@ -848,7 +848,7 @@ func (socket *Socket) MulticastLoopback() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_multicast_loopback(_arg0)
 	runtime.KeepAlive(socket)
@@ -873,7 +873,7 @@ func (socket *Socket) MulticastTTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_multicast_ttl(_arg0)
 	runtime.KeepAlive(socket)
@@ -914,7 +914,7 @@ func (socket *Socket) Option(level, optname int) (int, error) {
 	var _arg3 C.gint     // in
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	_arg1 = C.gint(level)
 	_arg2 = C.gint(optname)
 
@@ -945,7 +945,7 @@ func (socket *Socket) Protocol() SocketProtocol {
 	var _arg0 *C.GSocket        // out
 	var _cret C.GSocketProtocol // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_protocol(_arg0)
 	runtime.KeepAlive(socket)
@@ -970,7 +970,7 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 	var _cret *C.GSocketAddress // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_remote_address(_arg0, &_cerr)
 	runtime.KeepAlive(socket)
@@ -1012,7 +1012,7 @@ func (socket *Socket) SocketType() SocketType {
 	var _arg0 *C.GSocket    // out
 	var _cret C.GSocketType // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_socket_type(_arg0)
 	runtime.KeepAlive(socket)
@@ -1035,7 +1035,7 @@ func (socket *Socket) Timeout() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_timeout(_arg0)
 	runtime.KeepAlive(socket)
@@ -1058,7 +1058,7 @@ func (socket *Socket) TTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_get_ttl(_arg0)
 	runtime.KeepAlive(socket)
@@ -1080,7 +1080,7 @@ func (socket *Socket) IsClosed() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_is_closed(_arg0)
 	runtime.KeepAlive(socket)
@@ -1110,7 +1110,7 @@ func (socket *Socket) IsConnected() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_is_connected(_arg0)
 	runtime.KeepAlive(socket)
@@ -1151,8 +1151,8 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 	var _arg3 *C.gchar        // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
@@ -1205,10 +1205,10 @@ func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, 
 	var _arg3 *C.gchar        // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	if sourceSpecific != nil {
-		_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
+		_arg2 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(sourceSpecific).Native()))
 	}
 	if iface != "" {
 		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
@@ -1253,8 +1253,8 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 	var _arg3 *C.gchar        // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
@@ -1299,10 +1299,10 @@ func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress,
 	var _arg3 *C.gchar        // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	if sourceSpecific != nil {
-		_arg2 = (*C.GInetAddress)(unsafe.Pointer(sourceSpecific.Native()))
+		_arg2 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(sourceSpecific).Native()))
 	}
 	if iface != "" {
 		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
@@ -1336,7 +1336,7 @@ func (socket *Socket) Listen() error {
 	var _arg0 *C.GSocket // out
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	C.g_socket_listen(_arg0, &_cerr)
 	runtime.KeepAlive(socket)
@@ -1391,7 +1391,7 @@ func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1445,7 +1445,7 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1560,7 +1560,7 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 	var _cret C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1619,7 +1619,7 @@ func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, bl
 	var _cret C.gssize   // in
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1682,7 +1682,7 @@ func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -1776,14 +1776,14 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if address != nil {
-		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	}
 	_arg3 = (C.gint)(len(vectors))
 	_arg2 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
@@ -1801,7 +1801,7 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 		{
 			out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 			for i := range messages {
-				out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
+				out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(messages[i]).Native()))
 			}
 		}
 	}
@@ -1868,14 +1868,14 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 	var _cret C.GPollableReturn // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if address != nil {
-		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	}
 	_arg3 = (C.gint)(len(vectors))
 	_arg2 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
@@ -1893,7 +1893,7 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 		{
 			out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 			for i := range messages {
-				out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
+				out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(messages[i]).Native()))
 			}
 		}
 	}
@@ -1980,7 +1980,7 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 	var _cret C.gint    // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2039,14 +2039,14 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if address != nil {
-		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	}
 	_arg3 = (C.gsize)(len(buffer))
 	_arg2 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
@@ -2094,7 +2094,7 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, block
 	var _cret C.gssize   // in
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -2142,7 +2142,7 @@ func (socket *Socket) SetBlocking(blocking bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	if blocking {
 		_arg1 = C.TRUE
 	}
@@ -2163,7 +2163,7 @@ func (socket *Socket) SetBroadcast(broadcast bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	if broadcast {
 		_arg1 = C.TRUE
 	}
@@ -2196,7 +2196,7 @@ func (socket *Socket) SetKeepalive(keepalive bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	if keepalive {
 		_arg1 = C.TRUE
 	}
@@ -2222,7 +2222,7 @@ func (socket *Socket) SetListenBacklog(backlog int) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	_arg1 = C.gint(backlog)
 
 	C.g_socket_set_listen_backlog(_arg0, _arg1)
@@ -2243,7 +2243,7 @@ func (socket *Socket) SetMulticastLoopback(loopback bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	if loopback {
 		_arg1 = C.TRUE
 	}
@@ -2265,7 +2265,7 @@ func (socket *Socket) SetMulticastTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	_arg1 = C.guint(ttl)
 
 	C.g_socket_set_multicast_ttl(_arg0, _arg1)
@@ -2295,7 +2295,7 @@ func (socket *Socket) SetOption(level, optname, value int) error {
 	var _arg3 C.gint     // out
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	_arg1 = C.gint(level)
 	_arg2 = C.gint(optname)
 	_arg3 = C.gint(value)
@@ -2341,7 +2341,7 @@ func (socket *Socket) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	_arg1 = C.guint(timeout)
 
 	C.g_socket_set_timeout(_arg0, _arg1)
@@ -2360,7 +2360,7 @@ func (socket *Socket) SetTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	_arg1 = C.guint(ttl)
 
 	C.g_socket_set_ttl(_arg0, _arg1)
@@ -2394,7 +2394,7 @@ func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
 	var _arg2 C.gboolean // out
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	if shutdownRead {
 		_arg1 = C.TRUE
 	}
@@ -2433,7 +2433,7 @@ func (socket *Socket) SpeaksIPv4() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 
 	_cret = C.g_socket_speaks_ipv4(_arg0)
 	runtime.KeepAlive(socket)

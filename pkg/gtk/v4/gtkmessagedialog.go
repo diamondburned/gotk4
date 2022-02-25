@@ -224,7 +224,7 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(externglib.InternObject(messageDialog).Native()))
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 	runtime.KeepAlive(messageDialog)
@@ -262,7 +262,7 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(externglib.InternObject(messageDialog).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -277,7 +277,7 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 // from ResponseType.
 func NewMessageDialog(parent *Window, flags DialogFlags, typ MessageType, buttons ButtonsType) *MessageDialog {
 	w := C._gotk4_gtk_message_dialog_new2(
-		(*C.GtkWindow)(unsafe.Pointer(parent.Native())),
+		(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
 		(C.GtkDialogFlags)(flags),
 		(C.GtkMessageType)(typ),
 		(C.GtkButtonsType)(buttons),

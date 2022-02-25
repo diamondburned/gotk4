@@ -79,7 +79,7 @@ func (self *ListItem) Activatable() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_item_get_activatable(_arg0)
 	runtime.KeepAlive(self)
@@ -104,7 +104,7 @@ func (self *ListItem) Child() Widgetter {
 	var _arg0 *C.GtkListItem // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_item_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -143,7 +143,7 @@ func (self *ListItem) Item() *externglib.Object {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_item_get_item(_arg0)
 	runtime.KeepAlive(self)
@@ -167,7 +167,7 @@ func (self *ListItem) Position() uint {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_item_get_position(_arg0)
 	runtime.KeepAlive(self)
@@ -192,7 +192,7 @@ func (self *ListItem) Selectable() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_item_get_selectable(_arg0)
 	runtime.KeepAlive(self)
@@ -219,7 +219,7 @@ func (self *ListItem) Selected() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_list_item_get_selected(_arg0)
 	runtime.KeepAlive(self)
@@ -250,7 +250,7 @@ func (self *ListItem) SetActivatable(activatable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if activatable {
 		_arg1 = C.TRUE
 	}
@@ -273,9 +273,9 @@ func (self *ListItem) SetChild(child Widgetter) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_list_item_set_child(_arg0, _arg1)
@@ -303,7 +303,7 @@ func (self *ListItem) SetSelectable(selectable bool) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if selectable {
 		_arg1 = C.TRUE
 	}

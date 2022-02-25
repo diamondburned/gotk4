@@ -304,7 +304,7 @@ func (stream *PollableOutputStream) CanPoll() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_pollable_output_stream_can_poll(_arg0)
 	runtime.KeepAlive(stream)
@@ -340,7 +340,7 @@ func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Sour
 	var _arg1 *C.GCancellable          // out
 	var _cret *C.GSource               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -382,7 +382,7 @@ func (stream *PollableOutputStream) IsWritable() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_pollable_output_stream_is_writable(_arg0)
 	runtime.KeepAlive(stream)
@@ -429,7 +429,7 @@ func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -495,7 +495,7 @@ func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vecto
 	var _cret C.GPollableReturn // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)

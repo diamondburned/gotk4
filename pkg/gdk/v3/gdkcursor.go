@@ -462,7 +462,7 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 	var _arg2 C.GdkCursorType // out
 	var _cret *C.GdkCursor    // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg2 = C.GdkCursorType(cursorType)
 
 	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
@@ -569,7 +569,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 	var _arg2 *C.gchar      // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -620,8 +620,8 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 	var _arg4 C.gint        // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	_arg3 = C.gint(x)
 	_arg4 = C.gint(y)
 
@@ -668,7 +668,7 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64
 	var _arg4 C.gdouble          // out
 	var _cret *C.GdkCursor       // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
@@ -696,7 +696,7 @@ func (cursor *Cursor) CursorType() CursorType {
 	var _arg0 *C.GdkCursor    // out
 	var _cret C.GdkCursorType // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_cursor_type(_arg0)
 	runtime.KeepAlive(cursor)
@@ -718,7 +718,7 @@ func (cursor *Cursor) Display() *Display {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_display(_arg0)
 	runtime.KeepAlive(cursor)
@@ -744,7 +744,7 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_image(_arg0)
 	runtime.KeepAlive(cursor)
@@ -787,7 +787,7 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	var _arg2 C.gdouble          // in
 	var _cret *C.cairo_surface_t // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
 
 	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(cursor)

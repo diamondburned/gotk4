@@ -78,8 +78,8 @@ func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *N
 	var _arg2 *C.GtkWidget             // out
 	var _cret *C.AtkObject             // in
 
-	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer(notebook.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer(externglib.InternObject(notebook).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)
 	runtime.KeepAlive(notebook)
@@ -95,7 +95,7 @@ func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *N
 func (page *NotebookPageAccessible) Invalidate() {
 	var _arg0 *C.GtkNotebookPageAccessible // out
 
-	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(page.Native()))
+	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(externglib.InternObject(page).Native()))
 
 	C.gtk_notebook_page_accessible_invalidate(_arg0)
 	runtime.KeepAlive(page)

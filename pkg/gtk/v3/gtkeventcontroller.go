@@ -92,7 +92,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
 	var _cret C.GtkPropagationPhase // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 	runtime.KeepAlive(controller)
@@ -114,7 +114,7 @@ func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 	runtime.KeepAlive(controller)
@@ -159,7 +159,7 @@ func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 	var _arg1 *C.GdkEvent           // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_event_controller_handle_event(_arg0, _arg1)
@@ -181,7 +181,7 @@ func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 func (controller *EventController) Reset() {
 	var _arg0 *C.GtkEventController // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 
 	C.gtk_event_controller_reset(_arg0)
 	runtime.KeepAlive(controller)
@@ -202,7 +202,7 @@ func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out
 	var _arg1 C.GtkPropagationPhase // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
 	_arg1 = C.GtkPropagationPhase(phase)
 
 	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)

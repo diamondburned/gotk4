@@ -143,8 +143,8 @@ func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 	var _arg2 *C.GdkDevice // out
 	var _arg3 C.gboolean   // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 	if blockOthers {
 		_arg3 = C.TRUE
 	}
@@ -168,8 +168,8 @@ func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	C.gtk_device_grab_remove(_arg1, _arg2)
 	runtime.KeepAlive(widget)
@@ -813,7 +813,7 @@ func PropagateEvent(widget Widgetter, event *gdk.Event) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkEvent  // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
 	C.gtk_propagate_event(_arg1, _arg2)
@@ -889,7 +889,7 @@ func True() bool {
 func (widget *Widget) GrabAdd() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_grab_add(_arg0)
 	runtime.KeepAlive(widget)
@@ -903,7 +903,7 @@ func (widget *Widget) GrabAdd() {
 func (widget *Widget) GrabRemove() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_grab_remove(_arg0)
 	runtime.KeepAlive(widget)

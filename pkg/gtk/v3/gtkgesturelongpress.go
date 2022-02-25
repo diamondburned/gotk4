@@ -135,7 +135,7 @@ func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_gesture_long_press_new(_arg1)
 	runtime.KeepAlive(widget)

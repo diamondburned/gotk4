@@ -142,7 +142,7 @@ func (plug *Plug) Embedded() bool {
 	var _arg0 *C.GtkPlug // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPlug)(unsafe.Pointer(plug.Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
 
 	_cret = C.gtk_plug_get_embedded(_arg0)
 	runtime.KeepAlive(plug)
@@ -166,7 +166,7 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 	var _arg0 *C.GtkPlug   // out
 	var _cret *C.GdkWindow // in
 
-	_arg0 = (*C.GtkPlug)(unsafe.Pointer(plug.Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
 
 	_cret = C.gtk_plug_get_socket_window(_arg0)
 	runtime.KeepAlive(plug)

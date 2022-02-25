@@ -89,7 +89,7 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
 	var _cret *C.cairo_t         // in
 
-	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gdk_cairo_context_cairo_create(_arg0)
 	runtime.KeepAlive(self)

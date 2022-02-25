@@ -667,7 +667,7 @@ func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
 	object := iface.Caption()
 
 	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+		cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 	}
 
 	return cret
@@ -736,7 +736,7 @@ func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cr
 	object := iface.ColumnHeader(_column)
 
 	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+		cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 	}
 
 	return cret
@@ -849,7 +849,7 @@ func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret 
 	object := iface.RowHeader(_row)
 
 	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+		cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 	}
 
 	return cret
@@ -894,8 +894,8 @@ func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
 
 	object := iface.Summary()
 
-	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
-	C.g_object_ref(C.gpointer(object.Native()))
+	cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(object).Native()))
 
 	return cret
 }
@@ -977,8 +977,8 @@ func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (
 
 	object := iface.RefAt(_row, _column)
 
-	cret = (*C.AtkObject)(unsafe.Pointer(object.Native()))
-	C.g_object_ref(C.gpointer(object.Native()))
+	cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(object).Native()))
 
 	return cret
 }
@@ -1340,7 +1340,7 @@ func (table *Table) AddColumnSelection(column int) bool {
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_add_column_selection(_arg0, _arg1)
@@ -1372,7 +1372,7 @@ func (table *Table) AddRowSelection(row int) bool {
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_add_row_selection(_arg0, _arg1)
@@ -1399,7 +1399,7 @@ func (table *Table) Caption() *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 
 	_cret = C.atk_table_get_caption(_arg0)
 	runtime.KeepAlive(table)
@@ -1431,7 +1431,7 @@ func (table *Table) ColumnAtIndex(index_ int) int {
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.atk_table_get_column_at_index(_arg0, _arg1)
@@ -1462,7 +1462,7 @@ func (table *Table) ColumnDescription(column int) string {
 	var _arg1 C.gint      // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_description(_arg0, _arg1)
@@ -1495,7 +1495,7 @@ func (table *Table) ColumnExtentAt(row, column int) int {
 	var _arg2 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -1528,7 +1528,7 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_get_column_header(_arg0, _arg1)
@@ -1566,7 +1566,7 @@ func (table *Table) IndexAt(row, column int) int {
 	var _arg2 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -1593,7 +1593,7 @@ func (table *Table) NColumns() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 
 	_cret = C.atk_table_get_n_columns(_arg0)
 	runtime.KeepAlive(table)
@@ -1616,7 +1616,7 @@ func (table *Table) NRows() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 
 	_cret = C.atk_table_get_n_rows(_arg0)
 	runtime.KeepAlive(table)
@@ -1646,7 +1646,7 @@ func (table *Table) RowAtIndex(index_ int) int {
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.atk_table_get_row_at_index(_arg0, _arg1)
@@ -1676,7 +1676,7 @@ func (table *Table) RowDescription(row int) string {
 	var _arg1 C.gint      // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_description(_arg0, _arg1)
@@ -1711,7 +1711,7 @@ func (table *Table) RowExtentAt(row, column int) int {
 	var _arg2 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -1743,7 +1743,7 @@ func (table *Table) RowHeader(row int) *ObjectClass {
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_get_row_header(_arg0, _arg1)
@@ -1777,7 +1777,7 @@ func (table *Table) SelectedColumns(selected **int) int {
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = (**C.gint)(unsafe.Pointer(selected))
 
 	_cret = C.atk_table_get_selected_columns(_arg0, _arg1)
@@ -1808,7 +1808,7 @@ func (table *Table) SelectedRows(selected **int) int {
 	var _arg1 **C.gint    // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = (**C.gint)(unsafe.Pointer(selected))
 
 	_cret = C.atk_table_get_selected_rows(_arg0, _arg1)
@@ -1833,7 +1833,7 @@ func (table *Table) Summary() *ObjectClass {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 
 	_cret = C.atk_table_get_summary(_arg0)
 	runtime.KeepAlive(table)
@@ -1862,7 +1862,7 @@ func (table *Table) IsColumnSelected(column int) bool {
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_is_column_selected(_arg0, _arg1)
@@ -1895,7 +1895,7 @@ func (table *Table) IsRowSelected(row int) bool {
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_is_row_selected(_arg0, _arg1)
@@ -1930,7 +1930,7 @@ func (table *Table) IsSelected(row, column int) bool {
 	var _arg2 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -1966,7 +1966,7 @@ func (table *Table) RefAt(row, column int) *ObjectClass {
 	var _arg2 C.gint       // out
 	var _cret *C.AtkObject // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
 
@@ -1998,7 +1998,7 @@ func (table *Table) RemoveColumnSelection(column int) bool {
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
 
 	_cret = C.atk_table_remove_column_selection(_arg0, _arg1)
@@ -2030,7 +2030,7 @@ func (table *Table) RemoveRowSelection(row int) bool {
 	var _arg1 C.gint      // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 
 	_cret = C.atk_table_remove_row_selection(_arg0, _arg1)
@@ -2056,8 +2056,8 @@ func (table *Table) SetCaption(caption *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(caption.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(caption).Native()))
 
 	C.atk_table_set_caption(_arg0, _arg1)
 	runtime.KeepAlive(table)
@@ -2078,7 +2078,7 @@ func (table *Table) SetColumnDescription(column int, description string) {
 	var _arg1 C.gint      // out
 	var _arg2 *C.gchar    // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -2101,9 +2101,9 @@ func (table *Table) SetColumnHeader(column int, header *ObjectClass) {
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(header).Native()))
 
 	C.atk_table_set_column_header(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(table)
@@ -2124,7 +2124,7 @@ func (table *Table) SetRowDescription(row int, description string) {
 	var _arg1 C.gint      // out
 	var _arg2 *C.gchar    // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -2147,9 +2147,9 @@ func (table *Table) SetRowHeader(row int, header *ObjectClass) {
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer(header.Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(header).Native()))
 
 	C.atk_table_set_row_header(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(table)
@@ -2167,8 +2167,8 @@ func (table *Table) SetSummary(accessible *ObjectClass) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 
-	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(externglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(accessible).Native()))
 
 	C.atk_table_set_summary(_arg0, _arg1)
 	runtime.KeepAlive(table)

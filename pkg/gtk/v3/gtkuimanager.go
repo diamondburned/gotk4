@@ -591,7 +591,7 @@ func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.GtkUIManager, arg1 *C.gchar) 
 
 	action := iface.Action(_path)
 
-	cret = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	cret = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
 
 	return cret
 }
@@ -607,7 +607,7 @@ func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.GtkUIManager, arg1 *C.gchar) 
 
 	widget := iface.Widget(_path)
 
-	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	cret = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	return cret
 }
@@ -912,7 +912,7 @@ func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIM
 	var _arg5 C.GtkUIManagerItemType // out
 	var _arg6 C.gboolean             // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = C.guint(mergeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -958,7 +958,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	var _cret C.guint         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -998,7 +998,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	var _cret C.guint         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1041,7 +1041,7 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 	var _cret C.guint         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
@@ -1081,7 +1081,7 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 func (manager *UIManager) EnsureUpdate() {
 	var _arg0 *C.GtkUIManager // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	C.gtk_ui_manager_ensure_update(_arg0)
 	runtime.KeepAlive(manager)
@@ -1099,7 +1099,7 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkUIManager  // out
 	var _cret *C.GtkAccelGroup // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_ui_manager_get_accel_group(_arg0)
 	runtime.KeepAlive(manager)
@@ -1130,7 +1130,7 @@ func (manager *UIManager) Action(path string) *Action {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkAction    // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1158,7 +1158,7 @@ func (manager *UIManager) ActionGroups() []ActionGroup {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.GList        // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_ui_manager_get_action_groups(_arg0)
 	runtime.KeepAlive(manager)
@@ -1190,7 +1190,7 @@ func (manager *UIManager) AddTearoffs() bool {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_ui_manager_get_add_tearoffs(_arg0)
 	runtime.KeepAlive(manager)
@@ -1223,7 +1223,7 @@ func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
 	var _arg1 C.GtkUIManagerItemType // out
 	var _cret *C.GSList              // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = C.GtkUIManagerItemType(types)
 
 	_cret = C.gtk_ui_manager_get_toplevels(_arg0, _arg1)
@@ -1272,7 +1272,7 @@ func (manager *UIManager) Ui() string {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_ui_manager_get_ui(_arg0)
 	runtime.KeepAlive(manager)
@@ -1314,7 +1314,7 @@ func (manager *UIManager) Widget(path string) Widgetter {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkWidget    // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1364,8 +1364,8 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 	var _arg1 *C.GtkActionGroup // out
 	var _arg2 C.gint            // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 	_arg2 = C.gint(pos)
 
 	C.gtk_ui_manager_insert_action_group(_arg0, _arg1, _arg2)
@@ -1387,7 +1387,7 @@ func (manager *UIManager) NewMergeID() uint {
 	var _arg0 *C.GtkUIManager // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 
 	_cret = C.gtk_ui_manager_new_merge_id(_arg0)
 	runtime.KeepAlive(manager)
@@ -1412,8 +1412,8 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 	var _arg0 *C.GtkUIManager   // out
 	var _arg1 *C.GtkActionGroup // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
 
 	C.gtk_ui_manager_remove_action_group(_arg0, _arg1)
 	runtime.KeepAlive(manager)
@@ -1432,7 +1432,7 @@ func (manager *UIManager) RemoveUi(mergeId uint) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.guint         // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	_arg1 = C.guint(mergeId)
 
 	C.gtk_ui_manager_remove_ui(_arg0, _arg1)
@@ -1457,7 +1457,7 @@ func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 C.gboolean      // out
 
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
 	if addTearoffs {
 		_arg1 = C.TRUE
 	}

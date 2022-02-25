@@ -223,7 +223,7 @@ func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.GIOStream) (cret *C.GInp
 
 	inputStream := iface.InputStream()
 
-	cret = (*C.GInputStream)(unsafe.Pointer(inputStream.Native()))
+	cret = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(inputStream).Native()))
 
 	return cret
 }
@@ -235,7 +235,7 @@ func _gotk4_gio2_IOStreamClass_get_output_stream(arg0 *C.GIOStream) (cret *C.GOu
 
 	outputStream := iface.OutputStream()
 
-	cret = (*C.GOutputStream)(unsafe.Pointer(outputStream.Native()))
+	cret = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(outputStream).Native()))
 
 	return cret
 }
@@ -263,7 +263,7 @@ func BaseIOStream(obj IOStreamer) *IOStream {
 func (stream *IOStream) ClearPending() {
 	var _arg0 *C.GIOStream // out
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	C.g_io_stream_clear_pending(_arg0)
 	runtime.KeepAlive(stream)
@@ -311,7 +311,7 @@ func (stream *IOStream) Close(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -354,7 +354,7 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -384,8 +384,8 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
@@ -410,7 +410,7 @@ func (stream *IOStream) InputStream() InputStreamer {
 	var _arg0 *C.GIOStream    // out
 	var _cret *C.GInputStream // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_io_stream_get_input_stream(_arg0)
 	runtime.KeepAlive(stream)
@@ -449,7 +449,7 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 	var _arg0 *C.GIOStream     // out
 	var _cret *C.GOutputStream // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_io_stream_get_output_stream(_arg0)
 	runtime.KeepAlive(stream)
@@ -487,7 +487,7 @@ func (stream *IOStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_io_stream_has_pending(_arg0)
 	runtime.KeepAlive(stream)
@@ -511,7 +511,7 @@ func (stream *IOStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_io_stream_is_closed(_arg0)
 	runtime.KeepAlive(stream)
@@ -531,7 +531,7 @@ func (stream *IOStream) SetPending() error {
 	var _arg0 *C.GIOStream // out
 	var _cerr *C.GError    // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	C.g_io_stream_set_pending(_arg0, &_cerr)
 	runtime.KeepAlive(stream)
@@ -569,13 +569,13 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 	var _arg5 C.GAsyncReadyCallback  // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream1.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream1).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
 		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(stream2.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream2).Native()))
 	_arg2 = C.GIOStreamSpliceFlags(flags)
 	_arg3 = C.int(ioPriority)
 	if callback != nil {
@@ -602,7 +602,7 @@ func IOStreamSpliceFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.g_io_stream_splice_finish(_arg1, &_cerr)
 	runtime.KeepAlive(result)

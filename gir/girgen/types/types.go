@@ -169,10 +169,10 @@ var objectorMethods = map[string]struct{}{
 	"HandlerBlock":      {},
 	"HandlerUnblock":    {},
 	"HandlerDisconnect": {},
+	"NotifyProperty":    {},
 	"ObjectProperty":    {},
 	"SetObjectProperty": {},
 	"Cast":              {},
-	"Native":            {},
 	"baseObject":        {},
 }
 

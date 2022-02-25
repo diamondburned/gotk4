@@ -143,7 +143,7 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, a
 	iconFactory := iface.IconFactory(_path)
 
 	if iconFactory != nil {
-		cret = (*C.GtkIconFactory)(unsafe.Pointer(iconFactory.Native()))
+		cret = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(iconFactory).Native()))
 	}
 
 	return cret
@@ -168,8 +168,8 @@ func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.GtkStyleProvider, arg1 *C.
 	styleProperties := iface.Style(_path)
 
 	if styleProperties != nil {
-		cret = (*C.GtkStyleProperties)(unsafe.Pointer(styleProperties.Native()))
-		C.g_object_ref(C.gpointer(styleProperties.Native()))
+		cret = (*C.GtkStyleProperties)(unsafe.Pointer(externglib.InternObject(styleProperties).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(styleProperties).Native()))
 	}
 
 	return cret
@@ -203,7 +203,7 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	var _arg1 *C.GtkWidgetPath    // out
 	var _cret *C.GtkIconFactory   // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_style_provider_get_icon_factory(_arg0, _arg1)
@@ -238,7 +238,7 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	var _arg1 *C.GtkWidgetPath      // out
 	var _cret *C.GtkStyleProperties // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_style_provider_get_style(_arg0, _arg1)

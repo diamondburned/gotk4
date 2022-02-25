@@ -116,7 +116,7 @@ func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cre
 
 	hyperlink := iface.Link(_linkIndex)
 
-	cret = (*C.AtkHyperlink)(unsafe.Pointer(hyperlink.Native()))
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(hyperlink).Native()))
 
 	return cret
 }
@@ -212,7 +212,7 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg1 C.gint          // out
 	var _cret *C.AtkHyperlink // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(externglib.InternObject(hypertext).Native()))
 	_arg1 = C.gint(linkIndex)
 
 	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
@@ -243,7 +243,7 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg1 C.gint          // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(externglib.InternObject(hypertext).Native()))
 	_arg1 = C.gint(charIndex)
 
 	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
@@ -267,7 +267,7 @@ func (hypertext *Hypertext) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(hypertext.Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(externglib.InternObject(hypertext).Native()))
 
 	_cret = C.atk_hypertext_get_n_links(_arg0)
 	runtime.KeepAlive(hypertext)

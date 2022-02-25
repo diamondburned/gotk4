@@ -86,7 +86,7 @@ func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible 
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.AtkObject       // in
 
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.gtk_renderer_cell_accessible_new(_arg1)
 	runtime.KeepAlive(renderer)

@@ -139,8 +139,8 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 	var _arg2 *C.GtkCellAreaContext // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
 	runtime.KeepAlive(area)
@@ -197,7 +197,7 @@ func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 
 	_cret = C.gtk_cell_view_new_with_pixbuf(_arg1)
 	runtime.KeepAlive(pixbuf)
@@ -248,7 +248,7 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
 	var _cret *C.GtkTreePath // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 
 	_cret = C.gtk_cell_view_get_displayed_row(_arg0)
 	runtime.KeepAlive(cellView)
@@ -279,7 +279,7 @@ func (cellView *CellView) DrawSensitive() bool {
 	var _arg0 *C.GtkCellView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 
 	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
 	runtime.KeepAlive(cellView)
@@ -304,7 +304,7 @@ func (cellView *CellView) FitModel() bool {
 	var _arg0 *C.GtkCellView // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 
 	_cret = C.gtk_cell_view_get_fit_model(_arg0)
 	runtime.KeepAlive(cellView)
@@ -328,7 +328,7 @@ func (cellView *CellView) Model() TreeModeller {
 	var _arg0 *C.GtkCellView  // out
 	var _cret *C.GtkTreeModel // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 
 	_cret = C.gtk_cell_view_get_model(_arg0)
 	runtime.KeepAlive(cellView)
@@ -378,7 +378,7 @@ func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
 	var _arg2 C.GtkRequisition // in
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, &_arg2)
@@ -408,7 +408,7 @@ func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GdkColor    // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_cell_view_set_background_color(_arg0, _arg1)
@@ -426,7 +426,7 @@ func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GdkRGBA     // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gtk_cell_view_set_background_rgba(_arg0, _arg1)
@@ -448,7 +448,7 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GtkTreePath // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 	if path != nil {
 		_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	}
@@ -471,7 +471,7 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 	if drawSensitive {
 		_arg1 = C.TRUE
 	}
@@ -496,7 +496,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 	if fitModel {
 		_arg1 = C.TRUE
 	}
@@ -518,9 +518,9 @@ func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
+	_arg0 = (*C.GtkCellView)(unsafe.Pointer(externglib.InternObject(cellView).Native()))
 	if model != nil {
-		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_cell_view_set_model(_arg0, _arg1)

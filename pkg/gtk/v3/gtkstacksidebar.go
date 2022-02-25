@@ -116,7 +116,7 @@ func (sidebar *StackSidebar) Stack() *Stack {
 	var _arg0 *C.GtkStackSidebar // out
 	var _cret *C.GtkStack        // in
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(sidebar.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(externglib.InternObject(sidebar).Native()))
 
 	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
 	runtime.KeepAlive(sidebar)
@@ -143,8 +143,8 @@ func (sidebar *StackSidebar) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(externglib.InternObject(sidebar).Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(externglib.InternObject(stack).Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 	runtime.KeepAlive(sidebar)

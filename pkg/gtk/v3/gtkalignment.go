@@ -158,7 +158,7 @@ func (alignment *Alignment) Padding() (paddingTop uint, paddingBottom uint, padd
 	var _arg3 C.guint         // in
 	var _arg4 C.guint         // in
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(alignment.Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(externglib.InternObject(alignment).Native()))
 
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(alignment)
@@ -200,7 +200,7 @@ func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 	var _arg3 C.gfloat        // out
 	var _arg4 C.gfloat        // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(alignment.Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(externglib.InternObject(alignment).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 	_arg3 = C.gfloat(xscale)
@@ -234,7 +234,7 @@ func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, p
 	var _arg3 C.guint         // out
 	var _arg4 C.guint         // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(alignment.Native()))
+	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(externglib.InternObject(alignment).Native()))
 	_arg1 = C.guint(paddingTop)
 	_arg2 = C.guint(paddingBottom)
 	_arg3 = C.guint(paddingLeft)

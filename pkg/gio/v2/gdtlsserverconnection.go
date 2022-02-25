@@ -89,9 +89,9 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	var _cret *C.GDatagramBased  // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(baseSocket.Native()))
+	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(baseSocket).Native()))
 	if certificate != nil {
-		_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
+		_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(externglib.InternObject(certificate).Native()))
 	}
 
 	_cret = C.g_dtls_server_connection_new(_arg1, _arg2, &_cerr)

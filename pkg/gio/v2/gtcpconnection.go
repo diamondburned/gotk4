@@ -71,7 +71,7 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 	var _arg0 *C.GTcpConnection // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 
 	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
 	runtime.KeepAlive(connection)
@@ -104,7 +104,7 @@ func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) 
 	var _arg0 *C.GTcpConnection // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(connection.Native()))
+	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
 	if gracefulDisconnect {
 		_arg1 = C.TRUE
 	}

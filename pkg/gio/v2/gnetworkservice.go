@@ -116,7 +116,7 @@ func (srv *NetworkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(externglib.InternObject(srv).Native()))
 
 	_cret = C.g_network_service_get_domain(_arg0)
 	runtime.KeepAlive(srv)
@@ -138,7 +138,7 @@ func (srv *NetworkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(externglib.InternObject(srv).Native()))
 
 	_cret = C.g_network_service_get_protocol(_arg0)
 	runtime.KeepAlive(srv)
@@ -161,7 +161,7 @@ func (srv *NetworkService) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(externglib.InternObject(srv).Native()))
 
 	_cret = C.g_network_service_get_scheme(_arg0)
 	runtime.KeepAlive(srv)
@@ -183,7 +183,7 @@ func (srv *NetworkService) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(externglib.InternObject(srv).Native()))
 
 	_cret = C.g_network_service_get_service(_arg0)
 	runtime.KeepAlive(srv)
@@ -206,7 +206,7 @@ func (srv *NetworkService) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GNetworkService)(unsafe.Pointer(srv.Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(externglib.InternObject(srv).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
 	defer C.free(unsafe.Pointer(_arg1))
 

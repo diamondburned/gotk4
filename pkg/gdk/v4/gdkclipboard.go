@@ -99,7 +99,7 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 	var _arg0 *C.GdkClipboard       // out
 	var _cret *C.GdkContentProvider // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 
 	_cret = C.gdk_clipboard_get_content(_arg0)
 	runtime.KeepAlive(clipboard)
@@ -123,7 +123,7 @@ func (clipboard *Clipboard) Display() *Display {
 	var _arg0 *C.GdkClipboard // out
 	var _cret *C.GdkDisplay   // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 
 	_cret = C.gdk_clipboard_get_display(_arg0)
 	runtime.KeepAlive(clipboard)
@@ -146,7 +146,7 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 	var _arg0 *C.GdkClipboard      // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 
 	_cret = C.gdk_clipboard_get_formats(_arg0)
 	runtime.KeepAlive(clipboard)
@@ -181,7 +181,7 @@ func (clipboard *Clipboard) IsLocal() bool {
 	var _arg0 *C.GdkClipboard // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 
 	_cret = C.gdk_clipboard_is_local(_arg0)
 	runtime.KeepAlive(clipboard)
@@ -219,7 +219,7 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -272,8 +272,8 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	var _cret *C.GInputStream // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.gdk_clipboard_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(clipboard)
@@ -330,7 +330,7 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -365,8 +365,8 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	var _cret *C.char         // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.gdk_clipboard_read_text_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)
@@ -407,7 +407,7 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -442,8 +442,8 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	var _cret *C.GdkTexture   // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.gdk_clipboard_read_texture_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)
@@ -500,7 +500,7 @@ func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.T
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -539,8 +539,8 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 	var _cret *C.GValue       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.gdk_clipboard_read_value_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)
@@ -583,9 +583,9 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	var _arg1 *C.GdkContentProvider // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	if provider != nil {
-		_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+		_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
 	}
 
 	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
@@ -611,7 +611,7 @@ func (clipboard *Clipboard) SetText(text string) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -630,8 +630,8 @@ func (clipboard *Clipboard) SetTexture(texture Texturer) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GdkTexture   // out
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(externglib.InternObject(texture).Native()))
 
 	C.gdk_clipboard_set_texture(_arg0, _arg1)
 	runtime.KeepAlive(clipboard)
@@ -648,7 +648,7 @@ func (clipboard *Clipboard) Set(value *externglib.Value) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GValue       // out
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	C.gdk_clipboard_set_value(_arg0, _arg1)
@@ -684,7 +684,7 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, call
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -716,8 +716,8 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(externglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	C.gdk_clipboard_store_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)

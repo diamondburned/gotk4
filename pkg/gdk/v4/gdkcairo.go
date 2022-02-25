@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 )
 
@@ -57,7 +58,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bu
 	var _arg9 C.int         // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 	_arg3 = C.int(source)
 	_arg4 = C.int(sourceType)
 	_arg5 = C.int(bufferScale)
@@ -171,7 +172,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 	var _arg4 C.double     // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	_arg3 = C.double(pixbufX)
 	_arg4 = C.double(pixbufY)
 

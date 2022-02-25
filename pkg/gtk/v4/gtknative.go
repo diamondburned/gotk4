@@ -109,7 +109,7 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 	var _arg0 *C.GtkNative   // out
 	var _cret *C.GskRenderer // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_native_get_renderer(_arg0)
 	runtime.KeepAlive(self)
@@ -147,7 +147,7 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 	var _arg0 *C.GtkNative  // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_native_get_surface(_arg0)
 	runtime.KeepAlive(self)
@@ -190,7 +190,7 @@ func (self *NativeSurface) SurfaceTransform() (x float64, y float64) {
 	var _arg1 C.double     // in
 	var _arg2 C.double     // in
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_native_get_surface_transform(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(self)
@@ -210,7 +210,7 @@ func (self *NativeSurface) SurfaceTransform() (x float64, y float64) {
 func (self *NativeSurface) Realize() {
 	var _arg0 *C.GtkNative // out
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_native_realize(_arg0)
 	runtime.KeepAlive(self)
@@ -222,7 +222,7 @@ func (self *NativeSurface) Realize() {
 func (self *NativeSurface) Unrealize() {
 	var _arg0 *C.GtkNative // out
 
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_native_unrealize(_arg0)
 	runtime.KeepAlive(self)
@@ -242,7 +242,7 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GtkNative  // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	_cret = C.gtk_native_get_for_surface(_arg1)
 	runtime.KeepAlive(surface)

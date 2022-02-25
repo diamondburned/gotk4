@@ -98,7 +98,7 @@ func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 	var _arg1 C.GType             // out
 	var _cret *C.AtkObjectFactory // in
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(registry.Native()))
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(externglib.InternObject(registry).Native()))
 	_arg1 = C.GType(typ)
 
 	_cret = C.atk_registry_get_factory(_arg0, _arg1)
@@ -128,7 +128,7 @@ func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg1 C.GType        // out
 	var _cret C.GType        // in
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(registry.Native()))
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(externglib.InternObject(registry).Native()))
 	_arg1 = C.GType(typ)
 
 	_cret = C.atk_registry_get_factory_type(_arg0, _arg1)
@@ -157,7 +157,7 @@ func (registry *Registry) SetFactoryType(typ, factoryType externglib.Type) {
 	var _arg1 C.GType        // out
 	var _arg2 C.GType        // out
 
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(registry.Native()))
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(externglib.InternObject(registry).Native()))
 	_arg1 = C.GType(typ)
 	_arg2 = C.GType(factoryType)
 

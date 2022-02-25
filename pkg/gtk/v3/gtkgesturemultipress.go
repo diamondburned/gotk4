@@ -175,7 +175,7 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_gesture_multi_press_new(_arg1)
 	runtime.KeepAlive(widget)
@@ -202,7 +202,7 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 	var _arg1 C.GdkRectangle          // in
 	var _cret C.gboolean              // in
 
-	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(gesture.Native()))
+	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
 
 	_cret = C.gtk_gesture_multi_press_get_area(_arg0, &_arg1)
 	runtime.KeepAlive(gesture)
@@ -234,7 +234,7 @@ func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out
 	var _arg1 *C.GdkRectangle         // out
 
-	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(gesture.Native()))
+	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
 	if rect != nil {
 		_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	}

@@ -119,7 +119,7 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoContext    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_create_pango_context(_arg0)
 	runtime.KeepAlive(context)
@@ -147,7 +147,7 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoLayout     // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_create_pango_layout(_arg0)
 	runtime.KeepAlive(context)
@@ -175,7 +175,7 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_cairo_context(_arg0)
 	runtime.KeepAlive(context)
@@ -202,7 +202,7 @@ func (context *PrintContext) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_dpi_x(_arg0)
 	runtime.KeepAlive(context)
@@ -225,7 +225,7 @@ func (context *PrintContext) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_dpi_y(_arg0)
 	runtime.KeepAlive(context)
@@ -256,7 +256,7 @@ func (context *PrintContext) HardMargins() (top float64, bottom float64, left fl
 	var _arg4 C.double           // in
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(context)
@@ -288,7 +288,7 @@ func (context *PrintContext) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_height(_arg0)
 	runtime.KeepAlive(context)
@@ -311,7 +311,7 @@ func (context *PrintContext) PageSetup() *PageSetup {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.GtkPageSetup    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_page_setup(_arg0)
 	runtime.KeepAlive(context)
@@ -334,7 +334,7 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoFontMap    // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
 	runtime.KeepAlive(context)
@@ -372,7 +372,7 @@ func (context *PrintContext) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_print_context_get_width(_arg0)
 	runtime.KeepAlive(context)
@@ -402,7 +402,7 @@ func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float
 	var _arg2 C.double           // out
 	var _arg3 C.double           // out
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = C.double(dpiX)
 	_arg3 = C.double(dpiY)

@@ -160,7 +160,7 @@ func (password *TLSPassword) Description() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 
 	_cret = C.g_tls_password_get_description(_arg0)
 	runtime.KeepAlive(password)
@@ -182,7 +182,7 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 	var _arg0 *C.GTlsPassword     // out
 	var _cret C.GTlsPasswordFlags // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 
 	_cret = C.g_tls_password_get_flags(_arg0)
 	runtime.KeepAlive(password)
@@ -212,7 +212,7 @@ func (password *TLSPassword) Value(length *uint) *byte {
 	var _arg1 *C.gsize        // out
 	var _cret *C.guchar       // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 	if length != nil {
 		_arg1 = (*C.gsize)(unsafe.Pointer(length))
 	}
@@ -240,7 +240,7 @@ func (password *TLSPassword) Warning() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 
 	_cret = C.g_tls_password_get_warning(_arg0)
 	runtime.KeepAlive(password)
@@ -263,7 +263,7 @@ func (password *TLSPassword) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -282,7 +282,7 @@ func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 	var _arg0 *C.GTlsPassword     // out
 	var _arg1 C.GTlsPasswordFlags // out
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 	_arg1 = C.GTlsPasswordFlags(flags)
 
 	C.g_tls_password_set_flags(_arg0, _arg1)
@@ -307,7 +307,7 @@ func (password *TLSPassword) SetValue(value []byte) {
 	var _arg1 *C.guchar       // out
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 	_arg2 = (C.gssize)(len(value))
 	if len(value) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
@@ -330,7 +330,7 @@ func (password *TLSPassword) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(externglib.InternObject(password).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(warning)))
 	defer C.free(unsafe.Pointer(_arg1))
 

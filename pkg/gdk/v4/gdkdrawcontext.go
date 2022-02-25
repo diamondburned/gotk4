@@ -103,7 +103,7 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
 	var _arg1 *C.cairo_region_t // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_draw_context_begin_frame(_arg0, _arg1)
@@ -123,7 +123,7 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 func (context *DrawContext) EndFrame() {
 	var _arg0 *C.GdkDrawContext // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gdk_draw_context_end_frame(_arg0)
 	runtime.KeepAlive(context)
@@ -139,7 +139,7 @@ func (context *DrawContext) Display() *Display {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkDisplay     // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_draw_context_get_display(_arg0)
 	runtime.KeepAlive(context)
@@ -170,7 +170,7 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_draw_context_get_frame_region(_arg0)
 	runtime.KeepAlive(context)
@@ -201,7 +201,7 @@ func (context *DrawContext) Surface() Surfacer {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkSurface     // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_draw_context_get_surface(_arg0)
 	runtime.KeepAlive(context)
@@ -244,7 +244,7 @@ func (context *DrawContext) IsInFrame() bool {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_draw_context_is_in_frame(_arg0)
 	runtime.KeepAlive(context)

@@ -292,7 +292,7 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 	var _arg1 *C.char           // out
 	var _arg2 **C.char          // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(sectionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
@@ -327,7 +327,7 @@ func (about *AboutDialog) Artists() []string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret **C.char          // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_artists(_arg0)
 	runtime.KeepAlive(about)
@@ -363,7 +363,7 @@ func (about *AboutDialog) Authors() []string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret **C.char          // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_authors(_arg0)
 	runtime.KeepAlive(about)
@@ -398,7 +398,7 @@ func (about *AboutDialog) Comments() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_comments(_arg0)
 	runtime.KeepAlive(about)
@@ -423,7 +423,7 @@ func (about *AboutDialog) Copyright() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_copyright(_arg0)
 	runtime.KeepAlive(about)
@@ -449,7 +449,7 @@ func (about *AboutDialog) Documenters() []string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret **C.char          // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_documenters(_arg0)
 	runtime.KeepAlive(about)
@@ -484,7 +484,7 @@ func (about *AboutDialog) License() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_license(_arg0)
 	runtime.KeepAlive(about)
@@ -508,7 +508,7 @@ func (about *AboutDialog) LicenseType() License {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret C.GtkLicense      // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_license_type(_arg0)
 	runtime.KeepAlive(about)
@@ -532,7 +532,7 @@ func (about *AboutDialog) Logo() gdk.Paintabler {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.GdkPaintable   // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_logo(_arg0)
 	runtime.KeepAlive(about)
@@ -571,7 +571,7 @@ func (about *AboutDialog) LogoIconName() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
 	runtime.KeepAlive(about)
@@ -596,7 +596,7 @@ func (about *AboutDialog) ProgramName() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_program_name(_arg0)
 	runtime.KeepAlive(about)
@@ -621,7 +621,7 @@ func (about *AboutDialog) SystemInformation() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_system_information(_arg0)
 	runtime.KeepAlive(about)
@@ -646,7 +646,7 @@ func (about *AboutDialog) TranslatorCredits() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
 	runtime.KeepAlive(about)
@@ -671,7 +671,7 @@ func (about *AboutDialog) Version() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_version(_arg0)
 	runtime.KeepAlive(about)
@@ -695,7 +695,7 @@ func (about *AboutDialog) Website() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_website(_arg0)
 	runtime.KeepAlive(about)
@@ -719,7 +719,7 @@ func (about *AboutDialog) WebsiteLabel() string {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_website_label(_arg0)
 	runtime.KeepAlive(about)
@@ -744,7 +744,7 @@ func (about *AboutDialog) WrapLicense() bool {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 
 	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
 	runtime.KeepAlive(about)
@@ -769,7 +769,7 @@ func (about *AboutDialog) SetArtists(artists []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char          // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	{
 		_arg1 = (**C.char)(C.calloc(C.size_t((len(artists) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -800,7 +800,7 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char          // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	{
 		_arg1 = (**C.char)(C.calloc(C.size_t((len(authors) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -832,7 +832,7 @@ func (about *AboutDialog) SetComments(comments string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if comments != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(comments)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -855,7 +855,7 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if copyright != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(copyright)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -877,7 +877,7 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 **C.char          // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	{
 		_arg1 = (**C.char)(C.calloc(C.size_t((len(documenters) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -910,7 +910,7 @@ func (about *AboutDialog) SetLicense(license string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if license != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(license)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -934,7 +934,7 @@ func (about *AboutDialog) SetLicenseType(licenseType License) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.GtkLicense      // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	_arg1 = C.GtkLicense(licenseType)
 
 	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
@@ -952,9 +952,9 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.GdkPaintable   // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if logo != nil {
-		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(logo.Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(logo).Native()))
 	}
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
@@ -973,7 +973,7 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -996,7 +996,7 @@ func (about *AboutDialog) SetProgramName(name string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if name != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1022,7 +1022,7 @@ func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if systemInformation != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(systemInformation)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1058,7 +1058,7 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if translatorCredits != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(translatorCredits)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1079,7 +1079,7 @@ func (about *AboutDialog) SetVersion(version string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if version != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(version)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1100,7 +1100,7 @@ func (about *AboutDialog) SetWebsite(website string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if website != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(website)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -1121,7 +1121,7 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(websiteLabel)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1141,7 +1141,7 @@ func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
 	if wrapLicense {
 		_arg1 = C.TRUE
 	}

@@ -54,7 +54,7 @@ func (icon *BytesIcon) Bytes() *glib.Bytes {
 	var _arg0 *C.GBytesIcon // out
 	var _cret *C.GBytes     // in
 
-	_arg0 = (*C.GBytesIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GBytesIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	_cret = C.g_bytes_icon_get_bytes(_arg0)
 	runtime.KeepAlive(icon)

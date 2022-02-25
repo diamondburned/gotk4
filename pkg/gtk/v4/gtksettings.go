@@ -88,7 +88,7 @@ func (settings *Settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
 	var _arg1 *C.char        // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -136,7 +136,7 @@ func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	var _arg1 *C.GdkDisplay  // out
 	var _cret *C.GtkSettings // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gtk_settings_get_for_display(_arg1)
 	runtime.KeepAlive(display)

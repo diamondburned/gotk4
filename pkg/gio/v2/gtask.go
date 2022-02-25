@@ -292,7 +292,7 @@ func (task *Task) Cancellable() *Cancellable {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GCancellable // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_cancellable(_arg0)
 	runtime.KeepAlive(task)
@@ -313,7 +313,7 @@ func (task *Task) CheckCancellable() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_check_cancellable(_arg0)
 	runtime.KeepAlive(task)
@@ -339,7 +339,7 @@ func (task *Task) Completed() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_completed(_arg0)
 	runtime.KeepAlive(task)
@@ -369,7 +369,7 @@ func (task *Task) Context() *glib.MainContext {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GMainContext // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_context(_arg0)
 	runtime.KeepAlive(task)
@@ -398,7 +398,7 @@ func (task *Task) Name() string {
 	var _arg0 *C.GTask // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_name(_arg0)
 	runtime.KeepAlive(task)
@@ -422,7 +422,7 @@ func (task *Task) Priority() int {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_priority(_arg0)
 	runtime.KeepAlive(task)
@@ -443,7 +443,7 @@ func (task *Task) ReturnOnCancel() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_return_on_cancel(_arg0)
 	runtime.KeepAlive(task)
@@ -468,7 +468,7 @@ func (task *Task) SourceObject() *externglib.Object {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_source_object(_arg0)
 	runtime.KeepAlive(task)
@@ -490,7 +490,7 @@ func (task *Task) SourceTag() cgo.Handle {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_source_tag(_arg0)
 	runtime.KeepAlive(task)
@@ -512,7 +512,7 @@ func (task *Task) TaskData() cgo.Handle {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_get_task_data(_arg0)
 	runtime.KeepAlive(task)
@@ -534,7 +534,7 @@ func (task *Task) HadError() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_had_error(_arg0)
 	runtime.KeepAlive(task)
@@ -559,7 +559,7 @@ func (task *Task) PropagateBoolean() error {
 	var _arg0 *C.GTask  // out
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	C.g_task_propagate_boolean(_arg0, &_cerr)
 	runtime.KeepAlive(task)
@@ -590,7 +590,7 @@ func (task *Task) PropagateInt() (int, error) {
 	var _cret C.gssize  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_propagate_int(_arg0, &_cerr)
 	runtime.KeepAlive(task)
@@ -624,7 +624,7 @@ func (task *Task) PropagatePointer() (cgo.Handle, error) {
 	var _cret C.gpointer // in
 	var _cerr *C.GError  // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_propagate_pointer(_arg0, &_cerr)
 	runtime.KeepAlive(task)
@@ -660,7 +660,7 @@ func (task *Task) PropagateValue() (externglib.Value, error) {
 	var _arg1 C.GValue  // in
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	C.g_task_propagate_value(_arg0, &_arg1, &_cerr)
 	runtime.KeepAlive(task)
@@ -687,7 +687,7 @@ func (task *Task) ReturnBoolean(result bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	if result {
 		_arg1 = C.TRUE
 	}
@@ -716,7 +716,7 @@ func (task *Task) ReturnError(err error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GError // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	if err != nil {
 		_arg1 = (*C.GError)(gerror.New(err))
 	}
@@ -738,7 +738,7 @@ func (task *Task) ReturnErrorIfCancelled() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 
 	_cret = C.g_task_return_error_if_cancelled(_arg0)
 	runtime.KeepAlive(task)
@@ -763,7 +763,7 @@ func (task *Task) ReturnInt(result int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gssize // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	_arg1 = C.gssize(result)
 
 	C.g_task_return_int(_arg0, _arg1)
@@ -789,7 +789,7 @@ func (task *Task) ReturnValue(result *externglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	if result != nil {
 		_arg1 = (*C.GValue)(unsafe.Pointer(result.Native()))
 	}
@@ -822,7 +822,7 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	if checkCancellable {
 		_arg1 = C.TRUE
 	}
@@ -850,7 +850,7 @@ func (task *Task) SetName(name string) {
 	var _arg0 *C.GTask // out
 	var _arg1 *C.gchar // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	if name != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -876,7 +876,7 @@ func (task *Task) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	_arg1 = C.gint(priority)
 
 	C.g_task_set_priority(_arg0, _arg1)
@@ -925,7 +925,7 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	if returnOnCancel {
 		_arg1 = C.TRUE
 	}
@@ -957,7 +957,7 @@ func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
+	_arg0 = (*C.GTask)(unsafe.Pointer(externglib.InternObject(task).Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	C.g_task_set_source_tag(_arg0, _arg1)
@@ -984,7 +984,7 @@ func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
 	var _arg2 C.gpointer // out
 	var _cret C.gboolean // in
 
-	_arg1 = C.gpointer(unsafe.Pointer(result.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(externglib.InternObject(result).Native()))
 	_arg2 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
 
 	_cret = C.g_task_is_valid(_arg1, _arg2)

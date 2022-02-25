@@ -171,7 +171,7 @@ func NewRadioMenuItem(group []RadioMenuItem) *RadioMenuItem {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -203,7 +203,7 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 	var _cret *C.GtkWidget        // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	}
 
 	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
@@ -237,7 +237,7 @@ func NewRadioMenuItemWithLabel(group []RadioMenuItem, label string) *RadioMenuIt
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -275,7 +275,7 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 	var _cret *C.GtkWidget        // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	}
 	if label != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
@@ -316,7 +316,7 @@ func NewRadioMenuItemWithMnemonic(group []RadioMenuItem, label string) *RadioMen
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -358,7 +358,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 	var _cret *C.GtkWidget        // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	}
 	if label != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
@@ -387,7 +387,7 @@ func (radioMenuItem *RadioMenuItem) Group() []RadioMenuItem {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _cret *C.GSList           // in
 
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(radioMenuItem.Native()))
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(radioMenuItem).Native()))
 
 	_cret = C.gtk_radio_menu_item_get_group(_arg0)
 	runtime.KeepAlive(radioMenuItem)
@@ -435,9 +435,9 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GtkRadioMenuItem // out
 
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(radioMenuItem.Native()))
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(radioMenuItem).Native()))
 	if groupSource != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(groupSource).Native()))
 	}
 
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
@@ -455,12 +455,12 @@ func (radioMenuItem *RadioMenuItem) SetGroup(group []RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GSList           // out
 
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(radioMenuItem.Native()))
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(radioMenuItem).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)

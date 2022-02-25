@@ -75,7 +75,7 @@ func (context *AppLaunchContext) Display() *Display {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _cret *C.GdkDisplay          // in
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_app_launch_context_get_display(_arg0)
 	runtime.KeepAlive(context)
@@ -104,7 +104,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.int                  // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.int(desktop)
 
 	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
@@ -127,9 +127,9 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if icon != nil {
-		_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+		_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	}
 
 	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
@@ -156,7 +156,7 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	if iconName != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -184,7 +184,7 @@ func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.guint32              // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.guint32(timestamp)
 
 	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)

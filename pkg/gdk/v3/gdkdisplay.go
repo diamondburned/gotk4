@@ -253,7 +253,7 @@ func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.Signa
 func (display *Display) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_display_beep(_arg0)
 	runtime.KeepAlive(display)
@@ -264,7 +264,7 @@ func (display *Display) Beep() {
 func (display *Display) Close() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_display_close(_arg0)
 	runtime.KeepAlive(display)
@@ -286,8 +286,8 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg1 *C.GdkDevice  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 	runtime.KeepAlive(display)
@@ -314,7 +314,7 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 func (display *Display) Flush() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_display_flush(_arg0)
 	runtime.KeepAlive(display)
@@ -332,7 +332,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_app_launch_context(_arg0)
 	runtime.KeepAlive(display)
@@ -354,7 +354,7 @@ func (display *Display) DefaultCursorSize() uint {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_default_cursor_size(_arg0)
 	runtime.KeepAlive(display)
@@ -378,7 +378,7 @@ func (display *Display) DefaultGroup() Windower {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkWindow  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_default_group(_arg0)
 	runtime.KeepAlive(display)
@@ -416,7 +416,7 @@ func (display *Display) DefaultScreen() *Screen {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkScreen  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_default_screen(_arg0)
 	runtime.KeepAlive(display)
@@ -438,7 +438,7 @@ func (display *Display) DefaultSeat() Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 	runtime.KeepAlive(display)
@@ -479,7 +479,7 @@ func (display *Display) DeviceManager() DeviceManagerer {
 	var _arg0 *C.GdkDisplay       // out
 	var _cret *C.GdkDeviceManager // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_device_manager(_arg0)
 	runtime.KeepAlive(display)
@@ -518,7 +518,7 @@ func (display *Display) Event() *Event {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkEvent   // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_event(_arg0)
 	runtime.KeepAlive(display)
@@ -547,7 +547,7 @@ func (display *Display) MaximalCursorSize() (width uint, height uint) {
 	var _arg1 C.guint       // in
 	var _arg2 C.guint       // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_display_get_maximal_cursor_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(display)
@@ -576,7 +576,7 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 	var _arg1 C.int         // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.int(monitorNum)
 
 	_cret = C.gdk_display_get_monitor(_arg0, _arg1)
@@ -610,7 +610,7 @@ func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 	var _arg2 C.int         // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -642,8 +642,8 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _arg1 *C.GdkWindow  // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
 
 	_cret = C.gdk_display_get_monitor_at_window(_arg0, _arg1)
 	runtime.KeepAlive(display)
@@ -669,7 +669,7 @@ func (display *Display) NMonitors() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_n_monitors(_arg0)
 	runtime.KeepAlive(display)
@@ -693,7 +693,7 @@ func (display *Display) NScreens() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_n_screens(_arg0)
 	runtime.KeepAlive(display)
@@ -716,7 +716,7 @@ func (display *Display) Name() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_name(_arg0)
 	runtime.KeepAlive(display)
@@ -750,7 +750,7 @@ func (display *Display) Pointer() (screen *Screen, x int, y int, mask ModifierTy
 	var _arg3 C.gint            // in
 	var _arg4 C.GdkModifierType // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_display_get_pointer(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(display)
@@ -786,7 +786,7 @@ func (display *Display) PrimaryMonitor() *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkMonitor // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_primary_monitor(_arg0)
 	runtime.KeepAlive(display)
@@ -818,7 +818,7 @@ func (display *Display) Screen(screenNum int) *Screen {
 	var _arg1 C.gint        // out
 	var _cret *C.GdkScreen  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.gint(screenNum)
 
 	_cret = C.gdk_display_get_screen(_arg0, _arg1)
@@ -853,7 +853,7 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 	var _arg2 C.gint        // in
 	var _cret *C.GdkWindow  // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_get_window_at_pointer(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(display)
@@ -895,7 +895,7 @@ func (display *Display) HasPending() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_has_pending(_arg0)
 	runtime.KeepAlive(display)
@@ -919,7 +919,7 @@ func (display *Display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_is_closed(_arg0)
 	runtime.KeepAlive(display)
@@ -945,7 +945,7 @@ func (display *Display) KeyboardUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.guint32(time_)
 
 	C.gdk_display_keyboard_ungrab(_arg0, _arg1)
@@ -966,7 +966,7 @@ func (display *Display) ListDevices() []Devicer {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_list_devices(_arg0)
 	runtime.KeepAlive(display)
@@ -1010,7 +1010,7 @@ func (display *Display) ListSeats() []Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GList      // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_list_seats(_arg0)
 	runtime.KeepAlive(display)
@@ -1060,7 +1060,7 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -1084,7 +1084,7 @@ func (display *Display) PeekEvent() *Event {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkEvent   // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_peek_event(_arg0)
 	runtime.KeepAlive(display)
@@ -1113,7 +1113,7 @@ func (display *Display) PointerIsGrabbed() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_pointer_is_grabbed(_arg0)
 	runtime.KeepAlive(display)
@@ -1139,7 +1139,7 @@ func (display *Display) PointerUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint32     // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.guint32(time_)
 
 	C.gdk_display_pointer_ungrab(_arg0, _arg1)
@@ -1158,7 +1158,7 @@ func (display *Display) PutEvent(event *Event) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkEvent   // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
 	C.gdk_display_put_event(_arg0, _arg1)
@@ -1179,7 +1179,7 @@ func (display *Display) SetDoubleClickDistance(distance uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.guint(distance)
 
 	C.gdk_display_set_double_click_distance(_arg0, _arg1)
@@ -1199,7 +1199,7 @@ func (display *Display) SetDoubleClickTime(msec uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 	_arg1 = C.guint(msec)
 
 	C.gdk_display_set_double_click_time(_arg0, _arg1)
@@ -1220,7 +1220,7 @@ func (display *Display) SupportsClipboardPersistence() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_clipboard_persistence(_arg0)
 	runtime.KeepAlive(display)
@@ -1251,7 +1251,7 @@ func (display *Display) SupportsComposite() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_composite(_arg0)
 	runtime.KeepAlive(display)
@@ -1276,7 +1276,7 @@ func (display *Display) SupportsCursorAlpha() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_cursor_alpha(_arg0)
 	runtime.KeepAlive(display)
@@ -1301,7 +1301,7 @@ func (display *Display) SupportsCursorColor() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_cursor_color(_arg0)
 	runtime.KeepAlive(display)
@@ -1326,7 +1326,7 @@ func (display *Display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
 	runtime.KeepAlive(display)
@@ -1351,7 +1351,7 @@ func (display *Display) SupportsSelectionNotification() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_selection_notification(_arg0)
 	runtime.KeepAlive(display)
@@ -1376,7 +1376,7 @@ func (display *Display) SupportsShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_shapes(_arg0)
 	runtime.KeepAlive(display)
@@ -1401,7 +1401,7 @@ func (display *Display) SupportsShapes() bool {
 func (display *Display) Sync() {
 	var _arg0 *C.GdkDisplay // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
 
 	C.gdk_display_sync(_arg0)
 	runtime.KeepAlive(display)
@@ -1430,8 +1430,8 @@ func (display *Display) WarpPointer(screen *Screen, x, y int) {
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

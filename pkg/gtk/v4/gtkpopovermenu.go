@@ -267,7 +267,7 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	var _cret *C.GtkWidget  // in
 
 	if model != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	_cret = C.gtk_popover_menu_new_from_model(_arg1)
@@ -307,7 +307,7 @@ func NewPopoverMenuFromModelFull(model gio.MenuModeller, flags PopoverMenuFlags)
 	var _arg2 C.GtkPopoverMenuFlags // out
 	var _cret *C.GtkWidget          // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg2 = C.GtkPopoverMenuFlags(flags)
 
 	_cret = C.gtk_popover_menu_new_from_model_full(_arg1, _arg2)
@@ -341,8 +341,8 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 	var _arg2 *C.char           // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -370,7 +370,7 @@ func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _cret *C.GMenuModel     // in
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(externglib.InternObject(popover).Native()))
 
 	_cret = C.gtk_popover_menu_get_menu_model(_arg0)
 	runtime.KeepAlive(popover)
@@ -414,8 +414,8 @@ func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 
 	_cret = C.gtk_popover_menu_remove_child(_arg0, _arg1)
 	runtime.KeepAlive(popover)
@@ -443,9 +443,9 @@ func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GMenuModel     // out
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(externglib.InternObject(popover).Native()))
 	if model != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_popover_menu_set_menu_model(_arg0, _arg1)

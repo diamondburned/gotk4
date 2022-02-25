@@ -314,7 +314,7 @@ func (self *CheckButton) Active() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_check_button_get_active(_arg0)
 	runtime.KeepAlive(self)
@@ -338,7 +338,7 @@ func (checkButton *CheckButton) Inconsistent() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(checkButton.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(checkButton).Native()))
 
 	_cret = C.gtk_check_button_get_inconsistent(_arg0)
 	runtime.KeepAlive(checkButton)
@@ -363,7 +363,7 @@ func (self *CheckButton) Label() string {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret *C.char           // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_check_button_get_label(_arg0)
 	runtime.KeepAlive(self)
@@ -388,7 +388,7 @@ func (self *CheckButton) UseUnderline() bool {
 	var _arg0 *C.GtkCheckButton // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_check_button_get_use_underline(_arg0)
 	runtime.KeepAlive(self)
@@ -412,7 +412,7 @@ func (self *CheckButton) SetActive(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -445,9 +445,9 @@ func (self *CheckButton) SetGroup(group *CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if group != nil {
-		_arg1 = (*C.GtkCheckButton)(unsafe.Pointer(group.Native()))
+		_arg1 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	}
 
 	C.gtk_check_button_set_group(_arg0, _arg1)
@@ -468,7 +468,7 @@ func (checkButton *CheckButton) SetInconsistent(inconsistent bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(checkButton.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(checkButton).Native()))
 	if inconsistent {
 		_arg1 = C.TRUE
 	}
@@ -493,7 +493,7 @@ func (self *CheckButton) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.char           // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if label != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -518,7 +518,7 @@ func (self *CheckButton) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

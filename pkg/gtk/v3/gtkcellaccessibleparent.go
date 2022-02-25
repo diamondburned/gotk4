@@ -308,8 +308,8 @@ func (parent *CellAccessibleParent) Activate(cell *CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	C.gtk_cell_accessible_parent_activate(_arg0, _arg1)
 	runtime.KeepAlive(parent)
@@ -322,8 +322,8 @@ func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	C.gtk_cell_accessible_parent_edit(_arg0, _arg1)
 	runtime.KeepAlive(parent)
@@ -336,8 +336,8 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	C.gtk_cell_accessible_parent_expand_collapse(_arg0, _arg1)
 	runtime.KeepAlive(parent)
@@ -353,8 +353,8 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangl
 	var _arg1 *C.GtkCellAccessible       // out
 	var _arg2 C.GdkRectangle             // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	C.gtk_cell_accessible_parent_get_cell_area(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(parent)
@@ -388,8 +388,8 @@ func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType 
 	var _arg5 C.gint                     // in
 	var _arg6 C.AtkCoordType             // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 	_arg6 = C.AtkCoordType(coordType)
 
 	C.gtk_cell_accessible_parent_get_cell_extents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
@@ -423,8 +423,8 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row int,
 	var _arg2 C.gint                     // in
 	var _arg3 C.gint                     // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	C.gtk_cell_accessible_parent_get_cell_position(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(parent)
@@ -448,8 +448,8 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int {
 	var _arg1 *C.GtkCellAccessible       // out
 	var _cret C.int                      // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	_cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
 	runtime.KeepAlive(parent)
@@ -471,8 +471,8 @@ func (parent *CellAccessibleParent) RendererState(cell *CellAccessible) CellRend
 	var _arg1 *C.GtkCellAccessible       // out
 	var _cret C.GtkCellRendererState     // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	_cret = C.gtk_cell_accessible_parent_get_renderer_state(_arg0, _arg1)
 	runtime.KeepAlive(parent)
@@ -494,8 +494,8 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 	var _arg1 *C.GtkCellAccessible       // out
 	var _cret C.gboolean                 // in
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
 
 	_cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
 	runtime.KeepAlive(parent)
@@ -520,9 +520,9 @@ func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, rela
 	var _arg1 *C.GtkCellAccessible       // out
 	var _arg2 *C.AtkRelationSet          // out
 
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-	_arg2 = (*C.AtkRelationSet)(unsafe.Pointer(relationset.Native()))
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(cell).Native()))
+	_arg2 = (*C.AtkRelationSet)(unsafe.Pointer(externglib.InternObject(relationset).Native()))
 
 	C.gtk_cell_accessible_parent_update_relationset(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(parent)

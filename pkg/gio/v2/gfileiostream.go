@@ -252,8 +252,8 @@ func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.GFileIOStream, arg1 *C.cha
 
 	fileInfo, _goerr := iface.QueryInfo(_cancellable, _attributes)
 
-	cret = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
-	C.g_object_ref(C.gpointer(fileInfo.Native()))
+	cret = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(fileInfo).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(fileInfo).Native()))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -290,8 +290,8 @@ func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.GFileIOStream, arg1
 
 	fileInfo, _goerr := iface.QueryInfoFinish(_result)
 
-	cret = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
-	C.g_object_ref(C.gpointer(fileInfo.Native()))
+	cret = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(fileInfo).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(fileInfo).Native()))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -389,7 +389,7 @@ func (stream *FileIOStream) ETag() string {
 	var _arg0 *C.GFileIOStream // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_file_io_stream_get_etag(_arg0)
 	runtime.KeepAlive(stream)
@@ -436,7 +436,7 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 	var _cret *C.GFileInfo     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -483,7 +483,7 @@ func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes strin
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -522,8 +522,8 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	var _cret *C.GFileInfo     // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)

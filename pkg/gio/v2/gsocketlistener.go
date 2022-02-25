@@ -194,7 +194,7 @@ func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object,
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -236,7 +236,7 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -272,8 +272,8 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_socket_listener_accept_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(listener)
@@ -324,7 +324,7 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.O
 	var _cret *C.GSocket         // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -367,7 +367,7 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -403,8 +403,8 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 	var _cret *C.GSocket         // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.g_socket_listener_accept_socket_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(listener)
@@ -467,8 +467,8 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	var _arg5 *C.GSocketAddress  // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	_arg2 = C.GSocketType(typ)
 	_arg3 = C.GSocketProtocol(protocol)
 	if sourceObject != nil {
@@ -532,7 +532,7 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 	var _cret C.guint16          // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 	if sourceObject != nil {
 		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 	}
@@ -575,7 +575,7 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externgli
 	var _arg2 *C.GObject         // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 	_arg1 = C.guint16(port)
 	if sourceObject != nil {
 		_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
@@ -618,8 +618,8 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externgl
 	var _arg2 *C.GObject         // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg1 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
 	if sourceObject != nil {
 		_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 	}
@@ -642,7 +642,7 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externgl
 func (listener *SocketListener) Close() {
 	var _arg0 *C.GSocketListener // out
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 
 	C.g_socket_listener_close(_arg0)
 	runtime.KeepAlive(listener)
@@ -662,7 +662,7 @@ func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
 	_arg1 = C.int(listenBacklog)
 
 	C.g_socket_listener_set_backlog(_arg0, _arg1)

@@ -178,13 +178,13 @@ type GeneratedClosure struct {
 	Func interface{}
 }
 
-// goMarshal is called by the GLib runtime when a closure needs to be invoked.
-// The closure will be invoked with as many arguments as it can take, from 0 to
-// the full amount provided by the call. If the closure asks for more parameters
-// than there are to give, then a runtime panic will occur.
+// _gotk4_goMarshal is called by the GLib runtime when a closure needs to be
+// invoked. The closure will be invoked with as many arguments as it can take,
+// from 0 to the full amount provided by the call. If the closure asks for more
+// parameters than there are to give, then a runtime panic will occur.
 //
-//export goMarshal
-func goMarshal(
+//export _gotk4_goMarshal
+func _gotk4_goMarshal(
 	gclosure *C.GClosure,
 	retValue *C.GValue,
 	nParams C.guint,
@@ -308,11 +308,11 @@ const (
 
 type SourceHandle uint
 
-// sourceFunc is the callback for g_idle_add_full and g_timeout_add_full that
-// replaces the GClosure API.
+// _gotk4_sourceFunc is the callback for g_idle_add_full and g_timeout_add_full
+// that replaces the GClosure API.
 //
-//export sourceFunc
-func sourceFunc(data C.gpointer) C.gboolean {
+//export _gotk4_sourceFunc
+func _gotk4_sourceFunc(data C.gpointer) C.gboolean {
 	fs, ok := gbox.Get(uintptr(data)).(*closure.FuncStack)
 	if !ok {
 		log.Println("warning: idle handler", data, "not found")
@@ -337,14 +337,14 @@ func sourceFunc(data C.gpointer) C.gboolean {
 	return C.FALSE
 }
 
-//export removeSourceFunc
-func removeSourceFunc(data C.gpointer) {
+//export _gotk4_removeSourceFunc
+func _gotk4_removeSourceFunc(data C.gpointer) {
 	gbox.Delete(uintptr(data))
 }
 
 var (
-	_sourceFunc       = (*[0]byte)(C.sourceFunc)
-	_removeSourceFunc = (*[0]byte)(C.removeSourceFunc)
+	_sourceFunc       = (*[0]byte)(C._gotk4_sourceFunc)
+	_removeSourceFunc = (*[0]byte)(C._gotk4_removeSourceFunc)
 )
 
 // IdleAdd adds an idle source to the default main event loop context with the
@@ -454,7 +454,7 @@ func ConnectGeneratedClosure(
 	// instance).
 	userData := C.gpointer(gbox.Assign(data))
 
-	gclosure := C.g_cclosure_new(C.GCallback(tramp), userData, (*[0]byte)(C.removeGeneratedClosure))
+	gclosure := C.g_cclosure_new(C.GCallback(tramp), userData, (*[0]byte)(C._gotk4_removeGeneratedClosure))
 
 	// Hold the GClosure reference.
 	data.GClosure = uintptr(unsafe.Pointer(gclosure))
@@ -483,18 +483,18 @@ func ConnectedGeneratedClosure(closureData uintptr) *closure.FuncStack {
 	return intern.ObjectClosure(unsafe.Pointer(data.GObject), unsafe.Pointer(data.GClosure))
 }
 
-//export removeClosure
-func removeClosure(obj *C.GObject, gclosure *C.GClosure) {
+//export _gotk4_removeClosure
+func _gotk4_removeClosure(obj *C.GObject, gclosure *C.GClosure) {
 	intern.RemoveClosure(unsafe.Pointer(obj), unsafe.Pointer(gclosure))
 }
 
-//export removeGeneratedClosure
-func removeGeneratedClosure(fnID C.guintptr, gclosure *C.GClosure) {
+//export _gotk4_removeGeneratedClosure
+func _gotk4_removeGeneratedClosure(fnID C.guintptr, gclosure *C.GClosure) {
 	data := gbox.Pop(uintptr(fnID)).(*generatedClosureData)
 	if data == nil {
 		return
 	}
-	removeClosure((*C.GObject)(unsafe.Pointer(data.GObject)), gclosure)
+	_gotk4_removeClosure((*C.GObject)(unsafe.Pointer(data.GObject)), gclosure)
 }
 
 // Objector is an interface that describes the Object type's methods. Only this
@@ -507,11 +507,11 @@ type Objector interface {
 	HandlerUnblock(SignalHandle)
 	HandlerDisconnect(SignalHandle)
 
+	NotifyProperty(string, func()) SignalHandle
 	ObjectProperty(string) interface{}
 	SetObjectProperty(string, interface{})
 
 	Cast() Objector
-	Native() uintptr
 
 	baseObject() *Object
 }
@@ -726,6 +726,27 @@ func (v *Object) SetObjectProperty(name string, value interface{}) {
 
 	C.g_object_set_property(v.native(), (*C.gchar)(cstr), p.native())
 	runtime.KeepAlive(v)
+}
+
+// NotifyProperty adds a handler that's called when the object's property is
+// updated.
+func (v *Object) NotifyProperty(property string, f func()) SignalHandle {
+	return ConnectGeneratedClosure(
+		v, "notify::"+property, false,
+		unsafe.Pointer(C._gotk4_notifyHandlerTramp), f,
+	)
+}
+
+//export _gotk4_notifyHandlerTramp
+func _gotk4_notifyHandlerTramp(obj C.gpointer, closureData C.guintptr) {
+	closure := ConnectedGeneratedClosure(uintptr(closureData))
+	if closure == nil {
+		panic("given unknown closure user_data")
+	}
+	defer closure.TryRepanic()
+
+	f := closure.Func.(func())
+	f()
 }
 
 // Emit emits the signal specified by the string s to an Object. Arguments to

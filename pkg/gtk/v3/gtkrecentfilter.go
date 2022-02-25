@@ -241,7 +241,7 @@ func (filter *RecentFilter) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = C.gint(days)
 
 	C.gtk_recent_filter_add_age(_arg0, _arg1)
@@ -260,7 +260,7 @@ func (filter *RecentFilter) AddApplication(application string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(application)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -289,7 +289,7 @@ func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterF
 	var _arg3 C.gpointer
 	var _arg4 C.GDestroyNotify
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = C.GtkRecentFilterFlags(needed)
 	_arg2 = (*[0]byte)(C._gotk4_gtk3_RecentFilterFunc)
 	_arg3 = C.gpointer(gbox.Assign(fn))
@@ -312,7 +312,7 @@ func (filter *RecentFilter) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(group)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -332,7 +332,7 @@ func (filter *RecentFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -352,7 +352,7 @@ func (filter *RecentFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -366,7 +366,7 @@ func (filter *RecentFilter) AddPattern(pattern string) {
 func (filter *RecentFilter) AddPixbufFormats() {
 	var _arg0 *C.GtkRecentFilter // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 
 	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
 	runtime.KeepAlive(filter)
@@ -393,7 +393,7 @@ func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg1 *C.GtkRecentFilterInfo // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.GtkRecentFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
 
 	_cret = C.gtk_recent_filter_filter(_arg0, _arg1)
@@ -421,7 +421,7 @@ func (filter *RecentFilter) Name() string {
 	var _arg0 *C.GtkRecentFilter // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 
 	_cret = C.gtk_recent_filter_get_name(_arg0)
 	runtime.KeepAlive(filter)
@@ -450,7 +450,7 @@ func (filter *RecentFilter) Needed() RecentFilterFlags {
 	var _arg0 *C.GtkRecentFilter     // out
 	var _cret C.GtkRecentFilterFlags // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 
 	_cret = C.gtk_recent_filter_get_needed(_arg0)
 	runtime.KeepAlive(filter)
@@ -474,7 +474,7 @@ func (filter *RecentFilter) SetName(name string) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 *C.gchar           // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 

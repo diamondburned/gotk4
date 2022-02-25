@@ -144,7 +144,7 @@ func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(externglib.InternObject(accelLabel).Native()))
 
 	C.gtk_accel_label_get_accel(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(accelLabel)
@@ -169,7 +169,7 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret *C.GtkWidget     // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(externglib.InternObject(accelLabel).Native()))
 
 	_cret = C.gtk_accel_label_get_accel_widget(_arg0)
 	runtime.KeepAlive(accelLabel)
@@ -208,7 +208,7 @@ func (accelLabel *AccelLabel) AccelWidth() uint {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(externglib.InternObject(accelLabel).Native()))
 
 	_cret = C.gtk_accel_label_get_accel_width(_arg0)
 	runtime.KeepAlive(accelLabel)
@@ -232,7 +232,7 @@ func (accelLabel *AccelLabel) Refetch() bool {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(externglib.InternObject(accelLabel).Native()))
 
 	_cret = C.gtk_accel_label_refetch(_arg0)
 	runtime.KeepAlive(accelLabel)
@@ -264,7 +264,7 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(externglib.InternObject(accelLabel).Native()))
 	_arg1 = C.guint(acceleratorKey)
 	_arg2 = C.GdkModifierType(acceleratorMods)
 
@@ -288,7 +288,7 @@ func (accelLabel *AccelLabel) SetAccelClosure(accelClosure externglib.AnyClosure
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GClosure      // out
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(externglib.InternObject(accelLabel).Native()))
 	_arg1 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(accelLabel), accelClosure))
 
 	C.gtk_accel_label_set_accel_closure(_arg0, _arg1)
@@ -308,9 +308,9 @@ func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GtkWidget     // out
 
-	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(accelLabel.Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(externglib.InternObject(accelLabel).Native()))
 	if accelWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(accelWidget).Native()))
 	}
 
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)

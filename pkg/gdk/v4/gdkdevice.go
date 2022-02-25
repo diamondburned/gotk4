@@ -191,7 +191,7 @@ func (device *Device) CapsLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_caps_lock_state(_arg0)
 	runtime.KeepAlive(device)
@@ -215,7 +215,7 @@ func (device *Device) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkDevice     // out
 	var _cret *C.GdkDeviceTool // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_device_tool(_arg0)
 	runtime.KeepAlive(device)
@@ -243,7 +243,7 @@ func (device *Device) Direction() pango.Direction {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.PangoDirection // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_direction(_arg0)
 	runtime.KeepAlive(device)
@@ -265,7 +265,7 @@ func (device *Device) Display() *Display {
 	var _arg0 *C.GdkDevice  // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_display(_arg0)
 	runtime.KeepAlive(device)
@@ -289,7 +289,7 @@ func (device *Device) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_has_cursor(_arg0)
 	runtime.KeepAlive(device)
@@ -315,7 +315,7 @@ func (device *Device) ModifierState() ModifierType {
 	var _arg0 *C.GdkDevice      // out
 	var _cret C.GdkModifierType // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_modifier_state(_arg0)
 	runtime.KeepAlive(device)
@@ -337,7 +337,7 @@ func (device *Device) Name() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_name(_arg0)
 	runtime.KeepAlive(device)
@@ -362,7 +362,7 @@ func (device *Device) NumLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_num_lock_state(_arg0)
 	runtime.KeepAlive(device)
@@ -386,7 +386,7 @@ func (device *Device) NumTouches() uint {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_num_touches(_arg0)
 	runtime.KeepAlive(device)
@@ -411,7 +411,7 @@ func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_product_id(_arg0)
 	runtime.KeepAlive(device)
@@ -438,7 +438,7 @@ func (device *Device) ScrollLockState() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_scroll_lock_state(_arg0)
 	runtime.KeepAlive(device)
@@ -462,7 +462,7 @@ func (device *Device) Seat() Seater {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_seat(_arg0)
 	runtime.KeepAlive(device)
@@ -500,7 +500,7 @@ func (device *Device) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.GdkInputSource // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_source(_arg0)
 	runtime.KeepAlive(device)
@@ -532,7 +532,7 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 	var _arg2 C.double      // in
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_surface_at_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(device)
@@ -577,7 +577,7 @@ func (device *Device) Timestamp() uint32 {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint32    // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_timestamp(_arg0)
 	runtime.KeepAlive(device)
@@ -622,7 +622,7 @@ func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_get_vendor_id(_arg0)
 	runtime.KeepAlive(device)
@@ -649,7 +649,7 @@ func (device *Device) HasBidiLayouts() bool {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
 
 	_cret = C.gdk_device_has_bidi_layouts(_arg0)
 	runtime.KeepAlive(device)

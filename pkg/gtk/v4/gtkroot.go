@@ -102,7 +102,7 @@ func (self *Root) Display() *gdk.Display {
 	var _arg0 *C.GtkRoot    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_root_get_display(_arg0)
 	runtime.KeepAlive(self)
@@ -133,7 +133,7 @@ func (self *Root) Focus() Widgetter {
 	var _arg0 *C.GtkRoot   // out
 	var _cret *C.GtkWidget // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_root_get_focus(_arg0)
 	runtime.KeepAlive(self)
@@ -177,9 +177,9 @@ func (self *Root) SetFocus(focus Widgetter) {
 	var _arg0 *C.GtkRoot   // out
 	var _arg1 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if focus != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(focus).Native()))
 	}
 
 	C.gtk_root_set_focus(_arg0, _arg1)

@@ -1145,7 +1145,7 @@ func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 	var _arg1 C.GtkTreeModelForeachFunc // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeModelForEachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
@@ -1170,7 +1170,7 @@ func (treeModel *TreeModel) ColumnType(index_ int) externglib.Type {
 	var _arg1 C.gint          // out
 	var _cret C.GType         // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = C.gint(index_)
 
 	_cret = C.gtk_tree_model_get_column_type(_arg0, _arg1)
@@ -1197,7 +1197,7 @@ func (treeModel *TreeModel) Flags() TreeModelFlags {
 	var _arg0 *C.GtkTreeModel     // out
 	var _cret C.GtkTreeModelFlags // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 
 	_cret = C.gtk_tree_model_get_flags(_arg0)
 	runtime.KeepAlive(treeModel)
@@ -1227,7 +1227,7 @@ func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 	var _arg2 *C.GtkTreePath  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_model_get_iter(_arg0, &_arg1, _arg2)
@@ -1258,7 +1258,7 @@ func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 	var _arg1 C.GtkTreeIter   // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 
 	_cret = C.gtk_tree_model_get_iter_first(_arg0, &_arg1)
 	runtime.KeepAlive(treeModel)
@@ -1292,7 +1292,7 @@ func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) 
 	var _arg2 *C.gchar        // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pathString)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -1321,7 +1321,7 @@ func (treeModel *TreeModel) NColumns() int {
 	var _arg0 *C.GtkTreeModel // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 
 	_cret = C.gtk_tree_model_get_n_columns(_arg0)
 	runtime.KeepAlive(treeModel)
@@ -1350,7 +1350,7 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret *C.GtkTreePath  // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_get_path(_arg0, _arg1)
@@ -1388,7 +1388,7 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_get_string_from_iter(_arg0, _arg1)
@@ -1423,7 +1423,7 @@ func (treeModel *TreeModel) Value(iter *TreeIter, column int) externglib.Value {
 	var _arg2 C.gint          // out
 	var _arg3 C.GValue        // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = C.gint(column)
 
@@ -1462,7 +1462,7 @@ func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 	var _arg2 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	if parent != nil {
 		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
@@ -1497,7 +1497,7 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_iter_has_child(_arg0, _arg1)
@@ -1531,7 +1531,7 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int {
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	if iter != nil {
 		_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
@@ -1564,7 +1564,7 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_iter_next(_arg0, _arg1)
@@ -1604,7 +1604,7 @@ func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (*TreeIter, bo
 	var _arg3 C.gint          // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	if parent != nil {
 		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
@@ -1650,7 +1650,7 @@ func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 	var _arg2 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(child)))
 
 	_cret = C.gtk_tree_model_iter_parent(_arg0, &_arg1, _arg2)
@@ -1686,7 +1686,7 @@ func (treeModel *TreeModel) IterPrevious(iter *TreeIter) bool {
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_iter_previous(_arg0, _arg1)
@@ -1726,7 +1726,7 @@ func (treeModel *TreeModel) RefNode(iter *TreeIter) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.gtk_tree_model_ref_node(_arg0, _arg1)
@@ -1746,7 +1746,7 @@ func (treeModel *TreeModel) RowChanged(path *TreePath, iter *TreeIter) {
 	var _arg1 *C.GtkTreePath  // out
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
@@ -1773,7 +1773,7 @@ func (treeModel *TreeModel) RowDeleted(path *TreePath) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreePath  // out
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_tree_model_row_deleted(_arg0, _arg1)
@@ -1795,7 +1795,7 @@ func (treeModel *TreeModel) RowHasChildToggled(path *TreePath, iter *TreeIter) {
 	var _arg1 *C.GtkTreePath  // out
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
@@ -1817,7 +1817,7 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 	var _arg1 *C.GtkTreePath  // out
 	var _arg2 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
@@ -1846,7 +1846,7 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 	var _arg3 *C.gint         // out
 	var _arg4 C.gint
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	if iter != nil {
 		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
@@ -1884,7 +1884,7 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
 
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.gtk_tree_model_unref_node(_arg0, _arg1)
@@ -2416,7 +2416,7 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	var _arg2 *C.GtkTreePath         // out
 	var _cret *C.GtkTreeRowReference // in
 
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_row_reference_new(_arg1, _arg2)
@@ -2444,7 +2444,7 @@ func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeller, path
 	var _cret *C.GtkTreeRowReference // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
-	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	_arg3 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_row_reference_new_proxy(_arg1, _arg2, _arg3)

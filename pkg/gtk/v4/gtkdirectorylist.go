@@ -106,7 +106,7 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if file != nil {
-		_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg2 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
@@ -130,7 +130,7 @@ func (self *DirectoryList) Attributes() string {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.char             // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_directory_list_get_attributes(_arg0)
 	runtime.KeepAlive(self)
@@ -161,7 +161,7 @@ func (self *DirectoryList) Error() error {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.GError           // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_directory_list_get_error(_arg0)
 	runtime.KeepAlive(self)
@@ -185,7 +185,7 @@ func (self *DirectoryList) File() gio.Filer {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.GFile            // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_directory_list_get_file(_arg0)
 	runtime.KeepAlive(self)
@@ -222,7 +222,7 @@ func (self *DirectoryList) IOPriority() int {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.int               // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_directory_list_get_io_priority(_arg0)
 	runtime.KeepAlive(self)
@@ -245,7 +245,7 @@ func (self *DirectoryList) Monitored() bool {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_directory_list_get_monitored(_arg0)
 	runtime.KeepAlive(self)
@@ -272,7 +272,7 @@ func (self *DirectoryList) IsLoading() bool {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_directory_list_is_loading(_arg0)
 	runtime.KeepAlive(self)
@@ -300,7 +300,7 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.char             // out
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if attributes != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -323,9 +323,9 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.GFile            // out
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if file != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 
 	C.gtk_directory_list_set_file(_arg0, _arg1)
@@ -351,7 +351,7 @@ func (self *DirectoryList) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.int               // out
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.int(ioPriority)
 
 	C.gtk_directory_list_set_io_priority(_arg0, _arg1)
@@ -375,7 +375,7 @@ func (self *DirectoryList) SetMonitored(monitored bool) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if monitored {
 		_arg1 = C.TRUE
 	}

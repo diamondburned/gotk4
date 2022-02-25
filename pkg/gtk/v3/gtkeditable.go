@@ -187,7 +187,7 @@ func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) extern
 func (editable *Editable) CopyClipboard() {
 	var _arg0 *C.GtkEditable // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 
 	C.gtk_editable_copy_clipboard(_arg0)
 	runtime.KeepAlive(editable)
@@ -198,7 +198,7 @@ func (editable *Editable) CopyClipboard() {
 func (editable *Editable) CutClipboard() {
 	var _arg0 *C.GtkEditable // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 
 	C.gtk_editable_cut_clipboard(_arg0)
 	runtime.KeepAlive(editable)
@@ -209,7 +209,7 @@ func (editable *Editable) CutClipboard() {
 func (editable *Editable) DeleteSelection() {
 	var _arg0 *C.GtkEditable // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 
 	C.gtk_editable_delete_selection(_arg0)
 	runtime.KeepAlive(editable)
@@ -232,7 +232,7 @@ func (editable *Editable) DeleteText(startPos, endPos int) {
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -266,7 +266,7 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg2 C.gint         // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -294,7 +294,7 @@ func (editable *Editable) Editable() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 
 	_cret = C.gtk_editable_get_editable(_arg0)
 	runtime.KeepAlive(editable)
@@ -321,7 +321,7 @@ func (editable *Editable) Position() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 
 	_cret = C.gtk_editable_get_position(_arg0)
 	runtime.KeepAlive(editable)
@@ -351,7 +351,7 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 	var _arg2 C.gint         // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 
 	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(editable)
@@ -374,7 +374,7 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 func (editable *Editable) PasteClipboard() {
 	var _arg0 *C.GtkEditable // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 
 	C.gtk_editable_paste_clipboard(_arg0)
 	runtime.KeepAlive(editable)
@@ -397,7 +397,7 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 
@@ -418,7 +418,7 @@ func (editable *Editable) SetEditable(isEditable bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 	if isEditable {
 		_arg1 = C.TRUE
 	}
@@ -444,7 +444,7 @@ func (editable *Editable) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out
 
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(editable).Native()))
 	_arg1 = C.gint(position)
 
 	C.gtk_editable_set_position(_arg0, _arg1)

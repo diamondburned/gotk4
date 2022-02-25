@@ -50,7 +50,7 @@ func (self *TestDBus) AddServiceDir(path string) {
 	var _arg0 *C.GTestDBus // out
 	var _arg1 *C.gchar     // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -67,7 +67,7 @@ func (self *TestDBus) AddServiceDir(path string) {
 func (self *TestDBus) Down() {
 	var _arg0 *C.GTestDBus // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.g_test_dbus_down(_arg0)
 	runtime.KeepAlive(self)
@@ -85,7 +85,7 @@ func (self *TestDBus) BusAddress() string {
 	var _arg0 *C.GTestDBus // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.g_test_dbus_get_bus_address(_arg0)
 	runtime.KeepAlive(self)
@@ -109,7 +109,7 @@ func (self *TestDBus) Flags() TestDBusFlags {
 	var _arg0 *C.GTestDBus     // out
 	var _cret C.GTestDBusFlags // in
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.g_test_dbus_get_flags(_arg0)
 	runtime.KeepAlive(self)
@@ -130,7 +130,7 @@ func (self *TestDBus) Flags() TestDBusFlags {
 func (self *TestDBus) Stop() {
 	var _arg0 *C.GTestDBus // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.g_test_dbus_stop(_arg0)
 	runtime.KeepAlive(self)
@@ -147,7 +147,7 @@ func (self *TestDBus) Stop() {
 func (self *TestDBus) Up() {
 	var _arg0 *C.GTestDBus // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.g_test_dbus_up(_arg0)
 	runtime.KeepAlive(self)

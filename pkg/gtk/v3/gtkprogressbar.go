@@ -143,7 +143,7 @@ func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkProgressBar    // out
 	var _cret C.PangoEllipsizeMode // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 
 	_cret = C.gtk_progress_bar_get_ellipsize(_arg0)
 	runtime.KeepAlive(pbar)
@@ -165,7 +165,7 @@ func (pbar *ProgressBar) Fraction() float64 {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gdouble         // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 
 	_cret = C.gtk_progress_bar_get_fraction(_arg0)
 	runtime.KeepAlive(pbar)
@@ -187,7 +187,7 @@ func (pbar *ProgressBar) Inverted() bool {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 
 	_cret = C.gtk_progress_bar_get_inverted(_arg0)
 	runtime.KeepAlive(pbar)
@@ -212,7 +212,7 @@ func (pbar *ProgressBar) PulseStep() float64 {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gdouble         // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 
 	_cret = C.gtk_progress_bar_get_pulse_step(_arg0)
 	runtime.KeepAlive(pbar)
@@ -235,7 +235,7 @@ func (pbar *ProgressBar) ShowText() bool {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 
 	_cret = C.gtk_progress_bar_get_show_text(_arg0)
 	runtime.KeepAlive(pbar)
@@ -262,7 +262,7 @@ func (pbar *ProgressBar) Text() string {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 
 	_cret = C.gtk_progress_bar_get_text(_arg0)
 	runtime.KeepAlive(pbar)
@@ -284,7 +284,7 @@ func (pbar *ProgressBar) Text() string {
 func (pbar *ProgressBar) Pulse() {
 	var _arg0 *C.GtkProgressBar // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 
 	C.gtk_progress_bar_pulse(_arg0)
 	runtime.KeepAlive(pbar)
@@ -301,7 +301,7 @@ func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
 	var _arg0 *C.GtkProgressBar    // out
 	var _arg1 C.PangoEllipsizeMode // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 	_arg1 = C.PangoEllipsizeMode(mode)
 
 	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
@@ -320,7 +320,7 @@ func (pbar *ProgressBar) SetFraction(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gdouble         // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 	_arg1 = C.gdouble(fraction)
 
 	C.gtk_progress_bar_set_fraction(_arg0, _arg1)
@@ -339,7 +339,7 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 	if inverted {
 		_arg1 = C.TRUE
 	}
@@ -360,7 +360,7 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gdouble         // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 	_arg1 = C.gdouble(fraction)
 
 	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
@@ -384,7 +384,7 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 	if showText {
 		_arg1 = C.TRUE
 	}
@@ -412,7 +412,7 @@ func (pbar *ProgressBar) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 *C.gchar          // out
 
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(externglib.InternObject(pbar).Native()))
 	if text != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))

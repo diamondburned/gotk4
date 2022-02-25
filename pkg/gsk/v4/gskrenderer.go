@@ -109,7 +109,7 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	var _arg1 *C.GdkSurface  // out
 	var _cret *C.GskRenderer // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	_cret = C.gsk_renderer_new_for_surface(_arg1)
 	runtime.KeepAlive(surface)
@@ -135,7 +135,7 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 	var _arg0 *C.GskRenderer // out
 	var _cret *C.GdkSurface  // in
 
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.gsk_renderer_get_surface(_arg0)
 	runtime.KeepAlive(renderer)
@@ -172,7 +172,7 @@ func (renderer *Renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.gsk_renderer_is_realized(_arg0)
 	runtime.KeepAlive(renderer)
@@ -198,8 +198,8 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _arg1 *C.GdkSurface  // out
 	var _cerr *C.GError      // in
 
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
 
 	C.gsk_renderer_realize(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(renderer)
@@ -236,8 +236,8 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.cairo_region_t // out
 
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(externglib.InternObject(root).Native()))
 	if region != nil {
 		_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	}
@@ -272,8 +272,8 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 	var _arg2 *C.graphene_rect_t // out
 	var _cret *C.GdkTexture      // in
 
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(externglib.InternObject(root).Native()))
 	if viewport != nil {
 		_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(viewport)))
 	}
@@ -310,7 +310,7 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 func (renderer *Renderer) Unrealize() {
 	var _arg0 *C.GskRenderer // out
 
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	C.gsk_renderer_unrealize(_arg0)
 	runtime.KeepAlive(renderer)

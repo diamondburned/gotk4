@@ -608,7 +608,7 @@ func (obj *Value) CurrentValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	C.atk_value_get_current_value(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
@@ -633,7 +633,7 @@ func (obj *Value) Increment() float64 {
 	var _arg0 *C.AtkValue // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	_cret = C.atk_value_get_increment(_arg0)
 	runtime.KeepAlive(obj)
@@ -657,7 +657,7 @@ func (obj *Value) MaximumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	C.atk_value_get_maximum_value(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
@@ -684,7 +684,7 @@ func (obj *Value) MinimumIncrement() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	C.atk_value_get_minimum_increment(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
@@ -708,7 +708,7 @@ func (obj *Value) MinimumValue() externglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	C.atk_value_get_minimum_value(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
@@ -732,7 +732,7 @@ func (obj *Value) Range() *Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.AtkRange // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	_cret = C.atk_value_get_range(_arg0)
 	runtime.KeepAlive(obj)
@@ -764,7 +764,7 @@ func (obj *Value) SubRanges() []*Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.GSList   // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	_cret = C.atk_value_get_sub_ranges(_arg0)
 	runtime.KeepAlive(obj)
@@ -803,7 +803,7 @@ func (obj *Value) ValueAndText() (float64, string) {
 	var _arg1 C.gdouble   // in
 	var _arg2 *C.gchar    // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 
 	C.atk_value_get_value_and_text(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(obj)
@@ -837,7 +837,7 @@ func (obj *Value) SetCurrentValue(value *externglib.Value) bool {
 	var _arg1 *C.GValue   // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_cret = C.atk_value_set_current_value(_arg0, _arg1)
@@ -874,7 +874,7 @@ func (obj *Value) SetValue(newValue float64) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // out
 
-	_arg0 = (*C.AtkValue)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(externglib.InternObject(obj).Native()))
 	_arg1 = C.gdouble(newValue)
 
 	C.atk_value_set_value(_arg0, _arg1)

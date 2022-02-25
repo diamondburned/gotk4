@@ -81,7 +81,7 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_t           // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drawing_context_get_cairo_context(_arg0)
 	runtime.KeepAlive(context)
@@ -107,7 +107,7 @@ func (context *DrawingContext) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drawing_context_get_clip(_arg0)
 	runtime.KeepAlive(context)
@@ -137,7 +137,7 @@ func (context *DrawingContext) Window() Windower {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drawing_context_get_window(_arg0)
 	runtime.KeepAlive(context)
@@ -175,7 +175,7 @@ func (context *DrawingContext) IsValid() bool {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gdk_drawing_context_is_valid(_arg0)
 	runtime.KeepAlive(context)

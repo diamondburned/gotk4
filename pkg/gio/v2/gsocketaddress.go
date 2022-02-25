@@ -224,7 +224,7 @@ func (address *SocketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_socket_address_get_family(_arg0)
 	runtime.KeepAlive(address)
@@ -247,7 +247,7 @@ func (address *SocketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 
 	_cret = C.g_socket_address_get_native_size(_arg0)
 	runtime.KeepAlive(address)
@@ -279,7 +279,7 @@ func (address *SocketAddress) ToNative(dest cgo.Handle, destlen uint) error {
 	var _arg2 C.gsize           // out
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(dest))
 	_arg2 = C.gsize(destlen)
 

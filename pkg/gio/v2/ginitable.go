@@ -198,7 +198,7 @@ func (initable *Initable) Init(ctx context.Context) error {
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GInitable)(unsafe.Pointer(initable.Native()))
+	_arg0 = (*C.GInitable)(unsafe.Pointer(externglib.InternObject(initable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)

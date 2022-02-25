@@ -96,7 +96,7 @@ func (self *Drop) Finish(action DragAction) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 C.GdkDragAction // out
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GdkDragAction(action)
 
 	C.gdk_drop_finish(_arg0, _arg1)
@@ -126,7 +126,7 @@ func (self *Drop) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
 	var _cret C.GdkDragAction // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gdk_drop_get_actions(_arg0)
 	runtime.KeepAlive(self)
@@ -148,7 +148,7 @@ func (self *Drop) Device() Devicer {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gdk_drop_get_device(_arg0)
 	runtime.KeepAlive(self)
@@ -186,7 +186,7 @@ func (self *Drop) Display() *Display {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkDisplay // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gdk_drop_get_display(_arg0)
 	runtime.KeepAlive(self)
@@ -211,7 +211,7 @@ func (self *Drop) Drag() Dragger {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 	runtime.KeepAlive(self)
@@ -249,7 +249,7 @@ func (self *Drop) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gdk_drop_get_formats(_arg0)
 	runtime.KeepAlive(self)
@@ -278,7 +278,7 @@ func (self *Drop) Surface() Surfacer {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 	runtime.KeepAlive(self)
@@ -325,7 +325,7 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -383,8 +383,8 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	var _cret *C.GInputStream // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(self)
@@ -444,7 +444,7 @@ func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPri
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -483,8 +483,8 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 	var _cret *C.GValue       // in
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
 
 	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(self)
@@ -527,7 +527,7 @@ func (self *Drop) Status(actions, preferred DragAction) {
 	var _arg1 C.GdkDragAction // out
 	var _arg2 C.GdkDragAction // out
 
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GdkDragAction(actions)
 	_arg2 = C.GdkDragAction(preferred)
 

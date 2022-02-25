@@ -205,12 +205,12 @@ func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Icon
 	var _arg2 *C.char                // out
 	var _arg3 *C.GIcon               // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg3 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 
 	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
@@ -224,7 +224,7 @@ func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Icon
 func (self *AppChooserButton) AppendSeparator() {
 	var _arg0 *C.GtkAppChooserButton // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_app_chooser_button_append_separator(_arg0)
 	runtime.KeepAlive(self)
@@ -241,7 +241,7 @@ func (self *AppChooserButton) Heading() string {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret *C.char                // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
 	runtime.KeepAlive(self)
@@ -265,7 +265,7 @@ func (self *AppChooserButton) Modal() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_button_get_modal(_arg0)
 	runtime.KeepAlive(self)
@@ -290,7 +290,7 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 	runtime.KeepAlive(self)
@@ -315,7 +315,7 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
 	runtime.KeepAlive(self)
@@ -343,7 +343,7 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -364,7 +364,7 @@ func (self *AppChooserButton) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -383,7 +383,7 @@ func (self *AppChooserButton) SetModal(modal bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
@@ -404,7 +404,7 @@ func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -425,7 +425,7 @@ func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}

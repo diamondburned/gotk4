@@ -104,7 +104,7 @@ func (d DestDefaults) Has(other DestDefaults) bool {
 func (widget *Widget) DragDestAddImageTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_dest_add_image_targets(_arg0)
 	runtime.KeepAlive(widget)
@@ -117,7 +117,7 @@ func (widget *Widget) DragDestAddImageTargets() {
 func (widget *Widget) DragDestAddTextTargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_dest_add_text_targets(_arg0)
 	runtime.KeepAlive(widget)
@@ -130,7 +130,7 @@ func (widget *Widget) DragDestAddTextTargets() {
 func (widget *Widget) DragDestAddURITargets() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_dest_add_uri_targets(_arg0)
 	runtime.KeepAlive(widget)
@@ -147,7 +147,7 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_drag_dest_get_target_list(_arg0)
 	runtime.KeepAlive(widget)
@@ -179,7 +179,7 @@ func (widget *Widget) DragDestGetTrackMotion() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_drag_dest_get_track_motion(_arg0)
 	runtime.KeepAlive(widget)
@@ -249,7 +249,7 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 	var _arg3 C.gint
 	var _arg4 C.GdkDragAction // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg1 = C.GtkDestDefaults(flags)
 	_arg3 = (C.gint)(len(targets))
 	_arg2 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
@@ -287,8 +287,8 @@ func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.Dr
 	var _arg2 C.GdkDragProtocol // out
 	var _arg3 C.gboolean        // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(proxyWindow.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(proxyWindow).Native()))
 	_arg2 = C.GdkDragProtocol(protocol)
 	if useCoordinates {
 		_arg3 = C.TRUE
@@ -313,7 +313,7 @@ func (widget *Widget) DragDestSetTargetList(targetList *TargetList) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkTargetList // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	if targetList != nil {
 		_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
 	}
@@ -338,7 +338,7 @@ func (widget *Widget) DragDestSetTrackMotion(trackMotion bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	if trackMotion {
 		_arg1 = C.TRUE
 	}
@@ -353,7 +353,7 @@ func (widget *Widget) DragDestSetTrackMotion(trackMotion bool) {
 func (widget *Widget) DragDestUnset() {
 	var _arg0 *C.GtkWidget // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_drag_dest_unset(_arg0)
 	runtime.KeepAlive(widget)

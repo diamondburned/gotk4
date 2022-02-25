@@ -114,7 +114,7 @@ func (self *DragIcon) Child() Widgetter {
 	var _arg0 *C.GtkDragIcon // out
 	var _cret *C.GtkWidget   // in
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
 	runtime.KeepAlive(self)
@@ -151,9 +151,9 @@ func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	}
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
@@ -226,7 +226,7 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	var _arg1 *C.GdkDrag   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
 
 	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
 	runtime.KeepAlive(drag)
@@ -273,8 +273,8 @@ func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, 
 	var _arg3 C.int           // out
 	var _arg4 C.int           // out
 
-	_arg1 = (*C.GdkDrag)(unsafe.Pointer(drag.Native()))
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 	_arg3 = C.int(hotX)
 	_arg4 = C.int(hotY)
 

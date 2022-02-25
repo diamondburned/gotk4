@@ -155,8 +155,8 @@ func _gotk4_gio2_SocketConnectableIface_enumerate(arg0 *C.GSocketConnectable) (c
 
 	socketAddressEnumerator := iface.Enumerate()
 
-	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(socketAddressEnumerator.Native()))
-	C.g_object_ref(C.gpointer(socketAddressEnumerator.Native()))
+	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(socketAddressEnumerator).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddressEnumerator).Native()))
 
 	return cret
 }
@@ -168,8 +168,8 @@ func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.GSocketConnectab
 
 	socketAddressEnumerator := iface.ProxyEnumerate()
 
-	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(socketAddressEnumerator.Native()))
-	C.g_object_ref(C.gpointer(socketAddressEnumerator.Native()))
+	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(socketAddressEnumerator).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddressEnumerator).Native()))
 
 	return cret
 }
@@ -206,7 +206,7 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(connectable).Native()))
 
 	_cret = C.g_socket_connectable_enumerate(_arg0)
 	runtime.KeepAlive(connectable)
@@ -248,7 +248,7 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(connectable).Native()))
 
 	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
 	runtime.KeepAlive(connectable)
@@ -292,7 +292,7 @@ func (connectable *SocketConnectable) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(connectable).Native()))
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
 	runtime.KeepAlive(connectable)

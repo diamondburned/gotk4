@@ -81,7 +81,7 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(defaultProxy)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -108,7 +108,7 @@ func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out
 
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(resolver.Native()))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(proxy)))

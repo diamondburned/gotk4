@@ -315,7 +315,7 @@ func (converter *Converter) Convert(inbuf, outbuf []byte, flags ConverterFlags) 
 	var _cret C.GConverterResult // in
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
+	_arg0 = (*C.GConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
 	_arg2 = (C.gsize)(len(inbuf))
 	if len(inbuf) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&inbuf[0]))
@@ -353,7 +353,7 @@ func (converter *Converter) Convert(inbuf, outbuf []byte, flags ConverterFlags) 
 func (converter *Converter) Reset() {
 	var _arg0 *C.GConverter // out
 
-	_arg0 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
+	_arg0 = (*C.GConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
 
 	C.g_converter_reset(_arg0)
 	runtime.KeepAlive(converter)

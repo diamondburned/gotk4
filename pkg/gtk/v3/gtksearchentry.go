@@ -325,7 +325,7 @@ func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
 	var _arg1 *C.GdkEvent       // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_search_entry_handle_event(_arg0, _arg1)

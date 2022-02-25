@@ -426,8 +426,8 @@ func (buildable *Buildable) AddChild(builder *Builder, child *externglib.Object,
 	var _arg2 *C.GObject      // out
 	var _arg3 *C.gchar        // out
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	if typ != "" {
 		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
@@ -461,8 +461,8 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *exter
 	var _arg2 *C.gchar        // out
 	var _cret *C.GObject      // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -495,8 +495,8 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *externglib.O
 	var _arg3 *C.gchar        // out
 	var _arg4 C.gpointer      // out
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 	if child != nil {
 		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	}
@@ -529,8 +529,8 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *externglib.Obj
 	var _arg3 *C.gchar        // out
 	var _arg4 *C.gpointer     // out
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 	if child != nil {
 		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	}
@@ -572,8 +572,8 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 	var _arg5 C.gpointer      // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 	if child != nil {
 		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	}
@@ -617,8 +617,8 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *e
 	var _arg2 *C.gchar        // out
 	var _cret *C.GObject      // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childname)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -647,7 +647,7 @@ func (buildable *Buildable) Name() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.gchar        // in
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
 
 	_cret = C.gtk_buildable_get_name(_arg0)
 	runtime.KeepAlive(buildable)
@@ -672,8 +672,8 @@ func (buildable *Buildable) ParserFinished(builder *Builder) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.GtkBuilder   // out
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 
 	C.gtk_buildable_parser_finished(_arg0, _arg1)
 	runtime.KeepAlive(buildable)
@@ -695,8 +695,8 @@ func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, 
 	var _arg2 *C.gchar        // out
 	var _arg3 *C.GValue       // out
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(externglib.InternObject(builder).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
@@ -718,7 +718,7 @@ func (buildable *Buildable) SetName(name string) {
 	var _arg0 *C.GtkBuildable // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(externglib.InternObject(buildable).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 

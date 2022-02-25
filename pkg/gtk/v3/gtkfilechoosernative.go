@@ -251,7 +251,7 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if parent != nil {
-		_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+		_arg2 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
 	}
 	_arg3 = C.GtkFileChooserAction(action)
 	if acceptLabel != "" {
@@ -288,7 +288,7 @@ func (self *FileChooserNative) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
 	runtime.KeepAlive(self)
@@ -313,7 +313,7 @@ func (self *FileChooserNative) CancelLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _cret *C.char                 // in
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
 	runtime.KeepAlive(self)
@@ -343,7 +343,7 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if acceptLabel != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -370,7 +370,7 @@ func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
 	var _arg1 *C.char                 // out
 
-	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if cancelLabel != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
 		defer C.free(unsafe.Pointer(_arg1))

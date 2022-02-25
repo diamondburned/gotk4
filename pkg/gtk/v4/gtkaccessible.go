@@ -150,7 +150,7 @@ func (self *Accessible) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkAccessible    // out
 	var _cret C.GtkAccessibleRole // in
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_accessible_get_accessible_role(_arg0)
 	runtime.KeepAlive(self)
@@ -172,7 +172,7 @@ func (self *Accessible) ResetProperty(property AccessibleProperty) {
 	var _arg0 *C.GtkAccessible        // out
 	var _arg1 C.GtkAccessibleProperty // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkAccessibleProperty(property)
 
 	C.gtk_accessible_reset_property(_arg0, _arg1)
@@ -190,7 +190,7 @@ func (self *Accessible) ResetRelation(relation AccessibleRelation) {
 	var _arg0 *C.GtkAccessible        // out
 	var _arg1 C.GtkAccessibleRelation // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkAccessibleRelation(relation)
 
 	C.gtk_accessible_reset_relation(_arg0, _arg1)
@@ -208,7 +208,7 @@ func (self *Accessible) ResetState(state AccessibleState) {
 	var _arg0 *C.GtkAccessible     // out
 	var _arg1 C.GtkAccessibleState // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkAccessibleState(state)
 
 	C.gtk_accessible_reset_state(_arg0, _arg1)
@@ -234,7 +234,7 @@ func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values [
 	var _arg1 C.int
 	var _arg3 *C.GValue // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (C.int)(len(properties))
 	if len(properties) > 0 {
 		_arg2 = (*C.GtkAccessibleProperty)(unsafe.Pointer(&properties[0]))
@@ -273,7 +273,7 @@ func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []
 	var _arg1 C.int
 	var _arg3 *C.GValue // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (C.int)(len(relations))
 	if len(relations) > 0 {
 		_arg2 = (*C.GtkAccessibleRelation)(unsafe.Pointer(&relations[0]))
@@ -312,7 +312,7 @@ func (self *Accessible) UpdateState(states []AccessibleState, values []externgli
 	var _arg1 C.int
 	var _arg3 *C.GValue // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = (C.int)(len(states))
 	if len(states) > 0 {
 		_arg2 = (*C.GtkAccessibleState)(unsafe.Pointer(&states[0]))

@@ -58,8 +58,8 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) 
 	listModel := fn(_item)
 
 	if listModel != nil {
-		cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
-		C.g_object_ref(C.gpointer(listModel.Native()))
+		cret = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(listModel).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(listModel).Native()))
 	}
 
 	return cret
@@ -128,8 +128,8 @@ func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, creat
 	var _arg6 C.GDestroyNotify
 	var _cret *C.GtkTreeListModel // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(root.Native()))
-	C.g_object_ref(C.gpointer(root.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(root).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(root).Native()))
 	if passthrough {
 		_arg2 = C.TRUE
 	}
@@ -167,7 +167,7 @@ func (self *TreeListModel) Autoexpand() bool {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_model_get_autoexpand(_arg0)
 	runtime.KeepAlive(self)
@@ -202,7 +202,7 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_model_get_child_row(_arg0, _arg1)
@@ -228,7 +228,7 @@ func (self *TreeListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret *C.GListModel       // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
@@ -274,7 +274,7 @@ func (self *TreeListModel) Passthrough() bool {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_model_get_passthrough(_arg0)
 	runtime.KeepAlive(self)
@@ -316,7 +316,7 @@ func (self *TreeListModel) Row(position uint) *TreeListRow {
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_model_get_row(_arg0, _arg1)
@@ -346,7 +346,7 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if autoexpand {
 		_arg1 = C.TRUE
 	}
@@ -414,7 +414,7 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 	var _arg1 C.guint           // out
 	var _cret *C.GtkTreeListRow // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	_cret = C.gtk_tree_list_row_get_child_row(_arg0, _arg1)
@@ -445,7 +445,7 @@ func (self *TreeListRow) Children() gio.ListModeller {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GListModel     // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_get_children(_arg0)
 	runtime.KeepAlive(self)
@@ -488,7 +488,7 @@ func (self *TreeListRow) Depth() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_get_depth(_arg0)
 	runtime.KeepAlive(self)
@@ -510,7 +510,7 @@ func (self *TreeListRow) Expanded() bool {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_get_expanded(_arg0)
 	runtime.KeepAlive(self)
@@ -536,7 +536,7 @@ func (self *TreeListRow) Item() *externglib.Object {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gpointer        // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_get_item(_arg0)
 	runtime.KeepAlive(self)
@@ -564,7 +564,7 @@ func (self *TreeListRow) Parent() *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GtkTreeListRow // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_get_parent(_arg0)
 	runtime.KeepAlive(self)
@@ -589,7 +589,7 @@ func (self *TreeListRow) Position() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_get_position(_arg0)
 	runtime.KeepAlive(self)
@@ -616,7 +616,7 @@ func (self *TreeListRow) IsExpandable() bool {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_tree_list_row_is_expandable(_arg0)
 	runtime.KeepAlive(self)
@@ -646,7 +646,7 @@ func (self *TreeListRow) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.gboolean        // out
 
-	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if expanded {
 		_arg1 = C.TRUE
 	}

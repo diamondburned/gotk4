@@ -752,8 +752,8 @@ func _gotk4_gtk3_CellAreaClass_copy_context(arg0 *C.GtkCellArea, arg1 *C.GtkCell
 
 	cellAreaContext := iface.CopyContext(_context)
 
-	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(cellAreaContext.Native()))
-	C.g_object_ref(C.gpointer(cellAreaContext.Native()))
+	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(cellAreaContext).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(cellAreaContext).Native()))
 
 	return cret
 }
@@ -765,8 +765,8 @@ func _gotk4_gtk3_CellAreaClass_create_context(arg0 *C.GtkCellArea) (cret *C.GtkC
 
 	cellAreaContext := iface.CreateContext()
 
-	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(cellAreaContext.Native()))
-	C.g_object_ref(C.gpointer(cellAreaContext.Native()))
+	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(cellAreaContext).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(cellAreaContext).Native()))
 
 	return cret
 }
@@ -1361,9 +1361,9 @@ func (area *CellArea) Activate(context *CellAreaContext, widget Widgetter, cellA
 	var _arg5 C.gboolean             // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg4 = C.GtkCellRendererState(flags)
 	if editOnly {
@@ -1412,9 +1412,9 @@ func (area *CellArea) ActivateCell(widget Widgetter, renderer CellRendererer, ev
 	var _arg5 C.GtkCellRendererState // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg3 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg5 = C.GtkCellRendererState(flags)
@@ -1446,8 +1446,8 @@ func (area *CellArea) Add(renderer CellRendererer) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	C.gtk_cell_area_add(_arg0, _arg1)
 	runtime.KeepAlive(area)
@@ -1471,9 +1471,9 @@ func (area *CellArea) AddFocusSibling(renderer, sibling CellRendererer) {
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.GtkCellRenderer // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(sibling.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(sibling).Native()))
 
 	C.gtk_cell_area_add_focus_sibling(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
@@ -1499,8 +1499,8 @@ func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, is
 	var _arg3 C.gboolean      // out
 	var _arg4 C.gboolean      // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if isExpander {
 		_arg3 = C.TRUE
@@ -1532,8 +1532,8 @@ func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string
 	var _arg2 *C.gchar           // out
 	var _arg3 C.gint             // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
@@ -1558,8 +1558,8 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.gchar           // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -1587,8 +1587,8 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 	var _arg2 *C.gchar           // out
 	var _cret C.gint             // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 
@@ -1618,8 +1618,8 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.GValue          // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
@@ -1645,8 +1645,8 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.GValue          // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
@@ -1681,8 +1681,8 @@ func (area *CellArea) CopyContext(context *CellAreaContext) *CellAreaContext {
 	var _arg1 *C.GtkCellAreaContext // out
 	var _cret *C.GtkCellAreaContext // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_cell_area_copy_context(_arg0, _arg1)
 	runtime.KeepAlive(area)
@@ -1710,7 +1710,7 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 	var _arg0 *C.GtkCellArea        // out
 	var _cret *C.GtkCellAreaContext // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_cell_area_create_context(_arg0)
 	runtime.KeepAlive(area)
@@ -1745,9 +1745,9 @@ func (area *CellArea) Event(context *CellAreaContext, widget Widgetter, event *g
 	var _arg5 C.GtkCellRendererState // out
 	var _cret C.gint                 // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg5 = C.GtkCellRendererState(flags)
@@ -1787,7 +1787,7 @@ func (area *CellArea) Focus(direction DirectionType) bool {
 	var _arg1 C.GtkDirectionType // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 	_arg1 = C.GtkDirectionType(direction)
 
 	_cret = C.gtk_cell_area_focus(_arg0, _arg1)
@@ -1814,7 +1814,7 @@ func (area *CellArea) ForEach(callback CellCallback) {
 	var _arg1 C.GtkCellCallback // out
 	var _arg2 C.gpointer
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 	_arg1 = (*[0]byte)(C._gotk4_gtk3_CellCallback)
 	_arg2 = C.gpointer(gbox.Assign(callback))
 	defer gbox.Delete(uintptr(_arg2))
@@ -1844,9 +1844,9 @@ func (area *CellArea) ForEachAlloc(context *CellAreaContext, widget Widgetter, c
 	var _arg5 C.GtkCellAllocCallback // out
 	var _arg6 C.gpointer
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
 	_arg5 = (*[0]byte)(C._gotk4_gtk3_CellAllocCallback)
@@ -1884,10 +1884,10 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 	var _arg4 *C.GdkRectangle       // out
 	var _arg5 C.GdkRectangle        // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
 	C.gtk_cell_area_get_cell_allocation(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
@@ -1931,9 +1931,9 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	var _arg6 C.GdkRectangle        // in
 	var _cret *C.GtkCellRenderer    // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg4 = C.gint(x)
 	_arg5 = C.gint(y)
@@ -1984,7 +1984,7 @@ func (area *CellArea) CurrentPathString() string {
 	var _arg0 *C.GtkCellArea // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_cell_area_get_current_path_string(_arg0)
 	runtime.KeepAlive(area)
@@ -2007,7 +2007,7 @@ func (area *CellArea) EditWidget() CellEditabler {
 	var _arg0 *C.GtkCellArea     // out
 	var _cret *C.GtkCellEditable // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_cell_area_get_edit_widget(_arg0)
 	runtime.KeepAlive(area)
@@ -2045,7 +2045,7 @@ func (area *CellArea) EditedCell() CellRendererer {
 	var _arg0 *C.GtkCellArea     // out
 	var _cret *C.GtkCellRenderer // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_cell_area_get_edited_cell(_arg0)
 	runtime.KeepAlive(area)
@@ -2083,7 +2083,7 @@ func (area *CellArea) FocusCell() CellRendererer {
 	var _arg0 *C.GtkCellArea     // out
 	var _cret *C.GtkCellRenderer // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_cell_area_get_focus_cell(_arg0)
 	runtime.KeepAlive(area)
@@ -2131,8 +2131,8 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.GtkCellRenderer // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.gtk_cell_area_get_focus_from_sibling(_arg0, _arg1)
 	runtime.KeepAlive(area)
@@ -2176,8 +2176,8 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret *C.GList           // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.gtk_cell_area_get_focus_siblings(_arg0, _arg1)
 	runtime.KeepAlive(area)
@@ -2237,9 +2237,9 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 	var _arg3 C.gint                // in
 	var _arg4 C.gint                // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_cell_area_get_preferred_height(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(area)
@@ -2288,9 +2288,9 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 	var _arg4 C.gint                // in
 	var _arg5 C.gint                // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = C.gint(width)
 
 	C.gtk_cell_area_get_preferred_height_for_width(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
@@ -2332,9 +2332,9 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 	var _arg3 C.gint                // in
 	var _arg4 C.gint                // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_cell_area_get_preferred_width(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(area)
@@ -2383,9 +2383,9 @@ func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget W
 	var _arg4 C.gint                // in
 	var _arg5 C.gint                // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = C.gint(height)
 
 	C.gtk_cell_area_get_preferred_width_for_height(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
@@ -2414,7 +2414,7 @@ func (area *CellArea) RequestMode() SizeRequestMode {
 	var _arg0 *C.GtkCellArea       // out
 	var _cret C.GtkSizeRequestMode // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_cell_area_get_request_mode(_arg0)
 	runtime.KeepAlive(area)
@@ -2441,8 +2441,8 @@ func (area *CellArea) HasRenderer(renderer CellRendererer) bool {
 	var _arg1 *C.GtkCellRenderer // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	_cret = C.gtk_cell_area_has_renderer(_arg0, _arg1)
 	runtime.KeepAlive(area)
@@ -2477,8 +2477,8 @@ func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) *
 	var _arg2 *C.GdkRectangle // out
 	var _arg3 C.GdkRectangle  // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
 	C.gtk_cell_area_inner_cell_area(_arg0, _arg1, _arg2, &_arg3)
@@ -2504,7 +2504,7 @@ func (area *CellArea) IsActivatable() bool {
 	var _arg0 *C.GtkCellArea // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 
 	_cret = C.gtk_cell_area_is_activatable(_arg0)
 	runtime.KeepAlive(area)
@@ -2536,9 +2536,9 @@ func (area *CellArea) IsFocusSibling(renderer, sibling CellRendererer) bool {
 	var _arg2 *C.GtkCellRenderer // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(sibling.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(sibling).Native()))
 
 	_cret = C.gtk_cell_area_is_focus_sibling(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
@@ -2564,8 +2564,8 @@ func (area *CellArea) Remove(renderer CellRendererer) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	C.gtk_cell_area_remove(_arg0, _arg1)
 	runtime.KeepAlive(area)
@@ -2585,9 +2585,9 @@ func (area *CellArea) RemoveFocusSibling(renderer, sibling CellRendererer) {
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.GtkCellRenderer // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(sibling.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(sibling).Native()))
 
 	C.gtk_cell_area_remove_focus_sibling(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
@@ -2619,9 +2619,9 @@ func (area *CellArea) Render(context *CellAreaContext, widget Widgetter, cr *cai
 	var _arg6 C.GtkCellRendererState // out
 	var _arg7 C.gboolean             // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg3 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
 	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
@@ -2668,10 +2668,10 @@ func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orien
 	var _arg5 C.gint             // in
 	var _arg6 C.gint             // in
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 	_arg2 = C.GtkOrientation(orientation)
-	_arg3 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg4 = C.gint(forSize)
 
 	C.gtk_cell_area_request_renderer(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
@@ -2704,8 +2704,8 @@ func (area *CellArea) SetFocusCell(renderer CellRendererer) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
 
 	C.gtk_cell_area_set_focus_cell(_arg0, _arg1)
 	runtime.KeepAlive(area)
@@ -2728,7 +2728,7 @@ func (area *CellArea) StopEditing(canceled bool) {
 	var _arg0 *C.GtkCellArea // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
 	if canceled {
 		_arg1 = C.TRUE
 	}

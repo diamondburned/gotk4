@@ -123,7 +123,7 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, pa
 	var _cret C.gboolean          // in
 
 	_arg1 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
+	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
 	_arg3 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_set_row_drag_data(_arg1, _arg2, _arg3)
@@ -277,7 +277,7 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *Se
 	var _arg2 *C.GtkSelectionData // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(dragDest.Native()))
+	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(externglib.InternObject(dragDest).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(dest)))
 	_arg2 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
@@ -316,7 +316,7 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, selectionData 
 	var _arg2 *C.GtkSelectionData // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(dragDest.Native()))
+	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(externglib.InternObject(dragDest).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(destPath)))
 	_arg2 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
@@ -497,7 +497,7 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(dragSource.Native()))
+	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(externglib.InternObject(dragSource).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
@@ -533,7 +533,7 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath, selectionData *Sel
 	var _arg2 *C.GtkSelectionData  // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(dragSource.Native()))
+	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(externglib.InternObject(dragSource).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg2 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
@@ -568,7 +568,7 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	var _arg1 *C.GtkTreePath       // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(dragSource.Native()))
+	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(externglib.InternObject(dragSource).Native()))
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)

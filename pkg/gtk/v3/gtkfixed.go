@@ -139,8 +139,8 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -165,8 +165,8 @@ func (fixed *Fixed) Put(widget Widgetter, x, y int) {
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(fixed.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 

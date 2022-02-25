@@ -171,7 +171,7 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
 	runtime.KeepAlive(self)
@@ -195,7 +195,7 @@ func (self *EventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
 
-	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_event_controller_motion_is_pointer(_arg0)
 	runtime.KeepAlive(self)

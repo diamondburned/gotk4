@@ -224,7 +224,7 @@ func NewRadioButton(group []RadioButton) *RadioButton {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioButton // out
-			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -257,7 +257,7 @@ func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 	var _cret *C.GtkWidget      // in
 
 	if radioGroupMember != nil {
-		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject(radioGroupMember).Native()))
 	}
 
 	_cret = C.gtk_radio_button_new_from_widget(_arg1)
@@ -291,7 +291,7 @@ func NewRadioButtonWithLabel(group []RadioButton, label string) *RadioButton {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioButton // out
-			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -328,7 +328,7 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 	var _cret *C.GtkWidget      // in
 
 	if radioGroupMember != nil {
-		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject(radioGroupMember).Native()))
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -368,7 +368,7 @@ func NewRadioButtonWithMnemonic(group []RadioButton, label string) *RadioButton 
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioButton // out
-			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -407,7 +407,7 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 	var _cret *C.GtkWidget      // in
 
 	if radioGroupMember != nil {
-		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
+		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject(radioGroupMember).Native()))
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
@@ -435,7 +435,7 @@ func (radioButton *RadioButton) Group() []RadioButton {
 	var _arg0 *C.GtkRadioButton // out
 	var _cret *C.GSList         // in
 
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(radioButton.Native()))
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject(radioButton).Native()))
 
 	_cret = C.gtk_radio_button_get_group(_arg0)
 	runtime.KeepAlive(radioButton)
@@ -481,9 +481,9 @@ func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GtkRadioButton // out
 
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(radioButton.Native()))
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject(radioButton).Native()))
 	if groupSource != nil {
-		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
+		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject(groupSource).Native()))
 	}
 
 	C.gtk_radio_button_join_group(_arg0, _arg1)
@@ -505,12 +505,12 @@ func (radioButton *RadioButton) SetGroup(group []RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GSList         // out
 
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(radioButton.Native()))
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject(radioButton).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioButton // out
-			dst = (*C.GtkRadioButton)(unsafe.Pointer((&src).Native()))
+			dst = (*C.GtkRadioButton)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)

@@ -88,7 +88,7 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 	var _cret *C.GInputStream  // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -150,7 +150,7 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback Asyn
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
@@ -189,8 +189,8 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	var _cret *C.GInputStream  // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(icon.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(icon)

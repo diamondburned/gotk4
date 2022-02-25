@@ -79,7 +79,7 @@ func (dragSurface *DragSurface) Present(width, height int) bool {
 	var _arg2 C.int             // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(dragSurface.Native()))
+	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(externglib.InternObject(dragSurface).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 

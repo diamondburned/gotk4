@@ -148,7 +148,7 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkEventController // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 
 	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
 	runtime.KeepAlive(model)
@@ -173,9 +173,9 @@ func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
-	C.g_object_ref(C.gpointer(shortcut.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(externglib.InternObject(shortcut).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(shortcut).Native()))
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -193,7 +193,7 @@ func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GdkModifierType        // in
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
 	runtime.KeepAlive(self)
@@ -216,7 +216,7 @@ func (self *ShortcutController) Scope() ShortcutScope {
 	var _arg0 *C.GtkShortcutController // out
 	var _cret C.GtkShortcutScope       // in
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_shortcut_controller_get_scope(_arg0)
 	runtime.KeepAlive(self)
@@ -241,8 +241,8 @@ func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(externglib.InternObject(shortcut).Native()))
 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -272,7 +272,7 @@ func (self *ShortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 C.GdkModifierType        // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GdkModifierType(modifiers)
 
 	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
@@ -297,7 +297,7 @@ func (self *ShortcutController) SetScope(scope ShortcutScope) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 C.GtkShortcutScope       // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.GtkShortcutScope(scope)
 
 	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)

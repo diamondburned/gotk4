@@ -1600,7 +1600,7 @@ func (text *Text) AddSelection(startOffset, endOffset int) bool {
 	var _arg2 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 
@@ -1641,7 +1641,7 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 	var _arg4 C.AtkTextClipType   // out
 	var _cret **C.AtkTextRange    // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = (*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	_arg2 = C.AtkCoordType(coordType)
 	_arg3 = C.AtkTextClipType(xClipType)
@@ -1691,7 +1691,7 @@ func (text *Text) CaretOffset() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 
 	_cret = C.atk_text_get_caret_offset(_arg0)
 	runtime.KeepAlive(text)
@@ -1718,7 +1718,7 @@ func (text *Text) CharacterAtOffset(offset int) uint32 {
 	var _arg1 C.gint     // out
 	var _cret C.gunichar // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
 
 	_cret = C.atk_text_get_character_at_offset(_arg0, _arg1)
@@ -1742,7 +1742,7 @@ func (text *Text) CharacterCount() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 
 	_cret = C.atk_text_get_character_count(_arg0)
 	runtime.KeepAlive(text)
@@ -1782,7 +1782,7 @@ func (text *Text) CharacterExtents(offset int, coords CoordType) (x int, y int, 
 	var _arg5 C.gint         // in
 	var _arg6 C.AtkCoordType // out
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
 	_arg6 = C.AtkCoordType(coords)
 
@@ -1814,7 +1814,7 @@ func (text *Text) NSelections() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 
 	_cret = C.atk_text_get_n_selections(_arg0)
 	runtime.KeepAlive(text)
@@ -1849,7 +1849,7 @@ func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
 	var _arg3 C.AtkCoordType // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	_arg3 = C.AtkCoordType(coords)
@@ -1892,7 +1892,7 @@ func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) 
 	var _arg3 C.AtkCoordType     // out
 	var _arg4 C.AtkTextRectangle // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 	_arg3 = C.AtkCoordType(coordType)
@@ -1936,7 +1936,7 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 	var _arg3 C.gint     // in
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(selectionNum)
 
 	_cret = C.atk_text_get_selection(_arg0, _arg1, &_arg2, &_arg3)
@@ -2008,7 +2008,7 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 	var _arg4 C.gint               // in
 	var _cret *C.gchar             // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.AtkTextGranularity(granularity)
 
@@ -2050,7 +2050,7 @@ func (text *Text) Text(startOffset, endOffset int) string {
 	var _arg2 C.gint     // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 
@@ -2091,7 +2091,7 @@ func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startO
 	var _arg4 C.gint            // in
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.AtkTextBoundary(boundaryType)
 
@@ -2160,7 +2160,7 @@ func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffs
 	var _arg4 C.gint            // in
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.AtkTextBoundary(boundaryType)
 
@@ -2205,7 +2205,7 @@ func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (start
 	var _arg4 C.gint            // in
 	var _cret *C.gchar          // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.AtkTextBoundary(boundaryType)
 
@@ -2245,7 +2245,7 @@ func (text *Text) RemoveSelection(selectionNum int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(selectionNum)
 
 	_cret = C.atk_text_remove_selection(_arg0, _arg1)
@@ -2281,7 +2281,7 @@ func (text *Text) ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) 
 	var _arg3 C.AtkScrollType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 	_arg3 = C.AtkScrollType(typ)
@@ -2326,7 +2326,7 @@ func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int, coords Coor
 	var _arg5 C.gint         // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 	_arg3 = C.AtkCoordType(coords)
@@ -2381,7 +2381,7 @@ func (text *Text) SetCaretOffset(offset int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
 
 	_cret = C.atk_text_set_caret_offset(_arg0, _arg1)
@@ -2421,7 +2421,7 @@ func (text *Text) SetSelection(selectionNum, startOffset, endOffset int) bool {
 	var _arg3 C.gint     // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(externglib.InternObject(text).Native()))
 	_arg1 = C.gint(selectionNum)
 	_arg2 = C.gint(startOffset)
 	_arg3 = C.gint(endOffset)

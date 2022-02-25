@@ -176,7 +176,7 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret *C.GMenuModel       // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 	runtime.KeepAlive(entry)
@@ -215,7 +215,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret C.gboolean          // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
 	runtime.KeepAlive(entry)
@@ -240,9 +240,9 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if model != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
 	}
 
 	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
@@ -263,7 +263,7 @@ func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 C.gboolean          // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if showPeekIcon {
 		_arg1 = C.TRUE
 	}

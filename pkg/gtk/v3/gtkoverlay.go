@@ -252,8 +252,8 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(externglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 	runtime.KeepAlive(overlay)
@@ -276,8 +276,8 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	var _arg1 *C.GtkWidget  // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(externglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 
 	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
 	runtime.KeepAlive(overlay)
@@ -311,8 +311,8 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(externglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
 	_arg2 = C.int(index_)
 
 	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
@@ -334,8 +334,8 @@ func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out
 
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(overlay.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(externglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
 	if passThrough {
 		_arg2 = C.TRUE
 	}

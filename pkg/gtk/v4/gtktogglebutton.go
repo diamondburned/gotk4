@@ -289,7 +289,7 @@ func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(externglib.InternObject(toggleButton).Native()))
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 	runtime.KeepAlive(toggleButton)
@@ -319,7 +319,7 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 C.gboolean         // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(externglib.InternObject(toggleButton).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
@@ -348,9 +348,9 @@ func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 *C.GtkToggleButton // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(externglib.InternObject(toggleButton).Native()))
 	if group != nil {
-		_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
+		_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(externglib.InternObject(group).Native()))
 	}
 
 	C.gtk_toggle_button_set_group(_arg0, _arg1)
@@ -364,7 +364,7 @@ func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 func (toggleButton *ToggleButton) Toggled() {
 	var _arg0 *C.GtkToggleButton // out
 
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(toggleButton.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(externglib.InternObject(toggleButton).Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
 	runtime.KeepAlive(toggleButton)

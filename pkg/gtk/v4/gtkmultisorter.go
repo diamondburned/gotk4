@@ -107,9 +107,9 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
-	C.g_object_ref(C.gpointer(sorter.Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(externglib.InternObject(sorter).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(sorter).Native()))
 
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 	runtime.KeepAlive(self)
@@ -129,7 +129,7 @@ func (self *MultiSorter) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
 
 	C.gtk_multi_sorter_remove(_arg0, _arg1)

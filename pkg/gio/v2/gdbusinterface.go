@@ -97,8 +97,8 @@ func _gotk4_gio2_DBusInterfaceIface_dup_object(arg0 *C.GDBusInterface) (cret *C.
 	dBusObject := iface.DupObject()
 
 	if dBusObject != nil {
-		cret = (*C.GDBusObject)(unsafe.Pointer(dBusObject.Native()))
-		C.g_object_ref(C.gpointer(dBusObject.Native()))
+		cret = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(dBusObject).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(dBusObject).Native()))
 	}
 
 	return cret
@@ -164,7 +164,7 @@ func (interface_ *DBusInterface) GetObject() DBusObjector {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
 	runtime.KeepAlive(interface_)
@@ -202,7 +202,7 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
 
 	_cret = C.g_dbus_interface_get_info(_arg0)
 	runtime.KeepAlive(interface_)
@@ -233,9 +233,9 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(interface_.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
 	if object != nil {
-		_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+		_arg1 = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
 	}
 
 	C.g_dbus_interface_set_object(_arg0, _arg1)

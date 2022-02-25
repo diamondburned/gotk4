@@ -440,7 +440,7 @@ func (loader *PixbufLoader) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(externglib.InternObject(loader).Native()))
 
 	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
 	runtime.KeepAlive(loader)
@@ -472,7 +472,7 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(externglib.InternObject(loader).Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 	runtime.KeepAlive(loader)
@@ -497,7 +497,7 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbufFormat // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(externglib.InternObject(loader).Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_format(_arg0)
 	runtime.KeepAlive(loader)
@@ -535,7 +535,7 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(externglib.InternObject(loader).Native()))
 
 	_cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 	runtime.KeepAlive(loader)
@@ -568,7 +568,7 @@ func (loader *PixbufLoader) SetSize(width, height int) {
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(externglib.InternObject(loader).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
@@ -590,7 +590,7 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 	var _arg2 C.gsize
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(externglib.InternObject(loader).Native()))
 	_arg2 = (C.gsize)(len(buf))
 	if len(buf) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
@@ -620,7 +620,7 @@ func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	var _arg1 *C.GBytes          // out
 	var _cerr *C.GError          // in
 
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(loader.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(externglib.InternObject(loader).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(buffer)))
 
 	C.gdk_pixbuf_loader_write_bytes(_arg0, _arg1, &_cerr)

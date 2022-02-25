@@ -192,7 +192,7 @@ func (hsv *HSV) Color() (h float64, s float64, v float64) {
 	var _arg2 C.gdouble // in
 	var _arg3 C.gdouble // in
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer(externglib.InternObject(hsv).Native()))
 
 	C.gtk_hsv_get_color(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(hsv)
@@ -220,7 +220,7 @@ func (hsv *HSV) Metrics() (size int, ringWidth int) {
 	var _arg1 C.gint    // in
 	var _arg2 C.gint    // in
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer(externglib.InternObject(hsv).Native()))
 
 	C.gtk_hsv_get_metrics(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(hsv)
@@ -249,7 +249,7 @@ func (hsv *HSV) IsAdjusting() bool {
 	var _arg0 *C.GtkHSV  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer(externglib.InternObject(hsv).Native()))
 
 	_cret = C.gtk_hsv_is_adjusting(_arg0)
 	runtime.KeepAlive(hsv)
@@ -278,7 +278,7 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 	var _arg2 C.double  // out
 	var _arg3 C.double  // out
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer(externglib.InternObject(hsv).Native()))
 	_arg1 = C.double(h)
 	_arg2 = C.double(s)
 	_arg3 = C.double(v)
@@ -302,7 +302,7 @@ func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	var _arg1 C.gint    // out
 	var _arg2 C.gint    // out
 
-	_arg0 = (*C.GtkHSV)(unsafe.Pointer(hsv.Native()))
+	_arg0 = (*C.GtkHSV)(unsafe.Pointer(externglib.InternObject(hsv).Native()))
 	_arg1 = C.gint(size)
 	_arg2 = C.gint(ringWidth)
 

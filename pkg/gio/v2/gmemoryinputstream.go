@@ -131,7 +131,7 @@ func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var _arg0 *C.GMemoryInputStream // out
 	var _arg1 *C.GBytes             // out
 
-	_arg0 = (*C.GMemoryInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GMemoryInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	C.g_memory_input_stream_add_bytes(_arg0, _arg1)

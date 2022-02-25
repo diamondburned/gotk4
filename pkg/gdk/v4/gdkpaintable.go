@@ -288,8 +288,8 @@ func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.GdkPaintable) (cre
 
 	ret := iface.CurrentImage()
 
-	cret = (*C.GdkPaintable)(unsafe.Pointer(ret.Native()))
-	C.g_object_ref(C.gpointer(ret.Native()))
+	cret = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(ret).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
 
 	return cret
 }
@@ -471,7 +471,7 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 	var _arg5 C.double        // in
 	var _arg6 C.double        // in
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 	_arg1 = C.double(specifiedWidth)
 	_arg2 = C.double(specifiedHeight)
 	_arg3 = C.double(defaultWidth)
@@ -509,7 +509,7 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 	var _arg0 *C.GdkPaintable // out
 	var _cret *C.GdkPaintable // in
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 
 	_cret = C.gdk_paintable_get_current_image(_arg0)
 	runtime.KeepAlive(paintable)
@@ -551,7 +551,7 @@ func (paintable *Paintable) Flags() PaintableFlags {
 	var _arg0 *C.GdkPaintable     // out
 	var _cret C.GdkPaintableFlags // in
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 
 	_cret = C.gdk_paintable_get_flags(_arg0)
 	runtime.KeepAlive(paintable)
@@ -589,7 +589,7 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.double        // in
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 
 	_cret = C.gdk_paintable_get_intrinsic_aspect_ratio(_arg0)
 	runtime.KeepAlive(paintable)
@@ -621,7 +621,7 @@ func (paintable *Paintable) IntrinsicHeight() int {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 
 	_cret = C.gdk_paintable_get_intrinsic_height(_arg0)
 	runtime.KeepAlive(paintable)
@@ -653,7 +653,7 @@ func (paintable *Paintable) IntrinsicWidth() int {
 	var _arg0 *C.GdkPaintable // out
 	var _cret C.int           // in
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 
 	_cret = C.gdk_paintable_get_intrinsic_width(_arg0)
 	runtime.KeepAlive(paintable)
@@ -678,7 +678,7 @@ func (paintable *Paintable) IntrinsicWidth() int {
 func (paintable *Paintable) InvalidateContents() {
 	var _arg0 *C.GdkPaintable // out
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 
 	C.gdk_paintable_invalidate_contents(_arg0)
 	runtime.KeepAlive(paintable)
@@ -697,7 +697,7 @@ func (paintable *Paintable) InvalidateContents() {
 func (paintable *Paintable) InvalidateSize() {
 	var _arg0 *C.GdkPaintable // out
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
 
 	C.gdk_paintable_invalidate_size(_arg0)
 	runtime.KeepAlive(paintable)
@@ -720,8 +720,8 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64
 	var _arg2 C.double        // out
 	var _arg3 C.double        // out
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-	_arg1 = (*C.GdkSnapshot)(unsafe.Pointer(snapshot.Native()))
+	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
+	_arg1 = (*C.GdkSnapshot)(unsafe.Pointer(externglib.InternObject(snapshot).Native()))
 	_arg2 = C.double(width)
 	_arg3 = C.double(height)
 

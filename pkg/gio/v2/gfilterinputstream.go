@@ -90,7 +90,7 @@ func (stream *FilterInputStream) BaseStream() InputStreamer {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret *C.GInputStream       // in
 
-	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_filter_input_stream_get_base_stream(_arg0)
 	runtime.KeepAlive(stream)
@@ -129,7 +129,7 @@ func (stream *FilterInputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.g_filter_input_stream_get_close_base_stream(_arg0)
 	runtime.KeepAlive(stream)
@@ -154,7 +154,7 @@ func (stream *FilterInputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterInputStream // out
 	var _arg1 C.gboolean            // out
 
-	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	if closeBase {
 		_arg1 = C.TRUE
 	}

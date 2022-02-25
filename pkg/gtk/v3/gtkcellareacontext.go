@@ -253,7 +253,7 @@ func (context *CellAreaContext) Allocate(width, height int) {
 	var _arg1 C.gint                // out
 	var _arg2 C.gint                // out
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 
@@ -279,7 +279,7 @@ func (context *CellAreaContext) Allocation() (width int, height int) {
 	var _arg1 C.gint                // in
 	var _arg2 C.gint                // in
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_cell_area_context_get_allocation(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
@@ -311,7 +311,7 @@ func (context *CellAreaContext) Area() CellAreaer {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _cret *C.GtkCellArea        // in
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	_cret = C.gtk_cell_area_context_get_area(_arg0)
 	runtime.KeepAlive(context)
@@ -355,7 +355,7 @@ func (context *CellAreaContext) PreferredHeight() (minimumHeight int, naturalHei
 	var _arg1 C.gint                // in
 	var _arg2 C.gint                // in
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_cell_area_context_get_preferred_height(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
@@ -390,7 +390,7 @@ func (context *CellAreaContext) PreferredHeightForWidth(width int) (minimumHeigh
 	var _arg2 C.gint                // in
 	var _arg3 C.gint                // in
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.gint(width)
 
 	C.gtk_cell_area_context_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
@@ -422,7 +422,7 @@ func (context *CellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth
 	var _arg1 C.gint                // in
 	var _arg2 C.gint                // in
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_cell_area_context_get_preferred_width(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
@@ -458,7 +458,7 @@ func (context *CellAreaContext) PreferredWidthForHeight(height int) (minimumWidt
 	var _arg2 C.gint                // in
 	var _arg3 C.gint                // in
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.gint(height)
 
 	C.gtk_cell_area_context_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
@@ -491,7 +491,7 @@ func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight
 	var _arg1 C.gint                // out
 	var _arg2 C.gint                // out
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.gint(minimumHeight)
 	_arg2 = C.gint(naturalHeight)
 
@@ -518,7 +518,7 @@ func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth in
 	var _arg1 C.gint                // out
 	var _arg2 C.gint                // out
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 	_arg1 = C.gint(minimumWidth)
 	_arg2 = C.gint(naturalWidth)
 
@@ -549,7 +549,7 @@ func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth in
 func (context *CellAreaContext) Reset() {
 	var _arg0 *C.GtkCellAreaContext // out
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
 
 	C.gtk_cell_area_context_reset(_arg0)
 	runtime.KeepAlive(context)

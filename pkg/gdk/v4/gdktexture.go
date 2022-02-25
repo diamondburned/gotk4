@@ -109,7 +109,7 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 
 	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
 	runtime.KeepAlive(pixbuf)
@@ -141,7 +141,7 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _cret *C.GdkTexture // in
 	var _cerr *C.GError     // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
 	runtime.KeepAlive(file)
@@ -202,7 +202,7 @@ func (texture *Texture) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(externglib.InternObject(texture).Native()))
 
 	_cret = C.gdk_texture_get_height(_arg0)
 	runtime.KeepAlive(texture)
@@ -224,7 +224,7 @@ func (texture *Texture) Width() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(externglib.InternObject(texture).Native()))
 
 	_cret = C.gdk_texture_get_width(_arg0)
 	runtime.KeepAlive(texture)
@@ -255,7 +255,7 @@ func (texture *Texture) SaveToPng(filename string) bool {
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(externglib.InternObject(texture).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
 

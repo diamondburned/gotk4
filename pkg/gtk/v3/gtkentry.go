@@ -953,7 +953,7 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 	var _arg1 *C.GtkEntryBuffer // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	_cret = C.gtk_entry_new_with_buffer(_arg1)
 	runtime.KeepAlive(buffer)
@@ -976,7 +976,7 @@ func (entry *Entry) ActivatesDefault() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_activates_default(_arg0)
 	runtime.KeepAlive(entry)
@@ -1000,7 +1000,7 @@ func (entry *Entry) Alignment() float32 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gfloat    // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_alignment(_arg0)
 	runtime.KeepAlive(entry)
@@ -1023,7 +1023,7 @@ func (entry *Entry) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoAttrList // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_attributes(_arg0)
 	runtime.KeepAlive(entry)
@@ -1054,7 +1054,7 @@ func (entry *Entry) Buffer() *EntryBuffer {
 	var _arg0 *C.GtkEntry       // out
 	var _cret *C.GtkEntryBuffer // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_buffer(_arg0)
 	runtime.KeepAlive(entry)
@@ -1076,7 +1076,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 	var _arg0 *C.GtkEntry           // out
 	var _cret *C.GtkEntryCompletion // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_completion(_arg0)
 	runtime.KeepAlive(entry)
@@ -1102,7 +1102,7 @@ func (entry *Entry) CurrentIconDragSource() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
 	runtime.KeepAlive(entry)
@@ -1126,7 +1126,7 @@ func (entry *Entry) CursorHAdjustment() *Adjustment {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.GtkAdjustment // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_cursor_hadjustment(_arg0)
 	runtime.KeepAlive(entry)
@@ -1150,7 +1150,7 @@ func (entry *Entry) HasFrame() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_has_frame(_arg0)
 	runtime.KeepAlive(entry)
@@ -1179,7 +1179,7 @@ func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_activatable(_arg0, _arg1)
@@ -1217,7 +1217,7 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 C.GdkRectangle         // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	C.gtk_entry_get_icon_area(_arg0, _arg1, &_arg2)
@@ -1251,7 +1251,7 @@ func (entry *Entry) IconAtPos(x, y int) int {
 	var _arg2 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
@@ -1284,7 +1284,7 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
@@ -1331,7 +1331,7 @@ func (entry *Entry) IconName(iconPos EntryIconPosition) string {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_name(_arg0, _arg1)
@@ -1366,7 +1366,7 @@ func (entry *Entry) IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GdkPixbuf           // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_pixbuf(_arg0, _arg1)
@@ -1407,7 +1407,7 @@ func (entry *Entry) IconSensitive(iconPos EntryIconPosition) bool {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_sensitive(_arg0, _arg1)
@@ -1443,7 +1443,7 @@ func (entry *Entry) IconStock(iconPos EntryIconPosition) string {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_stock(_arg0, _arg1)
@@ -1474,7 +1474,7 @@ func (entry *Entry) IconStorageType(iconPos EntryIconPosition) ImageType {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret C.GtkImageType         // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_storage_type(_arg0, _arg1)
@@ -1505,7 +1505,7 @@ func (entry *Entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_tooltip_markup(_arg0, _arg1)
@@ -1539,7 +1539,7 @@ func (entry *Entry) IconTooltipText(iconPos EntryIconPosition) string {
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
 	_cret = C.gtk_entry_get_icon_tooltip_text(_arg0, _arg1)
@@ -1571,7 +1571,7 @@ func (entry *Entry) InnerBorder() *Border {
 	var _arg0 *C.GtkEntry  // out
 	var _cret *C.GtkBorder // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_inner_border(_arg0)
 	runtime.KeepAlive(entry)
@@ -1593,7 +1593,7 @@ func (entry *Entry) InputHints() InputHints {
 	var _arg0 *C.GtkEntry     // out
 	var _cret C.GtkInputHints // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_input_hints(_arg0)
 	runtime.KeepAlive(entry)
@@ -1613,7 +1613,7 @@ func (entry *Entry) InputPurpose() InputPurpose {
 	var _arg0 *C.GtkEntry       // out
 	var _cret C.GtkInputPurpose // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_input_purpose(_arg0)
 	runtime.KeepAlive(entry)
@@ -1638,7 +1638,7 @@ func (entry *Entry) InvisibleChar() uint32 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gunichar  // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_invisible_char(_arg0)
 	runtime.KeepAlive(entry)
@@ -1668,7 +1668,7 @@ func (entry *Entry) Layout() *pango.Layout {
 	var _arg0 *C.GtkEntry    // out
 	var _cret *C.PangoLayout // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_layout(_arg0)
 	runtime.KeepAlive(entry)
@@ -1713,7 +1713,7 @@ func (entry *Entry) LayoutOffsets() (x int, y int) {
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	C.gtk_entry_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(entry)
@@ -1742,7 +1742,7 @@ func (entry *Entry) MaxLength() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_max_length(_arg0)
 	runtime.KeepAlive(entry)
@@ -1765,7 +1765,7 @@ func (entry *Entry) MaxWidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_max_width_chars(_arg0)
 	runtime.KeepAlive(entry)
@@ -1787,7 +1787,7 @@ func (entry *Entry) OverwriteMode() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_overwrite_mode(_arg0)
 	runtime.KeepAlive(entry)
@@ -1814,7 +1814,7 @@ func (entry *Entry) PlaceholderText() string {
 	var _arg0 *C.GtkEntry // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_placeholder_text(_arg0)
 	runtime.KeepAlive(entry)
@@ -1837,7 +1837,7 @@ func (entry *Entry) ProgressFraction() float64 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_progress_fraction(_arg0)
 	runtime.KeepAlive(entry)
@@ -1860,7 +1860,7 @@ func (entry *Entry) ProgressPulseStep() float64 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_progress_pulse_step(_arg0)
 	runtime.KeepAlive(entry)
@@ -1883,7 +1883,7 @@ func (entry *Entry) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_tabs(_arg0)
 	runtime.KeepAlive(entry)
@@ -1913,7 +1913,7 @@ func (entry *Entry) Text() string {
 	var _arg0 *C.GtkEntry // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_text(_arg0)
 	runtime.KeepAlive(entry)
@@ -1940,7 +1940,7 @@ func (entry *Entry) TextArea() *gdk.Rectangle {
 	var _arg0 *C.GtkEntry    // out
 	var _arg1 C.GdkRectangle // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	C.gtk_entry_get_text_area(_arg0, &_arg1)
 	runtime.KeepAlive(entry)
@@ -1965,7 +1965,7 @@ func (entry *Entry) TextLength() uint16 {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.guint16   // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_text_length(_arg0)
 	runtime.KeepAlive(entry)
@@ -1988,7 +1988,7 @@ func (entry *Entry) Visibility() bool {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_visibility(_arg0)
 	runtime.KeepAlive(entry)
@@ -2012,7 +2012,7 @@ func (entry *Entry) WidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	_cret = C.gtk_entry_get_width_chars(_arg0)
 	runtime.KeepAlive(entry)
@@ -2033,7 +2033,7 @@ func (entry *Entry) WidthChars() int {
 func (entry *Entry) GrabFocusWithoutSelecting() {
 	var _arg0 *C.GtkEntry // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	C.gtk_entry_grab_focus_without_selecting(_arg0)
 	runtime.KeepAlive(entry)
@@ -2063,7 +2063,7 @@ func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	var _arg1 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_entry_im_context_filter_keypress(_arg0, _arg1)
@@ -2096,7 +2096,7 @@ func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gint(layoutIndex)
 
 	_cret = C.gtk_entry_layout_index_to_text_index(_arg0, _arg1)
@@ -2118,7 +2118,7 @@ func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
 func (entry *Entry) ProgressPulse() {
 	var _arg0 *C.GtkEntry // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	C.gtk_entry_progress_pulse(_arg0)
 	runtime.KeepAlive(entry)
@@ -2131,7 +2131,7 @@ func (entry *Entry) ProgressPulse() {
 func (entry *Entry) ResetIMContext() {
 	var _arg0 *C.GtkEntry // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	C.gtk_entry_reset_im_context(_arg0)
 	runtime.KeepAlive(entry)
@@ -2154,7 +2154,7 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -2177,7 +2177,7 @@ func (entry *Entry) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gfloat    // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gfloat(xalign)
 
 	C.gtk_entry_set_alignment(_arg0, _arg1)
@@ -2196,7 +2196,7 @@ func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoAttrList // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 
 	C.gtk_entry_set_attributes(_arg0, _arg1)
@@ -2214,8 +2214,8 @@ func (entry *Entry) SetBuffer(buffer *EntryBuffer) {
 	var _arg0 *C.GtkEntry       // out
 	var _arg1 *C.GtkEntryBuffer // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
 
 	C.gtk_entry_set_buffer(_arg0, _arg1)
 	runtime.KeepAlive(entry)
@@ -2235,9 +2235,9 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 	var _arg0 *C.GtkEntry           // out
 	var _arg1 *C.GtkEntryCompletion // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if completion != nil {
-		_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+		_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(externglib.InternObject(completion).Native()))
 	}
 
 	C.gtk_entry_set_completion(_arg0, _arg1)
@@ -2262,9 +2262,9 @@ func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.GtkAdjustment // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if adjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
 	}
 
 	C.gtk_entry_set_cursor_hadjustment(_arg0, _arg1)
@@ -2282,7 +2282,7 @@ func (entry *Entry) SetHasFrame(setting bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -2304,7 +2304,7 @@ func (entry *Entry) SetIconActivatable(iconPos EntryIconPosition, activatable bo
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 C.gboolean             // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if activatable {
 		_arg2 = C.TRUE
@@ -2341,7 +2341,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *Tar
 	var _arg2 *C.GtkTargetList       // out
 	var _arg3 C.GdkDragAction        // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
 	_arg3 = C.GdkDragAction(actions)
@@ -2369,10 +2369,10 @@ func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if icon != nil {
-		_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+		_arg2 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
 	}
 
 	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
@@ -2399,7 +2399,7 @@ func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName stri
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.gchar               // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if iconName != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
@@ -2427,10 +2427,10 @@ func (entry *Entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf *gdkpixb
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GdkPixbuf           // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if pixbuf != nil {
-		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
 	}
 
 	C.gtk_entry_set_icon_from_pixbuf(_arg0, _arg1, _arg2)
@@ -2456,7 +2456,7 @@ func (entry *Entry) SetIconFromStock(iconPos EntryIconPosition, stockId string) 
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.gchar               // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if stockId != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
@@ -2482,7 +2482,7 @@ func (entry *Entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) 
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 C.gboolean             // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if sensitive {
 		_arg2 = C.TRUE
@@ -2513,7 +2513,7 @@ func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip stri
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.gchar               // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if tooltip != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
@@ -2550,7 +2550,7 @@ func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.gchar               // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	if tooltip != "" {
 		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
@@ -2584,7 +2584,7 @@ func (entry *Entry) SetInnerBorder(border *Border) {
 	var _arg0 *C.GtkEntry  // out
 	var _arg1 *C.GtkBorder // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if border != nil {
 		_arg1 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border)))
 	}
@@ -2605,7 +2605,7 @@ func (entry *Entry) SetInputHints(hints InputHints) {
 	var _arg0 *C.GtkEntry     // out
 	var _arg1 C.GtkInputHints // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkInputHints(hints)
 
 	C.gtk_entry_set_input_hints(_arg0, _arg1)
@@ -2624,7 +2624,7 @@ func (entry *Entry) SetInputPurpose(purpose InputPurpose) {
 	var _arg0 *C.GtkEntry       // out
 	var _arg1 C.GtkInputPurpose // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.GtkInputPurpose(purpose)
 
 	C.gtk_entry_set_input_purpose(_arg0, _arg1)
@@ -2648,7 +2648,7 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gunichar  // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gunichar(ch)
 
 	C.gtk_entry_set_invisible_char(_arg0, _arg1)
@@ -2673,7 +2673,7 @@ func (entry *Entry) SetMaxLength(max int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gint(max)
 
 	C.gtk_entry_set_max_length(_arg0, _arg1)
@@ -2691,7 +2691,7 @@ func (entry *Entry) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gint(nChars)
 
 	C.gtk_entry_set_max_width_chars(_arg0, _arg1)
@@ -2710,7 +2710,7 @@ func (entry *Entry) SetOverwriteMode(overwrite bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if overwrite {
 		_arg1 = C.TRUE
 	}
@@ -2738,7 +2738,7 @@ func (entry *Entry) SetPlaceholderText(text string) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 *C.gchar    // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if text != "" {
 		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -2761,7 +2761,7 @@ func (entry *Entry) SetProgressFraction(fraction float64) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gdouble   // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gdouble(fraction)
 
 	C.gtk_entry_set_progress_fraction(_arg0, _arg1)
@@ -2780,7 +2780,7 @@ func (entry *Entry) SetProgressPulseStep(fraction float64) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gdouble   // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gdouble(fraction)
 
 	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
@@ -2799,7 +2799,7 @@ func (entry *Entry) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.PangoTabArray // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 
 	C.gtk_entry_set_tabs(_arg0, _arg1)
@@ -2820,7 +2820,7 @@ func (entry *Entry) SetText(text string) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 *C.gchar    // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 
@@ -2849,7 +2849,7 @@ func (entry *Entry) SetVisibility(visible bool) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gboolean  // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
@@ -2872,7 +2872,7 @@ func (entry *Entry) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gint(nChars)
 
 	C.gtk_entry_set_width_chars(_arg0, _arg1)
@@ -2898,7 +2898,7 @@ func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 	_arg1 = C.gint(textIndex)
 
 	_cret = C.gtk_entry_text_index_to_layout_index(_arg0, _arg1)
@@ -2918,7 +2918,7 @@ func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
 func (entry *Entry) UnsetInvisibleChar() {
 	var _arg0 *C.GtkEntry // out
 
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
 
 	C.gtk_entry_unset_invisible_char(_arg0)
 	runtime.KeepAlive(entry)

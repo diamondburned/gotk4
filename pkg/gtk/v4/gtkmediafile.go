@@ -156,7 +156,7 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 	var _arg1 *C.GFile          // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 
 	_cret = C.gtk_media_file_new_for_file(_arg1)
 	runtime.KeepAlive(file)
@@ -215,7 +215,7 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
 
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 
 	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
 	runtime.KeepAlive(stream)
@@ -261,7 +261,7 @@ func NewMediaFileForResource(resourcePath string) *MediaFile {
 func (self *MediaFile) Clear() {
 	var _arg0 *C.GtkMediaFile // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	C.gtk_media_file_clear(_arg0)
 	runtime.KeepAlive(self)
@@ -280,7 +280,7 @@ func (self *MediaFile) File() gio.Filer {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GFile        // in
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_file_get_file(_arg0)
 	runtime.KeepAlive(self)
@@ -320,7 +320,7 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GInputStream // in
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(externglib.InternObject(self).Native()))
 
 	_cret = C.gtk_media_file_get_input_stream(_arg0)
 	runtime.KeepAlive(self)
@@ -359,9 +359,9 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.GFile        // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if file != nil {
-		_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
 	}
 
 	C.gtk_media_file_set_file(_arg0, _arg1)
@@ -382,7 +382,7 @@ func (self *MediaFile) SetFilename(filename string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if filename != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -408,9 +408,9 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.GInputStream // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if stream != nil {
-		_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+		_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
 	}
 
 	C.gtk_media_file_set_input_stream(_arg0, _arg1)
@@ -431,7 +431,7 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
 
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(externglib.InternObject(self).Native()))
 	if resourcePath != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))

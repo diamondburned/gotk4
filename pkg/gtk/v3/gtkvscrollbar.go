@@ -100,7 +100,7 @@ func NewVScrollbar(adjustment *Adjustment) *VScrollbar {
 	var _cret *C.GtkWidget     // in
 
 	if adjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
 	}
 
 	_cret = C.gtk_vscrollbar_new(_arg1)

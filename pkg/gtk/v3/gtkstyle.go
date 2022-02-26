@@ -2946,10 +2946,10 @@ func _gotk4_gtk3_Style_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectRealize: emitted when the style has been initialized for a particular
-// visual. Connecting to this signal is probably seldom useful since most of the
-// time applications and widgets only deal with styles that have been already
-// realized.
+// ConnectRealize is emitted when the style has been initialized for a
+// particular visual. Connecting to this signal is probably seldom useful since
+// most of the time applications and widgets only deal with styles that have
+// been already realized.
 func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(style, "realize", false, unsafe.Pointer(C._gotk4_gtk3_Style_ConnectRealize), f)
 }
@@ -2970,7 +2970,7 @@ func _gotk4_gtk3_Style_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectUnrealize: emitted when the aspects of the style specific to a
+// ConnectUnrealize is emitted when the aspects of the style specific to a
 // particular visual is being cleaned up. A connection to this signal can be
 // useful if a widget wants to cache objects as object data on Style. This
 // signal provides a convenient place to free such cached objects.

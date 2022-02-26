@@ -221,7 +221,7 @@ func _gotk4_gtk4_ComboBox_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when the active item is changed.
+// ConnectChanged is emitted when the active item is changed.
 //
 // The can be due to the user selecting a different item from the list, or due
 // to a call to gtk.ComboBox.SetActiveIter(). It will also be emitted while
@@ -254,7 +254,7 @@ func _gotk4_gtk4_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.gchar,
 	return cret
 }
 
-// ConnectFormatEntryText: emitted to allow changing how the text in a combo
+// ConnectFormatEntryText is emitted to allow changing how the text in a combo
 // box's entry is displayed.
 //
 // See gtk.ComboBox:has-entry.
@@ -309,7 +309,7 @@ func _gotk4_gtk4_ComboBox_ConnectMoveActive(arg0 C.gpointer, arg1 C.GtkScrollTyp
 	f(_scrollType)
 }
 
-// ConnectMoveActive: emitted to move the active selection.
+// ConnectMoveActive is emitted to move the active selection.
 //
 // This is an keybinding signal (class.SignalAction.html).
 func (comboBox *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) externglib.SignalHandle {
@@ -338,7 +338,7 @@ func _gotk4_gtk4_ComboBox_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) (cret
 	return cret
 }
 
-// ConnectPopdown: emitted to popdown the combo box list.
+// ConnectPopdown is emitted to popdown the combo box list.
 //
 // This is an keybinding signal (class.SignalAction.html).
 //
@@ -363,7 +363,7 @@ func _gotk4_gtk4_ComboBox_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPopup: emitted to popup the combo box list.
+// ConnectPopup is emitted to popup the combo box list.
 //
 // This is an keybinding signal (class.SignalAction.html).
 //

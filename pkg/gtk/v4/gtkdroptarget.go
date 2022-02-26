@@ -14,6 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
+// extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 // extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, GdkDrop*, guintptr);
 // extern gboolean _gotk4_gtk4_DropTarget_ConnectDrop(gpointer, GValue, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
@@ -172,7 +174,7 @@ func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2
 	return cret
 }
 
-// ConnectAccept: emitted on the drop site when a drop operation is about to
+// ConnectAccept is emitted on the drop site when a drop operation is about to
 // begin.
 //
 // If the drop is not accepted, FALSE will be returned and the drop target will
@@ -221,7 +223,7 @@ func _gotk4_gtk4_DropTarget_ConnectDrop(arg0 C.gpointer, arg1 C.GValue, arg2 C.g
 	return cret
 }
 
-// ConnectDrop: emitted on the drop site when the user drops the data onto the
+// ConnectDrop is emitted on the drop site when the user drops the data onto the
 // widget.
 //
 // The signal handler must determine whether the pointer position is in a drop
@@ -233,6 +235,39 @@ func _gotk4_gtk4_DropTarget_ConnectDrop(arg0 C.gpointer, arg1 C.GValue, arg2 C.g
 // performing the drop operation.
 func (self *DropTarget) ConnectDrop(f func(value externglib.Value, x, y float64) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectDrop), f)
+}
+
+//export _gotk4_gtk4_DropTarget_ConnectEnter
+func _gotk4_gtk4_DropTarget_ConnectEnter(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret C.GdkDragAction) {
+	var f func(x, y float64) (dragAction gdk.DragAction)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64) (dragAction gdk.DragAction))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	dragAction := f(_x, _y)
+
+	cret = C.GdkDragAction(dragAction)
+
+	return cret
+}
+
+// ConnectEnter is emitted on the drop site when the pointer enters the widget.
+//
+// It can be used to set up custom highlighting.
+func (self *DropTarget) ConnectEnter(f func(x, y float64) (dragAction gdk.DragAction)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "enter", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectEnter), f)
 }
 
 //export _gotk4_gtk4_DropTarget_ConnectLeave
@@ -251,11 +286,42 @@ func _gotk4_gtk4_DropTarget_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectLeave: emitted on the drop site when the pointer leaves the widget.
+// ConnectLeave is emitted on the drop site when the pointer leaves the widget.
 //
 // Its main purpose it to undo things done in gtk.DropTarget::enter.
 func (self *DropTarget) ConnectLeave(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectLeave), f)
+}
+
+//export _gotk4_gtk4_DropTarget_ConnectMotion
+func _gotk4_gtk4_DropTarget_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret C.GdkDragAction) {
+	var f func(x, y float64) (dragAction gdk.DragAction)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64) (dragAction gdk.DragAction))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	dragAction := f(_x, _y)
+
+	cret = C.GdkDragAction(dragAction)
+
+	return cret
+}
+
+// ConnectMotion is emitted while the pointer is moving over the drop target.
+func (self *DropTarget) ConnectMotion(f func(x, y float64) (dragAction gdk.DragAction)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(self, "motion", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectMotion), f)
 }
 
 // NewDropTarget creates a new GtkDropTarget object.

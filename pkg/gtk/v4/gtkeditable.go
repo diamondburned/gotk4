@@ -218,10 +218,10 @@ type Editabler interface {
 	// right size for n_chars characters.
 	SetWidthChars(nChars int)
 
-	// Changed: emitted at the end of a single user-visible operation on the
+	// Changed is emitted at the end of a single user-visible operation on the
 	// contents.
 	ConnectChanged(func()) externglib.SignalHandle
-	// Delete-text: emitted when text is deleted from the widget by the user.
+	// Delete-text is emitted when text is deleted from the widget by the user.
 	ConnectDeleteText(func(startPos, endPos int)) externglib.SignalHandle
 }
 
@@ -267,8 +267,8 @@ func _gotk4_gtk4_Editable_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted at the end of a single user-visible operation on the
-// contents.
+// ConnectChanged is emitted at the end of a single user-visible operation on
+// the contents.
 //
 // E.g., a paste operation that replaces the contents of the selection will
 // cause only one signal emission (even though it is implemented by first
@@ -300,7 +300,8 @@ func _gotk4_gtk4_Editable_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C
 	f(_startPos, _endPos)
 }
 
-// ConnectDeleteText: emitted when text is deleted from the widget by the user.
+// ConnectDeleteText is emitted when text is deleted from the widget by the
+// user.
 //
 // The default handler for this signal will normally be responsible for deleting
 // the text, so by connecting to this signal and then stopping the signal with

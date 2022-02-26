@@ -282,7 +282,7 @@ func _gotk4_gtk4_Entry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivate: emitted when the entry is activated.
+// ConnectActivate is emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
 func (entry *Entry) ConnectActivate(f func()) externglib.SignalHandle {
@@ -309,7 +309,7 @@ func _gotk4_gtk4_Entry_ConnectIconPress(arg0 C.gpointer, arg1 C.GtkEntryIconPosi
 	f(_iconPos)
 }
 
-// ConnectIconPress: emitted when an activatable icon is clicked.
+// ConnectIconPress is emitted when an activatable icon is clicked.
 func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(entry, "icon-press", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectIconPress), f)
 }
@@ -334,8 +334,8 @@ func _gotk4_gtk4_Entry_ConnectIconRelease(arg0 C.gpointer, arg1 C.GtkEntryIconPo
 	f(_iconPos)
 }
 
-// ConnectIconRelease: emitted on the button release from a mouse click over an
-// activatable icon.
+// ConnectIconRelease is emitted on the button release from a mouse click over
+// an activatable icon.
 func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(entry, "icon-release", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectIconRelease), f)
 }

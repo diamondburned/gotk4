@@ -179,9 +179,9 @@ func _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, ar
 	f(_itemName)
 }
 
-// ConnectCustomItemActivated: emitted when a custom item, previously added with
-// gtk_app_chooser_button_append_custom_item(), is activated from the dropdown
-// menu.
+// ConnectCustomItemActivated is emitted when a custom item, previously added
+// with gtk_app_chooser_button_append_custom_item(), is activated from the
+// dropdown menu.
 func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "custom-item-activated", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated), f)
 }

@@ -167,7 +167,7 @@ func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1
 	return cret
 }
 
-// ConnectAuthorizeMethod: emitted when a method is invoked by a remote caller
+// ConnectAuthorizeMethod is emitted when a method is invoked by a remote caller
 // and used to determine if the method call is authorized.
 //
 // This signal is like BusInterfaceSkeleton's

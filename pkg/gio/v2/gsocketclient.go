@@ -195,7 +195,7 @@ func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClient
 	f(_event, _connectable, _connection)
 }
 
-// ConnectEvent: emitted when client's activity on connectable changes state.
+// ConnectEvent is emitted when client's activity on connectable changes state.
 // Among other things, this can be used to provide progress information about a
 // network connection in the UI. The meanings of the different event values are
 // as follows:

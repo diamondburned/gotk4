@@ -267,8 +267,8 @@ func _gotk4_gtk4_Window_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr)
 	f()
 }
 
-// ConnectActivateDefault: emitted when the user activates the default widget of
-// window.
+// ConnectActivateDefault is emitted when the user activates the default widget
+// of window.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
@@ -291,7 +291,7 @@ func _gotk4_gtk4_Window_ConnectActivateFocus(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivateFocus: emitted when the user activates the currently focused
+// ConnectActivateFocus is emitted when the user activates the currently focused
 // widget of window.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -321,8 +321,8 @@ func _gotk4_gtk4_Window_ConnectCloseRequest(arg0 C.gpointer, arg1 C.guintptr) (c
 	return cret
 }
 
-// ConnectCloseRequest: emitted when the user clicks on the close button of the
-// window.
+// ConnectCloseRequest is emitted when the user clicks on the close button of
+// the window.
 func (window *Window) ConnectCloseRequest(f func() (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(window, "close-request", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectCloseRequest), f)
 }
@@ -355,8 +355,8 @@ func _gotk4_gtk4_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean,
 	return cret
 }
 
-// ConnectEnableDebugging: emitted when the user enables or disables interactive
-// debugging.
+// ConnectEnableDebugging is emitted when the user enables or disables
+// interactive debugging.
 //
 // When toggle is TRUE, interactive debugging is toggled on or off, when it is
 // FALSE, the debugger will be pointed at the widget under the pointer.
@@ -384,7 +384,7 @@ func _gotk4_gtk4_Window_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectKeysChanged: emitted when the set of accelerators or mnemonics that
+// ConnectKeysChanged is emitted when the set of accelerators or mnemonics that
 // are associated with window changes.
 func (window *Window) ConnectKeysChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(window, "keys-changed", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectKeysChanged), f)

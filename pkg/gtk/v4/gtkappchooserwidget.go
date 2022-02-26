@@ -138,7 +138,7 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 	f(_application)
 }
 
-// ConnectApplicationActivated: emitted when an application item is activated
+// ConnectApplicationActivated is emitted when an application item is activated
 // from the widget's list.
 //
 // This usually happens when the user double clicks an item, or an item is
@@ -184,8 +184,8 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, ar
 	f(_application)
 }
 
-// ConnectApplicationSelected: emitted when an application item is selected from
-// the widget's list.
+// ConnectApplicationSelected is emitted when an application item is selected
+// from the widget's list.
 func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "application-selected", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected), f)
 }

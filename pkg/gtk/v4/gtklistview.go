@@ -193,7 +193,7 @@ func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 	f(_position)
 }
 
-// ConnectActivate: emitted when a row has been activated by the user, usually
+// ConnectActivate is emitted when a row has been activated by the user, usually
 // via activating the GtkListView|list.activate-item action.
 //
 // This allows for a convenient way to handle activation in a listview. See

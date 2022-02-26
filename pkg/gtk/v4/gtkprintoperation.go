@@ -16,6 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GObject _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_PrintOperationClass_paginate(GtkPrintOperation*, GtkPrintContext*);
 // extern gboolean _gotk4_gtk4_PrintOperationClass_preview(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*);
 // extern gboolean _gotk4_gtk4_PrintOperation_ConnectPaginate(gpointer, GtkPrintContext*, guintptr);
@@ -776,7 +777,7 @@ func _gotk4_gtk4_PrintOperation_ConnectBeginPrint(arg0 C.gpointer, arg1 *C.GtkPr
 	f(_context)
 }
 
-// ConnectBeginPrint: emitted after the user has finished changing print
+// ConnectBeginPrint is emitted after the user has finished changing print
 // settings in the dialog, before the actual rendering starts.
 //
 // A typical use for ::begin-print is to use the parameters from the
@@ -784,6 +785,40 @@ func _gotk4_gtk4_PrintOperation_ConnectBeginPrint(arg0 C.gpointer, arg1 *C.GtkPr
 // number of pages with gtk.PrintOperation.SetNPages().
 func (op *PrintOperation) ConnectBeginPrint(f func(context *PrintContext)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(op, "begin-print", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectBeginPrint), f)
+}
+
+//export _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget
+func _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 C.guintptr) (cret C.GObject) {
+	var f func() (object *externglib.Object)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (object *externglib.Object))
+	}
+
+	object := f()
+
+	cret = *(*C.GObject)(unsafe.Pointer(object.Native()))
+
+	return cret
+}
+
+// ConnectCreateCustomWidget is emitted when displaying the print dialog.
+//
+// If you return a widget in a handler for this signal it will be added to a
+// custom tab in the print dialog. You typically return a container widget with
+// multiple widgets in it.
+//
+// The print dialog owns the returned widget, and its lifetime is not controlled
+// by the application. However, the widget is guaranteed to stay around until
+// the gtk.PrintOperation::custom-widget-apply signal is emitted on the
+// operation. Then you can read out any information you need from the widgets.
+func (op *PrintOperation) ConnectCreateCustomWidget(f func() (object *externglib.Object)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(op, "create-custom-widget", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget), f)
 }
 
 //export _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply
@@ -822,7 +857,7 @@ func _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply(arg0 C.gpointer, arg1 *
 	f(_widget)
 }
 
-// ConnectCustomWidgetApply: emitted right before ::begin-print if you added a
+// ConnectCustomWidgetApply is emitted right before ::begin-print if you added a
 // custom widget in the ::create-custom-widget handler.
 //
 // When you get this signal you should read the information from the custom
@@ -851,7 +886,7 @@ func _gotk4_gtk4_PrintOperation_ConnectDone(arg0 C.gpointer, arg1 C.GtkPrintOper
 	f(_result)
 }
 
-// ConnectDone: emitted when the print operation run has finished doing
+// ConnectDone is emitted when the print operation run has finished doing
 // everything required for printing.
 //
 // result gives you information about what happened during the run. If result is
@@ -886,7 +921,7 @@ func _gotk4_gtk4_PrintOperation_ConnectDrawPage(arg0 C.gpointer, arg1 *C.GtkPrin
 	f(_context, _pageNr)
 }
 
-// ConnectDrawPage: emitted for every page that is printed.
+// ConnectDrawPage is emitted for every page that is printed.
 //
 // The signal handler must render the page_nr's page onto the cairo context
 // obtained from context using gtk.PrintContext.GetCairoContext().
@@ -958,7 +993,7 @@ func _gotk4_gtk4_PrintOperation_ConnectEndPrint(arg0 C.gpointer, arg1 *C.GtkPrin
 	f(_context)
 }
 
-// ConnectEndPrint: emitted after all pages have been rendered.
+// ConnectEndPrint is emitted after all pages have been rendered.
 //
 // A handler for this signal can clean up any resources that have been allocated
 // in the gtk.PrintOperation::begin-print handler.
@@ -992,7 +1027,7 @@ func _gotk4_gtk4_PrintOperation_ConnectPaginate(arg0 C.gpointer, arg1 *C.GtkPrin
 	return cret
 }
 
-// ConnectPaginate: emitted after the ::begin-print signal, but before the
+// ConnectPaginate is emitted after the ::begin-print signal, but before the
 // actual rendering starts.
 //
 // It keeps getting emitted until a connected signal handler returns TRUE.
@@ -1102,7 +1137,7 @@ func _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(arg0 C.gpointer, arg1 *C
 	f(_context, _pageNr, _setup)
 }
 
-// ConnectRequestPageSetup: emitted once for every page that is printed.
+// ConnectRequestPageSetup is emitted once for every page that is printed.
 //
 // This gives the application a chance to modify the page setup. Any changes
 // done to setup will be in force only for printing this page.
@@ -1126,7 +1161,7 @@ func _gotk4_gtk4_PrintOperation_ConnectStatusChanged(arg0 C.gpointer, arg1 C.gui
 	f()
 }
 
-// ConnectStatusChanged: emitted at between the various phases of the print
+// ConnectStatusChanged is emitted at between the various phases of the print
 // operation.
 //
 // See gtk.PrintStatus for the phases that are being discriminated. Use
@@ -1175,7 +1210,7 @@ func _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget(arg0 C.gpointer, arg1 
 	f(_widget, _setup, _settings)
 }
 
-// ConnectUpdateCustomWidget: emitted after change of selected printer.
+// ConnectUpdateCustomWidget is emitted after change of selected printer.
 //
 // The actual page setup and print settings are passed to the custom widget,
 // which can actualize itself according to this change.

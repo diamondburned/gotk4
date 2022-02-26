@@ -276,7 +276,7 @@ func _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 	f(_application)
 }
 
-// ConnectApplicationActivated: emitted when an application item is activated
+// ConnectApplicationActivated is emitted when an application item is activated
 // from the widget's list.
 //
 // This usually happens when the user double clicks an item, or an item is
@@ -322,8 +322,8 @@ func _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, ar
 	f(_application)
 }
 
-// ConnectApplicationSelected: emitted when an application item is selected from
-// the widget's list.
+// ConnectApplicationSelected is emitted when an application item is selected
+// from the widget's list.
 func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "application-selected", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected), f)
 }
@@ -366,7 +366,7 @@ func _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.
 	f(_menu, _application)
 }
 
-// ConnectPopulatePopup: emitted when a context menu is about to popup over an
+// ConnectPopulatePopup is emitted when a context menu is about to popup over an
 // application item. Clients can insert menu items into the provided Menu object
 // in the callback of this signal; the context menu will be shown over the item
 // if at least one item has been added to the menu.

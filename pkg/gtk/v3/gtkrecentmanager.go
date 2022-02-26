@@ -195,7 +195,7 @@ func _gotk4_gtk3_RecentManager_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectChanged: emitted when the current recently used resources manager
+// ConnectChanged is emitted when the current recently used resources manager
 // changes its contents, either by calling gtk_recent_manager_add_item() or by
 // another application.
 func (manager *RecentManager) ConnectChanged(f func()) externglib.SignalHandle {

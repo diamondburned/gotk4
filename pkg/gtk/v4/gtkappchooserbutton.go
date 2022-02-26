@@ -124,7 +124,7 @@ func _gotk4_gtk4_AppChooserButton_ConnectChanged(arg0 C.gpointer, arg1 C.guintpt
 	f()
 }
 
-// ConnectChanged: emitted when the active application changes.
+// ConnectChanged is emitted when the active application changes.
 func (self *AppChooserButton) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "changed", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserButton_ConnectChanged), f)
 }
@@ -149,7 +149,7 @@ func _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, ar
 	f(_itemName)
 }
 
-// ConnectCustomItemActivated: emitted when a custom item is activated.
+// ConnectCustomItemActivated is emitted when a custom item is activated.
 //
 // Use gtk.AppChooserButton.AppendCustomItem(), to add custom items.
 func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {

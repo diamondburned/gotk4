@@ -91,7 +91,7 @@ func _gotk4_gtk4_GestureStylus_ConnectDown(arg0 C.gpointer, arg1 C.gdouble, arg2
 	f(_x, _y)
 }
 
-// ConnectDown: emitted when the stylus touches the device.
+// ConnectDown is emitted when the stylus touches the device.
 func (gesture *GestureStylus) ConnectDown(f func(x, y float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "down", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectDown), f)
 }
@@ -118,7 +118,7 @@ func _gotk4_gtk4_GestureStylus_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, ar
 	f(_x, _y)
 }
 
-// ConnectMotion: emitted when the stylus moves while touching the device.
+// ConnectMotion is emitted when the stylus moves while touching the device.
 func (gesture *GestureStylus) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "motion", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectMotion), f)
 }
@@ -145,7 +145,7 @@ func _gotk4_gtk4_GestureStylus_ConnectProximity(arg0 C.gpointer, arg1 C.gdouble,
 	f(_x, _y)
 }
 
-// ConnectProximity: emitted when the stylus is in proximity of the device.
+// ConnectProximity is emitted when the stylus is in proximity of the device.
 func (gesture *GestureStylus) ConnectProximity(f func(x, y float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "proximity", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectProximity), f)
 }
@@ -172,7 +172,7 @@ func _gotk4_gtk4_GestureStylus_ConnectUp(arg0 C.gpointer, arg1 C.gdouble, arg2 C
 	f(_x, _y)
 }
 
-// ConnectUp: emitted when the stylus no longer touches the device.
+// ConnectUp is emitted when the stylus no longer touches the device.
 func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "up", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectUp), f)
 }

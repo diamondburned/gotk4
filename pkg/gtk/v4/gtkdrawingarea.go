@@ -236,7 +236,7 @@ func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.
 	f(_width, _height)
 }
 
-// ConnectResize: emitted once when the widget is realized, and then each time
+// ConnectResize is emitted once when the widget is realized, and then each time
 // the widget is changed while realized.
 //
 // This is useful in order to keep state up to date with the widget size, like

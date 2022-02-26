@@ -135,7 +135,7 @@ func _gotk4_gtk3_EventControllerMotion_ConnectMotion(arg0 C.gpointer, arg1 C.gdo
 	f(_x, _y)
 }
 
-// ConnectMotion: emitted when the pointer moves inside the widget.
+// ConnectMotion is emitted when the pointer moves inside the widget.
 func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(v, "motion", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectMotion), f)
 }

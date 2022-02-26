@@ -141,7 +141,7 @@ func _gotk4_gtk4_PasswordEntry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr)
 	f()
 }
 
-// ConnectActivate: emitted when the entry is activated.
+// ConnectActivate is emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
 func (entry *PasswordEntry) ConnectActivate(f func()) externglib.SignalHandle {

@@ -250,7 +250,7 @@ func _gotk4_gtk4_Filter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkFilterChange, 
 	f(_change)
 }
 
-// ConnectChanged: emitted whenever the filter changed.
+// ConnectChanged is emitted whenever the filter changed.
 //
 // Users of the filter should then check items again via gtk.Filter.Match().
 //

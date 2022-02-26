@@ -175,7 +175,7 @@ func _gotk4_gtk4_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2
 	f(_responseId)
 }
 
-// ConnectResponse: emitted when the user responds to the dialog.
+// ConnectResponse is emitted when the user responds to the dialog.
 //
 // When this is called the dialog has been hidden.
 //

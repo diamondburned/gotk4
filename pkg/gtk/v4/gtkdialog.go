@@ -401,7 +401,7 @@ func _gotk4_gtk4_Dialog_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectClose: emitted when the user uses a keybinding to close the dialog.
+// ConnectClose is emitted when the user uses a keybinding to close the dialog.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -430,7 +430,7 @@ func _gotk4_gtk4_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gui
 	f(_responseId)
 }
 
-// ConnectResponse: emitted when an action widget is clicked.
+// ConnectResponse is emitted when an action widget is clicked.
 //
 // The signal is also emitted when the dialog receives a delete event, and when
 // gtk.Dialog.Response() is called. On a delete event, the response ID is

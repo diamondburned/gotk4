@@ -169,7 +169,7 @@ func _gotk4_gtk4_Text_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivate: emitted when the user hits the Enter key.
+// ConnectActivate is emitted when the user hits the Enter key.
 //
 // The default bindings for this signal are all forms of the <kbd>Enter</kbd>
 // key.
@@ -193,7 +193,7 @@ func _gotk4_gtk4_Text_ConnectBackspace(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectBackspace: emitted when the user asks for it.
+// ConnectBackspace is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -219,7 +219,7 @@ func _gotk4_gtk4_Text_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectCopyClipboard: emitted to copy the selection to the clipboard.
+// ConnectCopyClipboard is emitted to copy the selection to the clipboard.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -245,7 +245,7 @@ func _gotk4_gtk4_Text_ConnectCutClipboard(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectCutClipboard: emitted to cut the selection to the clipboard.
+// ConnectCutClipboard is emitted to cut the selection to the clipboard.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -277,7 +277,7 @@ func _gotk4_gtk4_Text_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteT
 	f(_typ, _count)
 }
 
-// ConnectDeleteFromCursor: emitted when the user initiates a text deletion.
+// ConnectDeleteFromCursor is emitted when the user initiates a text deletion.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -310,7 +310,7 @@ func _gotk4_gtk4_Text_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2
 	f(_str)
 }
 
-// ConnectInsertAtCursor: emitted when the user initiates the insertion of a
+// ConnectInsertAtCursor is emitted when the user initiates the insertion of a
 // fixed string at the cursor.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -336,7 +336,7 @@ func _gotk4_gtk4_Text_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectInsertEmoji: emitted to present the Emoji chooser for the self.
+// ConnectInsertEmoji is emitted to present the Emoji chooser for the self.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -372,7 +372,7 @@ func _gotk4_gtk4_Text_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep,
 	f(_step, _count, _extend)
 }
 
-// ConnectMoveCursor: emitted when the user initiates a cursor movement.
+// ConnectMoveCursor is emitted when the user initiates a cursor movement.
 //
 // If the cursor is not visible in self, this signal causes the viewport to be
 // moved instead.
@@ -412,7 +412,7 @@ func _gotk4_gtk4_Text_ConnectPasteClipboard(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPasteClipboard: emitted to paste the contents of the clipboard.
+// ConnectPasteClipboard is emitted to paste the contents of the clipboard.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -442,7 +442,7 @@ func _gotk4_gtk4_Text_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2
 	f(_preedit)
 }
 
-// ConnectPreeditChanged: emitted when the preedit text changes.
+// ConnectPreeditChanged is emitted when the preedit text changes.
 //
 // If an input method is used, the typed text will not immediately be committed
 // to the buffer. So if you are interested in the text, connect to this signal.
@@ -466,7 +466,8 @@ func _gotk4_gtk4_Text_ConnectToggleOverwrite(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectToggleOverwrite: emitted to toggle the overwrite mode of the GtkText.
+// ConnectToggleOverwrite is emitted to toggle the overwrite mode of the
+// GtkText.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //

@@ -141,7 +141,7 @@ func _gotk4_gdk4_Device_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted either when the the number of either axes or keys
+// ConnectChanged is emitted either when the the number of either axes or keys
 // changes.
 //
 // On X11 this will normally happen when the physical device routing events
@@ -172,7 +172,7 @@ func _gotk4_gdk4_Device_ConnectToolChanged(arg0 C.gpointer, arg1 *C.GdkDeviceToo
 	f(_tool)
 }
 
-// ConnectToolChanged: emitted on pen/eraser devices whenever tools enter or
+// ConnectToolChanged is emitted on pen/eraser devices whenever tools enter or
 // leave proximity.
 func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(device, "tool-changed", false, unsafe.Pointer(C._gotk4_gdk4_Device_ConnectToolChanged), f)

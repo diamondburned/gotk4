@@ -18,6 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GdkGLContext* _gotk4_gtk3_GLArea_ConnectCreateContext(gpointer, guintptr);
 // extern gboolean _gotk4_gtk3_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
 // extern gboolean _gotk4_gtk3_GLArea_ConnectRender(gpointer, GdkGLContext*, guintptr);
 // extern void _gotk4_gtk3_GLAreaClass_resize(GtkGLArea*, int, int);
@@ -203,6 +204,39 @@ func wrapGLArea(obj *externglib.Object) *GLArea {
 
 func marshalGLArea(p uintptr) (interface{}, error) {
 	return wrapGLArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gtk3_GLArea_ConnectCreateContext
+func _gotk4_gtk3_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (cret *C.GdkGLContext) {
+	var f func() (glContext gdk.GLContexter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (glContext gdk.GLContexter))
+	}
+
+	glContext := f()
+
+	cret = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(glContext).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(glContext).Native()))
+
+	return cret
+}
+
+// ConnectCreateContext signal is emitted when the widget is being realized, and
+// allows you to override how the GL context is created. This is useful when you
+// want to reuse an existing GL context, or if you want to try creating
+// different kinds of GL options.
+//
+// If context creation fails then the signal handler can use
+// gtk_gl_area_set_error() to register a more detailed error of how the
+// construction failed.
+func (area *GLArea) ConnectCreateContext(f func() (glContext gdk.GLContexter)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(area, "create-context", false, unsafe.Pointer(C._gotk4_gtk3_GLArea_ConnectCreateContext), f)
 }
 
 //export _gotk4_gtk3_GLArea_ConnectRender

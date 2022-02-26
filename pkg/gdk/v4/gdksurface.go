@@ -110,7 +110,7 @@ func _gotk4_gdk4_Surface_ConnectEnterMonitor(arg0 C.gpointer, arg1 *C.GdkMonitor
 	f(_monitor)
 }
 
-// ConnectEnterMonitor: emitted when surface starts being present on the
+// ConnectEnterMonitor is emitted when surface starts being present on the
 // monitor.
 func (surface *Surface) ConnectEnterMonitor(f func(monitor *Monitor)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(surface, "enter-monitor", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectEnterMonitor), f)
@@ -158,7 +158,7 @@ func _gotk4_gdk4_Surface_ConnectEvent(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.
 	return cret
 }
 
-// ConnectEvent: emitted when GDK receives an input event for surface.
+// ConnectEvent is emitted when GDK receives an input event for surface.
 func (surface *Surface) ConnectEvent(f func(event Eventer) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(surface, "event", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectEvent), f)
 }
@@ -185,8 +185,8 @@ func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint
 	f(_width, _height)
 }
 
-// ConnectLayout: emitted when the size of surface is changed, or when relayout
-// should be performed.
+// ConnectLayout is emitted when the size of surface is changed, or when
+// relayout should be performed.
 //
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk_surface_get_scale_factor()).
@@ -214,7 +214,8 @@ func _gotk4_gdk4_Surface_ConnectLeaveMonitor(arg0 C.gpointer, arg1 *C.GdkMonitor
 	f(_monitor)
 }
 
-// ConnectLeaveMonitor: emitted when surface stops being present on the monitor.
+// ConnectLeaveMonitor is emitted when surface stops being present on the
+// monitor.
 func (surface *Surface) ConnectLeaveMonitor(f func(monitor *Monitor)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(surface, "leave-monitor", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectLeaveMonitor), f)
 }
@@ -252,7 +253,7 @@ func _gotk4_gdk4_Surface_ConnectRender(arg0 C.gpointer, arg1 *C.cairo_region_t, 
 	return cret
 }
 
-// ConnectRender: emitted when part of the surface needs to be redrawn.
+// ConnectRender is emitted when part of the surface needs to be redrawn.
 func (surface *Surface) ConnectRender(f func(region *cairo.Region) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(surface, "render", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectRender), f)
 }

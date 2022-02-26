@@ -272,7 +272,7 @@ func _gotk4_gtk3_Application_ConnectQueryEnd(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectQueryEnd: emitted when the session manager is about to end the
+// ConnectQueryEnd is emitted when the session manager is about to end the
 // session, only if Application::register-session is TRUE. Applications can
 // connect to this signal and call gtk_application_inhibit() with
 // GTK_APPLICATION_INHIBIT_LOGOUT to delay the end of the session until state
@@ -301,7 +301,7 @@ func _gotk4_gtk3_Application_ConnectWindowAdded(arg0 C.gpointer, arg1 *C.GtkWind
 	f(_window)
 }
 
-// ConnectWindowAdded: emitted when a Window is added to application through
+// ConnectWindowAdded is emitted when a Window is added to application through
 // gtk_application_add_window().
 func (application *Application) ConnectWindowAdded(f func(window *Window)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(application, "window-added", false, unsafe.Pointer(C._gotk4_gtk3_Application_ConnectWindowAdded), f)
@@ -327,7 +327,7 @@ func _gotk4_gtk3_Application_ConnectWindowRemoved(arg0 C.gpointer, arg1 *C.GtkWi
 	f(_window)
 }
 
-// ConnectWindowRemoved: emitted when a Window is removed from application,
+// ConnectWindowRemoved is emitted when a Window is removed from application,
 // either as a side-effect of being destroyed or explicitly through
 // gtk_application_remove_window().
 func (application *Application) ConnectWindowRemoved(f func(window *Window)) externglib.SignalHandle {

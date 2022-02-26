@@ -169,7 +169,7 @@ type Volumer interface {
 	// mounted.
 	ShouldAutomount() bool
 
-	// Changed: emitted when the volume has been changed.
+	// Changed is emitted when the volume has been changed.
 	ConnectChanged(func()) externglib.SignalHandle
 	// Removed: this signal is emitted when the #GVolume have been removed.
 	ConnectRemoved(func()) externglib.SignalHandle
@@ -203,7 +203,7 @@ func _gotk4_gio2_Volume_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when the volume has been changed.
+// ConnectChanged is emitted when the volume has been changed.
 func (volume *Volume) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volume, "changed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectChanged), f)
 }

@@ -258,7 +258,7 @@ func _gotk4_gtk4_Sorter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkSorterChange, 
 	f(_change)
 }
 
-// ConnectChanged: emitted whenever the sorter changed.
+// ConnectChanged is emitted whenever the sorter changed.
 //
 // Users of the sorter should then update the sort order again via
 // gtk_sorter_compare().

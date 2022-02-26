@@ -92,7 +92,7 @@ func _gotk4_gtk4_GestureDrag_ConnectDragBegin(arg0 C.gpointer, arg1 C.gdouble, a
 	f(_startX, _startY)
 }
 
-// ConnectDragBegin: emitted whenever dragging starts.
+// ConnectDragBegin is emitted whenever dragging starts.
 func (gesture *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "drag-begin", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragBegin), f)
 }
@@ -119,7 +119,7 @@ func _gotk4_gtk4_GestureDrag_ConnectDragEnd(arg0 C.gpointer, arg1 C.gdouble, arg
 	f(_offsetX, _offsetY)
 }
 
-// ConnectDragEnd: emitted whenever the dragging is finished.
+// ConnectDragEnd is emitted whenever the dragging is finished.
 func (gesture *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "drag-end", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragEnd), f)
 }
@@ -146,7 +146,7 @@ func _gotk4_gtk4_GestureDrag_ConnectDragUpdate(arg0 C.gpointer, arg1 C.gdouble, 
 	f(_offsetX, _offsetY)
 }
 
-// ConnectDragUpdate: emitted whenever the dragging point moves.
+// ConnectDragUpdate is emitted whenever the dragging point moves.
 func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "drag-update", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragUpdate), f)
 }

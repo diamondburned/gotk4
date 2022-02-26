@@ -192,7 +192,7 @@ func _gotk4_gtk4_TreeViewColumn_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr)
 	f()
 }
 
-// ConnectClicked: emitted when the column's header has been clicked.
+// ConnectClicked is emitted when the column's header has been clicked.
 func (treeColumn *TreeViewColumn) ConnectClicked(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(treeColumn, "clicked", false, unsafe.Pointer(C._gotk4_gtk4_TreeViewColumn_ConnectClicked), f)
 }

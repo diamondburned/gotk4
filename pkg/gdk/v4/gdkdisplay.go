@@ -87,7 +87,7 @@ func _gotk4_gdk4_Display_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, arg2 C.
 	f(_isError)
 }
 
-// ConnectClosed: emitted when the connection to the windowing system for
+// ConnectClosed is emitted when the connection to the windowing system for
 // display is closed.
 func (display *Display) ConnectClosed(f func(isError bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(display, "closed", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectClosed), f)
@@ -109,7 +109,7 @@ func _gotk4_gdk4_Display_ConnectOpened(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectOpened: emitted when the connection to the windowing system for
+// ConnectOpened is emitted when the connection to the windowing system for
 // display is opened.
 func (display *Display) ConnectOpened(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(display, "opened", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectOpened), f)
@@ -151,8 +151,8 @@ func _gotk4_gdk4_Display_ConnectSeatAdded(arg0 C.gpointer, arg1 *C.GdkSeat, arg2
 	f(_seat)
 }
 
-// ConnectSeatAdded: emitted whenever a new seat is made known to the windowing
-// system.
+// ConnectSeatAdded is emitted whenever a new seat is made known to the
+// windowing system.
 func (display *Display) ConnectSeatAdded(f func(seat Seater)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(display, "seat-added", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectSeatAdded), f)
 }
@@ -193,7 +193,7 @@ func _gotk4_gdk4_Display_ConnectSeatRemoved(arg0 C.gpointer, arg1 *C.GdkSeat, ar
 	f(_seat)
 }
 
-// ConnectSeatRemoved: emitted whenever a seat is removed by the windowing
+// ConnectSeatRemoved is emitted whenever a seat is removed by the windowing
 // system.
 func (display *Display) ConnectSeatRemoved(f func(seat Seater)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(display, "seat-removed", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectSeatRemoved), f)
@@ -219,7 +219,7 @@ func _gotk4_gdk4_Display_ConnectSettingChanged(arg0 C.gpointer, arg1 *C.gchar, a
 	f(_setting)
 }
 
-// ConnectSettingChanged: emitted whenever a setting changes its value.
+// ConnectSettingChanged is emitted whenever a setting changes its value.
 func (display *Display) ConnectSettingChanged(f func(setting string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(display, "setting-changed", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectSettingChanged), f)
 }

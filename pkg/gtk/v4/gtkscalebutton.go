@@ -131,7 +131,7 @@ func _gotk4_gtk4_ScaleButton_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPopdown: emitted to dismiss the popup.
+// ConnectPopdown is emitted to dismiss the popup.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -156,7 +156,7 @@ func _gotk4_gtk4_ScaleButton_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPopup: emitted to popup the scale widget.
+// ConnectPopup is emitted to popup the scale widget.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -186,7 +186,7 @@ func _gotk4_gtk4_ScaleButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble
 	f(_value)
 }
 
-// ConnectValueChanged: emitted when the value field has changed.
+// ConnectValueChanged is emitted when the value field has changed.
 func (button *ScaleButton) ConnectValueChanged(f func(value float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "value-changed", false, unsafe.Pointer(C._gotk4_gtk4_ScaleButton_ConnectValueChanged), f)
 }

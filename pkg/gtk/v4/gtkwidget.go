@@ -1255,7 +1255,8 @@ func _gotk4_gtk4_Widget_ConnectDirectionChanged(arg0 C.gpointer, arg1 C.GtkTextD
 	f(_previousDirection)
 }
 
-// ConnectDirectionChanged: emitted when the text direction of a widget changes.
+// ConnectDirectionChanged is emitted when the text direction of a widget
+// changes.
 func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(widget, "direction-changed", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectDirectionChanged), f)
 }
@@ -1276,7 +1277,7 @@ func _gotk4_gtk4_Widget_ConnectHide(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectHide: emitted when widget is hidden.
+// ConnectHide is emitted when widget is hidden.
 func (widget *Widget) ConnectHide(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(widget, "hide", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectHide), f)
 }
@@ -1307,7 +1308,7 @@ func _gotk4_gtk4_Widget_ConnectKeynavFailed(arg0 C.gpointer, arg1 C.GtkDirection
 	return cret
 }
 
-// ConnectKeynavFailed: emitted if keyboard navigation fails.
+// ConnectKeynavFailed is emitted if keyboard navigation fails.
 //
 // See gtk.Widget.KeynavFailed() for details.
 func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) (ok bool)) externglib.SignalHandle {
@@ -1330,7 +1331,7 @@ func _gotk4_gtk4_Widget_ConnectMap(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectMap: emitted when widget is going to be mapped.
+// ConnectMap is emitted when widget is going to be mapped.
 //
 // A widget is mapped when the widget is visible (which is controlled with
 // gtk.Widget:visible) and all its parents up to the toplevel widget are also
@@ -1371,7 +1372,7 @@ func _gotk4_gtk4_Widget_ConnectMnemonicActivate(arg0 C.gpointer, arg1 C.gboolean
 	return cret
 }
 
-// ConnectMnemonicActivate: emitted when a widget is activated via a mnemonic.
+// ConnectMnemonicActivate is emitted when a widget is activated via a mnemonic.
 //
 // The default handler for this signal activates widget if group_cycling is
 // FALSE, or just makes widget grab focus if group_cycling is TRUE.
@@ -1399,7 +1400,7 @@ func _gotk4_gtk4_Widget_ConnectMoveFocus(arg0 C.gpointer, arg1 C.GtkDirectionTyp
 	f(_direction)
 }
 
-// ConnectMoveFocus: emitted when the focus is moved.
+// ConnectMoveFocus is emitted when the focus is moved.
 func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(widget, "move-focus", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectMoveFocus), f)
 }
@@ -1438,7 +1439,7 @@ func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 	return cret
 }
 
-// ConnectQueryTooltip: emitted when the widgets tooltip is about to be shown.
+// ConnectQueryTooltip is emitted when the widgets tooltip is about to be shown.
 //
 // This happens when the gtk.Widget:has-tooltip property is TRUE and the hover
 // timeout has expired with the cursor hovering "above" widget; or emitted when
@@ -1471,7 +1472,7 @@ func _gotk4_gtk4_Widget_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectRealize: emitted when widget is associated with a GdkSurface.
+// ConnectRealize is emitted when widget is associated with a GdkSurface.
 //
 // This means that gtk.Widget.Realize() has been called or the widget has been
 // mapped (that is, it is going to be drawn).
@@ -1495,7 +1496,7 @@ func _gotk4_gtk4_Widget_ConnectShow(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectShow: emitted when widget is shown.
+// ConnectShow is emitted when widget is shown.
 func (widget *Widget) ConnectShow(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(widget, "show", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectShow), f)
 }
@@ -1520,7 +1521,7 @@ func _gotk4_gtk4_Widget_ConnectStateFlagsChanged(arg0 C.gpointer, arg1 C.GtkStat
 	f(_flags)
 }
 
-// ConnectStateFlagsChanged: emitted when the widget state changes.
+// ConnectStateFlagsChanged is emitted when the widget state changes.
 //
 // See gtk.Widget.GetStateFlags().
 func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) externglib.SignalHandle {
@@ -1543,7 +1544,7 @@ func _gotk4_gtk4_Widget_ConnectUnmap(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectUnmap: emitted when widget is going to be unmapped.
+// ConnectUnmap is emitted when widget is going to be unmapped.
 //
 // A widget is unmapped when either it or any of its parents up to the toplevel
 // widget have been set as hidden.
@@ -1570,7 +1571,7 @@ func _gotk4_gtk4_Widget_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectUnrealize: emitted when the GdkSurface associated with widget is
+// ConnectUnrealize is emitted when the GdkSurface associated with widget is
 // destroyed.
 //
 // This means that gtk.Widget.Unrealize() has been called or the widget has been

@@ -126,7 +126,7 @@ func _gotk4_gtk3_Adjustment_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when one or more of the Adjustment properties have
+// ConnectChanged is emitted when one or more of the Adjustment properties have
 // been changed, other than the Adjustment:value property.
 func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(adjustment, "changed", false, unsafe.Pointer(C._gotk4_gtk3_Adjustment_ConnectChanged), f)
@@ -148,7 +148,7 @@ func _gotk4_gtk3_Adjustment_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr
 	f()
 }
 
-// ConnectValueChanged: emitted when the Adjustment:value property has been
+// ConnectValueChanged is emitted when the Adjustment:value property has been
 // changed.
 func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(adjustment, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_Adjustment_ConnectValueChanged), f)

@@ -186,10 +186,10 @@ func _gotk4_gtk4_TreeSelection_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectChanged: emitted whenever the selection has (possibly) changed. Please
-// note that this signal is mostly a hint. It may only be emitted once when a
-// range of rows are selected, and it may occasionally be emitted when nothing
-// has happened.
+// ConnectChanged is emitted whenever the selection has (possibly) changed.
+// Please note that this signal is mostly a hint. It may only be emitted once
+// when a range of rows are selected, and it may occasionally be emitted when
+// nothing has happened.
 func (selection *TreeSelection) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(selection, "changed", false, unsafe.Pointer(C._gotk4_gtk4_TreeSelection_ConnectChanged), f)
 }

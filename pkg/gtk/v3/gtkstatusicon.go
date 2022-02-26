@@ -482,7 +482,7 @@ func _gotk4_gtk3_StatusIcon_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, ar
 	return cret
 }
 
-// ConnectQueryTooltip: emitted when the hover timeout has expired with the
+// ConnectQueryTooltip is emitted when the hover timeout has expired with the
 // cursor hovering above status_icon; or emitted when status_icon got focus in
 // keyboard mode.
 //

@@ -160,7 +160,7 @@ func _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(arg0 C.gpointer, arg1 C.G
 	f(_level)
 }
 
-// ConnectLowMemoryWarning: emitted when the system is running low on free
+// ConnectLowMemoryWarning is emitted when the system is running low on free
 // memory. The signal handler should then take the appropriate action depending
 // on the warning level. See the MonitorWarningLevel documentation for details.
 func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarningLevel)) externglib.SignalHandle {

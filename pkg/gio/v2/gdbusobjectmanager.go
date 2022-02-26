@@ -128,13 +128,13 @@ type DBusObjectManagerer interface {
 	// Objects gets all BusObject objects known to manager.
 	Objects() []DBusObjector
 
-	// Interface-added: emitted when interface is added to object.
+	// Interface-added is emitted when interface is added to object.
 	ConnectInterfaceAdded(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
-	// Interface-removed: emitted when interface has been removed from object.
+	// Interface-removed is emitted when interface has been removed from object.
 	ConnectInterfaceRemoved(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
-	// Object-added: emitted when object is added to manager.
+	// Object-added is emitted when object is added to manager.
 	ConnectObjectAdded(func(object DBusObjector)) externglib.SignalHandle
-	// Object-removed: emitted when object is removed from manager.
+	// Object-removed is emitted when object is removed from manager.
 	ConnectObjectRemoved(func(object DBusObjector)) externglib.SignalHandle
 }
 
@@ -431,7 +431,7 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 	f(_object, _iface)
 }
 
-// ConnectInterfaceAdded: emitted when interface is added to object.
+// ConnectInterfaceAdded is emitted when interface is added to object.
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
@@ -493,7 +493,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 	f(_object, _iface)
 }
 
-// ConnectInterfaceRemoved: emitted when interface has been removed from object.
+// ConnectInterfaceRemoved is emitted when interface has been removed from
+// object.
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
@@ -537,7 +538,7 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.G
 	f(_object)
 }
 
-// ConnectObjectAdded: emitted when object is added to manager.
+// ConnectObjectAdded is emitted when object is added to manager.
 func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(manager, "object-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectAdded), f)
 }
@@ -578,7 +579,7 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C
 	f(_object)
 }
 
-// ConnectObjectRemoved: emitted when object is removed from manager.
+// ConnectObjectRemoved is emitted when object is removed from manager.
 func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(manager, "object-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectRemoved), f)
 }

@@ -116,8 +116,8 @@ func _gotk4_gtk4_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2
 	f(_contextId, _text)
 }
 
-// ConnectTextPopped: emitted whenever a new message is popped off a statusbar's
-// stack.
+// ConnectTextPopped is emitted whenever a new message is popped off a
+// statusbar's stack.
 func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(statusbar, "text-popped", false, unsafe.Pointer(C._gotk4_gtk4_Statusbar_ConnectTextPopped), f)
 }
@@ -144,7 +144,7 @@ func _gotk4_gtk4_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2
 	f(_contextId, _text)
 }
 
-// ConnectTextPushed: emitted whenever a new message gets pushed onto a
+// ConnectTextPushed is emitted whenever a new message gets pushed onto a
 // statusbar's stack.
 func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(statusbar, "text-pushed", false, unsafe.Pointer(C._gotk4_gtk4_Statusbar_ConnectTextPushed), f)

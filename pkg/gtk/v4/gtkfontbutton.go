@@ -97,7 +97,7 @@ func _gotk4_gtk4_FontButton_ConnectFontSet(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectFontSet: emitted when the user selects a font.
+// ConnectFontSet is emitted when the user selects a font.
 //
 // When handling this signal, use gtk.FontChooser.GetFont() to find out which
 // font was just selected.

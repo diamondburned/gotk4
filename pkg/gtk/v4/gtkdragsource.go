@@ -13,6 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
 // extern gboolean _gotk4_gtk4_DragSource_ConnectDragCancel(gpointer, GdkDrag*, GdkDragCancelReason, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, GdkDrag*, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, GdkDrag*, gboolean, guintptr);
@@ -170,7 +171,7 @@ func _gotk4_gtk4_DragSource_ConnectDragBegin(arg0 C.gpointer, arg1 *C.GdkDrag, a
 	f(_drag)
 }
 
-// ConnectDragBegin: emitted on the drag source when a drag is started.
+// ConnectDragBegin is emitted on the drag source when a drag is started.
 //
 // It can be used to e.g. set a custom drag icon with gtk.DragSource.SetIcon().
 func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) externglib.SignalHandle {
@@ -221,7 +222,7 @@ func _gotk4_gtk4_DragSource_ConnectDragCancel(arg0 C.gpointer, arg1 *C.GdkDrag, 
 	return cret
 }
 
-// ConnectDragCancel: emitted on the drag source when a drag has failed.
+// ConnectDragCancel is emitted on the drag source when a drag has failed.
 //
 // The signal handler may handle a failed drag operation based on the type of
 // error. It should return TRUE if the failure has been handled and the default
@@ -270,12 +271,51 @@ func _gotk4_gtk4_DragSource_ConnectDragEnd(arg0 C.gpointer, arg1 *C.GdkDrag, arg
 	f(_drag, _deleteData)
 }
 
-// ConnectDragEnd: emitted on the drag source when a drag is finished.
+// ConnectDragEnd is emitted on the drag source when a drag is finished.
 //
 // A typical reason to connect to this signal is to undo things done in
 // gtk.DragSource::prepare or gtk.DragSource::drag-begin handlers.
 func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(source, "drag-end", false, unsafe.Pointer(C._gotk4_gtk4_DragSource_ConnectDragEnd), f)
+}
+
+//export _gotk4_gtk4_DragSource_ConnectPrepare
+func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.GdkContentProvider) {
+	var f func(x, y float64) (contentProvider *gdk.ContentProvider)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64) (contentProvider *gdk.ContentProvider))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	contentProvider := f(_x, _y)
+
+	if contentProvider != nil {
+		cret = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(contentProvider).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(contentProvider).Native()))
+	}
+
+	return cret
+}
+
+// ConnectPrepare is emitted when a drag is about to be initiated.
+//
+// It returns the GdkContentProvider to use for the drag that is about to start.
+// The default handler for this signal returns the value of the
+// gtk.DragSource:content property, so if you set up that property ahead of
+// time, you don't need to connect to this signal.
+func (source *DragSource) ConnectPrepare(f func(x, y float64) (contentProvider *gdk.ContentProvider)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(source, "prepare", false, unsafe.Pointer(C._gotk4_gtk4_DragSource_ConnectPrepare), f)
 }
 
 // NewDragSource creates a new GtkDragSource object.

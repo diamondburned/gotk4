@@ -265,7 +265,7 @@ func _gotk4_gtk3_Button_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectClicked: emitted when the button has been activated (pressed and
+// ConnectClicked is emitted when the button has been activated (pressed and
 // released).
 func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "clicked", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectClicked), f)
@@ -287,7 +287,7 @@ func _gotk4_gtk3_Button_ConnectEnter(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectEnter: emitted when the pointer enters the button.
+// ConnectEnter is emitted when the pointer enters the button.
 func (button *Button) ConnectEnter(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "enter", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectEnter), f)
 }
@@ -308,7 +308,7 @@ func _gotk4_gtk3_Button_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectLeave: emitted when the pointer leaves the button.
+// ConnectLeave is emitted when the pointer leaves the button.
 func (button *Button) ConnectLeave(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "leave", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectLeave), f)
 }
@@ -329,7 +329,7 @@ func _gotk4_gtk3_Button_ConnectPressed(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPressed: emitted when the button is pressed.
+// ConnectPressed is emitted when the button is pressed.
 func (button *Button) ConnectPressed(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectPressed), f)
 }
@@ -350,7 +350,7 @@ func _gotk4_gtk3_Button_ConnectReleased(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectReleased: emitted when the button is released.
+// ConnectReleased is emitted when the button is released.
 func (button *Button) ConnectReleased(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "released", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectReleased), f)
 }

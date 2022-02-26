@@ -445,7 +445,7 @@ func _gotk4_gtk3_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gui
 	f(_responseId)
 }
 
-// ConnectResponse: emitted when an action widget is clicked, the dialog
+// ConnectResponse is emitted when an action widget is clicked, the dialog
 // receives a delete event, or the application programmer calls
 // gtk_dialog_response(). On a delete event, the response ID is
 // K_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was

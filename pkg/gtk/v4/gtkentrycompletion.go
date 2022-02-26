@@ -175,7 +175,7 @@ func _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(arg0 C.gpointer, arg1 *C.G
 	return cret
 }
 
-// ConnectCursorOnMatch: emitted when a match from the cursor is on a match of
+// ConnectCursorOnMatch is emitted when a match from the cursor is on a match of
 // the list.
 //
 // The default behaviour is to replace the contents of the entry with the
@@ -213,7 +213,7 @@ func _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(arg0 C.gpointer, arg1 *C.gc
 	return cret
 }
 
-// ConnectInsertPrefix: emitted when the inline autocompletion is triggered.
+// ConnectInsertPrefix is emitted when the inline autocompletion is triggered.
 //
 // The default behaviour is to make the entry display the whole prefix and
 // select the newly inserted part.
@@ -269,7 +269,7 @@ func _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(arg0 C.gpointer, arg1 *C.G
 	return cret
 }
 
-// ConnectMatchSelected: emitted when a match from the list is selected.
+// ConnectMatchSelected is emitted when a match from the list is selected.
 //
 // The default behaviour is to replace the contents of the entry with the
 // contents of the text column in the row pointed to by iter.
@@ -296,7 +296,7 @@ func _gotk4_gtk4_EntryCompletion_ConnectNoMatches(arg0 C.gpointer, arg1 C.guintp
 	f()
 }
 
-// ConnectNoMatches: emitted when the filter model has zero number of rows in
+// ConnectNoMatches is emitted when the filter model has zero number of rows in
 // completion_complete method.
 //
 // In other words when GtkEntryCompletion is out of suggestions.

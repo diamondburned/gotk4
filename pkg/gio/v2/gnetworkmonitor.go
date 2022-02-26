@@ -69,7 +69,7 @@ type NetworkMonitorrer interface {
 	// NetworkMetered checks if the network is metered.
 	NetworkMetered() bool
 
-	// Network-changed: emitted when the network configuration changes.
+	// Network-changed is emitted when the network configuration changes.
 	ConnectNetworkChanged(func(networkAvailable bool)) externglib.SignalHandle
 }
 
@@ -109,7 +109,7 @@ func _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(arg0 C.gpointer, arg1 C.gb
 	f(_networkAvailable)
 }
 
-// ConnectNetworkChanged: emitted when the network configuration changes.
+// ConnectNetworkChanged is emitted when the network configuration changes.
 func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(monitor, "network-changed", false, unsafe.Pointer(C._gotk4_gio2_NetworkMonitor_ConnectNetworkChanged), f)
 }

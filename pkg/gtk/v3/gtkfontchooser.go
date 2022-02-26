@@ -227,7 +227,7 @@ type FontChooserer interface {
 	// SetShowPreviewEntry shows or hides the editable preview entry.
 	SetShowPreviewEntry(showPreviewEntry bool)
 
-	// Font-activated: emitted when a font is activated.
+	// Font-activated is emitted when a font is activated.
 	ConnectFontActivated(func(fontname string)) externglib.SignalHandle
 }
 
@@ -263,9 +263,9 @@ func _gotk4_gtk3_FontChooser_ConnectFontActivated(arg0 C.gpointer, arg1 *C.gchar
 	f(_fontname)
 }
 
-// ConnectFontActivated: emitted when a font is activated. This usually happens
-// when the user double clicks an item, or an item is selected and the user
-// presses one of the keys Space, Shift+Space, Return or Enter.
+// ConnectFontActivated is emitted when a font is activated. This usually
+// happens when the user double clicks an item, or an item is selected and the
+// user presses one of the keys Space, Shift+Space, Return or Enter.
 func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(fontchooser, "font-activated", false, unsafe.Pointer(C._gotk4_gtk3_FontChooser_ConnectFontActivated), f)
 }

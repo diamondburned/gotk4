@@ -62,7 +62,7 @@ func GoType(gen FileGenerator, typ gir.Type, pub bool) (string, bool) {
 // RecordIsOpaque returns true if the record has no fields in the GIR schema.
 // These records must always be referenced using a pointer.
 func RecordIsOpaque(rec gir.Record) bool {
-	return len(rec.Fields) == 0 || rec.GLibGetType == "intern"
+	return len(rec.Fields) == 0 || rec.GLibGetType == "intern" || rec.Foreign
 }
 
 // methodCanCallDirectly returns true if the method is generated, has no

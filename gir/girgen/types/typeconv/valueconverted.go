@@ -134,7 +134,7 @@ func (value *ValueConverted) Logln(lvl logger.Level, v ...interface{}) {
 // resolveType resolves the value type to the resolved field. If inputC is true,
 // then the input type is set to the CGo type, otherwise the Go type is set.
 func (value *ValueConverted) resolveType(conv *Converter) bool {
-	if value.Resolved != nil && value.Inner != nil {
+	if value.Resolved != nil && value.Inner != nil && value.In.Type != "" && value.Out.Type != "" {
 		// already resolved
 		return true
 	}
@@ -221,6 +221,11 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		// Fix missing CGo type, which sometimes happens when we're in a
 		// subtype.
 		cgoType = value.Resolved.CGoType()
+	}
+
+	if cgoType == "" {
+		value.Logln(logger.Debug, "empty CGoType")
+		return false
 	}
 
 	if !strings.Contains(cgoType, "*") && value.InContainer {

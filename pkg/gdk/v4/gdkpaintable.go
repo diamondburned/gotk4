@@ -268,9 +268,9 @@ type Paintabler interface {
 	// Snapshot snapshots the given paintable with the given width and height.
 	Snapshot(snapshot Snapshotter, width, height float64)
 
-	// Invalidate-contents: emitted when the contents of the paintable change.
+	// Invalidate-contents is emitted when the contents of the paintable change.
 	ConnectInvalidateContents(func()) externglib.SignalHandle
-	// Invalidate-size: emitted when the intrinsic size of the paintable
+	// Invalidate-size is emitted when the intrinsic size of the paintable
 	// changes.
 	ConnectInvalidateSize(func()) externglib.SignalHandle
 }
@@ -406,7 +406,8 @@ func _gotk4_gdk4_Paintable_ConnectInvalidateContents(arg0 C.gpointer, arg1 C.gui
 	f()
 }
 
-// ConnectInvalidateContents: emitted when the contents of the paintable change.
+// ConnectInvalidateContents is emitted when the contents of the paintable
+// change.
 //
 // Examples for such an event would be videos changing to the next frame or the
 // icon theme for an icon changing.
@@ -430,7 +431,7 @@ func _gotk4_gdk4_Paintable_ConnectInvalidateSize(arg0 C.gpointer, arg1 C.guintpt
 	f()
 }
 
-// ConnectInvalidateSize: emitted when the intrinsic size of the paintable
+// ConnectInvalidateSize is emitted when the intrinsic size of the paintable
 // changes.
 //
 // This means the values reported by at least one of

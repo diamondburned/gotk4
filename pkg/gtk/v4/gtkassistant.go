@@ -241,7 +241,7 @@ func _gotk4_gtk4_Assistant_ConnectApply(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectApply: emitted when the apply button is clicked.
+// ConnectApply is emitted when the apply button is clicked.
 //
 // The default behavior of the GtkAssistant is to switch to the page after the
 // current page, unless the current page is the last one.
@@ -271,7 +271,7 @@ func _gotk4_gtk4_Assistant_ConnectCancel(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectCancel: emitted when then the cancel button is clicked.
+// ConnectCancel is emitted when then the cancel button is clicked.
 func (assistant *Assistant) ConnectCancel(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(assistant, "cancel", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectCancel), f)
 }
@@ -292,7 +292,7 @@ func _gotk4_gtk4_Assistant_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectClose: emitted either when the close button of a summary page is
+// ConnectClose is emitted either when the close button of a summary page is
 // clicked, or when the apply button in the last page in the flow (of type
 // GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
 func (assistant *Assistant) ConnectClose(f func()) externglib.SignalHandle {
@@ -356,7 +356,7 @@ func _gotk4_gtk4_Assistant_ConnectPrepare(arg0 C.gpointer, arg1 *C.GtkWidget, ar
 	f(_page)
 }
 
-// ConnectPrepare: emitted when a new page is set as the assistant's current
+// ConnectPrepare is emitted when a new page is set as the assistant's current
 // page, before making the new page visible.
 //
 // A handler for this signal can do any preparations which are necessary before

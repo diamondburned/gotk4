@@ -188,7 +188,7 @@ func _gotk4_gtk4_EventControllerScroll_ConnectDecelerate(arg0 C.gpointer, arg1 C
 	f(_velX, _velY)
 }
 
-// ConnectDecelerate: emitted after scroll is finished if the
+// ConnectDecelerate is emitted after scroll is finished if the
 // GTK_EVENT_CONTROLLER_SCROLL_KINETIC flag is set.
 //
 // vel_x and vel_y express the initial velocity that was imprinted by the scroll

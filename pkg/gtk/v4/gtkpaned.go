@@ -154,7 +154,7 @@ func _gotk4_gtk4_Paned_ConnectAcceptPosition(arg0 C.gpointer, arg1 C.guintptr) (
 	return cret
 }
 
-// ConnectAcceptPosition: emitted to accept the current position of the handle
+// ConnectAcceptPosition is emitted to accept the current position of the handle
 // when moving it using key bindings.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -186,7 +186,7 @@ func _gotk4_gtk4_Paned_ConnectCancelPosition(arg0 C.gpointer, arg1 C.guintptr) (
 	return cret
 }
 
-// ConnectCancelPosition: emitted to cancel moving the position of the handle
+// ConnectCancelPosition is emitted to cancel moving the position of the handle
 // using key bindings.
 //
 // The position of the handle will be reset to the value prior to moving it.
@@ -226,7 +226,7 @@ func _gotk4_gtk4_Paned_ConnectCycleChildFocus(arg0 C.gpointer, arg1 C.gboolean, 
 	return cret
 }
 
-// ConnectCycleChildFocus: emitted to cycle the focus between the children of
+// ConnectCycleChildFocus is emitted to cycle the focus between the children of
 // the paned.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -264,8 +264,9 @@ func _gotk4_gtk4_Paned_ConnectCycleHandleFocus(arg0 C.gpointer, arg1 C.gboolean,
 	return cret
 }
 
-// ConnectCycleHandleFocus: emitted to cycle whether the paned should grab focus
-// to allow the user to change position of the handle by using key bindings.
+// ConnectCycleHandleFocus is emitted to cycle whether the paned should grab
+// focus to allow the user to change position of the handle by using key
+// bindings.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -300,7 +301,7 @@ func _gotk4_gtk4_Paned_ConnectMoveHandle(arg0 C.gpointer, arg1 C.GtkScrollType, 
 	return cret
 }
 
-// ConnectMoveHandle: emitted to move the handle with key bindings.
+// ConnectMoveHandle is emitted to move the handle with key bindings.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) (ok bool)) externglib.SignalHandle {
@@ -329,7 +330,7 @@ func _gotk4_gtk4_Paned_ConnectToggleHandleFocus(arg0 C.gpointer, arg1 C.guintptr
 	return cret
 }
 
-// ConnectToggleHandleFocus: emitted to accept the current position of the
+// ConnectToggleHandleFocus is emitted to accept the current position of the
 // handle and then move focus to the next widget in the focus chain.
 //
 // This is a keybinding signal (class.SignalAction.html).

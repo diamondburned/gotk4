@@ -726,7 +726,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveChanged(arg0 C.gpointer, arg1 *C.GDri
 	f(_drive)
 }
 
-// ConnectDriveChanged: emitted when a drive changes.
+// ConnectDriveChanged is emitted when a drive changes.
 func (volumeMonitor *VolumeMonitor) ConnectDriveChanged(f func(drive Driver)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveChanged), f)
 }
@@ -767,7 +767,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveConnected(arg0 C.gpointer, arg1 *C.GD
 	f(_drive)
 }
 
-// ConnectDriveConnected: emitted when a drive is connected to the system.
+// ConnectDriveConnected is emitted when a drive is connected to the system.
 func (volumeMonitor *VolumeMonitor) ConnectDriveConnected(f func(drive Driver)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-connected", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveConnected), f)
 }
@@ -808,7 +808,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected(arg0 C.gpointer, arg1 *C
 	f(_drive)
 }
 
-// ConnectDriveDisconnected: emitted when a drive is disconnected from the
+// ConnectDriveDisconnected is emitted when a drive is disconnected from the
 // system.
 func (volumeMonitor *VolumeMonitor) ConnectDriveDisconnected(f func(drive Driver)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-disconnected", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected), f)
@@ -850,7 +850,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton(arg0 C.gpointer, arg1 *C.
 	f(_drive)
 }
 
-// ConnectDriveEjectButton: emitted when the eject button is pressed on drive.
+// ConnectDriveEjectButton is emitted when the eject button is pressed on drive.
 func (volumeMonitor *VolumeMonitor) ConnectDriveEjectButton(f func(drive Driver)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-eject-button", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton), f)
 }
@@ -891,7 +891,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton(arg0 C.gpointer, arg1 *C.G
 	f(_drive)
 }
 
-// ConnectDriveStopButton: emitted when the stop button is pressed on drive.
+// ConnectDriveStopButton is emitted when the stop button is pressed on drive.
 func (volumeMonitor *VolumeMonitor) ConnectDriveStopButton(f func(drive Driver)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-stop-button", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveStopButton), f)
 }
@@ -932,7 +932,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountAdded(arg0 C.gpointer, arg1 *C.GMount
 	f(_mount)
 }
 
-// ConnectMountAdded: emitted when a mount is added.
+// ConnectMountAdded is emitted when a mount is added.
 func (volumeMonitor *VolumeMonitor) ConnectMountAdded(f func(mount Mounter)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-added", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountAdded), f)
 }
@@ -973,7 +973,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountChanged(arg0 C.gpointer, arg1 *C.GMou
 	f(_mount)
 }
 
-// ConnectMountChanged: emitted when a mount changes.
+// ConnectMountChanged is emitted when a mount changes.
 func (volumeMonitor *VolumeMonitor) ConnectMountChanged(f func(mount Mounter)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountChanged), f)
 }
@@ -1058,7 +1058,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountRemoved(arg0 C.gpointer, arg1 *C.GMou
 	f(_mount)
 }
 
-// ConnectMountRemoved: emitted when a mount is removed.
+// ConnectMountRemoved is emitted when a mount is removed.
 func (volumeMonitor *VolumeMonitor) ConnectMountRemoved(f func(mount Mounter)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-removed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountRemoved), f)
 }
@@ -1099,7 +1099,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(arg0 C.gpointer, arg1 *C.GVolu
 	f(_volume)
 }
 
-// ConnectVolumeAdded: emitted when a mountable volume is added to the system.
+// ConnectVolumeAdded is emitted when a mountable volume is added to the system.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeAdded(f func(volume Volumer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-added", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeAdded), f)
 }
@@ -1140,7 +1140,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(arg0 C.gpointer, arg1 *C.GVo
 	f(_volume)
 }
 
-// ConnectVolumeChanged: emitted when mountable volume is changed.
+// ConnectVolumeChanged is emitted when mountable volume is changed.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeChanged(f func(volume Volumer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeChanged), f)
 }
@@ -1181,7 +1181,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(arg0 C.gpointer, arg1 *C.GVo
 	f(_volume)
 }
 
-// ConnectVolumeRemoved: emitted when a mountable volume is removed from the
+// ConnectVolumeRemoved is emitted when a mountable volume is removed from the
 // system.
 func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-removed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved), f)

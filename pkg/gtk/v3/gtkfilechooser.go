@@ -19,6 +19,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkFileChooserConfirmation _gotk4_gtk3_FileChooser_ConnectConfirmOverwrite(gpointer, guintptr);
 // extern void _gotk4_gtk3_FileChooser_ConnectCurrentFolderChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_FileChooser_ConnectFileActivated(gpointer, guintptr);
 // extern void _gotk4_gtk3_FileChooser_ConnectSelectionChanged(gpointer, guintptr);
@@ -435,6 +436,10 @@ type FileChooserer interface {
 	// UnselectURI unselects the file referred to by uri.
 	UnselectURI(uri string)
 
+	// Confirm-overwrite: this signal gets emitted whenever it is appropriate to
+	// present a confirmation dialog when the user has selected a file name that
+	// already exists.
+	ConnectConfirmOverwrite(func() (fileChooserConfirmation FileChooserConfirmation)) externglib.SignalHandle
 	// Current-folder-changed: this signal is emitted when the current folder in
 	// a FileChooser changes.
 	ConnectCurrentFolderChanged(func()) externglib.SignalHandle
@@ -459,6 +464,83 @@ func wrapFileChooser(obj *externglib.Object) *FileChooser {
 
 func marshalFileChooser(p uintptr) (interface{}, error) {
 	return wrapFileChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gtk3_FileChooser_ConnectConfirmOverwrite
+func _gotk4_gtk3_FileChooser_ConnectConfirmOverwrite(arg0 C.gpointer, arg1 C.guintptr) (cret C.GtkFileChooserConfirmation) {
+	var f func() (fileChooserConfirmation FileChooserConfirmation)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (fileChooserConfirmation FileChooserConfirmation))
+	}
+
+	fileChooserConfirmation := f()
+
+	cret = C.GtkFileChooserConfirmation(fileChooserConfirmation)
+
+	return cret
+}
+
+// ConnectConfirmOverwrite: this signal gets emitted whenever it is appropriate
+// to present a confirmation dialog when the user has selected a file name that
+// already exists. The signal only gets emitted when the file chooser is in
+// GTK_FILE_CHOOSER_ACTION_SAVE mode.
+//
+// Most applications just need to turn on the
+// FileChooser:do-overwrite-confirmation property (or call the
+// gtk_file_chooser_set_do_overwrite_confirmation() function), and they will
+// automatically get a stock confirmation dialog. Applications which need to
+// customize this behavior should do that, and also connect to the
+// FileChooser::confirm-overwrite signal.
+//
+// A signal handler for this signal must return a FileChooserConfirmation value,
+// which indicates the action to take. If the handler determines that the user
+// wants to select a different filename, it should return
+// GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN. If it determines that the user is
+// satisfied with his choice of file name, it should return
+// GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME. On the other hand, if it
+// determines that the stock confirmation dialog should be used, it should
+// return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM. The following example
+// illustrates this.
+//
+// Custom confirmation
+//
+//    static GtkFileChooserConfirmation
+//    confirm_overwrite_callback (GtkFileChooser *chooser, gpointer data)
+//    {
+//      char *uri;
+//
+//      uri = gtk_file_chooser_get_uri (chooser);
+//
+//      if (is_uri_read_only (uri))
+//        {
+//          if (user_wants_to_replace_read_only_file (uri))
+//            return GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME;
+//          else
+//            return GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN;
+//        } else
+//          return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM; // fall back to the default dialog
+//    }
+//
+//    ...
+//
+//    chooser = gtk_file_chooser_dialog_new (...);
+//
+//    gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+//    g_signal_connect (chooser, "confirm-overwrite",
+//                      G_CALLBACK (confirm_overwrite_callback), NULL);
+//
+//    if (gtk_dialog_run (chooser) == GTK_RESPONSE_ACCEPT)
+//            save_to_file (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser));
+//
+//    gtk_widget_destroy (chooser);.
+func (chooser *FileChooser) ConnectConfirmOverwrite(f func() (fileChooserConfirmation FileChooserConfirmation)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(chooser, "confirm-overwrite", false, unsafe.Pointer(C._gotk4_gtk3_FileChooser_ConnectConfirmOverwrite), f)
 }
 
 //export _gotk4_gtk3_FileChooser_ConnectCurrentFolderChanged

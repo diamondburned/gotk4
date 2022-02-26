@@ -256,7 +256,7 @@ func _gotk4_gtk4_FlowBox_ConnectActivateCursorChild(arg0 C.gpointer, arg1 C.guin
 	f()
 }
 
-// ConnectActivateCursorChild: emitted when the user activates the box.
+// ConnectActivateCursorChild is emitted when the user activates the box.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (box *FlowBox) ConnectActivateCursorChild(f func()) externglib.SignalHandle {
@@ -283,7 +283,7 @@ func _gotk4_gtk4_FlowBox_ConnectChildActivated(arg0 C.gpointer, arg1 *C.GtkFlowB
 	f(_child)
 }
 
-// ConnectChildActivated: emitted when a child has been activated by the user.
+// ConnectChildActivated is emitted when a child has been activated by the user.
 func (box *FlowBox) ConnectChildActivated(f func(child *FlowBoxChild)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(box, "child-activated", false, unsafe.Pointer(C._gotk4_gtk4_FlowBox_ConnectChildActivated), f)
 }
@@ -324,7 +324,7 @@ func _gotk4_gtk4_FlowBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementSt
 	return cret
 }
 
-// ConnectMoveCursor: emitted when the user initiates a cursor movement.
+// ConnectMoveCursor is emitted when the user initiates a cursor movement.
 //
 // This is a keybinding signal (class.SignalAction.html). Applications should
 // not connect to it, but may emit it with g_signal_emit_by_name() if they need
@@ -360,8 +360,8 @@ func _gotk4_gtk4_FlowBox_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectSelectAll: emitted to select all children of the box, if the selection
-// mode permits it.
+// ConnectSelectAll is emitted to select all children of the box, if the
+// selection mode permits it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -386,7 +386,7 @@ func _gotk4_gtk4_FlowBox_ConnectSelectedChildrenChanged(arg0 C.gpointer, arg1 C.
 	f()
 }
 
-// ConnectSelectedChildrenChanged: emitted when the set of selected children
+// ConnectSelectedChildrenChanged is emitted when the set of selected children
 // changes.
 //
 // Use gtk.FlowBox.SelectedForEach() or gtk.FlowBox.GetSelectedChildren() to
@@ -411,7 +411,7 @@ func _gotk4_gtk4_FlowBox_ConnectToggleCursorChild(arg0 C.gpointer, arg1 C.guintp
 	f()
 }
 
-// ConnectToggleCursorChild: emitted to toggle the selection of the child that
+// ConnectToggleCursorChild is emitted to toggle the selection of the child that
 // has the focus.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -437,7 +437,7 @@ func _gotk4_gtk4_FlowBox_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectUnselectAll: emitted to unselect all children of the box, if the
+// ConnectUnselectAll is emitted to unselect all children of the box, if the
 // selection mode permits it.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -1261,7 +1261,7 @@ func _gotk4_gtk4_FlowBoxChild_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectActivate: emitted when the user activates a child widget in a
+// ConnectActivate is emitted when the user activates a child widget in a
 // GtkFlowBox.
 //
 // This can be happen either by clicking or double-clicking, or via a

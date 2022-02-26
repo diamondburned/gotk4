@@ -162,15 +162,15 @@ type Driver interface {
 	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResulter) error
 
-	// Changed: emitted when the drive's state has changed.
+	// Changed is emitted when the drive's state has changed.
 	ConnectChanged(func()) externglib.SignalHandle
 	// Disconnected: this signal is emitted when the #GDrive have been
 	// disconnected.
 	ConnectDisconnected(func()) externglib.SignalHandle
-	// Eject-button: emitted when the physical eject button (if any) of a drive
-	// has been pressed.
+	// Eject-button is emitted when the physical eject button (if any) of a
+	// drive has been pressed.
 	ConnectEjectButton(func()) externglib.SignalHandle
-	// Stop-button: emitted when the physical stop button (if any) of a drive
+	// Stop-button is emitted when the physical stop button (if any) of a drive
 	// has been pressed.
 	ConnectStopButton(func()) externglib.SignalHandle
 }
@@ -203,7 +203,7 @@ func _gotk4_gio2_Drive_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when the drive's state has changed.
+// ConnectChanged is emitted when the drive's state has changed.
 func (drive *Drive) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(drive, "changed", false, unsafe.Pointer(C._gotk4_gio2_Drive_ConnectChanged), f)
 }
@@ -247,7 +247,7 @@ func _gotk4_gio2_Drive_ConnectEjectButton(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectEjectButton: emitted when the physical eject button (if any) of a
+// ConnectEjectButton is emitted when the physical eject button (if any) of a
 // drive has been pressed.
 func (drive *Drive) ConnectEjectButton(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(drive, "eject-button", false, unsafe.Pointer(C._gotk4_gio2_Drive_ConnectEjectButton), f)
@@ -269,8 +269,8 @@ func _gotk4_gio2_Drive_ConnectStopButton(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectStopButton: emitted when the physical stop button (if any) of a drive
-// has been pressed.
+// ConnectStopButton is emitted when the physical stop button (if any) of a
+// drive has been pressed.
 func (drive *Drive) ConnectStopButton(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(drive, "stop-button", false, unsafe.Pointer(C._gotk4_gio2_Drive_ConnectStopButton), f)
 }

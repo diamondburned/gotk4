@@ -138,7 +138,7 @@ type Mounter interface {
 	// Unshadow decrements the shadow count on mount.
 	Unshadow()
 
-	// Changed: emitted when the mount has been changed.
+	// Changed is emitted when the mount has been changed.
 	ConnectChanged(func()) externglib.SignalHandle
 	// Pre-unmount: this signal may be emitted when the #GMount is about to be
 	// unmounted.
@@ -175,7 +175,7 @@ func _gotk4_gio2_Mount_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when the mount has been changed.
+// ConnectChanged is emitted when the mount has been changed.
 func (mount *Mount) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(mount, "changed", false, unsafe.Pointer(C._gotk4_gio2_Mount_ConnectChanged), f)
 }

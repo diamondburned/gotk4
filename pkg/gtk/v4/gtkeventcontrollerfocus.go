@@ -82,8 +82,8 @@ func _gotk4_gtk4_EventControllerFocus_ConnectEnter(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-// ConnectEnter: emitted whenever the focus enters into the widget or one of its
-// descendents.
+// ConnectEnter is emitted whenever the focus enters into the widget or one of
+// its descendents.
 //
 // Note that this means you may not get an ::enter signal even though the widget
 // becomes the focus location, in certain cases (such as when the focus moves
@@ -110,8 +110,8 @@ func _gotk4_gtk4_EventControllerFocus_ConnectLeave(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-// ConnectLeave: emitted whenever the focus leaves the widget hierarchy that is
-// rooted at the widget that the controller is attached to.
+// ConnectLeave is emitted whenever the focus leaves the widget hierarchy that
+// is rooted at the widget that the controller is attached to.
 //
 // Note that this means you may not get a ::leave signal even though the focus
 // moves away from the widget, in certain cases (such as when the focus moves

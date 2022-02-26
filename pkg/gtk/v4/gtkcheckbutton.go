@@ -193,7 +193,7 @@ func _gotk4_gtk4_CheckButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivate: emitted to when the check button is activated.
+// ConnectActivate is emitted to when the check button is activated.
 //
 // The ::activate signal on GtkCheckButton is an action signal and emitting it
 // causes the button to animate press then release.
@@ -220,7 +220,7 @@ func _gotk4_gtk4_CheckButton_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectToggled: emitted when the buttons's gtk.CheckButton:active property
+// ConnectToggled is emitted when the buttons's gtk.CheckButton:active property
 // changes.
 func (self *CheckButton) ConnectToggled(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "toggled", false, unsafe.Pointer(C._gotk4_gtk4_CheckButton_ConnectToggled), f)

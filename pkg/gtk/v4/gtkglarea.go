@@ -15,6 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern GdkGLContext* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
 // extern gboolean _gotk4_gtk4_GLArea_ConnectRender(gpointer, GdkGLContext*, guintptr);
 // extern void _gotk4_gtk4_GLAreaClass_resize(GtkGLArea*, int, int);
@@ -250,6 +251,40 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return wrapGLArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_GLArea_ConnectCreateContext
+func _gotk4_gtk4_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (cret *C.GdkGLContext) {
+	var f func() (glContext gdk.GLContexter)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (glContext gdk.GLContexter))
+	}
+
+	glContext := f()
+
+	cret = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(glContext).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(glContext).Native()))
+
+	return cret
+}
+
+// ConnectCreateContext is emitted when the widget is being realized.
+//
+// This allows you to override how the GL context is created. This is useful
+// when you want to reuse an existing GL context, or if you want to try creating
+// different kinds of GL options.
+//
+// If context creation fails then the signal handler can use
+// gtk.GLArea.SetError() to register a more detailed error of how the
+// construction failed.
+func (area *GLArea) ConnectCreateContext(f func() (glContext gdk.GLContexter)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(area, "create-context", false, unsafe.Pointer(C._gotk4_gtk4_GLArea_ConnectCreateContext), f)
+}
+
 //export _gotk4_gtk4_GLArea_ConnectRender
 func _gotk4_gtk4_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.GdkGLContext, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(context gdk.GLContexter) (ok bool)
@@ -292,7 +327,7 @@ func _gotk4_gtk4_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.GdkGLContext, arg
 	return cret
 }
 
-// ConnectRender: emitted every time the contents of the GtkGLArea should be
+// ConnectRender is emitted every time the contents of the GtkGLArea should be
 // redrawn.
 //
 // The context is bound to the area prior to emitting this function, and the
@@ -323,7 +358,7 @@ func _gotk4_gtk4_GLArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint,
 	f(_width, _height)
 }
 
-// ConnectResize: emitted once when the widget is realized, and then each time
+// ConnectResize is emitted once when the widget is realized, and then each time
 // the widget is changed while realized.
 //
 // This is useful in order to keep GL state up to date with the widget size,

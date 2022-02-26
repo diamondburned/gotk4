@@ -95,7 +95,7 @@ func _gotk4_gio2_Cancellable_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectCancelled: emitted when the operation has been cancelled.
+// ConnectCancelled is emitted when the operation has been cancelled.
 //
 // Can be used by implementations of cancellable operations. If the operation is
 // cancelled from another thread, the signal will be emitted in the thread that

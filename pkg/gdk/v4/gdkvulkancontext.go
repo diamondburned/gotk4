@@ -98,7 +98,7 @@ func _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(arg0 C.gpointer, arg1 C.guin
 	f()
 }
 
-// ConnectImagesUpdated: emitted when the images managed by this context have
+// ConnectImagesUpdated is emitted when the images managed by this context have
 // changed.
 //
 // Usually this means that the swapchain had to be recreated, for example in

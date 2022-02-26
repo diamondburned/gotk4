@@ -518,7 +518,7 @@ func _gotk4_gtk4_TextBuffer_ConnectApplyTag(arg0 C.gpointer, arg1 *C.GtkTextTag,
 	f(_tag, _start, _end)
 }
 
-// ConnectApplyTag: emitted to apply a tag to a range of text in a
+// ConnectApplyTag is emitted to apply a tag to a range of text in a
 // GtkTextBuffer.
 //
 // Applying actually occurs in the default handler.
@@ -548,7 +548,7 @@ func _gotk4_gtk4_TextBuffer_ConnectBeginUserAction(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-// ConnectBeginUserAction: emitted at the beginning of a single user-visible
+// ConnectBeginUserAction is emitted at the beginning of a single user-visible
 // operation on a GtkTextBuffer.
 //
 // See also: gtk.TextBuffer.BeginUserAction(),
@@ -575,7 +575,7 @@ func _gotk4_gtk4_TextBuffer_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when the content of a GtkTextBuffer has changed.
+// ConnectChanged is emitted when the content of a GtkTextBuffer has changed.
 func (buffer *TextBuffer) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(buffer, "changed", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectChanged), f)
 }
@@ -602,7 +602,7 @@ func _gotk4_gtk4_TextBuffer_ConnectDeleteRange(arg0 C.gpointer, arg1 *C.GtkTextI
 	f(_start, _end)
 }
 
-// ConnectDeleteRange: emitted to delete a range from a GtkTextBuffer.
+// ConnectDeleteRange is emitted to delete a range from a GtkTextBuffer.
 //
 // Note that if your handler runs before the default handler it must not
 // invalidate the start and end iters (or has to revalidate them). The default
@@ -631,7 +631,7 @@ func _gotk4_gtk4_TextBuffer_ConnectEndUserAction(arg0 C.gpointer, arg1 C.guintpt
 	f()
 }
 
-// ConnectEndUserAction: emitted at the end of a single user-visible operation
+// ConnectEndUserAction is emitted at the end of a single user-visible operation
 // on the GtkTextBuffer.
 //
 // See also: gtk.TextBuffer.EndUserAction(), gtk.TextBuffer.InsertInteractive(),
@@ -664,7 +664,7 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertChildAnchor(arg0 C.gpointer, arg1 *C.Gt
 	f(_location, _anchor)
 }
 
-// ConnectInsertChildAnchor: emitted to insert a GtkTextChildAnchor in a
+// ConnectInsertChildAnchor is emitted to insert a GtkTextChildAnchor in a
 // GtkTextBuffer.
 //
 // Insertion actually occurs in the default handler.
@@ -716,7 +716,8 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertPaintable(arg0 C.gpointer, arg1 *C.GtkT
 	f(_location, _paintable)
 }
 
-// ConnectInsertPaintable: emitted to insert a GdkPaintable in a GtkTextBuffer.
+// ConnectInsertPaintable is emitted to insert a GdkPaintable in a
+// GtkTextBuffer.
 //
 // Insertion actually occurs in the default handler.
 //
@@ -753,7 +754,7 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIt
 	f(_location, _text, _len)
 }
 
-// ConnectInsertText: emitted to insert text in a GtkTextBuffer.
+// ConnectInsertText is emitted to insert text in a GtkTextBuffer.
 //
 // Insertion actually occurs in the default handler.
 //
@@ -786,7 +787,7 @@ func _gotk4_gtk4_TextBuffer_ConnectMarkDeleted(arg0 C.gpointer, arg1 *C.GtkTextM
 	f(_mark)
 }
 
-// ConnectMarkDeleted: emitted as notification after a GtkTextMark is deleted.
+// ConnectMarkDeleted is emitted as notification after a GtkTextMark is deleted.
 //
 // See also: gtk.TextBuffer.DeleteMark().
 func (buffer *TextBuffer) ConnectMarkDeleted(f func(mark *TextMark)) externglib.SignalHandle {
@@ -815,7 +816,7 @@ func _gotk4_gtk4_TextBuffer_ConnectMarkSet(arg0 C.gpointer, arg1 *C.GtkTextIter,
 	f(_location, _mark)
 }
 
-// ConnectMarkSet: emitted as notification after a GtkTextMark is set.
+// ConnectMarkSet is emitted as notification after a GtkTextMark is set.
 //
 // See also: gtk.TextBuffer.CreateMark(), gtk.TextBuffer.MoveMark().
 func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark *TextMark)) externglib.SignalHandle {
@@ -838,7 +839,7 @@ func _gotk4_gtk4_TextBuffer_ConnectModifiedChanged(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-// ConnectModifiedChanged: emitted when the modified bit of a GtkTextBuffer
+// ConnectModifiedChanged is emitted when the modified bit of a GtkTextBuffer
 // flips.
 //
 // See also: gtk.TextBuffer.SetModified().
@@ -871,7 +872,7 @@ func _gotk4_gtk4_TextBuffer_ConnectPasteDone(arg0 C.gpointer, arg1 *C.GdkClipboa
 	f(_clipboard)
 }
 
-// ConnectPasteDone: emitted after paste operation has been completed.
+// ConnectPasteDone is emitted after paste operation has been completed.
 //
 // This is useful to properly scroll the view to the end of the pasted text. See
 // gtk.TextBuffer.PasteClipboard() for more details.
@@ -895,7 +896,7 @@ func _gotk4_gtk4_TextBuffer_ConnectRedo(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectRedo: emitted when a request has been made to redo the previously
+// ConnectRedo is emitted when a request has been made to redo the previously
 // undone operation.
 func (buffer *TextBuffer) ConnectRedo(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(buffer, "redo", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectRedo), f)
@@ -925,7 +926,7 @@ func _gotk4_gtk4_TextBuffer_ConnectRemoveTag(arg0 C.gpointer, arg1 *C.GtkTextTag
 	f(_tag, _start, _end)
 }
 
-// ConnectRemoveTag: emitted to remove all occurrences of tag from a range of
+// ConnectRemoveTag is emitted to remove all occurrences of tag from a range of
 // text in a GtkTextBuffer.
 //
 // Removal actually occurs in the default handler.
@@ -954,7 +955,7 @@ func _gotk4_gtk4_TextBuffer_ConnectUndo(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectUndo: emitted when a request has been made to undo the previous
+// ConnectUndo is emitted when a request has been made to undo the previous
 // operation or set of operations that have been grouped together.
 func (buffer *TextBuffer) ConnectUndo(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(buffer, "undo", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectUndo), f)

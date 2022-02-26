@@ -220,7 +220,8 @@ func _gotk4_gtk4_Popover_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr
 	f()
 }
 
-// ConnectActivateDefault: emitted whend the user activates the default widget.
+// ConnectActivateDefault is emitted whend the user activates the default
+// widget.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (popover *Popover) ConnectActivateDefault(f func()) externglib.SignalHandle {
@@ -243,7 +244,7 @@ func _gotk4_gtk4_Popover_ConnectClosed(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectClosed: emitted when the popover is closed.
+// ConnectClosed is emitted when the popover is closed.
 func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(popover, "closed", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectClosed), f)
 }

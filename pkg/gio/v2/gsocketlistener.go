@@ -140,9 +140,10 @@ func _gotk4_gio2_SocketListener_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketList
 	f(_event, _socket)
 }
 
-// ConnectEvent: emitted when listener's activity on socket changes state. Note
-// that when listener is used to listen on both IPv4 and IPv6, a separate set of
-// signals will be emitted for each, and the order they happen in is undefined.
+// ConnectEvent is emitted when listener's activity on socket changes state.
+// Note that when listener is used to listen on both IPv4 and IPv6, a separate
+// set of signals will be emitted for each, and the order they happen in is
+// undefined.
 func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket *Socket)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(listener, "event", false, unsafe.Pointer(C._gotk4_gio2_SocketListener_ConnectEvent), f)
 }

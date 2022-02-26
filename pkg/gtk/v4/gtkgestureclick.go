@@ -95,7 +95,7 @@ func _gotk4_gtk4_GestureClick_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 
 	f(_nPress, _x, _y)
 }
 
-// ConnectPressed: emitted whenever a button or touch press happens.
+// ConnectPressed is emitted whenever a button or touch press happens.
 func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(v, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectPressed), f)
 }
@@ -124,7 +124,7 @@ func _gotk4_gtk4_GestureClick_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2
 	f(_nPress, _x, _y)
 }
 
-// ConnectReleased: emitted when a button or touch is released.
+// ConnectReleased is emitted when a button or touch is released.
 //
 // n_press will report the number of press that is paired to this event, note
 // that gtk.GestureClick::stopped may have been emitted between the press and
@@ -149,7 +149,7 @@ func _gotk4_gtk4_GestureClick_ConnectStopped(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectStopped: emitted whenever any time/distance threshold has been
+// ConnectStopped is emitted whenever any time/distance threshold has been
 // exceeded.
 func (v *GestureClick) ConnectStopped(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(v, "stopped", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectStopped), f)
@@ -181,8 +181,8 @@ func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdo
 	f(_x, _y, _button, _sequence)
 }
 
-// ConnectUnpairedRelease: emitted whenever the gesture receives a release event
-// that had no previous corresponding press.
+// ConnectUnpairedRelease is emitted whenever the gesture receives a release
+// event that had no previous corresponding press.
 //
 // Due to implicit grabs, this can only happen on situations where input is
 // grabbed elsewhere mid-press or the pressed widget voluntarily relinquishes

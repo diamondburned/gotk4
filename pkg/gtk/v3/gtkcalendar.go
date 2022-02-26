@@ -322,7 +322,7 @@ func _gotk4_gtk3_Calendar_ConnectDaySelected(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectDaySelected: emitted when the user selects a day.
+// ConnectDaySelected is emitted when the user selects a day.
 func (calendar *Calendar) ConnectDaySelected(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(calendar, "day-selected", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectDaySelected), f)
 }
@@ -343,7 +343,7 @@ func _gotk4_gtk3_Calendar_ConnectDaySelectedDoubleClick(arg0 C.gpointer, arg1 C.
 	f()
 }
 
-// ConnectDaySelectedDoubleClick: emitted when the user double-clicks a day.
+// ConnectDaySelectedDoubleClick is emitted when the user double-clicks a day.
 func (calendar *Calendar) ConnectDaySelectedDoubleClick(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(calendar, "day-selected-double-click", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectDaySelectedDoubleClick), f)
 }
@@ -364,7 +364,7 @@ func _gotk4_gtk3_Calendar_ConnectMonthChanged(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectMonthChanged: emitted when the user clicks a button to change the
+// ConnectMonthChanged is emitted when the user clicks a button to change the
 // selected month on a calendar.
 func (calendar *Calendar) ConnectMonthChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(calendar, "month-changed", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectMonthChanged), f)
@@ -386,7 +386,7 @@ func _gotk4_gtk3_Calendar_ConnectNextMonth(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectNextMonth: emitted when the user switched to the next month.
+// ConnectNextMonth is emitted when the user switched to the next month.
 func (calendar *Calendar) ConnectNextMonth(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(calendar, "next-month", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectNextMonth), f)
 }
@@ -407,7 +407,7 @@ func _gotk4_gtk3_Calendar_ConnectNextYear(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectNextYear: emitted when user switched to the next year.
+// ConnectNextYear is emitted when user switched to the next year.
 func (calendar *Calendar) ConnectNextYear(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(calendar, "next-year", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectNextYear), f)
 }
@@ -428,7 +428,7 @@ func _gotk4_gtk3_Calendar_ConnectPrevMonth(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPrevMonth: emitted when the user switched to the previous month.
+// ConnectPrevMonth is emitted when the user switched to the previous month.
 func (calendar *Calendar) ConnectPrevMonth(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(calendar, "prev-month", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectPrevMonth), f)
 }
@@ -449,7 +449,7 @@ func _gotk4_gtk3_Calendar_ConnectPrevYear(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPrevYear: emitted when user switched to the previous year.
+// ConnectPrevYear is emitted when user switched to the previous year.
 func (calendar *Calendar) ConnectPrevYear(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(calendar, "prev-year", false, unsafe.Pointer(C._gotk4_gtk3_Calendar_ConnectPrevYear), f)
 }

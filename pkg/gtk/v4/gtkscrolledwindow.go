@@ -252,7 +252,7 @@ func _gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot(arg0 C.gpointer, arg1 C.GtkP
 	f(_pos)
 }
 
-// ConnectEdgeOvershot: emitted whenever user initiated scrolling makes the
+// ConnectEdgeOvershot is emitted whenever user initiated scrolling makes the
 // scrolled window firmly surpass the limits defined by the adjustment in that
 // orientation.
 //
@@ -285,7 +285,7 @@ func _gotk4_gtk4_ScrolledWindow_ConnectEdgeReached(arg0 C.gpointer, arg1 C.GtkPo
 	f(_pos)
 }
 
-// ConnectEdgeReached: emitted whenever user-initiated scrolling makes the
+// ConnectEdgeReached is emitted whenever user-initiated scrolling makes the
 // scrolled window exactly reach the lower or upper limits defined by the
 // adjustment in that orientation.
 //
@@ -318,7 +318,7 @@ func _gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut(arg0 C.gpointer, arg1 C.GtkD
 	f(_directionType)
 }
 
-// ConnectMoveFocusOut: emitted when focus is moved away from the scrolled
+// ConnectMoveFocusOut is emitted when focus is moved away from the scrolled
 // window by a keybinding.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -359,7 +359,7 @@ func _gotk4_gtk4_ScrolledWindow_ConnectScrollChild(arg0 C.gpointer, arg1 C.GtkSc
 	return cret
 }
 
-// ConnectScrollChild: emitted when a keybinding that scrolls is pressed.
+// ConnectScrollChild is emitted when a keybinding that scrolls is pressed.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //

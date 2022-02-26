@@ -254,7 +254,7 @@ func _gotk4_gtk4_AboutDialog_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar,
 	return cret
 }
 
-// ConnectActivateLink: emitted every time a URL is activated.
+// ConnectActivateLink is emitted every time a URL is activated.
 //
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk.ShowURI().

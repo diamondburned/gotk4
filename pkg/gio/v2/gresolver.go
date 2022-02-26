@@ -756,7 +756,7 @@ func _gotk4_gio2_Resolver_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectReload: emitted when the resolver notices that the system resolver
+// ConnectReload is emitted when the resolver notices that the system resolver
 // configuration has changed.
 func (resolver *Resolver) ConnectReload(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(resolver, "reload", false, unsafe.Pointer(C._gotk4_gio2_Resolver_ConnectReload), f)

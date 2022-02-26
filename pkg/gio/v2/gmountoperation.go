@@ -251,8 +251,8 @@ func _gotk4_gio2_MountOperation_ConnectAborted(arg0 C.gpointer, arg1 C.guintptr)
 	f()
 }
 
-// ConnectAborted: emitted by the backend when e.g. a device becomes unavailable
-// while a mount operation is in progress.
+// ConnectAborted is emitted by the backend when e.g. a device becomes
+// unavailable while a mount operation is in progress.
 //
 // Implementations of GMountOperation should handle this signal by dismissing
 // open password dialogs.
@@ -286,7 +286,7 @@ func _gotk4_gio2_MountOperation_ConnectAskPassword(arg0 C.gpointer, arg1 *C.gcha
 	f(_message, _defaultUser, _defaultDomain, _flags)
 }
 
-// ConnectAskPassword: emitted when a mount operation asks the user for a
+// ConnectAskPassword is emitted when a mount operation asks the user for a
 // password.
 //
 // If the message contains a line break, the first line should be presented as a
@@ -315,7 +315,7 @@ func _gotk4_gio2_MountOperation_ConnectReply(arg0 C.gpointer, arg1 C.GMountOpera
 	f(_result)
 }
 
-// ConnectReply: emitted when the user has replied to the mount operation.
+// ConnectReply is emitted when the user has replied to the mount operation.
 func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(op, "reply", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectReply), f)
 }
@@ -344,7 +344,7 @@ func _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(arg0 C.gpointer, arg1
 	f(_message, _timeLeft, _bytesLeft)
 }
 
-// ConnectShowUnmountProgress: emitted when an unmount operation has been busy
+// ConnectShowUnmountProgress is emitted when an unmount operation has been busy
 // for more than some time (typically 1.5 seconds).
 //
 // When unmounting or ejecting a volume, the kernel might need to flush pending

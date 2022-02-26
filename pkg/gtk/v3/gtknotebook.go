@@ -16,6 +16,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern GtkNotebook* _gotk4_gtk3_Notebook_ConnectCreateWindow(gpointer, GtkWidget*, gint, gint, guintptr);
 // extern gboolean _gotk4_gtk3_NotebookClass_change_current_page(GtkNotebook*, gint);
 // extern gboolean _gotk4_gtk3_NotebookClass_focus_tab(GtkNotebook*, GtkNotebookTab);
 // extern gboolean _gotk4_gtk3_NotebookClass_reorder_tab(GtkNotebook*, GtkDirectionType, gboolean);
@@ -604,6 +605,61 @@ func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int) (ok bool))
 	return externglib.ConnectGeneratedClosure(notebook, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk3_Notebook_ConnectChangeCurrentPage), f)
 }
 
+//export _gotk4_gtk3_Notebook_ConnectCreateWindow
+func _gotk4_gtk3_Notebook_ConnectCreateWindow(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.gint, arg3 C.gint, arg4 C.guintptr) (cret *C.GtkNotebook) {
+	var f func(page Widgetter, x, y int) (notebook *Notebook)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(page Widgetter, x, y int) (notebook *Notebook))
+	}
+
+	var _page Widgetter // out
+	var _x int          // out
+	var _y int          // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_page = rv
+	}
+	_x = int(arg2)
+	_y = int(arg3)
+
+	notebook := f(_page, _x, _y)
+
+	cret = (*C.GtkNotebook)(unsafe.Pointer(externglib.InternObject(notebook).Native()))
+
+	return cret
+}
+
+// ConnectCreateWindow signal is emitted when a detachable tab is dropped on the
+// root window.
+//
+// A handler for this signal can create a window containing a notebook where the
+// tab will be attached. It is also responsible for moving/resizing the window
+// and adding the necessary properties to the notebook (e.g. the
+// Notebook:group-name ).
+func (notebook *Notebook) ConnectCreateWindow(f func(page Widgetter, x, y int) (notebook *Notebook)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(notebook, "create-window", false, unsafe.Pointer(C._gotk4_gtk3_Notebook_ConnectCreateWindow), f)
+}
+
 //export _gotk4_gtk3_Notebook_ConnectFocusTab
 func _gotk4_gtk3_Notebook_ConnectFocusTab(arg0 C.gpointer, arg1 C.GtkNotebookTab, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(object NotebookTab) (ok bool)
@@ -894,7 +950,7 @@ func _gotk4_gtk3_Notebook_ConnectSwitchPage(arg0 C.gpointer, arg1 *C.GtkWidget, 
 	f(_page, _pageNum)
 }
 
-// ConnectSwitchPage: emitted when the user or a function changes the current
+// ConnectSwitchPage is emitted when the user or a function changes the current
 // page.
 func (notebook *Notebook) ConnectSwitchPage(f func(page Widgetter, pageNum uint)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(notebook, "switch-page", false, unsafe.Pointer(C._gotk4_gtk3_Notebook_ConnectSwitchPage), f)

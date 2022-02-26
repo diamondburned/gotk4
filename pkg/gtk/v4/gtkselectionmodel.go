@@ -255,8 +255,8 @@ type SelectionModeller interface {
 	// UnselectRange requests to unselect a range of items in the model.
 	UnselectRange(position, nItems uint) bool
 
-	// Selection-changed: emitted when the selection state of some of the items
-	// in model changes.
+	// Selection-changed is emitted when the selection state of some of the
+	// items in model changes.
 	ConnectSelectionChanged(func(position, nItems uint)) externglib.SignalHandle
 }
 
@@ -491,7 +491,7 @@ func _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.
 	f(_position, _nItems)
 }
 
-// ConnectSelectionChanged: emitted when the selection state of some of the
+// ConnectSelectionChanged is emitted when the selection state of some of the
 // items in model changes.
 //
 // Note that this signal does not specify the new selection state of the items,

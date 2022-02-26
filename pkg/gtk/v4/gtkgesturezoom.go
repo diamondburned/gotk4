@@ -83,7 +83,7 @@ func _gotk4_gtk4_GestureZoom_ConnectScaleChanged(arg0 C.gpointer, arg1 C.gdouble
 	f(_scale)
 }
 
-// ConnectScaleChanged: emitted whenever the distance between both tracked
+// ConnectScaleChanged is emitted whenever the distance between both tracked
 // sequences changes.
 func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "scale-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureZoom_ConnectScaleChanged), f)

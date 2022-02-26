@@ -277,7 +277,7 @@ func _gotk4_gtk3_MenuItem_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivate: emitted when the item is activated.
+// ConnectActivate is emitted when the item is activated.
 func (menuItem *MenuItem) ConnectActivate(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(menuItem, "activate", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectActivate), f)
 }
@@ -298,8 +298,8 @@ func _gotk4_gtk3_MenuItem_ConnectActivateItem(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectActivateItem: emitted when the item is activated, but also if the menu
-// item has a submenu. For normal applications, the relevant signal is
+// ConnectActivateItem is emitted when the item is activated, but also if the
+// menu item has a submenu. For normal applications, the relevant signal is
 // MenuItem::activate.
 func (menuItem *MenuItem) ConnectActivateItem(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(menuItem, "activate-item", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectActivateItem), f)

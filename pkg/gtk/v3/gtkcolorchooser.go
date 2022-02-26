@@ -109,7 +109,7 @@ type ColorChooserer interface {
 	// channel.
 	SetUseAlpha(useAlpha bool)
 
-	// Color-activated: emitted when a color is activated from the color
+	// Color-activated is emitted when a color is activated from the color
 	// chooser.
 	ConnectColorActivated(func(color *gdk.RGBA)) externglib.SignalHandle
 }
@@ -212,7 +212,7 @@ func _gotk4_gtk3_ColorChooser_ConnectColorActivated(arg0 C.gpointer, arg1 *C.Gdk
 	f(_color)
 }
 
-// ConnectColorActivated: emitted when a color is activated from the color
+// ConnectColorActivated is emitted when a color is activated from the color
 // chooser. This usually happens when the user clicks a color swatch, or a color
 // is selected and the user presses one of the keys Space, Shift+Space, Return
 // or Enter.

@@ -194,7 +194,7 @@ func _gotk4_gtk3_RadioButton_ConnectGroupChanged(arg0 C.gpointer, arg1 C.guintpt
 	f()
 }
 
-// ConnectGroupChanged: emitted when the group of radio buttons that a radio
+// ConnectGroupChanged is emitted when the group of radio buttons that a radio
 // button belongs to changes. This is emitted when a radio button switches from
 // being alone to being part of a group of 2 or more buttons, or vice-versa, and
 // when a button is moved from one group of 2 or more buttons to a different

@@ -194,7 +194,7 @@ func _gotk4_gtk3_Menu_ConnectPoppedUp(arg0 C.gpointer, arg1 C.gpointer, arg2 C.g
 	f(_flippedRect, _finalRect, _flippedX, _flippedY)
 }
 
-// ConnectPoppedUp: emitted when the position of menu is finalized after being
+// ConnectPoppedUp is emitted when the position of menu is finalized after being
 // popped up using gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (), or
 // gtk_menu_popup_at_pointer ().
 //

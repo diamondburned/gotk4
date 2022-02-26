@@ -134,7 +134,7 @@ func _gotk4_gtk4_Overlay_ConnectGetChildPosition(arg0 C.gpointer, arg1 *C.GtkWid
 	return cret
 }
 
-// ConnectGetChildPosition: emitted to determine the position and size of any
+// ConnectGetChildPosition is emitted to determine the position and size of any
 // overlay child widgets.
 //
 // A handler for this signal should fill allocation with the desired position

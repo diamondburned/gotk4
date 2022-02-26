@@ -172,7 +172,7 @@ func _gotk4_gtk4_Button_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivate: emitted to animate press then release.
+// ConnectActivate is emitted to animate press then release.
 //
 // This is an action signal. Applications should never connect to this signal,
 // but use the gtk.Button::clicked signal.
@@ -196,7 +196,7 @@ func _gotk4_gtk4_Button_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectClicked: emitted when the button has been activated (pressed and
+// ConnectClicked is emitted when the button has been activated (pressed and
 // released).
 func (button *Button) ConnectClicked(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "clicked", false, unsafe.Pointer(C._gotk4_gtk4_Button_ConnectClicked), f)

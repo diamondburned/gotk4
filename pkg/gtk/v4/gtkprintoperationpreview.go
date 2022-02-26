@@ -101,7 +101,7 @@ type PrintOperationPreviewer interface {
 	// RenderPage renders a page to the preview.
 	RenderPage(pageNr int)
 
-	// Got-page-size: emitted once for each page that gets rendered to the
+	// Got-page-size is emitted once for each page that gets rendered to the
 	// preview.
 	ConnectGotPageSize(func(context *PrintContext, pageSetup *PageSetup)) externglib.SignalHandle
 	// Ready signal gets emitted once per preview operation, before the first
@@ -216,7 +216,7 @@ func _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize(arg0 C.gpointer, arg1 
 	f(_context, _pageSetup)
 }
 
-// ConnectGotPageSize: emitted once for each page that gets rendered to the
+// ConnectGotPageSize is emitted once for each page that gets rendered to the
 // preview.
 //
 // A handler for this signal should update the context according to page_setup

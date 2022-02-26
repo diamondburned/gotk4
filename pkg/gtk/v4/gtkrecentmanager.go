@@ -202,7 +202,7 @@ func _gotk4_gtk4_RecentManager_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectChanged: emitted when the current recently used resources manager
+// ConnectChanged is emitted when the current recently used resources manager
 // changes its contents.
 //
 // This can happen either by calling gtk.RecentManager.AddItem() or by another

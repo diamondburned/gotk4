@@ -337,7 +337,7 @@ func _gotk4_gtk4_ListBox_ConnectRowActivated(arg0 C.gpointer, arg1 *C.GtkListBox
 	f(_row)
 }
 
-// ConnectRowActivated: emitted when a row has been activated by the user.
+// ConnectRowActivated is emitted when a row has been activated by the user.
 func (box *ListBox) ConnectRowActivated(f func(row *ListBoxRow)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(box, "row-activated", false, unsafe.Pointer(C._gotk4_gtk4_ListBox_ConnectRowActivated), f)
 }
@@ -364,8 +364,8 @@ func _gotk4_gtk4_ListBox_ConnectRowSelected(arg0 C.gpointer, arg1 *C.GtkListBoxR
 	f(_row)
 }
 
-// ConnectRowSelected: emitted when a new row is selected, or (with a NULL row)
-// when the selection is cleared.
+// ConnectRowSelected is emitted when a new row is selected, or (with a NULL
+// row) when the selection is cleared.
 //
 // When the box is using GTK_SELECTION_MULTIPLE, this signal will not give you
 // the full picture of selection changes, and you should use the
@@ -390,8 +390,8 @@ func _gotk4_gtk4_ListBox_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectSelectAll: emitted to select all children of the box, if the selection
-// mode permits it.
+// ConnectSelectAll is emitted to select all children of the box, if the
+// selection mode permits it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -416,7 +416,7 @@ func _gotk4_gtk4_ListBox_ConnectSelectedRowsChanged(arg0 C.gpointer, arg1 C.guin
 	f()
 }
 
-// ConnectSelectedRowsChanged: emitted when the set of selected rows changes.
+// ConnectSelectedRowsChanged is emitted when the set of selected rows changes.
 func (box *ListBox) ConnectSelectedRowsChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(box, "selected-rows-changed", false, unsafe.Pointer(C._gotk4_gtk4_ListBox_ConnectSelectedRowsChanged), f)
 }
@@ -457,7 +457,7 @@ func _gotk4_gtk4_ListBox_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectUnselectAll: emitted to unselect all children of the box, if the
+// ConnectUnselectAll is emitted to unselect all children of the box, if the
 // selection mode permits it.
 //
 // This is a keybinding signal (class.SignalAction.html).

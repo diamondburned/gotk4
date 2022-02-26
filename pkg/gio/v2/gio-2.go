@@ -349,7 +349,7 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(arg0 C.gpointer, arg1 *C
 	return cret
 }
 
-// ConnectAllowMechanism: emitted to check if mechanism is allowed to be used.
+// ConnectAllowMechanism is emitted to check if mechanism is allowed to be used.
 func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(observer, "allow-mechanism", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism), f)
 }
@@ -400,7 +400,7 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpoin
 	return cret
 }
 
-// ConnectAuthorizeAuthenticatedPeer: emitted to check if a peer that is
+// ConnectAuthorizeAuthenticatedPeer is emitted to check if a peer that is
 // successfully authenticated is authorized.
 func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials *Credentials) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(observer, "authorize-authenticated-peer", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer), f)
@@ -511,7 +511,7 @@ func _gotk4_gio2_DBusConnection_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, 
 	f(_remotePeerVanished, _err)
 }
 
-// ConnectClosed: emitted when the connection is closed.
+// ConnectClosed is emitted when the connection is closed.
 //
 //
 // The cause of this event can be
@@ -671,7 +671,7 @@ func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusC
 	return cret
 }
 
-// ConnectNewConnection: emitted when a new authenticated connection has been
+// ConnectNewConnection is emitted when a new authenticated connection has been
 // made. Use g_dbus_connection_get_peer_credentials() to figure out what
 // identity (if any), was authenticated.
 //

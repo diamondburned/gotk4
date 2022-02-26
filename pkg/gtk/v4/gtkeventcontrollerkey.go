@@ -79,7 +79,7 @@ func _gotk4_gtk4_EventControllerKey_ConnectIMUpdate(arg0 C.gpointer, arg1 C.guin
 	f()
 }
 
-// ConnectIMUpdate: emitted whenever the input method context filters away a
+// ConnectIMUpdate is emitted whenever the input method context filters away a
 // keypress and prevents the controller receiving it.
 //
 // See gtk.EventControllerKey.SetIMContext() and gtk.IMContext.FilterKeypress().
@@ -117,7 +117,7 @@ func _gotk4_gtk4_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.gu
 	return cret
 }
 
-// ConnectKeyPressed: emitted whenever a key is pressed.
+// ConnectKeyPressed is emitted whenever a key is pressed.
 func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(controller, "key-pressed", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerKey_ConnectKeyPressed), f)
 }
@@ -146,7 +146,7 @@ func _gotk4_gtk4_EventControllerKey_ConnectKeyReleased(arg0 C.gpointer, arg1 C.g
 	f(_keyval, _keycode, _state)
 }
 
-// ConnectKeyReleased: emitted whenever a key is released.
+// ConnectKeyReleased is emitted whenever a key is released.
 func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(controller, "key-released", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerKey_ConnectKeyReleased), f)
 }
@@ -177,7 +177,7 @@ func _gotk4_gtk4_EventControllerKey_ConnectModifiers(arg0 C.gpointer, arg1 C.Gdk
 	return cret
 }
 
-// ConnectModifiers: emitted whenever the state of modifier keys and pointer
+// ConnectModifiers is emitted whenever the state of modifier keys and pointer
 // buttons change.
 func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.ModifierType) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(controller, "modifiers", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerKey_ConnectModifiers), f)

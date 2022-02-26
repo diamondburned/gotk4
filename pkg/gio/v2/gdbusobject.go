@@ -94,9 +94,9 @@ type DBusObjector interface {
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
 
-	// Interface-added: emitted when interface is added to object.
+	// Interface-added is emitted when interface is added to object.
 	ConnectInterfaceAdded(func(iface DBusInterfacer)) externglib.SignalHandle
-	// Interface-removed: emitted when interface is removed from object.
+	// Interface-removed is emitted when interface is removed from object.
 	ConnectInterfaceRemoved(func(iface DBusInterfacer)) externglib.SignalHandle
 }
 
@@ -263,7 +263,7 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBus
 	f(_iface)
 }
 
-// ConnectInterfaceAdded: emitted when interface is added to object.
+// ConnectInterfaceAdded is emitted when interface is added to object.
 func (object *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfacer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(object, "interface-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObject_ConnectInterfaceAdded), f)
 }
@@ -304,7 +304,7 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDB
 	f(_iface)
 }
 
-// ConnectInterfaceRemoved: emitted when interface is removed from object.
+// ConnectInterfaceRemoved is emitted when interface is removed from object.
 func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(object, "interface-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObject_ConnectInterfaceRemoved), f)
 }

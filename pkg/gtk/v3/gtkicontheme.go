@@ -1232,7 +1232,7 @@ func _gotk4_gtk3_IconTheme_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when the current icon theme is switched or GTK+
+// ConnectChanged is emitted when the current icon theme is switched or GTK+
 // detects that a change has occurred in the contents of the current icon theme.
 func (iconTheme *IconTheme) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(iconTheme, "changed", false, unsafe.Pointer(C._gotk4_gtk3_IconTheme_ConnectChanged), f)

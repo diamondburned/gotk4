@@ -131,7 +131,7 @@ type DTLSConnectioner interface {
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation.
 	ShutdownFinish(result AsyncResulter) error
 
-	// Accept-certificate: emitted during the TLS handshake after the peer
+	// Accept-certificate is emitted during the TLS handshake after the peer
 	// certificate has been received.
 	ConnectAcceptCertificate(func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool)) externglib.SignalHandle
 }
@@ -194,7 +194,7 @@ func _gotk4_gio2_DtlsConnection_ConnectAcceptCertificate(arg0 C.gpointer, arg1 *
 	return cret
 }
 
-// ConnectAcceptCertificate: emitted during the TLS handshake after the peer
+// ConnectAcceptCertificate is emitted during the TLS handshake after the peer
 // certificate has been received. You can examine peer_cert's certification path
 // by calling g_tls_certificate_get_issuer() on it.
 //

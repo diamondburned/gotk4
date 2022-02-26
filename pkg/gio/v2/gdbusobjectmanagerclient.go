@@ -224,7 +224,7 @@ func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpoi
 	f(_objectProxy, _interfaceProxy, _senderName, _signalName, _parameters)
 }
 
-// ConnectInterfaceProxySignal: emitted when a D-Bus signal is received on
+// ConnectInterfaceProxySignal is emitted when a D-Bus signal is received on
 // interface_proxy.
 //
 // This signal exists purely as a convenience to avoid having to connect signals

@@ -226,8 +226,8 @@ func _gotk4_gtk4_Range_ConnectAdjustBounds(arg0 C.gpointer, arg1 C.gdouble, arg2
 	f(_value)
 }
 
-// ConnectAdjustBounds: emitted before clamping a value, to give the application
-// a chance to adjust the bounds.
+// ConnectAdjustBounds is emitted before clamping a value, to give the
+// application a chance to adjust the bounds.
 func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(_range, "adjust-bounds", false, unsafe.Pointer(C._gotk4_gtk4_Range_ConnectAdjustBounds), f)
 }
@@ -260,7 +260,7 @@ func _gotk4_gtk4_Range_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScrollType,
 	return cret
 }
 
-// ConnectChangeValue: emitted when a scroll action is performed on a range.
+// ConnectChangeValue is emitted when a scroll action is performed on a range.
 //
 // It allows an application to determine the type of scroll event that occurred
 // and the resultant new value. The application can handle the event itself and
@@ -318,7 +318,7 @@ func _gotk4_gtk4_Range_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectValueChanged: emitted when the range value changes.
+// ConnectValueChanged is emitted when the range value changes.
 func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(_range, "value-changed", false, unsafe.Pointer(C._gotk4_gtk4_Range_ConnectValueChanged), f)
 }

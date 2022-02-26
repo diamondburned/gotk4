@@ -319,7 +319,7 @@ func _gotk4_gtk3_Toolbar_ConnectOrientationChanged(arg0 C.gpointer, arg1 C.GtkOr
 	f(_orientation)
 }
 
-// ConnectOrientationChanged: emitted when the orientation of the toolbar
+// ConnectOrientationChanged is emitted when the orientation of the toolbar
 // changes.
 func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(toolbar, "orientation-changed", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectOrientationChanged), f)
@@ -355,7 +355,7 @@ func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, a
 	return cret
 }
 
-// ConnectPopupContextMenu: emitted when the user right-clicks the toolbar or
+// ConnectPopupContextMenu is emitted when the user right-clicks the toolbar or
 // uses the keybinding to display a popup menu.
 //
 // Application developers should handle this signal if they want to display a
@@ -386,7 +386,7 @@ func _gotk4_gtk3_Toolbar_ConnectStyleChanged(arg0 C.gpointer, arg1 C.GtkToolbarS
 	f(_style)
 }
 
-// ConnectStyleChanged: emitted when the style of the toolbar changes.
+// ConnectStyleChanged is emitted when the style of the toolbar changes.
 func (toolbar *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(toolbar, "style-changed", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectStyleChanged), f)
 }

@@ -285,7 +285,7 @@ func _gotk4_gdk4_FrameClock_ConnectLayout(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectLayout: emitted as the second step of toolkit and application
+// ConnectLayout is emitted as the second step of toolkit and application
 // processing of the frame.
 //
 // Any work to update sizes and positions of application elements should be
@@ -310,8 +310,8 @@ func _gotk4_gdk4_FrameClock_ConnectPaint(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectPaint: emitted as the third step of toolkit and application processing
-// of the frame.
+// ConnectPaint is emitted as the third step of toolkit and application
+// processing of the frame.
 //
 // The frame is repainted. GDK normally handles this internally and emits
 // gdk.Surface::render signals which are turned into gtk.Widget::snapshot
@@ -336,7 +336,7 @@ func _gotk4_gdk4_FrameClock_ConnectResumeEvents(arg0 C.gpointer, arg1 C.guintptr
 	f()
 }
 
-// ConnectResumeEvents: emitted after processing of the frame is finished.
+// ConnectResumeEvents is emitted after processing of the frame is finished.
 //
 // This signal is handled internally by GTK to resume normal event processing.
 // Applications should not handle this signal.
@@ -360,7 +360,7 @@ func _gotk4_gdk4_FrameClock_ConnectUpdate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectUpdate: emitted as the first step of toolkit and application
+// ConnectUpdate is emitted as the first step of toolkit and application
 // processing of the frame.
 //
 // Animations should be updated using gdk.FrameClock.GetFrameTime().

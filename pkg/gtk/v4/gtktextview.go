@@ -646,7 +646,7 @@ func _gotk4_gtk4_TextView_ConnectExtendSelection(arg0 C.gpointer, arg1 C.GtkText
 	return cret
 }
 
-// ConnectExtendSelection: emitted when the selection needs to be extended at
+// ConnectExtendSelection is emitted when the selection needs to be extended at
 // location.
 func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(textView, "extend-selection", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectExtendSelection), f)
@@ -844,7 +844,7 @@ func _gotk4_gtk4_TextView_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, 
 	f(_preedit)
 }
 
-// ConnectPreeditChanged: emitted when preedit text of the active IM changes.
+// ConnectPreeditChanged is emitted when preedit text of the active IM changes.
 //
 // If an input method is used, the typed text will not immediately be committed
 // to the buffer. So if you are interested in the text, connect to this signal.

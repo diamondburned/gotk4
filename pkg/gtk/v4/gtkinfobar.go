@@ -177,7 +177,7 @@ func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 	f(_responseId)
 }
 
-// ConnectResponse: emitted when an action widget is clicked.
+// ConnectResponse is emitted when an action widget is clicked.
 //
 // The signal is also emitted when the application programmer calls
 // gtk.InfoBar.Response(). The response_id depends on which action widget was

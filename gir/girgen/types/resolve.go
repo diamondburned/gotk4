@@ -315,6 +315,17 @@ func (typ *Resolved) IsRecord() bool {
 	return ok
 }
 
+// IsForeignRecord returns true if the current ResolvedType is a foreign record.
+func (typ *Resolved) IsForeignRecord() bool {
+	t := typ.UnderlyingExtern()
+	if t == nil {
+		return false
+	}
+
+	r, ok := t.Type.(*gir.Record)
+	return ok && r.Foreign
+}
+
 // IsInterface returns true if the current ResolvedType is an interface.
 func (typ *Resolved) IsInterface() bool {
 	t := typ.UnderlyingExtern()
@@ -706,6 +717,13 @@ var BuiltinHandledTypes = []FilterMatcher{
 	AbsoluteFilter("GLib.Type"),
 }
 
+func fillCType(typ gir.Type, ctype string) gir.Type {
+	if typ.CType == "" {
+		typ.CType = ctype
+	}
+	return typ
+}
+
 // Resolve resolves the given type from the GIR type field. It returns nil if
 // the type is not known. It does not recursively traverse the type.
 func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
@@ -855,13 +873,22 @@ func resolveCopyType(gen FileGenerator, typ *gir.Type, array *gir.Array) *gir.Ty
 	}
 
 	if ctyp == "" {
-		ctyp = CTypeFallback(typ.CType, typ.Name)
+		if resolved := Resolve(gen, *typ); resolved != nil {
+			ctyp = resolved.CType
+
+			// Edge cases: certain things should always be pointers. This works
+			// for now, but we really need a place to put all these in, since it
+			// exists in multiple places. We could have an IsPointer().
+			if ctyp != "" && CountPtr(ctyp) == 0 && resolved.Extern != nil {
+				if resolved.IsClass() || resolved.IsInterface() || resolved.IsForeignRecord() {
+					ctyp += "*"
+				}
+			}
+		}
 	}
 
 	if ctyp == "" {
-		if resolved := Resolve(gen, *typ); resolved != nil {
-			ctyp = resolved.CType
-		}
+		ctyp = CTypeFallback(typ.CType, typ.Name)
 	}
 
 	if ctyp == "" {

@@ -162,7 +162,7 @@ func _gotk4_gtk4_ColumnView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 
 	f(_position)
 }
 
-// ConnectActivate: emitted when a row has been activated by the user, usually
+// ConnectActivate is emitted when a row has been activated by the user, usually
 // via activating the GtkListBase|list.activate-item action.
 //
 // This allows for a convenient way to handle activation in a columnview. See

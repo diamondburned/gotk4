@@ -20,7 +20,9 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern GdkWindow* _gotk4_gdk3_Window_ConnectPickEmbeddedChild(gpointer, gdouble, gdouble, guintptr);
 // extern cairo_surface_t* _gotk4_gdk3_WindowClass_create_surface(GdkWindow*, gint, gint);
+// extern cairo_surface_t* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);
 // extern gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
 // extern void _gotk4_gdk3_WindowClass_from_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
 // extern void _gotk4_gdk3_WindowClass_to_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
@@ -998,6 +1000,45 @@ func BaseWindow(obj Windower) *Window {
 	return obj.baseWindow()
 }
 
+//export _gotk4_gdk3_Window_ConnectCreateSurface
+func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret *C.cairo_surface_t) {
+	var f func(width, height int) (surface *cairo.Surface)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(width, height int) (surface *cairo.Surface))
+	}
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	surface := f(_width, _height)
+
+	cret = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+
+	return cret
+}
+
+// ConnectCreateSurface signal is emitted when an offscreen window needs its
+// surface (re)created, which happens either when the window is first drawn to,
+// or when the window is being resized. The first signal handler that returns a
+// non-NULL surface will stop any further signal emission, and its surface will
+// be used.
+//
+// Note that it is not possible to access the window's previous surface from
+// within any callback of this signal. Calling
+// gdk_offscreen_window_get_surface() will lead to a crash.
+func (window *Window) ConnectCreateSurface(f func(width, height int) (surface *cairo.Surface)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(window, "create-surface", false, unsafe.Pointer(C._gotk4_gdk3_Window_ConnectCreateSurface), f)
+}
+
 //export _gotk4_gdk3_Window_ConnectMovedToRect
 func _gotk4_gdk3_Window_ConnectMovedToRect(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
 	var f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)
@@ -1028,7 +1069,7 @@ func _gotk4_gdk3_Window_ConnectMovedToRect(arg0 C.gpointer, arg1 C.gpointer, arg
 	f(_flippedRect, _finalRect, _flippedX, _flippedY)
 }
 
-// ConnectMovedToRect: emitted when the position of window is finalized after
+// ConnectMovedToRect is emitted when the position of window is finalized after
 // being moved to a destination rectangle.
 //
 // window might be flipped over the destination rectangle in order to keep it
@@ -1041,6 +1082,40 @@ func _gotk4_gdk3_Window_ConnectMovedToRect(arg0 C.gpointer, arg1 C.gpointer, arg
 // on-screen.
 func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(window, "moved-to-rect", false, unsafe.Pointer(C._gotk4_gdk3_Window_ConnectMovedToRect), f)
+}
+
+//export _gotk4_gdk3_Window_ConnectPickEmbeddedChild
+func _gotk4_gdk3_Window_ConnectPickEmbeddedChild(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.GdkWindow) {
+	var f func(x, y float64) (window Windower)
+	{
+		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64) (window Windower))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	window := f(_x, _y)
+
+	if window != nil {
+		cret = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	}
+
+	return cret
+}
+
+// ConnectPickEmbeddedChild signal is emitted to find an embedded child at the
+// given position.
+func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) (window Windower)) externglib.SignalHandle {
+	return externglib.ConnectGeneratedClosure(window, "pick-embedded-child", false, unsafe.Pointer(C._gotk4_gdk3_Window_ConnectPickEmbeddedChild), f)
 }
 
 // NewWindow creates a new Window using the attributes from attributes. See

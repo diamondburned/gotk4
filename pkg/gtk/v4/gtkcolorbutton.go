@@ -100,7 +100,7 @@ func _gotk4_gtk4_ColorButton_ConnectColorSet(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectColorSet: emitted when the user selects a color.
+// ConnectColorSet is emitted when the user selects a color.
 //
 // When handling this signal, use gtk.ColorChooser.GetRGBA() to find out which
 // color was just selected.

@@ -104,7 +104,7 @@ func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.Gdk
 	return cret
 }
 
-// ConnectEvent: emitted for each GDK event delivered to controller.
+// ConnectEvent is emitted for each GDK event delivered to controller.
 func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(v, "event", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerLegacy_ConnectEvent), f)
 }

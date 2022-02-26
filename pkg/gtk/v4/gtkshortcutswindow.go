@@ -143,7 +143,7 @@ func _gotk4_gtk4_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectClose: emitted when the user uses a keybinding to close the window.
+// ConnectClose is emitted when the user uses a keybinding to close the window.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -168,7 +168,7 @@ func _gotk4_gtk4_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr)
 	f()
 }
 
-// ConnectSearch: emitted when the user uses a keybinding to start a search.
+// ConnectSearch is emitted when the user uses a keybinding to start a search.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //

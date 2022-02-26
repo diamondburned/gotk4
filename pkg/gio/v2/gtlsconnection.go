@@ -339,7 +339,7 @@ func _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(arg0 C.gpointer, arg1 *C
 	return cret
 }
 
-// ConnectAcceptCertificate: emitted during the TLS handshake after the peer
+// ConnectAcceptCertificate is emitted during the TLS handshake after the peer
 // certificate has been received. You can examine peer_cert's certification path
 // by calling g_tls_certificate_get_issuer() on it.
 //

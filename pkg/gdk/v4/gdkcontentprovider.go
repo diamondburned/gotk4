@@ -292,8 +292,8 @@ func _gotk4_gdk4_ContentProvider_ConnectContentChanged(arg0 C.gpointer, arg1 C.g
 	f()
 }
 
-// ConnectContentChanged: emitted whenever the content provided by this provider
-// has changed.
+// ConnectContentChanged is emitted whenever the content provided by this
+// provider has changed.
 func (provider *ContentProvider) ConnectContentChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(provider, "content-changed", false, unsafe.Pointer(C._gotk4_gdk4_ContentProvider_ConnectContentChanged), f)
 }

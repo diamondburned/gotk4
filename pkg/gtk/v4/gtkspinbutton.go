@@ -342,7 +342,7 @@ func _gotk4_gtk4_SpinButton_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScroll
 	f(_scroll)
 }
 
-// ConnectChangeValue: emitted when the user initiates a value change.
+// ConnectChangeValue is emitted when the user initiates a value change.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -376,7 +376,7 @@ func _gotk4_gtk4_SpinButton_ConnectOutput(arg0 C.gpointer, arg1 C.guintptr) (cre
 	return cret
 }
 
-// ConnectOutput: emitted to tweak the formatting of the value for display.
+// ConnectOutput is emitted to tweak the formatting of the value for display.
 //
 //    // show leading zeros
 //    static gboolean
@@ -415,7 +415,7 @@ func _gotk4_gtk4_SpinButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr
 	f()
 }
 
-// ConnectValueChanged: emitted when the value is changed.
+// ConnectValueChanged is emitted when the value is changed.
 //
 // Also see the gtk.SpinButton::output signal.
 func (spinButton *SpinButton) ConnectValueChanged(f func()) externglib.SignalHandle {
@@ -438,8 +438,8 @@ func _gotk4_gtk4_SpinButton_ConnectWrapped(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectWrapped: emitted right after the spinbutton wraps from its maximum to
-// its minimum value or vice-versa.
+// ConnectWrapped is emitted right after the spinbutton wraps from its maximum
+// to its minimum value or vice-versa.
 func (spinButton *SpinButton) ConnectWrapped(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(spinButton, "wrapped", false, unsafe.Pointer(C._gotk4_gtk4_SpinButton_ConnectWrapped), f)
 }

@@ -92,7 +92,7 @@ func _gotk4_gtk4_GestureLongPress_ConnectCancelled(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-// ConnectCancelled: emitted whenever a press moved too far, or was released
+// ConnectCancelled is emitted whenever a press moved too far, or was released
 // before gtk.GestureLongPress::pressed happened.
 func (gesture *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "cancelled", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectCancelled), f)
@@ -120,8 +120,8 @@ func _gotk4_gtk4_GestureLongPress_ConnectPressed(arg0 C.gpointer, arg1 C.gdouble
 	f(_x, _y)
 }
 
-// ConnectPressed: emitted whenever a press goes unmoved/unreleased longer than
-// what the GTK defaults tell.
+// ConnectPressed is emitted whenever a press goes unmoved/unreleased longer
+// than what the GTK defaults tell.
 func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectPressed), f)
 }

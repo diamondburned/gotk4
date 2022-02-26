@@ -137,7 +137,7 @@ func _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(arg0 C.gpointer, arg1 *C.gchar,
 	f(_text)
 }
 
-// ConnectEmojiPicked: emitted when the user selects an Emoji.
+// ConnectEmojiPicked is emitted when the user selects an Emoji.
 func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(v, "emoji-picked", false, unsafe.Pointer(C._gotk4_gtk4_EmojiChooser_ConnectEmojiPicked), f)
 }

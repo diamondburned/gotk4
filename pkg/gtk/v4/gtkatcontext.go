@@ -98,7 +98,7 @@ func _gotk4_gtk4_ATContext_ConnectStateChange(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectStateChange: emitted when the attributes of the accessible for the
+// ConnectStateChange is emitted when the attributes of the accessible for the
 // GtkATContext instance change.
 func (self *ATContext) ConnectStateChange(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "state-change", false, unsafe.Pointer(C._gotk4_gtk4_ATContext_ConnectStateChange), f)

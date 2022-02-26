@@ -150,7 +150,7 @@ func _gotk4_gdk4_DisplayManager_ConnectDisplayOpened(arg0 C.gpointer, arg1 *C.Gd
 	f(_display)
 }
 
-// ConnectDisplayOpened: emitted when a display is opened.
+// ConnectDisplayOpened is emitted when a display is opened.
 func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(manager, "display-opened", false, unsafe.Pointer(C._gotk4_gdk4_DisplayManager_ConnectDisplayOpened), f)
 }

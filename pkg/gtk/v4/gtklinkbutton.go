@@ -128,7 +128,7 @@ func _gotk4_gtk4_LinkButton_ConnectActivateLink(arg0 C.gpointer, arg1 C.guintptr
 	return cret
 }
 
-// ConnectActivateLink: emitted each time the GtkLinkButton is clicked.
+// ConnectActivateLink is emitted each time the GtkLinkButton is clicked.
 //
 // The default handler will call gtk.ShowURI() with the URI stored inside the
 // gtk.LinkButton:uri property.

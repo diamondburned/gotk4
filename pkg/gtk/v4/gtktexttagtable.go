@@ -113,7 +113,7 @@ func _gotk4_gtk4_TextTagTable_ConnectTagAdded(arg0 C.gpointer, arg1 *C.GtkTextTa
 	f(_tag)
 }
 
-// ConnectTagAdded: emitted every time a new tag is added in the
+// ConnectTagAdded is emitted every time a new tag is added in the
 // GtkTextTagTable.
 func (table *TextTagTable) ConnectTagAdded(f func(tag *TextTag)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(table, "tag-added", false, unsafe.Pointer(C._gotk4_gtk4_TextTagTable_ConnectTagAdded), f)
@@ -143,7 +143,7 @@ func _gotk4_gtk4_TextTagTable_ConnectTagChanged(arg0 C.gpointer, arg1 *C.GtkText
 	f(_tag, _sizeChanged)
 }
 
-// ConnectTagChanged: emitted every time a tag in the GtkTextTagTable changes.
+// ConnectTagChanged is emitted every time a tag in the GtkTextTagTable changes.
 func (table *TextTagTable) ConnectTagChanged(f func(tag *TextTag, sizeChanged bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(table, "tag-changed", false, unsafe.Pointer(C._gotk4_gtk4_TextTagTable_ConnectTagChanged), f)
 }
@@ -168,7 +168,7 @@ func _gotk4_gtk4_TextTagTable_ConnectTagRemoved(arg0 C.gpointer, arg1 *C.GtkText
 	f(_tag)
 }
 
-// ConnectTagRemoved: emitted every time a tag is removed from the
+// ConnectTagRemoved is emitted every time a tag is removed from the
 // GtkTextTagTable.
 //
 // The tag is still valid by the time the signal is emitted, but it is not

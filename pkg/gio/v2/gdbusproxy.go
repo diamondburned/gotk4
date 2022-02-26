@@ -187,7 +187,7 @@ func _gotk4_gio2_DBusProxy_ConnectGSignal(arg0 C.gpointer, arg1 *C.gchar, arg2 *
 	f(_senderName, _signalName, _parameters)
 }
 
-// ConnectGSignal: emitted when a signal from the remote object and interface
+// ConnectGSignal is emitted when a signal from the remote object and interface
 // that proxy is for, has been received.
 func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, parameters *glib.Variant)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(proxy, "g-signal", false, unsafe.Pointer(C._gotk4_gio2_DBusProxy_ConnectGSignal), f)

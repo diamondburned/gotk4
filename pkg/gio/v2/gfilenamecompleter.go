@@ -93,7 +93,7 @@ func _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(arg0 C.gpointer, arg
 	f()
 }
 
-// ConnectGotCompletionData: emitted when the file name completion information
+// ConnectGotCompletionData is emitted when the file name completion information
 // comes available.
 func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(completer, "got-completion-data", false, unsafe.Pointer(C._gotk4_gio2_FilenameCompleter_ConnectGotCompletionData), f)

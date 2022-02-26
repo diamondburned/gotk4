@@ -140,7 +140,7 @@ func _gotk4_gtk3_ToggleToolButton_ConnectToggled(arg0 C.gpointer, arg1 C.guintpt
 	f()
 }
 
-// ConnectToggled: emitted whenever the toggle tool button changes state.
+// ConnectToggled is emitted whenever the toggle tool button changes state.
 func (button *ToggleToolButton) ConnectToggled(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(button, "toggled", false, unsafe.Pointer(C._gotk4_gtk3_ToggleToolButton_ConnectToggled), f)
 }

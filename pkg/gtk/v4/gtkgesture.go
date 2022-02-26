@@ -196,7 +196,7 @@ func _gotk4_gtk4_Gesture_ConnectBegin(arg0 C.gpointer, arg1 *C.GdkEventSequence,
 	f(_sequence)
 }
 
-// ConnectBegin: emitted when the gesture is recognized.
+// ConnectBegin is emitted when the gesture is recognized.
 //
 // This means the number of touch sequences matches gtk.Gesture:n-points.
 //
@@ -229,7 +229,7 @@ func _gotk4_gtk4_Gesture_ConnectCancel(arg0 C.gpointer, arg1 *C.GdkEventSequence
 	f(_sequence)
 }
 
-// ConnectCancel: emitted whenever a sequence is cancelled.
+// ConnectCancel is emitted whenever a sequence is cancelled.
 //
 // This usually happens on active touches when gtk.EventController.Reset() is
 // called on gesture (manually, due to grabs...), or the individual sequence was
@@ -262,7 +262,7 @@ func _gotk4_gtk4_Gesture_ConnectEnd(arg0 C.gpointer, arg1 *C.GdkEventSequence, a
 	f(_sequence)
 }
 
-// ConnectEnd: emitted when gesture either stopped recognizing the event
+// ConnectEnd is emitted when gesture either stopped recognizing the event
 // sequences as something to be handled, or the number of touch sequences became
 // higher or lower than gtk.Gesture:n-points.
 //
@@ -298,7 +298,7 @@ func _gotk4_gtk4_Gesture_ConnectSequenceStateChanged(arg0 C.gpointer, arg1 *C.Gd
 	f(_sequence, _state)
 }
 
-// ConnectSequenceStateChanged: emitted whenever a sequence state changes.
+// ConnectSequenceStateChanged is emitted whenever a sequence state changes.
 //
 // See gtk.Gesture.SetSequenceState() to know more about the expectable sequence
 // lifetimes.
@@ -328,7 +328,7 @@ func _gotk4_gtk4_Gesture_ConnectUpdate(arg0 C.gpointer, arg1 *C.GdkEventSequence
 	f(_sequence)
 }
 
-// ConnectUpdate: emitted whenever an event is handled while the gesture is
+// ConnectUpdate is emitted whenever an event is handled while the gesture is
 // recognized.
 //
 // sequence is guaranteed to pertain to the set of active touches.

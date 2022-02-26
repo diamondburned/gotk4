@@ -162,7 +162,7 @@ func _gotk4_gdk4_Drag_ConnectCancel(arg0 C.gpointer, arg1 C.GdkDragCancelReason,
 	f(_reason)
 }
 
-// ConnectCancel: emitted when the drag operation is cancelled.
+// ConnectCancel is emitted when the drag operation is cancelled.
 func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(drag, "cancel", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectCancel), f)
 }
@@ -183,7 +183,7 @@ func _gotk4_gdk4_Drag_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectDNDFinished: emitted when the destination side has finished reading
+// ConnectDNDFinished is emitted when the destination side has finished reading
 // all data.
 //
 // The drag object can now free all miscellaneous data.
@@ -207,7 +207,7 @@ func _gotk4_gdk4_Drag_ConnectDropPerformed(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectDropPerformed: emitted when the drop operation is performed on an
+// ConnectDropPerformed is emitted when the drop operation is performed on an
 // accepting client.
 func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(drag, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectDropPerformed), f)

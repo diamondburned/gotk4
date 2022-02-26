@@ -119,7 +119,7 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.GtkL
 	f(_listitem)
 }
 
-// ConnectBind: emitted when a new gtk.ListItem:item has been set on the
+// ConnectBind is emitted when a new gtk.ListItem:item has been set on the
 // listitem and should be bound for use.
 //
 // After this signal was emitted, the listitem might be shown in a gtk.ListView
@@ -151,7 +151,7 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.Gtk
 	f(_listitem)
 }
 
-// ConnectSetup: emitted when a new listitem has been created and needs to be
+// ConnectSetup is emitted when a new listitem has been created and needs to be
 // setup for use.
 //
 // It is the first signal emitted for every listitem.
@@ -182,7 +182,7 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.
 	f(_listitem)
 }
 
-// ConnectTeardown: emitted when a listitem is about to be destroyed.
+// ConnectTeardown is emitted when a listitem is about to be destroyed.
 //
 // It is the last signal ever emitted for this listitem.
 //
@@ -212,7 +212,7 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.Gt
 	f(_listitem)
 }
 
-// ConnectUnbind: emitted when a listitem has been removed from use in a list
+// ConnectUnbind is emitted when a listitem has been removed from use in a list
 // widget and its new gtk.ListItem:item is about to be unset.
 //
 // This signal is the opposite of the gtk.SignalListItemFactory::bind signal and

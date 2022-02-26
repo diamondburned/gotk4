@@ -167,7 +167,7 @@ func _gotk4_gtk3_LevelBar_ConnectOffsetChanged(arg0 C.gpointer, arg1 *C.gchar, a
 	f(_name)
 }
 
-// ConnectOffsetChanged: emitted when an offset specified on the bar changes
+// ConnectOffsetChanged is emitted when an offset specified on the bar changes
 // value as an effect to gtk_level_bar_add_offset_value() being called.
 //
 // The signal supports detailed connections; you can connect to the detailed

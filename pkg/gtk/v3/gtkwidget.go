@@ -3223,8 +3223,8 @@ func _gotk4_gtk3_Widget_ConnectDamageEvent(arg0 C.gpointer, arg1 *C.GdkEventExpo
 	return cret
 }
 
-// ConnectDamageEvent: emitted when a redirected window belonging to widget gets
-// drawn into. The region/area members of the event shows what area of the
+// ConnectDamageEvent is emitted when a redirected window belonging to widget
+// gets drawn into. The region/area members of the event shows what area of the
 // redirected drawable was drawn into.
 func (widget *Widget) ConnectDamageEvent(f func(event *gdk.EventExpose) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(widget, "damage-event", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDamageEvent), f)
@@ -4133,7 +4133,7 @@ func _gotk4_gtk3_Widget_ConnectGrabBrokenEvent(arg0 C.gpointer, arg1 *C.GdkEvent
 	return cret
 }
 
-// ConnectGrabBrokenEvent: emitted when a pointer or keyboard grab on a window
+// ConnectGrabBrokenEvent is emitted when a pointer or keyboard grab on a window
 // belonging to widget gets broken.
 //
 // On X11, this happens when the grab window becomes unviewable (i.e. it or one
@@ -4772,7 +4772,7 @@ func _gotk4_gtk3_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 	return cret
 }
 
-// ConnectQueryTooltip: emitted when Widget:has-tooltip is TRUE and the hover
+// ConnectQueryTooltip is emitted when Widget:has-tooltip is TRUE and the hover
 // timeout has expired with the cursor hovering "above" widget; or emitted when
 // widget got focus in keyboard mode.
 //

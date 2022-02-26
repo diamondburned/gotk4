@@ -236,9 +236,9 @@ func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 	f(_responseId)
 }
 
-// ConnectResponse: emitted when an action widget is clicked or the application
-// programmer calls gtk_dialog_response(). The response_id depends on which
-// action widget was clicked.
+// ConnectResponse is emitted when an action widget is clicked or the
+// application programmer calls gtk_dialog_response(). The response_id depends
+// on which action widget was clicked.
 func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk3_InfoBar_ConnectResponse), f)
 }

@@ -80,7 +80,7 @@ func _gotk4_gdk4_Clipboard_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectChanged: emitted when the clipboard changes ownership.
+// ConnectChanged is emitted when the clipboard changes ownership.
 func (clipboard *Clipboard) ConnectChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(clipboard, "changed", false, unsafe.Pointer(C._gotk4_gdk4_Clipboard_ConnectChanged), f)
 }

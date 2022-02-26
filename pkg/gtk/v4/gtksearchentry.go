@@ -142,7 +142,7 @@ func _gotk4_gtk4_SearchEntry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivate: emitted when the entry is activated.
+// ConnectActivate is emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
 func (entry *SearchEntry) ConnectActivate(f func()) externglib.SignalHandle {
@@ -165,7 +165,7 @@ func _gotk4_gtk4_SearchEntry_ConnectNextMatch(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
-// ConnectNextMatch: emitted when the user initiates a move to the next match
+// ConnectNextMatch is emitted when the user initiates a move to the next match
 // for the current search string.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -193,8 +193,8 @@ func _gotk4_gtk4_SearchEntry_ConnectPreviousMatch(arg0 C.gpointer, arg1 C.guintp
 	f()
 }
 
-// ConnectPreviousMatch: emitted when the user initiates a move to the previous
-// match for the current search string.
+// ConnectPreviousMatch is emitted when the user initiates a move to the
+// previous match for the current search string.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -221,7 +221,7 @@ func _gotk4_gtk4_SearchEntry_ConnectSearchChanged(arg0 C.gpointer, arg1 C.guintp
 	f()
 }
 
-// ConnectSearchChanged: emitted with a short delay of 150 milliseconds after
+// ConnectSearchChanged is emitted with a short delay of 150 milliseconds after
 // the last change to the entry text.
 func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(entry, "search-changed", false, unsafe.Pointer(C._gotk4_gtk4_SearchEntry_ConnectSearchChanged), f)
@@ -243,7 +243,8 @@ func _gotk4_gtk4_SearchEntry_ConnectSearchStarted(arg0 C.gpointer, arg1 C.guintp
 	f()
 }
 
-// ConnectSearchStarted: emitted when the user initiated a search on the entry.
+// ConnectSearchStarted is emitted when the user initiated a search on the
+// entry.
 func (entry *SearchEntry) ConnectSearchStarted(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(entry, "search-started", false, unsafe.Pointer(C._gotk4_gtk4_SearchEntry_ConnectSearchStarted), f)
 }
@@ -264,7 +265,7 @@ func _gotk4_gtk4_SearchEntry_ConnectStopSearch(arg0 C.gpointer, arg1 C.guintptr)
 	f()
 }
 
-// ConnectStopSearch: emitted when the user stops a search via keyboard input.
+// ConnectStopSearch is emitted when the user stops a search via keyboard input.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //

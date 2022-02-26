@@ -182,7 +182,8 @@ func _gotk4_gdk4_Seat_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.GdkDevice, arg
 	f(_device)
 }
 
-// ConnectDeviceAdded: emitted when a new input device is related to this seat.
+// ConnectDeviceAdded is emitted when a new input device is related to this
+// seat.
 func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(seat, "device-added", false, unsafe.Pointer(C._gotk4_gdk4_Seat_ConnectDeviceAdded), f)
 }
@@ -223,7 +224,7 @@ func _gotk4_gdk4_Seat_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.GdkDevice, a
 	f(_device)
 }
 
-// ConnectDeviceRemoved: emitted when an input device is removed (e.g.
+// ConnectDeviceRemoved is emitted when an input device is removed (e.g.
 // unplugged).
 func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(seat, "device-removed", false, unsafe.Pointer(C._gotk4_gdk4_Seat_ConnectDeviceRemoved), f)
@@ -249,7 +250,7 @@ func _gotk4_gdk4_Seat_ConnectToolAdded(arg0 C.gpointer, arg1 *C.GdkDeviceTool, a
 	f(_tool)
 }
 
-// ConnectToolAdded: emitted whenever a new tool is made known to the seat.
+// ConnectToolAdded is emitted whenever a new tool is made known to the seat.
 //
 // The tool may later be assigned to a device (i.e. on proximity with a tablet).
 // The device will emit the [signalGdkDevice::tool-changed] signal accordingly.
@@ -279,7 +280,8 @@ func _gotk4_gdk4_Seat_ConnectToolRemoved(arg0 C.gpointer, arg1 *C.GdkDeviceTool,
 	f(_tool)
 }
 
-// ConnectToolRemoved: emitted whenever a tool is no longer known to this seat.
+// ConnectToolRemoved is emitted whenever a tool is no longer known to this
+// seat.
 func (seat *Seat) ConnectToolRemoved(f func(tool *DeviceTool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(seat, "tool-removed", false, unsafe.Pointer(C._gotk4_gdk4_Seat_ConnectToolRemoved), f)
 }

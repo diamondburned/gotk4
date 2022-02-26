@@ -132,8 +132,8 @@ func _gotk4_gtk4_GridView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 	f(_position)
 }
 
-// ConnectActivate: emitted when a cell has been activated by the user, usually
-// via activating the GtkGridView|list.activate-item action.
+// ConnectActivate is emitted when a cell has been activated by the user,
+// usually via activating the GtkGridView|list.activate-item action.
 //
 // This allows for a convenient way to handle activation in a gridview. See
 // gtk.ListItem:activatable for details on how to use this signal.

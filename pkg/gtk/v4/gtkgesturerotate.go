@@ -85,7 +85,7 @@ func _gotk4_gtk4_GestureRotate_ConnectAngleChanged(arg0 C.gpointer, arg1 C.gdoub
 	f(_angle, _angleDelta)
 }
 
-// ConnectAngleChanged: emitted when the angle between both tracked points
+// ConnectAngleChanged is emitted when the angle between both tracked points
 // changes.
 func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "angle-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureRotate_ConnectAngleChanged), f)

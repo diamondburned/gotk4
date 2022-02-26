@@ -126,7 +126,7 @@ func _gotk4_gdk4_Monitor_ConnectInvalidate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectInvalidate: emitted when the output represented by monitor gets
+// ConnectInvalidate is emitted when the output represented by monitor gets
 // disconnected.
 func (monitor *Monitor) ConnectInvalidate(f func()) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(monitor, "invalidate", false, unsafe.Pointer(C._gotk4_gdk4_Monitor_ConnectInvalidate), f)

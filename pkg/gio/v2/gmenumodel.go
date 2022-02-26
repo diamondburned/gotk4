@@ -1115,7 +1115,7 @@ func _gotk4_gio2_MenuModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.gint, arg
 	f(_position, _removed, _added)
 }
 
-// ConnectItemsChanged: emitted when a change has occurred to the menu.
+// ConnectItemsChanged is emitted when a change has occurred to the menu.
 //
 // The only changes that can occur to a menu is that items are removed or added.
 // Items may not change (except by being removed and added back in the same

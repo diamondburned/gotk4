@@ -101,7 +101,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectDesktopFolder(arg0 C.gpointer, arg1 C.
 	f()
 }
 
-// ConnectDesktopFolder: emitted when the user asks for it.
+// ConnectDesktopFolder is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -129,7 +129,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectDownFolder(arg0 C.gpointer, arg1 C.gui
 	f()
 }
 
-// ConnectDownFolder: emitted when the user asks for it.
+// ConnectDownFolder is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -160,7 +160,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectHomeFolder(arg0 C.gpointer, arg1 C.gui
 	f()
 }
 
-// ConnectHomeFolder: emitted when the user asks for it.
+// ConnectHomeFolder is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -192,7 +192,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup(arg0 C.gpointer, arg1 *C
 	f(_path)
 }
 
-// ConnectLocationPopup: emitted when the user asks for it.
+// ConnectLocationPopup is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -224,7 +224,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectLocationPopupOnPaste(arg0 C.gpointer, 
 	f()
 }
 
-// ConnectLocationPopupOnPaste: emitted when the user asks for it.
+// ConnectLocationPopupOnPaste is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -252,7 +252,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectLocationTogglePopup(arg0 C.gpointer, a
 	f()
 }
 
-// ConnectLocationTogglePopup: emitted when the user asks for it.
+// ConnectLocationTogglePopup is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -280,7 +280,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectPlacesShortcut(arg0 C.gpointer, arg1 C
 	f()
 }
 
-// ConnectPlacesShortcut: emitted when the user asks for it.
+// ConnectPlacesShortcut is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -311,7 +311,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectQuickBookmark(arg0 C.gpointer, arg1 C.
 	f(_bookmarkIndex)
 }
 
-// ConnectQuickBookmark: emitted when the user asks for it.
+// ConnectQuickBookmark is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -343,7 +343,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectRecentShortcut(arg0 C.gpointer, arg1 C
 	f()
 }
 
-// ConnectRecentShortcut: emitted when the user asks for it.
+// ConnectRecentShortcut is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -370,7 +370,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectSearchShortcut(arg0 C.gpointer, arg1 C
 	f()
 }
 
-// ConnectSearchShortcut: emitted when the user asks for it.
+// ConnectSearchShortcut is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -397,7 +397,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectShowHidden(arg0 C.gpointer, arg1 C.gui
 	f()
 }
 
-// ConnectShowHidden: emitted when the user asks for it.
+// ConnectShowHidden is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
@@ -424,7 +424,7 @@ func _gotk4_gtk4_FileChooserWidget_ConnectUpFolder(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-// ConnectUpFolder: emitted when the user asks for it.
+// ConnectUpFolder is emitted when the user asks for it.
 //
 // This is a keybinding signal (class.SignalAction.html).
 //

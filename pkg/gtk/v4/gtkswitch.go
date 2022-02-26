@@ -122,7 +122,7 @@ func _gotk4_gtk4_Switch_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-// ConnectActivate: emitted to animate the switch.
+// ConnectActivate is emitted to animate the switch.
 //
 // Applications should never connect to this signal, but use the
 // gtk.Switch:active property.
@@ -158,7 +158,7 @@ func _gotk4_gtk4_Switch_ConnectStateSet(arg0 C.gpointer, arg1 C.gboolean, arg2 C
 	return cret
 }
 
-// ConnectStateSet: emitted to change the underlying state.
+// ConnectStateSet is emitted to change the underlying state.
 //
 // The ::state-set signal is emitted when the user changes the switch position.
 // The default handler keeps the state in sync with the gtk.Switch:active

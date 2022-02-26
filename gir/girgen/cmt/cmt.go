@@ -397,6 +397,8 @@ func format(self, cmt string, opts []Option) string {
 			fallthrough
 		case strings.ToLower(nthWord(cmt, 0)) == "will":
 			cmt = self + " " + lowerFirstWord(cmt)
+		case strings.ToLower(nthWord(cmt, 0)) == "emitted":
+			cmt = self + " is " + lowerFirstWord(cmt)
 
 		case typeNamed:
 			fallthrough

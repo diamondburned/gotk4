@@ -154,13 +154,15 @@ func CGoTail(gen types.FileGenerator, g *gir.CallableAttrs) (string, error) {
 		cgotail := pen.NewJoints(", ", len(g.Parameters.Parameters)+1)
 
 		addParam := func(ix int, param *gir.ParameterAttrs) bool {
-			ctype := types.AnyTypeC(param.AnyType)
+			anyType := types.ResolveAnyType(gen, param.AnyType)
+
+			ctype := types.AnyTypeC(anyType)
 			if ctype == "" {
 				// probably var_args
 				return false
 			}
 
-			cgotype := types.AnyTypeCGo(param.AnyType)
+			cgotype := types.AnyTypeCGo(anyType)
 			cgotail.Addf("%s %s", CallbackArg(ix), cgotype)
 			return true
 		}
@@ -185,12 +187,15 @@ func CGoTail(gen types.FileGenerator, g *gir.CallableAttrs) (string, error) {
 	}
 
 	if !types.ReturnIsVoid(g.ReturnValue) {
-		ctype := types.AnyTypeC(g.ReturnValue.AnyType)
+		anyType := types.ResolveAnyType(gen, g.ReturnValue.AnyType)
+
+		ctype := types.AnyTypeC(anyType)
 		if ctype == "" {
-			return "", errors.New("anyTypeC return is empty")
+			// Try resolving.
+			return "", fmt.Errorf("anyTypeC return is empty")
 		}
 
-		callTail += fmt.Sprintf(" (cret %s)", types.AnyTypeCGo(g.ReturnValue.AnyType))
+		callTail += fmt.Sprintf(" (cret %s)", types.AnyTypeCGo(anyType))
 	}
 
 	return callTail, nil

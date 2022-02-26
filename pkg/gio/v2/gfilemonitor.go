@@ -236,7 +236,7 @@ func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2
 	f(_file, _otherFile, _eventType)
 }
 
-// ConnectChanged: emitted when file has been changed.
+// ConnectChanged is emitted when file has been changed.
 //
 // If using G_FILE_MONITOR_WATCH_MOVES on a directory monitor, and the
 // information is available (and if supported by the backend), event_type may be

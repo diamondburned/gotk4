@@ -98,7 +98,7 @@ func _gotk4_gtk4_GesturePan_ConnectPan(arg0 C.gpointer, arg1 C.GtkPanDirection, 
 	f(_direction, _offset)
 }
 
-// ConnectPan: emitted once a panning gesture along the expected axis is
+// ConnectPan is emitted once a panning gesture along the expected axis is
 // detected.
 func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(gesture, "pan", false, unsafe.Pointer(C._gotk4_gtk4_GesturePan_ConnectPan), f)

@@ -320,6 +320,7 @@ func (g *Generator) Use(typ interface{}) bool {
 
 		// Copy the parameters.
 		if sig.Parameters != nil {
+			// Resolve all AnyTypes.
 			param.Parameters = types.ResolveParameters(g.gen, sig.Parameters.Parameters)
 
 			// A lot of parameter types in signals don't have a pointer for some
@@ -362,9 +363,18 @@ func (g *Generator) Use(typ interface{}) bool {
 		// Prepend the user data parameter.
 		param.Parameters = append(param.Parameters, signalDataParameter)
 
+		// Ensure returnValue's AnyType.
+		returnValue := sig.ReturnValue
+		if returnValue != nil {
+			ret := *returnValue
+			ret.AnyType = types.ResolveAnyType(g.gen, ret.AnyType)
+
+			returnValue = &ret
+		}
+
 		sigCallable := &gir.CallableAttrs{
 			Parameters:  param,
-			ReturnValue: sig.ReturnValue,
+			ReturnValue: returnValue,
 		}
 
 		if !callbackGen.Use(sigCallable) {

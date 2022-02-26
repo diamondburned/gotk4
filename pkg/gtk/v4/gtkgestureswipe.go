@@ -94,7 +94,7 @@ func _gotk4_gtk4_GestureSwipe_ConnectSwipe(arg0 C.gpointer, arg1 C.gdouble, arg2
 	f(_velocityX, _velocityY)
 }
 
-// ConnectSwipe: emitted when the recognized gesture is finished.
+// ConnectSwipe is emitted when the recognized gesture is finished.
 //
 // Velocity and direction are a product of previously recorded events.
 func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) externglib.SignalHandle {

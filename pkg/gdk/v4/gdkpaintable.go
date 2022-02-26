@@ -267,6 +267,12 @@ type Paintabler interface {
 	InvalidateSize()
 	// Snapshot snapshots the given paintable with the given width and height.
 	Snapshot(snapshot Snapshotter, width, height float64)
+
+	// Invalidate-contents: emitted when the contents of the paintable change.
+	ConnectInvalidateContents(func()) externglib.SignalHandle
+	// Invalidate-size: emitted when the intrinsic size of the paintable
+	// changes.
+	ConnectInvalidateSize(func()) externglib.SignalHandle
 }
 
 var _ Paintabler = (*Paintable)(nil)

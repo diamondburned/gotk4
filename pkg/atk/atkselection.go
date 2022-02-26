@@ -168,6 +168,10 @@ type Selectioner interface {
 	// SelectAllSelection causes every child of the object to be selected if the
 	// object supports multiple selections.
 	SelectAllSelection() bool
+
+	// Selection-changed: "selection-changed" signal is emitted by an object
+	// which implements AtkSelection interface when the selection changes.
+	ConnectSelectionChanged(func()) externglib.SignalHandle
 }
 
 var _ Selectioner = (*Selection)(nil)

@@ -950,6 +950,26 @@ type Texter interface {
 	SetCaretOffset(offset int) bool
 	// SetSelection changes the start and end offset of the specified selection.
 	SetSelection(selectionNum, startOffset, endOffset int) bool
+
+	// Text-attributes-changed: "text-attributes-changed" signal is emitted when
+	// the text attributes of the text of an object which implements AtkText
+	// changes.
+	ConnectTextAttributesChanged(func()) externglib.SignalHandle
+	// Text-caret-moved: "text-caret-moved" signal is emitted when the caret
+	// position of the text of an object which implements AtkText changes.
+	ConnectTextCaretMoved(func(arg1 int)) externglib.SignalHandle
+	// Text-changed: "text-changed" signal is emitted when the text of the
+	// object which implements the AtkText interface changes, This signal will
+	// have a detail which is either "insert" or "delete" which identifies
+	// whether the text change was an insertion or a deletion.
+	ConnectTextChanged(func(arg1, arg2 int)) externglib.SignalHandle
+	// Text-insert: "text-insert" signal is emitted when a new text is inserted.
+	ConnectTextInsert(func(arg1, arg2 int, arg3 string)) externglib.SignalHandle
+	// Text-remove: "text-remove" signal is emitted when a new text is removed.
+	ConnectTextRemove(func(arg1, arg2 int, arg3 string)) externglib.SignalHandle
+	// Text-selection-changed: "text-selection-changed" signal is emitted when
+	// the selected text of an object which implements AtkText changes.
+	ConnectTextSelectionChanged(func()) externglib.SignalHandle
 }
 
 var _ Texter = (*Text)(nil)

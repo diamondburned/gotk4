@@ -93,6 +93,10 @@ type Hypertexter interface {
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
+
+	// Link-selected: "link-selected" signal is emitted by an AtkHyperText
+	// object when one of the hyperlinks associated with the object is selected.
+	ConnectLinkSelected(func(arg1 int)) externglib.SignalHandle
 }
 
 var _ Hypertexter = (*Hypertext)(nil)

@@ -108,6 +108,10 @@ type ColorChooserer interface {
 	// SetUseAlpha sets whether or not the color chooser should use the alpha
 	// channel.
 	SetUseAlpha(useAlpha bool)
+
+	// Color-activated: emitted when a color is activated from the color
+	// chooser.
+	ConnectColorActivated(func(color *gdk.RGBA)) externglib.SignalHandle
 }
 
 var _ ColorChooserer = (*ColorChooser)(nil)

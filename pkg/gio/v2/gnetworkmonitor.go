@@ -68,6 +68,9 @@ type NetworkMonitorrer interface {
 	NetworkAvailable() bool
 	// NetworkMetered checks if the network is metered.
 	NetworkMetered() bool
+
+	// Network-changed: emitted when the network configuration changes.
+	ConnectNetworkChanged(func(networkAvailable bool)) externglib.SignalHandle
 }
 
 var _ NetworkMonitorrer = (*NetworkMonitor)(nil)

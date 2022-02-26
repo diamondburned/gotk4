@@ -405,6 +405,10 @@ type Valueer interface {
 	SetCurrentValue(value *externglib.Value) bool
 	// SetValue sets the value of this object.
 	SetValue(newValue float64)
+
+	// Value-changed: 'value-changed' signal is emitted when the current value
+	// that represent the object changes.
+	ConnectValueChanged(func(value float64, text string)) externglib.SignalHandle
 }
 
 var _ Valueer = (*Value)(nil)

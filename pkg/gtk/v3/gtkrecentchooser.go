@@ -258,6 +258,13 @@ type RecentChooserer interface {
 	UnselectAll()
 	// UnselectURI unselects uri inside chooser.
 	UnselectURI(uri string)
+
+	// Item-activated: this signal is emitted when the user "activates" a recent
+	// item in the recent chooser.
+	ConnectItemActivated(func()) externglib.SignalHandle
+	// Selection-changed: this signal is emitted when there is a change in the
+	// set of selected recently used resources.
+	ConnectSelectionChanged(func()) externglib.SignalHandle
 }
 
 var _ RecentChooserer = (*RecentChooser)(nil)

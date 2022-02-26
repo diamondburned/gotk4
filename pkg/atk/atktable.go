@@ -543,6 +543,29 @@ type Tabler interface {
 	SetRowHeader(row int, header *ObjectClass)
 	// SetSummary sets the summary description of the table.
 	SetSummary(accessible *ObjectClass)
+
+	// Column-deleted: "column-deleted" signal is emitted by an object which
+	// implements the AtkTable interface when a column is deleted.
+	ConnectColumnDeleted(func(arg1, arg2 int)) externglib.SignalHandle
+	// Column-inserted: "column-inserted" signal is emitted by an object which
+	// implements the AtkTable interface when a column is inserted.
+	ConnectColumnInserted(func(arg1, arg2 int)) externglib.SignalHandle
+	// Column-reordered: "column-reordered" signal is emitted by an object which
+	// implements the AtkTable interface when the columns are reordered.
+	ConnectColumnReordered(func()) externglib.SignalHandle
+	// Model-changed: "model-changed" signal is emitted by an object which
+	// implements the AtkTable interface when the model displayed by the table
+	// changes.
+	ConnectModelChanged(func()) externglib.SignalHandle
+	// Row-deleted: "row-deleted" signal is emitted by an object which
+	// implements the AtkTable interface when a row is deleted.
+	ConnectRowDeleted(func(arg1, arg2 int)) externglib.SignalHandle
+	// Row-inserted: "row-inserted" signal is emitted by an object which
+	// implements the AtkTable interface when a row is inserted.
+	ConnectRowInserted(func(arg1, arg2 int)) externglib.SignalHandle
+	// Row-reordered: "row-reordered" signal is emitted by an object which
+	// implements the AtkTable interface when the rows are reordered.
+	ConnectRowReordered(func()) externglib.SignalHandle
 }
 
 var _ Tabler = (*Table)(nil)

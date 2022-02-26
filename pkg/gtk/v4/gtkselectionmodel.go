@@ -254,6 +254,10 @@ type SelectionModeller interface {
 	UnselectItem(position uint) bool
 	// UnselectRange requests to unselect a range of items in the model.
 	UnselectRange(position, nItems uint) bool
+
+	// Selection-changed: emitted when the selection state of some of the items
+	// in model changes.
+	ConnectSelectionChanged(func(position, nItems uint)) externglib.SignalHandle
 }
 
 var _ SelectionModeller = (*SelectionModel)(nil)

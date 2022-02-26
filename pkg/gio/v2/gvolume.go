@@ -168,6 +168,11 @@ type Volumer interface {
 	// ShouldAutomount returns whether the volume should be automatically
 	// mounted.
 	ShouldAutomount() bool
+
+	// Changed: emitted when the volume has been changed.
+	ConnectChanged(func()) externglib.SignalHandle
+	// Removed: this signal is emitted when the #GVolume have been removed.
+	ConnectRemoved(func()) externglib.SignalHandle
 }
 
 var _ Volumer = (*Volume)(nil)

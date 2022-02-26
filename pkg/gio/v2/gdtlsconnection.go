@@ -130,6 +130,10 @@ type DTLSConnectioner interface {
 	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation.
 	ShutdownFinish(result AsyncResulter) error
+
+	// Accept-certificate: emitted during the TLS handshake after the peer
+	// certificate has been received.
+	ConnectAcceptCertificate(func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool)) externglib.SignalHandle
 }
 
 var _ DTLSConnectioner = (*DTLSConnection)(nil)

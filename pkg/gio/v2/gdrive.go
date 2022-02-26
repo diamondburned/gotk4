@@ -161,6 +161,18 @@ type Driver interface {
 	Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResulter) error
+
+	// Changed: emitted when the drive's state has changed.
+	ConnectChanged(func()) externglib.SignalHandle
+	// Disconnected: this signal is emitted when the #GDrive have been
+	// disconnected.
+	ConnectDisconnected(func()) externglib.SignalHandle
+	// Eject-button: emitted when the physical eject button (if any) of a drive
+	// has been pressed.
+	ConnectEjectButton(func()) externglib.SignalHandle
+	// Stop-button: emitted when the physical stop button (if any) of a drive
+	// has been pressed.
+	ConnectStopButton(func()) externglib.SignalHandle
 }
 
 var _ Driver = (*Drive)(nil)

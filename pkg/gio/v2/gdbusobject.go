@@ -93,6 +93,11 @@ type DBusObjector interface {
 	Interfaces() []DBusInterfacer
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
+
+	// Interface-added: emitted when interface is added to object.
+	ConnectInterfaceAdded(func(iface DBusInterfacer)) externglib.SignalHandle
+	// Interface-removed: emitted when interface is removed from object.
+	ConnectInterfaceRemoved(func(iface DBusInterfacer)) externglib.SignalHandle
 }
 
 var _ DBusObjector = (*DBusObject)(nil)

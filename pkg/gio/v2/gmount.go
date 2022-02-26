@@ -137,6 +137,14 @@ type Mounter interface {
 	UnmountWithOperationFinish(result AsyncResulter) error
 	// Unshadow decrements the shadow count on mount.
 	Unshadow()
+
+	// Changed: emitted when the mount has been changed.
+	ConnectChanged(func()) externglib.SignalHandle
+	// Pre-unmount: this signal may be emitted when the #GMount is about to be
+	// unmounted.
+	ConnectPreUnmount(func()) externglib.SignalHandle
+	// Unmounted: this signal is emitted when the #GMount have been unmounted.
+	ConnectUnmounted(func()) externglib.SignalHandle
 }
 
 var _ Mounter = (*Mount)(nil)

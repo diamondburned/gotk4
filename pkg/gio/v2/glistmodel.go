@@ -131,6 +131,10 @@ type ListModeller interface {
 	Item(position uint) *externglib.Object
 	// ItemsChanged emits the Model::items-changed signal on list.
 	ItemsChanged(position, removed, added uint)
+
+	// Items-changed: this signal is emitted whenever items were added to or
+	// removed from list.
+	ConnectItemsChanged(func(position, removed, added uint)) externglib.SignalHandle
 }
 
 var _ ListModeller = (*ListModel)(nil)

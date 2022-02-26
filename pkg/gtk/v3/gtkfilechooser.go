@@ -434,6 +434,19 @@ type FileChooserer interface {
 	UnselectFilename(filename string)
 	// UnselectURI unselects the file referred to by uri.
 	UnselectURI(uri string)
+
+	// Current-folder-changed: this signal is emitted when the current folder in
+	// a FileChooser changes.
+	ConnectCurrentFolderChanged(func()) externglib.SignalHandle
+	// File-activated: this signal is emitted when the user "activates" a file
+	// in the file chooser.
+	ConnectFileActivated(func()) externglib.SignalHandle
+	// Selection-changed: this signal is emitted when there is a change in the
+	// set of selected files in a FileChooser.
+	ConnectSelectionChanged(func()) externglib.SignalHandle
+	// Update-preview: this signal is emitted when the preview in a file chooser
+	// should be regenerated.
+	ConnectUpdatePreview(func()) externglib.SignalHandle
 }
 
 var _ FileChooserer = (*FileChooser)(nil)

@@ -96,6 +96,13 @@ type PrintOperationPreviewer interface {
 	// RenderPage renders a page to the preview, using the print context that
 	// was passed to the PrintOperation::preview handler together with preview.
 	RenderPage(pageNr int)
+
+	// Got-page-size signal is emitted once for each page that gets rendered to
+	// the preview.
+	ConnectGotPageSize(func(context *PrintContext, pageSetup *PageSetup)) externglib.SignalHandle
+	// Ready signal gets emitted once per preview operation, before the first
+	// page is rendered.
+	ConnectReady(func(context *PrintContext)) externglib.SignalHandle
 }
 
 var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)

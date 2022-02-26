@@ -68,6 +68,20 @@ type Documenter interface {
 	// SetAttributeValue sets the value for the given attribute_name inside
 	// document.
 	SetAttributeValue(attributeName, attributeValue string) bool
+
+	// Load-complete: 'load-complete' signal is emitted when a pending load of a
+	// static document has completed.
+	ConnectLoadComplete(func()) externglib.SignalHandle
+	// Load-stopped: 'load-stopped' signal is emitted when a pending load of
+	// document contents is cancelled, paused, or otherwise interrupted by the
+	// user or application logic.
+	ConnectLoadStopped(func()) externglib.SignalHandle
+	// Page-changed: 'page-changed' signal is emitted when the current page of a
+	// document changes, e.g.
+	ConnectPageChanged(func(pageNumber int)) externglib.SignalHandle
+	// Reload: 'reload' signal is emitted when the contents of a document is
+	// refreshed from its source.
+	ConnectReload(func()) externglib.SignalHandle
 }
 
 var _ Documenter = (*Document)(nil)

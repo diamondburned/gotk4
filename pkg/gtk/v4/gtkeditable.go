@@ -217,6 +217,12 @@ type Editabler interface {
 	// SetWidthChars changes the size request of the editable to be about the
 	// right size for n_chars characters.
 	SetWidthChars(nChars int)
+
+	// Changed: emitted at the end of a single user-visible operation on the
+	// contents.
+	ConnectChanged(func()) externglib.SignalHandle
+	// Delete-text: emitted when text is deleted from the widget by the user.
+	ConnectDeleteText(func(startPos, endPos int)) externglib.SignalHandle
 }
 
 var _ Editabler = (*Editable)(nil)

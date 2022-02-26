@@ -226,6 +226,9 @@ type FontChooserer interface {
 	SetPreviewText(text string)
 	// SetShowPreviewEntry shows or hides the editable preview entry.
 	SetShowPreviewEntry(showPreviewEntry bool)
+
+	// Font-activated: emitted when a font is activated.
+	ConnectFontActivated(func(fontname string)) externglib.SignalHandle
 }
 
 var _ FontChooserer = (*FontChooser)(nil)

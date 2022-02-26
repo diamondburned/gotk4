@@ -377,6 +377,10 @@ type Componenter interface {
 	SetPosition(x, y int, coordType CoordType) bool
 	// SetSize: set the size of the component in terms of width and height.
 	SetSize(width, height int) bool
+
+	// Bounds-changed: 'bounds-changed" signal is emitted when the bposition or
+	// size of the component changes.
+	ConnectBoundsChanged(func(arg1 *Rectangle)) externglib.SignalHandle
 }
 
 var _ Componenter = (*Component)(nil)

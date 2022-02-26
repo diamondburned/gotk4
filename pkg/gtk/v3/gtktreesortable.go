@@ -130,6 +130,10 @@ type TreeSortabler interface {
 	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 	// sortable.
 	SortColumnChanged()
+
+	// Sort-column-changed signal is emitted when the sort column or sort order
+	// of sortable is changed.
+	ConnectSortColumnChanged(func()) externglib.SignalHandle
 }
 
 var _ TreeSortabler = (*TreeSortable)(nil)

@@ -80,6 +80,14 @@ type CellEditabler interface {
 	RemoveWidget()
 	// StartEditing begins editing on a cell_editable.
 	StartEditing(event gdk.Eventer)
+
+	// Editing-done: this signal is a sign for the cell renderer to update its
+	// value from the cell_editable.
+	ConnectEditingDone(func()) externglib.SignalHandle
+	// Remove-widget: this signal is meant to indicate that the cell is finished
+	// editing, and the cell_editable widget is being removed and may
+	// subsequently be destroyed.
+	ConnectRemoveWidget(func()) externglib.SignalHandle
 }
 
 var _ CellEditabler = (*CellEditable)(nil)

@@ -671,6 +671,20 @@ type TreeModeller interface {
 	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int)
 	// UnrefNode lets the tree unref the node.
 	UnrefNode(iter *TreeIter)
+
+	// Row-changed: this signal is emitted when a row in the model has changed.
+	ConnectRowChanged(func(path *TreePath, iter *TreeIter)) externglib.SignalHandle
+	// Row-deleted: this signal is emitted when a row has been deleted.
+	ConnectRowDeleted(func(path *TreePath)) externglib.SignalHandle
+	// Row-has-child-toggled: this signal is emitted when a row has gotten the
+	// first child row or lost its last child row.
+	ConnectRowHasChildToggled(func(path *TreePath, iter *TreeIter)) externglib.SignalHandle
+	// Row-inserted: this signal is emitted when a new row has been inserted in
+	// the model.
+	ConnectRowInserted(func(path *TreePath, iter *TreeIter)) externglib.SignalHandle
+	// Rows-reordered: this signal is emitted when the children of a node in the
+	// TreeModel have been reordered.
+	ConnectRowsReordered(func(path *TreePath, iter *TreeIter, newOrder cgo.Handle)) externglib.SignalHandle
 }
 
 var _ TreeModeller = (*TreeModel)(nil)

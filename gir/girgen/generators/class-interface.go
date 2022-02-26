@@ -57,13 +57,24 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	type {{ .InterfaceName }} interface {
 		externglib.Objector
 
-		{{ range .Methods -}}
-		{{- if $.IsInSameFile . }}
-		{{- Synopsis . 1 TrailingNewLine -}}
+		{{ if .Methods -}}
+
+		{{ range .Methods }}
+		{{ if $.IsInSameFile . -}}
+		{{- Synopsis . 1 TrailingNewLine }}
 		{{- .Name }}{{ .Tail }}
 		{{- end }}
-		{{ else }}
-		{{ $needsPrivate = true }}
+		{{- end }}
+
+		{{ range .Signals }}
+		{{ Synopsis . 1 TrailingNewLine }}
+		{{- .GoName }}(func{{ .GoTail }}) externglib.SignalHandle
+		{{- end }}
+
+		{{- end}}
+
+		{{ if not .Methods -}}
+		{{ $needsPrivate = true -}}
 		base{{ .StructName }}() *{{ .StructName }}
 		{{ end -}}
 	}

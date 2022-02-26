@@ -127,6 +127,15 @@ type DBusObjectManagerer interface {
 	ObjectPath() string
 	// Objects gets all BusObject objects known to manager.
 	Objects() []DBusObjector
+
+	// Interface-added: emitted when interface is added to object.
+	ConnectInterfaceAdded(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
+	// Interface-removed: emitted when interface has been removed from object.
+	ConnectInterfaceRemoved(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
+	// Object-added: emitted when object is added to manager.
+	ConnectObjectAdded(func(object DBusObjector)) externglib.SignalHandle
+	// Object-removed: emitted when object is removed from manager.
+	ConnectObjectRemoved(func(object DBusObjector)) externglib.SignalHandle
 }
 
 var _ DBusObjectManagerer = (*DBusObjectManager)(nil)

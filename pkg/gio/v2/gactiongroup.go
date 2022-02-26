@@ -407,6 +407,18 @@ type ActionGrouper interface {
 	// QueryAction queries all aspects of the named action within an
 	// action_group.
 	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
+
+	// Action-added signals that a new action was just added to the group.
+	ConnectActionAdded(func(actionName string)) externglib.SignalHandle
+	// Action-enabled-changed signals that the enabled status of the named
+	// action has changed.
+	ConnectActionEnabledChanged(func(actionName string, enabled bool)) externglib.SignalHandle
+	// Action-removed signals that an action is just about to be removed from
+	// the group.
+	ConnectActionRemoved(func(actionName string)) externglib.SignalHandle
+	// Action-state-changed signals that the state of the named action has
+	// changed.
+	ConnectActionStateChanged(func(actionName string, value *glib.Variant)) externglib.SignalHandle
 }
 
 var _ ActionGrouper = (*ActionGroup)(nil)

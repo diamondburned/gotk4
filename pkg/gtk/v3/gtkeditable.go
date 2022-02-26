@@ -108,6 +108,13 @@ type Editabler interface {
 	SetEditable(isEditable bool)
 	// SetPosition sets the cursor position in the editable to the given value.
 	SetPosition(position int)
+
+	// Changed signal is emitted at the end of a single user-visible operation
+	// on the contents of the Editable.
+	ConnectChanged(func()) externglib.SignalHandle
+	// Delete-text: this signal is emitted when text is deleted from the widget
+	// by the user.
+	ConnectDeleteText(func(startPos, endPos int)) externglib.SignalHandle
 }
 
 var _ Editabler = (*Editable)(nil)

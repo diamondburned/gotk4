@@ -89,7 +89,7 @@ extern gboolean _gotk4_sourceFunc(gpointer data);
 
 extern void _gotk4_goMarshal(GClosure *, GValue *, guint, GValue *, gpointer,
                              GObject *);
-extern void _gotk4_notifyHandlerTramp(gpointer, guintptr);
+extern void _gotk4_notifyHandlerTramp(gpointer, gpointer, guintptr);
 
 extern void _gotk4_removeClosure(GObject *, GClosure *);
 extern void _gotk4_removeGeneratedClosure(guintptr, GClosure *);

@@ -470,13 +470,15 @@ func ConnectGeneratedClosure(
 	defer C.free(unsafe.Pointer(csignal))
 
 	id := C.g_signal_connect_closure(C.gpointer(v.native()), csignal, gclosure, gbool(after))
+
+	runtime.KeepAlive(obj)
 	return SignalHandle(id)
 }
 
 // ConnectedGeneratedClosure returns the function from the given user_data
 // pointer that's set by ConnectGeneratedClosure's GClosure instance.
 func ConnectedGeneratedClosure(closureData uintptr) *closure.FuncStack {
-	data := gbox.Get(closureData).(*generatedClosureData)
+	data, _ := gbox.Get(closureData).(*generatedClosureData)
 	if data == nil {
 		return nil
 	}
@@ -490,7 +492,7 @@ func _gotk4_removeClosure(obj *C.GObject, gclosure *C.GClosure) {
 
 //export _gotk4_removeGeneratedClosure
 func _gotk4_removeGeneratedClosure(fnID C.guintptr, gclosure *C.GClosure) {
-	data := gbox.Pop(uintptr(fnID)).(*generatedClosureData)
+	data, _ := gbox.Pop(uintptr(fnID)).(*generatedClosureData)
 	if data == nil {
 		return
 	}
@@ -738,7 +740,7 @@ func (v *Object) NotifyProperty(property string, f func()) SignalHandle {
 }
 
 //export _gotk4_notifyHandlerTramp
-func _gotk4_notifyHandlerTramp(obj C.gpointer, closureData C.guintptr) {
+func _gotk4_notifyHandlerTramp(obj C.gpointer, paramSpec C.gpointer, closureData C.guintptr) {
 	closure := ConnectedGeneratedClosure(uintptr(closureData))
 	if closure == nil {
 		panic("given unknown closure user_data")

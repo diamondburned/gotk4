@@ -537,6 +537,9 @@ type Object struct {
 // InternObject gets the internal Object type. This is used for calling methods
 // not in the Objector.
 func InternObject(obj Objector) *Object {
+	if obj == nil {
+		return nil
+	}
 	return obj.baseObject()
 }
 

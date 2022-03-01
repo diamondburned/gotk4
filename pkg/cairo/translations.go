@@ -31,7 +31,7 @@ func (v *Context) SetMatrix(matrix *Matrix) {
 }
 
 // GetMatrix is a wrapper around cairo_get_matrix.
-func (v *Context) GetMatrix() *Matrix {
+func (v *Context) Matrix() *Matrix {
 	var matrix C.cairo_matrix_t
 	C.cairo_get_matrix(v.native(), &matrix)
 	return &Matrix{

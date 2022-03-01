@@ -54,9 +54,9 @@ func init() {
 type Content int
 
 const (
-	CONTENT_COLOR       Content = C.CAIRO_CONTENT_COLOR
-	CONTENT_ALPHA       Content = C.CAIRO_CONTENT_ALPHA
-	CONTENT_COLOR_ALPHA Content = C.CAIRO_CONTENT_COLOR_ALPHA
+	ContentColor      Content = C.CAIRO_CONTENT_COLOR
+	ContentAlpha      Content = C.CAIRO_CONTENT_ALPHA
+	ContentColorAlpha Content = C.CAIRO_CONTENT_COLOR_ALPHA
 )
 
 func marshalContent(p uintptr) (interface{}, error) {

@@ -13,17 +13,17 @@ import (
 type FontSlant int
 
 const (
-	FONT_SLANT_NORMAL  FontSlant = C.CAIRO_FONT_SLANT_NORMAL
-	FONT_SLANT_ITALIC  FontSlant = C.CAIRO_FONT_SLANT_ITALIC
-	FONT_SLANT_OBLIQUE FontSlant = C.CAIRO_FONT_SLANT_OBLIQUE
+	FontSlantNormal  FontSlant = C.CAIRO_FONT_SLANT_NORMAL
+	FontSlantItalic  FontSlant = C.CAIRO_FONT_SLANT_ITALIC
+	FontSlantOblique FontSlant = C.CAIRO_FONT_SLANT_OBLIQUE
 )
 
 // FontWeight is a representation of Cairo's cairo_font_weight_t
 type FontWeight int
 
 const (
-	FONT_WEIGHT_NORMAL FontWeight = C.CAIRO_FONT_WEIGHT_NORMAL
-	FONT_WEIGHT_BOLD   FontWeight = C.CAIRO_FONT_WEIGHT_BOLD
+	FontWeightNormal FontWeight = C.CAIRO_FONT_WEIGHT_NORMAL
+	FontWeightBold   FontWeight = C.CAIRO_FONT_WEIGHT_BOLD
 )
 
 func (v *Context) SelectFontFace(family string, slant FontSlant, weight FontWeight) {

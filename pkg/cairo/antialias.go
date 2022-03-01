@@ -12,13 +12,13 @@ import (
 type Antialias int
 
 const (
-	ANTIALIAS_DEFAULT  Antialias = C.CAIRO_ANTIALIAS_DEFAULT
-	ANTIALIAS_NONE     Antialias = C.CAIRO_ANTIALIAS_NONE
-	ANTIALIAS_GRAY     Antialias = C.CAIRO_ANTIALIAS_GRAY
-	ANTIALIAS_SUBPIXEL Antialias = C.CAIRO_ANTIALIAS_SUBPIXEL
-	ANTIALIAS_FAST     Antialias = C.CAIRO_ANTIALIAS_FAST // (since 1.12)
-	ANTIALIAS_GOOD     Antialias = C.CAIRO_ANTIALIAS_GOOD // (since 1.12)
-	ANTIALIAS_BEST     Antialias = C.CAIRO_ANTIALIAS_BEST // (since 1.12)
+	AntialiasDefault  Antialias = C.CAIRO_ANTIALIAS_DEFAULT
+	AntialiasNone     Antialias = C.CAIRO_ANTIALIAS_NONE
+	AntialiasGray     Antialias = C.CAIRO_ANTIALIAS_GRAY
+	AntialiasSubpixel Antialias = C.CAIRO_ANTIALIAS_SUBPIXEL
+	AntialiasFast     Antialias = C.CAIRO_ANTIALIAS_FAST // (since 1.12)
+	AntialiasGood     Antialias = C.CAIRO_ANTIALIAS_GOOD // (since 1.12)
+	AntialiasBest     Antialias = C.CAIRO_ANTIALIAS_BEST // (since 1.12)
 )
 
 func marshalAntialias(p uintptr) (interface{}, error) {

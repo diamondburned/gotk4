@@ -12,9 +12,9 @@ import (
 type LineJoin int
 
 const (
-	LINE_JOIN_MITER LineJoin = C.CAIRO_LINE_JOIN_MITER
-	LINE_JOIN_ROUND LineJoin = C.CAIRO_LINE_JOIN_ROUND
-	LINE_JOIN_BEVEL LineJoin = C.CAIRO_LINE_JOIN_BEVEL
+	LineJoinMiter LineJoin = C.CAIRO_LINE_JOIN_MITER
+	LineJoinRound LineJoin = C.CAIRO_LINE_JOIN_ROUND
+	LineJoinBevel LineJoin = C.CAIRO_LINE_JOIN_BEVEL
 )
 
 func marshalLineJoin(p uintptr) (interface{}, error) {

@@ -12,8 +12,8 @@ import (
 type FillRule int
 
 const (
-	FILL_RULE_WINDING  FillRule = C.CAIRO_FILL_RULE_WINDING
-	FILL_RULE_EVEN_ODD FillRule = C.CAIRO_FILL_RULE_EVEN_ODD
+	FillRuleWinding FillRule = C.CAIRO_FILL_RULE_WINDING
+	FillRuleEvenOdd FillRule = C.CAIRO_FILL_RULE_EVEN_ODD
 )
 
 func marshalFillRule(p uintptr) (interface{}, error) {

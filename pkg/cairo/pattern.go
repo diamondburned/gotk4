@@ -16,12 +16,12 @@ import (
 type Filter int
 
 const (
-	FILTER_FAST     Filter = C.CAIRO_FILTER_FAST
-	FILTER_GOOD     Filter = C.CAIRO_FILTER_GOOD
-	FILTER_BEST     Filter = C.CAIRO_FILTER_BEST
-	FILTER_NEAREST  Filter = C.CAIRO_FILTER_NEAREST
-	FILTER_BILINEAR Filter = C.CAIRO_FILTER_BILINEAR
-	FILTER_GAUSSIAN Filter = C.CAIRO_FILTER_GAUSSIAN
+	FilterFast     Filter = C.CAIRO_FILTER_FAST
+	FilterGood     Filter = C.CAIRO_FILTER_GOOD
+	FilterBest     Filter = C.CAIRO_FILTER_BEST
+	FilterNearest  Filter = C.CAIRO_FILTER_NEAREST
+	FilterBilinear Filter = C.CAIRO_FILTER_BILINEAR
+	FilterGaussian Filter = C.CAIRO_FILTER_GAUSSIAN
 )
 
 func marshalFilter(p uintptr) (interface{}, error) {

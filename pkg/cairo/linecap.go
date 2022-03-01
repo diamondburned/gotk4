@@ -12,9 +12,9 @@ import (
 type LineCap int
 
 const (
-	LINE_CAP_BUTT   LineCap = C.CAIRO_LINE_CAP_BUTT
-	LINE_CAP_ROUND  LineCap = C.CAIRO_LINE_CAP_ROUND
-	LINE_CAP_SQUARE LineCap = C.CAIRO_LINE_CAP_SQUARE
+	LineCapButt   LineCap = C.CAIRO_LINE_CAP_BUTT
+	LineCapRound  LineCap = C.CAIRO_LINE_CAP_ROUND
+	LineCapSquare LineCap = C.CAIRO_LINE_CAP_SQUARE
 )
 
 func marshalLineCap(p uintptr) (interface{}, error) {

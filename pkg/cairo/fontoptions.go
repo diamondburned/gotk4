@@ -28,11 +28,11 @@ func init() {
 type SubpixelOrder int
 
 const (
-	SUBPIXEL_ORDER_DEFAULT SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_DEFAULT
-	SUBPIXEL_ORDER_RGB     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_RGB
-	SUBPIXEL_ORDER_BGR     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_BGR
-	SUBPIXEL_ORDER_VRGB    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VRGB
-	SUBPIXEL_ORDER_VBGR    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
+	SubpixelOrderDefault SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_DEFAULT
+	SubpixelOrderRGB     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_RGB
+	SubpixelOrderBGR     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_BGR
+	SubpixelOrderVRGB    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VRGB
+	SubpixelOrderVBGR    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
 )
 
 func marshalSubpixelOrder(p uintptr) (interface{}, error) {
@@ -44,11 +44,11 @@ func marshalSubpixelOrder(p uintptr) (interface{}, error) {
 type HintStyle int
 
 const (
-	HINT_STYLE_DEFAULT HintStyle = C.CAIRO_HINT_STYLE_DEFAULT
-	HINT_STYLE_NONE    HintStyle = C.CAIRO_HINT_STYLE_NONE
-	HINT_STYLE_SLIGHT  HintStyle = C.CAIRO_HINT_STYLE_SLIGHT
-	HINT_STYLE_MEDIUM  HintStyle = C.CAIRO_HINT_STYLE_MEDIUM
-	HINT_STYLE_FULL    HintStyle = C.CAIRO_HINT_STYLE_FULL
+	HintStyleDefault HintStyle = C.CAIRO_HINT_STYLE_DEFAULT
+	HintStyleNone    HintStyle = C.CAIRO_HINT_STYLE_NONE
+	HintStyleSlight  HintStyle = C.CAIRO_HINT_STYLE_SLIGHT
+	HintStyleMedium  HintStyle = C.CAIRO_HINT_STYLE_MEDIUM
+	HintStyleFull    HintStyle = C.CAIRO_HINT_STYLE_FULL
 )
 
 func marshalHintStyle(p uintptr) (interface{}, error) {
@@ -60,9 +60,9 @@ func marshalHintStyle(p uintptr) (interface{}, error) {
 type HintMetrics int
 
 const (
-	HINT_METRICS_DEFAULT HintMetrics = C.CAIRO_HINT_METRICS_DEFAULT
-	HINT_METRICS_OFF     HintMetrics = C.CAIRO_HINT_METRICS_OFF
-	HINT_METRICS_ON      HintMetrics = C.CAIRO_HINT_METRICS_ON
+	HintMetricsDefault HintMetrics = C.CAIRO_HINT_METRICS_DEFAULT
+	HintMetricsOff     HintMetrics = C.CAIRO_HINT_METRICS_OFF
+	HintMetricsOn      HintMetrics = C.CAIRO_HINT_METRICS_ON
 )
 
 func marshalHintMetrics(p uintptr) (interface{}, error) {
@@ -132,7 +132,7 @@ func (o *FontOptions) SetAntialias(antialias Antialias) {
 }
 
 // GetAntialias is a wrapper around cairo_font_options_get_antialias().
-func (o *FontOptions) GetAntialias() Antialias {
+func (o *FontOptions) Antialias() Antialias {
 	return Antialias(C.cairo_font_options_get_antialias(o.native))
 }
 
@@ -142,7 +142,7 @@ func (o *FontOptions) SetSubpixelOrder(subpixelOrder SubpixelOrder) {
 }
 
 // GetSubpixelOrder is a wrapper around cairo_font_options_get_subpixel_order().
-func (o *FontOptions) GetSubpixelOrder() SubpixelOrder {
+func (o *FontOptions) SubpixelOrder() SubpixelOrder {
 	return SubpixelOrder(C.cairo_font_options_get_subpixel_order(o.native))
 }
 
@@ -152,7 +152,7 @@ func (o *FontOptions) SetHintStyle(hintStyle HintStyle) {
 }
 
 // GetHintStyle is a wrapper around cairo_font_options_get_hint_style().
-func (o *FontOptions) GetHintStyle() HintStyle {
+func (o *FontOptions) HintStyle() HintStyle {
 	return HintStyle(C.cairo_font_options_get_hint_style(o.native))
 }
 
@@ -162,12 +162,12 @@ func (o *FontOptions) SetHintMetrics(hintMetrics HintMetrics) {
 }
 
 // GetHintMetrics is a wrapper around cairo_font_options_get_hint_metrics().
-func (o *FontOptions) GetHintMetrics() HintMetrics {
+func (o *FontOptions) HintMetrics() HintMetrics {
 	return HintMetrics(C.cairo_font_options_get_hint_metrics(o.native))
 }
 
 // GetVariations is a wrapper around cairo_font_options_get_variations().
-func (o *FontOptions) GetVariations() string {
+func (o *FontOptions) Variations() string {
 	return C.GoString(C.cairo_font_options_get_variations(o.native))
 }
 

@@ -23,8 +23,8 @@ func CreatePNGSurfaceFromPNG(fileName string) (*Surface, error) {
 	surfaceNative := C.cairo_image_surface_create_from_png(cstr)
 
 	status := Status(C.cairo_surface_status(surfaceNative))
-	if status != STATUS_SUCCESS {
-		return nil, ErrorStatus(status)
+	if status != StatusSuccess {
+		return nil, status
 	}
 
 	return &Surface{surface: surfaceNative}, nil
@@ -36,8 +36,8 @@ func CreateImageSurfaceForData(data []byte, format Format, width, height, stride
 		C.cairo_format_t(format), C.int(width), C.int(height), C.int(stride))
 
 	status := Status(C.cairo_surface_status(surfaceNative))
-	if status != STATUS_SUCCESS {
-		panic("cairo_image_surface_create_for_data: " + ErrorStatus(status).Error())
+	if status != StatusSuccess {
+		panic("cairo_image_surface_create_for_data: " + status.Error())
 	}
 
 	s := wrapSurface(surfaceNative)
@@ -52,8 +52,8 @@ func CreateImageSurface(format Format, width, height int) *Surface {
 		C.int(width), C.int(height))
 
 	status := Status(C.cairo_surface_status(surfaceNative))
-	if status != STATUS_SUCCESS {
-		panic("cairo_image_surface_create: " + ErrorStatus(status).Error())
+	if status != StatusSuccess {
+		panic("cairo_image_surface_create: " + status.Error())
 	}
 
 	s := wrapSurface(surfaceNative)
@@ -68,17 +68,17 @@ func CreateSurfaceFromImage(img image.Image) *Surface {
 
 	switch img := img.(type) {
 	case *image.RGBA:
-		s = CreateImageSurface(FORMAT_ARGB32, img.Rect.Dx(), img.Rect.Dy())
-		pix := s.GetData()
+		s = CreateImageSurface(FormatARGB32, img.Rect.Dx(), img.Rect.Dy())
+		pix := s.Data()
 		// Copy is pretty fast. Copy the RGBA data to the image directly.
 		copy(pix, img.Pix)
 		// Swizzle the RGBA bytes to the correct order.
 		swizzle.BGRA(pix)
 
 	case *image.NRGBA:
-		s = CreateImageSurface(FORMAT_ARGB32, img.Rect.Dx(), img.Rect.Dy())
+		s = CreateImageSurface(FormatARGB32, img.Rect.Dx(), img.Rect.Dy())
 
-		pix := s.GetData()
+		pix := s.Data()
 		// I'm not sure how slower this is than just doing a fast copy and
 		// calculate onto the malloc'd bytes, but since we're mostly doing
 		// calculations for each pixel, it likely doesn't matter.
@@ -91,17 +91,17 @@ func CreateSurfaceFromImage(img image.Image) *Surface {
 		}
 
 	case *image.Alpha:
-		s = CreateImageSurface(FORMAT_A8, img.Rect.Dx(), img.Rect.Dy())
-		copy(s.GetData(), img.Pix)
+		s = CreateImageSurface(FormatA8, img.Rect.Dx(), img.Rect.Dy())
+		copy(s.Data(), img.Pix)
 
 	default:
 		bounds := img.Bounds()
-		s = CreateImageSurface(FORMAT_ARGB32, bounds.Dx(), bounds.Dy())
+		s = CreateImageSurface(FormatARGB32, bounds.Dx(), bounds.Dy())
 
 		// Create a new image.RGBA that uses the malloc'd byte array as the
 		// backing array, then draw directly on it.
 		rgba := image.RGBA{
-			Pix:    s.GetData(),
+			Pix:    s.Data(),
 			Stride: bounds.Dx(),
 			Rect:   bounds,
 		}

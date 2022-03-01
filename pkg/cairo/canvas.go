@@ -26,10 +26,6 @@ func (v *Context) native() *C.cairo_t {
 	return v.context
 }
 
-func (v *Context) GetCContext() *C.cairo_t {
-	return v.native()
-}
-
 // Native returns a pointer to the underlying cairo_t.
 func (v *Context) Native() uintptr {
 	return uintptr(unsafe.Pointer(v.native()))
@@ -93,7 +89,7 @@ func (v *Context) Restore() {
 }
 
 // GetTarget is a wrapper around cairo_get_target().
-func (v *Context) GetTarget() *Surface {
+func (v *Context) Target() *Surface {
 	c := C.cairo_get_target(v.native())
 	s := wrapSurface(c)
 	s.reference()
@@ -120,7 +116,7 @@ func (v *Context) PopGroupToSource() {
 }
 
 // GetGroupTarget is a wrapper around cairo_get_group_target().
-func (v *Context) GetGroupTarget() *Surface {
+func (v *Context) GroupTarget() *Surface {
 	c := C.cairo_get_group_target(v.native())
 	s := wrapSurface(c)
 	s.reference()
@@ -154,7 +150,7 @@ func (v *Context) SetSourceSurface(surface *Surface, x, y float64) {
 		C.double(y))
 }
 
-// TODO(jrick) GetSource (depends on Pattern)
+// TODO(jrick) Source (depends on Pattern)
 // cairo_get_source
 
 // SetAntialias is a wrapper around cairo_set_antialias().
@@ -163,7 +159,7 @@ func (v *Context) SetAntialias(antialias Antialias) {
 }
 
 // GetAntialias is a wrapper around cairo_get_antialias().
-func (v *Context) GetAntialias() Antialias {
+func (v *Context) Antialias() Antialias {
 	c := C.cairo_get_antialias(v.native())
 	return Antialias(c)
 }
@@ -177,14 +173,14 @@ func (v *Context) SetDash(dashes []float64, offset float64) {
 }
 
 // GetDashCount is a wrapper around cairo_get_dash_count().
-func (v *Context) GetDashCount() int {
+func (v *Context) DashCount() int {
 	c := C.cairo_get_dash_count(v.native())
 	return int(c)
 }
 
 // GetDash is a wrapper around cairo_get_dash().
-func (v *Context) GetDash() (dashes []float64, offset float64) {
-	dashCount := v.GetDashCount()
+func (v *Context) Dash() (dashes []float64, offset float64) {
+	dashCount := v.DashCount()
 	cdashes := (*C.double)(C.calloc(8, C.size_t(dashCount)))
 	var coffset C.double
 	C.cairo_get_dash(v.native(), cdashes, &coffset)
@@ -201,7 +197,7 @@ func (v *Context) SetFillRule(fillRule FillRule) {
 }
 
 // GetFillRule is a wrapper around cairo_get_fill_rule().
-func (v *Context) GetFillRule() FillRule {
+func (v *Context) FillRule() FillRule {
 	c := C.cairo_get_fill_rule(v.native())
 	return FillRule(c)
 }
@@ -212,7 +208,7 @@ func (v *Context) SetLineCap(lineCap LineCap) {
 }
 
 // GetLineCap is a wrapper around cairo_get_line_cap().
-func (v *Context) GetLineCap() LineCap {
+func (v *Context) LineCap() LineCap {
 	c := C.cairo_get_line_cap(v.native())
 	return LineCap(c)
 }
@@ -223,7 +219,7 @@ func (v *Context) SetLineJoin(lineJoin LineJoin) {
 }
 
 // GetLineJoin is a wrapper around cairo_get_line_join().
-func (v *Context) GetLineJoin() LineJoin {
+func (v *Context) LineJoin() LineJoin {
 	c := C.cairo_get_line_join(v.native())
 	return LineJoin(c)
 }
@@ -234,7 +230,7 @@ func (v *Context) SetLineWidth(width float64) {
 }
 
 // GetLineWidth is a wrapper cairo_get_line_width().
-func (v *Context) GetLineWidth() float64 {
+func (v *Context) LineWidth() float64 {
 	c := C.cairo_get_line_width(v.native())
 	return float64(c)
 }
@@ -245,7 +241,7 @@ func (v *Context) SetMiterLimit(limit float64) {
 }
 
 // GetMiterLimit is a wrapper around cairo_get_miter_limit().
-func (v *Context) GetMiterLimit() float64 {
+func (v *Context) MiterLimit() float64 {
 	c := C.cairo_get_miter_limit(v.native())
 	return float64(c)
 }
@@ -256,7 +252,7 @@ func (v *Context) SetOperator(op Operator) {
 }
 
 // GetOperator is a wrapper around cairo_get_operator().
-func (v *Context) GetOperator() Operator {
+func (v *Context) Operator() Operator {
 	c := C.cairo_get_operator(v.native())
 	return Operator(c)
 }
@@ -267,7 +263,7 @@ func (v *Context) SetTolerance(tolerance float64) {
 }
 
 // GetTolerance is a wrapper around cairo_get_tolerance().
-func (v *Context) GetTolerance() float64 {
+func (v *Context) Tolerance() float64 {
 	c := C.cairo_get_tolerance(v.native())
 	return float64(c)
 }
@@ -354,7 +350,7 @@ func (v *Context) NewPath() {
 }
 
 // GetCurrentPoint is a wrapper around cairo_get_current_point().
-func (v *Context) GetCurrentPoint() (x, y float64) {
+func (v *Context) CurrentPoint() (x, y float64) {
 	C.cairo_get_current_point(v.native(), (*C.double)(&x), (*C.double)(&y))
 	return
 }

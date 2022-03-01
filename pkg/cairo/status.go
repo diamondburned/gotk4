@@ -5,7 +5,6 @@ package cairo
 // #include <cairo-gobject.h>
 import "C"
 import (
-	"errors"
 	"strings"
 	"unsafe"
 )
@@ -14,92 +13,83 @@ import (
 type Status int
 
 const (
-	STATUS_SUCCESS                   Status = C.CAIRO_STATUS_SUCCESS
-	STATUS_NO_MEMORY                 Status = C.CAIRO_STATUS_NO_MEMORY
-	STATUS_INVALID_RESTORE           Status = C.CAIRO_STATUS_INVALID_RESTORE
-	STATUS_INVALID_POP_GROUP         Status = C.CAIRO_STATUS_INVALID_POP_GROUP
-	STATUS_NO_CURRENT_POINT          Status = C.CAIRO_STATUS_NO_CURRENT_POINT
-	STATUS_INVALID_MATRIX            Status = C.CAIRO_STATUS_INVALID_MATRIX
-	STATUS_INVALID_STATUS            Status = C.CAIRO_STATUS_INVALID_STATUS
-	STATUS_NULL_POINTER              Status = C.CAIRO_STATUS_NULL_POINTER
-	STATUS_INVALID_STRING            Status = C.CAIRO_STATUS_INVALID_STRING
-	STATUS_INVALID_PATH_DATA         Status = C.CAIRO_STATUS_INVALID_PATH_DATA
-	STATUS_READ_ERROR                Status = C.CAIRO_STATUS_READ_ERROR
-	STATUS_WRITE_ERROR               Status = C.CAIRO_STATUS_WRITE_ERROR
-	STATUS_SURFACE_FINISHED          Status = C.CAIRO_STATUS_SURFACE_FINISHED
-	STATUS_SURFACE_TYPE_MISMATCH     Status = C.CAIRO_STATUS_SURFACE_TYPE_MISMATCH
-	STATUS_PATTERN_TYPE_MISMATCH     Status = C.CAIRO_STATUS_PATTERN_TYPE_MISMATCH
-	STATUS_INVALID_CONTENT           Status = C.CAIRO_STATUS_INVALID_CONTENT
-	STATUS_INVALID_FORMAT            Status = C.CAIRO_STATUS_INVALID_FORMAT
-	STATUS_INVALID_VISUAL            Status = C.CAIRO_STATUS_INVALID_VISUAL
-	STATUS_FILE_NOT_FOUND            Status = C.CAIRO_STATUS_FILE_NOT_FOUND
-	STATUS_INVALID_DASH              Status = C.CAIRO_STATUS_INVALID_DASH
-	STATUS_INVALID_DSC_COMMENT       Status = C.CAIRO_STATUS_INVALID_DSC_COMMENT
-	STATUS_INVALID_INDEX             Status = C.CAIRO_STATUS_INVALID_INDEX
-	STATUS_CLIP_NOT_REPRESENTABLE    Status = C.CAIRO_STATUS_CLIP_NOT_REPRESENTABLE
-	STATUS_TEMP_FILE_ERROR           Status = C.CAIRO_STATUS_TEMP_FILE_ERROR
-	STATUS_INVALID_STRIDE            Status = C.CAIRO_STATUS_INVALID_STRIDE
-	STATUS_FONT_TYPE_MISMATCH        Status = C.CAIRO_STATUS_FONT_TYPE_MISMATCH
-	STATUS_USER_FONT_IMMUTABLE       Status = C.CAIRO_STATUS_USER_FONT_IMMUTABLE
-	STATUS_USER_FONT_ERROR           Status = C.CAIRO_STATUS_USER_FONT_ERROR
-	STATUS_NEGATIVE_COUNT            Status = C.CAIRO_STATUS_NEGATIVE_COUNT
-	STATUS_INVALID_CLUSTERS          Status = C.CAIRO_STATUS_INVALID_CLUSTERS
-	STATUS_INVALID_SLANT             Status = C.CAIRO_STATUS_INVALID_SLANT
-	STATUS_INVALID_WEIGHT            Status = C.CAIRO_STATUS_INVALID_WEIGHT
-	STATUS_INVALID_SIZE              Status = C.CAIRO_STATUS_INVALID_SIZE
-	STATUS_USER_FONT_NOT_IMPLEMENTED Status = C.CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED
-	STATUS_DEVICE_TYPE_MISMATCH      Status = C.CAIRO_STATUS_DEVICE_TYPE_MISMATCH
-	STATUS_DEVICE_ERROR              Status = C.CAIRO_STATUS_DEVICE_ERROR
+	StatusSuccess                Status = C.CAIRO_STATUS_SUCCESS
+	StatusNoMemory               Status = C.CAIRO_STATUS_NO_MEMORY
+	StatusInvalidRestore         Status = C.CAIRO_STATUS_INVALID_RESTORE
+	StatusInvalidPopGroup        Status = C.CAIRO_STATUS_INVALID_POP_GROUP
+	StatusNoCurrentPoint         Status = C.CAIRO_STATUS_NO_CURRENT_POINT
+	StatusInvalidMatrix          Status = C.CAIRO_STATUS_INVALID_MATRIX
+	StatusInvalidStatus          Status = C.CAIRO_STATUS_INVALID_STATUS
+	StatusNullPointer            Status = C.CAIRO_STATUS_NULL_POINTER
+	StatusInvalidString          Status = C.CAIRO_STATUS_INVALID_STRING
+	StatusInvalidPathData        Status = C.CAIRO_STATUS_INVALID_PATH_DATA
+	StatusReadError              Status = C.CAIRO_STATUS_READ_ERROR
+	StatusWriteError             Status = C.CAIRO_STATUS_WRITE_ERROR
+	StatusSurfaceFinished        Status = C.CAIRO_STATUS_SURFACE_FINISHED
+	StatusSurfaceTypeMismatch    Status = C.CAIRO_STATUS_SURFACE_TYPE_MISMATCH
+	StatusPatternTypeMismatch    Status = C.CAIRO_STATUS_PATTERN_TYPE_MISMATCH
+	StatusInvalidContent         Status = C.CAIRO_STATUS_INVALID_CONTENT
+	StatusInvalidFormat          Status = C.CAIRO_STATUS_INVALID_FORMAT
+	StatusInvalidVisual          Status = C.CAIRO_STATUS_INVALID_VISUAL
+	StatusFileNotFound           Status = C.CAIRO_STATUS_FILE_NOT_FOUND
+	StatusInvalidDash            Status = C.CAIRO_STATUS_INVALID_DASH
+	StatusInvalidDSCComment      Status = C.CAIRO_STATUS_INVALID_DSC_COMMENT
+	StatusInvalidIndex           Status = C.CAIRO_STATUS_INVALID_INDEX
+	StatusClipNotRepresentable   Status = C.CAIRO_STATUS_CLIP_NOT_REPRESENTABLE
+	StatusTempFileError          Status = C.CAIRO_STATUS_TEMP_FILE_ERROR
+	StatusInvalidStride          Status = C.CAIRO_STATUS_INVALID_STRIDE
+	StatusFontTypeMismatch       Status = C.CAIRO_STATUS_FONT_TYPE_MISMATCH
+	StatusUserFontImmutable      Status = C.CAIRO_STATUS_USER_FONT_IMMUTABLE
+	StatusUserFontError          Status = C.CAIRO_STATUS_USER_FONT_ERROR
+	StatusNegativeCount          Status = C.CAIRO_STATUS_NEGATIVE_COUNT
+	StatusInvalidClusters        Status = C.CAIRO_STATUS_INVALID_CLUSTERS
+	StatusInvalidSlant           Status = C.CAIRO_STATUS_INVALID_SLANT
+	StatusInvalidWeight          Status = C.CAIRO_STATUS_INVALID_WEIGHT
+	StatusInvalidSize            Status = C.CAIRO_STATUS_INVALID_SIZE
+	StatusUserFontNotImplemented Status = C.CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED
+	StatusDeviceTypeMismatch     Status = C.CAIRO_STATUS_DEVICE_TYPE_MISMATCH
+	StatusDeviceError            Status = C.CAIRO_STATUS_DEVICE_ERROR
 	// STATUS_INVALID_MESH_CONSTRUCTION Status = C.CAIRO_STATUS_INVALID_MESH_CONSTRUCTION (since 1.12)
 	// STATUS_DEVICE_FINISHED           Status = C.CAIRO_STATUS_DEVICE_FINISHED (since 1.12)
 )
 
-var key_Status = map[Status]string{
-
-	STATUS_SUCCESS:                   "CAIRO_STATUS_SUCCESS",
-	STATUS_NO_MEMORY:                 "CAIRO_STATUS_NO_MEMORY",
-	STATUS_INVALID_RESTORE:           "CAIRO_STATUS_INVALID_RESTORE",
-	STATUS_INVALID_POP_GROUP:         "CAIRO_STATUS_INVALID_POP_GROUP",
-	STATUS_NO_CURRENT_POINT:          "CAIRO_STATUS_NO_CURRENT_POINT",
-	STATUS_INVALID_MATRIX:            "CAIRO_STATUS_INVALID_MATRIX",
-	STATUS_INVALID_STATUS:            "CAIRO_STATUS_INVALID_STATUS",
-	STATUS_NULL_POINTER:              "CAIRO_STATUS_NULL_POINTER",
-	STATUS_INVALID_STRING:            "CAIRO_STATUS_INVALID_STRING",
-	STATUS_INVALID_PATH_DATA:         "CAIRO_STATUS_INVALID_PATH_DATA",
-	STATUS_READ_ERROR:                "CAIRO_STATUS_READ_ERROR",
-	STATUS_WRITE_ERROR:               "CAIRO_STATUS_WRITE_ERROR",
-	STATUS_SURFACE_FINISHED:          "CAIRO_STATUS_SURFACE_FINISHED",
-	STATUS_SURFACE_TYPE_MISMATCH:     "CAIRO_STATUS_SURFACE_TYPE_MISMATCH",
-	STATUS_PATTERN_TYPE_MISMATCH:     "CAIRO_STATUS_PATTERN_TYPE_MISMATCH",
-	STATUS_INVALID_CONTENT:           "CAIRO_STATUS_INVALID_CONTENT",
-	STATUS_INVALID_FORMAT:            "CAIRO_STATUS_INVALID_FORMAT",
-	STATUS_INVALID_VISUAL:            "CAIRO_STATUS_INVALID_VISUAL",
-	STATUS_FILE_NOT_FOUND:            "CAIRO_STATUS_FILE_NOT_FOUND",
-	STATUS_INVALID_DASH:              "CAIRO_STATUS_INVALID_DASH",
-	STATUS_INVALID_DSC_COMMENT:       "CAIRO_STATUS_INVALID_DSC_COMMENT",
-	STATUS_INVALID_INDEX:             "CAIRO_STATUS_INVALID_INDEX",
-	STATUS_CLIP_NOT_REPRESENTABLE:    "CAIRO_STATUS_CLIP_NOT_REPRESENTABLE",
-	STATUS_TEMP_FILE_ERROR:           "CAIRO_STATUS_TEMP_FILE_ERROR",
-	STATUS_INVALID_STRIDE:            "CAIRO_STATUS_INVALID_STRIDE",
-	STATUS_FONT_TYPE_MISMATCH:        "CAIRO_STATUS_FONT_TYPE_MISMATCH",
-	STATUS_USER_FONT_IMMUTABLE:       "CAIRO_STATUS_USER_FONT_IMMUTABLE",
-	STATUS_USER_FONT_ERROR:           "CAIRO_STATUS_USER_FONT_ERROR",
-	STATUS_NEGATIVE_COUNT:            "CAIRO_STATUS_NEGATIVE_COUNT",
-	STATUS_INVALID_CLUSTERS:          "CAIRO_STATUS_INVALID_CLUSTERS",
-	STATUS_INVALID_SLANT:             "CAIRO_STATUS_INVALID_SLANT",
-	STATUS_INVALID_WEIGHT:            "CAIRO_STATUS_INVALID_WEIGHT",
-	STATUS_INVALID_SIZE:              "CAIRO_STATUS_INVALID_SIZE",
-	STATUS_USER_FONT_NOT_IMPLEMENTED: "CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED",
-	STATUS_DEVICE_TYPE_MISMATCH:      "CAIRO_STATUS_DEVICE_TYPE_MISMATCH",
-	STATUS_DEVICE_ERROR:              "CAIRO_STATUS_DEVICE_ERROR",
-}
-
-func StatusToString(status Status) string {
-	s, ok := key_Status[status]
-	if !ok {
-		s = "CAIRO_STATUS_UNDEFINED"
-	}
-	return s
+var keyStatus = map[Status]string{
+	StatusSuccess:                "CAIRO_StatusSuccess",
+	StatusNoMemory:               "CAIRO_STATUS_NO_MEMORY",
+	StatusInvalidRestore:         "CAIRO_STATUS_INVALID_RESTORE",
+	StatusInvalidPopGroup:        "CAIRO_STATUS_INVALID_POP_GROUP",
+	StatusNoCurrentPoint:         "CAIRO_STATUS_NO_CURRENT_POINT",
+	StatusInvalidMatrix:          "CAIRO_STATUS_INVALID_MATRIX",
+	StatusInvalidStatus:          "CAIRO_STATUS_INVALID_STATUS",
+	StatusNullPointer:            "CAIRO_STATUS_NULL_POINTER",
+	StatusInvalidString:          "CAIRO_STATUS_INVALID_STRING",
+	StatusInvalidPathData:        "CAIRO_STATUS_INVALID_PATH_DATA",
+	StatusReadError:              "CAIRO_STATUS_READ_ERROR",
+	StatusWriteError:             "CAIRO_STATUS_WRITE_ERROR",
+	StatusSurfaceFinished:        "CAIRO_STATUS_SURFACE_FINISHED",
+	StatusSurfaceTypeMismatch:    "CAIRO_STATUS_SURFACE_TYPE_MISMATCH",
+	StatusPatternTypeMismatch:    "CAIRO_STATUS_PATTERN_TYPE_MISMATCH",
+	StatusInvalidContent:         "CAIRO_STATUS_INVALID_CONTENT",
+	StatusInvalidFormat:          "CAIRO_STATUS_INVALID_FORMAT",
+	StatusInvalidVisual:          "CAIRO_STATUS_INVALID_VISUAL",
+	StatusFileNotFound:           "CAIRO_STATUS_FILE_NOT_FOUND",
+	StatusInvalidDash:            "CAIRO_STATUS_INVALID_DASH",
+	StatusInvalidDSCComment:      "CAIRO_STATUS_INVALID_DSC_COMMENT",
+	StatusInvalidIndex:           "CAIRO_STATUS_INVALID_INDEX",
+	StatusClipNotRepresentable:   "CAIRO_STATUS_CLIP_NOT_REPRESENTABLE",
+	StatusTempFileError:          "CAIRO_STATUS_TEMP_FILE_ERROR",
+	StatusInvalidStride:          "CAIRO_STATUS_INVALID_STRIDE",
+	StatusFontTypeMismatch:       "CAIRO_STATUS_FONT_TYPE_MISMATCH",
+	StatusUserFontImmutable:      "CAIRO_STATUS_USER_FONT_IMMUTABLE",
+	StatusUserFontError:          "CAIRO_STATUS_USER_FONT_ERROR",
+	StatusNegativeCount:          "CAIRO_STATUS_NEGATIVE_COUNT",
+	StatusInvalidClusters:        "CAIRO_STATUS_INVALID_CLUSTERS",
+	StatusInvalidSlant:           "CAIRO_STATUS_INVALID_SLANT",
+	StatusInvalidWeight:          "CAIRO_STATUS_INVALID_WEIGHT",
+	StatusInvalidSize:            "CAIRO_STATUS_INVALID_SIZE",
+	StatusUserFontNotImplemented: "CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED",
+	StatusDeviceTypeMismatch:     "CAIRO_STATUS_DEVICE_TYPE_MISMATCH",
+	StatusDeviceError:            "CAIRO_STATUS_DEVICE_ERROR",
 }
 
 func marshalStatus(p uintptr) (interface{}, error) {
@@ -109,16 +99,28 @@ func marshalStatus(p uintptr) (interface{}, error) {
 
 // String returns a readable status messsage usable in texts.
 func (s Status) String() string {
-	str := StatusToString(s)
+	str, ok := keyStatus[s]
+	if !ok {
+		str = "CAIRO_STATUS_UNDEFINED"
+	}
+
 	str = strings.Replace(str, "CAIRO_STATUS_", "", 1)
 	str = strings.Replace(str, "_", " ", 0)
 	return strings.ToLower(str)
 }
 
+// Error implements error. It calls String() unless s is StatusSuccess.
+func (s Status) Error() string {
+	if s == StatusSuccess {
+		return "<nil>"
+	}
+	return s.String()
+}
+
 // ToError returns the error for the status. Returns nil if success.
 func (s Status) ToError() error {
-	if s == STATUS_SUCCESS {
+	if s == StatusSuccess {
 		return nil
 	}
-	return errors.New(s.String())
+	return s
 }

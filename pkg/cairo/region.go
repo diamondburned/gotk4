@@ -28,9 +28,9 @@ func init() {
 type RegionOverlap int
 
 const (
-	REGION_OVERLAP_IN   RegionOverlap = C.CAIRO_REGION_OVERLAP_IN
-	REGION_OVERLAP_OUT  RegionOverlap = C.CAIRO_REGION_OVERLAP_OUT
-	REGION_OVERLAP_PART RegionOverlap = C.CAIRO_REGION_OVERLAP_PART
+	RegionOverlapIn   RegionOverlap = C.CAIRO_REGION_OVERLAP_IN
+	RegionOverlapOut  RegionOverlap = C.CAIRO_REGION_OVERLAP_OUT
+	RegionOverlapPart RegionOverlap = C.CAIRO_REGION_OVERLAP_PART
 )
 
 func marshalRegionOverlap(p uintptr) (interface{}, error) {
@@ -171,7 +171,7 @@ func (v *Region) Status() Status {
 }
 
 // GetExtents is a wrapper around cairo_region_get_extents().
-func (v *Region) GetExtents(extents *Rectangle) {
+func (v *Region) Extents(extents *Rectangle) {
 
 	C.cairo_region_get_extents(v.native(), extents.native())
 }
@@ -183,7 +183,7 @@ func (v *Region) NumRectangles() int {
 }
 
 // GetRectangle is a wrapper around cairo_region_get_rectangle().
-func (v *Region) GetRectangle(nth int) *Rectangle {
+func (v *Region) Rectangle(nth int) *Rectangle {
 
 	cr := new(C.cairo_rectangle_int_t)
 	C.cairo_region_get_rectangle(v.native(), C.int(nth), cr)

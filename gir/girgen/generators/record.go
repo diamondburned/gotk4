@@ -375,8 +375,6 @@ func (rg *RecordGenerator) getters() {
 			continue
 		}
 
-		file.ApplyHeader(rg, converted)
-
 		info := gir.InfoElements{
 			DocElements: gir.DocElements{Doc: values[i].Doc},
 		}
@@ -391,6 +389,8 @@ func (rg *RecordGenerator) getters() {
 			b.Linef(converted.Out.Declare)
 			b.Linef(converted.Conversion)
 			b.Linef("return v")
+
+			file.ApplyHeader(rg, converted)
 
 			rg.Getters = append(rg.Getters, recordGetter{
 				Name:         strcases.SnakeToGo(true, converted.Name),

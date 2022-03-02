@@ -36,6 +36,7 @@ Rtl
 Gtk
 Nul
 Eof
+Svg
 Md5
 Dmy
 Cas

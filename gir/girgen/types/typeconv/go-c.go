@@ -379,7 +379,7 @@ func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
 		value.p.Linef(inner.Conversion)
 		value.p.Linef(
 			"%s = C.%s(%[1]s, C.gpointer(unsafe.Pointer(dst)))",
-			value.OutInNamePtr(1), prependFn)
+			value.Out.Set, prependFn)
 		value.p.Linef("}")
 
 		if value.ShouldFree() {

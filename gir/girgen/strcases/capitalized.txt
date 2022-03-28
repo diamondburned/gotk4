@@ -12,6 +12,11 @@ Rc
 Ft
 Ps
 Pdf
+Png
+Jpg
+Jpeg
+Tiff
+Tif
 Pin
 Dnd
 Ngl

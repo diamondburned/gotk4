@@ -236,7 +236,7 @@ func (texture *Texture) Width() int {
 	return _gint
 }
 
-// SaveToPng: store the given texture to the filename as a PNG file.
+// SaveToPNG: store the given texture to the filename as a PNG file.
 //
 // This is a utility function intended for debugging and testing. If you want
 // more control over formats, proper error handling or want to store to a GFile
@@ -250,7 +250,7 @@ func (texture *Texture) Width() int {
 //
 //    - ok: TRUE if saving succeeded, FALSE on failure.
 //
-func (texture *Texture) SaveToPng(filename string) bool {
+func (texture *Texture) SaveToPNG(filename string) bool {
 	var _arg0 *C.GdkTexture // out
 	var _arg1 *C.char       // out
 	var _cret C.gboolean    // in

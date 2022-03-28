@@ -766,7 +766,7 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 	defer C.free(unsafe.Pointer(cstr))
 
 	// Create array of this instance and arguments
-	valv := (*C.GValue)(C.malloc(C.sizeof_GValue * C.size_t(len(args)+1)))
+	valv := (*C.GValue)(C.calloc(C.sizeof_GValue, C.size_t(len(args)+1)))
 	defer C.free(unsafe.Pointer(valv))
 
 	// Add args and valv
@@ -781,6 +781,10 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 	t := v.TypeFromInstance()
 	// TODO: use just the signal name
 	id := C.g_signal_lookup((*C.gchar)(cstr), C.GType(t))
+	if id == 0 {
+		log.Println("Emit: signal", s, "not found for object type", t)
+		return nil
+	}
 
 	ret := AllocateValue()
 

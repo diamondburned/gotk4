@@ -626,9 +626,9 @@ const (
 	// InputPurposePassword: like GTK_INPUT_PURPOSE_FREE_FORM, but characters
 	// are hidden.
 	InputPurposePassword
-	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are
+	// InputPurposePIN: like GTK_INPUT_PURPOSE_DIGITS, but characters are
 	// hidden.
-	InputPurposePin
+	InputPurposePIN
 	// InputPurposeTerminal: allow any character, in addition to control codes.
 	InputPurposeTerminal
 )
@@ -658,8 +658,8 @@ func (i InputPurpose) String() string {
 		return "Name"
 	case InputPurposePassword:
 		return "Password"
-	case InputPurposePin:
-		return "Pin"
+	case InputPurposePIN:
+		return "PIN"
 	case InputPurposeTerminal:
 		return "Terminal"
 	default:

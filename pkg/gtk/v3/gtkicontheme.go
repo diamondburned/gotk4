@@ -77,12 +77,12 @@ func (i IconThemeError) String() string {
 type IconLookupFlags C.guint
 
 const (
-	// IconLookupNoSvg: never get SVG icons, even if gdk-pixbuf supports them.
+	// IconLookupNoSVG: never get SVG icons, even if gdk-pixbuf supports them.
 	// Cannot be used together with GTK_ICON_LOOKUP_FORCE_SVG.
-	IconLookupNoSvg IconLookupFlags = 0b1
-	// IconLookupForceSvg: get SVG icons, even if gdk-pixbuf doesn’t support
+	IconLookupNoSVG IconLookupFlags = 0b1
+	// IconLookupForceSVG: get SVG icons, even if gdk-pixbuf doesn’t support
 	// them. Cannot be used together with GTK_ICON_LOOKUP_NO_SVG.
-	IconLookupForceSvg IconLookupFlags = 0b10
+	IconLookupForceSVG IconLookupFlags = 0b10
 	// IconLookupUseBuiltin: when passed to gtk_icon_theme_lookup_icon()
 	// includes builtin icons as well as files. For a builtin icon,
 	// gtk_icon_info_get_filename() is NULL and you need to call
@@ -128,10 +128,10 @@ func (i IconLookupFlags) String() string {
 		bit := i - next
 
 		switch bit {
-		case IconLookupNoSvg:
-			builder.WriteString("NoSvg|")
-		case IconLookupForceSvg:
-			builder.WriteString("ForceSvg|")
+		case IconLookupNoSVG:
+			builder.WriteString("NoSVG|")
+		case IconLookupForceSVG:
+			builder.WriteString("ForceSVG|")
 		case IconLookupUseBuiltin:
 			builder.WriteString("UseBuiltin|")
 		case IconLookupGenericFallback:

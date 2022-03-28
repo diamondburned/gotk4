@@ -12,6 +12,7 @@ Rc
 Ft
 Ps
 Pdf
+Pin
 Dnd
 Ngl
 Iso

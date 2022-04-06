@@ -463,7 +463,7 @@ func ConnectGeneratedClosure(
 	v.box.Closures.Register(unsafe.Pointer(gclosure), fs)
 
 	// Just in case.
-	C.g_object_watch_closure(v.native(), gclosure)
+	// C.g_object_watch_closure(v.native(), gclosure)
 
 	// TODO: intern this.
 	csignal := (*C.gchar)(C.CString(signal))

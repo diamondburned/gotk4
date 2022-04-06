@@ -34,6 +34,7 @@ var sink interface{}
 // newBox creates a zero-value instance of Box.
 func newBox(obj unsafe.Pointer) *Box {
 	box := &Box{obj: obj}
+	profileRecordObject(box.obj, 3)
 
 	// Force box on the heap. Objects on the stack can move, but not objects on
 	// the heap. At least not for now; the assume-no-moving-gc import will
@@ -169,6 +170,8 @@ func finalizeBox(box *Box) {
 			(*C.GObject)(unsafe.Pointer(box.obj)),
 			(*[0]byte)(C.goToggleNotify), nil,
 		)
+
+		profileRemoveObject(box.obj)
 	}
 }
 

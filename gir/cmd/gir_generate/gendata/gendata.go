@@ -515,6 +515,7 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 
 	h := fg.Header()
 	h.Import("runtime")
+	h.Import("reflect")
 	h.ImportCore("gbox")
 	h.ImportCore("gextras")
 	h.CallbackDelete = true
@@ -548,6 +549,29 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 			)
 
 			return _bytes
+		}
+
+		// Use calls f with Bytes' internal byte slice without making a copy. f
+		// must NOT move the byte slice to outside of the closure, since the
+		// slice's internal array buffer may be freed after.
+		func (b *Bytes) Use(f func([]byte)) {
+			var ptr C.gconstpointer // in
+			var len C.gsize         // in
+
+			ptr = C.g_bytes_get_data(
+				(*C.GBytes)(gextras.StructNative(unsafe.Pointer(b))),
+				&len,
+			)
+
+			var buf []byte
+
+			h := (*reflect.SliceHeader)(unsafe.Pointer(&buf))
+			h.Data = uintptr(ptr)
+			h.Len = int(len)
+			h.Cap = int(len)
+
+			f(buf)
+			runtime.KeepAlive(b)
 		}
 	`)
 

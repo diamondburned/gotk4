@@ -36,6 +36,7 @@ func init() {
 
 // BuildableOverrider contains methods that are overridable.
 type BuildableOverrider interface {
+	externglib.Objector
 	// AddChild adds a child to buildable. type is an optional string describing
 	// how the child should be added.
 	//

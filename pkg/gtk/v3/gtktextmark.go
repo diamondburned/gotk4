@@ -27,6 +27,7 @@ func init() {
 
 // TextMarkOverrider contains methods that are overridable.
 type TextMarkOverrider interface {
+	externglib.Objector
 }
 
 // TextMark: you may wish to begin by reading the [text widget conceptual

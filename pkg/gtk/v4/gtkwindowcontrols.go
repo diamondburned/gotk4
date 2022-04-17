@@ -25,6 +25,7 @@ func init() {
 
 // WindowControlsOverrider contains methods that are overridable.
 type WindowControlsOverrider interface {
+	externglib.Objector
 }
 
 // WindowControls: GtkWindowControls shows window frame controls.

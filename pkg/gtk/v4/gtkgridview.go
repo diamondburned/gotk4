@@ -26,6 +26,7 @@ func init() {
 
 // GridViewOverrider contains methods that are overridable.
 type GridViewOverrider interface {
+	externglib.Objector
 }
 
 // GridView: GtkGridView presents a large dynamic grid of items.
@@ -158,7 +159,7 @@ func (self *GridView) ConnectActivate(f func(position uint)) externglib.SignalHa
 //
 //    - gridView: new GtkGridView using the given model and factory.
 //
-func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
+func NewGridView(model SelectionModelOverrider, factory *ListItemFactory) *GridView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -282,7 +283,7 @@ func (self *GridView) MinColumns() uint {
 //
 //    - selectionModel (optional): model in use.
 //
-func (self *GridView) Model() SelectionModeller {
+func (self *GridView) Model() SelectionModelOverrider {
 	var _arg0 *C.GtkGridView       // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -291,7 +292,7 @@ func (self *GridView) Model() SelectionModeller {
 	_cret = C.gtk_grid_view_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel SelectionModeller // out
+	var _selectionModel SelectionModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -299,10 +300,10 @@ func (self *GridView) Model() SelectionModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SelectionModeller)
+				_, ok := obj.(SelectionModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(SelectionModeller)
+			rv, ok := casted.(SelectionModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 			}
@@ -433,7 +434,7 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 //
 //    - model (optional) to use or NULL for none.
 //
-func (self *GridView) SetModel(model SelectionModeller) {
+func (self *GridView) SetModel(model SelectionModelOverrider) {
 	var _arg0 *C.GtkGridView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

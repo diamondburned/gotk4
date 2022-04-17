@@ -173,6 +173,7 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 
 // ContextOverrider contains methods that are overridable.
 type ContextOverrider interface {
+	externglib.Objector
 }
 
 // Context: PangoContext stores global information used to control the

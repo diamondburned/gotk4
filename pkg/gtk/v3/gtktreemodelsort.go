@@ -28,6 +28,7 @@ func init() {
 
 // TreeModelSortOverrider contains methods that are overridable.
 type TreeModelSortOverrider interface {
+	externglib.Objector
 }
 
 // TreeModelSort is a model which implements the TreeSortable interface. It does
@@ -134,7 +135,7 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 //
 //    - treeModelSort: new TreeModelSort.
 //
-func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
+func NewTreeModelSortWithModel(childModel TreeModelOverrider) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
 
@@ -320,7 +321,7 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 //
 //    - treeModel: "child model" being sorted.
 //
-func (treeModel *TreeModelSort) Model() TreeModeller {
+func (treeModel *TreeModelSort) Model() TreeModelOverrider {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _cret *C.GtkTreeModel     // in
 
@@ -329,7 +330,7 @@ func (treeModel *TreeModelSort) Model() TreeModeller {
 	_cret = C.gtk_tree_model_sort_get_model(_arg0)
 	runtime.KeepAlive(treeModel)
 
-	var _treeModel TreeModeller // out
+	var _treeModel TreeModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -339,10 +340,10 @@ func (treeModel *TreeModelSort) Model() TreeModeller {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}

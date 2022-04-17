@@ -23,9 +23,11 @@ import (
 // extern gboolean _gotk4_gio2_OutputStreamClass_flush(GOutputStream*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_OutputStreamClass_flush_finish(GOutputStream*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_OutputStreamClass_writev_finish(GOutputStream*, GAsyncResult*, gsize*, GError**);
+// extern gboolean _gotk4_gio2_OutputStreamClass_writev_fn(GOutputStream*, GOutputVector*, gsize, gsize*, GCancellable*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_splice(GOutputStream*, GInputStream*, GOutputStreamSpliceFlags, GCancellable*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_splice_finish(GOutputStream*, GAsyncResult*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_write_finish(GOutputStream*, GAsyncResult*, GError**);
+// extern gssize _gotk4_gio2_OutputStreamClass_write_fn(GOutputStream*, void*, gsize, GCancellable*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -40,13 +42,14 @@ func init() {
 
 // OutputStreamOverrider contains methods that are overridable.
 type OutputStreamOverrider interface {
+	externglib.Objector
 	// CloseFinish closes an output stream.
 	//
 	// The function takes the following parameters:
 	//
 	//    - result: Result.
 	//
-	CloseFinish(result AsyncResulter) error
+	CloseFinish(result AsyncResultOverrider) error
 	// The function takes the following parameters:
 	//
 	CloseFn(ctx context.Context) error
@@ -71,7 +74,7 @@ type OutputStreamOverrider interface {
 	//
 	//    - result: GAsyncResult.
 	//
-	FlushFinish(result AsyncResulter) error
+	FlushFinish(result AsyncResultOverrider) error
 	// Splice splices an input stream into an output stream.
 	//
 	// The function takes the following parameters:
@@ -100,7 +103,7 @@ type OutputStreamOverrider interface {
 	//      bytes spliced is greater than G_MAXSSIZE, then that will be returned,
 	//      and there is no way to determine the actual number of bytes spliced.
 	//
-	SpliceFinish(result AsyncResulter) (int, error)
+	SpliceFinish(result AsyncResultOverrider) (int, error)
 	// WriteFinish finishes a stream write operation.
 	//
 	// The function takes the following parameters:
@@ -111,7 +114,37 @@ type OutputStreamOverrider interface {
 	//
 	//    - gssize containing the number of bytes written to the stream.
 	//
-	WriteFinish(result AsyncResulter) (int, error)
+	WriteFinish(result AsyncResultOverrider) (int, error)
+	// WriteFn tries to write count bytes from buffer into the stream. Will
+	// block during the operation.
+	//
+	// If count is 0, returns 0 and does nothing. A value of count larger than
+	// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes written to the stream is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. on a partial I/O error, or if there is not enough storage in
+	// the stream. All writes block until at least one byte is written or an
+	// error occurs; 0 is never returned (unless count is 0).
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// On error -1 is returned and error is set accordingly.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional cancellable object.
+	//    - buffer (optional) containing the data to write.
+	//
+	// The function returns the following values:
+	//
+	//    - gssize: number of bytes written, or -1 on error.
+	//
+	WriteFn(ctx context.Context, buffer []byte) (int, error)
 	// WritevFinish finishes a stream writev operation.
 	//
 	// The function takes the following parameters:
@@ -123,7 +156,42 @@ type OutputStreamOverrider interface {
 	//    - bytesWritten (optional): location to store the number of bytes that
 	//      were written to the stream.
 	//
-	WritevFinish(result AsyncResulter) (uint, error)
+	WritevFinish(result AsyncResultOverrider) (uint, error)
+	// WritevFn tries to write the bytes contained in the n_vectors vectors into
+	// the stream. Will block during the operation.
+	//
+	// If n_vectors is 0 or the sum of all bytes in vectors is 0, returns 0 and
+	// does nothing.
+	//
+	// On success, the number of bytes written to the stream is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. on a partial I/O error, or if there is not enough storage in
+	// the stream. All writes block until at least one byte is written or an
+	// error occurs; 0 is never returned (unless n_vectors is 0 or the sum of
+	// all bytes in vectors is 0).
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// Some implementations of g_output_stream_writev() may have limitations on
+	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
+	// these are exceeded. For example, when writing to a local file on UNIX
+	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional cancellable object.
+	//    - vectors: buffer containing the Vectors to write.
+	//
+	// The function returns the following values:
+	//
+	//    - bytesWritten (optional): location to store the number of bytes that
+	//      were written to the stream.
+	//
+	WritevFn(ctx context.Context, vectors []OutputVector) (uint, error)
 }
 
 // OutputStream has functions to write to a stream (g_output_stream_write()), to
@@ -169,7 +237,7 @@ func classInitOutputStreamer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GOutputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		CloseFinish(result AsyncResulter) error
+		CloseFinish(result AsyncResultOverrider) error
 	}); ok {
 		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_close_finish)
 	}
@@ -187,7 +255,7 @@ func classInitOutputStreamer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		FlushFinish(result AsyncResulter) error
+		FlushFinish(result AsyncResultOverrider) error
 	}); ok {
 		pclass.flush_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_flush_finish)
 	}
@@ -199,21 +267,33 @@ func classInitOutputStreamer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		SpliceFinish(result AsyncResulter) (int, error)
+		SpliceFinish(result AsyncResultOverrider) (int, error)
 	}); ok {
 		pclass.splice_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_splice_finish)
 	}
 
 	if _, ok := goval.(interface {
-		WriteFinish(result AsyncResulter) (int, error)
+		WriteFinish(result AsyncResultOverrider) (int, error)
 	}); ok {
 		pclass.write_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_write_finish)
 	}
 
 	if _, ok := goval.(interface {
-		WritevFinish(result AsyncResulter) (uint, error)
+		WriteFn(ctx context.Context, buffer []byte) (int, error)
+	}); ok {
+		pclass.write_fn = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_write_fn)
+	}
+
+	if _, ok := goval.(interface {
+		WritevFinish(result AsyncResultOverrider) (uint, error)
 	}); ok {
 		pclass.writev_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_writev_finish)
+	}
+
+	if _, ok := goval.(interface {
+		WritevFn(ctx context.Context, vectors []OutputVector) (uint, error)
+	}); ok {
+		pclass.writev_fn = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_writev_fn)
 	}
 }
 
@@ -221,10 +301,10 @@ func classInitOutputStreamer(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		CloseFinish(result AsyncResulter) error
+		CloseFinish(result AsyncResultOverrider) error
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -234,10 +314,10 @@ func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.GOutputStream, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -301,10 +381,10 @@ func _gotk4_gio2_OutputStreamClass_flush(arg0 *C.GOutputStream, arg1 *C.GCancell
 func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		FlushFinish(result AsyncResulter) error
+		FlushFinish(result AsyncResultOverrider) error
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -314,10 +394,10 @@ func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.GOutputStream, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -380,10 +460,10 @@ func _gotk4_gio2_OutputStreamClass_splice(arg0 *C.GOutputStream, arg1 *C.GInputS
 func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		SpliceFinish(result AsyncResulter) (int, error)
+		SpliceFinish(result AsyncResultOverrider) (int, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -393,10 +473,10 @@ func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -417,10 +497,10 @@ func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.
 func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		WriteFinish(result AsyncResulter) (int, error)
+		WriteFinish(result AsyncResultOverrider) (int, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -430,10 +510,10 @@ func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -450,14 +530,42 @@ func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.G
 	return cret
 }
 
+//export _gotk4_gio2_OutputStreamClass_write_fn
+func _gotk4_gio2_OutputStreamClass_write_fn(arg0 *C.GOutputStream, arg1 *C.void, arg2 C.gsize, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		WriteFn(ctx context.Context, buffer []byte) (int, error)
+	})
+
+	var _cancellable context.Context // out
+	var _buffer []byte               // out
+
+	if arg3 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
+	}
+	if arg1 != nil {
+		_buffer = make([]byte, arg2)
+		copy(_buffer, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
+	}
+
+	gssize, _goerr := iface.WriteFn(_cancellable, _buffer)
+
+	cret = C.gssize(gssize)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
 //export _gotk4_gio2_OutputStreamClass_writev_finish
 func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, arg2 *C.gsize, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		WritevFinish(result AsyncResulter) (uint, error)
+		WritevFinish(result AsyncResultOverrider) (uint, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -467,10 +575,10 @@ func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.GOutputStream, arg1 *C.
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -480,6 +588,37 @@ func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.GOutputStream, arg1 *C.
 	bytesWritten, _goerr := iface.WritevFinish(_result)
 
 	*arg2 = C.gsize(bytesWritten)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_OutputStreamClass_writev_fn
+func _gotk4_gio2_OutputStreamClass_writev_fn(arg0 *C.GOutputStream, arg1 *C.GOutputVector, arg2 C.gsize, arg3 *C.gsize, arg4 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		WritevFn(ctx context.Context, vectors []OutputVector) (uint, error)
+	})
+
+	var _cancellable context.Context // out
+	var _vectors []OutputVector      // out
+
+	if arg4 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg4))
+	}
+	{
+		src := unsafe.Slice((*C.GOutputVector)(arg1), arg2)
+		_vectors = make([]OutputVector, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_vectors[i] = *(*OutputVector)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+
+	bytesWritten, _goerr := iface.WritevFn(_cancellable, _vectors)
+
+	*arg3 = C.gsize(bytesWritten)
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -623,7 +762,7 @@ func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, call
 //
 //    - result: Result.
 //
-func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
+func (stream *OutputStream) CloseFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
@@ -727,7 +866,7 @@ func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, call
 //
 //    - result: GAsyncResult.
 //
-func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
+func (stream *OutputStream) FlushFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cerr *C.GError        // in
@@ -950,7 +1089,7 @@ func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreame
 //      spliced is greater than G_MAXSSIZE, then that will be returned, and there
 //      is no way to determine the actual number of bytes spliced.
 //
-func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
+func (stream *OutputStream) SpliceFinish(result AsyncResultOverrider) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
@@ -1177,7 +1316,7 @@ func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, io
 //    - bytesWritten (optional): location to store the number of bytes that was
 //      written to the stream.
 //
-func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
+func (stream *OutputStream) WriteAllFinish(result AsyncResultOverrider) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
@@ -1386,7 +1525,7 @@ func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Byt
 //
 //    - gssize containing the number of bytes written to the stream.
 //
-func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) {
+func (stream *OutputStream) WriteBytesFinish(result AsyncResultOverrider) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
@@ -1420,7 +1559,7 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 //
 //    - gssize containing the number of bytes written to the stream.
 //
-func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
+func (stream *OutputStream) WriteFinish(result AsyncResultOverrider) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret C.gssize         // in
@@ -1671,7 +1810,7 @@ func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []Output
 //    - bytesWritten (optional): location to store the number of bytes that were
 //      written to the stream.
 //
-func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) {
+func (stream *OutputStream) WritevAllFinish(result AsyncResultOverrider) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in
@@ -1782,7 +1921,7 @@ func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVec
 //    - bytesWritten (optional): location to store the number of bytes that were
 //      written to the stream.
 //
-func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
+func (stream *OutputStream) WritevFinish(result AsyncResultOverrider) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 C.gsize          // in

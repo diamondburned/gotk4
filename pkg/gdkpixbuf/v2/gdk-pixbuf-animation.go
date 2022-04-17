@@ -210,7 +210,7 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 //
 //    - pixbufAnimation (optional): newly created animation.
 //
-func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufAnimation, error) {
+func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResultOverrider) (*PixbufAnimation, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in

@@ -28,6 +28,7 @@ func init() {
 
 // PopoverMenuOverrider contains methods that are overridable.
 type PopoverMenuOverrider interface {
+	externglib.Objector
 }
 
 // PopoverMenu is a subclass of Popover that treats its children like menus and

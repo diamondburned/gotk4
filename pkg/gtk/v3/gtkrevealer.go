@@ -76,6 +76,7 @@ func (r RevealerTransitionType) String() string {
 
 // RevealerOverrider contains methods that are overridable.
 type RevealerOverrider interface {
+	externglib.Objector
 }
 
 // Revealer widget is a container which animates the transition of its child

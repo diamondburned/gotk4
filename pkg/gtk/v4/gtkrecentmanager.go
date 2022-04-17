@@ -89,6 +89,7 @@ func (r RecentManagerError) String() string {
 
 // RecentManagerOverrider contains methods that are overridable.
 type RecentManagerOverrider interface {
+	externglib.Objector
 	Changed()
 }
 
@@ -675,7 +676,7 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 //    - appInfo (optional): newly created GAppInfo, or NULL. In case of error,
 //      error will be set either with a GTK_RECENT_MANAGER_ERROR or a G_IO_ERROR.
 //
-func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
+func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfoOverrider, error) {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out
 	var _cret *C.GAppInfo      // in
@@ -691,8 +692,8 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(appName)
 
-	var _appInfo gio.AppInfor // out
-	var _goerr error          // out
+	var _appInfo gio.AppInfoOverrider // out
+	var _goerr error                  // out
 
 	if _cret != nil {
 		{
@@ -700,10 +701,10 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.AppInfor)
+				_, ok := obj.(gio.AppInfoOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.AppInfor)
+			rv, ok := casted.(gio.AppInfoOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
@@ -942,7 +943,7 @@ func (info *RecentInfo) DisplayName() string {
 //    - icon (optional) containing the icon, or NULL. Use g_object_unref() when
 //      finished using the icon.
 //
-func (info *RecentInfo) GIcon() gio.Iconner {
+func (info *RecentInfo) GIcon() gio.IconOverrider {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GIcon         // in
 
@@ -951,7 +952,7 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 	_cret = C.gtk_recent_info_get_gicon(_arg0)
 	runtime.KeepAlive(info)
 
-	var _icon gio.Iconner // out
+	var _icon gio.IconOverrider // out
 
 	if _cret != nil {
 		{
@@ -959,10 +960,10 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
+				_, ok := obj.(gio.IconOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.Iconner)
+			rv, ok := casted.(gio.IconOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}

@@ -30,6 +30,7 @@ const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
 
 // MemoryMonitorOverrider contains methods that are overridable.
 type MemoryMonitorOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	LowMemoryWarning(level MemoryMonitorWarningLevel)
@@ -174,12 +175,12 @@ func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitor
 //
 //    - memoryMonitor: new reference to the default Monitor.
 //
-func MemoryMonitorDupDefault() MemoryMonitorrer {
+func MemoryMonitorDupDefault() MemoryMonitorOverrider {
 	var _cret *C.GMemoryMonitor // in
 
 	_cret = C.g_memory_monitor_dup_default()
 
-	var _memoryMonitor MemoryMonitorrer // out
+	var _memoryMonitor MemoryMonitorOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -189,10 +190,10 @@ func MemoryMonitorDupDefault() MemoryMonitorrer {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(MemoryMonitorrer)
+			_, ok := obj.(MemoryMonitorOverrider)
 			return ok
 		})
-		rv, ok := casted.(MemoryMonitorrer)
+		rv, ok := casted.(MemoryMonitorOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MemoryMonitorrer")
 		}

@@ -27,6 +27,7 @@ func init() {
 
 // VSeparatorOverrider contains methods that are overridable.
 type VSeparatorOverrider interface {
+	externglib.Objector
 }
 
 // VSeparator widget is a vertical separator, used to group the widgets within a

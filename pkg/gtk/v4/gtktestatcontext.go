@@ -24,7 +24,7 @@ import "C"
 //    - expectedRole
 //    - actualRole
 //
-func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr string, accessible Accessibler, expectedRole, actualRole AccessibleRole) {
+func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr string, accessible AccessibleOverrider, expectedRole, actualRole AccessibleRole) {
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
 	var _arg3 C.int               // out
@@ -69,7 +69,7 @@ func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr 
 //
 //    - ok: TRUE if the property is set in the accessible.
 //
-func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProperty) bool {
+func TestAccessibleHasProperty(accessible AccessibleOverrider, property AccessibleProperty) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleProperty // out
 	var _cret C.gboolean              // in
@@ -101,7 +101,7 @@ func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProper
 //
 //    - ok: TRUE if the relation is set in the accessible.
 //
-func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelation) bool {
+func TestAccessibleHasRelation(accessible AccessibleOverrider, relation AccessibleRelation) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleRelation // out
 	var _cret C.gboolean              // in
@@ -134,7 +134,7 @@ func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelati
 //
 //    - ok: TRUE if the role matches.
 //
-func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
+func TestAccessibleHasRole(accessible AccessibleOverrider, role AccessibleRole) bool {
 	var _arg1 *C.GtkAccessible    // out
 	var _arg2 C.GtkAccessibleRole // out
 	var _cret C.gboolean          // in
@@ -166,7 +166,7 @@ func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 //
 //    - ok: TRUE if the state is set in the accessible.
 //
-func TestAccessibleHasState(accessible Accessibler, state AccessibleState) bool {
+func TestAccessibleHasState(accessible AccessibleOverrider, state AccessibleState) bool {
 	var _arg1 *C.GtkAccessible     // out
 	var _arg2 C.GtkAccessibleState // out
 	var _cret C.gboolean           // in

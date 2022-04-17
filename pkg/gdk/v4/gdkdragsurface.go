@@ -25,6 +25,7 @@ func init() {
 
 // DragSurfaceOverrider contains methods that are overridable.
 type DragSurfaceOverrider interface {
+	externglib.Objector
 }
 
 // DragSurface is an interface for surfaces used during DND.

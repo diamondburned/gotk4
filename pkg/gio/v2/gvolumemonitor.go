@@ -60,21 +60,22 @@ const VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-volume-monitor"
 
 // VolumeMonitorOverrider contains methods that are overridable.
 type VolumeMonitorOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
-	DriveChanged(drive Driver)
+	DriveChanged(drive DriveOverrider)
 	// The function takes the following parameters:
 	//
-	DriveConnected(drive Driver)
+	DriveConnected(drive DriveOverrider)
 	// The function takes the following parameters:
 	//
-	DriveDisconnected(drive Driver)
+	DriveDisconnected(drive DriveOverrider)
 	// The function takes the following parameters:
 	//
-	DriveEjectButton(drive Driver)
+	DriveEjectButton(drive DriveOverrider)
 	// The function takes the following parameters:
 	//
-	DriveStopButton(drive Driver)
+	DriveStopButton(drive DriveOverrider)
 	// ConnectedDrives gets a list of drives connected to the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -84,7 +85,7 @@ type VolumeMonitorOverrider interface {
 	//
 	//    - list of connected #GDrive objects.
 	//
-	ConnectedDrives() []Driver
+	ConnectedDrives() []DriveOverrider
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid()).
 	//
 	// The function takes the following parameters:
@@ -96,7 +97,7 @@ type VolumeMonitorOverrider interface {
 	//    - mount (optional) or NULL if no such mount is available. Free the
 	//      returned object with g_object_unref().
 	//
-	MountForUUID(uuid string) Mounter
+	MountForUUID(uuid string) MountOverrider
 	// Mounts gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -106,7 +107,7 @@ type VolumeMonitorOverrider interface {
 	//
 	//    - list of #GMount objects.
 	//
-	Mounts() []Mounter
+	Mounts() []MountOverrider
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid()).
 	//
@@ -119,7 +120,7 @@ type VolumeMonitorOverrider interface {
 	//    - volume (optional) or NULL if no such volume is available. Free the
 	//      returned object with g_object_unref().
 	//
-	VolumeForUUID(uuid string) Volumer
+	VolumeForUUID(uuid string) VolumeOverrider
 	// Volumes gets a list of the volumes on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -129,28 +130,28 @@ type VolumeMonitorOverrider interface {
 	//
 	//    - list of #GVolume objects.
 	//
-	Volumes() []Volumer
+	Volumes() []VolumeOverrider
 	// The function takes the following parameters:
 	//
-	MountAdded(mount Mounter)
+	MountAdded(mount MountOverrider)
 	// The function takes the following parameters:
 	//
-	MountChanged(mount Mounter)
+	MountChanged(mount MountOverrider)
 	// The function takes the following parameters:
 	//
-	MountPreUnmount(mount Mounter)
+	MountPreUnmount(mount MountOverrider)
 	// The function takes the following parameters:
 	//
-	MountRemoved(mount Mounter)
+	MountRemoved(mount MountOverrider)
 	// The function takes the following parameters:
 	//
-	VolumeAdded(volume Volumer)
+	VolumeAdded(volume VolumeOverrider)
 	// The function takes the following parameters:
 	//
-	VolumeChanged(volume Volumer)
+	VolumeChanged(volume VolumeOverrider)
 	// The function takes the following parameters:
 	//
-	VolumeRemoved(volume Volumer)
+	VolumeRemoved(volume VolumeOverrider)
 }
 
 // VolumeMonitor is for listing the user interesting devices and volumes on the
@@ -183,71 +184,75 @@ func classInitVolumeMonitorrer(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GVolumeMonitorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
-	if _, ok := goval.(interface{ DriveChanged(drive Driver) }); ok {
+	if _, ok := goval.(interface{ DriveChanged(drive DriveOverrider) }); ok {
 		pclass.drive_changed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_changed)
 	}
 
-	if _, ok := goval.(interface{ DriveConnected(drive Driver) }); ok {
+	if _, ok := goval.(interface{ DriveConnected(drive DriveOverrider) }); ok {
 		pclass.drive_connected = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_connected)
 	}
 
-	if _, ok := goval.(interface{ DriveDisconnected(drive Driver) }); ok {
+	if _, ok := goval.(interface{ DriveDisconnected(drive DriveOverrider) }); ok {
 		pclass.drive_disconnected = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_disconnected)
 	}
 
-	if _, ok := goval.(interface{ DriveEjectButton(drive Driver) }); ok {
+	if _, ok := goval.(interface{ DriveEjectButton(drive DriveOverrider) }); ok {
 		pclass.drive_eject_button = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_eject_button)
 	}
 
-	if _, ok := goval.(interface{ DriveStopButton(drive Driver) }); ok {
+	if _, ok := goval.(interface{ DriveStopButton(drive DriveOverrider) }); ok {
 		pclass.drive_stop_button = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_stop_button)
 	}
 
-	if _, ok := goval.(interface{ ConnectedDrives() []Driver }); ok {
+	if _, ok := goval.(interface{ ConnectedDrives() []DriveOverrider }); ok {
 		pclass.get_connected_drives = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_connected_drives)
 	}
 
-	if _, ok := goval.(interface{ MountForUUID(uuid string) Mounter }); ok {
+	if _, ok := goval.(interface {
+		MountForUUID(uuid string) MountOverrider
+	}); ok {
 		pclass.get_mount_for_uuid = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid)
 	}
 
-	if _, ok := goval.(interface{ Mounts() []Mounter }); ok {
+	if _, ok := goval.(interface{ Mounts() []MountOverrider }); ok {
 		pclass.get_mounts = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_mounts)
 	}
 
-	if _, ok := goval.(interface{ VolumeForUUID(uuid string) Volumer }); ok {
+	if _, ok := goval.(interface {
+		VolumeForUUID(uuid string) VolumeOverrider
+	}); ok {
 		pclass.get_volume_for_uuid = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid)
 	}
 
-	if _, ok := goval.(interface{ Volumes() []Volumer }); ok {
+	if _, ok := goval.(interface{ Volumes() []VolumeOverrider }); ok {
 		pclass.get_volumes = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_volumes)
 	}
 
-	if _, ok := goval.(interface{ MountAdded(mount Mounter) }); ok {
+	if _, ok := goval.(interface{ MountAdded(mount MountOverrider) }); ok {
 		pclass.mount_added = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_added)
 	}
 
-	if _, ok := goval.(interface{ MountChanged(mount Mounter) }); ok {
+	if _, ok := goval.(interface{ MountChanged(mount MountOverrider) }); ok {
 		pclass.mount_changed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_changed)
 	}
 
-	if _, ok := goval.(interface{ MountPreUnmount(mount Mounter) }); ok {
+	if _, ok := goval.(interface{ MountPreUnmount(mount MountOverrider) }); ok {
 		pclass.mount_pre_unmount = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_pre_unmount)
 	}
 
-	if _, ok := goval.(interface{ MountRemoved(mount Mounter) }); ok {
+	if _, ok := goval.(interface{ MountRemoved(mount MountOverrider) }); ok {
 		pclass.mount_removed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_removed)
 	}
 
-	if _, ok := goval.(interface{ VolumeAdded(volume Volumer) }); ok {
+	if _, ok := goval.(interface{ VolumeAdded(volume VolumeOverrider) }); ok {
 		pclass.volume_added = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_volume_added)
 	}
 
-	if _, ok := goval.(interface{ VolumeChanged(volume Volumer) }); ok {
+	if _, ok := goval.(interface{ VolumeChanged(volume VolumeOverrider) }); ok {
 		pclass.volume_changed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_volume_changed)
 	}
 
-	if _, ok := goval.(interface{ VolumeRemoved(volume Volumer) }); ok {
+	if _, ok := goval.(interface{ VolumeRemoved(volume VolumeOverrider) }); ok {
 		pclass.volume_removed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_volume_removed)
 	}
 }
@@ -255,9 +260,9 @@ func classInitVolumeMonitorrer(gclassPtr, data C.gpointer) {
 //export _gotk4_gio2_VolumeMonitorClass_drive_changed
 func _gotk4_gio2_VolumeMonitorClass_drive_changed(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DriveChanged(drive Driver) })
+	iface := goval.(interface{ DriveChanged(drive DriveOverrider) })
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -267,10 +272,10 @@ func _gotk4_gio2_VolumeMonitorClass_drive_changed(arg0 *C.GVolumeMonitor, arg1 *
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -283,9 +288,9 @@ func _gotk4_gio2_VolumeMonitorClass_drive_changed(arg0 *C.GVolumeMonitor, arg1 *
 //export _gotk4_gio2_VolumeMonitorClass_drive_connected
 func _gotk4_gio2_VolumeMonitorClass_drive_connected(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DriveConnected(drive Driver) })
+	iface := goval.(interface{ DriveConnected(drive DriveOverrider) })
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -295,10 +300,10 @@ func _gotk4_gio2_VolumeMonitorClass_drive_connected(arg0 *C.GVolumeMonitor, arg1
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -311,9 +316,9 @@ func _gotk4_gio2_VolumeMonitorClass_drive_connected(arg0 *C.GVolumeMonitor, arg1
 //export _gotk4_gio2_VolumeMonitorClass_drive_disconnected
 func _gotk4_gio2_VolumeMonitorClass_drive_disconnected(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DriveDisconnected(drive Driver) })
+	iface := goval.(interface{ DriveDisconnected(drive DriveOverrider) })
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -323,10 +328,10 @@ func _gotk4_gio2_VolumeMonitorClass_drive_disconnected(arg0 *C.GVolumeMonitor, a
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -339,9 +344,9 @@ func _gotk4_gio2_VolumeMonitorClass_drive_disconnected(arg0 *C.GVolumeMonitor, a
 //export _gotk4_gio2_VolumeMonitorClass_drive_eject_button
 func _gotk4_gio2_VolumeMonitorClass_drive_eject_button(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DriveEjectButton(drive Driver) })
+	iface := goval.(interface{ DriveEjectButton(drive DriveOverrider) })
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -351,10 +356,10 @@ func _gotk4_gio2_VolumeMonitorClass_drive_eject_button(arg0 *C.GVolumeMonitor, a
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -367,9 +372,9 @@ func _gotk4_gio2_VolumeMonitorClass_drive_eject_button(arg0 *C.GVolumeMonitor, a
 //export _gotk4_gio2_VolumeMonitorClass_drive_stop_button
 func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DriveStopButton(drive Driver) })
+	iface := goval.(interface{ DriveStopButton(drive DriveOverrider) })
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -379,10 +384,10 @@ func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.GVolumeMonitor, ar
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -395,7 +400,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.GVolumeMonitor, ar
 //export _gotk4_gio2_VolumeMonitorClass_get_connected_drives
 func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.GVolumeMonitor) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ConnectedDrives() []Driver })
+	iface := goval.(interface{ ConnectedDrives() []DriveOverrider })
 
 	list := iface.ConnectedDrives()
 
@@ -413,7 +418,9 @@ func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.GVolumeMonitor)
 //export _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid
 func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.GVolumeMonitor, arg1 *C.char) (cret *C.GMount) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MountForUUID(uuid string) Mounter })
+	iface := goval.(interface {
+		MountForUUID(uuid string) MountOverrider
+	})
 
 	var _uuid string // out
 
@@ -432,7 +439,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.GVolumeMonitor, a
 //export _gotk4_gio2_VolumeMonitorClass_get_mounts
 func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.GVolumeMonitor) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Mounts() []Mounter })
+	iface := goval.(interface{ Mounts() []MountOverrider })
 
 	list := iface.Mounts()
 
@@ -450,7 +457,9 @@ func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.GVolumeMonitor) (cret *C.
 //export _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid
 func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.GVolumeMonitor, arg1 *C.char) (cret *C.GVolume) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ VolumeForUUID(uuid string) Volumer })
+	iface := goval.(interface {
+		VolumeForUUID(uuid string) VolumeOverrider
+	})
 
 	var _uuid string // out
 
@@ -469,7 +478,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.GVolumeMonitor, 
 //export _gotk4_gio2_VolumeMonitorClass_get_volumes
 func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.GVolumeMonitor) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Volumes() []Volumer })
+	iface := goval.(interface{ Volumes() []VolumeOverrider })
 
 	list := iface.Volumes()
 
@@ -487,9 +496,9 @@ func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.GVolumeMonitor) (cret *C
 //export _gotk4_gio2_VolumeMonitorClass_mount_added
 func _gotk4_gio2_VolumeMonitorClass_mount_added(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MountAdded(mount Mounter) })
+	iface := goval.(interface{ MountAdded(mount MountOverrider) })
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -499,10 +508,10 @@ func _gotk4_gio2_VolumeMonitorClass_mount_added(arg0 *C.GVolumeMonitor, arg1 *C.
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -515,9 +524,9 @@ func _gotk4_gio2_VolumeMonitorClass_mount_added(arg0 *C.GVolumeMonitor, arg1 *C.
 //export _gotk4_gio2_VolumeMonitorClass_mount_changed
 func _gotk4_gio2_VolumeMonitorClass_mount_changed(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MountChanged(mount Mounter) })
+	iface := goval.(interface{ MountChanged(mount MountOverrider) })
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -527,10 +536,10 @@ func _gotk4_gio2_VolumeMonitorClass_mount_changed(arg0 *C.GVolumeMonitor, arg1 *
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -543,9 +552,9 @@ func _gotk4_gio2_VolumeMonitorClass_mount_changed(arg0 *C.GVolumeMonitor, arg1 *
 //export _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount
 func _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MountPreUnmount(mount Mounter) })
+	iface := goval.(interface{ MountPreUnmount(mount MountOverrider) })
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -555,10 +564,10 @@ func _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount(arg0 *C.GVolumeMonitor, ar
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -571,9 +580,9 @@ func _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount(arg0 *C.GVolumeMonitor, ar
 //export _gotk4_gio2_VolumeMonitorClass_mount_removed
 func _gotk4_gio2_VolumeMonitorClass_mount_removed(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MountRemoved(mount Mounter) })
+	iface := goval.(interface{ MountRemoved(mount MountOverrider) })
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -583,10 +592,10 @@ func _gotk4_gio2_VolumeMonitorClass_mount_removed(arg0 *C.GVolumeMonitor, arg1 *
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -599,9 +608,9 @@ func _gotk4_gio2_VolumeMonitorClass_mount_removed(arg0 *C.GVolumeMonitor, arg1 *
 //export _gotk4_gio2_VolumeMonitorClass_volume_added
 func _gotk4_gio2_VolumeMonitorClass_volume_added(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ VolumeAdded(volume Volumer) })
+	iface := goval.(interface{ VolumeAdded(volume VolumeOverrider) })
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -611,10 +620,10 @@ func _gotk4_gio2_VolumeMonitorClass_volume_added(arg0 *C.GVolumeMonitor, arg1 *C
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Volumer)
+			_, ok := obj.(VolumeOverrider)
 			return ok
 		})
-		rv, ok := casted.(Volumer)
+		rv, ok := casted.(VolumeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}
@@ -627,9 +636,9 @@ func _gotk4_gio2_VolumeMonitorClass_volume_added(arg0 *C.GVolumeMonitor, arg1 *C
 //export _gotk4_gio2_VolumeMonitorClass_volume_changed
 func _gotk4_gio2_VolumeMonitorClass_volume_changed(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ VolumeChanged(volume Volumer) })
+	iface := goval.(interface{ VolumeChanged(volume VolumeOverrider) })
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -639,10 +648,10 @@ func _gotk4_gio2_VolumeMonitorClass_volume_changed(arg0 *C.GVolumeMonitor, arg1 
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Volumer)
+			_, ok := obj.(VolumeOverrider)
 			return ok
 		})
-		rv, ok := casted.(Volumer)
+		rv, ok := casted.(VolumeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}
@@ -655,9 +664,9 @@ func _gotk4_gio2_VolumeMonitorClass_volume_changed(arg0 *C.GVolumeMonitor, arg1 
 //export _gotk4_gio2_VolumeMonitorClass_volume_removed
 func _gotk4_gio2_VolumeMonitorClass_volume_removed(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ VolumeRemoved(volume Volumer) })
+	iface := goval.(interface{ VolumeRemoved(volume VolumeOverrider) })
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -667,10 +676,10 @@ func _gotk4_gio2_VolumeMonitorClass_volume_removed(arg0 *C.GVolumeMonitor, arg1 
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Volumer)
+			_, ok := obj.(VolumeOverrider)
 			return ok
 		})
-		rv, ok := casted.(Volumer)
+		rv, ok := casted.(VolumeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}
@@ -692,7 +701,7 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 
 //export _gotk4_gio2_VolumeMonitor_ConnectDriveChanged
 func _gotk4_gio2_VolumeMonitor_ConnectDriveChanged(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
-	var f func(drive Driver)
+	var f func(drive DriveOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -700,10 +709,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveChanged(arg0 C.gpointer, arg1 *C.GDri
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(drive Driver))
+		f = closure.Func.(func(drive DriveOverrider))
 	}
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -713,10 +722,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveChanged(arg0 C.gpointer, arg1 *C.GDri
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -727,13 +736,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveChanged(arg0 C.gpointer, arg1 *C.GDri
 }
 
 // ConnectDriveChanged is emitted when a drive changes.
-func (volumeMonitor *VolumeMonitor) ConnectDriveChanged(f func(drive Driver)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectDriveChanged(f func(drive DriveOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveChanged), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectDriveConnected
 func _gotk4_gio2_VolumeMonitor_ConnectDriveConnected(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
-	var f func(drive Driver)
+	var f func(drive DriveOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -741,10 +750,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveConnected(arg0 C.gpointer, arg1 *C.GD
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(drive Driver))
+		f = closure.Func.(func(drive DriveOverrider))
 	}
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -754,10 +763,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveConnected(arg0 C.gpointer, arg1 *C.GD
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -768,13 +777,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveConnected(arg0 C.gpointer, arg1 *C.GD
 }
 
 // ConnectDriveConnected is emitted when a drive is connected to the system.
-func (volumeMonitor *VolumeMonitor) ConnectDriveConnected(f func(drive Driver)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectDriveConnected(f func(drive DriveOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-connected", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveConnected), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected
 func _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
-	var f func(drive Driver)
+	var f func(drive DriveOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -782,10 +791,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected(arg0 C.gpointer, arg1 *C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(drive Driver))
+		f = closure.Func.(func(drive DriveOverrider))
 	}
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -795,10 +804,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected(arg0 C.gpointer, arg1 *C
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -810,13 +819,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected(arg0 C.gpointer, arg1 *C
 
 // ConnectDriveDisconnected is emitted when a drive is disconnected from the
 // system.
-func (volumeMonitor *VolumeMonitor) ConnectDriveDisconnected(f func(drive Driver)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectDriveDisconnected(f func(drive DriveOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-disconnected", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveDisconnected), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton
 func _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
-	var f func(drive Driver)
+	var f func(drive DriveOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -824,10 +833,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton(arg0 C.gpointer, arg1 *C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(drive Driver))
+		f = closure.Func.(func(drive DriveOverrider))
 	}
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -837,10 +846,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton(arg0 C.gpointer, arg1 *C.
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -851,13 +860,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton(arg0 C.gpointer, arg1 *C.
 }
 
 // ConnectDriveEjectButton is emitted when the eject button is pressed on drive.
-func (volumeMonitor *VolumeMonitor) ConnectDriveEjectButton(f func(drive Driver)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectDriveEjectButton(f func(drive DriveOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-eject-button", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveEjectButton), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton
 func _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton(arg0 C.gpointer, arg1 *C.GDrive, arg2 C.guintptr) {
-	var f func(drive Driver)
+	var f func(drive DriveOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -865,10 +874,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton(arg0 C.gpointer, arg1 *C.G
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(drive Driver))
+		f = closure.Func.(func(drive DriveOverrider))
 	}
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -878,10 +887,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton(arg0 C.gpointer, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Driver)
+			_, ok := obj.(DriveOverrider)
 			return ok
 		})
-		rv, ok := casted.(Driver)
+		rv, ok := casted.(DriveOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 		}
@@ -892,13 +901,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectDriveStopButton(arg0 C.gpointer, arg1 *C.G
 }
 
 // ConnectDriveStopButton is emitted when the stop button is pressed on drive.
-func (volumeMonitor *VolumeMonitor) ConnectDriveStopButton(f func(drive Driver)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectDriveStopButton(f func(drive DriveOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "drive-stop-button", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectDriveStopButton), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectMountAdded
 func _gotk4_gio2_VolumeMonitor_ConnectMountAdded(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
-	var f func(mount Mounter)
+	var f func(mount MountOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -906,10 +915,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountAdded(arg0 C.gpointer, arg1 *C.GMount
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(mount Mounter))
+		f = closure.Func.(func(mount MountOverrider))
 	}
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -919,10 +928,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountAdded(arg0 C.gpointer, arg1 *C.GMount
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -933,13 +942,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountAdded(arg0 C.gpointer, arg1 *C.GMount
 }
 
 // ConnectMountAdded is emitted when a mount is added.
-func (volumeMonitor *VolumeMonitor) ConnectMountAdded(f func(mount Mounter)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectMountAdded(f func(mount MountOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-added", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountAdded), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectMountChanged
 func _gotk4_gio2_VolumeMonitor_ConnectMountChanged(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
-	var f func(mount Mounter)
+	var f func(mount MountOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -947,10 +956,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountChanged(arg0 C.gpointer, arg1 *C.GMou
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(mount Mounter))
+		f = closure.Func.(func(mount MountOverrider))
 	}
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -960,10 +969,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountChanged(arg0 C.gpointer, arg1 *C.GMou
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -974,13 +983,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountChanged(arg0 C.gpointer, arg1 *C.GMou
 }
 
 // ConnectMountChanged is emitted when a mount changes.
-func (volumeMonitor *VolumeMonitor) ConnectMountChanged(f func(mount Mounter)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectMountChanged(f func(mount MountOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountChanged), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount
 func _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
-	var f func(mount Mounter)
+	var f func(mount MountOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -988,10 +997,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount(arg0 C.gpointer, arg1 *C.G
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(mount Mounter))
+		f = closure.Func.(func(mount MountOverrider))
 	}
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1001,10 +1010,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount(arg0 C.gpointer, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -1018,13 +1027,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount(arg0 C.gpointer, arg1 *C.G
 //
 // This signal depends on the backend and is only emitted if GIO was used to
 // unmount.
-func (volumeMonitor *VolumeMonitor) ConnectMountPreUnmount(f func(mount Mounter)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectMountPreUnmount(f func(mount MountOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-pre-unmount", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountPreUnmount), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectMountRemoved
 func _gotk4_gio2_VolumeMonitor_ConnectMountRemoved(arg0 C.gpointer, arg1 *C.GMount, arg2 C.guintptr) {
-	var f func(mount Mounter)
+	var f func(mount MountOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -1032,10 +1041,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountRemoved(arg0 C.gpointer, arg1 *C.GMou
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(mount Mounter))
+		f = closure.Func.(func(mount MountOverrider))
 	}
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1045,10 +1054,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountRemoved(arg0 C.gpointer, arg1 *C.GMou
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
+			_, ok := obj.(MountOverrider)
 			return ok
 		})
-		rv, ok := casted.(Mounter)
+		rv, ok := casted.(MountOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -1059,13 +1068,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectMountRemoved(arg0 C.gpointer, arg1 *C.GMou
 }
 
 // ConnectMountRemoved is emitted when a mount is removed.
-func (volumeMonitor *VolumeMonitor) ConnectMountRemoved(f func(mount Mounter)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectMountRemoved(f func(mount MountOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "mount-removed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectMountRemoved), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded
 func _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(arg0 C.gpointer, arg1 *C.GVolume, arg2 C.guintptr) {
-	var f func(volume Volumer)
+	var f func(volume VolumeOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -1073,10 +1082,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(arg0 C.gpointer, arg1 *C.GVolu
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(volume Volumer))
+		f = closure.Func.(func(volume VolumeOverrider))
 	}
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1086,10 +1095,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(arg0 C.gpointer, arg1 *C.GVolu
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Volumer)
+			_, ok := obj.(VolumeOverrider)
 			return ok
 		})
-		rv, ok := casted.(Volumer)
+		rv, ok := casted.(VolumeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}
@@ -1100,13 +1109,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(arg0 C.gpointer, arg1 *C.GVolu
 }
 
 // ConnectVolumeAdded is emitted when a mountable volume is added to the system.
-func (volumeMonitor *VolumeMonitor) ConnectVolumeAdded(f func(volume Volumer)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectVolumeAdded(f func(volume VolumeOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-added", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeAdded), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged
 func _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(arg0 C.gpointer, arg1 *C.GVolume, arg2 C.guintptr) {
-	var f func(volume Volumer)
+	var f func(volume VolumeOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -1114,10 +1123,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(arg0 C.gpointer, arg1 *C.GVo
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(volume Volumer))
+		f = closure.Func.(func(volume VolumeOverrider))
 	}
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1127,10 +1136,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(arg0 C.gpointer, arg1 *C.GVo
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Volumer)
+			_, ok := obj.(VolumeOverrider)
 			return ok
 		})
-		rv, ok := casted.(Volumer)
+		rv, ok := casted.(VolumeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}
@@ -1141,13 +1150,13 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(arg0 C.gpointer, arg1 *C.GVo
 }
 
 // ConnectVolumeChanged is emitted when mountable volume is changed.
-func (volumeMonitor *VolumeMonitor) ConnectVolumeChanged(f func(volume Volumer)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectVolumeChanged(f func(volume VolumeOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-changed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeChanged), f)
 }
 
 //export _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved
 func _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(arg0 C.gpointer, arg1 *C.GVolume, arg2 C.guintptr) {
-	var f func(volume Volumer)
+	var f func(volume VolumeOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -1155,10 +1164,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(arg0 C.gpointer, arg1 *C.GVo
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(volume Volumer))
+		f = closure.Func.(func(volume VolumeOverrider))
 	}
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1168,10 +1177,10 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(arg0 C.gpointer, arg1 *C.GVo
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Volumer)
+			_, ok := obj.(VolumeOverrider)
 			return ok
 		})
-		rv, ok := casted.(Volumer)
+		rv, ok := casted.(VolumeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}
@@ -1183,7 +1192,7 @@ func _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(arg0 C.gpointer, arg1 *C.GVo
 
 // ConnectVolumeRemoved is emitted when a mountable volume is removed from the
 // system.
-func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer)) externglib.SignalHandle {
+func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume VolumeOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(volumeMonitor, "volume-removed", false, unsafe.Pointer(C._gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved), f)
 }
 
@@ -1196,7 +1205,7 @@ func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer))
 //
 //    - list of connected #GDrive objects.
 //
-func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
+func (volumeMonitor *VolumeMonitor) ConnectedDrives() []DriveOverrider {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -1205,12 +1214,12 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 	_cret = C.g_volume_monitor_get_connected_drives(_arg0)
 	runtime.KeepAlive(volumeMonitor)
 
-	var _list []Driver // out
+	var _list []DriveOverrider // out
 
-	_list = make([]Driver, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]DriveOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDrive)(v)
-		var dst Driver // out
+		var dst DriveOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1219,10 +1228,10 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Driver)
+				_, ok := obj.(DriveOverrider)
 				return ok
 			})
-			rv, ok := casted.(Driver)
+			rv, ok := casted.(DriveOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 			}
@@ -1245,7 +1254,7 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []Driver {
 //    - mount (optional) or NULL if no such mount is available. Free the returned
 //      object with g_object_unref().
 //
-func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
+func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) MountOverrider {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GMount         // in
@@ -1258,7 +1267,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 	runtime.KeepAlive(volumeMonitor)
 	runtime.KeepAlive(uuid)
 
-	var _mount Mounter // out
+	var _mount MountOverrider // out
 
 	if _cret != nil {
 		{
@@ -1266,10 +1275,10 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Mounter)
+				_, ok := obj.(MountOverrider)
 				return ok
 			})
-			rv, ok := casted.(Mounter)
+			rv, ok := casted.(MountOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 			}
@@ -1289,7 +1298,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 //
 //    - list of #GMount objects.
 //
-func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
+func (volumeMonitor *VolumeMonitor) Mounts() []MountOverrider {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -1298,12 +1307,12 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 	_cret = C.g_volume_monitor_get_mounts(_arg0)
 	runtime.KeepAlive(volumeMonitor)
 
-	var _list []Mounter // out
+	var _list []MountOverrider // out
 
-	_list = make([]Mounter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]MountOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GMount)(v)
-		var dst Mounter // out
+		var dst MountOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1312,10 +1321,10 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Mounter)
+				_, ok := obj.(MountOverrider)
 				return ok
 			})
-			rv, ok := casted.(Mounter)
+			rv, ok := casted.(MountOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 			}
@@ -1338,7 +1347,7 @@ func (volumeMonitor *VolumeMonitor) Mounts() []Mounter {
 //    - volume (optional) or NULL if no such volume is available. Free the
 //      returned object with g_object_unref().
 //
-func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
+func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) VolumeOverrider {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
 	var _cret *C.GVolume        // in
@@ -1351,7 +1360,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 	runtime.KeepAlive(volumeMonitor)
 	runtime.KeepAlive(uuid)
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	if _cret != nil {
 		{
@@ -1359,10 +1368,10 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Volumer)
+				_, ok := obj.(VolumeOverrider)
 				return ok
 			})
-			rv, ok := casted.(Volumer)
+			rv, ok := casted.(VolumeOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 			}
@@ -1382,7 +1391,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 //
 //    - list of #GVolume objects.
 //
-func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
+func (volumeMonitor *VolumeMonitor) Volumes() []VolumeOverrider {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
 
@@ -1391,12 +1400,12 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 	_cret = C.g_volume_monitor_get_volumes(_arg0)
 	runtime.KeepAlive(volumeMonitor)
 
-	var _list []Volumer // out
+	var _list []VolumeOverrider // out
 
-	_list = make([]Volumer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]VolumeOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GVolume)(v)
-		var dst Volumer // out
+		var dst VolumeOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1405,10 +1414,10 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Volumer)
+				_, ok := obj.(VolumeOverrider)
 				return ok
 			})
-			rv, ok := casted.(Volumer)
+			rv, ok := casted.(VolumeOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 			}
@@ -1463,7 +1472,7 @@ func (volumeMonitor *VolumeMonitor) Volumes() []Volumer {
 //    - volume object that is the parent for mount or NULL if no wants to adopt
 //      the #GMount.
 //
-func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
+func VolumeMonitorAdoptOrphanMount(mount MountOverrider) VolumeOverrider {
 	var _arg1 *C.GMount  // out
 	var _cret *C.GVolume // in
 
@@ -1472,7 +1481,7 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 	_cret = C.g_volume_monitor_adopt_orphan_mount(_arg1)
 	runtime.KeepAlive(mount)
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -1482,10 +1491,10 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Volumer)
+			_, ok := obj.(VolumeOverrider)
 			return ok
 		})
-		rv, ok := casted.(Volumer)
+		rv, ok := casted.(VolumeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 		}

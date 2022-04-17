@@ -28,6 +28,7 @@ func init() {
 
 // NumerableIconOverrider contains methods that are overridable.
 type NumerableIconOverrider interface {
+	externglib.Objector
 }
 
 // NumerableIcon is a subclass of Icon that can show a number or short string as
@@ -79,7 +80,7 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 //
 //    - icon (optional) or NULL.
 //
-func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
+func (self *NumerableIcon) BackgroundGIcon() gio.IconOverrider {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.GIcon            // in
 
@@ -88,7 +89,7 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
 	runtime.KeepAlive(self)
 
-	var _icon gio.Iconner // out
+	var _icon gio.IconOverrider // out
 
 	if _cret != nil {
 		{
@@ -96,10 +97,10 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
+				_, ok := obj.(gio.IconOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.Iconner)
+			rv, ok := casted.(gio.IconOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -230,7 +231,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 //
 //    - icon (optional) or NULL.
 //
-func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
+func (self *NumerableIcon) SetBackgroundGIcon(icon gio.IconOverrider) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GIcon            // out
 
@@ -369,7 +370,7 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 //
 //    - icon: new #GIcon.
 //
-func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
+func NewNumerableIcon(baseIcon gio.IconOverrider) gio.IconOverrider {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
 
@@ -378,7 +379,7 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	_cret = C.gtk_numerable_icon_new(_arg1)
 	runtime.KeepAlive(baseIcon)
 
-	var _icon gio.Iconner // out
+	var _icon gio.IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -388,10 +389,10 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Iconner)
+			_, ok := obj.(gio.IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.Iconner)
+		rv, ok := casted.(gio.IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -416,7 +417,7 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 //
 //    - icon: new #GIcon.
 //
-func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) gio.Iconner {
+func NewNumerableIconWithStyleContext(baseIcon gio.IconOverrider, context *StyleContext) gio.IconOverrider {
 	var _arg1 *C.GIcon           // out
 	var _arg2 *C.GtkStyleContext // out
 	var _cret *C.GIcon           // in
@@ -428,7 +429,7 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	runtime.KeepAlive(baseIcon)
 	runtime.KeepAlive(context)
 
-	var _icon gio.Iconner // out
+	var _icon gio.IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -438,10 +439,10 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Iconner)
+			_, ok := obj.(gio.IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.Iconner)
+		rv, ok := casted.(gio.IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}

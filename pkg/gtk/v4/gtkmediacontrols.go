@@ -25,6 +25,7 @@ func init() {
 
 // MediaControlsOverrider contains methods that are overridable.
 type MediaControlsOverrider interface {
+	externglib.Objector
 }
 
 // MediaControls: GtkMediaControls is a widget to show controls for a video.

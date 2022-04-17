@@ -29,6 +29,7 @@ func init() {
 
 // ActivatableOverrider contains methods that are overridable.
 type ActivatableOverrider interface {
+	externglib.Objector
 	// SyncActionProperties: this is called to update the activatable
 	// completely, this is called internally when the Activatable:related-action
 	// property is set or unset and by the implementing class when

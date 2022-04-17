@@ -614,6 +614,11 @@ func (typ *Resolved) ImplType(needsNamespace bool) string {
 	return typ.ptr(false) + typ.ImplImport.Package + "." + name
 }
 
+// OverriderType returns the overrider interface type.
+func (typ *Resolved) OverriderType(needsNamespace bool) string {
+	return strings.TrimPrefix(typ.ImplType(needsNamespace), "*") + "Overrider"
+}
+
 // PublicType returns the public type. If the resolved type is a class, then the
 // interface type is returned.
 func (typ *Resolved) PublicType(needsNamespace bool) string {

@@ -26,6 +26,7 @@ func init() {
 
 // NetworkAddressOverrider contains methods that are overridable.
 type NetworkAddressOverrider interface {
+	externglib.Objector
 }
 
 // NetworkAddress provides an easy way to resolve a hostname and then attempt to

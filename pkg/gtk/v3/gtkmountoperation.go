@@ -29,6 +29,7 @@ func init() {
 
 // MountOperationOverrider contains methods that are overridable.
 type MountOperationOverrider interface {
+	externglib.Objector
 }
 
 // MountOperation: this should not be accessed directly. Use the accessor

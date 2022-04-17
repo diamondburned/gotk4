@@ -28,6 +28,7 @@ func init() {
 
 // BoxOverrider contains methods that are overridable.
 type BoxOverrider interface {
+	externglib.Objector
 }
 
 // Box widget arranges child widgets into a single row or column, depending upon

@@ -27,6 +27,7 @@ func init() {
 
 // HButtonBoxOverrider contains methods that are overridable.
 type HButtonBoxOverrider interface {
+	externglib.Objector
 }
 
 type HButtonBox struct {

@@ -154,6 +154,7 @@ func (c CellRendererState) Has(other CellRendererState) bool {
 
 // CellRendererOverrider contains methods that are overridable.
 type CellRendererOverrider interface {
+	externglib.Objector
 	// Activate passes an activate event to the cell renderer for possible
 	// processing. Some cell renderers may use events; for example,
 	// CellRendererToggle toggles when it gets a mouse click.
@@ -180,7 +181,7 @@ type CellRendererOverrider interface {
 	//    - editable
 	//    - path
 	//
-	EditingStarted(editable CellEditabler, path string)
+	EditingStarted(editable CellEditableOverrider, path string)
 	// AlignedArea gets the aligned area used by cell inside cell_area. Used for
 	// finding the appropriate edit and focus rectangle.
 	//
@@ -328,7 +329,7 @@ type CellRendererOverrider interface {
 	//    - cellEditable (optional): new CellEditable for editing this cell, or
 	//      NULL if editing is not possible.
 	//
-	StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
+	StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditableOverrider
 }
 
 // CellRenderer is a base class of a set of objects used for rendering a cell to
@@ -403,7 +404,7 @@ func classInitCellRendererer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		EditingStarted(editable CellEditabler, path string)
+		EditingStarted(editable CellEditableOverrider, path string)
 	}); ok {
 		pclass.editing_started = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_editing_started)
 	}
@@ -455,7 +456,7 @@ func classInitCellRendererer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
+		StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditableOverrider
 	}); ok {
 		pclass.start_editing = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_start_editing)
 	}
@@ -523,11 +524,11 @@ func _gotk4_gtk3_CellRendererClass_editing_canceled(arg0 *C.GtkCellRenderer) {
 func _gotk4_gtk3_CellRendererClass_editing_started(arg0 *C.GtkCellRenderer, arg1 *C.GtkCellEditable, arg2 *C.gchar) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		EditingStarted(editable CellEditabler, path string)
+		EditingStarted(editable CellEditableOverrider, path string)
 	})
 
-	var _editable CellEditabler // out
-	var _path string            // out
+	var _editable CellEditableOverrider // out
+	var _path string                    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -537,10 +538,10 @@ func _gotk4_gtk3_CellRendererClass_editing_started(arg0 *C.GtkCellRenderer, arg1
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(CellEditabler)
+			_, ok := obj.(CellEditableOverrider)
 			return ok
 		})
-		rv, ok := casted.(CellEditabler)
+		rv, ok := casted.(CellEditableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 		}
@@ -820,7 +821,7 @@ func _gotk4_gtk3_CellRendererClass_render(arg0 *C.GtkCellRenderer, arg1 *C.cairo
 func _gotk4_gtk3_CellRendererClass_start_editing(arg0 *C.GtkCellRenderer, arg1 *C.GdkEvent, arg2 *C.GtkWidget, arg3 *C.gchar, arg4 *C.GdkRectangle, arg5 *C.GdkRectangle, arg6 C.GtkCellRendererState) (cret *C.GtkCellEditable) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler
+		StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditableOverrider
 	})
 
 	var _event *gdk.Event              // out
@@ -916,7 +917,7 @@ func (cell *CellRenderer) ConnectEditingCanceled(f func()) externglib.SignalHand
 
 //export _gotk4_gtk3_CellRenderer_ConnectEditingStarted
 func _gotk4_gtk3_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.GtkCellEditable, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(editable CellEditabler, path string)
+	var f func(editable CellEditableOverrider, path string)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -924,11 +925,11 @@ func _gotk4_gtk3_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.Gtk
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(editable CellEditabler, path string))
+		f = closure.Func.(func(editable CellEditableOverrider, path string))
 	}
 
-	var _editable CellEditabler // out
-	var _path string            // out
+	var _editable CellEditableOverrider // out
+	var _path string                    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -938,10 +939,10 @@ func _gotk4_gtk3_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.Gtk
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(CellEditabler)
+			_, ok := obj.(CellEditableOverrider)
 			return ok
 		})
-		rv, ok := casted.(CellEditabler)
+		rv, ok := casted.(CellEditableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 		}
@@ -979,7 +980,7 @@ func _gotk4_gtk3_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.Gtk
 //          gtk_entry_set_completion (entry, completion);
 //        }
 //    }.
-func (cell *CellRenderer) ConnectEditingStarted(f func(editable CellEditabler, path string)) externglib.SignalHandle {
+func (cell *CellRenderer) ConnectEditingStarted(f func(editable CellEditableOverrider, path string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(cell, "editing-started", false, unsafe.Pointer(C._gotk4_gtk3_CellRenderer_ConnectEditingStarted), f)
 }
 
@@ -1699,7 +1700,7 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 //    - cellEditable (optional): new CellEditable for editing this cell, or NULL
 //      if editing is not possible.
 //
-func (cell *CellRenderer) StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditabler {
+func (cell *CellRenderer) StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditableOverrider {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out
@@ -1729,7 +1730,7 @@ func (cell *CellRenderer) StartEditing(event *gdk.Event, widget Widgetter, path 
 	runtime.KeepAlive(cellArea)
 	runtime.KeepAlive(flags)
 
-	var _cellEditable CellEditabler // out
+	var _cellEditable CellEditableOverrider // out
 
 	if _cret != nil {
 		{
@@ -1737,10 +1738,10 @@ func (cell *CellRenderer) StartEditing(event *gdk.Event, widget Widgetter, path 
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(CellEditabler)
+				_, ok := obj.(CellEditableOverrider)
 				return ok
 			})
-			rv, ok := casted.(CellEditabler)
+			rv, ok := casted.(CellEditableOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 			}

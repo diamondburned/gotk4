@@ -34,6 +34,7 @@ func init() {
 
 // DBusInterfaceSkeletonOverrider contains methods that are overridable.
 type DBusInterfaceSkeletonOverrider interface {
+	externglib.Objector
 	// Flush: if interface_ has outstanding changes, request for these changes
 	// to be emitted immediately.
 	//

@@ -121,6 +121,7 @@ func (b BuilderError) String() string {
 
 // BuilderOverrider contains methods that are overridable.
 type BuilderOverrider interface {
+	externglib.Objector
 	// TypeFromName looks up a type by name, using the virtual function that
 	// Builder has for that purpose. This is mainly used when implementing the
 	// Buildable interface on a type.

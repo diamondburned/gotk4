@@ -33,6 +33,7 @@ func init() {
 
 // HandleBoxOverrider contains methods that are overridable.
 type HandleBoxOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	ChildAttached(child Widgetter)

@@ -27,6 +27,7 @@ func init() {
 
 // MemoryInputStreamOverrider contains methods that are overridable.
 type MemoryInputStreamOverrider interface {
+	externglib.Objector
 }
 
 // MemoryInputStream is a class for using arbitrary memory chunks as input for

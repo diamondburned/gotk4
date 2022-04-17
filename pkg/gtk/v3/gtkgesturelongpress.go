@@ -29,6 +29,7 @@ func init() {
 
 // GestureLongPressOverrider contains methods that are overridable.
 type GestureLongPressOverrider interface {
+	externglib.Objector
 }
 
 // GestureLongPress is a Gesture implementation able to recognize long presses,

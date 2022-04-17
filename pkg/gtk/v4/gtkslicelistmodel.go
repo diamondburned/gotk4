@@ -26,6 +26,7 @@ func init() {
 
 // SliceListModelOverrider contains methods that are overridable.
 type SliceListModelOverrider interface {
+	externglib.Objector
 }
 
 // SliceListModel: GtkSliceListModel is a list model that presents a slice of
@@ -80,7 +81,7 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 //
 //    - sliceListModel: new GtkSliceListModel.
 //
-func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListModel {
+func NewSliceListModel(model gio.ListModelOverrider, offset, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
 	var _arg2 C.guint              // out
 	var _arg3 C.guint              // out
@@ -111,7 +112,7 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListMode
 //
 //    - listModel (optional): model in use.
 //
-func (self *SliceListModel) Model() gio.ListModeller {
+func (self *SliceListModel) Model() gio.ListModelOverrider {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret *C.GListModel        // in
 
@@ -120,7 +121,7 @@ func (self *SliceListModel) Model() gio.ListModeller {
 	_cret = C.gtk_slice_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -128,10 +129,10 @@ func (self *SliceListModel) Model() gio.ListModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModeller)
+				_, ok := obj.(gio.ListModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.ListModeller)
+			rv, ok := casted.(gio.ListModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
@@ -194,7 +195,7 @@ func (self *SliceListModel) Size() uint {
 //
 //    - model (optional) to be sliced.
 //
-func (self *SliceListModel) SetModel(model gio.ListModeller) {
+func (self *SliceListModel) SetModel(model gio.ListModelOverrider) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 *C.GListModel        // out
 

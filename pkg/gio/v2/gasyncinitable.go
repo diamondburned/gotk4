@@ -29,6 +29,19 @@ func init() {
 	})
 }
 
+// AsyncInitableOverrider contains methods that are overridable.
+type AsyncInitableOverrider interface {
+	externglib.Objector
+	// InitFinish finishes asynchronous initialization and returns the result.
+	// See g_async_initable_init_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - res: Result.
+	//
+	InitFinish(res AsyncResultOverrider) error
+}
+
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
 // same in all ways except that initialization is asynchronous. For more details
 // see the descriptions on #GInitable.
@@ -143,14 +156,53 @@ type AsyncInitabler interface {
 	// the interface.
 	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
-	InitFinish(res AsyncResulter) error
+	InitFinish(res AsyncResultOverrider) error
 	// NewFinish finishes the async construction for the various
 	// g_async_initable_new calls, returning the created object or NULL on
 	// error.
-	NewFinish(res AsyncResulter) (*externglib.Object, error)
+	NewFinish(res AsyncResultOverrider) (*externglib.Object, error)
 }
 
 var _ AsyncInitabler = (*AsyncInitable)(nil)
+
+func ifaceInitAsyncInitabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GAsyncInitableIface)(unsafe.Pointer(gifacePtr))
+	iface.init_finish = (*[0]byte)(C._gotk4_gio2_AsyncInitableIface_init_finish)
+}
+
+//export _gotk4_gio2_AsyncInitableIface_init_finish
+func _gotk4_gio2_AsyncInitableIface_init_finish(arg0 *C.GAsyncInitable, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AsyncInitableOverrider)
+
+	var _res AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_res = rv
+	}
+
+	_goerr := iface.InitFinish(_res)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapAsyncInitable(obj *externglib.Object) *AsyncInitable {
 	return &AsyncInitable{
@@ -237,7 +289,7 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, ca
 //
 //    - res: Result.
 //
-func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
+func (initable *AsyncInitable) InitFinish(res AsyncResultOverrider) error {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cerr *C.GError         // in
@@ -270,7 +322,7 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 //    - object: newly created #GObject, or NULL on error. Free with
 //      g_object_unref().
 //
-func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object, error) {
+func (initable *AsyncInitable) NewFinish(res AsyncResultOverrider) (*externglib.Object, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret *C.GObject        // in

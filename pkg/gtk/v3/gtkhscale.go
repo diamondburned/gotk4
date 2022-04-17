@@ -28,6 +28,7 @@ func init() {
 
 // HScaleOverrider contains methods that are overridable.
 type HScaleOverrider interface {
+	externglib.Objector
 }
 
 // HScale widget is used to allow the user to select a value using a horizontal

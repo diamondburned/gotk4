@@ -32,6 +32,7 @@ import (
 // extern gboolean _gotk4_gio2_AppInfoIface_add_supports_type(GAppInfo*, char*, GError**);
 // extern gboolean _gotk4_gio2_AppInfoIface_can_delete(GAppInfo*);
 // extern gboolean _gotk4_gio2_AppInfoIface_can_remove_supports_type(GAppInfo*);
+// extern gboolean _gotk4_gio2_AppInfoIface_do_delete(GAppInfo*);
 // extern gboolean _gotk4_gio2_AppInfoIface_equal(GAppInfo*, GAppInfo*);
 // extern gboolean _gotk4_gio2_AppInfoIface_launch(GAppInfo*, GList*, GAppLaunchContext*, GError**);
 // extern gboolean _gotk4_gio2_AppInfoIface_launch_uris(GAppInfo*, GList*, GAppLaunchContext*, GError**);
@@ -61,6 +62,258 @@ func init() {
 		{T: GTypeAppInfo, F: marshalAppInfo},
 		{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
 	})
+}
+
+// AppInfoOverrider contains methods that are overridable.
+type AppInfoOverrider interface {
+	externglib.Objector
+	// AddSupportsType adds a content type to the application information to
+	// indicate the application is capable of opening files with the given
+	// content type.
+	//
+	// The function takes the following parameters:
+	//
+	//    - contentType: string.
+	//
+	AddSupportsType(contentType string) error
+	// CanDelete obtains the information whether the Info can be deleted. See
+	// g_app_info_delete().
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if appinfo can be deleted.
+	//
+	CanDelete() bool
+	// CanRemoveSupportsType checks if a supported content type can be removed
+	// from an application.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if it is possible to remove supported content types from a
+	//      given appinfo, FALSE if not.
+	//
+	CanRemoveSupportsType() bool
+	// DoDelete tries to delete a Info.
+	//
+	// On some platforms, there may be a difference between user-defined Infos
+	// which can be deleted, and system-wide ones which cannot. See
+	// g_app_info_can_delete().
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if appinfo has been deleted.
+	//
+	DoDelete() bool
+	// Dup creates a duplicate of a Info.
+	//
+	// The function returns the following values:
+	//
+	//    - appInfo: duplicate of appinfo.
+	//
+	Dup() AppInfoOverrider
+	// Equal checks if two Infos are equal.
+	//
+	// Note that the check *may not* compare each individual field, and only
+	// does an identity check. In case detecting changes in the contents is
+	// needed, program code must additionally compare relevant fields.
+	//
+	// The function takes the following parameters:
+	//
+	//    - appinfo2: second Info.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
+	//
+	Equal(appinfo2 AppInfoOverrider) bool
+	// Commandline gets the commandline with which the application will be
+	// started.
+	//
+	// The function returns the following values:
+	//
+	//    - filename (optional): string containing the appinfo's commandline, or
+	//      NULL if this information is not available.
+	//
+	Commandline() string
+	// Description gets a human-readable description of an installed
+	// application.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): string containing a description of the application
+	//      appinfo, or NULL if none.
+	//
+	Description() string
+	// DisplayName gets the display name of the application. The display name is
+	// often more descriptive to the user than the name itself.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: display name of the application for appinfo, or the name if no
+	//      display name is available.
+	//
+	DisplayName() string
+	// Executable gets the executable's name for the installed application.
+	//
+	// The function returns the following values:
+	//
+	//    - filename: string containing the appinfo's application binaries name.
+	//
+	Executable() string
+	// Icon gets the icon for the application.
+	//
+	// The function returns the following values:
+	//
+	//    - icon (optional): default #GIcon for appinfo or NULL if there is no
+	//      default icon.
+	//
+	Icon() IconOverrider
+	// ID gets the ID of an application. An id is a string that identifies the
+	// application. The exact format of the id is platform dependent. For
+	// instance, on Unix this is the desktop file id from the xdg menu
+	// specification.
+	//
+	// Note that the returned ID may be NULL, depending on how the appinfo has
+	// been constructed.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): string containing the application's ID.
+	//
+	ID() string
+	// Name gets the installed name of the application.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: name of the application for appinfo.
+	//
+	Name() string
+	// SupportedTypes retrieves the list of content types that app_info claims
+	// to support. If this information is not provided by the environment, this
+	// function will return NULL. This function does not take in consideration
+	// associations added with g_app_info_add_supports_type(), but only those
+	// exported directly by the application.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: a list of content types.
+	//
+	SupportedTypes() []string
+	// Launch launches the application. Passes files to the launched application
+	// as arguments, using the optional context to get information about the
+	// details of the launcher (like what screen it is on). On error, error will
+	// be set accordingly.
+	//
+	// To launch the application without arguments pass a NULL files list.
+	//
+	// Note that even if the launch is successful the application launched can
+	// fail to start if it runs into problems during startup. There is no way to
+	// detect this.
+	//
+	// Some URIs can be changed when passed through a GFile (for instance
+	// unsupported URIs with strange formats like mailto:), so if you have a
+	// textual URI you want to pass in as argument, consider using
+	// g_app_info_launch_uris() instead.
+	//
+	// The launched application inherits the environment of the launching
+	// process, but it can be modified with g_app_launch_context_setenv() and
+	// g_app_launch_context_unsetenv().
+	//
+	// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE environment
+	// variable with the path of the launched desktop file and
+	// GIO_LAUNCHED_DESKTOP_FILE_PID to the process id of the launched process.
+	// This can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be
+	// inherited by further processes. The DISPLAY and DESKTOP_STARTUP_ID
+	// environment variables are also set, based on information provided in
+	// context.
+	//
+	// The function takes the following parameters:
+	//
+	//    - files (optional) of #GFile objects.
+	//    - context (optional) or NULL.
+	//
+	Launch(files []FileOverrider, context *AppLaunchContext) error
+	// LaunchURIs launches the application. This passes the uris to the launched
+	// application as arguments, using the optional context to get information
+	// about the details of the launcher (like what screen it is on). On error,
+	// error will be set accordingly.
+	//
+	// To launch the application without arguments pass a NULL uris list.
+	//
+	// Note that even if the launch is successful the application launched can
+	// fail to start if it runs into problems during startup. There is no way to
+	// detect this.
+	//
+	// The function takes the following parameters:
+	//
+	//    - uris (optional) containing URIs to launch.
+	//    - context (optional) or NULL.
+	//
+	LaunchURIs(uris []string, context *AppLaunchContext) error
+	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	LaunchURIsFinish(result AsyncResultOverrider) error
+	// RemoveSupportsType removes a supported type from an application, if
+	// possible.
+	//
+	// The function takes the following parameters:
+	//
+	//    - contentType: string.
+	//
+	RemoveSupportsType(contentType string) error
+	// SetAsDefaultForExtension sets the application as the default handler for
+	// the given file extension.
+	//
+	// The function takes the following parameters:
+	//
+	//    - extension: string containing the file extension (without the dot).
+	//
+	SetAsDefaultForExtension(extension string) error
+	// SetAsDefaultForType sets the application as the default handler for a
+	// given type.
+	//
+	// The function takes the following parameters:
+	//
+	//    - contentType: content type.
+	//
+	SetAsDefaultForType(contentType string) error
+	// SetAsLastUsedForType sets the application as the last used application
+	// for a given type. This will make the application appear as first in the
+	// list returned by g_app_info_get_recommended_for_type(), regardless of the
+	// default application for that content type.
+	//
+	// The function takes the following parameters:
+	//
+	//    - contentType: content type.
+	//
+	SetAsLastUsedForType(contentType string) error
+	// ShouldShow checks if the application info should be shown in menus that
+	// list available applications.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the appinfo should be shown, FALSE otherwise.
+	//
+	ShouldShow() bool
+	// SupportsFiles checks if the application accepts files as arguments.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the appinfo supports files.
+	//
+	SupportsFiles() bool
+	// SupportsURIs checks if the application supports reading files and
+	// directories from URIs.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the appinfo supports URIs.
+	//
+	SupportsURIs() bool
 }
 
 // AppInfo and LaunchContext are used for describing and launching applications
@@ -130,9 +383,9 @@ type AppInfor interface {
 	// Delete tries to delete a Info.
 	Delete() bool
 	// Dup creates a duplicate of a Info.
-	Dup() AppInfor
+	Dup() AppInfoOverrider
 	// Equal checks if two Infos are equal.
-	Equal(appinfo2 AppInfor) bool
+	Equal(appinfo2 AppInfoOverrider) bool
 	// Commandline gets the commandline with which the application will be
 	// started.
 	Commandline() string
@@ -144,7 +397,7 @@ type AppInfor interface {
 	// Executable gets the executable's name for the installed application.
 	Executable() string
 	// Icon gets the icon for the application.
-	Icon() Iconner
+	Icon() IconOverrider
 	// ID gets the ID of an application.
 	ID() string
 	// Name gets the installed name of the application.
@@ -153,13 +406,13 @@ type AppInfor interface {
 	// to support.
 	SupportedTypes() []string
 	// Launch launches the application.
-	Launch(files []Filer, context *AppLaunchContext) error
+	Launch(files []FileOverrider, context *AppLaunchContext) error
 	// LaunchURIs launches the application.
 	LaunchURIs(uris []string, context *AppLaunchContext) error
 	// LaunchURIsAsync: async version of g_app_info_launch_uris().
 	LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback)
 	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
-	LaunchURIsFinish(result AsyncResulter) error
+	LaunchURIsFinish(result AsyncResultOverrider) error
 	// RemoveSupportsType removes a supported type from an application, if
 	// possible.
 	RemoveSupportsType(contentType string) error
@@ -183,6 +436,487 @@ type AppInfor interface {
 }
 
 var _ AppInfor = (*AppInfo)(nil)
+
+func ifaceInitAppInfor(gifacePtr, data C.gpointer) {
+	iface := (*C.GAppInfoIface)(unsafe.Pointer(gifacePtr))
+	iface.add_supports_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_add_supports_type)
+	iface.can_delete = (*[0]byte)(C._gotk4_gio2_AppInfoIface_can_delete)
+	iface.can_remove_supports_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_can_remove_supports_type)
+	iface.do_delete = (*[0]byte)(C._gotk4_gio2_AppInfoIface_do_delete)
+	iface.dup = (*[0]byte)(C._gotk4_gio2_AppInfoIface_dup)
+	iface.equal = (*[0]byte)(C._gotk4_gio2_AppInfoIface_equal)
+	iface.get_commandline = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_commandline)
+	iface.get_description = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_description)
+	iface.get_display_name = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_display_name)
+	iface.get_executable = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_executable)
+	iface.get_icon = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_icon)
+	iface.get_id = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_id)
+	iface.get_name = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_name)
+	iface.get_supported_types = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_supported_types)
+	iface.launch = (*[0]byte)(C._gotk4_gio2_AppInfoIface_launch)
+	iface.launch_uris = (*[0]byte)(C._gotk4_gio2_AppInfoIface_launch_uris)
+	iface.launch_uris_finish = (*[0]byte)(C._gotk4_gio2_AppInfoIface_launch_uris_finish)
+	iface.remove_supports_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_remove_supports_type)
+	iface.set_as_default_for_extension = (*[0]byte)(C._gotk4_gio2_AppInfoIface_set_as_default_for_extension)
+	iface.set_as_default_for_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_set_as_default_for_type)
+	iface.set_as_last_used_for_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_set_as_last_used_for_type)
+	iface.should_show = (*[0]byte)(C._gotk4_gio2_AppInfoIface_should_show)
+	iface.supports_files = (*[0]byte)(C._gotk4_gio2_AppInfoIface_supports_files)
+	iface.supports_uris = (*[0]byte)(C._gotk4_gio2_AppInfoIface_supports_uris)
+}
+
+//export _gotk4_gio2_AppInfoIface_add_supports_type
+func _gotk4_gio2_AppInfoIface_add_supports_type(arg0 *C.GAppInfo, arg1 *C.char, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _contentType string // out
+
+	_contentType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	_goerr := iface.AddSupportsType(_contentType)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_can_delete
+func _gotk4_gio2_AppInfoIface_can_delete(arg0 *C.GAppInfo) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	ok := iface.CanDelete()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_can_remove_supports_type
+func _gotk4_gio2_AppInfoIface_can_remove_supports_type(arg0 *C.GAppInfo) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	ok := iface.CanRemoveSupportsType()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_do_delete
+func _gotk4_gio2_AppInfoIface_do_delete(arg0 *C.GAppInfo) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	ok := iface.DoDelete()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_dup
+func _gotk4_gio2_AppInfoIface_dup(arg0 *C.GAppInfo) (cret *C.GAppInfo) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	appInfo := iface.Dup()
+
+	cret = (*C.GAppInfo)(unsafe.Pointer(externglib.InternObject(appInfo).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(appInfo).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_equal
+func _gotk4_gio2_AppInfoIface_equal(arg0 *C.GAppInfo, arg1 *C.GAppInfo) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _appinfo2 AppInfoOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AppInfoOverrider)
+			return ok
+		})
+		rv, ok := casted.(AppInfoOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_appinfo2 = rv
+	}
+
+	ok := iface.Equal(_appinfo2)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_commandline
+func _gotk4_gio2_AppInfoIface_get_commandline(arg0 *C.GAppInfo) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	filename := iface.Commandline()
+
+	if filename != "" {
+		cret = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_description
+func _gotk4_gio2_AppInfoIface_get_description(arg0 *C.GAppInfo) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	utf8 := iface.Description()
+
+	if utf8 != "" {
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_display_name
+func _gotk4_gio2_AppInfoIface_get_display_name(arg0 *C.GAppInfo) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	utf8 := iface.DisplayName()
+
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_executable
+func _gotk4_gio2_AppInfoIface_get_executable(arg0 *C.GAppInfo) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	filename := iface.Executable()
+
+	cret = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_icon
+func _gotk4_gio2_AppInfoIface_get_icon(arg0 *C.GAppInfo) (cret *C.GIcon) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	icon := iface.Icon()
+
+	if icon != nil {
+		cret = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_id
+func _gotk4_gio2_AppInfoIface_get_id(arg0 *C.GAppInfo) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	utf8 := iface.ID()
+
+	if utf8 != "" {
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_name
+func _gotk4_gio2_AppInfoIface_get_name(arg0 *C.GAppInfo) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	utf8 := iface.Name()
+
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_get_supported_types
+func _gotk4_gio2_AppInfoIface_get_supported_types(arg0 *C.GAppInfo) (cret **C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	utf8s := iface.SupportedTypes()
+
+	{
+		cret = (**C.char)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(cret))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.char
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(utf8s[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_launch
+func _gotk4_gio2_AppInfoIface_launch(arg0 *C.GAppInfo, arg1 *C.GList, arg2 *C.GAppLaunchContext, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _files []FileOverrider     // out
+	var _context *AppLaunchContext // out
+
+	if arg1 != nil {
+		_files = make([]FileOverrider, 0, gextras.ListSize(unsafe.Pointer(arg1)))
+		gextras.MoveList(unsafe.Pointer(arg1), false, func(v unsafe.Pointer) {
+			src := (*C.GFile)(v)
+			var dst FileOverrider // out
+			{
+				objptr := unsafe.Pointer(src)
+				if objptr == nil {
+					panic("object of type gio.Filer is nil")
+				}
+
+				object := externglib.Take(objptr)
+				casted := object.WalkCast(func(obj externglib.Objector) bool {
+					_, ok := obj.(FileOverrider)
+					return ok
+				})
+				rv, ok := casted.(FileOverrider)
+				if !ok {
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+				}
+				dst = rv
+			}
+			_files = append(_files, dst)
+		})
+	}
+	if arg2 != nil {
+		_context = wrapAppLaunchContext(externglib.Take(unsafe.Pointer(arg2)))
+	}
+
+	_goerr := iface.Launch(_files, _context)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_launch_uris
+func _gotk4_gio2_AppInfoIface_launch_uris(arg0 *C.GAppInfo, arg1 *C.GList, arg2 *C.GAppLaunchContext, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _uris []string             // out
+	var _context *AppLaunchContext // out
+
+	if arg1 != nil {
+		_uris = make([]string, 0, gextras.ListSize(unsafe.Pointer(arg1)))
+		gextras.MoveList(unsafe.Pointer(arg1), false, func(v unsafe.Pointer) {
+			src := (*C.gchar)(v)
+			var dst string // out
+			dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+			_uris = append(_uris, dst)
+		})
+	}
+	if arg2 != nil {
+		_context = wrapAppLaunchContext(externglib.Take(unsafe.Pointer(arg2)))
+	}
+
+	_goerr := iface.LaunchURIs(_uris, _context)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_launch_uris_finish
+func _gotk4_gio2_AppInfoIface_launch_uris_finish(arg0 *C.GAppInfo, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.LaunchURIsFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_remove_supports_type
+func _gotk4_gio2_AppInfoIface_remove_supports_type(arg0 *C.GAppInfo, arg1 *C.char, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _contentType string // out
+
+	_contentType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	_goerr := iface.RemoveSupportsType(_contentType)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_set_as_default_for_extension
+func _gotk4_gio2_AppInfoIface_set_as_default_for_extension(arg0 *C.GAppInfo, arg1 *C.char, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _extension string // out
+
+	_extension = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	_goerr := iface.SetAsDefaultForExtension(_extension)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_set_as_default_for_type
+func _gotk4_gio2_AppInfoIface_set_as_default_for_type(arg0 *C.GAppInfo, arg1 *C.char, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _contentType string // out
+
+	_contentType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	_goerr := iface.SetAsDefaultForType(_contentType)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_set_as_last_used_for_type
+func _gotk4_gio2_AppInfoIface_set_as_last_used_for_type(arg0 *C.GAppInfo, arg1 *C.char, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	var _contentType string // out
+
+	_contentType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	_goerr := iface.SetAsLastUsedForType(_contentType)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_should_show
+func _gotk4_gio2_AppInfoIface_should_show(arg0 *C.GAppInfo) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	ok := iface.ShouldShow()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_supports_files
+func _gotk4_gio2_AppInfoIface_supports_files(arg0 *C.GAppInfo) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	ok := iface.SupportsFiles()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AppInfoIface_supports_uris
+func _gotk4_gio2_AppInfoIface_supports_uris(arg0 *C.GAppInfo) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AppInfoOverrider)
+
+	ok := iface.SupportsURIs()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapAppInfo(obj *externglib.Object) *AppInfo {
 	return &AppInfo{
@@ -309,7 +1043,7 @@ func (appinfo *AppInfo) Delete() bool {
 //
 //    - appInfo: duplicate of appinfo.
 //
-func (appinfo *AppInfo) Dup() AppInfor {
+func (appinfo *AppInfo) Dup() AppInfoOverrider {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
 
@@ -318,7 +1052,7 @@ func (appinfo *AppInfo) Dup() AppInfor {
 	_cret = C.g_app_info_dup(_arg0)
 	runtime.KeepAlive(appinfo)
 
-	var _appInfo AppInfor // out
+	var _appInfo AppInfoOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -328,10 +1062,10 @@ func (appinfo *AppInfo) Dup() AppInfor {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
+			_, ok := obj.(AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(AppInfor)
+		rv, ok := casted.(AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -355,7 +1089,7 @@ func (appinfo *AppInfo) Dup() AppInfor {
 //
 //    - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
 //
-func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
+func (appinfo1 *AppInfo) Equal(appinfo2 AppInfoOverrider) bool {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -479,7 +1213,7 @@ func (appinfo *AppInfo) Executable() string {
 //    - icon (optional): default #GIcon for appinfo or NULL if there is no
 //      default icon.
 //
-func (appinfo *AppInfo) Icon() Iconner {
+func (appinfo *AppInfo) Icon() IconOverrider {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
 
@@ -488,7 +1222,7 @@ func (appinfo *AppInfo) Icon() Iconner {
 	_cret = C.g_app_info_get_icon(_arg0)
 	runtime.KeepAlive(appinfo)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	if _cret != nil {
 		{
@@ -496,10 +1230,10 @@ func (appinfo *AppInfo) Icon() Iconner {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Iconner)
+				_, ok := obj.(IconOverrider)
 				return ok
 			})
-			rv, ok := casted.(Iconner)
+			rv, ok := casted.(IconOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -631,7 +1365,7 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 //    - files (optional) of #GFile objects.
 //    - context (optional) or NULL.
 //
-func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
+func (appinfo *AppInfo) Launch(files []FileOverrider, context *AppLaunchContext) error {
 	var _arg0 *C.GAppInfo          // out
 	var _arg1 *C.GList             // out
 	var _arg2 *C.GAppLaunchContext // out
@@ -776,7 +1510,7 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 //
 //    - result: Result.
 //
-func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
+func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -1007,7 +1741,7 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 //
 //    - appInfo: new Info for given command.
 //
-func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (AppInfor, error) {
+func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (AppInfoOverrider, error) {
 	var _arg1 *C.char               // out
 	var _arg2 *C.char               // out
 	var _arg3 C.GAppInfoCreateFlags // out
@@ -1027,8 +1761,8 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 	runtime.KeepAlive(applicationName)
 	runtime.KeepAlive(flags)
 
-	var _appInfo AppInfor // out
-	var _goerr error      // out
+	var _appInfo AppInfoOverrider // out
+	var _goerr error              // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -1038,10 +1772,10 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
+			_, ok := obj.(AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(AppInfor)
+		rv, ok := casted.(AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -1066,17 +1800,17 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 //
 //    - list: newly allocated #GList of references to Infos.
 //
-func AppInfoGetAll() []AppInfor {
+func AppInfoGetAll() []AppInfoOverrider {
 	var _cret *C.GList // in
 
 	_cret = C.g_app_info_get_all()
 
-	var _list []AppInfor // out
+	var _list []AppInfoOverrider // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]AppInfoOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
+		var dst AppInfoOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1085,10 +1819,10 @@ func AppInfoGetAll() []AppInfor {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
+				_, ok := obj.(AppInfoOverrider)
 				return ok
 			})
-			rv, ok := casted.(AppInfor)
+			rv, ok := casted.(AppInfoOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
@@ -1112,7 +1846,7 @@ func AppInfoGetAll() []AppInfor {
 //
 //    - list of Infos for given content_type or NULL on error.
 //
-func AppInfoGetAllForType(contentType string) []AppInfor {
+func AppInfoGetAllForType(contentType string) []AppInfoOverrider {
 	var _arg1 *C.char  // out
 	var _cret *C.GList // in
 
@@ -1122,12 +1856,12 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_all_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list []AppInfoOverrider // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]AppInfoOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
+		var dst AppInfoOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1136,10 +1870,10 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
+				_, ok := obj.(AppInfoOverrider)
 				return ok
 			})
-			rv, ok := casted.(AppInfor)
+			rv, ok := casted.(AppInfoOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
@@ -1162,7 +1896,7 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 //
 //    - appInfo (optional) for given content_type or NULL on error.
 //
-func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor {
+func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfoOverrider {
 	var _arg1 *C.char     // out
 	var _arg2 C.gboolean  // out
 	var _cret *C.GAppInfo // in
@@ -1177,7 +1911,7 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 	runtime.KeepAlive(contentType)
 	runtime.KeepAlive(mustSupportUris)
 
-	var _appInfo AppInfor // out
+	var _appInfo AppInfoOverrider // out
 
 	if _cret != nil {
 		{
@@ -1185,10 +1919,10 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
+				_, ok := obj.(AppInfoOverrider)
 				return ok
 			})
-			rv, ok := casted.(AppInfor)
+			rv, ok := casted.(AppInfoOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
@@ -1211,7 +1945,7 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 //
 //    - appInfo (optional) for given uri_scheme or NULL on error.
 //
-func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
+func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfoOverrider {
 	var _arg1 *C.char     // out
 	var _cret *C.GAppInfo // in
 
@@ -1221,7 +1955,7 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
 	runtime.KeepAlive(uriScheme)
 
-	var _appInfo AppInfor // out
+	var _appInfo AppInfoOverrider // out
 
 	if _cret != nil {
 		{
@@ -1229,10 +1963,10 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
+				_, ok := obj.(AppInfoOverrider)
 				return ok
 			})
-			rv, ok := casted.(AppInfor)
+			rv, ok := casted.(AppInfoOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
@@ -1255,7 +1989,7 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 //
 //    - list of Infos for given content_type or NULL on error.
 //
-func AppInfoGetFallbackForType(contentType string) []AppInfor {
+func AppInfoGetFallbackForType(contentType string) []AppInfoOverrider {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -1265,12 +1999,12 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_fallback_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list []AppInfoOverrider // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]AppInfoOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
+		var dst AppInfoOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1279,10 +2013,10 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
+				_, ok := obj.(AppInfoOverrider)
 				return ok
 			})
-			rv, ok := casted.(AppInfor)
+			rv, ok := casted.(AppInfoOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
@@ -1308,7 +2042,7 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 //
 //    - list of Infos for given content_type or NULL on error.
 //
-func AppInfoGetRecommendedForType(contentType string) []AppInfor {
+func AppInfoGetRecommendedForType(contentType string) []AppInfoOverrider {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -1318,12 +2052,12 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_recommended_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list []AppInfoOverrider // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]AppInfoOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
+		var dst AppInfoOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1332,10 +2066,10 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
+				_, ok := obj.(AppInfoOverrider)
 				return ok
 			})
-			rv, ok := casted.(AppInfor)
+			rv, ok := casted.(AppInfoOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
@@ -1438,7 +2172,7 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 //
 //    - result: Result.
 //
-func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
+func AppInfoLaunchDefaultForURIFinish(result AsyncResultOverrider) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 
@@ -1503,6 +2237,7 @@ func AppInfoMonitorGet() *AppInfoMonitor {
 
 // AppLaunchContextOverrider contains methods that are overridable.
 type AppLaunchContextOverrider interface {
+	externglib.Objector
 	// Display gets the display string for the context. This is used to ensure
 	// new applications are started on the same display as the launching
 	// application, by setting the DISPLAY environment variable.
@@ -1516,7 +2251,7 @@ type AppLaunchContextOverrider interface {
 	//
 	//    - utf8 (optional): display string for the display.
 	//
-	Display(info AppInfor, files []Filer) string
+	Display(info AppInfoOverrider, files []FileOverrider) string
 	// StartupNotifyID initiates startup notification for the application and
 	// returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
 	//
@@ -1534,7 +2269,7 @@ type AppLaunchContextOverrider interface {
 	//    - utf8 (optional): startup notification ID for the application, or NULL
 	//      if not supported.
 	//
-	StartupNotifyID(info AppInfor, files []Filer) string
+	StartupNotifyID(info AppInfoOverrider, files []FileOverrider) string
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
@@ -1550,7 +2285,7 @@ type AppLaunchContextOverrider interface {
 	//    - info
 	//    - platformData
 	//
-	Launched(info AppInfor, platformData *glib.Variant)
+	Launched(info AppInfoOverrider, platformData *glib.Variant)
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This
@@ -1577,13 +2312,13 @@ func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GAppLaunchContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		Display(info AppInfor, files []Filer) string
+		Display(info AppInfoOverrider, files []FileOverrider) string
 	}); ok {
 		pclass.get_display = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_get_display)
 	}
 
 	if _, ok := goval.(interface {
-		StartupNotifyID(info AppInfor, files []Filer) string
+		StartupNotifyID(info AppInfoOverrider, files []FileOverrider) string
 	}); ok {
 		pclass.get_startup_notify_id = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_get_startup_notify_id)
 	}
@@ -1593,7 +2328,7 @@ func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Launched(info AppInfor, platformData *glib.Variant)
+		Launched(info AppInfoOverrider, platformData *glib.Variant)
 	}); ok {
 		pclass.launched = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_launched)
 	}
@@ -1603,11 +2338,11 @@ func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Display(info AppInfor, files []Filer) string
+		Display(info AppInfoOverrider, files []FileOverrider) string
 	})
 
-	var _info AppInfor // out
-	var _files []Filer // out
+	var _info AppInfoOverrider // out
+	var _files []FileOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1617,19 +2352,19 @@ func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, ar
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
+			_, ok := obj.(AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(AppInfor)
+		rv, ok := casted.(AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
 		_info = rv
 	}
-	_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
+	_files = make([]FileOverrider, 0, gextras.ListSize(unsafe.Pointer(arg2)))
 	gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
-		var dst Filer // out
+		var dst FileOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1638,10 +2373,10 @@ func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, ar
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Filer)
+				_, ok := obj.(FileOverrider)
 				return ok
 			})
-			rv, ok := casted.(Filer)
+			rv, ok := casted.(FileOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -1663,11 +2398,11 @@ func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, ar
 func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		StartupNotifyID(info AppInfor, files []Filer) string
+		StartupNotifyID(info AppInfoOverrider, files []FileOverrider) string
 	})
 
-	var _info AppInfor // out
-	var _files []Filer // out
+	var _info AppInfoOverrider // out
+	var _files []FileOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1677,19 +2412,19 @@ func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchC
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
+			_, ok := obj.(AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(AppInfor)
+		rv, ok := casted.(AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
 		_info = rv
 	}
-	_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
+	_files = make([]FileOverrider, 0, gextras.ListSize(unsafe.Pointer(arg2)))
 	gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
-		var dst Filer // out
+		var dst FileOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1698,10 +2433,10 @@ func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchC
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Filer)
+				_, ok := obj.(FileOverrider)
 				return ok
 			})
-			rv, ok := casted.(Filer)
+			rv, ok := casted.(FileOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -1735,10 +2470,10 @@ func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, 
 func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Launched(info AppInfor, platformData *glib.Variant)
+		Launched(info AppInfoOverrider, platformData *glib.Variant)
 	})
 
-	var _info AppInfor              // out
+	var _info AppInfoOverrider      // out
 	var _platformData *glib.Variant // out
 
 	{
@@ -1749,10 +2484,10 @@ func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
+			_, ok := obj.(AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(AppInfor)
+		rv, ok := casted.(AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -1809,7 +2544,7 @@ func (context *AppLaunchContext) ConnectLaunchFailed(f func(startupNotifyId stri
 
 //export _gotk4_gio2_AppLaunchContext_ConnectLaunched
 func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 *C.GVariant, arg3 C.guintptr) {
-	var f func(info AppInfor, platformData *glib.Variant)
+	var f func(info AppInfoOverrider, platformData *glib.Variant)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -1817,10 +2552,10 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppI
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(info AppInfor, platformData *glib.Variant))
+		f = closure.Func.(func(info AppInfoOverrider, platformData *glib.Variant))
 	}
 
-	var _info AppInfor              // out
+	var _info AppInfoOverrider      // out
 	var _platformData *glib.Variant // out
 
 	{
@@ -1831,10 +2566,10 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppI
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
+			_, ok := obj.(AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(AppInfor)
+		rv, ok := casted.(AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -1857,7 +2592,7 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppI
 // a{sv}), which contains additional, platform-specific data about this launch.
 // On UNIX, at least the "pid" and "startup-notification-id" keys will be
 // present.
-func (context *AppLaunchContext) ConnectLaunched(f func(info AppInfor, platformData *glib.Variant)) externglib.SignalHandle {
+func (context *AppLaunchContext) ConnectLaunched(f func(info AppInfoOverrider, platformData *glib.Variant)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(context, "launched", false, unsafe.Pointer(C._gotk4_gio2_AppLaunchContext_ConnectLaunched), f)
 }
 
@@ -1894,7 +2629,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 //
 //    - utf8 (optional): display string for the display.
 //
-func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
+func (context *AppLaunchContext) Display(info AppInfoOverrider, files []FileOverrider) string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.GAppInfo          // out
 	var _arg2 *C.GList             // out
@@ -1980,7 +2715,7 @@ func (context *AppLaunchContext) Environment() []string {
 //    - utf8 (optional): startup notification ID for the application, or NULL if
 //      not supported.
 //
-func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) string {
+func (context *AppLaunchContext) StartupNotifyID(info AppInfoOverrider, files []FileOverrider) string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.GAppInfo          // out
 	var _arg2 *C.GList             // out

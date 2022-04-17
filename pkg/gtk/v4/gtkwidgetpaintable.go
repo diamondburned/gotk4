@@ -26,6 +26,7 @@ func init() {
 
 // WidgetPaintableOverrider contains methods that are overridable.
 type WidgetPaintableOverrider interface {
+	externglib.Objector
 }
 
 // WidgetPaintable: GtkWidgetPaintable is a GdkPaintable that displays the

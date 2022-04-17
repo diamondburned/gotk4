@@ -27,6 +27,7 @@ func init() {
 
 // ShortcutControllerOverrider contains methods that are overridable.
 type ShortcutControllerOverrider interface {
+	externglib.Objector
 }
 
 // ShortcutController: GtkShortcutController is an event controller that manages
@@ -144,7 +145,7 @@ func NewShortcutController() *ShortcutController {
 //
 //    - shortcutController: newly created shortcut controller.
 //
-func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
+func NewShortcutControllerForModel(model gio.ListModelOverrider) *ShortcutController {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkEventController // in
 

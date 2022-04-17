@@ -26,6 +26,7 @@ func init() {
 
 // X11KeymapOverrider contains methods that are overridable.
 type X11KeymapOverrider interface {
+	externglib.Objector
 }
 
 type X11Keymap struct {

@@ -28,6 +28,7 @@ func init() {
 
 // HScrollbarOverrider contains methods that are overridable.
 type HScrollbarOverrider interface {
+	externglib.Objector
 }
 
 // HScrollbar widget is a widget arranged horizontally creating a scrollbar. See

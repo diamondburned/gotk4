@@ -980,6 +980,7 @@ func RCSetDefaultFiles(filenames []string) {
 
 // RCStyleOverrider contains methods that are overridable.
 type RCStyleOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	Merge(src *RCStyle)

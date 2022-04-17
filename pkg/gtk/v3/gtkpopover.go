@@ -34,6 +34,7 @@ func init() {
 
 // PopoverOverrider contains methods that are overridable.
 type PopoverOverrider interface {
+	externglib.Objector
 	Closed()
 }
 

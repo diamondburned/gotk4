@@ -528,7 +528,7 @@ func (box *ListBox) Append(child Widgetter) {
 //    - createWidgetFunc (optional): function that creates widgets for items or
 //      NULL in case you also passed NULL as model.
 //
-func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCreateWidgetFunc) {
+func (box *ListBox) BindModel(model gio.ListModelOverrider, createWidgetFunc ListBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkListBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkListBoxCreateWidgetFunc // out
@@ -1218,6 +1218,7 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 
 // ListBoxRowOverrider contains methods that are overridable.
 type ListBoxRowOverrider interface {
+	externglib.Objector
 	Activate()
 }
 

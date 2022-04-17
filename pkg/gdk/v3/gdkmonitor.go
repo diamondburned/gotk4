@@ -75,6 +75,7 @@ func (s SubpixelLayout) String() string {
 
 // MonitorOverrider contains methods that are overridable.
 type MonitorOverrider interface {
+	externglib.Objector
 }
 
 // Monitor objects represent the individual outputs that are associated with a

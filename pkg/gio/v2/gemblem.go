@@ -25,6 +25,7 @@ func init() {
 
 // EmblemOverrider contains methods that are overridable.
 type EmblemOverrider interface {
+	externglib.Objector
 }
 
 // Emblem is an implementation of #GIcon that supports having an emblem, which
@@ -74,7 +75,7 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 //
 //    - emblem: new #GEmblem.
 //
-func NewEmblem(icon Iconner) *Emblem {
+func NewEmblem(icon IconOverrider) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
 
@@ -101,7 +102,7 @@ func NewEmblem(icon Iconner) *Emblem {
 //
 //    - emblem: new #GEmblem.
 //
-func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
+func NewEmblemWithOrigin(icon IconOverrider, origin EmblemOrigin) *Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out
 	var _cret *C.GEmblem      // in
@@ -127,7 +128,7 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 //    - icon The returned object belongs to the emblem and should not be modified
 //      or freed.
 //
-func (emblem *Emblem) GetIcon() Iconner {
+func (emblem *Emblem) GetIcon() IconOverrider {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
@@ -136,7 +137,7 @@ func (emblem *Emblem) GetIcon() Iconner {
 	_cret = C.g_emblem_get_icon(_arg0)
 	runtime.KeepAlive(emblem)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -146,10 +147,10 @@ func (emblem *Emblem) GetIcon() Iconner {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}

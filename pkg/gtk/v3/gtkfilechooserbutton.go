@@ -31,6 +31,7 @@ func init() {
 
 // FileChooserButtonOverrider contains methods that are overridable.
 type FileChooserButtonOverrider interface {
+	externglib.Objector
 	FileSet()
 }
 

@@ -27,6 +27,7 @@ func init() {
 
 // TearoffMenuItemOverrider contains methods that are overridable.
 type TearoffMenuItemOverrider interface {
+	externglib.Objector
 }
 
 // TearoffMenuItem is a special MenuItem which is used to tear off and reattach

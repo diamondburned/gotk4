@@ -104,7 +104,7 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated
 func _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
-	var f func(application gio.AppInfor)
+	var f func(application gio.AppInfoOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -112,10 +112,10 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(application gio.AppInfor))
+		f = closure.Func.(func(application gio.AppInfoOverrider))
 	}
 
-	var _application gio.AppInfor // out
+	var _application gio.AppInfoOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -125,10 +125,10 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.AppInfor)
+			_, ok := obj.(gio.AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.AppInfor)
+		rv, ok := casted.(gio.AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -144,13 +144,13 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 // This usually happens when the user double clicks an item, or an item is
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
-func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) externglib.SignalHandle {
+func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfoOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "application-activated", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated), f)
 }
 
 //export _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected
 func _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
-	var f func(application gio.AppInfor)
+	var f func(application gio.AppInfoOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -158,10 +158,10 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, ar
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(application gio.AppInfor))
+		f = closure.Func.(func(application gio.AppInfoOverrider))
 	}
 
-	var _application gio.AppInfor // out
+	var _application gio.AppInfoOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -171,10 +171,10 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, ar
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.AppInfor)
+			_, ok := obj.(gio.AppInfoOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.AppInfor)
+		rv, ok := casted.(gio.AppInfoOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -186,7 +186,7 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, ar
 
 // ConnectApplicationSelected is emitted when an application item is selected
 // from the widget's list.
-func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
+func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfoOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(self, "application-selected", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected), f)
 }
 

@@ -120,6 +120,7 @@ func _gotk4_gtk3_IconViewForEachFunc(arg1 *C.GtkIconView, arg2 *C.GtkTreePath, a
 
 // IconViewOverrider contains methods that are overridable.
 type IconViewOverrider interface {
+	externglib.Objector
 	// The function returns the following values:
 	//
 	ActivateCursorItem() bool
@@ -640,7 +641,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 //
 //    - iconView: newly created IconView widget.
 //
-func NewIconViewWithModel(model TreeModeller) *IconView {
+func NewIconViewWithModel(model TreeModelOverrider) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -1304,7 +1305,7 @@ func (iconView *IconView) MarkupColumn() int {
 //
 //    - treeModel (optional) or NULL if none is currently being used.
 //
-func (iconView *IconView) Model() TreeModeller {
+func (iconView *IconView) Model() TreeModelOverrider {
 	var _arg0 *C.GtkIconView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -1313,7 +1314,7 @@ func (iconView *IconView) Model() TreeModeller {
 	_cret = C.gtk_icon_view_get_model(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _treeModel TreeModeller // out
+	var _treeModel TreeModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -1321,10 +1322,10 @@ func (iconView *IconView) Model() TreeModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -2005,7 +2006,7 @@ func (iconView *IconView) SetMarkupColumn(column int) {
 //
 //    - model (optional): model.
 //
-func (iconView *IconView) SetModel(model TreeModeller) {
+func (iconView *IconView) SetModel(model TreeModelOverrider) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 *C.GtkTreeModel // out
 

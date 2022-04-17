@@ -36,6 +36,44 @@ func init() {
 // monitoring functionality. See [Extending GIO][extending-gio].
 const NETWORK_MONITOR_EXTENSION_POINT_NAME = "gio-network-monitor"
 
+// NetworkMonitorOverrider contains methods that are overridable.
+type NetworkMonitorOverrider interface {
+	externglib.Objector
+	// CanReach attempts to determine whether or not the host pointed to by
+	// connectable can be reached, without actually trying to connect to it.
+	//
+	// This may return TRUE even when Monitor:network-available is FALSE, if,
+	// for example, monitor can determine that connectable refers to a host on a
+	// local network.
+	//
+	// If monitor believes that an attempt to connect to connectable will
+	// succeed, it will return TRUE. Otherwise, it will return FALSE and set
+	// error to an appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
+	//
+	// Note that although this does not attempt to connect to connectable, it
+	// may still block for a brief period of time (eg, trying to do multicast
+	// DNS on the local network), so if you do not want to block, you should use
+	// g_network_monitor_can_reach_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - connectable: Connectable.
+	//
+	CanReach(ctx context.Context, connectable SocketConnectableOverrider) error
+	// CanReachFinish finishes an async network connectivity test. See
+	// g_network_monitor_can_reach_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	CanReachFinish(result AsyncResultOverrider) error
+	// The function takes the following parameters:
+	//
+	NetworkChanged(networkAvailable bool)
+}
+
 // NetworkMonitor provides an easy-to-use cross-platform API for monitoring
 // network connectivity. On Linux, the available implementations are based on
 // the kernel's netlink interface and on NetworkManager.
@@ -54,13 +92,13 @@ type NetworkMonitorrer interface {
 
 	// CanReach attempts to determine whether or not the host pointed to by
 	// connectable can be reached, without actually trying to connect to it.
-	CanReach(ctx context.Context, connectable SocketConnectabler) error
+	CanReach(ctx context.Context, connectable SocketConnectableOverrider) error
 	// CanReachAsync: asynchronously attempts to determine whether or not the
 	// host pointed to by connectable can be reached, without actually trying to
 	// connect to it.
-	CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback)
+	CanReachAsync(ctx context.Context, connectable SocketConnectableOverrider, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test.
-	CanReachFinish(result AsyncResulter) error
+	CanReachFinish(result AsyncResultOverrider) error
 	// Connectivity gets a more detailed networking state than
 	// g_network_monitor_get_network_available().
 	Connectivity() NetworkConnectivity
@@ -74,6 +112,99 @@ type NetworkMonitorrer interface {
 }
 
 var _ NetworkMonitorrer = (*NetworkMonitor)(nil)
+
+func ifaceInitNetworkMonitorrer(gifacePtr, data C.gpointer) {
+	iface := (*C.GNetworkMonitorInterface)(unsafe.Pointer(gifacePtr))
+	iface.can_reach = (*[0]byte)(C._gotk4_gio2_NetworkMonitorInterface_can_reach)
+	iface.can_reach_finish = (*[0]byte)(C._gotk4_gio2_NetworkMonitorInterface_can_reach_finish)
+	iface.network_changed = (*[0]byte)(C._gotk4_gio2_NetworkMonitorInterface_network_changed)
+}
+
+//export _gotk4_gio2_NetworkMonitorInterface_can_reach
+func _gotk4_gio2_NetworkMonitorInterface_can_reach(arg0 *C.GNetworkMonitor, arg1 *C.GSocketConnectable, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(NetworkMonitorOverrider)
+
+	var _cancellable context.Context            // out
+	var _connectable SocketConnectableOverrider // out
+
+	if arg2 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
+	}
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.SocketConnectabler is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(SocketConnectableOverrider)
+			return ok
+		})
+		rv, ok := casted.(SocketConnectableOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
+		}
+		_connectable = rv
+	}
+
+	_goerr := iface.CanReach(_cancellable, _connectable)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_NetworkMonitorInterface_can_reach_finish
+func _gotk4_gio2_NetworkMonitorInterface_can_reach_finish(arg0 *C.GNetworkMonitor, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(NetworkMonitorOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.CanReachFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_NetworkMonitorInterface_network_changed
+func _gotk4_gio2_NetworkMonitorInterface_network_changed(arg0 *C.GNetworkMonitor, arg1 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(NetworkMonitorOverrider)
+
+	var _networkAvailable bool // out
+
+	if arg1 != 0 {
+		_networkAvailable = true
+	}
+
+	iface.NetworkChanged(_networkAvailable)
+}
 
 func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	return &NetworkMonitor{
@@ -135,7 +266,7 @@ func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable boo
 //    - ctx (optional) or NULL.
 //    - connectable: Connectable.
 //
-func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
+func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectableOverrider) error {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GSocketConnectable // out
@@ -178,7 +309,7 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 //    - connectable: Connectable.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
+func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectableOverrider, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GSocketConnectable // out
@@ -211,7 +342,7 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 //
 //    - result: Result.
 //
-func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
+func (monitor *NetworkMonitor) CanReachFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -331,12 +462,12 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 //    - networkMonitor which will be a dummy object if no network monitor is
 //      available.
 //
-func NetworkMonitorGetDefault() NetworkMonitorrer {
+func NetworkMonitorGetDefault() NetworkMonitorOverrider {
 	var _cret *C.GNetworkMonitor // in
 
 	_cret = C.g_network_monitor_get_default()
 
-	var _networkMonitor NetworkMonitorrer // out
+	var _networkMonitor NetworkMonitorOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -346,10 +477,10 @@ func NetworkMonitorGetDefault() NetworkMonitorrer {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(NetworkMonitorrer)
+			_, ok := obj.(NetworkMonitorOverrider)
 			return ok
 		})
-		rv, ok := casted.(NetworkMonitorrer)
+		rv, ok := casted.(NetworkMonitorOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.NetworkMonitorrer")
 		}

@@ -32,6 +32,7 @@ func init() {
 
 // SocketAddressEnumeratorOverrider contains methods that are overridable.
 type SocketAddressEnumeratorOverrider interface {
+	externglib.Objector
 	// Next retrieves the next Address from enumerator. Note that this may block
 	// for some amount of time. (Eg, a Address may need to do a DNS lookup
 	// before it can return an address.) Use
@@ -68,7 +69,7 @@ type SocketAddressEnumeratorOverrider interface {
 	//    - socketAddress (owned by the caller), or NULL on error (in which case
 	//      *error will be set) or if there are no more addresses.
 	//
-	NextFinish(result AsyncResulter) (SocketAddresser, error)
+	NextFinish(result AsyncResultOverrider) (SocketAddresser, error)
 }
 
 // SocketAddressEnumerator is an enumerator type for Address instances. It is
@@ -121,7 +122,7 @@ func classInitSocketAddressEnumeratorrer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		NextFinish(result AsyncResulter) (SocketAddresser, error)
+		NextFinish(result AsyncResultOverrider) (SocketAddresser, error)
 	}); ok {
 		pclass.next_finish = (*[0]byte)(C._gotk4_gio2_SocketAddressEnumeratorClass_next_finish)
 	}
@@ -155,10 +156,10 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumera
 func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddressEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GSocketAddress) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		NextFinish(result AsyncResulter) (SocketAddresser, error)
+		NextFinish(result AsyncResultOverrider) (SocketAddresser, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -168,10 +169,10 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddress
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -321,7 +322,7 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 //    - socketAddress (owned by the caller), or NULL on error (in which case
 //      *error will be set) or if there are no more addresses.
 //
-func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (SocketAddresser, error) {
+func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResultOverrider) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
 	var _cret *C.GSocketAddress           // in

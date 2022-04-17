@@ -26,6 +26,7 @@ func init() {
 
 // X11AppLaunchContextOverrider contains methods that are overridable.
 type X11AppLaunchContextOverrider interface {
+	externglib.Objector
 }
 
 type X11AppLaunchContext struct {

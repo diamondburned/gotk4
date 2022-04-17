@@ -25,6 +25,7 @@ func init() {
 
 // GridOverrider contains methods that are overridable.
 type GridOverrider interface {
+	externglib.Objector
 }
 
 // Grid: GtkGrid is a container which arranges its child widgets in rows and

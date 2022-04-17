@@ -25,6 +25,7 @@ func init() {
 
 // TreeExpanderOverrider contains methods that are overridable.
 type TreeExpanderOverrider interface {
+	externglib.Objector
 }
 
 // TreeExpander: GtkTreeExpander is a widget that provides an expander for a

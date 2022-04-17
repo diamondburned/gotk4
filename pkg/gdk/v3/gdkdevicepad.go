@@ -60,6 +60,7 @@ func (d DevicePadFeature) String() string {
 
 // DevicePadOverrider contains methods that are overridable.
 type DevicePadOverrider interface {
+	externglib.Objector
 }
 
 // DevicePad is an interface implemented by devices of type

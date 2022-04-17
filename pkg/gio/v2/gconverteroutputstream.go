@@ -25,6 +25,7 @@ func init() {
 
 // ConverterOutputStreamOverrider contains methods that are overridable.
 type ConverterOutputStreamOverrider interface {
+	externglib.Objector
 }
 
 // ConverterOutputStream: converter output stream implements Stream and allows
@@ -89,7 +90,7 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 //
 //    - converterOutputStream: new Stream.
 //
-func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) *ConverterOutputStream {
+func NewConverterOutputStream(baseStream OutputStreamer, converter ConverterOverrider) *ConverterOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.GConverter    // out
 	var _cret *C.GOutputStream // in
@@ -114,7 +115,7 @@ func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) 
 //
 //    - converter of the converter output stream.
 //
-func (converterStream *ConverterOutputStream) Converter() Converterer {
+func (converterStream *ConverterOutputStream) Converter() ConverterOverrider {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in
 
@@ -123,7 +124,7 @@ func (converterStream *ConverterOutputStream) Converter() Converterer {
 	_cret = C.g_converter_output_stream_get_converter(_arg0)
 	runtime.KeepAlive(converterStream)
 
-	var _converter Converterer // out
+	var _converter ConverterOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -133,10 +134,10 @@ func (converterStream *ConverterOutputStream) Converter() Converterer {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Converterer)
+			_, ok := obj.(ConverterOverrider)
 			return ok
 		})
-		rv, ok := casted.(Converterer)
+		rv, ok := casted.(ConverterOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Converterer")
 		}

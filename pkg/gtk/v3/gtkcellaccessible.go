@@ -29,6 +29,7 @@ func init() {
 
 // CellAccessibleOverrider contains methods that are overridable.
 type CellAccessibleOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	UpdateCache(emitSignal bool)

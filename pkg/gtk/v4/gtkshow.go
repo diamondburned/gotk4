@@ -103,7 +103,7 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 //    - parent passed to gtk_show_uri().
 //    - result that was passed to callback.
 //
-func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
+func ShowURIFullFinish(parent *Window, result gio.AsyncResultOverrider) error {
 	var _arg1 *C.GtkWindow    // out
 	var _arg2 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

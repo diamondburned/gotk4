@@ -28,6 +28,7 @@ func init() {
 
 // ThreadedSocketServiceOverrider contains methods that are overridable.
 type ThreadedSocketServiceOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - connection

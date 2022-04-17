@@ -421,6 +421,7 @@ func (g *Generator) Use(typ interface{}) bool {
 func (g *Generator) checkTypeStruct(girName string) {
 	result := types.Find(g.gen, girName)
 	if result == nil {
+		g.Logln(logger.Debug, "cannot find type-struct", girName)
 		return
 	}
 

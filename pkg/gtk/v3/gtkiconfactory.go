@@ -238,6 +238,7 @@ func IconSizeRegisterAlias(alias string, target int) {
 
 // IconFactoryOverrider contains methods that are overridable.
 type IconFactoryOverrider interface {
+	externglib.Objector
 }
 
 // IconFactory: icon factory manages a collection of IconSet; a IconSet manages

@@ -36,6 +36,7 @@ func init() {
 
 // AlternativeTriggerOverrider contains methods that are overridable.
 type AlternativeTriggerOverrider interface {
+	externglib.Objector
 }
 
 // AlternativeTrigger: GtkShortcutTrigger that combines two triggers.
@@ -190,6 +191,7 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 
 // KeyvalTriggerOverrider contains methods that are overridable.
 type KeyvalTriggerOverrider interface {
+	externglib.Objector
 }
 
 // KeyvalTrigger: GtkShortcutTrigger that triggers when a specific keyval and
@@ -300,6 +302,7 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 
 // MnemonicTriggerOverrider contains methods that are overridable.
 type MnemonicTriggerOverrider interface {
+	externglib.Objector
 }
 
 // MnemonicTrigger: GtkShortcutTrigger that triggers when a specific mnemonic is
@@ -390,6 +393,7 @@ func (self *MnemonicTrigger) Keyval() uint {
 
 // NeverTriggerOverrider contains methods that are overridable.
 type NeverTriggerOverrider interface {
+	externglib.Objector
 }
 
 // NeverTrigger: GtkShortcutTrigger that never triggers.
@@ -445,6 +449,7 @@ func NeverTriggerGet() *NeverTrigger {
 
 // ShortcutTriggerOverrider contains methods that are overridable.
 type ShortcutTriggerOverrider interface {
+	externglib.Objector
 }
 
 // ShortcutTrigger: GtkShortcutTrigger tracks how a GtkShortcut should be

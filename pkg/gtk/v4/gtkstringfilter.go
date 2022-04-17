@@ -61,6 +61,7 @@ func (s StringFilterMatchMode) String() string {
 
 // StringFilterOverrider contains methods that are overridable.
 type StringFilterOverrider interface {
+	externglib.Objector
 }
 
 // StringFilter: GtkStringFilter determines whether to include items by

@@ -34,6 +34,7 @@ func init() {
 
 // ColorChooserOverrider contains methods that are overridable.
 type ColorChooserOverrider interface {
+	externglib.Objector
 	// AddPalette adds a palette to the color chooser. If orientation is
 	// horizontal, the colors are grouped in rows, with colors_per_line colors
 	// in each row. If horizontal is FALSE, the colors are grouped in columns

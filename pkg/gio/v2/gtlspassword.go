@@ -28,6 +28,7 @@ func init() {
 
 // TLSPasswordOverrider contains methods that are overridable.
 type TLSPasswordOverrider interface {
+	externglib.Objector
 	// The function returns the following values:
 	//
 	DefaultWarning() string

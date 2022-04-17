@@ -35,6 +35,58 @@ func init() {
 // functionality. See [Extending GIO][extending-gio].
 const PROXY_RESOLVER_EXTENSION_POINT_NAME = "gio-proxy-resolver"
 
+// ProxyResolverOverrider contains methods that are overridable.
+type ProxyResolverOverrider interface {
+	externglib.Objector
+	// IsSupported checks if resolver can be used on this system. (This is used
+	// internally; g_proxy_resolver_get_default() will only return a proxy
+	// resolver that returns TRUE for this method.).
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if resolver is supported.
+	//
+	IsSupported() bool
+	// Lookup looks into the system proxy configuration to determine what proxy,
+	// if any, to use to connect to uri. The returned proxy URIs are of the form
+	// <protocol>://[user[:password]@]host:port or direct://, where <protocol>
+	// could be http, rtsp, socks or other proxying protocol.
+	//
+	// If you don't know what network protocol is being used on the socket, you
+	// should use none as the URI protocol. In this case, the resolver might
+	// still return a generic proxy type (such as SOCKS), but would not return
+	// protocol-specific proxy types (such as http).
+	//
+	// direct:// is used when no proxy is needed. Direct connection should not
+	// be attempted unless it is part of the returned array of proxies.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional) or NULL.
+	//    - uri: URI representing the destination to connect to.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+	//      g_strfreev().
+	//
+	Lookup(ctx context.Context, uri string) ([]string, error)
+	// LookupFinish: call this function to obtain the array of proxy URIs when
+	// g_proxy_resolver_lookup_async() is complete. See
+	// g_proxy_resolver_lookup() for more details.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+	//      g_strfreev().
+	//
+	LookupFinish(result AsyncResultOverrider) ([]string, error)
+}
+
 // ProxyResolver provides synchronous and asynchronous network proxy resolution.
 // Resolver is used within Client through the method
 // g_socket_connectable_proxy_enumerate().
@@ -64,10 +116,109 @@ type ProxyResolverer interface {
 	LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete.
-	LookupFinish(result AsyncResulter) ([]string, error)
+	LookupFinish(result AsyncResultOverrider) ([]string, error)
 }
 
 var _ ProxyResolverer = (*ProxyResolver)(nil)
+
+func ifaceInitProxyResolverer(gifacePtr, data C.gpointer) {
+	iface := (*C.GProxyResolverInterface)(unsafe.Pointer(gifacePtr))
+	iface.is_supported = (*[0]byte)(C._gotk4_gio2_ProxyResolverInterface_is_supported)
+	iface.lookup = (*[0]byte)(C._gotk4_gio2_ProxyResolverInterface_lookup)
+	iface.lookup_finish = (*[0]byte)(C._gotk4_gio2_ProxyResolverInterface_lookup_finish)
+}
+
+//export _gotk4_gio2_ProxyResolverInterface_is_supported
+func _gotk4_gio2_ProxyResolverInterface_is_supported(arg0 *C.GProxyResolver) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ProxyResolverOverrider)
+
+	ok := iface.IsSupported()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ProxyResolverInterface_lookup
+func _gotk4_gio2_ProxyResolverInterface_lookup(arg0 *C.GProxyResolver, arg1 *C.gchar, arg2 *C.GCancellable, _cerr **C.GError) (cret **C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ProxyResolverOverrider)
+
+	var _cancellable context.Context // out
+	var _uri string                  // out
+
+	if arg2 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
+	}
+	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	utf8s, _goerr := iface.Lookup(_cancellable, _uri)
+
+	{
+		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.gchar
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
+			}
+		}
+	}
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ProxyResolverInterface_lookup_finish
+func _gotk4_gio2_ProxyResolverInterface_lookup_finish(arg0 *C.GProxyResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret **C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ProxyResolverOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	utf8s, _goerr := iface.LookupFinish(_result)
+
+	{
+		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.gchar
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
+			}
+		}
+	}
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapProxyResolver(obj *externglib.Object) *ProxyResolver {
 	return &ProxyResolver{
@@ -223,7 +374,7 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 //    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
 //      g_strfreev().
 //
-func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
+func (resolver *ProxyResolver) LookupFinish(result AsyncResultOverrider) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret **C.gchar         // in
@@ -268,12 +419,12 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 //    - proxyResolver: default Resolver, which will be a dummy object if no proxy
 //      resolver is available.
 //
-func ProxyResolverGetDefault() ProxyResolverer {
+func ProxyResolverGetDefault() ProxyResolverOverrider {
 	var _cret *C.GProxyResolver // in
 
 	_cret = C.g_proxy_resolver_get_default()
 
-	var _proxyResolver ProxyResolverer // out
+	var _proxyResolver ProxyResolverOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -283,10 +434,10 @@ func ProxyResolverGetDefault() ProxyResolverer {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(ProxyResolverer)
+			_, ok := obj.(ProxyResolverOverrider)
 			return ok
 		})
-		rv, ok := casted.(ProxyResolverer)
+		rv, ok := casted.(ProxyResolverOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ProxyResolverer")
 		}

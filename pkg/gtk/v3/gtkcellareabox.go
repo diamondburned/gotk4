@@ -27,6 +27,7 @@ func init() {
 
 // CellAreaBoxOverrider contains methods that are overridable.
 type CellAreaBoxOverrider interface {
+	externglib.Objector
 }
 
 // CellAreaBox renders cell renderers into a row or a column depending on its

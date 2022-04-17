@@ -486,7 +486,7 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 //
 //    - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
-func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
+func BusGetFinish(res AsyncResultOverrider) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
@@ -571,7 +571,7 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 //
 //    - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
-func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
+func NewDBusConnectionFinish(res AsyncResultOverrider) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
@@ -603,7 +603,7 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 //
 //    - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
-func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, error) {
+func NewDBusConnectionForAddressFinish(res AsyncResultOverrider) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
@@ -943,7 +943,7 @@ func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath,
 //    - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
 //      with return values. Free with g_variant_unref().
 //
-func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, error) {
+func (connection *DBusConnection) CallFinish(res AsyncResultOverrider) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GVariant        // in
@@ -1150,7 +1150,7 @@ func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReady
 //
 //    - res obtained from the ReadyCallback passed to g_dbus_connection_close().
 //
-func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
+func (connection *DBusConnection) CloseFinish(res AsyncResultOverrider) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -1312,7 +1312,7 @@ func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReady
 //
 //    - res obtained from the ReadyCallback passed to g_dbus_connection_flush().
 //
-func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
+func (connection *DBusConnection) FlushFinish(res AsyncResultOverrider) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -1853,7 +1853,7 @@ func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, mess
 //
 //    - dBusMessage: locked BusMessage or NULL if error is set.
 //
-func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error) {
+func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResultOverrider) (*DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusMessage    // in

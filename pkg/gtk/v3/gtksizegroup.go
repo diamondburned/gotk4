@@ -28,6 +28,7 @@ func init() {
 
 // SizeGroupOverrider contains methods that are overridable.
 type SizeGroupOverrider interface {
+	externglib.Objector
 }
 
 // SizeGroup provides a mechanism for grouping a number of widgets together so

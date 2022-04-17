@@ -60,6 +60,7 @@ const STYLE_PROVIDER_PRIORITY_USER = 800
 
 // StyleProviderOverrider contains methods that are overridable.
 type StyleProviderOverrider interface {
+	externglib.Objector
 	// IconFactory returns the IconFactory defined to be in use for path, or
 	// NULL if none is defined.
 	//

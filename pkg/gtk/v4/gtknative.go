@@ -27,6 +27,7 @@ func init() {
 
 // NativeSurfaceOverrider contains methods that are overridable.
 type NativeSurfaceOverrider interface {
+	externglib.Objector
 }
 
 // NativeSurface: GtkNative is the interface implemented by all widgets that
@@ -238,7 +239,7 @@ func (self *NativeSurface) Unrealize() {
 //
 //    - native: GtkNative that is associated with surface.
 //
-func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
+func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfaceOverrider {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GtkNative  // in
 
@@ -247,7 +248,7 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	_cret = C.gtk_native_get_for_surface(_arg1)
 	runtime.KeepAlive(surface)
 
-	var _native NativeSurfacer // out
+	var _native NativeSurfaceOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -257,10 +258,10 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(NativeSurfacer)
+			_, ok := obj.(NativeSurfaceOverrider)
 			return ok
 		})
-		rv, ok := casted.(NativeSurfacer)
+		rv, ok := casted.(NativeSurfaceOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.NativeSurfacer")
 		}

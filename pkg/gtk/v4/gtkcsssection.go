@@ -46,7 +46,7 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 }
 
 // NewCSSSection constructs a struct CSSSection.
-func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSection {
+func NewCSSSection(file gio.FileOverrider, start *CSSLocation, end *CSSLocation) *CSSSection {
 	var _arg1 *C.GFile          // out
 	var _arg2 *C.GtkCssLocation // out
 	var _arg3 *C.GtkCssLocation // out
@@ -107,7 +107,7 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 //
 //    - file: GFile from which the section was parsed.
 //
-func (section *CSSSection) File() gio.Filer {
+func (section *CSSSection) File() gio.FileOverrider {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
 
@@ -116,7 +116,7 @@ func (section *CSSSection) File() gio.Filer {
 	_cret = C.gtk_css_section_get_file(_arg0)
 	runtime.KeepAlive(section)
 
-	var _file gio.Filer // out
+	var _file gio.FileOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -126,10 +126,10 @@ func (section *CSSSection) File() gio.Filer {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
+			_, ok := obj.(gio.FileOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.Filer)
+		rv, ok := casted.(gio.FileOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}

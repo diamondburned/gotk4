@@ -149,6 +149,7 @@ func _gotk4_gtk4_ShortcutFunc(arg1 *C.GtkWidget, arg2 *C.GVariant, arg3 C.gpoint
 
 // ActivateActionOverrider contains methods that are overridable.
 type ActivateActionOverrider interface {
+	externglib.Objector
 }
 
 // ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
@@ -204,6 +205,7 @@ func ActivateActionGet() *ActivateAction {
 
 // CallbackActionOverrider contains methods that are overridable.
 type CallbackActionOverrider interface {
+	externglib.Objector
 }
 
 // CallbackAction: GtkShortcutAction that invokes a callback.
@@ -271,6 +273,7 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 
 // MnemonicActionOverrider contains methods that are overridable.
 type MnemonicActionOverrider interface {
+	externglib.Objector
 }
 
 // MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
@@ -326,6 +329,7 @@ func MnemonicActionGet() *MnemonicAction {
 
 // NamedActionOverrider contains methods that are overridable.
 type NamedActionOverrider interface {
+	externglib.Objector
 }
 
 // NamedAction: GtkShortcutAction that activates an action by name.
@@ -414,6 +418,7 @@ func (self *NamedAction) ActionName() string {
 
 // NothingActionOverrider contains methods that are overridable.
 type NothingActionOverrider interface {
+	externglib.Objector
 }
 
 // NothingAction: GtkShortcutAction that does nothing.
@@ -468,6 +473,7 @@ func NothingActionGet() *NothingAction {
 
 // ShortcutActionOverrider contains methods that are overridable.
 type ShortcutActionOverrider interface {
+	externglib.Objector
 }
 
 // ShortcutAction: GtkShortcutAction encodes an action that can be triggered by
@@ -663,6 +669,7 @@ func (self *ShortcutAction) String() string {
 
 // SignalActionOverrider contains methods that are overridable.
 type SignalActionOverrider interface {
+	externglib.Objector
 }
 
 // SignalAction: GtkShortcutAction that emits a signal.

@@ -27,6 +27,7 @@ func init() {
 
 // LevelBarAccessibleOverrider contains methods that are overridable.
 type LevelBarAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type LevelBarAccessible struct {

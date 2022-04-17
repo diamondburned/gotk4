@@ -28,6 +28,7 @@ func init() {
 
 // ImageMenuItemOverrider contains methods that are overridable.
 type ImageMenuItemOverrider interface {
+	externglib.Objector
 }
 
 // ImageMenuItem is a menu item which has an icon next to the text label.

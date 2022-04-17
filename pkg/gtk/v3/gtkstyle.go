@@ -1300,6 +1300,7 @@ func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 
 // StyleOverrider contains methods that are overridable.
 type StyleOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	Copy(src *Style)

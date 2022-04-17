@@ -29,6 +29,7 @@ func init() {
 
 // MenuButtonOverrider contains methods that are overridable.
 type MenuButtonOverrider interface {
+	externglib.Objector
 }
 
 // MenuButton widget is used to display a popup when clicked on. This popup can

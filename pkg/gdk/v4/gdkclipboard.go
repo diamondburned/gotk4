@@ -265,7 +265,7 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 //    - outMimeType (optional): pointer to store the chosen mime type in or NULL.
 //    - inputStream (optional): GInputStream or NULL on error.
 //
-func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
+func (clipboard *Clipboard) ReadFinish(result gio.AsyncResultOverrider) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -359,7 +359,7 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 //
 //    - utf8 (optional): new string or NULL on error.
 //
-func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, error) {
+func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResultOverrider) (string, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.char         // in
@@ -436,7 +436,7 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 //
 //    - texture (optional): new GdkTexture or NULL on error.
 //
-func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texturer, error) {
+func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResultOverrider) (Texturer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GdkTexture   // in
@@ -533,7 +533,7 @@ func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.T
 //
 //    - value: GValue containing the result.
 //
-func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
+func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResultOverrider) (*externglib.Value, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GValue       // in
@@ -711,7 +711,7 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, call
 //
 //    - result: GAsyncResult.
 //
-func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
+func (clipboard *Clipboard) StoreFinish(result gio.AsyncResultOverrider) error {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

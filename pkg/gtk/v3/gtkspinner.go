@@ -28,6 +28,7 @@ func init() {
 
 // SpinnerOverrider contains methods that are overridable.
 type SpinnerOverrider interface {
+	externglib.Objector
 }
 
 // Spinner widget displays an icon-size spinning animation. It is often used as

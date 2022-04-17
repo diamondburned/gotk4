@@ -27,6 +27,7 @@ func init() {
 
 // EventControllerFocusOverrider contains methods that are overridable.
 type EventControllerFocusOverrider interface {
+	externglib.Objector
 }
 
 // EventControllerFocus: GtkEventControllerFocus is an event controller to keep

@@ -25,6 +25,7 @@ func init() {
 
 // InetSocketAddressOverrider contains methods that are overridable.
 type InetSocketAddressOverrider interface {
+	externglib.Objector
 }
 
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a

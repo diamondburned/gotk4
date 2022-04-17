@@ -28,6 +28,7 @@ func init() {
 
 // AspectFrameOverrider contains methods that are overridable.
 type AspectFrameOverrider interface {
+	externglib.Objector
 }
 
 // AspectFrame is useful when you want pack a widget so that it can resize but

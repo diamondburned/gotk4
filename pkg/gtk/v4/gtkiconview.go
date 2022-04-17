@@ -478,7 +478,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 //
 //    - iconView: newly created IconView widget.
 //
-func NewIconViewWithModel(model TreeModeller) *IconView {
+func NewIconViewWithModel(model TreeModelOverrider) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -505,7 +505,7 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 //
 //    - paintable: newly-allocated surface of the drag icon.
 //
-func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
+func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.PaintableOverrider {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 *C.GtkTreePath  // out
 	var _cret *C.GdkPaintable // in
@@ -517,7 +517,7 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
 	runtime.KeepAlive(iconView)
 	runtime.KeepAlive(path)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable gdk.PaintableOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -527,10 +527,10 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.Paintabler)
+			_, ok := obj.(gdk.PaintableOverrider)
 			return ok
 		})
-		rv, ok := casted.(gdk.Paintabler)
+		rv, ok := casted.(gdk.PaintableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 		}
@@ -1094,7 +1094,7 @@ func (iconView *IconView) MarkupColumn() int {
 //
 //    - treeModel (optional) or NULL if none is currently being used.
 //
-func (iconView *IconView) Model() TreeModeller {
+func (iconView *IconView) Model() TreeModelOverrider {
 	var _arg0 *C.GtkIconView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -1103,7 +1103,7 @@ func (iconView *IconView) Model() TreeModeller {
 	_cret = C.gtk_icon_view_get_model(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _treeModel TreeModeller // out
+	var _treeModel TreeModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -1111,10 +1111,10 @@ func (iconView *IconView) Model() TreeModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -1391,7 +1391,7 @@ func (iconView *IconView) TooltipColumn() int {
 //    - iter (optional): pointer to receive a TreeIter or NULL.
 //    - ok: whether or not the given tooltip context points to an item.
 //
-func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModeller, *TreePath, *TreeIter, bool) {
+func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModelOverrider, *TreePath, *TreeIter, bool) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -1414,10 +1414,10 @@ func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModell
 	runtime.KeepAlive(y)
 	runtime.KeepAlive(keyboardTip)
 
-	var _model TreeModeller // out
-	var _path *TreePath     // out
-	var _iter *TreeIter     // out
-	var _ok bool            // out
+	var _model TreeModelOverrider // out
+	var _path *TreePath           // out
+	var _iter *TreeIter           // out
+	var _ok bool                  // out
 
 	if _arg4 != nil {
 		{
@@ -1425,10 +1425,10 @@ func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModell
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -1876,7 +1876,7 @@ func (iconView *IconView) SetMarkupColumn(column int) {
 //
 //    - model (optional): model.
 //
-func (iconView *IconView) SetModel(model TreeModeller) {
+func (iconView *IconView) SetModel(model TreeModelOverrider) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 *C.GtkTreeModel // out
 

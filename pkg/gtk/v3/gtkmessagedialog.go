@@ -84,6 +84,7 @@ func (b ButtonsType) String() string {
 
 // MessageDialogOverrider contains methods that are overridable.
 type MessageDialogOverrider interface {
+	externglib.Objector
 }
 
 // MessageDialog presents a dialog with some message text. It’s simply a

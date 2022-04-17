@@ -28,6 +28,7 @@ func init() {
 
 // ShortcutsSectionOverrider contains methods that are overridable.
 type ShortcutsSectionOverrider interface {
+	externglib.Objector
 }
 
 // ShortcutsSection collects all the keyboard shortcuts and gestures for a major

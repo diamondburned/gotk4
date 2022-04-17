@@ -27,6 +27,7 @@ func init() {
 
 // VolumeButtonOverrider contains methods that are overridable.
 type VolumeButtonOverrider interface {
+	externglib.Objector
 }
 
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a

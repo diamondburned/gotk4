@@ -24,6 +24,7 @@ func init() {
 
 // BinLayoutOverrider contains methods that are overridable.
 type BinLayoutOverrider interface {
+	externglib.Objector
 }
 
 // BinLayout: GtkBinLayout is a GtkLayoutManager subclass useful for create

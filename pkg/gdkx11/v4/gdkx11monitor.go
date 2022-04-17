@@ -27,6 +27,7 @@ func init() {
 
 // X11MonitorOverrider contains methods that are overridable.
 type X11MonitorOverrider interface {
+	externglib.Objector
 }
 
 type X11Monitor struct {

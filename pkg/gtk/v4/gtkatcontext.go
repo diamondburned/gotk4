@@ -27,6 +27,7 @@ func init() {
 
 // ATContextOverrider contains methods that are overridable.
 type ATContextOverrider interface {
+	externglib.Objector
 }
 
 // ATContext: GtkATContext is an abstract class provided by GTK to communicate
@@ -120,7 +121,7 @@ func (self *ATContext) ConnectStateChange(f func()) externglib.SignalHandle {
 //
 //    - atContext (optional): GtkATContext.
 //
-func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, display *gdk.Display) *ATContext {
+func NewATContextCreate(accessibleRole AccessibleRole, accessible AccessibleOverrider, display *gdk.Display) *ATContext {
 	var _arg1 C.GtkAccessibleRole // out
 	var _arg2 *C.GtkAccessible    // out
 	var _arg3 *C.GdkDisplay       // out
@@ -150,7 +151,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 //
 //    - accessible: GtkAccessible.
 //
-func (self *ATContext) Accessible() Accessibler {
+func (self *ATContext) Accessible() AccessibleOverrider {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
@@ -159,7 +160,7 @@ func (self *ATContext) Accessible() Accessibler {
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 	runtime.KeepAlive(self)
 
-	var _accessible Accessibler // out
+	var _accessible AccessibleOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -169,10 +170,10 @@ func (self *ATContext) Accessible() Accessibler {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Accessibler)
+			_, ok := obj.(AccessibleOverrider)
 			return ok
 		})
-		rv, ok := casted.(Accessibler)
+		rv, ok := casted.(AccessibleOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Accessibler")
 		}

@@ -26,6 +26,7 @@ func init() {
 
 // NoSelectionOverrider contains methods that are overridable.
 type NoSelectionOverrider interface {
+	externglib.Objector
 }
 
 // NoSelection: GtkNoSelection is a GtkSelectionModel that does not allow
@@ -77,7 +78,7 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 //
 //    - noSelection: new GtkNoSelection.
 //
-func NewNoSelection(model gio.ListModeller) *NoSelection {
+func NewNoSelection(model gio.ListModelOverrider) *NoSelection {
 	var _arg1 *C.GListModel     // out
 	var _cret *C.GtkNoSelection // in
 
@@ -102,7 +103,7 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 //
 //    - listModel: model being wrapped.
 //
-func (self *NoSelection) Model() gio.ListModeller {
+func (self *NoSelection) Model() gio.ListModelOverrider {
 	var _arg0 *C.GtkNoSelection // out
 	var _cret *C.GListModel     // in
 
@@ -111,7 +112,7 @@ func (self *NoSelection) Model() gio.ListModeller {
 	_cret = C.gtk_no_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -121,10 +122,10 @@ func (self *NoSelection) Model() gio.ListModeller {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -142,7 +143,7 @@ func (self *NoSelection) Model() gio.ListModeller {
 //
 //    - model (optional): GListModel to wrap.
 //
-func (self *NoSelection) SetModel(model gio.ListModeller) {
+func (self *NoSelection) SetModel(model gio.ListModelOverrider) {
 	var _arg0 *C.GtkNoSelection // out
 	var _arg1 *C.GListModel     // out
 

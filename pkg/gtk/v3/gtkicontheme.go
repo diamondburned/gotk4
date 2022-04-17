@@ -163,6 +163,7 @@ func (i IconLookupFlags) Has(other IconLookupFlags) bool {
 
 // IconInfoOverrider contains methods that are overridable.
 type IconInfoOverrider interface {
+	externglib.Objector
 }
 
 // IconInfo contains information found when looking up an icon in an icon theme.
@@ -569,7 +570,7 @@ func (iconInfo *IconInfo) LoadIconAsync(ctx context.Context, callback gio.AsyncR
 //      reference to an internal icon, so you must not modify the icon. Use
 //      g_object_unref() to release your reference to the icon.
 //
-func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixbuf, error) {
+func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResultOverrider) (*gdkpixbuf.Pixbuf, error) {
 	var _arg0 *C.GtkIconInfo  // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GdkPixbuf    // in
@@ -815,7 +816,7 @@ func (iconInfo *IconInfo) LoadSymbolicAsync(ctx context.Context, fg, successColo
 //      reference to an internal icon, so you must not modify the icon. Use
 //      g_object_unref() to release your reference to the icon.
 //
-func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error) {
+func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResultOverrider) (bool, *gdkpixbuf.Pixbuf, error) {
 	var _arg0 *C.GtkIconInfo  // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 C.gboolean      // in
@@ -968,7 +969,7 @@ func (iconInfo *IconInfo) LoadSymbolicForContextAsync(ctx context.Context, conte
 //      reference to an internal icon, so you must not modify the icon. Use
 //      g_object_unref() to release your reference to the icon.
 //
-func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error) {
+func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResultOverrider) (bool, *gdkpixbuf.Pixbuf, error) {
 	var _arg0 *C.GtkIconInfo  // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 C.gboolean      // in
@@ -1110,6 +1111,7 @@ func (iconInfo *IconInfo) SetRawCoordinates(rawCoordinates bool) {
 
 // IconThemeOverrider contains methods that are overridable.
 type IconThemeOverrider interface {
+	externglib.Objector
 	Changed()
 }
 
@@ -1882,7 +1884,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size, scale int, forWin
 //    - iconInfo (optional) containing information about the icon, or NULL if the
 //      icon wasn’t found. Unref with g_object_unref().
 //
-func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIcon(icon gio.IconOverrider, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1925,7 +1927,7 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags Icon
 //    - iconInfo (optional) containing information about the icon, or NULL if the
 //      icon wasn’t found. Unref with g_object_unref().
 //
-func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size, scale int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.IconOverrider, size, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out

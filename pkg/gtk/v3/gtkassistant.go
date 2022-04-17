@@ -133,6 +133,7 @@ func _gotk4_gtk3_AssistantPageFunc(arg1 C.gint, arg2 C.gpointer) (cret C.gint) {
 
 // AssistantOverrider contains methods that are overridable.
 type AssistantOverrider interface {
+	externglib.Objector
 	Apply()
 	Cancel()
 	Close()

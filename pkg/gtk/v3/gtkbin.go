@@ -28,6 +28,7 @@ func init() {
 
 // BinOverrider contains methods that are overridable.
 type BinOverrider interface {
+	externglib.Objector
 }
 
 // Bin widget is a container with just one child. It is not very useful itself,

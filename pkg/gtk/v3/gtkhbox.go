@@ -28,6 +28,7 @@ func init() {
 
 // HBoxOverrider contains methods that are overridable.
 type HBoxOverrider interface {
+	externglib.Objector
 }
 
 // HBox is a container that organizes child widgets into a single row.

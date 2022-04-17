@@ -34,6 +34,7 @@ func init() {
 
 // SocketOverrider contains methods that are overridable.
 type SocketOverrider interface {
+	externglib.Objector
 	PlugAdded()
 	// The function returns the following values:
 	//

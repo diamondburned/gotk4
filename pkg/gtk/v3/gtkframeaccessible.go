@@ -27,6 +27,7 @@ func init() {
 
 // FrameAccessibleOverrider contains methods that are overridable.
 type FrameAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type FrameAccessible struct {

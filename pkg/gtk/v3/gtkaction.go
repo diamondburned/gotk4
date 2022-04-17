@@ -37,6 +37,7 @@ func init() {
 
 // ActionOverrider contains methods that are overridable.
 type ActionOverrider interface {
+	externglib.Objector
 	// Activate emits the “activate” signal on the specified action, if it isn't
 	// insensitive. This gets called by the proxy widgets when they get
 	// activated.
@@ -667,7 +668,7 @@ func (action *Action) AlwaysShowImage() bool {
 //
 //    - icon action’s #GIcon if one is set.
 //
-func (action *Action) GIcon() gio.Iconner {
+func (action *Action) GIcon() gio.IconOverrider {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GIcon     // in
 
@@ -676,7 +677,7 @@ func (action *Action) GIcon() gio.Iconner {
 	_cret = C.gtk_action_get_gicon(_arg0)
 	runtime.KeepAlive(action)
 
-	var _icon gio.Iconner // out
+	var _icon gio.IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -686,10 +687,10 @@ func (action *Action) GIcon() gio.Iconner {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Iconner)
+			_, ok := obj.(gio.IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.Iconner)
+		rv, ok := casted.(gio.IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -1177,7 +1178,7 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 //
 //    - icon to set.
 //
-func (action *Action) SetGIcon(icon gio.Iconner) {
+func (action *Action) SetGIcon(icon gio.IconOverrider) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.GIcon     // out
 

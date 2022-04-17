@@ -64,6 +64,203 @@ func init() {
 // with g_drive_get_identifier().
 const DRIVE_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
 
+// DriveOverrider contains methods that are overridable.
+type DriveOverrider interface {
+	externglib.Objector
+	// CanEject checks if a drive can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be ejected, FALSE otherwise.
+	//
+	CanEject() bool
+	// CanPollForMedia checks if a drive can be polled for media changes.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be polled for media changes, FALSE
+	//      otherwise.
+	//
+	CanPollForMedia() bool
+	// CanStart checks if a drive can be started.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be started, FALSE otherwise.
+	//
+	CanStart() bool
+	// CanStartDegraded checks if a drive can be started degraded.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+	//
+	CanStartDegraded() bool
+	// CanStop checks if a drive can be stopped.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
+	//
+	CanStop() bool
+	Changed()
+	Disconnected()
+	EjectButton()
+	// EjectFinish finishes ejecting a drive.
+	//
+	// Deprecated: Use g_drive_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	EjectFinish(result AsyncResultOverrider) error
+	// EjectWithOperationFinish finishes ejecting a drive. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	EjectWithOperationFinish(result AsyncResultOverrider) error
+	// EnumerateIdentifiers gets the kinds of identifiers that drive has. Use
+	// g_drive_get_identifier() to obtain the identifiers themselves.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of strings containing kinds of
+	//      identifiers. Use g_strfreev() to free.
+	//
+	EnumerateIdentifiers() []string
+	// Icon gets the icon for drive.
+	//
+	// The function returns the following values:
+	//
+	//    - icon for the drive. Free the returned object with g_object_unref().
+	//
+	Icon() IconOverrider
+	// Identifier gets the identifier of the given kind for drive. The only
+	// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
+	//
+	// The function takes the following parameters:
+	//
+	//    - kind of identifier to return.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): newly allocated string containing the requested
+	//      identifier, or NULL if the #GDrive doesn't have this kind of
+	//      identifier.
+	//
+	Identifier(kind string) string
+	// Name gets the name of drive.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: string containing drive's name. The returned string should be
+	//      freed when no longer needed.
+	//
+	Name() string
+	// SortKey gets the sort key for drive, if any.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): sorting key for drive or NULL if no such key is
+	//      available.
+	//
+	SortKey() string
+	// StartStopType gets a hint about how a drive can be started/stopped.
+	//
+	// The function returns the following values:
+	//
+	//    - driveStartStopType: value from the StartStopType enumeration.
+	//
+	StartStopType() DriveStartStopType
+	// SymbolicIcon gets the icon for drive.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: symbolic #GIcon for the drive. Free the returned object with
+	//      g_object_unref().
+	//
+	SymbolicIcon() IconOverrider
+	// Volumes: get a list of mountable volumes for drive.
+	//
+	// The returned list should be freed with g_list_free(), after its elements
+	// have been unreffed with g_object_unref().
+	//
+	// The function returns the following values:
+	//
+	//    - list containing any #GVolume objects on the given drive.
+	//
+	Volumes() []VolumeOverrider
+	// HasMedia checks if the drive has media. Note that the OS may not be
+	// polling the drive for media changes; see
+	// g_drive_is_media_check_automatic() for more details.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if drive has media, FALSE otherwise.
+	//
+	HasMedia() bool
+	// HasVolumes: check if drive has any mountable volumes.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive contains volumes, FALSE otherwise.
+	//
+	HasVolumes() bool
+	// IsMediaCheckAutomatic checks if drive is capable of automatically
+	// detecting media changes.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the drive is capable of automatically detecting media
+	//      changes, FALSE otherwise.
+	//
+	IsMediaCheckAutomatic() bool
+	// IsMediaRemovable checks if the drive supports removable media.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if drive supports removable media, FALSE otherwise.
+	//
+	IsMediaRemovable() bool
+	// IsRemovable checks if the #GDrive and/or its media is considered
+	// removable by the user. See g_drive_is_media_removable().
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if drive and/or its media is considered removable, FALSE
+	//      otherwise.
+	//
+	IsRemovable() bool
+	// PollForMediaFinish finishes an operation started with
+	// g_drive_poll_for_media() on a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	PollForMediaFinish(result AsyncResultOverrider) error
+	// StartFinish finishes starting a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	StartFinish(result AsyncResultOverrider) error
+	StopButton()
+	// StopFinish finishes stopping a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	StopFinish(result AsyncResultOverrider) error
+}
+
 // Drive - this represent a piece of hardware connected to the machine. It's
 // generally only created for removable hardware or hardware with removable
 // media.
@@ -114,15 +311,15 @@ type Driver interface {
 	// Eject: asynchronously ejects a drive.
 	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a drive.
-	EjectFinish(result AsyncResulter) error
+	EjectFinish(result AsyncResultOverrider) error
 	// EjectWithOperation ejects a drive.
 	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a drive.
-	EjectWithOperationFinish(result AsyncResulter) error
+	EjectWithOperationFinish(result AsyncResultOverrider) error
 	// EnumerateIdentifiers gets the kinds of identifiers that drive has.
 	EnumerateIdentifiers() []string
 	// Icon gets the icon for drive.
-	Icon() Iconner
+	Icon() IconOverrider
 	// Identifier gets the identifier of the given kind for drive.
 	Identifier(kind string) string
 	// Name gets the name of drive.
@@ -132,9 +329,9 @@ type Driver interface {
 	// StartStopType gets a hint about how a drive can be started/stopped.
 	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
-	SymbolicIcon() Iconner
+	SymbolicIcon() IconOverrider
 	// Volumes: get a list of mountable volumes for drive.
-	Volumes() []Volumer
+	Volumes() []VolumeOverrider
 	// HasMedia checks if the drive has media.
 	HasMedia() bool
 	// HasVolumes: check if drive has any mountable volumes.
@@ -152,15 +349,15 @@ type Driver interface {
 	PollForMedia(ctx context.Context, callback AsyncReadyCallback)
 	// PollForMediaFinish finishes an operation started with
 	// g_drive_poll_for_media() on a drive.
-	PollForMediaFinish(result AsyncResulter) error
+	PollForMediaFinish(result AsyncResultOverrider) error
 	// Start: asynchronously starts a drive.
 	Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StartFinish finishes starting a drive.
-	StartFinish(result AsyncResulter) error
+	StartFinish(result AsyncResultOverrider) error
 	// Stop: asynchronously stops a drive.
 	Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StopFinish finishes stopping a drive.
-	StopFinish(result AsyncResulter) error
+	StopFinish(result AsyncResultOverrider) error
 
 	// Changed is emitted when the drive's state has changed.
 	ConnectChanged(func()) externglib.SignalHandle
@@ -176,6 +373,502 @@ type Driver interface {
 }
 
 var _ Driver = (*Drive)(nil)
+
+func ifaceInitDriver(gifacePtr, data C.gpointer) {
+	iface := (*C.GDriveIface)(unsafe.Pointer(gifacePtr))
+	iface.can_eject = (*[0]byte)(C._gotk4_gio2_DriveIface_can_eject)
+	iface.can_poll_for_media = (*[0]byte)(C._gotk4_gio2_DriveIface_can_poll_for_media)
+	iface.can_start = (*[0]byte)(C._gotk4_gio2_DriveIface_can_start)
+	iface.can_start_degraded = (*[0]byte)(C._gotk4_gio2_DriveIface_can_start_degraded)
+	iface.can_stop = (*[0]byte)(C._gotk4_gio2_DriveIface_can_stop)
+	iface.changed = (*[0]byte)(C._gotk4_gio2_DriveIface_changed)
+	iface.disconnected = (*[0]byte)(C._gotk4_gio2_DriveIface_disconnected)
+	iface.eject_button = (*[0]byte)(C._gotk4_gio2_DriveIface_eject_button)
+	iface.eject_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_eject_finish)
+	iface.eject_with_operation_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_eject_with_operation_finish)
+	iface.enumerate_identifiers = (*[0]byte)(C._gotk4_gio2_DriveIface_enumerate_identifiers)
+	iface.get_icon = (*[0]byte)(C._gotk4_gio2_DriveIface_get_icon)
+	iface.get_identifier = (*[0]byte)(C._gotk4_gio2_DriveIface_get_identifier)
+	iface.get_name = (*[0]byte)(C._gotk4_gio2_DriveIface_get_name)
+	iface.get_sort_key = (*[0]byte)(C._gotk4_gio2_DriveIface_get_sort_key)
+	iface.get_start_stop_type = (*[0]byte)(C._gotk4_gio2_DriveIface_get_start_stop_type)
+	iface.get_symbolic_icon = (*[0]byte)(C._gotk4_gio2_DriveIface_get_symbolic_icon)
+	iface.get_volumes = (*[0]byte)(C._gotk4_gio2_DriveIface_get_volumes)
+	iface.has_media = (*[0]byte)(C._gotk4_gio2_DriveIface_has_media)
+	iface.has_volumes = (*[0]byte)(C._gotk4_gio2_DriveIface_has_volumes)
+	iface.is_media_check_automatic = (*[0]byte)(C._gotk4_gio2_DriveIface_is_media_check_automatic)
+	iface.is_media_removable = (*[0]byte)(C._gotk4_gio2_DriveIface_is_media_removable)
+	iface.is_removable = (*[0]byte)(C._gotk4_gio2_DriveIface_is_removable)
+	iface.poll_for_media_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_poll_for_media_finish)
+	iface.start_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_start_finish)
+	iface.stop_button = (*[0]byte)(C._gotk4_gio2_DriveIface_stop_button)
+	iface.stop_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_stop_finish)
+}
+
+//export _gotk4_gio2_DriveIface_can_eject
+func _gotk4_gio2_DriveIface_can_eject(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.CanEject()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_can_poll_for_media
+func _gotk4_gio2_DriveIface_can_poll_for_media(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.CanPollForMedia()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_can_start
+func _gotk4_gio2_DriveIface_can_start(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.CanStart()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_can_start_degraded
+func _gotk4_gio2_DriveIface_can_start_degraded(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.CanStartDegraded()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_can_stop
+func _gotk4_gio2_DriveIface_can_stop(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.CanStop()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_changed
+func _gotk4_gio2_DriveIface_changed(arg0 *C.GDrive) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	iface.Changed()
+}
+
+//export _gotk4_gio2_DriveIface_disconnected
+func _gotk4_gio2_DriveIface_disconnected(arg0 *C.GDrive) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	iface.Disconnected()
+}
+
+//export _gotk4_gio2_DriveIface_eject_button
+func _gotk4_gio2_DriveIface_eject_button(arg0 *C.GDrive) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	iface.EjectButton()
+}
+
+//export _gotk4_gio2_DriveIface_eject_finish
+func _gotk4_gio2_DriveIface_eject_finish(arg0 *C.GDrive, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.EjectFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_eject_with_operation_finish
+func _gotk4_gio2_DriveIface_eject_with_operation_finish(arg0 *C.GDrive, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.EjectWithOperationFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_enumerate_identifiers
+func _gotk4_gio2_DriveIface_enumerate_identifiers(arg0 *C.GDrive) (cret **C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	utf8s := iface.EnumerateIdentifiers()
+
+	{
+		cret = (**C.char)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.char
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(utf8s[i])))
+			}
+		}
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_get_icon
+func _gotk4_gio2_DriveIface_get_icon(arg0 *C.GDrive) (cret *C.GIcon) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	icon := iface.Icon()
+
+	cret = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(icon).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_get_identifier
+func _gotk4_gio2_DriveIface_get_identifier(arg0 *C.GDrive, arg1 *C.char) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	var _kind string // out
+
+	_kind = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	utf8 := iface.Identifier(_kind)
+
+	if utf8 != "" {
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_get_name
+func _gotk4_gio2_DriveIface_get_name(arg0 *C.GDrive) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	utf8 := iface.Name()
+
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_get_sort_key
+func _gotk4_gio2_DriveIface_get_sort_key(arg0 *C.GDrive) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	utf8 := iface.SortKey()
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_get_start_stop_type
+func _gotk4_gio2_DriveIface_get_start_stop_type(arg0 *C.GDrive) (cret C.GDriveStartStopType) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	driveStartStopType := iface.StartStopType()
+
+	cret = C.GDriveStartStopType(driveStartStopType)
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_get_symbolic_icon
+func _gotk4_gio2_DriveIface_get_symbolic_icon(arg0 *C.GDrive) (cret *C.GIcon) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	icon := iface.SymbolicIcon()
+
+	cret = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(icon).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_get_volumes
+func _gotk4_gio2_DriveIface_get_volumes(arg0 *C.GDrive) (cret *C.GList) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	list := iface.Volumes()
+
+	for i := len(list) - 1; i >= 0; i-- {
+		src := list[i]
+		var dst *C.GVolume // out
+		dst = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
+		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_has_media
+func _gotk4_gio2_DriveIface_has_media(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.HasMedia()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_has_volumes
+func _gotk4_gio2_DriveIface_has_volumes(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.HasVolumes()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_is_media_check_automatic
+func _gotk4_gio2_DriveIface_is_media_check_automatic(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.IsMediaCheckAutomatic()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_is_media_removable
+func _gotk4_gio2_DriveIface_is_media_removable(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.IsMediaRemovable()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_is_removable
+func _gotk4_gio2_DriveIface_is_removable(arg0 *C.GDrive) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	ok := iface.IsRemovable()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_poll_for_media_finish
+func _gotk4_gio2_DriveIface_poll_for_media_finish(arg0 *C.GDrive, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.PollForMediaFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_start_finish
+func _gotk4_gio2_DriveIface_start_finish(arg0 *C.GDrive, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.StartFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DriveIface_stop_button
+func _gotk4_gio2_DriveIface_stop_button(arg0 *C.GDrive) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	iface.StopButton()
+}
+
+//export _gotk4_gio2_DriveIface_stop_finish
+func _gotk4_gio2_DriveIface_stop_finish(arg0 *C.GDrive, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DriveOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.StopFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapDrive(obj *externglib.Object) *Drive {
 	return &Drive{
@@ -442,7 +1135,7 @@ func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback
 //
 //    - result: Result.
 //
-func (drive *Drive) EjectFinish(result AsyncResulter) error {
+func (drive *Drive) EjectFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -513,7 +1206,7 @@ func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 //
 //    - result: Result.
 //
-func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
+func (drive *Drive) EjectWithOperationFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -578,7 +1271,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 //
 //    - icon for the drive. Free the returned object with g_object_unref().
 //
-func (drive *Drive) Icon() Iconner {
+func (drive *Drive) Icon() IconOverrider {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -587,7 +1280,7 @@ func (drive *Drive) Icon() Iconner {
 	_cret = C.g_drive_get_icon(_arg0)
 	runtime.KeepAlive(drive)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -597,10 +1290,10 @@ func (drive *Drive) Icon() Iconner {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -723,7 +1416,7 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 //    - icon: symbolic #GIcon for the drive. Free the returned object with
 //      g_object_unref().
 //
-func (drive *Drive) SymbolicIcon() Iconner {
+func (drive *Drive) SymbolicIcon() IconOverrider {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -732,7 +1425,7 @@ func (drive *Drive) SymbolicIcon() Iconner {
 	_cret = C.g_drive_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(drive)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -742,10 +1435,10 @@ func (drive *Drive) SymbolicIcon() Iconner {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -764,7 +1457,7 @@ func (drive *Drive) SymbolicIcon() Iconner {
 //
 //    - list containing any #GVolume objects on the given drive.
 //
-func (drive *Drive) Volumes() []Volumer {
+func (drive *Drive) Volumes() []VolumeOverrider {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GList  // in
 
@@ -773,12 +1466,12 @@ func (drive *Drive) Volumes() []Volumer {
 	_cret = C.g_drive_get_volumes(_arg0)
 	runtime.KeepAlive(drive)
 
-	var _list []Volumer // out
+	var _list []VolumeOverrider // out
 
-	_list = make([]Volumer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]VolumeOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GVolume)(v)
-		var dst Volumer // out
+		var dst VolumeOverrider // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -787,10 +1480,10 @@ func (drive *Drive) Volumes() []Volumer {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Volumer)
+				_, ok := obj.(VolumeOverrider)
 				return ok
 			})
-			rv, ok := casted.(Volumer)
+			rv, ok := casted.(VolumeOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 			}
@@ -969,7 +1662,7 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 //
 //    - result: Result.
 //
-func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
+func (drive *Drive) PollForMediaFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -1039,7 +1732,7 @@ func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOpera
 //
 //    - result: Result.
 //
-func (drive *Drive) StartFinish(result AsyncResulter) error {
+func (drive *Drive) StartFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -1109,7 +1802,7 @@ func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOper
 //
 //    - result: Result.
 //
-func (drive *Drive) StopFinish(result AsyncResulter) error {
+func (drive *Drive) StopFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

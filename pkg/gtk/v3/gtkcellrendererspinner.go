@@ -26,6 +26,7 @@ func init() {
 
 // CellRendererSpinnerOverrider contains methods that are overridable.
 type CellRendererSpinnerOverrider interface {
+	externglib.Objector
 }
 
 // CellRendererSpinner renders a spinning animation in a cell, very similar to

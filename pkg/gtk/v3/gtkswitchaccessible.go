@@ -27,6 +27,7 @@ func init() {
 
 // SwitchAccessibleOverrider contains methods that are overridable.
 type SwitchAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type SwitchAccessible struct {

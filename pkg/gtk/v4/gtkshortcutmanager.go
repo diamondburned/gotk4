@@ -26,6 +26,7 @@ func init() {
 
 // ShortcutManagerOverrider contains methods that are overridable.
 type ShortcutManagerOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	AddController(controller *ShortcutController)

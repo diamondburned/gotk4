@@ -17,6 +17,7 @@ import "C"
 
 // HeaderBarAccessibleOverrider contains methods that are overridable.
 type HeaderBarAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type HeaderBarAccessible struct {

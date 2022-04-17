@@ -26,6 +26,7 @@ func init() {
 
 // DropDownOverrider contains methods that are overridable.
 type DropDownOverrider interface {
+	externglib.Objector
 }
 
 // DropDown: GtkDropDown is a widget that allows the user to choose an item from
@@ -112,7 +113,7 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 //
 //    - dropDown: new GtkDropDown.
 //
-func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
+func NewDropDown(model gio.ListModelOverrider, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
 	var _arg2 *C.GtkExpression // out
 	var _cret *C.GtkWidget     // in
@@ -298,7 +299,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 //
 //    - listModel (optional): model in use.
 //
-func (self *DropDown) Model() gio.ListModeller {
+func (self *DropDown) Model() gio.ListModelOverrider {
 	var _arg0 *C.GtkDropDown // out
 	var _cret *C.GListModel  // in
 
@@ -307,7 +308,7 @@ func (self *DropDown) Model() gio.ListModeller {
 	_cret = C.gtk_drop_down_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -315,10 +316,10 @@ func (self *DropDown) Model() gio.ListModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModeller)
+				_, ok := obj.(gio.ListModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.ListModeller)
+			rv, ok := casted.(gio.ListModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
@@ -469,7 +470,7 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 //
 //    - model (optional) to use or NULL for none.
 //
-func (self *DropDown) SetModel(model gio.ListModeller) {
+func (self *DropDown) SetModel(model gio.ListModelOverrider) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 *C.GListModel  // out
 

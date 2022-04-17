@@ -27,6 +27,7 @@ func init() {
 
 // RecentActionOverrider contains methods that are overridable.
 type RecentActionOverrider interface {
+	externglib.Objector
 }
 
 // RecentAction represents a list of recently used files, which can be shown by

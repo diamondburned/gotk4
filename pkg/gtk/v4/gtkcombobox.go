@@ -37,6 +37,7 @@ func init() {
 
 // ComboBoxOverrider contains methods that are overridable.
 type ComboBoxOverrider interface {
+	externglib.Objector
 	Changed()
 	// The function takes the following parameters:
 	//
@@ -418,7 +419,7 @@ func NewComboBoxWithEntry() *ComboBox {
 //
 //    - comboBox: new GtkComboBox.
 //
-func NewComboBoxWithModel(model TreeModeller) *ComboBox {
+func NewComboBoxWithModel(model TreeModelOverrider) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -445,7 +446,7 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 //
 //    - comboBox: new GtkComboBox.
 //
-func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
+func NewComboBoxWithModelAndEntry(model TreeModelOverrider) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -692,7 +693,7 @@ func (comboBox *ComboBox) IDColumn() int {
 //
 //    - treeModel (optional): GtkTreeModel which was passed during construction.
 //
-func (comboBox *ComboBox) Model() TreeModeller {
+func (comboBox *ComboBox) Model() TreeModelOverrider {
 	var _arg0 *C.GtkComboBox  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -701,7 +702,7 @@ func (comboBox *ComboBox) Model() TreeModeller {
 	_cret = C.gtk_combo_box_get_model(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _treeModel TreeModeller // out
+	var _treeModel TreeModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -709,10 +710,10 @@ func (comboBox *ComboBox) Model() TreeModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -979,7 +980,7 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 //
 //    - model (optional): GtkTreeModel.
 //
-func (comboBox *ComboBox) SetModel(model TreeModeller) {
+func (comboBox *ComboBox) SetModel(model TreeModelOverrider) {
 	var _arg0 *C.GtkComboBox  // out
 	var _arg1 *C.GtkTreeModel // out
 

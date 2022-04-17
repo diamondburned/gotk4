@@ -27,6 +27,7 @@ func init() {
 
 // GestureLongPressOverrider contains methods that are overridable.
 type GestureLongPressOverrider interface {
+	externglib.Objector
 }
 
 // GestureLongPress: GtkGestureLongPress is a GtkGesture for long presses.

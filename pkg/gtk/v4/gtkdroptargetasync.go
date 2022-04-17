@@ -32,6 +32,7 @@ func init() {
 
 // DropTargetAsyncOverrider contains methods that are overridable.
 type DropTargetAsyncOverrider interface {
+	externglib.Objector
 }
 
 // DropTargetAsync: GtkDropTargetAsync is an event controller to receive

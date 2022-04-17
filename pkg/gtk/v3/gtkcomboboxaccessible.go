@@ -27,6 +27,7 @@ func init() {
 
 // ComboBoxAccessibleOverrider contains methods that are overridable.
 type ComboBoxAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type ComboBoxAccessible struct {

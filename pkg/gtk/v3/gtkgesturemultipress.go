@@ -32,6 +32,7 @@ func init() {
 
 // GestureMultiPressOverrider contains methods that are overridable.
 type GestureMultiPressOverrider interface {
+	externglib.Objector
 }
 
 // GestureMultiPress is a Gesture implementation able to recognize multiple

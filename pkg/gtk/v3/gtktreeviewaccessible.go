@@ -27,6 +27,7 @@ func init() {
 
 // TreeViewAccessibleOverrider contains methods that are overridable.
 type TreeViewAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type TreeViewAccessible struct {

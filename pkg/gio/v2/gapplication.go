@@ -52,6 +52,7 @@ func init() {
 
 // ApplicationOverrider contains methods that are overridable.
 type ApplicationOverrider interface {
+	externglib.Objector
 	// Activate activates the application.
 	//
 	// In essence, this results in the #GApplication::activate signal being
@@ -113,7 +114,7 @@ type ApplicationOverrider interface {
 	//    - files: array of #GFiles to open.
 	//    - hint (or ""), but never NULL.
 	//
-	Open(files []Filer, hint string)
+	Open(files []FileOverrider, hint string)
 	QuitMainloop()
 	RunMainloop()
 	Shutdown()
@@ -302,7 +303,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Open(files []Filer, hint string)
+		Open(files []FileOverrider, hint string)
 	}); ok {
 		pclass.open = (*[0]byte)(C._gotk4_gio2_ApplicationClass_open)
 	}
@@ -494,15 +495,15 @@ func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboole
 func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Open(files []Filer, hint string)
+		Open(files []FileOverrider, hint string)
 	})
 
-	var _files []Filer // out
-	var _hint string   // out
+	var _files []FileOverrider // out
+	var _hint string           // out
 
 	{
 		src := unsafe.Slice((**C.GFile)(arg1), arg2)
-		_files = make([]Filer, arg2)
+		_files = make([]FileOverrider, arg2)
 		for i := 0; i < int(arg2); i++ {
 			{
 				objptr := unsafe.Pointer(src[i])
@@ -512,10 +513,10 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 
 				object := externglib.Take(objptr)
 				casted := object.WalkCast(func(obj externglib.Objector) bool {
-					_, ok := obj.(Filer)
+					_, ok := obj.(FileOverrider)
 					return ok
 				})
-				rv, ok := casted.(Filer)
+				rv, ok := casted.(FileOverrider)
 				if !ok {
 					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 				}
@@ -734,7 +735,7 @@ func (application *Application) ConnectNameLost(f func() (ok bool)) externglib.S
 
 //export _gotk4_gio2_Application_ConnectOpen
 func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
-	var f func(files []Filer, hint string)
+	var f func(files []FileOverrider, hint string)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -742,15 +743,15 @@ func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(files []Filer, hint string))
+		f = closure.Func.(func(files []FileOverrider, hint string))
 	}
 
-	var _files []Filer // out
-	var _hint string   // out
+	var _files []FileOverrider // out
+	var _hint string           // out
 
 	{
 		src := unsafe.Slice((**C.GFile)(arg1), arg2)
-		_files = make([]Filer, arg2)
+		_files = make([]FileOverrider, arg2)
 		for i := 0; i < int(arg2); i++ {
 			{
 				objptr := unsafe.Pointer(src[i])
@@ -760,10 +761,10 @@ func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C
 
 				object := externglib.Take(objptr)
 				casted := object.WalkCast(func(obj externglib.Objector) bool {
-					_, ok := obj.(Filer)
+					_, ok := obj.(FileOverrider)
 					return ok
 				})
-				rv, ok := casted.(Filer)
+				rv, ok := casted.(FileOverrider)
 				if !ok {
 					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 				}
@@ -778,7 +779,7 @@ func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C
 
 // ConnectOpen signal is emitted on the primary instance when there are files to
 // open. See g_application_open() for more information.
-func (application *Application) ConnectOpen(f func(files []Filer, hint string)) externglib.SignalHandle {
+func (application *Application) ConnectOpen(f func(files []FileOverrider, hint string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(application, "open", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectOpen), f)
 }
 
@@ -1400,7 +1401,7 @@ func (application *Application) MarkBusy() {
 //    - files: array of #GFiles to open.
 //    - hint (or ""), but never NULL.
 //
-func (application *Application) Open(files []Filer, hint string) {
+func (application *Application) Open(files []FileOverrider, hint string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 **C.GFile       // out
 	var _arg2 C.gint
@@ -1687,7 +1688,7 @@ func (application *Application) SendNotification(id string, notification *Notifi
 //
 //    - actionGroup (optional) or NULL.
 //
-func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
+func (application *Application) SetActionGroup(actionGroup ActionGroupOverrider) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GActionGroup // out
 

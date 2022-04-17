@@ -29,6 +29,7 @@ func init() {
 
 // DropControllerMotionOverrider contains methods that are overridable.
 type DropControllerMotionOverrider interface {
+	externglib.Objector
 }
 
 // DropControllerMotion: GtkDropControllerMotion is an event controller tracking

@@ -26,6 +26,7 @@ func init() {
 
 // FlattenListModelOverrider contains methods that are overridable.
 type FlattenListModelOverrider interface {
+	externglib.Objector
 }
 
 // FlattenListModel: GtkFlattenListModel is a list model that concatenates other
@@ -75,7 +76,7 @@ func marshalFlattenListModel(p uintptr) (interface{}, error) {
 //
 //    - flattenListModel: new GtkFlattenListModel.
 //
-func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
+func NewFlattenListModel(model gio.ListModelOverrider) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
 	var _cret *C.GtkFlattenListModel // in
 
@@ -100,7 +101,7 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 //
 //    - listModel (optional): model flattened by self.
 //
-func (self *FlattenListModel) Model() gio.ListModeller {
+func (self *FlattenListModel) Model() gio.ListModelOverrider {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _cret *C.GListModel          // in
 
@@ -109,7 +110,7 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 	_cret = C.gtk_flatten_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -117,10 +118,10 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModeller)
+				_, ok := obj.(gio.ListModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.ListModeller)
+			rv, ok := casted.(gio.ListModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
@@ -141,7 +142,7 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 //
 //    - listModel: model containing the item at position.
 //
-func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
+func (self *FlattenListModel) ModelForItem(position uint) gio.ListModelOverrider {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 C.guint                // out
 	var _cret *C.GListModel          // in
@@ -153,7 +154,7 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -163,10 +164,10 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -182,7 +183,7 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 //
 //    - model (optional): new model or NULL.
 //
-func (self *FlattenListModel) SetModel(model gio.ListModeller) {
+func (self *FlattenListModel) SetModel(model gio.ListModelOverrider) {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 *C.GListModel          // out
 

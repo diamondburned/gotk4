@@ -29,6 +29,7 @@ func init() {
 
 // ProgressBarOverrider contains methods that are overridable.
 type ProgressBarOverrider interface {
+	externglib.Objector
 }
 
 // ProgressBar is typically used to display the progress of a long running

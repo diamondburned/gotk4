@@ -32,6 +32,7 @@ func init() {
 
 // LayoutManagerOverrider contains methods that are overridable.
 type LayoutManagerOverrider interface {
+	externglib.Objector
 	// Allocate assigns the given width, height, and baseline to a widget, and
 	// computes the position and sizes of the children of the widget using the
 	// layout management policy of manager.

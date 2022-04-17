@@ -28,6 +28,7 @@ func init() {
 
 // VScrollbarOverrider contains methods that are overridable.
 type VScrollbarOverrider interface {
+	externglib.Objector
 }
 
 // VScrollbar widget is a widget arranged vertically creating a scrollbar. See

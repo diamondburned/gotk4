@@ -318,6 +318,7 @@ func (f FontMask) Has(other FontMask) bool {
 
 // FontOverrider contains methods that are overridable.
 type FontOverrider interface {
+	externglib.Objector
 	// Describe returns a description of the font, with font size set in points.
 	//
 	// Use pango.Font.DescribeWithAbsoluteSize() if you want the font size in
@@ -898,6 +899,7 @@ func (font *Font) HasChar(wc uint32) bool {
 
 // FontFaceOverrider contains methods that are overridable.
 type FontFaceOverrider interface {
+	externglib.Objector
 	// Describe returns the family, style, variant, weight and stretch of a
 	// PangoFontFace. The size field of the resulting font description will be
 	// unset.
@@ -1252,6 +1254,7 @@ func (face *FontFace) ListSizes() []int {
 
 // FontFamilyOverrider contains methods that are overridable.
 type FontFamilyOverrider interface {
+	externglib.Objector
 	// Face gets the PangoFontFace of family with the given name.
 	//
 	// The function takes the following parameters:

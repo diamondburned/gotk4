@@ -27,6 +27,7 @@ func init() {
 
 // TextViewAccessibleOverrider contains methods that are overridable.
 type TextViewAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type TextViewAccessible struct {

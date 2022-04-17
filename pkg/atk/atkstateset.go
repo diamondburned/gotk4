@@ -25,6 +25,7 @@ func init() {
 
 // StateSetOverrider contains methods that are overridable.
 type StateSetOverrider interface {
+	externglib.Objector
 }
 
 // StateSet is a read-only representation of the full set of States that apply

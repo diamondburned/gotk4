@@ -30,6 +30,7 @@ func init() {
 
 // CellAreaContextOverrider contains methods that are overridable.
 type CellAreaContextOverrider interface {
+	externglib.Objector
 	// Allocate allocates a width and/or a height for all rows which are to be
 	// rendered with context.
 	//

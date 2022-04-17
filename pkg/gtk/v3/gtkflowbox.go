@@ -163,6 +163,7 @@ func _gotk4_gtk3_FlowBoxSortFunc(arg1 *C.GtkFlowBoxChild, arg2 *C.GtkFlowBoxChil
 
 // FlowBoxOverrider contains methods that are overridable.
 type FlowBoxOverrider interface {
+	externglib.Objector
 	ActivateCursorChild()
 	// The function takes the following parameters:
 	//
@@ -609,7 +610,7 @@ func NewFlowBox() *FlowBox {
 //    - model (optional) to be bound to box.
 //    - createWidgetFunc: function that creates widgets for items.
 //
-func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
+func (box *FlowBox) BindModel(model gio.ListModelOverrider, createWidgetFunc FlowBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkFlowBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
@@ -1287,6 +1288,7 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 
 // FlowBoxChildOverrider contains methods that are overridable.
 type FlowBoxChildOverrider interface {
+	externglib.Objector
 	Activate()
 }
 

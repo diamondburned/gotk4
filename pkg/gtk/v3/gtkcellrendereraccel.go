@@ -66,6 +66,7 @@ func (c CellRendererAccelMode) String() string {
 
 // CellRendererAccelOverrider contains methods that are overridable.
 type CellRendererAccelOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	AccelCleared(pathString string)

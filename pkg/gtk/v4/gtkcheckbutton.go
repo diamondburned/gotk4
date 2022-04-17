@@ -30,6 +30,7 @@ func init() {
 
 // CheckButtonOverrider contains methods that are overridable.
 type CheckButtonOverrider interface {
+	externglib.Objector
 	Activate()
 	Toggled()
 }

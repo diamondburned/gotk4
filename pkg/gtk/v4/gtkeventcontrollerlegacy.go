@@ -26,6 +26,7 @@ func init() {
 
 // EventControllerLegacyOverrider contains methods that are overridable.
 type EventControllerLegacyOverrider interface {
+	externglib.Objector
 }
 
 // EventControllerLegacy: GtkEventControllerLegacy is an event controller that

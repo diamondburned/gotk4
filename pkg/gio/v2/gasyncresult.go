@@ -30,6 +30,7 @@ func init() {
 
 // AsyncResultOverrider contains methods that are overridable.
 type AsyncResultOverrider interface {
+	externglib.Objector
 	// SourceObject gets the source object from a Result.
 	//
 	// The function returns the following values:

@@ -198,7 +198,7 @@ func (notification *Notification) SetDefaultActionAndTarget(action string, targe
 //
 //    - icon to be shown in notification, as a #GIcon.
 //
-func (notification *Notification) SetIcon(icon Iconner) {
+func (notification *Notification) SetIcon(icon IconOverrider) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
 

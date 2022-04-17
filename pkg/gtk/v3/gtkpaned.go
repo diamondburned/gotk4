@@ -42,6 +42,7 @@ func init() {
 
 // PanedOverrider contains methods that are overridable.
 type PanedOverrider interface {
+	externglib.Objector
 	// The function returns the following values:
 	//
 	AcceptPosition() bool

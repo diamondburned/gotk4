@@ -27,6 +27,7 @@ func init() {
 
 // BuilderListItemFactoryOverrider contains methods that are overridable.
 type BuilderListItemFactoryOverrider interface {
+	externglib.Objector
 }
 
 // BuilderListItemFactory: GtkBuilderListItemFactory is a GtkListItemFactory
@@ -92,7 +93,7 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 //
 //    - builderListItemFactory: new GtkBuilderListItemFactory.
 //
-func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) *BuilderListItemFactory {
+func NewBuilderListItemFactoryFromBytes(scope BuilderScopeOverrider, bytes *glib.Bytes) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.GBytes             // out
 	var _cret *C.GtkListItemFactory // in
@@ -126,7 +127,7 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) 
 //
 //    - builderListItemFactory: new GtkBuilderListItemFactory.
 //
-func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
+func NewBuilderListItemFactoryFromResource(scope BuilderScopeOverrider, resourcePath string) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.char               // out
 	var _cret *C.GtkListItemFactory // in
@@ -208,7 +209,7 @@ func (self *BuilderListItemFactory) Resource() string {
 //
 //    - builderScope (optional): scope used when constructing listitems.
 //
-func (self *BuilderListItemFactory) Scope() BuilderScoper {
+func (self *BuilderListItemFactory) Scope() BuilderScopeOverrider {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in
 
@@ -217,7 +218,7 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
 	runtime.KeepAlive(self)
 
-	var _builderScope BuilderScoper // out
+	var _builderScope BuilderScopeOverrider // out
 
 	if _cret != nil {
 		{
@@ -225,10 +226,10 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(BuilderScoper)
+				_, ok := obj.(BuilderScopeOverrider)
 				return ok
 			})
-			rv, ok := casted.(BuilderScoper)
+			rv, ok := casted.(BuilderScopeOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.BuilderScoper")
 			}

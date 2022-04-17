@@ -32,6 +32,7 @@ func init() {
 
 // RadioButtonOverrider contains methods that are overridable.
 type RadioButtonOverrider interface {
+	externglib.Objector
 	GroupChanged()
 }
 

@@ -27,6 +27,7 @@ func init() {
 
 // BooleanCellAccessibleOverrider contains methods that are overridable.
 type BooleanCellAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type BooleanCellAccessible struct {

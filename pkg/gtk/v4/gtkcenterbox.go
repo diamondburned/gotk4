@@ -25,6 +25,7 @@ func init() {
 
 // CenterBoxOverrider contains methods that are overridable.
 type CenterBoxOverrider interface {
+	externglib.Objector
 }
 
 // CenterBox: GtkCenterBox arranges three children in a row, keeping the middle

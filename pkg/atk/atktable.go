@@ -68,6 +68,7 @@ func init() {
 
 // TableOverrider contains methods that are overridable.
 type TableOverrider interface {
+	externglib.Objector
 	// AddColumnSelection adds the specified column to the selection.
 	//
 	// The function takes the following parameters:

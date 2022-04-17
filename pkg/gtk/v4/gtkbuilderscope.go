@@ -84,6 +84,7 @@ func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
 
 // BuilderScopeOverrider contains methods that are overridable.
 type BuilderScopeOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - builder
@@ -197,6 +198,7 @@ func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 
 // BuilderCScopeOverrider contains methods that are overridable.
 type BuilderCScopeOverrider interface {
+	externglib.Objector
 }
 
 // BuilderCScope: GtkBuilderScope implementation for the C language.

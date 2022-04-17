@@ -33,6 +33,7 @@ func init() {
 
 // WindowOverrider contains methods that are overridable.
 type WindowOverrider interface {
+	externglib.Objector
 }
 
 // Window should be implemented by the UI elements that represent a top-level

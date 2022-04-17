@@ -24,6 +24,7 @@ func init() {
 
 // ProxyAddressEnumeratorOverrider contains methods that are overridable.
 type ProxyAddressEnumeratorOverrider interface {
+	externglib.Objector
 }
 
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the

@@ -29,6 +29,7 @@ func init() {
 
 // ApplicationWindowOverrider contains methods that are overridable.
 type ApplicationWindowOverrider interface {
+	externglib.Objector
 }
 
 // ApplicationWindow is a Window subclass that offers some extra functionality

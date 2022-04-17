@@ -27,6 +27,7 @@ func init() {
 
 // RangeAccessibleOverrider contains methods that are overridable.
 type RangeAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type RangeAccessible struct {

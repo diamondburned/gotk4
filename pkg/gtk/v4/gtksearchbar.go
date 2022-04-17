@@ -132,7 +132,7 @@ func NewSearchBar() *SearchBar {
 //
 //    - entry: GtkEditable.
 //
-func (bar *SearchBar) ConnectEntry(entry Editabler) {
+func (bar *SearchBar) ConnectEntry(entry EditableOverrider) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEditable  // out
 

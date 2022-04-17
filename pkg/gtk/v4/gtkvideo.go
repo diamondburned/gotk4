@@ -26,6 +26,7 @@ func init() {
 
 // VideoOverrider contains methods that are overridable.
 type VideoOverrider interface {
+	externglib.Objector
 }
 
 // Video: GtkVideo is a widget to show a GtkMediaStream with media controls.
@@ -110,7 +111,7 @@ func NewVideo() *Video {
 //
 //    - video: new GtkVideo.
 //
-func NewVideoForFile(file gio.Filer) *Video {
+func NewVideoForFile(file gio.FileOverrider) *Video {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
@@ -250,7 +251,7 @@ func (self *Video) Autoplay() bool {
 //
 //    - file (optional) played by self.
 //
-func (self *Video) File() gio.Filer {
+func (self *Video) File() gio.FileOverrider {
 	var _arg0 *C.GtkVideo // out
 	var _cret *C.GFile    // in
 
@@ -259,7 +260,7 @@ func (self *Video) File() gio.Filer {
 	_cret = C.gtk_video_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.Filer // out
+	var _file gio.FileOverrider // out
 
 	if _cret != nil {
 		{
@@ -267,10 +268,10 @@ func (self *Video) File() gio.Filer {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
+				_, ok := obj.(gio.FileOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.Filer)
+			rv, ok := casted.(gio.FileOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -369,7 +370,7 @@ func (self *Video) SetAutoplay(autoplay bool) {
 //
 //    - file (optional) to play.
 //
-func (self *Video) SetFile(file gio.Filer) {
+func (self *Video) SetFile(file gio.FileOverrider) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.GFile    // out
 

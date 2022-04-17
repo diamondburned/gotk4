@@ -188,7 +188,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 //    - icon corresponding to the content type. Free the returned object with
 //      g_object_unref().
 //
-func ContentTypeGetIcon(typ string) Iconner {
+func ContentTypeGetIcon(typ string) IconOverrider {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -198,7 +198,7 @@ func ContentTypeGetIcon(typ string) Iconner {
 	_cret = C.g_content_type_get_icon(_arg1)
 	runtime.KeepAlive(typ)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -208,10 +208,10 @@ func ContentTypeGetIcon(typ string) Iconner {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -297,7 +297,7 @@ func ContentTypeGetMIMEType(typ string) string {
 //    - icon: symbolic #GIcon corresponding to the content type. Free the
 //      returned object with g_object_unref().
 //
-func ContentTypeGetSymbolicIcon(typ string) Iconner {
+func ContentTypeGetSymbolicIcon(typ string) IconOverrider {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -307,7 +307,7 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 	runtime.KeepAlive(typ)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -317,10 +317,10 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -401,7 +401,7 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 //    - utf8s: NULL-terminated array of zero or more content types. Free with
 //      g_strfreev().
 //
-func ContentTypeGuessForTree(root Filer) []string {
+func ContentTypeGuessForTree(root FileOverrider) []string {
 	var _arg1 *C.GFile  // out
 	var _cret **C.gchar // in
 

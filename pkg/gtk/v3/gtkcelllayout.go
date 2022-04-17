@@ -39,7 +39,7 @@ func init() {
 
 // CellLayoutDataFunc: function which should set the value of cell_layout’s cell
 // renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
+type CellLayoutDataFunc func(cellLayout CellLayoutOverrider, cell CellRendererer, treeModel TreeModelOverrider, iter *TreeIter)
 
 //export _gotk4_gtk3_CellLayoutDataFunc
 func _gotk4_gtk3_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRenderer, arg3 *C.GtkTreeModel, arg4 *C.GtkTreeIter, arg5 C.gpointer) {
@@ -52,10 +52,10 @@ func _gotk4_gtk3_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRender
 		fn = v.(CellLayoutDataFunc)
 	}
 
-	var _cellLayout CellLayouter // out
-	var _cell CellRendererer     // out
-	var _treeModel TreeModeller  // out
-	var _iter *TreeIter          // out
+	var _cellLayout CellLayoutOverrider // out
+	var _cell CellRendererer            // out
+	var _treeModel TreeModelOverrider   // out
+	var _iter *TreeIter                 // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -65,10 +65,10 @@ func _gotk4_gtk3_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRender
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(CellLayouter)
+			_, ok := obj.(CellLayoutOverrider)
 			return ok
 		})
-		rv, ok := casted.(CellLayouter)
+		rv, ok := casted.(CellLayoutOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellLayouter")
 		}
@@ -99,10 +99,10 @@ func _gotk4_gtk3_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRender
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -111,6 +111,91 @@ func _gotk4_gtk3_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRender
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
 	fn(_cellLayout, _cell, _treeModel, _iter)
+}
+
+// CellLayoutOverrider contains methods that are overridable.
+type CellLayoutOverrider interface {
+	externglib.Objector
+	// AddAttribute adds an attribute mapping to the list in cell_layout.
+	//
+	// The column is the column of the model to get a value from, and the
+	// attribute is the parameter on cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - attribute on the renderer.
+	//    - column position on the model to get the attribute from.
+	//
+	AddAttribute(cell CellRendererer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on cell_layout and removes
+	// all renderers from cell_layout.
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell to clear the attribute mapping on.
+	//
+	ClearAttributes(cell CellRendererer)
+	// Area returns the underlying CellArea which might be cell_layout if called
+	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
+	//
+	// The function returns the following values:
+	//
+	//    - cellArea (optional): cell area used by cell_layout, or NULL in case
+	//      no cell area is used.
+	//
+	Area() CellAreaer
+	// Cells returns the cell renderers which have been added to cell_layout.
+	//
+	// The function returns the following values:
+	//
+	//    - list: a list of cell renderers. The list, but not the renderers has
+	//      been newly allocated and should be freed with g_list_free() when no
+	//      longer needed.
+	//
+	Cells() []CellRendererer
+	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
+	// the cell is allocated no more space than it needs. Any unused space is
+	// divided evenly between cells for which expand is TRUE.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - expand: TRUE if cell is to be given extra space allocated to
+	//      cell_layout.
+	//
+	PackEnd(cell CellRendererer, expand bool)
+	// PackStart packs the cell into the beginning of cell_layout. If expand is
+	// FALSE, then the cell is allocated no more space than it needs. Any unused
+	// space is divided evenly between cells for which expand is TRUE.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - expand: TRUE if cell is to be given extra space allocated to
+	//      cell_layout.
+	//
+	PackStart(cell CellRendererer, expand bool)
+	// Reorder re-inserts cell at position.
+	//
+	// Note that cell has already to be packed into cell_layout for this to
+	// function properly.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell to reorder.
+	//    - position: new position to insert cell at.
+	//
+	Reorder(cell CellRendererer, position int)
 }
 
 // CellLayout is an interface to be implemented by all objects which want to
@@ -236,6 +321,211 @@ type CellLayouter interface {
 }
 
 var _ CellLayouter = (*CellLayout)(nil)
+
+func ifaceInitCellLayouter(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkCellLayoutIface)(unsafe.Pointer(gifacePtr))
+	iface.add_attribute = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_add_attribute)
+	iface.clear = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_clear)
+	iface.clear_attributes = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_clear_attributes)
+	iface.get_area = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_get_area)
+	iface.get_cells = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_get_cells)
+	iface.pack_end = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_pack_end)
+	iface.pack_start = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_pack_start)
+	iface.reorder = (*[0]byte)(C._gotk4_gtk3_CellLayoutIface_reorder)
+}
+
+//export _gotk4_gtk3_CellLayoutIface_add_attribute
+func _gotk4_gtk3_CellLayoutIface_add_attribute(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.gchar, arg3 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	var _cell CellRendererer // out
+	var _attribute string    // out
+	var _column int          // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_cell = rv
+	}
+	_attribute = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_column = int(arg3)
+
+	iface.AddAttribute(_cell, _attribute, _column)
+}
+
+//export _gotk4_gtk3_CellLayoutIface_clear
+func _gotk4_gtk3_CellLayoutIface_clear(arg0 *C.GtkCellLayout) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	iface.Clear()
+}
+
+//export _gotk4_gtk3_CellLayoutIface_clear_attributes
+func _gotk4_gtk3_CellLayoutIface_clear_attributes(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	var _cell CellRendererer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_cell = rv
+	}
+
+	iface.ClearAttributes(_cell)
+}
+
+//export _gotk4_gtk3_CellLayoutIface_get_area
+func _gotk4_gtk3_CellLayoutIface_get_area(arg0 *C.GtkCellLayout) (cret *C.GtkCellArea) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	cellArea := iface.Area()
+
+	if cellArea != nil {
+		cret = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(cellArea).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_CellLayoutIface_get_cells
+func _gotk4_gtk3_CellLayoutIface_get_cells(arg0 *C.GtkCellLayout) (cret *C.GList) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	list := iface.Cells()
+
+	for i := len(list) - 1; i >= 0; i-- {
+		src := list[i]
+		var dst *C.GtkCellRenderer // out
+		dst = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk3_CellLayoutIface_pack_end
+func _gotk4_gtk3_CellLayoutIface_pack_end(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	var _cell CellRendererer // out
+	var _expand bool         // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_cell = rv
+	}
+	if arg2 != 0 {
+		_expand = true
+	}
+
+	iface.PackEnd(_cell, _expand)
+}
+
+//export _gotk4_gtk3_CellLayoutIface_pack_start
+func _gotk4_gtk3_CellLayoutIface_pack_start(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	var _cell CellRendererer // out
+	var _expand bool         // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_cell = rv
+	}
+	if arg2 != 0 {
+		_expand = true
+	}
+
+	iface.PackStart(_cell, _expand)
+}
+
+//export _gotk4_gtk3_CellLayoutIface_reorder
+func _gotk4_gtk3_CellLayoutIface_reorder(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 C.gint) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	var _cell CellRendererer // out
+	var _position int        // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_cell = rv
+	}
+	_position = int(arg2)
+
+	iface.Reorder(_cell, _position)
+}
 
 func wrapCellLayout(obj *externglib.Object) *CellLayout {
 	return &CellLayout{

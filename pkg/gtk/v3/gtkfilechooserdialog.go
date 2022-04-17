@@ -27,6 +27,7 @@ func init() {
 
 // FileChooserDialogOverrider contains methods that are overridable.
 type FileChooserDialogOverrider interface {
+	externglib.Objector
 }
 
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or

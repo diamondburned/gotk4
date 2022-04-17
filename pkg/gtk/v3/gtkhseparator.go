@@ -27,6 +27,7 @@ func init() {
 
 // HSeparatorOverrider contains methods that are overridable.
 type HSeparatorOverrider interface {
+	externglib.Objector
 }
 
 // HSeparator widget is a horizontal separator, used to group the widgets within

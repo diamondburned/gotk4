@@ -35,6 +35,7 @@ func init() {
 
 // DatagramBasedOverrider contains methods that are overridable.
 type DatagramBasedOverrider interface {
+	externglib.Objector
 	// ConditionCheck checks on the readiness of datagram_based to perform
 	// operations. The operations specified in condition are checked for and
 	// masked against the currently-satisfied conditions on datagram_based. The

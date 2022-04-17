@@ -29,6 +29,7 @@ func init() {
 
 // ListModelOverrider contains methods that are overridable.
 type ListModelOverrider interface {
+	externglib.Objector
 	// Item: get the item at position. If position is greater than the number of
 	// items in list, NULL is returned.
 	//

@@ -32,13 +32,14 @@ func init() {
 
 // SocketClientOverrider contains methods that are overridable.
 type SocketClientOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - event
 	//    - connectable
 	//    - connection
 	//
-	Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	Event(event SocketClientEvent, connectable SocketConnectableOverrider, connection IOStreamer)
 }
 
 // SocketClient is a lightweight high-level utility class for connecting to a
@@ -74,7 +75,7 @@ func classInitSocketClienter(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GSocketClientClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+		Event(event SocketClientEvent, connectable SocketConnectableOverrider, connection IOStreamer)
 	}); ok {
 		pclass.event = (*[0]byte)(C._gotk4_gio2_SocketClientClass_event)
 	}
@@ -84,12 +85,12 @@ func classInitSocketClienter(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_SocketClientClass_event(arg0 *C.GSocketClient, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+		Event(event SocketClientEvent, connectable SocketConnectableOverrider, connection IOStreamer)
 	})
 
-	var _event SocketClientEvent        // out
-	var _connectable SocketConnectabler // out
-	var _connection IOStreamer          // out
+	var _event SocketClientEvent                // out
+	var _connectable SocketConnectableOverrider // out
+	var _connection IOStreamer                  // out
 
 	_event = SocketClientEvent(arg1)
 	{
@@ -100,10 +101,10 @@ func _gotk4_gio2_SocketClientClass_event(arg0 *C.GSocketClient, arg1 C.GSocketCl
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(SocketConnectabler)
+			_, ok := obj.(SocketConnectableOverrider)
 			return ok
 		})
-		rv, ok := casted.(SocketConnectabler)
+		rv, ok := casted.(SocketConnectableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
 		}
@@ -142,7 +143,7 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 
 //export _gotk4_gio2_SocketClient_ConnectEvent
 func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream, arg4 C.guintptr) {
-	var f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	var f func(event SocketClientEvent, connectable SocketConnectableOverrider, connection IOStreamer)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -150,12 +151,12 @@ func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClient
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer))
+		f = closure.Func.(func(event SocketClientEvent, connectable SocketConnectableOverrider, connection IOStreamer))
 	}
 
-	var _event SocketClientEvent        // out
-	var _connectable SocketConnectabler // out
-	var _connection IOStreamer          // out
+	var _event SocketClientEvent                // out
+	var _connectable SocketConnectableOverrider // out
+	var _connection IOStreamer                  // out
 
 	_event = SocketClientEvent(arg1)
 	{
@@ -166,10 +167,10 @@ func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClient
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(SocketConnectabler)
+			_, ok := obj.(SocketConnectableOverrider)
 			return ok
 		})
-		rv, ok := casted.(SocketConnectabler)
+		rv, ok := casted.(SocketConnectableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
 		}
@@ -242,7 +243,7 @@ func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClient
 //
 // Note that there may be additional ClientEvent values in the future;
 // unrecognized event values should be ignored.
-func (client *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)) externglib.SignalHandle {
+func (client *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectableOverrider, connection IOStreamer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(client, "event", false, unsafe.Pointer(C._gotk4_gio2_SocketClient_ConnectEvent), f)
 }
 
@@ -328,7 +329,7 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 //
 //    - socketConnection on success, NULL on error.
 //
-func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable SocketConnectabler) (*SocketConnection, error) {
+func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable SocketConnectableOverrider) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GSocketConnectable // out
@@ -378,7 +379,7 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 //    - connectable specifying the remote address.
 //    - callback (optional): ReadyCallback.
 //
-func (client *SocketClient) ConnectAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectAsync(ctx context.Context, connectable SocketConnectableOverrider, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GSocketConnectable // out
@@ -415,7 +416,7 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 //
 //    - socketConnection on success, NULL on error.
 //
-func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnection, error) {
+func (client *SocketClient) ConnectFinish(result AsyncResultOverrider) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -568,7 +569,7 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 //
 //    - socketConnection on success, NULL on error.
 //
-func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error) {
+func (client *SocketClient) ConnectToHostFinish(result AsyncResultOverrider) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -704,7 +705,7 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, s
 //
 //    - socketConnection on success, NULL on error.
 //
-func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error) {
+func (client *SocketClient) ConnectToServiceFinish(result AsyncResultOverrider) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -847,7 +848,7 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 //
 //    - socketConnection on success, NULL on error.
 //
-func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error) {
+func (client *SocketClient) ConnectToURIFinish(result AsyncResultOverrider) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GSocketConnection // in
@@ -991,7 +992,7 @@ func (client *SocketClient) Protocol() SocketProtocol {
 //
 //    - proxyResolver being used by client.
 //
-func (client *SocketClient) ProxyResolver() ProxyResolverer {
+func (client *SocketClient) ProxyResolver() ProxyResolverOverrider {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
 
@@ -1000,7 +1001,7 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 	runtime.KeepAlive(client)
 
-	var _proxyResolver ProxyResolverer // out
+	var _proxyResolver ProxyResolverOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -1010,10 +1011,10 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(ProxyResolverer)
+			_, ok := obj.(ProxyResolverOverrider)
 			return ok
 		})
-		rv, ok := casted.(ProxyResolverer)
+		rv, ok := casted.(ProxyResolverOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ProxyResolverer")
 		}
@@ -1227,7 +1228,7 @@ func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 //
 //    - proxyResolver (optional) or NULL for the default.
 //
-func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
+func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverOverrider) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
 

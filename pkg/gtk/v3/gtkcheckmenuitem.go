@@ -33,6 +33,7 @@ func init() {
 
 // CheckMenuItemOverrider contains methods that are overridable.
 type CheckMenuItemOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	DrawIndicator(cr *cairo.Context)

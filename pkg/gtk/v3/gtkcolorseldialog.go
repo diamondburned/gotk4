@@ -28,6 +28,7 @@ func init() {
 
 // ColorSelectionDialogOverrider contains methods that are overridable.
 type ColorSelectionDialogOverrider interface {
+	externglib.Objector
 }
 
 type ColorSelectionDialog struct {

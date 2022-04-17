@@ -29,6 +29,7 @@ func init() {
 
 // OverlayLayoutOverrider contains methods that are overridable.
 type OverlayLayoutOverrider interface {
+	externglib.Objector
 }
 
 // OverlayLayout: GtkOverlayLayout is the layout manager used by GtkOverlay.
@@ -86,6 +87,7 @@ func NewOverlayLayout() *OverlayLayout {
 
 // OverlayLayoutChildOverrider contains methods that are overridable.
 type OverlayLayoutChildOverrider interface {
+	externglib.Objector
 }
 
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a

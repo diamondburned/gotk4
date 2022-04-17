@@ -66,6 +66,7 @@ func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncRead
 
 // SimpleAsyncResultOverrider contains methods that are overridable.
 type SimpleAsyncResultOverrider interface {
+	externglib.Objector
 }
 
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
@@ -620,7 +621,7 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 //
 //    - ok if all checks passed or LSE if any failed.
 //
-func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, sourceTag cgo.Handle) bool {
+func SimpleAsyncResultIsValid(result AsyncResultOverrider, source *externglib.Object, sourceTag cgo.Handle) bool {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GObject      // out
 	var _arg3 C.gpointer      // out

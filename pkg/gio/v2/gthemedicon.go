@@ -25,6 +25,7 @@ func init() {
 
 // ThemedIconOverrider contains methods that are overridable.
 type ThemedIconOverrider interface {
+	externglib.Objector
 }
 
 // ThemedIcon is an implementation of #GIcon that supports icon themes. Icon

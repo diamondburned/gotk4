@@ -29,6 +29,7 @@ func init() {
 
 // AppChooserDialogOverrider contains methods that are overridable.
 type AppChooserDialogOverrider interface {
+	externglib.Objector
 }
 
 // AppChooserDialog shows a AppChooserWidget inside a Dialog.
@@ -118,7 +119,7 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 //
 //    - appChooserDialog: newly created AppChooserDialog.
 //
-func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
+func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.FileOverrider) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
 	var _arg3 *C.GFile         // out

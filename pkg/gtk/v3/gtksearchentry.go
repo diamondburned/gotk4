@@ -39,6 +39,7 @@ func init() {
 
 // SearchEntryOverrider contains methods that are overridable.
 type SearchEntryOverrider interface {
+	externglib.Objector
 	NextMatch()
 	PreviousMatch()
 	SearchChanged()

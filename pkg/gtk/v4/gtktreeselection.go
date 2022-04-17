@@ -32,7 +32,7 @@ func init() {
 // TreeSelectionForEachFunc: function used by
 // gtk_tree_selection_selected_foreach() to map all selected rows. It will be
 // called on every selected row in the view.
-type TreeSelectionForEachFunc func(model TreeModeller, path *TreePath, iter *TreeIter)
+type TreeSelectionForEachFunc func(model TreeModelOverrider, path *TreePath, iter *TreeIter)
 
 //export _gotk4_gtk4_TreeSelectionForEachFunc
 func _gotk4_gtk4_TreeSelectionForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -45,9 +45,9 @@ func _gotk4_gtk4_TreeSelectionForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeP
 		fn = v.(TreeSelectionForEachFunc)
 	}
 
-	var _model TreeModeller // out
-	var _path *TreePath     // out
-	var _iter *TreeIter     // out
+	var _model TreeModelOverrider // out
+	var _path *TreePath           // out
+	var _iter *TreeIter           // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -57,10 +57,10 @@ func _gotk4_gtk4_TreeSelectionForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeP
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -78,7 +78,7 @@ func _gotk4_gtk4_TreeSelectionForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeP
 //
 // A return value of TRUE indicates to selection that it is okay to change the
 // selection.
-type TreeSelectionFunc func(selection *TreeSelection, model TreeModeller, path *TreePath, pathCurrentlySelected bool) (ok bool)
+type TreeSelectionFunc func(selection *TreeSelection, model TreeModelOverrider, path *TreePath, pathCurrentlySelected bool) (ok bool)
 
 //export _gotk4_gtk4_TreeSelectionFunc
 func _gotk4_gtk4_TreeSelectionFunc(arg1 *C.GtkTreeSelection, arg2 *C.GtkTreeModel, arg3 *C.GtkTreePath, arg4 C.gboolean, arg5 C.gpointer) (cret C.gboolean) {
@@ -92,7 +92,7 @@ func _gotk4_gtk4_TreeSelectionFunc(arg1 *C.GtkTreeSelection, arg2 *C.GtkTreeMode
 	}
 
 	var _selection *TreeSelection   // out
-	var _model TreeModeller         // out
+	var _model TreeModelOverrider   // out
 	var _path *TreePath             // out
 	var _pathCurrentlySelected bool // out
 
@@ -105,10 +105,10 @@ func _gotk4_gtk4_TreeSelectionFunc(arg1 *C.GtkTreeSelection, arg2 *C.GtkTreeMode
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -251,7 +251,7 @@ func (selection *TreeSelection) Mode() SelectionMode {
 //    - iter (optional) or NULL.
 //    - ok: TRUE, if there is a selected node.
 //
-func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
+func (selection *TreeSelection) Selected() (TreeModelOverrider, *TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _arg2 C.GtkTreeIter       // in
@@ -262,9 +262,9 @@ func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(selection)
 
-	var _model TreeModeller // out
-	var _iter *TreeIter     // out
-	var _ok bool            // out
+	var _model TreeModelOverrider // out
+	var _iter *TreeIter           // out
+	var _ok bool                  // out
 
 	if _arg1 != nil {
 		{
@@ -272,10 +272,10 @@ func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -304,7 +304,7 @@ func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 //    - model (optional): pointer to set to the TreeModel, or NULL.
 //    - list containing a TreePath for each selected row.
 //
-func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
+func (selection *TreeSelection) SelectedRows() (TreeModelOverrider, []*TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _cret *C.GList            // in
@@ -314,8 +314,8 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	_cret = C.gtk_tree_selection_get_selected_rows(_arg0, &_arg1)
 	runtime.KeepAlive(selection)
 
-	var _model TreeModeller // out
-	var _list []*TreePath   // out
+	var _model TreeModelOverrider // out
+	var _list []*TreePath         // out
 
 	if _arg1 != nil {
 		{
@@ -323,10 +323,10 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}

@@ -24,6 +24,7 @@ func init() {
 
 // ShortcutsGroupOverrider contains methods that are overridable.
 type ShortcutsGroupOverrider interface {
+	externglib.Objector
 }
 
 // ShortcutsGroup: GtkShortcutsGroup represents a group of related keyboard

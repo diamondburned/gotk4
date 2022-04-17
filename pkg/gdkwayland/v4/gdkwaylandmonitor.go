@@ -25,6 +25,7 @@ func init() {
 
 // WaylandMonitorOverrider contains methods that are overridable.
 type WaylandMonitorOverrider interface {
+	externglib.Objector
 }
 
 // WaylandMonitor: wayland implementation of GdkMonitor.

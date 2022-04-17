@@ -122,6 +122,11 @@ func FileChooserErrorQuark() glib.Quark {
 	return _quark
 }
 
+// FileChooserOverrider contains methods that are overridable.
+type FileChooserOverrider interface {
+	externglib.Objector
+}
+
 // FileChooser: GtkFileChooser is an interface that can be implemented by file
 // selection widgets.
 //
@@ -183,7 +188,7 @@ type FileChooserer interface {
 	AddFilter(filter *FileFilter)
 	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
 	// in a file chooser.
-	AddShortcutFolder(folder gio.Filer) error
+	AddShortcutFolder(folder gio.FileOverrider) error
 	// Action gets the type of operation that the file chooser is performing.
 	Action() FileChooserAction
 	// Choice gets the currently selected option in the 'choice' with the given
@@ -192,24 +197,24 @@ type FileChooserer interface {
 	// CreateFolders gets whether file chooser will offer to create new folders.
 	CreateFolders() bool
 	// CurrentFolder gets the current folder of chooser as #GFile.
-	CurrentFolder() gio.Filer
+	CurrentFolder() gio.FileOverrider
 	// CurrentName gets the current name in the file selector, as entered by the
 	// user.
 	CurrentName() string
 	// File gets the GFile for the currently selected file in the file selector.
-	File() gio.Filer
+	File() gio.FileOverrider
 	// Files lists all the selected files and subfolders in the current folder
 	// of chooser as #GFile.
-	Files() gio.ListModeller
+	Files() gio.ListModelOverrider
 	// Filter gets the current filter.
 	Filter() *FileFilter
 	// Filters gets the current set of user-selectable filters, as a list model.
-	Filters() gio.ListModeller
+	Filters() gio.ListModelOverrider
 	// SelectMultiple gets whether multiple files can be selected in the file
 	// chooser.
 	SelectMultiple() bool
 	// ShortcutFolders queries the list of shortcut folders in the file chooser.
-	ShortcutFolders() gio.ListModeller
+	ShortcutFolders() gio.ListModelOverrider
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
@@ -218,7 +223,7 @@ type FileChooserer interface {
 	RemoveFilter(filter *FileFilter)
 	// RemoveShortcutFolder removes a folder from the shortcut folders in a file
 	// chooser.
-	RemoveShortcutFolder(folder gio.Filer) error
+	RemoveShortcutFolder(folder gio.FileOverrider) error
 	// SetAction sets the type of operation that the chooser is performing.
 	SetAction(action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
@@ -228,12 +233,12 @@ type FileChooserer interface {
 	// folders.
 	SetCreateFolders(createFolders bool)
 	// SetCurrentFolder sets the current folder for chooser from a #GFile.
-	SetCurrentFolder(file gio.Filer) error
+	SetCurrentFolder(file gio.FileOverrider) error
 	// SetCurrentName sets the current name in the file selector, as if entered
 	// by the user.
 	SetCurrentName(name string)
 	// SetFile sets file as the current filename for the file chooser.
-	SetFile(file gio.Filer) error
+	SetFile(file gio.FileOverrider) error
 	// SetFilter sets the current filter.
 	SetFilter(filter *FileFilter)
 	// SetSelectMultiple sets whether multiple files can be selected in the file
@@ -348,7 +353,7 @@ func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 //
 //    - folder: GFile for the folder to add.
 //
-func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
+func (chooser *FileChooser) AddShortcutFolder(folder gio.FileOverrider) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in
@@ -451,7 +456,7 @@ func (chooser *FileChooser) CreateFolders() bool {
 //
 //    - file: GFile for the current folder.
 //
-func (chooser *FileChooser) CurrentFolder() gio.Filer {
+func (chooser *FileChooser) CurrentFolder() gio.FileOverrider {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -460,7 +465,7 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.Filer // out
+	var _file gio.FileOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -470,10 +475,10 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
+			_, ok := obj.(gio.FileOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.Filer)
+		rv, ok := casted.(gio.FileOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -525,7 +530,7 @@ func (chooser *FileChooser) CurrentName() string {
 //    - file: selected GFile. You own the returned file; use g_object_unref() to
 //      release it.
 //
-func (chooser *FileChooser) File() gio.Filer {
+func (chooser *FileChooser) File() gio.FileOverrider {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -534,7 +539,7 @@ func (chooser *FileChooser) File() gio.Filer {
 	_cret = C.gtk_file_chooser_get_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.Filer // out
+	var _file gio.FileOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -544,10 +549,10 @@ func (chooser *FileChooser) File() gio.Filer {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
+			_, ok := obj.(gio.FileOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.Filer)
+		rv, ok := casted.(gio.FileOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -566,7 +571,7 @@ func (chooser *FileChooser) File() gio.Filer {
 //      subfolder in the current folder. Free the returned list with
 //      g_object_unref().
 //
-func (chooser *FileChooser) Files() gio.ListModeller {
+func (chooser *FileChooser) Files() gio.ListModelOverrider {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -575,7 +580,7 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 	_cret = C.gtk_file_chooser_get_files(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -585,10 +590,10 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -635,7 +640,7 @@ func (chooser *FileChooser) Filter() *FileFilter {
 //    - listModel: GListModel containing the current set of user-selectable
 //      filters.
 //
-func (chooser *FileChooser) Filters() gio.ListModeller {
+func (chooser *FileChooser) Filters() gio.ListModelOverrider {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -644,7 +649,7 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 	_cret = C.gtk_file_chooser_get_filters(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -654,10 +659,10 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -701,7 +706,7 @@ func (chooser *FileChooser) SelectMultiple() bool {
 //
 //    - listModel: list model of GFiles.
 //
-func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
+func (chooser *FileChooser) ShortcutFolders() gio.ListModelOverrider {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -710,7 +715,7 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 	_cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -720,10 +725,10 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -779,7 +784,7 @@ func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 //
 //    - folder: GFile for the folder to remove.
 //
-func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
+func (chooser *FileChooser) RemoveShortcutFolder(folder gio.FileOverrider) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in
@@ -880,7 +885,7 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 //
 //    - file: GFile for the new folder.
 //
-func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
+func (chooser *FileChooser) SetCurrentFolder(file gio.FileOverrider) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in
@@ -977,7 +982,7 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 //
 //    - file: GFile to set as current.
 //
-func (chooser *FileChooser) SetFile(file gio.Filer) error {
+func (chooser *FileChooser) SetFile(file gio.FileOverrider) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in

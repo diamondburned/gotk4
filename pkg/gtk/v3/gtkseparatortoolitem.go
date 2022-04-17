@@ -28,6 +28,7 @@ func init() {
 
 // SeparatorToolItemOverrider contains methods that are overridable.
 type SeparatorToolItemOverrider interface {
+	externglib.Objector
 }
 
 // SeparatorToolItem is a ToolItem that separates groups of other ToolItems.

@@ -26,6 +26,7 @@ func init() {
 
 // MultiSelectionOverrider contains methods that are overridable.
 type MultiSelectionOverrider interface {
+	externglib.Objector
 }
 
 // MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
@@ -74,7 +75,7 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 //
 //    - multiSelection: new GtkMultiSelection.
 //
-func NewMultiSelection(model gio.ListModeller) *MultiSelection {
+func NewMultiSelection(model gio.ListModelOverrider) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in
 
@@ -99,7 +100,7 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 //
 //    - listModel: underlying model.
 //
-func (self *MultiSelection) Model() gio.ListModeller {
+func (self *MultiSelection) Model() gio.ListModelOverrider {
 	var _arg0 *C.GtkMultiSelection // out
 	var _cret *C.GListModel        // in
 
@@ -108,7 +109,7 @@ func (self *MultiSelection) Model() gio.ListModeller {
 	_cret = C.gtk_multi_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -118,10 +119,10 @@ func (self *MultiSelection) Model() gio.ListModeller {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -139,7 +140,7 @@ func (self *MultiSelection) Model() gio.ListModeller {
 //
 //    - model (optional): GListModel to wrap.
 //
-func (self *MultiSelection) SetModel(model gio.ListModeller) {
+func (self *MultiSelection) SetModel(model gio.ListModelOverrider) {
 	var _arg0 *C.GtkMultiSelection // out
 	var _arg1 *C.GListModel        // out
 

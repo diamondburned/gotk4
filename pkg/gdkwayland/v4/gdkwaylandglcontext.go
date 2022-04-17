@@ -25,6 +25,7 @@ func init() {
 
 // WaylandGLContextOverrider contains methods that are overridable.
 type WaylandGLContextOverrider interface {
+	externglib.Objector
 }
 
 // WaylandGLContext: wayland implementation of GdkGLContext.

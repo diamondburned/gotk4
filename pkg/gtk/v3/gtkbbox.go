@@ -81,6 +81,7 @@ func (b ButtonBoxStyle) String() string {
 
 // ButtonBoxOverrider contains methods that are overridable.
 type ButtonBoxOverrider interface {
+	externglib.Objector
 }
 
 type ButtonBox struct {

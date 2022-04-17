@@ -30,6 +30,7 @@ func init() {
 
 // ToggleActionOverrider contains methods that are overridable.
 type ToggleActionOverrider interface {
+	externglib.Objector
 	// Toggled emits the “toggled” signal on the toggle action.
 	//
 	// Deprecated: since version 3.10.

@@ -24,6 +24,7 @@ func init() {
 
 // ListItemFactoryOverrider contains methods that are overridable.
 type ListItemFactoryOverrider interface {
+	externglib.Objector
 }
 
 // ListItemFactory: GtkListItemFactory creates widgets for the items taken from

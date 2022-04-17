@@ -32,6 +32,7 @@ func init() {
 
 // AnyFilterOverrider contains methods that are overridable.
 type AnyFilterOverrider interface {
+	externglib.Objector
 }
 
 // AnyFilter: GtkAnyFilter matches an item when at least one of its filters
@@ -102,6 +103,7 @@ func NewAnyFilter() *AnyFilter {
 
 // EveryFilterOverrider contains methods that are overridable.
 type EveryFilterOverrider interface {
+	externglib.Objector
 }
 
 // EveryFilter: GtkEveryFilter matches an item when each of its filters matches.
@@ -171,6 +173,7 @@ func NewEveryFilter() *EveryFilter {
 
 // MultiFilterOverrider contains methods that are overridable.
 type MultiFilterOverrider interface {
+	externglib.Objector
 }
 
 // MultiFilter: GtkMultiFilter is the base class for filters that combine

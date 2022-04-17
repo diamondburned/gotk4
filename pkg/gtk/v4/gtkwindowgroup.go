@@ -26,6 +26,7 @@ func init() {
 
 // WindowGroupOverrider contains methods that are overridable.
 type WindowGroupOverrider interface {
+	externglib.Objector
 }
 
 // WindowGroup: GtkWindowGroup makes group of windows behave like separate

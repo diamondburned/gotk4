@@ -26,6 +26,7 @@ func init() {
 
 // DragIconOverrider contains methods that are overridable.
 type DragIconOverrider interface {
+	externglib.Objector
 }
 
 // DragIcon: GtkDragIcon is a GtkRoot implementation for drag icons.
@@ -267,7 +268,7 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 //    - hotX: x coordinate of the hotspot.
 //    - hotY: y coordinate of the hotspot.
 //
-func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, hotY int) {
+func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.PaintableOverrider, hotX, hotY int) {
 	var _arg1 *C.GdkDrag      // out
 	var _arg2 *C.GdkPaintable // out
 	var _arg3 C.int           // out

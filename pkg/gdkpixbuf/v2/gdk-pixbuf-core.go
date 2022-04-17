@@ -786,7 +786,7 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 //
 //    - pixbuf (optional): newly created pixbuf.
 //
-func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
+func NewPixbufFromStreamFinish(asyncResult gio.AsyncResultOverrider) (*Pixbuf, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GdkPixbuf    // in
 	var _cerr *C.GError       // in
@@ -2105,7 +2105,7 @@ func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStream
 //
 //    - asyncResult: GAsyncResult.
 //
-func PixbufSaveToStreamFinish(asyncResult gio.AsyncResulter) error {
+func PixbufSaveToStreamFinish(asyncResult gio.AsyncResultOverrider) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 

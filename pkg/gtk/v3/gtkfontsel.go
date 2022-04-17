@@ -33,6 +33,7 @@ func init() {
 
 // FontSelectionOverrider contains methods that are overridable.
 type FontSelectionOverrider interface {
+	externglib.Objector
 }
 
 type FontSelection struct {
@@ -535,6 +536,7 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 
 // FontSelectionDialogOverrider contains methods that are overridable.
 type FontSelectionDialogOverrider interface {
+	externglib.Objector
 }
 
 type FontSelectionDialog struct {

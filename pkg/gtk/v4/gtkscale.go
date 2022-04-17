@@ -56,6 +56,7 @@ func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.GtkScale, arg2 C.double, arg3 C.gp
 
 // ScaleOverrider contains methods that are overridable.
 type ScaleOverrider interface {
+	externglib.Objector
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// PangoLayout representing the text in the scale.
 	//

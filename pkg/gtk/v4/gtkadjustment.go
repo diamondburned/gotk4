@@ -30,6 +30,7 @@ func init() {
 
 // AdjustmentOverrider contains methods that are overridable.
 type AdjustmentOverrider interface {
+	externglib.Objector
 	Changed()
 	ValueChanged()
 }

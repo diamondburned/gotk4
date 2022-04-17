@@ -28,6 +28,7 @@ func init() {
 
 // TextureOverrider contains methods that are overridable.
 type TextureOverrider interface {
+	externglib.Objector
 }
 
 // Texture: GdkTexture is the basic element used to refer to pixel data.
@@ -136,7 +137,7 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 //
 //    - texture: newly-created GdkTexture or NULL if an error occurred.
 //
-func NewTextureFromFile(file gio.Filer) (*Texture, error) {
+func NewTextureFromFile(file gio.FileOverrider) (*Texture, error) {
 	var _arg1 *C.GFile      // out
 	var _cret *C.GdkTexture // in
 	var _cerr *C.GError     // in

@@ -33,6 +33,7 @@ func init() {
 
 // HSVOverrider contains methods that are overridable.
 type HSVOverrider interface {
+	externglib.Objector
 	Changed()
 	// The function takes the following parameters:
 	//

@@ -109,6 +109,7 @@ func (s SorterOrder) String() string {
 
 // SorterOverrider contains methods that are overridable.
 type SorterOverrider interface {
+	externglib.Objector
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
 	//

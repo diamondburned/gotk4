@@ -214,7 +214,7 @@ func NewImageFromFile(filename string) *Image {
 //
 //    - image: new GtkImage displaying the themed icon.
 //
-func NewImageFromGIcon(icon gio.Iconner) *Image {
+func NewImageFromGIcon(icon gio.IconOverrider) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
@@ -281,7 +281,7 @@ func NewImageFromIconName(iconName string) *Image {
 //
 //    - image: new GtkImage.
 //
-func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
+func NewImageFromPaintable(paintable gdk.PaintableOverrider) *Image {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
@@ -397,7 +397,7 @@ func (image *Image) Clear() {
 //
 //    - icon (optional): GIcon, or NULL.
 //
-func (image *Image) GIcon() gio.Iconner {
+func (image *Image) GIcon() gio.IconOverrider {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.GIcon    // in
 
@@ -406,7 +406,7 @@ func (image *Image) GIcon() gio.Iconner {
 	_cret = C.gtk_image_get_gicon(_arg0)
 	runtime.KeepAlive(image)
 
-	var _icon gio.Iconner // out
+	var _icon gio.IconOverrider // out
 
 	if _cret != nil {
 		{
@@ -414,10 +414,10 @@ func (image *Image) GIcon() gio.Iconner {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
+				_, ok := obj.(gio.IconOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.Iconner)
+			rv, ok := casted.(gio.IconOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -488,7 +488,7 @@ func (image *Image) IconSize() IconSize {
 //
 //    - paintable (optional): displayed paintable, or NULL if the image is empty.
 //
-func (image *Image) Paintable() gdk.Paintabler {
+func (image *Image) Paintable() gdk.PaintableOverrider {
 	var _arg0 *C.GtkImage     // out
 	var _cret *C.GdkPaintable // in
 
@@ -497,7 +497,7 @@ func (image *Image) Paintable() gdk.Paintabler {
 	_cret = C.gtk_image_get_paintable(_arg0)
 	runtime.KeepAlive(image)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable gdk.PaintableOverrider // out
 
 	if _cret != nil {
 		{
@@ -505,10 +505,10 @@ func (image *Image) Paintable() gdk.Paintabler {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gdk.Paintabler)
+				_, ok := obj.(gdk.PaintableOverrider)
 				return ok
 			})
-			rv, ok := casted.(gdk.Paintabler)
+			rv, ok := casted.(gdk.PaintableOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 			}
@@ -597,7 +597,7 @@ func (image *Image) SetFromFile(filename string) {
 //
 //    - icon: icon.
 //
-func (image *Image) SetFromGIcon(icon gio.Iconner) {
+func (image *Image) SetFromGIcon(icon gio.IconOverrider) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
 
@@ -640,7 +640,7 @@ func (image *Image) SetFromIconName(iconName string) {
 //
 //    - paintable (optional): GdkPaintable or NULL.
 //
-func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
+func (image *Image) SetFromPaintable(paintable gdk.PaintableOverrider) {
 	var _arg0 *C.GtkImage     // out
 	var _arg1 *C.GdkPaintable // out
 

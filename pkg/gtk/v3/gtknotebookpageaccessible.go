@@ -28,6 +28,7 @@ func init() {
 
 // NotebookPageAccessibleOverrider contains methods that are overridable.
 type NotebookPageAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type NotebookPageAccessible struct {

@@ -25,6 +25,7 @@ func init() {
 
 // TextChildAnchorOverrider contains methods that are overridable.
 type TextChildAnchorOverrider interface {
+	externglib.Objector
 }
 
 // TextChildAnchor: GtkTextChildAnchor is a spot in a GtkTextBuffer where child

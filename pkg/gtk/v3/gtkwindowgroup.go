@@ -29,6 +29,7 @@ func init() {
 
 // WindowGroupOverrider contains methods that are overridable.
 type WindowGroupOverrider interface {
+	externglib.Objector
 }
 
 // WindowGroup restricts the effect of grabs to windows in the same group,

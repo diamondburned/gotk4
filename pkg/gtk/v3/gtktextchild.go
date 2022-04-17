@@ -28,6 +28,7 @@ func init() {
 
 // TextChildAnchorOverrider contains methods that are overridable.
 type TextChildAnchorOverrider interface {
+	externglib.Objector
 }
 
 // TextChildAnchor is a spot in the buffer where child widgets can be “anchored”

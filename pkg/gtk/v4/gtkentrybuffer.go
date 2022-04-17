@@ -34,6 +34,7 @@ func init() {
 
 // EntryBufferOverrider contains methods that are overridable.
 type EntryBufferOverrider interface {
+	externglib.Objector
 	// DeleteText deletes a sequence of characters from the buffer.
 	//
 	// n_chars characters are deleted starting at position. If n_chars is

@@ -26,6 +26,7 @@ func init() {
 
 // HyperlinkImplOverrider contains methods that are overridable.
 type HyperlinkImplOverrider interface {
+	externglib.Objector
 	// Hyperlink gets the hyperlink associated with this object.
 	//
 	// The function returns the following values:

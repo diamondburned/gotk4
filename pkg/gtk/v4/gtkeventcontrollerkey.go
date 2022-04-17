@@ -30,6 +30,7 @@ func init() {
 
 // EventControllerKeyOverrider contains methods that are overridable.
 type EventControllerKeyOverrider interface {
+	externglib.Objector
 }
 
 // EventControllerKey: GtkEventControllerKey is an event controller that

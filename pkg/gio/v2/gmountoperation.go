@@ -35,6 +35,7 @@ func init() {
 
 // MountOperationOverrider contains methods that are overridable.
 type MountOperationOverrider interface {
+	externglib.Objector
 	Aborted()
 	// The function takes the following parameters:
 	//

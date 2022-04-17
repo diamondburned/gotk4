@@ -28,6 +28,7 @@ func init() {
 
 // ActionBarOverrider contains methods that are overridable.
 type ActionBarOverrider interface {
+	externglib.Objector
 }
 
 // ActionBar is designed to present contextual actions. It is expected to be

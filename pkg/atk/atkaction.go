@@ -32,6 +32,7 @@ func init() {
 
 // ActionOverrider contains methods that are overridable.
 type ActionOverrider interface {
+	externglib.Objector
 	// DoAction: perform the specified action on the object.
 	//
 	// The function takes the following parameters:

@@ -32,6 +32,7 @@ const MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"
 
 // MediaFileOverrider contains methods that are overridable.
 type MediaFileOverrider interface {
+	externglib.Objector
 	Close()
 	Open()
 }
@@ -152,7 +153,7 @@ func NewMediaFile() *MediaFile {
 //
 //    - mediaFile: new GtkMediaFile playing file.
 //
-func NewMediaFileForFile(file gio.Filer) *MediaFile {
+func NewMediaFileForFile(file gio.FileOverrider) *MediaFile {
 	var _arg1 *C.GFile          // out
 	var _cret *C.GtkMediaStream // in
 
@@ -276,7 +277,7 @@ func (self *MediaFile) Clear() {
 //    - file (optional): currently playing file or NULL if not playing from a
 //      file.
 //
-func (self *MediaFile) File() gio.Filer {
+func (self *MediaFile) File() gio.FileOverrider {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GFile        // in
 
@@ -285,7 +286,7 @@ func (self *MediaFile) File() gio.Filer {
 	_cret = C.gtk_media_file_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.Filer // out
+	var _file gio.FileOverrider // out
 
 	if _cret != nil {
 		{
@@ -293,10 +294,10 @@ func (self *MediaFile) File() gio.Filer {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
+				_, ok := obj.(gio.FileOverrider)
 				return ok
 			})
-			rv, ok := casted.(gio.Filer)
+			rv, ok := casted.(gio.FileOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -355,7 +356,7 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 //
 //    - file (optional) to play.
 //
-func (self *MediaFile) SetFile(file gio.Filer) {
+func (self *MediaFile) SetFile(file gio.FileOverrider) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.GFile        // out
 

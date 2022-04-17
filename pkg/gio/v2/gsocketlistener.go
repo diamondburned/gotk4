@@ -33,6 +33,7 @@ func init() {
 
 // SocketListenerOverrider contains methods that are overridable.
 type SocketListenerOverrider interface {
+	externglib.Objector
 	Changed()
 	// The function takes the following parameters:
 	//
@@ -266,7 +267,7 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 //    - sourceObject (optional): optional #GObject identifying this source.
 //    - socketConnection on success, NULL on error.
 //
-func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error) {
+func (listener *SocketListener) AcceptFinish(result AsyncResultOverrider) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GAsyncResult      // out
 	var _arg2 *C.GObject           // in
@@ -397,7 +398,7 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 //    - sourceObject (optional): optional #GObject identifying this source.
 //    - socket on success, NULL on error.
 //
-func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error) {
+func (listener *SocketListener) AcceptSocketFinish(result AsyncResultOverrider) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 *C.GObject         // in

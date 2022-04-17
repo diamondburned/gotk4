@@ -223,6 +223,7 @@ func (t ToplevelState) Has(other ToplevelState) bool {
 
 // ToplevelOverrider contains methods that are overridable.
 type ToplevelOverrider interface {
+	externglib.Objector
 }
 
 // Toplevel: GdkToplevel is a freestanding toplevel surface.

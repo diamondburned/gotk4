@@ -42,7 +42,7 @@ func init() {
 // the [thread-default main context][g-main-context-push-thread-default] where
 // the #GTask was created. All other users of ReadyCallback must likewise call
 // it asynchronously in a later iteration of the main context.
-type AsyncReadyCallback func(res AsyncResulter)
+type AsyncReadyCallback func(res AsyncResultOverrider)
 
 //export _gotk4_gio2_AsyncReadyCallback
 func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 C.gpointer) {
@@ -55,7 +55,7 @@ func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 
 		fn = v.(AsyncReadyCallback)
 	}
 
-	var _res AsyncResulter // out
+	var _res AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg2)
@@ -65,10 +65,10 @@ func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -146,7 +146,7 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg1 *C.GDBusObjectManagerClient, arg2 *C.gch
 
 // DatagramBasedSourceFunc: this is the function type of the callback used for
 // the #GSource returned by g_datagram_based_create_source().
-type DatagramBasedSourceFunc func(datagramBased DatagramBasedder, condition glib.IOCondition) (ok bool)
+type DatagramBasedSourceFunc func(datagramBased DatagramBasedOverrider, condition glib.IOCondition) (ok bool)
 
 //export _gotk4_gio2_DatagramBasedSourceFunc
 func _gotk4_gio2_DatagramBasedSourceFunc(arg1 *C.GDatagramBased, arg2 C.GIOCondition, arg3 C.gpointer) (cret C.gboolean) {
@@ -159,8 +159,8 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg1 *C.GDatagramBased, arg2 C.GIOCondi
 		fn = v.(DatagramBasedSourceFunc)
 	}
 
-	var _datagramBased DatagramBasedder // out
-	var _condition glib.IOCondition     // out
+	var _datagramBased DatagramBasedOverrider // out
+	var _condition glib.IOCondition           // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -170,10 +170,10 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg1 *C.GDatagramBased, arg2 C.GIOCondi
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DatagramBasedder)
+			_, ok := obj.(DatagramBasedOverrider)
 			return ok
 		})
-		rv, ok := casted.(DatagramBasedder)
+		rv, ok := casted.(DatagramBasedOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DatagramBasedder")
 		}

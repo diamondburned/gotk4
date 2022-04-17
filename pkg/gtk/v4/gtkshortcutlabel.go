@@ -25,6 +25,7 @@ func init() {
 
 // ShortcutLabelOverrider contains methods that are overridable.
 type ShortcutLabelOverrider interface {
+	externglib.Objector
 }
 
 // ShortcutLabel: GtkShortcutLabel displays a single keyboard shortcut or

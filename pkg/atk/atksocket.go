@@ -27,6 +27,7 @@ func init() {
 
 // SocketOverrider contains methods that are overridable.
 type SocketOverrider interface {
+	externglib.Objector
 	// Embed embeds the children of an Plug as the children of the Socket. The
 	// plug may be in the same process or in a different process.
 	//

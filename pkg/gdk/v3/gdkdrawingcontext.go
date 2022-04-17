@@ -26,6 +26,7 @@ func init() {
 
 // DrawingContextOverrider contains methods that are overridable.
 type DrawingContextOverrider interface {
+	externglib.Objector
 }
 
 // DrawingContext is an object that represents the current drawing state of a

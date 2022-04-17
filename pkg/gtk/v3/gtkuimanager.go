@@ -137,6 +137,7 @@ func (u UIManagerItemType) Has(other UIManagerItemType) bool {
 
 // UIManagerOverrider contains methods that are overridable.
 type UIManagerOverrider interface {
+	externglib.Objector
 	ActionsChanged()
 	// The function takes the following parameters:
 	//

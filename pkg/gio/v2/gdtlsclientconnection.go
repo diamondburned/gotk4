@@ -26,6 +26,7 @@ func init() {
 
 // DTLSClientConnectionOverrider contains methods that are overridable.
 type DTLSClientConnectionOverrider interface {
+	externglib.Objector
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
@@ -42,14 +43,14 @@ type DTLSClientConnectioner interface {
 	externglib.Objector
 
 	// ServerIdentity gets conn's expected server identity.
-	ServerIdentity() SocketConnectabler
+	ServerIdentity() SocketConnectableOverrider
 	// ValidationFlags gets conn's validation flags.
 	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
 	// also to let conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
-	SetServerIdentity(identity SocketConnectabler)
+	SetServerIdentity(identity SocketConnectableOverrider)
 	// SetValidationFlags sets conn's validation flags, to override the default
 	// set of checks performed when validating a server certificate.
 	SetValidationFlags(flags TLSCertificateFlags)
@@ -81,7 +82,7 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 //    - socketConnectable describing the expected server identity, or NULL if the
 //      expected identity is not known.
 //
-func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
+func (conn *DTLSClientConnection) ServerIdentity() SocketConnectableOverrider {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
 
@@ -90,7 +91,7 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 	runtime.KeepAlive(conn)
 
-	var _socketConnectable SocketConnectabler // out
+	var _socketConnectable SocketConnectableOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -100,10 +101,10 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(SocketConnectabler)
+			_, ok := obj.(SocketConnectableOverrider)
 			return ok
 		})
-		rv, ok := casted.(SocketConnectabler)
+		rv, ok := casted.(SocketConnectableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
 		}
@@ -144,7 +145,7 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 //
 //    - identity describing the expected server identity.
 //
-func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
+func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectableOverrider) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
 
@@ -189,7 +190,7 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 //
 //    - dtlsClientConnection: new ClientConnection, or NULL on error.
 //
-func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (DTLSClientConnectioner, error) {
+func NewDTLSClientConnection(baseSocket DatagramBasedOverrider, serverIdentity SocketConnectableOverrider) (DTLSClientConnectionOverrider, error) {
 	var _arg1 *C.GDatagramBased     // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GDatagramBased     // in
@@ -204,8 +205,8 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(serverIdentity)
 
-	var _dtlsClientConnection DTLSClientConnectioner // out
-	var _goerr error                                 // out
+	var _dtlsClientConnection DTLSClientConnectionOverrider // out
+	var _goerr error                                        // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -215,10 +216,10 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DTLSClientConnectioner)
+			_, ok := obj.(DTLSClientConnectionOverrider)
 			return ok
 		})
-		rv, ok := casted.(DTLSClientConnectioner)
+		rv, ok := casted.(DTLSClientConnectionOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DTLSClientConnectioner")
 		}

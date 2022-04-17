@@ -31,6 +31,7 @@ func init() {
 
 // CheckButtonOverrider contains methods that are overridable.
 type CheckButtonOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	DrawIndicator(cr *cairo.Context)

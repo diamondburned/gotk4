@@ -25,6 +25,7 @@ func init() {
 
 // CenterLayoutOverrider contains methods that are overridable.
 type CenterLayoutOverrider interface {
+	externglib.Objector
 }
 
 // CenterLayout: GtkCenterLayout is a layout manager that manages up to three

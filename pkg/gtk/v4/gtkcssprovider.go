@@ -29,6 +29,7 @@ func init() {
 
 // CSSProviderOverrider contains methods that are overridable.
 type CSSProviderOverrider interface {
+	externglib.Objector
 }
 
 // CSSProvider: GtkCssProvider is an object implementing the GtkStyleProvider
@@ -186,7 +187,7 @@ func (cssProvider *CSSProvider) LoadFromData(data string) {
 //
 //    - file: GFile pointing to a file to load.
 //
-func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) {
+func (cssProvider *CSSProvider) LoadFromFile(file gio.FileOverrider) {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.GFile          // out
 

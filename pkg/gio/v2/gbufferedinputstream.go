@@ -32,6 +32,7 @@ func init() {
 
 // BufferedInputStreamOverrider contains methods that are overridable.
 type BufferedInputStreamOverrider interface {
+	externglib.Objector
 	// Fill tries to read count bytes from the stream into the buffer. Will
 	// block during this read.
 	//
@@ -78,7 +79,7 @@ type BufferedInputStreamOverrider interface {
 	//
 	//    - gssize of the read stream, or -1 on an error.
 	//
-	FillFinish(result AsyncResulter) (int, error)
+	FillFinish(result AsyncResultOverrider) (int, error)
 }
 
 // BufferedInputStream: buffered input stream implements InputStream and
@@ -124,7 +125,7 @@ func classInitBufferedInputStreamer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		FillFinish(result AsyncResulter) (int, error)
+		FillFinish(result AsyncResultOverrider) (int, error)
 	}); ok {
 		pclass.fill_finish = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
 	}
@@ -159,10 +160,10 @@ func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg
 func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		FillFinish(result AsyncResulter) (int, error)
+		FillFinish(result AsyncResultOverrider) (int, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -172,10 +173,10 @@ func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStre
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -386,7 +387,7 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPrior
 //
 //    - gssize of the read stream, or -1 on an error.
 //
-func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error) {
+func (stream *BufferedInputStream) FillFinish(result AsyncResultOverrider) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.gssize                // in

@@ -27,6 +27,7 @@ func init() {
 
 // ExpanderAccessibleOverrider contains methods that are overridable.
 type ExpanderAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type ExpanderAccessible struct {

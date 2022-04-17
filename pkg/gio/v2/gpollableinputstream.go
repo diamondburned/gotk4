@@ -34,6 +34,7 @@ func init() {
 
 // PollableInputStreamOverrider contains methods that are overridable.
 type PollableInputStreamOverrider interface {
+	externglib.Objector
 	// CanPoll checks if stream is actually pollable. Some classes may implement
 	// InputStream but have only certain instances of that class be pollable. If
 	// this method returns FALSE, then the behavior of other InputStream methods

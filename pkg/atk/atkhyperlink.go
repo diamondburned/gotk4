@@ -85,6 +85,7 @@ func (h HyperlinkStateFlags) Has(other HyperlinkStateFlags) bool {
 
 // HyperlinkOverrider contains methods that are overridable.
 type HyperlinkOverrider interface {
+	externglib.Objector
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
 	//

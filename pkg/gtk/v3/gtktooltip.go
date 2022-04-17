@@ -136,7 +136,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 //    - gicon (optional) representing the icon, or NULL.
 //    - size: stock icon size (IconSize).
 //
-func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.IconOverrider, size int) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out

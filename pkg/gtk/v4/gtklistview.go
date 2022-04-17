@@ -26,6 +26,7 @@ func init() {
 
 // ListViewOverrider contains methods that are overridable.
 type ListViewOverrider interface {
+	externglib.Objector
 }
 
 // ListView: GtkListView presents a large dynamic list of items.
@@ -219,7 +220,7 @@ func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHa
 //
 //    - listView: new GtkListView using the given model and factory.
 //
-func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
+func NewListView(model SelectionModelOverrider, factory *ListItemFactory) *ListView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -299,7 +300,7 @@ func (self *ListView) Factory() *ListItemFactory {
 //
 //    - selectionModel (optional): model in use.
 //
-func (self *ListView) Model() SelectionModeller {
+func (self *ListView) Model() SelectionModelOverrider {
 	var _arg0 *C.GtkListView       // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -308,7 +309,7 @@ func (self *ListView) Model() SelectionModeller {
 	_cret = C.gtk_list_view_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel SelectionModeller // out
+	var _selectionModel SelectionModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -316,10 +317,10 @@ func (self *ListView) Model() SelectionModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SelectionModeller)
+				_, ok := obj.(SelectionModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(SelectionModeller)
+			rv, ok := casted.(SelectionModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 			}
@@ -429,7 +430,7 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 //
 //    - model (optional) to use or NULL for none.
 //
-func (self *ListView) SetModel(model SelectionModeller) {
+func (self *ListView) SetModel(model SelectionModelOverrider) {
 	var _arg0 *C.GtkListView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

@@ -29,6 +29,7 @@ func init() {
 
 // InvisibleOverrider contains methods that are overridable.
 type InvisibleOverrider interface {
+	externglib.Objector
 }
 
 // Invisible widget is used internally in GTK+, and is probably not very useful

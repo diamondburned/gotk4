@@ -123,6 +123,7 @@ func (b BuilderError) String() string {
 
 // BuilderOverrider contains methods that are overridable.
 type BuilderOverrider interface {
+	externglib.Objector
 }
 
 // Builder: GtkBuilder reads XML descriptions of a user interface and
@@ -899,7 +900,7 @@ func (builder *Builder) Objects() []*externglib.Object {
 //
 //    - builderScope: current scope.
 //
-func (builder *Builder) Scope() BuilderScoper {
+func (builder *Builder) Scope() BuilderScopeOverrider {
 	var _arg0 *C.GtkBuilder      // out
 	var _cret *C.GtkBuilderScope // in
 
@@ -908,7 +909,7 @@ func (builder *Builder) Scope() BuilderScoper {
 	_cret = C.gtk_builder_get_scope(_arg0)
 	runtime.KeepAlive(builder)
 
-	var _builderScope BuilderScoper // out
+	var _builderScope BuilderScopeOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -918,10 +919,10 @@ func (builder *Builder) Scope() BuilderScoper {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(BuilderScoper)
+			_, ok := obj.(BuilderScopeOverrider)
 			return ok
 		})
-		rv, ok := casted.(BuilderScoper)
+		rv, ok := casted.(BuilderScopeOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.BuilderScoper")
 		}
@@ -1025,7 +1026,7 @@ func (builder *Builder) SetCurrentObject(currentObject *externglib.Object) {
 //
 //    - scope (optional) to use or NULL for the default.
 //
-func (builder *Builder) SetScope(scope BuilderScoper) {
+func (builder *Builder) SetScope(scope BuilderScopeOverrider) {
 	var _arg0 *C.GtkBuilder      // out
 	var _arg1 *C.GtkBuilderScope // out
 

@@ -30,6 +30,7 @@ func init() {
 
 // SocketOverrider contains methods that are overridable.
 type SocketOverrider interface {
+	externglib.Objector
 }
 
 // Socket is a low-level networking primitive. It is a more or less direct

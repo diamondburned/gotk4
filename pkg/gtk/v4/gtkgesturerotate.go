@@ -26,6 +26,7 @@ func init() {
 
 // GestureRotateOverrider contains methods that are overridable.
 type GestureRotateOverrider interface {
+	externglib.Objector
 }
 
 // GestureRotate: GtkGestureRotate is a GtkGesture for 2-finger rotations.

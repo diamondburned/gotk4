@@ -28,6 +28,7 @@ func init() {
 
 // FontChooserDialogOverrider contains methods that are overridable.
 type FontChooserDialogOverrider interface {
+	externglib.Objector
 }
 
 // FontChooserDialog widget is a dialog for selecting a font. It implements the

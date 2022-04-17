@@ -24,6 +24,7 @@ func init() {
 
 // CustomLayoutOverrider contains methods that are overridable.
 type CustomLayoutOverrider interface {
+	externglib.Objector
 }
 
 // CustomLayout: GtkCustomLayout uses closures for size negotiation.

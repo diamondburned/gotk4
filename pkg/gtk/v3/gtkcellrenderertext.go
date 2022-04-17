@@ -30,6 +30,7 @@ func init() {
 
 // CellRendererTextOverrider contains methods that are overridable.
 type CellRendererTextOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - path

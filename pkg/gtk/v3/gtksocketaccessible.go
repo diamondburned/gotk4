@@ -28,6 +28,7 @@ func init() {
 
 // SocketAccessibleOverrider contains methods that are overridable.
 type SocketAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type SocketAccessible struct {

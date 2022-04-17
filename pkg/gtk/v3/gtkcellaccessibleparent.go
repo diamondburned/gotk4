@@ -40,6 +40,7 @@ func init() {
 
 // CellAccessibleParentOverrider contains methods that are overridable.
 type CellAccessibleParentOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	Activate(cell *CellAccessible)

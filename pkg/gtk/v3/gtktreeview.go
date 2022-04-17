@@ -200,7 +200,7 @@ func _gotk4_gtk3_TreeViewMappingFunc(arg1 *C.GtkTreeView, arg2 *C.GtkTreePath, a
 // pointed to by iter should be rendered as a separator. A common way to
 // implement this is to have a boolean column in the model, whose values the
 // TreeViewRowSeparatorFunc returns.
-type TreeViewRowSeparatorFunc func(model TreeModeller, iter *TreeIter) (ok bool)
+type TreeViewRowSeparatorFunc func(model TreeModelOverrider, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeViewRowSeparatorFunc
 func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
@@ -213,8 +213,8 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeI
 		fn = v.(TreeViewRowSeparatorFunc)
 	}
 
-	var _model TreeModeller // out
-	var _iter *TreeIter     // out
+	var _model TreeModelOverrider // out
+	var _iter *TreeIter           // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -224,10 +224,10 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeI
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -248,7 +248,7 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeI
 // matches a search key string entered by the user. Note the return value is
 // reversed from what you would normally expect, though it has some similarity
 // to strcmp() returning 0 for equal strings.
-type TreeViewSearchEqualFunc func(model TreeModeller, column int, key string, iter *TreeIter) (ok bool)
+type TreeViewSearchEqualFunc func(model TreeModelOverrider, column int, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeViewSearchEqualFunc
 func _gotk4_gtk3_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.gint, arg3 *C.gchar, arg4 *C.GtkTreeIter, arg5 C.gpointer) (cret C.gboolean) {
@@ -261,10 +261,10 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.gint, arg3
 		fn = v.(TreeViewSearchEqualFunc)
 	}
 
-	var _model TreeModeller // out
-	var _column int         // out
-	var _key string         // out
-	var _iter *TreeIter     // out
+	var _model TreeModelOverrider // out
+	var _column int               // out
+	var _key string               // out
+	var _iter *TreeIter           // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -274,10 +274,10 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.gint, arg3
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -336,6 +336,7 @@ func _gotk4_gtk3_TreeViewSearchPositionFunc(arg1 *C.GtkTreeView, arg2 *C.GtkWidg
 
 // TreeViewOverrider contains methods that are overridable.
 type TreeViewOverrider interface {
+	externglib.Objector
 	ColumnsChanged()
 	CursorChanged()
 	// The function takes the following parameters:
@@ -1334,7 +1335,7 @@ func NewTreeView() *TreeView {
 //
 //    - treeView: newly created TreeView widget.
 //
-func NewTreeViewWithModel(model TreeModeller) *TreeView {
+func NewTreeViewWithModel(model TreeModelOverrider) *TreeView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -2451,7 +2452,7 @@ func (treeView *TreeView) LevelIndentation() int {
 //
 //    - treeModel (optional) or NULL if none is currently being used.
 //
-func (treeView *TreeView) Model() TreeModeller {
+func (treeView *TreeView) Model() TreeModelOverrider {
 	var _arg0 *C.GtkTreeView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -2460,7 +2461,7 @@ func (treeView *TreeView) Model() TreeModeller {
 	_cret = C.gtk_tree_view_get_model(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _treeModel TreeModeller // out
+	var _treeModel TreeModelOverrider // out
 
 	if _cret != nil {
 		{
@@ -2468,10 +2469,10 @@ func (treeView *TreeView) Model() TreeModeller {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -3723,7 +3724,7 @@ func (treeView *TreeView) SetLevelIndentation(indentation int) {
 //
 //    - model (optional): model.
 //
-func (treeView *TreeView) SetModel(model TreeModeller) {
+func (treeView *TreeView) SetModel(model TreeModelOverrider) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 *C.GtkTreeModel // out
 

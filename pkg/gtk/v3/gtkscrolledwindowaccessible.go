@@ -27,6 +27,7 @@ func init() {
 
 // ScrolledWindowAccessibleOverrider contains methods that are overridable.
 type ScrolledWindowAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type ScrolledWindowAccessible struct {

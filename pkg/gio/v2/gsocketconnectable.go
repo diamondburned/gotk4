@@ -28,6 +28,7 @@ func init() {
 
 // SocketConnectableOverrider contains methods that are overridable.
 type SocketConnectableOverrider interface {
+	externglib.Objector
 	// Enumerate creates a AddressEnumerator for connectable.
 	//
 	// The function returns the following values:

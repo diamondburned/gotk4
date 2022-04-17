@@ -25,6 +25,7 @@ func init() {
 
 // IMMulticontextOverrider contains methods that are overridable.
 type IMMulticontextOverrider interface {
+	externglib.Objector
 }
 
 // IMMulticontext: GtkIMMulticontext is input method supporting multiple,

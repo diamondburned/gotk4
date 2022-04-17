@@ -28,6 +28,7 @@ func init() {
 
 // VBoxOverrider contains methods that are overridable.
 type VBoxOverrider interface {
+	externglib.Objector
 }
 
 // VBox is a container that organizes child widgets into a single column.

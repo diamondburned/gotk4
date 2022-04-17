@@ -25,6 +25,7 @@ func init() {
 
 // StringSorterOverrider contains methods that are overridable.
 type StringSorterOverrider interface {
+	externglib.Objector
 }
 
 // StringSorter: GtkStringSorter is a GtkSorter that compares strings.

@@ -26,6 +26,7 @@ func init() {
 
 // EmblemedIconOverrider contains methods that are overridable.
 type EmblemedIconOverrider interface {
+	externglib.Objector
 }
 
 // EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
@@ -77,7 +78,7 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 //
 //    - emblemedIcon: new #GIcon.
 //
-func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
+func NewEmblemedIcon(icon IconOverrider, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -160,7 +161,7 @@ func (emblemed *EmblemedIcon) Emblems() []Emblem {
 //
 //    - icon that is owned by emblemed.
 //
-func (emblemed *EmblemedIcon) GetIcon() Iconner {
+func (emblemed *EmblemedIcon) GetIcon() IconOverrider {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
@@ -169,7 +170,7 @@ func (emblemed *EmblemedIcon) GetIcon() Iconner {
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 	runtime.KeepAlive(emblemed)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -179,10 +180,10 @@ func (emblemed *EmblemedIcon) GetIcon() Iconner {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}

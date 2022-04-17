@@ -28,6 +28,7 @@ func init() {
 
 // StackSidebarOverrider contains methods that are overridable.
 type StackSidebarOverrider interface {
+	externglib.Objector
 }
 
 // StackSidebar enables you to quickly and easily provide a consistent "sidebar"

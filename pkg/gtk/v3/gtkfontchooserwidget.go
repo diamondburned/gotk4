@@ -27,6 +27,7 @@ func init() {
 
 // FontChooserWidgetOverrider contains methods that are overridable.
 type FontChooserWidgetOverrider interface {
+	externglib.Objector
 }
 
 // FontChooserWidget widget lists the available fonts, styles and sizes,

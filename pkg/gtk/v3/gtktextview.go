@@ -188,6 +188,7 @@ func (t TextWindowType) String() string {
 
 // TextViewOverrider contains methods that are overridable.
 type TextViewOverrider interface {
+	externglib.Objector
 	Backspace()
 	CopyClipboard()
 	CutClipboard()

@@ -31,6 +31,7 @@ func init() {
 
 // ToggleButtonOverrider contains methods that are overridable.
 type ToggleButtonOverrider interface {
+	externglib.Objector
 	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 	// is no good reason for an application ever to call this function.
 	Toggled()

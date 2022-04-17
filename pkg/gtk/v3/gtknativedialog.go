@@ -32,6 +32,7 @@ func init() {
 
 // NativeDialogOverrider contains methods that are overridable.
 type NativeDialogOverrider interface {
+	externglib.Objector
 	// Hide hides the dialog if it is visilbe, aborting any interaction. Once
 	// this is called the NativeDialog::response signal will not be emitted
 	// until after the next call to gtk_native_dialog_show().

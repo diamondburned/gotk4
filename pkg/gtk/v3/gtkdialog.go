@@ -201,6 +201,7 @@ func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 
 // DialogOverrider contains methods that are overridable.
 type DialogOverrider interface {
+	externglib.Objector
 	Close()
 	// Response emits the Dialog::response signal with the given response ID.
 	// Used to indicate that the user has responded to the dialog in some way;

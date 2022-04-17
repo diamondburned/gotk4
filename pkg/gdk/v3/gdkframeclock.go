@@ -116,6 +116,7 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 
 // FrameClockOverrider contains methods that are overridable.
 type FrameClockOverrider interface {
+	externglib.Objector
 }
 
 // FrameClock tells the application when to update and repaint a window. This

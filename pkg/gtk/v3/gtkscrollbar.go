@@ -28,6 +28,7 @@ func init() {
 
 // ScrollbarOverrider contains methods that are overridable.
 type ScrollbarOverrider interface {
+	externglib.Objector
 }
 
 // Scrollbar widget is a horizontal or vertical scrollbar, depending on the

@@ -27,6 +27,7 @@ func init() {
 
 // StatusbarAccessibleOverrider contains methods that are overridable.
 type StatusbarAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type StatusbarAccessible struct {

@@ -25,6 +25,7 @@ func init() {
 
 // X11DragContextOverrider contains methods that are overridable.
 type X11DragContextOverrider interface {
+	externglib.Objector
 }
 
 type X11DragContext struct {

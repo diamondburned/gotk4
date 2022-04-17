@@ -28,6 +28,7 @@ func init() {
 
 // GestureSwipeOverrider contains methods that are overridable.
 type GestureSwipeOverrider interface {
+	externglib.Objector
 }
 
 // GestureSwipe is a Gesture implementation able to recognize swipes, after a

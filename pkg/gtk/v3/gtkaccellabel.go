@@ -29,6 +29,7 @@ func init() {
 
 // AccelLabelOverrider contains methods that are overridable.
 type AccelLabelOverrider interface {
+	externglib.Objector
 }
 
 // AccelLabel widget is a subclass of Label that also displays an accelerator

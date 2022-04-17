@@ -34,6 +34,7 @@ func init() {
 
 // MediaStreamOverrider contains methods that are overridable.
 type MediaStreamOverrider interface {
+	externglib.Objector
 	// Pause pauses playback of the stream.
 	//
 	// If the stream is not playing, do nothing.

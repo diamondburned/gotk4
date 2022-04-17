@@ -958,6 +958,11 @@ func _gotk4_atk1_Function(arg1 C.gpointer) (cret C.gboolean) {
 	return cret
 }
 
+// ImplementorIfaceOverrider contains methods that are overridable.
+type ImplementorIfaceOverrider interface {
+	externglib.Objector
+}
+
 // ImplementorIface: atkImplementor interface is implemented by objects for
 // which AtkObject peers may be obtained via calls to
 // iface->(ref_accessible)(implementor);.
@@ -1000,6 +1005,7 @@ func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
 
 // ObjectClassOverrider contains methods that are overridable.
 type ObjectClassOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	ActiveDescendantChanged(child *cgo.Handle)

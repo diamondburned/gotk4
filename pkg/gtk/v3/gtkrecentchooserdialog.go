@@ -27,6 +27,7 @@ func init() {
 
 // RecentChooserDialogOverrider contains methods that are overridable.
 type RecentChooserDialogOverrider interface {
+	externglib.Objector
 }
 
 // RecentChooserDialog is a dialog box suitable for displaying the recently used

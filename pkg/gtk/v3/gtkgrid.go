@@ -28,6 +28,7 @@ func init() {
 
 // GridOverrider contains methods that are overridable.
 type GridOverrider interface {
+	externglib.Objector
 }
 
 // Grid is a container which arranges its child widgets in rows and columns,

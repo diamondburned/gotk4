@@ -28,6 +28,7 @@ func init() {
 
 // ArrowOverrider contains methods that are overridable.
 type ArrowOverrider interface {
+	externglib.Objector
 }
 
 // Arrow should be used to draw simple arrows that need to point in one of the

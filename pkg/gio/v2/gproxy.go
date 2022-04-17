@@ -35,6 +35,52 @@ func init() {
 // [Extending GIO][extending-gio].
 const PROXY_EXTENSION_POINT_NAME = "gio-proxy"
 
+// ProxyOverrider contains methods that are overridable.
+type ProxyOverrider interface {
+	externglib.Objector
+	// ConnectProxy: given connection to communicate with a proxy (eg, a
+	// Connection that is connected to the proxy server), this does the
+	// necessary handshake to connect to proxy_address, and if required, wraps
+	// the OStream to handle proxy payload.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): #GCancellable.
+	//    - connection: OStream.
+	//    - proxyAddress: Address.
+	//
+	// The function returns the following values:
+	//
+	//    - ioStream that will replace connection. This might be the same as
+	//      connection, in which case a reference will be added.
+	//
+	ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
+	// ConnectFinish: see g_proxy_connect().
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - ioStream: OStream.
+	//
+	ConnectFinish(result AsyncResultOverrider) (IOStreamer, error)
+	// SupportsHostname: some proxy protocols expect to be passed a hostname,
+	// which they will resolve to an IP address themselves. Others, like SOCKS4,
+	// do not allow this. This function will return FALSE if proxy is
+	// implementing such a protocol. When FALSE is returned, the caller should
+	// resolve the destination hostname first, and then pass a Address
+	// containing the stringified IP address to g_proxy_connect() or
+	// g_proxy_connect_async().
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if hostname resolution is supported.
+	//
+	SupportsHostname() bool
+}
+
 // Proxy handles connecting to a remote host via a given type of proxy server.
 // It is implemented by the 'gio-proxy' extension point. The extensions are
 // named after their proxy protocol name. As an example, a SOCKS5 proxy
@@ -61,13 +107,112 @@ type Proxier interface {
 	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
-	ConnectFinish(result AsyncResulter) (IOStreamer, error)
+	ConnectFinish(result AsyncResultOverrider) (IOStreamer, error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
 	// which they will resolve to an IP address themselves.
 	SupportsHostname() bool
 }
 
 var _ Proxier = (*Proxy)(nil)
+
+func ifaceInitProxier(gifacePtr, data C.gpointer) {
+	iface := (*C.GProxyInterface)(unsafe.Pointer(gifacePtr))
+	iface.connect = (*[0]byte)(C._gotk4_gio2_ProxyInterface_connect)
+	iface.connect_finish = (*[0]byte)(C._gotk4_gio2_ProxyInterface_connect_finish)
+	iface.supports_hostname = (*[0]byte)(C._gotk4_gio2_ProxyInterface_supports_hostname)
+}
+
+//export _gotk4_gio2_ProxyInterface_connect
+func _gotk4_gio2_ProxyInterface_connect(arg0 *C.GProxy, arg1 *C.GIOStream, arg2 *C.GProxyAddress, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GIOStream) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ProxyOverrider)
+
+	var _cancellable context.Context // out
+	var _connection IOStreamer       // out
+	var _proxyAddress *ProxyAddress  // out
+
+	if arg3 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
+	}
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.IOStreamer is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(IOStreamer)
+			return ok
+		})
+		rv, ok := casted.(IOStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
+		}
+		_connection = rv
+	}
+	_proxyAddress = wrapProxyAddress(externglib.Take(unsafe.Pointer(arg2)))
+
+	ioStream, _goerr := iface.ConnectProxy(_cancellable, _connection, _proxyAddress)
+
+	cret = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(ioStream).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(ioStream).Native()))
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ProxyInterface_connect_finish
+func _gotk4_gio2_ProxyInterface_connect_finish(arg0 *C.GProxy, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GIOStream) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ProxyOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	ioStream, _goerr := iface.ConnectFinish(_result)
+
+	cret = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(ioStream).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(ioStream).Native()))
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_ProxyInterface_supports_hostname
+func _gotk4_gio2_ProxyInterface_supports_hostname(arg0 *C.GProxy) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ProxyOverrider)
+
+	ok := iface.SupportsHostname()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
 
 func wrapProxy(obj *externglib.Object) *Proxy {
 	return &Proxy{
@@ -193,7 +338,7 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 //
 //    - ioStream: OStream.
 //
-func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
+func (proxy *Proxy) ConnectFinish(result AsyncResultOverrider) (IOStreamer, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GIOStream    // in
@@ -273,7 +418,7 @@ func (proxy *Proxy) SupportsHostname() bool {
 //
 //    - proxy (optional): return a #GProxy or NULL if protocol is not supported.
 //
-func ProxyGetDefaultForProtocol(protocol string) Proxier {
+func ProxyGetDefaultForProtocol(protocol string) ProxyOverrider {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GProxy // in
 
@@ -283,7 +428,7 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 	_cret = C.g_proxy_get_default_for_protocol(_arg1)
 	runtime.KeepAlive(protocol)
 
-	var _proxy Proxier // out
+	var _proxy ProxyOverrider // out
 
 	if _cret != nil {
 		{
@@ -291,10 +436,10 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Proxier)
+				_, ok := obj.(ProxyOverrider)
 				return ok
 			})
-			rv, ok := casted.(Proxier)
+			rv, ok := casted.(ProxyOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Proxier")
 			}

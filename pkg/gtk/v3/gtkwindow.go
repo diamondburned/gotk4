@@ -129,6 +129,7 @@ func (w WindowType) String() string {
 
 // WindowOverrider contains methods that are overridable.
 type WindowOverrider interface {
+	externglib.Objector
 	ActivateDefault()
 	ActivateFocus()
 	// The function takes the following parameters:

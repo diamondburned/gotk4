@@ -714,6 +714,7 @@ func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x, y float6
 
 // StyleContextOverrider contains methods that are overridable.
 type StyleContextOverrider interface {
+	externglib.Objector
 	Changed()
 }
 
@@ -911,7 +912,7 @@ func (context *StyleContext) AddClass(className string) {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
+func (context *StyleContext) AddProvider(provider StyleProviderOverrider, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
@@ -1921,7 +1922,7 @@ func (context *StyleContext) RemoveClass(className string) {
 //
 //    - provider: StyleProvider.
 //
-func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
+func (context *StyleContext) RemoveProvider(provider StyleProviderOverrider) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
@@ -2312,7 +2313,7 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint) {
+func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderOverrider, priority uint) {
 	var _arg1 *C.GdkScreen        // out
 	var _arg2 *C.GtkStyleProvider // out
 	var _arg3 C.guint             // out
@@ -2335,7 +2336,7 @@ func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProvider
 //    - screen: Screen.
 //    - provider: StyleProvider.
 //
-func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProviderer) {
+func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProviderOverrider) {
 	var _arg1 *C.GdkScreen        // out
 	var _arg2 *C.GtkStyleProvider // out
 

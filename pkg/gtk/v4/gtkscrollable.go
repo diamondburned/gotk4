@@ -27,6 +27,7 @@ func init() {
 
 // ScrollableOverrider contains methods that are overridable.
 type ScrollableOverrider interface {
+	externglib.Objector
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.
 	//

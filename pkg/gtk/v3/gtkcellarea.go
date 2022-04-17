@@ -145,6 +145,7 @@ func _gotk4_gtk3_CellCallback(arg1 *C.GtkCellRenderer, arg2 C.gpointer) (cret C.
 
 // CellAreaOverrider contains methods that are overridable.
 type CellAreaOverrider interface {
+	externglib.Objector
 	// Activate activates area, usually by activating the currently focused
 	// cell, however some subclasses which embed widgets in the area can also
 	// activate a widget if it currently has the focus.
@@ -181,7 +182,7 @@ type CellAreaOverrider interface {
 	//    - isExpanded: whether iter is expanded in the view and children are
 	//      visible.
 	//
-	ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
+	ApplyAttributes(treeModel TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool)
 	// CopyContext: this is sometimes needed for cases where rows need to share
 	// alignments in one orientation but may be separately grouped in the
 	// opposing orientation.
@@ -555,7 +556,7 @@ func classInitCellAreaer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
+		ApplyAttributes(treeModel TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool)
 	}); ok {
 		pclass.apply_attributes = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_apply_attributes)
 	}
@@ -703,13 +704,13 @@ func _gotk4_gtk3_CellAreaClass_add(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer)
 func _gotk4_gtk3_CellAreaClass_apply_attributes(arg0 *C.GtkCellArea, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gboolean, arg4 C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
+		ApplyAttributes(treeModel TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool)
 	})
 
-	var _treeModel TreeModeller // out
-	var _iter *TreeIter         // out
-	var _isExpander bool        // out
-	var _isExpanded bool        // out
+	var _treeModel TreeModelOverrider // out
+	var _iter *TreeIter               // out
+	var _isExpander bool              // out
+	var _isExpanded bool              // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -719,10 +720,10 @@ func _gotk4_gtk3_CellAreaClass_apply_attributes(arg0 *C.GtkCellArea, arg1 *C.Gtk
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -1113,7 +1114,7 @@ func BaseCellArea(obj CellAreaer) *CellArea {
 
 //export _gotk4_gtk3_CellArea_ConnectAddEditable
 func _gotk4_gtk3_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.GtkCellEditable, arg3 *C.GdkRectangle, arg4 *C.gchar, arg5 C.guintptr) {
-	var f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)
+	var f func(renderer CellRendererer, editable CellEditableOverrider, cellArea *gdk.Rectangle, path string)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -1121,13 +1122,13 @@ func _gotk4_gtk3_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.GtkCellRen
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string))
+		f = closure.Func.(func(renderer CellRendererer, editable CellEditableOverrider, cellArea *gdk.Rectangle, path string))
 	}
 
-	var _renderer CellRendererer // out
-	var _editable CellEditabler  // out
-	var _cellArea *gdk.Rectangle // out
-	var _path string             // out
+	var _renderer CellRendererer        // out
+	var _editable CellEditableOverrider // out
+	var _cellArea *gdk.Rectangle        // out
+	var _path string                    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1154,10 +1155,10 @@ func _gotk4_gtk3_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.GtkCellRen
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(CellEditabler)
+			_, ok := obj.(CellEditableOverrider)
 			return ok
 		})
-		rv, ok := casted.(CellEditabler)
+		rv, ok := casted.(CellEditableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 		}
@@ -1171,13 +1172,13 @@ func _gotk4_gtk3_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.GtkCellRen
 
 // ConnectAddEditable indicates that editing has started on renderer and that
 // editable should be added to the owning cell-layouting widget at cell_area.
-func (area *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)) externglib.SignalHandle {
+func (area *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editable CellEditableOverrider, cellArea *gdk.Rectangle, path string)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(area, "add-editable", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectAddEditable), f)
 }
 
 //export _gotk4_gtk3_CellArea_ConnectApplyAttributes
 func _gotk4_gtk3_CellArea_ConnectApplyAttributes(arg0 C.gpointer, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
-	var f func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
+	var f func(model TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -1185,13 +1186,13 @@ func _gotk4_gtk3_CellArea_ConnectApplyAttributes(arg0 C.gpointer, arg1 *C.GtkTre
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool))
+		f = closure.Func.(func(model TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool))
 	}
 
-	var _model TreeModeller // out
-	var _iter *TreeIter     // out
-	var _isExpander bool    // out
-	var _isExpanded bool    // out
+	var _model TreeModelOverrider // out
+	var _iter *TreeIter           // out
+	var _isExpander bool          // out
+	var _isExpanded bool          // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1201,10 +1202,10 @@ func _gotk4_gtk3_CellArea_ConnectApplyAttributes(arg0 C.gpointer, arg1 *C.GtkTre
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -1223,7 +1224,7 @@ func _gotk4_gtk3_CellArea_ConnectApplyAttributes(arg0 C.gpointer, arg1 *C.GtkTre
 
 // ConnectApplyAttributes: this signal is emitted whenever applying attributes
 // to area from model.
-func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool)) externglib.SignalHandle {
+func (area *CellArea) ConnectApplyAttributes(f func(model TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(area, "apply-attributes", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectApplyAttributes), f)
 }
 
@@ -1277,7 +1278,7 @@ func (area *CellArea) ConnectFocusChanged(f func(renderer CellRendererer, path s
 
 //export _gotk4_gtk3_CellArea_ConnectRemoveEditable
 func _gotk4_gtk3_CellArea_ConnectRemoveEditable(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.GtkCellEditable, arg3 C.guintptr) {
-	var f func(renderer CellRendererer, editable CellEditabler)
+	var f func(renderer CellRendererer, editable CellEditableOverrider)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -1285,11 +1286,11 @@ func _gotk4_gtk3_CellArea_ConnectRemoveEditable(arg0 C.gpointer, arg1 *C.GtkCell
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(renderer CellRendererer, editable CellEditabler))
+		f = closure.Func.(func(renderer CellRendererer, editable CellEditableOverrider))
 	}
 
-	var _renderer CellRendererer // out
-	var _editable CellEditabler  // out
+	var _renderer CellRendererer        // out
+	var _editable CellEditableOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1316,10 +1317,10 @@ func _gotk4_gtk3_CellArea_ConnectRemoveEditable(arg0 C.gpointer, arg1 *C.GtkCell
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(CellEditabler)
+			_, ok := obj.(CellEditableOverrider)
 			return ok
 		})
-		rv, ok := casted.(CellEditabler)
+		rv, ok := casted.(CellEditableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 		}
@@ -1331,7 +1332,7 @@ func _gotk4_gtk3_CellArea_ConnectRemoveEditable(arg0 C.gpointer, arg1 *C.GtkCell
 
 // ConnectRemoveEditable indicates that editing finished on renderer and that
 // editable should be removed from the owning cell-layouting widget.
-func (area *CellArea) ConnectRemoveEditable(f func(renderer CellRendererer, editable CellEditabler)) externglib.SignalHandle {
+func (area *CellArea) ConnectRemoveEditable(f func(renderer CellRendererer, editable CellEditableOverrider)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(area, "remove-editable", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectRemoveEditable), f)
 }
 
@@ -1492,7 +1493,7 @@ func (area *CellArea) AddFocusSibling(renderer, sibling CellRendererer) {
 //    - isExpanded: whether iter is expanded in the view and children are
 //      visible.
 //
-func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
+func (area *CellArea) ApplyAttributes(treeModel TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool) {
 	var _arg0 *C.GtkCellArea  // out
 	var _arg1 *C.GtkTreeModel // out
 	var _arg2 *C.GtkTreeIter  // out
@@ -2003,7 +2004,7 @@ func (area *CellArea) CurrentPathString() string {
 //
 //    - cellEditable: currently active CellEditable widget.
 //
-func (area *CellArea) EditWidget() CellEditabler {
+func (area *CellArea) EditWidget() CellEditableOverrider {
 	var _arg0 *C.GtkCellArea     // out
 	var _cret *C.GtkCellEditable // in
 
@@ -2012,7 +2013,7 @@ func (area *CellArea) EditWidget() CellEditabler {
 	_cret = C.gtk_cell_area_get_edit_widget(_arg0)
 	runtime.KeepAlive(area)
 
-	var _cellEditable CellEditabler // out
+	var _cellEditable CellEditableOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -2022,10 +2023,10 @@ func (area *CellArea) EditWidget() CellEditabler {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(CellEditabler)
+			_, ok := obj.(CellEditableOverrider)
 			return ok
 		})
-		rv, ok := casted.(CellEditabler)
+		rv, ok := casted.(CellEditableOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
 		}

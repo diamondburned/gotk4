@@ -27,6 +27,7 @@ func init() {
 
 // SeparatorMenuItemOverrider contains methods that are overridable.
 type SeparatorMenuItemOverrider interface {
+	externglib.Objector
 }
 
 // SeparatorMenuItem is a separator used to group items within a menu. It

@@ -97,6 +97,7 @@ func _gotk4_pango1_FontsetForEachFunc(arg1 *C.PangoFontset, arg2 *C.PangoFont, a
 
 // FontsetOverrider contains methods that are overridable.
 type FontsetOverrider interface {
+	externglib.Objector
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	//
@@ -337,6 +338,7 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 
 // FontsetSimpleOverrider contains methods that are overridable.
 type FontsetSimpleOverrider interface {
+	externglib.Objector
 }
 
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract

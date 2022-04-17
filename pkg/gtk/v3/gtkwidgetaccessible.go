@@ -27,6 +27,7 @@ func init() {
 
 // WidgetAccessibleOverrider contains methods that are overridable.
 type WidgetAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type WidgetAccessible struct {

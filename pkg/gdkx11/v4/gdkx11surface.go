@@ -53,6 +53,7 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 
 // X11SurfaceOverrider contains methods that are overridable.
 type X11SurfaceOverrider interface {
+	externglib.Objector
 }
 
 type X11Surface struct {

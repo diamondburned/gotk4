@@ -25,6 +25,7 @@ func init() {
 
 // NoOpObjectOverrider contains methods that are overridable.
 type NoOpObjectOverrider interface {
+	externglib.Objector
 }
 
 // NoOpObject is an AtkObject which purports to implement all ATK interfaces. It

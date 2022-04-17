@@ -28,6 +28,7 @@ func init() {
 
 // DataOutputStreamOverrider contains methods that are overridable.
 type DataOutputStreamOverrider interface {
+	externglib.Objector
 }
 
 // DataOutputStream: data output stream implements Stream and includes functions

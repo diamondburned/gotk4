@@ -34,6 +34,7 @@ func init() {
 
 // ToolItemOverrider contains methods that are overridable.
 type ToolItemOverrider interface {
+	externglib.Objector
 	// The function returns the following values:
 	//
 	CreateMenuProxy() bool

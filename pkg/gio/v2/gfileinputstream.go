@@ -36,6 +36,7 @@ func init() {
 
 // FileInputStreamOverrider contains methods that are overridable.
 type FileInputStreamOverrider interface {
+	externglib.Objector
 	// The function returns the following values:
 	//
 	CanSeek() bool
@@ -66,7 +67,7 @@ type FileInputStreamOverrider interface {
 	//
 	//    - fileInfo: Info.
 	//
-	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
+	QueryInfoFinish(result AsyncResultOverrider) (*FileInfo, error)
 	// The function takes the following parameters:
 	//
 	//    - ctx (optional)
@@ -122,7 +123,7 @@ func classInitFileInputStreamer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
+		QueryInfoFinish(result AsyncResultOverrider) (*FileInfo, error)
 	}); ok {
 		pclass.query_info_finish = (*[0]byte)(C._gotk4_gio2_FileInputStreamClass_query_info_finish)
 	}
@@ -182,10 +183,10 @@ func _gotk4_gio2_FileInputStreamClass_query_info(arg0 *C.GFileInputStream, arg1 
 func _gotk4_gio2_FileInputStreamClass_query_info_finish(arg0 *C.GFileInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
+		QueryInfoFinish(result AsyncResultOverrider) (*FileInfo, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -195,10 +196,10 @@ func _gotk4_gio2_FileInputStreamClass_query_info_finish(arg0 *C.GFileInputStream
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -375,7 +376,7 @@ func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes st
 //
 //    - fileInfo: Info.
 //
-func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
+func (stream *FileInputStream) QueryInfoFinish(result AsyncResultOverrider) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _cret *C.GFileInfo        // in

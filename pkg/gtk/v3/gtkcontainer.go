@@ -43,6 +43,7 @@ func init() {
 
 // ContainerOverrider contains methods that are overridable.
 type ContainerOverrider interface {
+	externglib.Objector
 	// Add adds widget to container. Typically used for simple containers such
 	// as Window, Frame, or Button; for more complicated layout containers such
 	// as Box or Grid, this function will pick default packing parameters that

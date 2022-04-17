@@ -52,6 +52,196 @@ func init() {
 	})
 }
 
+// MountOverrider contains methods that are overridable.
+type MountOverrider interface {
+	externglib.Objector
+	// CanEject checks if mount can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the mount can be ejected.
+	//
+	CanEject() bool
+	// CanUnmount checks if mount can be unmounted.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the mount can be unmounted.
+	//
+	CanUnmount() bool
+	Changed()
+	// EjectFinish finishes ejecting a mount. If any errors occurred during the
+	// operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// Deprecated: Use g_mount_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	EjectFinish(result AsyncResultOverrider) error
+	// EjectWithOperationFinish finishes ejecting a mount. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	EjectWithOperationFinish(result AsyncResultOverrider) error
+	// DefaultLocation gets the default location of mount. The default location
+	// of the given mount is a path that reflects the main entry point for the
+	// user (e.g. the home directory, or the root of the volume).
+	//
+	// The function returns the following values:
+	//
+	//    - file: #GFile. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
+	DefaultLocation() FileOverrider
+	// Drive gets the drive for the mount.
+	//
+	// This is a convenience method for getting the #GVolume and then using that
+	// object to get the #GDrive.
+	//
+	// The function returns the following values:
+	//
+	//    - drive (optional) or NULL if mount is not associated with a volume or
+	//      a drive. The returned object should be unreffed with g_object_unref()
+	//      when no longer needed.
+	//
+	Drive() DriveOverrider
+	// Icon gets the icon for mount.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
+	Icon() IconOverrider
+	// Name gets the name of mount.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: name for the given mount. The returned string should be freed
+	//      with g_free() when no longer needed.
+	//
+	Name() string
+	// Root gets the root directory on mount.
+	//
+	// The function returns the following values:
+	//
+	//    - file: #GFile. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
+	Root() FileOverrider
+	// SortKey gets the sort key for mount, if any.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): sorting key for mount or NULL if no such key is
+	//      available.
+	//
+	SortKey() string
+	// SymbolicIcon gets the symbolic icon for mount.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
+	SymbolicIcon() IconOverrider
+	// UUID gets the UUID for the mount. The reference is typically based on the
+	// file system UUID for the mount in question and should be considered an
+	// opaque string. Returns NULL if there is no UUID available.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): UUID for mount or NULL if no UUID can be computed.
+	//      The returned string should be freed with g_free() when no longer
+	//      needed.
+	//
+	UUID() string
+	// Volume gets the volume for the mount.
+	//
+	// The function returns the following values:
+	//
+	//    - volume (optional) or NULL if mount is not associated with a volume.
+	//      The returned object should be unreffed with g_object_unref() when no
+	//      longer needed.
+	//
+	Volume() VolumeOverrider
+	// GuessContentTypeFinish finishes guessing content types of mount. If any
+	// errors occurred during the operation, error will be set to contain the
+	// errors and FALSE will be returned. In particular, you may get an
+	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of content types or NULL on error.
+	//      Caller should free this array with g_strfreev() when done with it.
+	//
+	GuessContentTypeFinish(result AsyncResultOverrider) ([]string, error)
+	// GuessContentTypeSync tries to guess the type of content stored on mount.
+	// Returns one or more textual identifiers of well-known content types
+	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
+	// camera memory cards. See the shared-mime-info
+	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+	// specification for more on x-content types.
+	//
+	// This is a synchronous operation and as such may block doing IO; see
+	// g_mount_guess_content_type() for the asynchronous version.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - forceRescan: whether to force a rescan of the content. Otherwise a
+	//      cached result will be used if available.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of content types or NULL on error.
+	//      Caller should free this array with g_strfreev() when done with it.
+	//
+	GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error)
+	PreUnmount()
+	// RemountFinish finishes remounting a mount. If any errors occurred during
+	// the operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	RemountFinish(result AsyncResultOverrider) error
+	// UnmountFinish finishes unmounting a mount. If any errors occurred during
+	// the operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	UnmountFinish(result AsyncResultOverrider) error
+	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	UnmountWithOperationFinish(result AsyncResultOverrider) error
+	Unmounted()
+}
+
 // Mount interface represents user-visible mounts. Note, when porting from
 // GnomeVFS, #GMount is the moral equivalent of VFSVolume.
 //
@@ -90,33 +280,33 @@ type Mounter interface {
 	// Eject ejects a mount.
 	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a mount.
-	EjectFinish(result AsyncResulter) error
+	EjectFinish(result AsyncResultOverrider) error
 	// EjectWithOperation ejects a mount.
 	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a mount.
-	EjectWithOperationFinish(result AsyncResulter) error
+	EjectWithOperationFinish(result AsyncResultOverrider) error
 	// DefaultLocation gets the default location of mount.
-	DefaultLocation() Filer
+	DefaultLocation() FileOverrider
 	// Drive gets the drive for the mount.
-	Drive() Driver
+	Drive() DriveOverrider
 	// Icon gets the icon for mount.
-	Icon() Iconner
+	Icon() IconOverrider
 	// Name gets the name of mount.
 	Name() string
 	// Root gets the root directory on mount.
-	Root() Filer
+	Root() FileOverrider
 	// SortKey gets the sort key for mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for mount.
-	SymbolicIcon() Iconner
+	SymbolicIcon() IconOverrider
 	// UUID gets the UUID for the mount.
 	UUID() string
 	// Volume gets the volume for the mount.
-	Volume() Volumer
+	Volume() VolumeOverrider
 	// GuessContentType tries to guess the type of content stored on mount.
 	GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback)
 	// GuessContentTypeFinish finishes guessing content types of mount.
-	GuessContentTypeFinish(result AsyncResulter) ([]string, error)
+	GuessContentTypeFinish(result AsyncResultOverrider) ([]string, error)
 	// GuessContentTypeSync tries to guess the type of content stored on mount.
 	GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error)
 	// IsShadowed determines if mount is shadowed.
@@ -124,17 +314,17 @@ type Mounter interface {
 	// Remount remounts a mount.
 	Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// RemountFinish finishes remounting a mount.
-	RemountFinish(result AsyncResulter) error
+	RemountFinish(result AsyncResultOverrider) error
 	// Shadow increments the shadow count on mount.
 	Shadow()
 	// Unmount unmounts a mount.
 	Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// UnmountFinish finishes unmounting a mount.
-	UnmountFinish(result AsyncResulter) error
+	UnmountFinish(result AsyncResultOverrider) error
 	// UnmountWithOperation unmounts a mount.
 	UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish finishes unmounting a mount.
-	UnmountWithOperationFinish(result AsyncResulter) error
+	UnmountWithOperationFinish(result AsyncResultOverrider) error
 	// Unshadow decrements the shadow count on mount.
 	Unshadow()
 
@@ -148,6 +338,456 @@ type Mounter interface {
 }
 
 var _ Mounter = (*Mount)(nil)
+
+func ifaceInitMounter(gifacePtr, data C.gpointer) {
+	iface := (*C.GMountIface)(unsafe.Pointer(gifacePtr))
+	iface.can_eject = (*[0]byte)(C._gotk4_gio2_MountIface_can_eject)
+	iface.can_unmount = (*[0]byte)(C._gotk4_gio2_MountIface_can_unmount)
+	iface.changed = (*[0]byte)(C._gotk4_gio2_MountIface_changed)
+	iface.eject_finish = (*[0]byte)(C._gotk4_gio2_MountIface_eject_finish)
+	iface.eject_with_operation_finish = (*[0]byte)(C._gotk4_gio2_MountIface_eject_with_operation_finish)
+	iface.get_default_location = (*[0]byte)(C._gotk4_gio2_MountIface_get_default_location)
+	iface.get_drive = (*[0]byte)(C._gotk4_gio2_MountIface_get_drive)
+	iface.get_icon = (*[0]byte)(C._gotk4_gio2_MountIface_get_icon)
+	iface.get_name = (*[0]byte)(C._gotk4_gio2_MountIface_get_name)
+	iface.get_root = (*[0]byte)(C._gotk4_gio2_MountIface_get_root)
+	iface.get_sort_key = (*[0]byte)(C._gotk4_gio2_MountIface_get_sort_key)
+	iface.get_symbolic_icon = (*[0]byte)(C._gotk4_gio2_MountIface_get_symbolic_icon)
+	iface.get_uuid = (*[0]byte)(C._gotk4_gio2_MountIface_get_uuid)
+	iface.get_volume = (*[0]byte)(C._gotk4_gio2_MountIface_get_volume)
+	iface.guess_content_type_finish = (*[0]byte)(C._gotk4_gio2_MountIface_guess_content_type_finish)
+	iface.guess_content_type_sync = (*[0]byte)(C._gotk4_gio2_MountIface_guess_content_type_sync)
+	iface.pre_unmount = (*[0]byte)(C._gotk4_gio2_MountIface_pre_unmount)
+	iface.remount_finish = (*[0]byte)(C._gotk4_gio2_MountIface_remount_finish)
+	iface.unmount_finish = (*[0]byte)(C._gotk4_gio2_MountIface_unmount_finish)
+	iface.unmount_with_operation_finish = (*[0]byte)(C._gotk4_gio2_MountIface_unmount_with_operation_finish)
+	iface.unmounted = (*[0]byte)(C._gotk4_gio2_MountIface_unmounted)
+}
+
+//export _gotk4_gio2_MountIface_can_eject
+func _gotk4_gio2_MountIface_can_eject(arg0 *C.GMount) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	ok := iface.CanEject()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_can_unmount
+func _gotk4_gio2_MountIface_can_unmount(arg0 *C.GMount) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	ok := iface.CanUnmount()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_changed
+func _gotk4_gio2_MountIface_changed(arg0 *C.GMount) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	iface.Changed()
+}
+
+//export _gotk4_gio2_MountIface_eject_finish
+func _gotk4_gio2_MountIface_eject_finish(arg0 *C.GMount, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.EjectFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_eject_with_operation_finish
+func _gotk4_gio2_MountIface_eject_with_operation_finish(arg0 *C.GMount, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.EjectWithOperationFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_default_location
+func _gotk4_gio2_MountIface_get_default_location(arg0 *C.GMount) (cret *C.GFile) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	file := iface.DefaultLocation()
+
+	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(file).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_drive
+func _gotk4_gio2_MountIface_get_drive(arg0 *C.GMount) (cret *C.GDrive) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	drive := iface.Drive()
+
+	if drive != nil {
+		cret = (*C.GDrive)(unsafe.Pointer(externglib.InternObject(drive).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(drive).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_icon
+func _gotk4_gio2_MountIface_get_icon(arg0 *C.GMount) (cret *C.GIcon) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	icon := iface.Icon()
+
+	cret = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(icon).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_name
+func _gotk4_gio2_MountIface_get_name(arg0 *C.GMount) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	utf8 := iface.Name()
+
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_root
+func _gotk4_gio2_MountIface_get_root(arg0 *C.GMount) (cret *C.GFile) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	file := iface.Root()
+
+	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(file).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_sort_key
+func _gotk4_gio2_MountIface_get_sort_key(arg0 *C.GMount) (cret *C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	utf8 := iface.SortKey()
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_symbolic_icon
+func _gotk4_gio2_MountIface_get_symbolic_icon(arg0 *C.GMount) (cret *C.GIcon) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	icon := iface.SymbolicIcon()
+
+	cret = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(icon).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_uuid
+func _gotk4_gio2_MountIface_get_uuid(arg0 *C.GMount) (cret *C.char) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	utf8 := iface.UUID()
+
+	if utf8 != "" {
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_get_volume
+func _gotk4_gio2_MountIface_get_volume(arg0 *C.GMount) (cret *C.GVolume) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	volume := iface.Volume()
+
+	if volume != nil {
+		cret = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(volume).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_guess_content_type_finish
+func _gotk4_gio2_MountIface_guess_content_type_finish(arg0 *C.GMount, arg1 *C.GAsyncResult, _cerr **C.GError) (cret **C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	utf8s, _goerr := iface.GuessContentTypeFinish(_result)
+
+	{
+		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.gchar
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
+			}
+		}
+	}
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_guess_content_type_sync
+func _gotk4_gio2_MountIface_guess_content_type_sync(arg0 *C.GMount, arg1 C.gboolean, arg2 *C.GCancellable, _cerr **C.GError) (cret **C.gchar) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	var _cancellable context.Context // out
+	var _forceRescan bool            // out
+
+	if arg2 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
+	}
+	if arg1 != 0 {
+		_forceRescan = true
+	}
+
+	utf8s, _goerr := iface.GuessContentTypeSync(_cancellable, _forceRescan)
+
+	{
+		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.gchar
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
+			}
+		}
+	}
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_pre_unmount
+func _gotk4_gio2_MountIface_pre_unmount(arg0 *C.GMount) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	iface.PreUnmount()
+}
+
+//export _gotk4_gio2_MountIface_remount_finish
+func _gotk4_gio2_MountIface_remount_finish(arg0 *C.GMount, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.RemountFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_unmount_finish
+func _gotk4_gio2_MountIface_unmount_finish(arg0 *C.GMount, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.UnmountFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_unmount_with_operation_finish
+func _gotk4_gio2_MountIface_unmount_with_operation_finish(arg0 *C.GMount, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	var _result AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.UnmountWithOperationFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_MountIface_unmounted
+func _gotk4_gio2_MountIface_unmounted(arg0 *C.GMount) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(MountOverrider)
+
+	iface.Unmounted()
+}
 
 func wrapMount(obj *externglib.Object) *Mount {
 	return &Mount{
@@ -324,7 +964,7 @@ func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback
 //
 //    - result: Result.
 //
-func (mount *Mount) EjectFinish(result AsyncResulter) error {
+func (mount *Mount) EjectFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -395,7 +1035,7 @@ func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 //
 //    - result: Result.
 //
-func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
+func (mount *Mount) EjectWithOperationFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -425,7 +1065,7 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 //    - file: #GFile. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) DefaultLocation() Filer {
+func (mount *Mount) DefaultLocation() FileOverrider {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
@@ -434,7 +1074,7 @@ func (mount *Mount) DefaultLocation() Filer {
 	_cret = C.g_mount_get_default_location(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _file Filer // out
+	var _file FileOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -444,10 +1084,10 @@ func (mount *Mount) DefaultLocation() Filer {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
+			_, ok := obj.(FileOverrider)
 			return ok
 		})
-		rv, ok := casted.(Filer)
+		rv, ok := casted.(FileOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -468,7 +1108,7 @@ func (mount *Mount) DefaultLocation() Filer {
 //      drive. The returned object should be unreffed with g_object_unref() when
 //      no longer needed.
 //
-func (mount *Mount) Drive() Driver {
+func (mount *Mount) Drive() DriveOverrider {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
 
@@ -477,7 +1117,7 @@ func (mount *Mount) Drive() Driver {
 	_cret = C.g_mount_get_drive(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _drive Driver // out
+	var _drive DriveOverrider // out
 
 	if _cret != nil {
 		{
@@ -485,10 +1125,10 @@ func (mount *Mount) Drive() Driver {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Driver)
+				_, ok := obj.(DriveOverrider)
 				return ok
 			})
-			rv, ok := casted.(Driver)
+			rv, ok := casted.(DriveOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
 			}
@@ -506,7 +1146,7 @@ func (mount *Mount) Drive() Driver {
 //    - icon: #GIcon. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) Icon() Iconner {
+func (mount *Mount) Icon() IconOverrider {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
@@ -515,7 +1155,7 @@ func (mount *Mount) Icon() Iconner {
 	_cret = C.g_mount_get_icon(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -525,10 +1165,10 @@ func (mount *Mount) Icon() Iconner {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -569,7 +1209,7 @@ func (mount *Mount) Name() string {
 //    - file: #GFile. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) Root() Filer {
+func (mount *Mount) Root() FileOverrider {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
@@ -578,7 +1218,7 @@ func (mount *Mount) Root() Filer {
 	_cret = C.g_mount_get_root(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _file Filer // out
+	var _file FileOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -588,10 +1228,10 @@ func (mount *Mount) Root() Filer {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
+			_, ok := obj.(FileOverrider)
 			return ok
 		})
-		rv, ok := casted.(Filer)
+		rv, ok := casted.(FileOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -633,7 +1273,7 @@ func (mount *Mount) SortKey() string {
 //    - icon: #GIcon. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) SymbolicIcon() Iconner {
+func (mount *Mount) SymbolicIcon() IconOverrider {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
@@ -642,7 +1282,7 @@ func (mount *Mount) SymbolicIcon() Iconner {
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _icon Iconner // out
+	var _icon IconOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -652,10 +1292,10 @@ func (mount *Mount) SymbolicIcon() Iconner {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
+			_, ok := obj.(IconOverrider)
 			return ok
 		})
-		rv, ok := casted.(Iconner)
+		rv, ok := casted.(IconOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}
@@ -701,7 +1341,7 @@ func (mount *Mount) UUID() string {
 //      returned object should be unreffed with g_object_unref() when no longer
 //      needed.
 //
-func (mount *Mount) Volume() Volumer {
+func (mount *Mount) Volume() VolumeOverrider {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
 
@@ -710,7 +1350,7 @@ func (mount *Mount) Volume() Volumer {
 	_cret = C.g_mount_get_volume(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _volume Volumer // out
+	var _volume VolumeOverrider // out
 
 	if _cret != nil {
 		{
@@ -718,10 +1358,10 @@ func (mount *Mount) Volume() Volumer {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Volumer)
+				_, ok := obj.(VolumeOverrider)
 				return ok
 			})
-			rv, ok := casted.(Volumer)
+			rv, ok := casted.(VolumeOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 			}
@@ -793,7 +1433,7 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 //    - utf8s: NULL-terminated array of content types or NULL on error. Caller
 //      should free this array with g_strfreev() when done with it.
 //
-func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, error) {
+func (mount *Mount) GuessContentTypeFinish(result AsyncResultOverrider) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret **C.gchar       // in
@@ -997,7 +1637,7 @@ func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOpe
 //
 //    - result: Result.
 //
-func (mount *Mount) RemountFinish(result AsyncResulter) error {
+func (mount *Mount) RemountFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -1079,7 +1719,7 @@ func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callba
 //
 //    - result: Result.
 //
-func (mount *Mount) UnmountFinish(result AsyncResulter) error {
+func (mount *Mount) UnmountFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -1150,7 +1790,7 @@ func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmount
 //
 //    - result: Result.
 //
-func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
+func (mount *Mount) UnmountWithOperationFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in

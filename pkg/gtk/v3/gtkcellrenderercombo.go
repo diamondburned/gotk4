@@ -28,6 +28,7 @@ func init() {
 
 // CellRendererComboOverrider contains methods that are overridable.
 type CellRendererComboOverrider interface {
+	externglib.Objector
 }
 
 // CellRendererCombo renders text in a cell like CellRendererText from which it

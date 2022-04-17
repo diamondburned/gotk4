@@ -30,6 +30,7 @@ func init() {
 
 // CellRendererToggleOverrider contains methods that are overridable.
 type CellRendererToggleOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	Toggled(path string)

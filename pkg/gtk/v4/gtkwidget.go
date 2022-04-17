@@ -142,6 +142,7 @@ func _gotk4_gtk4_TickCallback(arg1 *C.GtkWidget, arg2 *C.GdkFrameClock, arg3 C.g
 
 // WidgetOverrider contains methods that are overridable.
 type WidgetOverrider interface {
+	externglib.Objector
 	// Contains tests if the point at (x, y) is contained in widget.
 	//
 	// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
@@ -3255,7 +3256,7 @@ func (widget *Widget) Name() string {
 //
 //    - native (optional): GtkNative widget of widget, or NULL.
 //
-func (widget *Widget) Native() NativeSurfacer {
+func (widget *Widget) Native() NativeSurfaceOverrider {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkNative // in
 
@@ -3264,7 +3265,7 @@ func (widget *Widget) Native() NativeSurfacer {
 	_cret = C.gtk_widget_get_native(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _native NativeSurfacer // out
+	var _native NativeSurfaceOverrider // out
 
 	if _cret != nil {
 		{
@@ -3272,10 +3273,10 @@ func (widget *Widget) Native() NativeSurfacer {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(NativeSurfacer)
+				_, ok := obj.(NativeSurfaceOverrider)
 				return ok
 			})
-			rv, ok := casted.(NativeSurfacer)
+			rv, ok := casted.(NativeSurfaceOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.NativeSurfacer")
 			}
@@ -3643,7 +3644,7 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 //
 //    - root (optional) widget of widget, or NULL.
 //
-func (widget *Widget) Root() Rooter {
+func (widget *Widget) Root() RootOverrider {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkRoot   // in
 
@@ -3652,7 +3653,7 @@ func (widget *Widget) Root() Rooter {
 	_cret = C.gtk_widget_get_root(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _root Rooter // out
+	var _root RootOverrider // out
 
 	if _cret != nil {
 		{
@@ -3660,10 +3661,10 @@ func (widget *Widget) Root() Rooter {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Rooter)
+				_, ok := obj.(RootOverrider)
 				return ok
 			})
-			rv, ok := casted.(Rooter)
+			rv, ok := casted.(RootOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Rooter")
 			}
@@ -4347,7 +4348,7 @@ func (widget *Widget) InitTemplate() {
 //    - name: prefix for actions in group.
 //    - group (optional) or NULL.
 //
-func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
+func (widget *Widget) InsertActionGroup(name string, group gio.ActionGroupOverrider) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.char         // out
 	var _arg2 *C.GActionGroup // out
@@ -4805,7 +4806,7 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 //
 //    - listModel: a GListModel tracking widget's children.
 //
-func (widget *Widget) ObserveChildren() gio.ListModeller {
+func (widget *Widget) ObserveChildren() gio.ListModelOverrider {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
 
@@ -4814,7 +4815,7 @@ func (widget *Widget) ObserveChildren() gio.ListModeller {
 	_cret = C.gtk_widget_observe_children(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -4824,10 +4825,10 @@ func (widget *Widget) ObserveChildren() gio.ListModeller {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -4851,7 +4852,7 @@ func (widget *Widget) ObserveChildren() gio.ListModeller {
 //
 //    - listModel: a GListModel tracking widget's controllers.
 //
-func (widget *Widget) ObserveControllers() gio.ListModeller {
+func (widget *Widget) ObserveControllers() gio.ListModelOverrider {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
 
@@ -4860,7 +4861,7 @@ func (widget *Widget) ObserveControllers() gio.ListModeller {
 	_cret = C.gtk_widget_observe_controllers(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _listModel gio.ListModeller // out
+	var _listModel gio.ListModelOverrider // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -4870,10 +4871,10 @@ func (widget *Widget) ObserveControllers() gio.ListModeller {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
+			_, ok := obj.(gio.ListModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModeller)
+		rv, ok := casted.(gio.ListModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}

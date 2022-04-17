@@ -31,6 +31,7 @@ func init() {
 
 // ActionableOverrider contains methods that are overridable.
 type ActionableOverrider interface {
+	externglib.Objector
 	// ActionName gets the action name for actionable.
 	//
 	// The function returns the following values:

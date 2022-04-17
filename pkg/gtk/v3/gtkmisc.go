@@ -28,6 +28,7 @@ func init() {
 
 // MiscOverrider contains methods that are overridable.
 type MiscOverrider interface {
+	externglib.Objector
 }
 
 // Misc widget is an abstract widget which is not useful itself, but is used to

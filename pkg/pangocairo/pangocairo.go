@@ -584,6 +584,11 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	runtime.KeepAlive(layout)
 }
 
+// FontOverrider contains methods that are overridable.
+type FontOverrider interface {
+	externglib.Objector
+}
+
 // Font: PangoCairoFont is an interface exported by fonts for use with Cairo.
 //
 // The actual type of the font will depend on the particular font technology
@@ -625,6 +630,11 @@ func (v *Font) baseFont() *Font {
 // BaseFont returns the underlying base object.
 func BaseFont(obj Fonter) *Font {
 	return obj.baseFont()
+}
+
+// FontMapOverrider contains methods that are overridable.
+type FontMapOverrider interface {
+	externglib.Objector
 }
 
 // FontMap: PangoCairoFontMap is an interface exported by font maps for use with

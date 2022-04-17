@@ -123,7 +123,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 //
 //    - icon (optional) or NULL.
 //
-func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
+func (context *AppLaunchContext) SetIcon(icon gio.IconOverrider) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
 

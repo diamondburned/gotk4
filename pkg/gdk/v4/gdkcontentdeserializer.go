@@ -88,7 +88,7 @@ func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mime
 //    - result: GAsyncResult.
 //    - value: return location for the result of the operation.
 //
-func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value) error {
+func ContentDeserializeFinish(result gio.AsyncResultOverrider, value *externglib.Value) error {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GValue       // out
 	var _cerr *C.GError       // in

@@ -25,6 +25,7 @@ func init() {
 
 // ZlibDecompressorOverrider contains methods that are overridable.
 type ZlibDecompressorOverrider interface {
+	externglib.Objector
 }
 
 // ZlibDecompressor: zlib decompression.

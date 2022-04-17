@@ -27,6 +27,7 @@ func init() {
 
 // TextCellAccessibleOverrider contains methods that are overridable.
 type TextCellAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type TextCellAccessible struct {

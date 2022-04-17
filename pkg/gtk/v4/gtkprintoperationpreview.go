@@ -32,6 +32,7 @@ func init() {
 
 // PrintOperationPreviewOverrider contains methods that are overridable.
 type PrintOperationPreviewOverrider interface {
+	externglib.Objector
 	// EndPreview ends a preview.
 	//
 	// This function must be called to finish a custom print preview.

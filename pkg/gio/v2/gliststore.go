@@ -28,6 +28,7 @@ func init() {
 
 // ListStoreOverrider contains methods that are overridable.
 type ListStoreOverrider interface {
+	externglib.Objector
 }
 
 // ListStore is a simple implementation of Model that stores all items in

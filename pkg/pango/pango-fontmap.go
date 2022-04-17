@@ -33,6 +33,7 @@ func init() {
 
 // FontMapOverrider contains methods that are overridable.
 type FontMapOverrider interface {
+	externglib.Objector
 	// Changed forces a change in the context, which will cause any PangoContext
 	// using this fontmap to change.
 	//

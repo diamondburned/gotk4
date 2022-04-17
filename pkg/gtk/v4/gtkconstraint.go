@@ -29,6 +29,7 @@ func init() {
 
 // ConstraintTargetOverrider contains methods that are overridable.
 type ConstraintTargetOverrider interface {
+	externglib.Objector
 }
 
 // ConstraintTarget: GtkConstraintTarget interface is implemented by objects
@@ -77,6 +78,7 @@ func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 
 // ConstraintOverrider contains methods that are overridable.
 type ConstraintOverrider interface {
+	externglib.Objector
 }
 
 // Constraint: GtkConstraint describes a constraint between attributes of two
@@ -138,7 +140,7 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 //
 //    - constraint: newly created constraint.
 //
-func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int) *Constraint {
+func NewConstraint(target ConstraintTargetOverrider, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetOverrider, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -194,7 +196,7 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 //
 //    - constraint: newly created constraint.
 //
-func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
+func NewConstraintConstant(target ConstraintTargetOverrider, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -301,7 +303,7 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 //
 //    - constraintTarget (optional): source of the constraint.
 //
-func (constraint *Constraint) Source() ConstraintTargetter {
+func (constraint *Constraint) Source() ConstraintTargetOverrider {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
@@ -310,7 +312,7 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 	_cret = C.gtk_constraint_get_source(_arg0)
 	runtime.KeepAlive(constraint)
 
-	var _constraintTarget ConstraintTargetter // out
+	var _constraintTarget ConstraintTargetOverrider // out
 
 	if _cret != nil {
 		{
@@ -318,10 +320,10 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(ConstraintTargetter)
+				_, ok := obj.(ConstraintTargetOverrider)
 				return ok
 			})
-			rv, ok := casted.(ConstraintTargetter)
+			rv, ok := casted.(ConstraintTargetOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.ConstraintTargetter")
 			}
@@ -387,7 +389,7 @@ func (constraint *Constraint) Strength() int {
 //
 //    - constraintTarget (optional): ConstraintTarget.
 //
-func (constraint *Constraint) Target() ConstraintTargetter {
+func (constraint *Constraint) Target() ConstraintTargetOverrider {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
@@ -396,7 +398,7 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 	_cret = C.gtk_constraint_get_target(_arg0)
 	runtime.KeepAlive(constraint)
 
-	var _constraintTarget ConstraintTargetter // out
+	var _constraintTarget ConstraintTargetOverrider // out
 
 	if _cret != nil {
 		{
@@ -404,10 +406,10 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(ConstraintTargetter)
+				_, ok := obj.(ConstraintTargetOverrider)
 				return ok
 			})
-			rv, ok := casted.(ConstraintTargetter)
+			rv, ok := casted.(ConstraintTargetOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.ConstraintTargetter")
 			}

@@ -36,6 +36,7 @@ func init() {
 
 // GLAreaOverrider contains methods that are overridable.
 type GLAreaOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:

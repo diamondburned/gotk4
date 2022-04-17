@@ -37,6 +37,7 @@ func init() {
 
 // InputStreamOverrider contains methods that are overridable.
 type InputStreamOverrider interface {
+	externglib.Objector
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	//
@@ -44,7 +45,7 @@ type InputStreamOverrider interface {
 	//
 	//    - result: Result.
 	//
-	CloseFinish(result AsyncResulter) error
+	CloseFinish(result AsyncResultOverrider) error
 	// The function takes the following parameters:
 	//
 	CloseFn(ctx context.Context) error
@@ -58,7 +59,7 @@ type InputStreamOverrider interface {
 	//
 	//    - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
 	//
-	ReadFinish(result AsyncResulter) (int, error)
+	ReadFinish(result AsyncResultOverrider) (int, error)
 	// Skip tries to skip count bytes from the stream. Will block during the
 	// operation.
 	//
@@ -95,7 +96,7 @@ type InputStreamOverrider interface {
 	//
 	//    - gssize: size of the bytes skipped, or -1 on error.
 	//
-	SkipFinish(result AsyncResulter) (int, error)
+	SkipFinish(result AsyncResultOverrider) (int, error)
 }
 
 // InputStream has functions to read from a stream (g_input_stream_read()), to
@@ -141,7 +142,7 @@ func classInitInputStreamer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GInputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		CloseFinish(result AsyncResulter) error
+		CloseFinish(result AsyncResultOverrider) error
 	}); ok {
 		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_close_finish)
 	}
@@ -153,7 +154,7 @@ func classInitInputStreamer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		ReadFinish(result AsyncResulter) (int, error)
+		ReadFinish(result AsyncResultOverrider) (int, error)
 	}); ok {
 		pclass.read_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_read_finish)
 	}
@@ -165,7 +166,7 @@ func classInitInputStreamer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		SkipFinish(result AsyncResulter) (int, error)
+		SkipFinish(result AsyncResultOverrider) (int, error)
 	}); ok {
 		pclass.skip_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_skip_finish)
 	}
@@ -175,10 +176,10 @@ func classInitInputStreamer(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		CloseFinish(result AsyncResulter) error
+		CloseFinish(result AsyncResultOverrider) error
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -188,10 +189,10 @@ func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.GInputStream, arg1 *C.GAs
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -233,10 +234,10 @@ func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.GInputStream, arg1 *C.GCancel
 func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		ReadFinish(result AsyncResulter) (int, error)
+		ReadFinish(result AsyncResultOverrider) (int, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -246,10 +247,10 @@ func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.GInputStream, arg1 *C.GAsy
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -295,10 +296,10 @@ func _gotk4_gio2_InputStreamClass_skip(arg0 *C.GInputStream, arg1 C.gsize, arg2 
 func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		SkipFinish(result AsyncResulter) (int, error)
+		SkipFinish(result AsyncResultOverrider) (int, error)
 	})
 
-	var _result AsyncResulter // out
+	var _result AsyncResultOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -308,10 +309,10 @@ func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.GInputStream, arg1 *C.GAsy
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
+			_, ok := obj.(AsyncResultOverrider)
 			return ok
 		})
-		rv, ok := casted.(AsyncResulter)
+		rv, ok := casted.(AsyncResultOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -460,7 +461,7 @@ func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callb
 //
 //    - result: Result.
 //
-func (stream *InputStream) CloseFinish(result AsyncResulter) error {
+func (stream *InputStream) CloseFinish(result AsyncResultOverrider) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -733,7 +734,7 @@ func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPr
 //    - bytesRead: location to store the number of bytes that was read from the
 //      stream.
 //
-func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
+func (stream *InputStream) ReadAllFinish(result AsyncResultOverrider) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 C.gsize         // in
@@ -957,7 +958,7 @@ func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPri
 //
 //    - bytes: newly-allocated #GBytes, or NULL on error.
 //
-func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error) {
+func (stream *InputStream) ReadBytesFinish(result AsyncResultOverrider) (*glib.Bytes, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GBytes       // in
@@ -997,7 +998,7 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 //
 //    - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
 //
-func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
+func (stream *InputStream) ReadFinish(result AsyncResultOverrider) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in
@@ -1167,7 +1168,7 @@ func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority
 //
 //    - gssize: size of the bytes skipped, or -1 on error.
 //
-func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
+func (stream *InputStream) SkipFinish(result AsyncResultOverrider) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret C.gssize        // in

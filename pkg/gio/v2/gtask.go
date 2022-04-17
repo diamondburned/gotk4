@@ -33,6 +33,7 @@ func init() {
 
 // TaskOverrider contains methods that are overridable.
 type TaskOverrider interface {
+	externglib.Objector
 }
 
 // Task represents and manages a cancellable "task".
@@ -979,7 +980,7 @@ func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 //
 //    - ok: TRUE if result and source_object are valid, FALSE if not.
 //
-func TaskIsValid(result AsyncResulter, sourceObject *externglib.Object) bool {
+func TaskIsValid(result AsyncResultOverrider, sourceObject *externglib.Object) bool {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 	var _cret C.gboolean // in

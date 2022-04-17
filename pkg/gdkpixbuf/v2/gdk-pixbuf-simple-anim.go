@@ -25,6 +25,7 @@ func init() {
 
 // PixbufSimpleAnimOverrider contains methods that are overridable.
 type PixbufSimpleAnimOverrider interface {
+	externglib.Objector
 }
 
 // PixbufSimpleAnim: opaque struct representing a simple animation.

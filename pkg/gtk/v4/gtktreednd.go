@@ -46,7 +46,7 @@ func init() {
 //
 //    - contentProvider: new ContentProvider.
 //
-func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.ContentProvider {
+func TreeCreateRowDragContent(treeModel TreeModelOverrider, path *TreePath) *gdk.ContentProvider {
 	var _arg1 *C.GtkTreeModel       // out
 	var _arg2 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in
@@ -86,7 +86,7 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 //    - ok: TRUE if selection_data had target type GTK_TYPE_TREE_ROW_DATA is
 //      otherwise valid.
 //
-func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool) {
+func TreeGetRowDragData(value *externglib.Value) (TreeModelOverrider, *TreePath, bool) {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GtkTreeModel // in
 	var _arg3 *C.GtkTreePath  // in
@@ -97,9 +97,9 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(value)
 
-	var _treeModel TreeModeller // out
-	var _path *TreePath         // out
-	var _ok bool                // out
+	var _treeModel TreeModelOverrider // out
+	var _path *TreePath               // out
+	var _ok bool                      // out
 
 	if _arg2 != nil {
 		{
@@ -107,10 +107,10 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
+				_, ok := obj.(TreeModelOverrider)
 				return ok
 			})
-			rv, ok := casted.(TreeModeller)
+			rv, ok := casted.(TreeModelOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -135,6 +135,7 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 
 // TreeDragDestOverrider contains methods that are overridable.
 type TreeDragDestOverrider interface {
+	externglib.Objector
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from value. If dest is outside the
 	// tree so that inserting before it is impossible, FALSE will be returned.
@@ -330,6 +331,7 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *externg
 
 // TreeDragSourceOverrider contains methods that are overridable.
 type TreeDragSourceOverrider interface {
+	externglib.Objector
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop. Returns FALSE if the
 	// deletion fails because path no longer exists, or for some model-specific

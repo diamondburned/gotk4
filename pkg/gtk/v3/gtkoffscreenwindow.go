@@ -31,6 +31,7 @@ func init() {
 
 // OffscreenWindowOverrider contains methods that are overridable.
 type OffscreenWindowOverrider interface {
+	externglib.Objector
 }
 
 // OffscreenWindow is strictly intended to be used for obtaining snapshots of

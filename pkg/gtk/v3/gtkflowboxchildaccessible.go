@@ -27,6 +27,7 @@ func init() {
 
 // FlowBoxChildAccessibleOverrider contains methods that are overridable.
 type FlowBoxChildAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type FlowBoxChildAccessible struct {

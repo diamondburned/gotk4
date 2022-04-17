@@ -28,6 +28,7 @@ func init() {
 
 // FilenameCompleterOverrider contains methods that are overridable.
 type FilenameCompleterOverrider interface {
+	externglib.Objector
 	GotCompletionData()
 }
 

@@ -59,6 +59,7 @@ func _gotk4_gtk4_CustomFilterFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.gboo
 
 // CustomFilterOverrider contains methods that are overridable.
 type CustomFilterOverrider interface {
+	externglib.Objector
 }
 
 // CustomFilter: GtkCustomFilter determines whether to include items with a

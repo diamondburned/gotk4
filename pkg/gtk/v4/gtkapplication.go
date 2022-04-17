@@ -99,6 +99,7 @@ func (a ApplicationInhibitFlags) Has(other ApplicationInhibitFlags) bool {
 
 // ApplicationOverrider contains methods that are overridable.
 type ApplicationOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	WindowAdded(window *Window)

@@ -869,7 +869,7 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 //
 //    - icon or NULL.
 //
-func (menuItem *MenuItem) SetIcon(icon Iconner) {
+func (menuItem *MenuItem) SetIcon(icon IconOverrider) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
 

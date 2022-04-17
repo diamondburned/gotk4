@@ -28,6 +28,7 @@ func init() {
 
 // VScaleOverrider contains methods that are overridable.
 type VScaleOverrider interface {
+	externglib.Objector
 }
 
 // VScale widget is used to allow the user to select a value using a vertical

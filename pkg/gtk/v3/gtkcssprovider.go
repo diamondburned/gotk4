@@ -80,6 +80,7 @@ func (c CSSProviderError) String() string {
 
 // CSSProviderOverrider contains methods that are overridable.
 type CSSProviderOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - section
@@ -277,7 +278,7 @@ func (cssProvider *CSSProvider) LoadFromData(data string) error {
 //
 //    - file pointing to a file to load.
 //
-func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
+func (cssProvider *CSSProvider) LoadFromFile(file gio.FileOverrider) error {
 	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in

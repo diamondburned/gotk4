@@ -30,6 +30,7 @@ func init() {
 
 // ActionMapOverrider contains methods that are overridable.
 type ActionMapOverrider interface {
+	externglib.Objector
 	// AddAction adds an action to the action_map.
 	//
 	// If the action map already contains an action with the same name as action
@@ -41,7 +42,7 @@ type ActionMapOverrider interface {
 	//
 	//    - action: #GAction.
 	//
-	AddAction(action Actioner)
+	AddAction(action ActionOverrider)
 	// LookupAction looks up the action with the name action_name in action_map.
 	//
 	// If no such action exists, returns NULL.
@@ -54,7 +55,7 @@ type ActionMapOverrider interface {
 	//
 	//    - action (optional) or NULL.
 	//
-	LookupAction(actionName string) Actioner
+	LookupAction(actionName string) ActionOverrider
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
@@ -86,12 +87,12 @@ type ActionMapper interface {
 	externglib.Objector
 
 	// AddAction adds an action to the action_map.
-	AddAction(action Actioner)
+	AddAction(action ActionOverrider)
 	// AddActionEntries: convenience function for creating multiple Action
 	// instances and adding them to a Map.
 	AddActionEntries(entries []ActionEntry, userData cgo.Handle)
 	// LookupAction looks up the action with the name action_name in action_map.
-	LookupAction(actionName string) Actioner
+	LookupAction(actionName string) ActionOverrider
 	// RemoveAction removes the named action from the action map.
 	RemoveAction(actionName string)
 }
@@ -110,7 +111,7 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GActi
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
-	var _action Actioner // out
+	var _action ActionOverrider // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -120,10 +121,10 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GActi
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Actioner)
+			_, ok := obj.(ActionOverrider)
 			return ok
 		})
-		rv, ok := casted.(Actioner)
+		rv, ok := casted.(ActionOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
 		}
@@ -184,7 +185,7 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 //
 //    - action: #GAction.
 //
-func (actionMap *ActionMap) AddAction(action Actioner) {
+func (actionMap *ActionMap) AddAction(action ActionOverrider) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
 
@@ -273,7 +274,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 //
 //    - action (optional) or NULL.
 //
-func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
+func (actionMap *ActionMap) LookupAction(actionName string) ActionOverrider {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
@@ -286,7 +287,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)
 
-	var _action Actioner // out
+	var _action ActionOverrider // out
 
 	if _cret != nil {
 		{
@@ -294,10 +295,10 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Actioner)
+				_, ok := obj.(ActionOverrider)
 				return ok
 			})
-			rv, ok := casted.(Actioner)
+			rv, ok := casted.(ActionOverrider)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
 			}

@@ -27,6 +27,7 @@ func init() {
 
 // PopoverAccessibleOverrider contains methods that are overridable.
 type PopoverAccessibleOverrider interface {
+	externglib.Objector
 }
 
 type PopoverAccessible struct {

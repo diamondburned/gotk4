@@ -32,6 +32,7 @@ func init() {
 
 // AdjustmentOverrider contains methods that are overridable.
 type AdjustmentOverrider interface {
+	externglib.Objector
 	// Changed emits a Adjustment::changed signal from the Adjustment. This is
 	// typically called by the owner of the Adjustment after it has changed any
 	// of the Adjustment properties other than the value.

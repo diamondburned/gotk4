@@ -30,6 +30,40 @@ func init() {
 	})
 }
 
+// LoadableIconOverrider contains methods that are overridable.
+type LoadableIconOverrider interface {
+	externglib.Objector
+	// Load loads a loadable icon. For the asynchronous version of this
+	// function, see g_loadable_icon_load_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//    - size: integer.
+	//
+	// The function returns the following values:
+	//
+	//    - typ (optional): location to store the type of the loaded icon, NULL
+	//      to ignore.
+	//    - inputStream to read the icon from.
+	//
+	Load(ctx context.Context, size int) (string, InputStreamer, error)
+	// LoadFinish finishes an asynchronous icon load started in
+	// g_loadable_icon_load_async().
+	//
+	// The function takes the following parameters:
+	//
+	//    - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//    - typ (optional): location to store the type of the loaded icon, NULL
+	//      to ignore.
+	//    - inputStream to read the icon from.
+	//
+	LoadFinish(res AsyncResultOverrider) (string, InputStreamer, error)
+}
+
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon struct {
@@ -49,10 +83,82 @@ type LoadableIconner interface {
 	LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
-	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
+	LoadFinish(res AsyncResultOverrider) (string, InputStreamer, error)
 }
 
 var _ LoadableIconner = (*LoadableIcon)(nil)
+
+func ifaceInitLoadableIconner(gifacePtr, data C.gpointer) {
+	iface := (*C.GLoadableIconIface)(unsafe.Pointer(gifacePtr))
+	iface.load = (*[0]byte)(C._gotk4_gio2_LoadableIconIface_load)
+	iface.load_finish = (*[0]byte)(C._gotk4_gio2_LoadableIconIface_load_finish)
+}
+
+//export _gotk4_gio2_LoadableIconIface_load
+func _gotk4_gio2_LoadableIconIface_load(arg0 *C.GLoadableIcon, arg1 C.int, arg2 **C.char, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GInputStream) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(LoadableIconOverrider)
+
+	var _cancellable context.Context // out
+	var _size int                    // out
+
+	if arg3 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
+	}
+	_size = int(arg1)
+
+	typ, inputStream, _goerr := iface.Load(_cancellable, _size)
+
+	if typ != "" {
+		*arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
+	}
+	cret = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(inputStream).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(inputStream).Native()))
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_LoadableIconIface_load_finish
+func _gotk4_gio2_LoadableIconIface_load_finish(arg0 *C.GLoadableIcon, arg1 *C.GAsyncResult, arg2 **C.char, _cerr **C.GError) (cret *C.GInputStream) {
+	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(LoadableIconOverrider)
+
+	var _res AsyncResultOverrider // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(AsyncResultOverrider)
+			return ok
+		})
+		rv, ok := casted.(AsyncResultOverrider)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_res = rv
+	}
+
+	typ, inputStream, _goerr := iface.LoadFinish(_res)
+
+	if typ != "" {
+		*arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
+	}
+	cret = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(inputStream).Native()))
+	C.g_object_ref(C.gpointer(externglib.InternObject(inputStream).Native()))
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
 
 func wrapLoadableIcon(obj *externglib.Object) *LoadableIcon {
 	return &LoadableIcon{
@@ -182,7 +288,7 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback Asyn
 //      ignore.
 //    - inputStream to read the icon from.
 //
-func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, error) {
+func (icon *LoadableIcon) LoadFinish(res AsyncResultOverrider) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 *C.GAsyncResult  // out
 	var _arg2 *C.char          // in

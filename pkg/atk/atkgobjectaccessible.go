@@ -25,6 +25,7 @@ func init() {
 
 // GObjectAccessibleOverrider contains methods that are overridable.
 type GObjectAccessibleOverrider interface {
+	externglib.Objector
 }
 
 // GObjectAccessible: this object class is derived from AtkObject. It can be

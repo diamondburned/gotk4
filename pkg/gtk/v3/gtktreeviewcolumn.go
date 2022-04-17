@@ -77,7 +77,7 @@ func (t TreeViewColumnSizing) String() string {
 // from the tree_model, and render it to the “text” attribute of “cell” by
 // converting it to its written equivalent. This is set by calling
 // gtk_tree_view_column_set_cell_data_func().
-type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
+type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell CellRendererer, treeModel TreeModelOverrider, iter *TreeIter)
 
 //export _gotk4_gtk3_TreeCellDataFunc
 func _gotk4_gtk3_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRenderer, arg3 *C.GtkTreeModel, arg4 *C.GtkTreeIter, arg5 C.gpointer) {
@@ -90,10 +90,10 @@ func _gotk4_gtk3_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRend
 		fn = v.(TreeCellDataFunc)
 	}
 
-	var _treeColumn *TreeViewColumn // out
-	var _cell CellRendererer        // out
-	var _treeModel TreeModeller     // out
-	var _iter *TreeIter             // out
+	var _treeColumn *TreeViewColumn   // out
+	var _cell CellRendererer          // out
+	var _treeModel TreeModelOverrider // out
+	var _iter *TreeIter               // out
 
 	_treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1)))
 	{
@@ -121,10 +121,10 @@ func _gotk4_gtk3_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRend
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
+			_, ok := obj.(TreeModelOverrider)
 			return ok
 		})
-		rv, ok := casted.(TreeModeller)
+		rv, ok := casted.(TreeModelOverrider)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -137,6 +137,7 @@ func _gotk4_gtk3_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRend
 
 // TreeViewColumnOverrider contains methods that are overridable.
 type TreeViewColumnOverrider interface {
+	externglib.Objector
 	// Clicked emits the “clicked” signal on the column. This function will only
 	// work if tree_column is clickable.
 	Clicked()
@@ -432,7 +433,7 @@ func (treeColumn *TreeViewColumn) CellIsVisible() bool {
 //    - isExpander: TRUE, if the row has children.
 //    - isExpanded: TRUE, if the row has visible children.
 //
-func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
+func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModelOverrider, iter *TreeIter, isExpander, isExpanded bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkTreeModel      // out
 	var _arg2 *C.GtkTreeIter       // out

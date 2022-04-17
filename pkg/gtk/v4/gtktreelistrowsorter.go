@@ -25,6 +25,7 @@ func init() {
 
 // TreeListRowSorterOverrider contains methods that are overridable.
 type TreeListRowSorterOverrider interface {
+	externglib.Objector
 }
 
 // TreeListRowSorter: GtkTreeListRowSorter is a special-purpose sorter that will

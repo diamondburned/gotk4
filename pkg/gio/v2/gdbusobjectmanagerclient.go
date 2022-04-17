@@ -36,6 +36,7 @@ func init() {
 
 // DBusObjectManagerClientOverrider contains methods that are overridable.
 type DBusObjectManagerClientOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - objectProxy
@@ -249,7 +250,7 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objec
 //    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
 //      is set. Free with g_object_unref().
 //
-func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
+func NewDBusObjectManagerClientFinish(res AsyncResultOverrider) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
 	var _cerr *C.GError             // in
@@ -283,7 +284,7 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 //    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
 //      is set. Free with g_object_unref().
 //
-func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
+func NewDBusObjectManagerClientForBusFinish(res AsyncResultOverrider) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
 	var _cerr *C.GError             // in

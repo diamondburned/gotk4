@@ -40,6 +40,7 @@ func init() {
 
 // LabelOverrider contains methods that are overridable.
 type LabelOverrider interface {
+	externglib.Objector
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:

@@ -59,12 +59,6 @@ type LabelOverrider interface {
 	PopulatePopup(menu *Menu)
 }
 
-// WrapLabelOverrider wraps the LabelOverrider
-// interface implementation to access the instance methods.
-func WrapLabelOverrider(obj LabelOverrider) *Label {
-	return wrapLabel(externglib.BaseObject(obj))
-}
-
 // Label widget displays a small amount of text. As the name implies, most
 // labels are used to label another widget such as a Button, a MenuItem, or a
 // ComboBox.

@@ -30,12 +30,6 @@ type StatusbarAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapStatusbarAccessibleOverrider wraps the StatusbarAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapStatusbarAccessibleOverrider(obj StatusbarAccessibleOverrider) *StatusbarAccessible {
-	return wrapStatusbarAccessible(externglib.BaseObject(obj))
-}
-
 type StatusbarAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

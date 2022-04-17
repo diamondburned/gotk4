@@ -37,12 +37,6 @@ type ColorButtonOverrider interface {
 	ColorSet()
 }
 
-// WrapColorButtonOverrider wraps the ColorButtonOverrider
-// interface implementation to access the instance methods.
-func WrapColorButtonOverrider(obj ColorButtonOverrider) *ColorButton {
-	return wrapColorButton(externglib.BaseObject(obj))
-}
-
 // ColorButton is a button which displays the currently selected color and
 // allows to open a color selection dialog to change the color. It is suitable
 // widget for selecting a color in a preference dialog.

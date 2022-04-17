@@ -183,12 +183,6 @@ type SelectionModelOverrider interface {
 	UnselectRange(position, nItems uint) bool
 }
 
-// WrapSelectionModelOverrider wraps the SelectionModelOverrider
-// interface implementation to access the instance methods.
-func WrapSelectionModelOverrider(obj SelectionModelOverrider) *SelectionModel {
-	return wrapSelectionModel(externglib.BaseObject(obj))
-}
-
 // SelectionModel: GtkSelectionModel is an interface that add support for
 // selection to list models.
 //

@@ -29,12 +29,6 @@ type MultiSorterOverrider interface {
 	externglib.Objector
 }
 
-// WrapMultiSorterOverrider wraps the MultiSorterOverrider
-// interface implementation to access the instance methods.
-func WrapMultiSorterOverrider(obj MultiSorterOverrider) *MultiSorter {
-	return wrapMultiSorter(externglib.BaseObject(obj))
-}
-
 // MultiSorter: GtkMultiSorter combines multiple sorters by trying them in turn.
 //
 // If the first sorter compares two items as equal, the second is tried next,

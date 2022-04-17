@@ -31,12 +31,6 @@ type BoxOverrider interface {
 	externglib.Objector
 }
 
-// WrapBoxOverrider wraps the BoxOverrider
-// interface implementation to access the instance methods.
-func WrapBoxOverrider(obj BoxOverrider) *Box {
-	return wrapBox(externglib.BaseObject(obj))
-}
-
 // Box widget arranges child widgets into a single row or column, depending upon
 // the value of its Orientable:orientation property. Within the other dimension,
 // all children are allocated the same size. Of course, the Widget:halign and

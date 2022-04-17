@@ -139,12 +139,6 @@ type EntryOverrider interface {
 	ToggleOverwrite()
 }
 
-// WrapEntryOverrider wraps the EntryOverrider
-// interface implementation to access the instance methods.
-func WrapEntryOverrider(obj EntryOverrider) *Entry {
-	return wrapEntry(externglib.BaseObject(obj))
-}
-
 // Entry widget is a single line text entry widget. A fairly large set of key
 // bindings are supported by default. If the entered text is longer than the
 // allocation of the widget, the widget will scroll so that the cursor position

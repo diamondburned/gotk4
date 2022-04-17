@@ -43,12 +43,6 @@ type ScrollableOverrider interface {
 	Border() (*Border, bool)
 }
 
-// WrapScrollableOverrider wraps the ScrollableOverrider
-// interface implementation to access the instance methods.
-func WrapScrollableOverrider(obj ScrollableOverrider) *Scrollable {
-	return wrapScrollable(externglib.BaseObject(obj))
-}
-
 // Scrollable: GtkScrollable is an interface for widgets with native scrolling
 // ability.
 //

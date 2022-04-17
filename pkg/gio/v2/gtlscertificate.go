@@ -60,12 +60,6 @@ type TLSCertificateOverrider interface {
 	Verify(identity SocketConnectableOverrider, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
-// WrapTLSCertificateOverrider wraps the TLSCertificateOverrider
-// interface implementation to access the instance methods.
-func WrapTLSCertificateOverrider(obj TLSCertificateOverrider) *TLSCertificate {
-	return wrapTLSCertificate(externglib.BaseObject(obj))
-}
-
 // TLSCertificate: certificate used for TLS authentication and encryption. This
 // can represent either a certificate only (eg, the certificate received by a
 // client from a server), or the combination of a certificate and a private key
@@ -172,8 +166,7 @@ func (cert *TLSCertificate) baseTLSCertificate() *TLSCertificate {
 	return cert
 }
 
-// BaseTLSCertificate returns the underlying base object from the
-// interface.
+// BaseTLSCertificate returns the underlying base object.
 func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
 	return obj.baseTLSCertificate()
 }

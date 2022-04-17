@@ -73,12 +73,6 @@ type MenuOverrider interface {
 	externglib.Objector
 }
 
-// WrapMenuOverrider wraps the MenuOverrider
-// interface implementation to access the instance methods.
-func WrapMenuOverrider(obj MenuOverrider) *Menu {
-	return wrapMenu(externglib.BaseObject(obj))
-}
-
 // Menu is a MenuShell that implements a drop down menu consisting of a list of
 // MenuItem objects which can be navigated and activated by the user to perform
 // application functions.

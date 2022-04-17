@@ -28,12 +28,6 @@ type BoxOverrider interface {
 	externglib.Objector
 }
 
-// WrapBoxOverrider wraps the BoxOverrider
-// interface implementation to access the instance methods.
-func WrapBoxOverrider(obj BoxOverrider) *Box {
-	return wrapBox(externglib.BaseObject(obj))
-}
-
 // Box: GtkBox widget arranges child widgets into a single row or column.
 //
 // !An example GtkBox (box.png)

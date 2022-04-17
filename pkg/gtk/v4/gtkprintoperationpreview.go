@@ -76,12 +76,6 @@ type PrintOperationPreviewOverrider interface {
 	RenderPage(pageNr int)
 }
 
-// WrapPrintOperationPreviewOverrider wraps the PrintOperationPreviewOverrider
-// interface implementation to access the instance methods.
-func WrapPrintOperationPreviewOverrider(obj PrintOperationPreviewOverrider) *PrintOperationPreview {
-	return wrapPrintOperationPreview(externglib.BaseObject(obj))
-}
-
 // PrintOperationPreview: GtkPrintOperationPreview is the interface that is used
 // to implement print preview.
 //

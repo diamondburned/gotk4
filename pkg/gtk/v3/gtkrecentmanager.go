@@ -95,12 +95,6 @@ type RecentManagerOverrider interface {
 	Changed()
 }
 
-// WrapRecentManagerOverrider wraps the RecentManagerOverrider
-// interface implementation to access the instance methods.
-func WrapRecentManagerOverrider(obj RecentManagerOverrider) *RecentManager {
-	return wrapRecentManager(externglib.BaseObject(obj))
-}
-
 // RecentManager provides a facility for adding, removing and looking up
 // recently used files. Each recently used file is identified by its URI, and
 // has meta-data associated to it, like the names and command lines of the

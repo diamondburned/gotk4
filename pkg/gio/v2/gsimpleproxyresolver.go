@@ -28,12 +28,6 @@ type SimpleProxyResolverOverrider interface {
 	externglib.Objector
 }
 
-// WrapSimpleProxyResolverOverrider wraps the SimpleProxyResolverOverrider
-// interface implementation to access the instance methods.
-func WrapSimpleProxyResolverOverrider(obj SimpleProxyResolverOverrider) *SimpleProxyResolver {
-	return wrapSimpleProxyResolver(externglib.BaseObject(obj))
-}
-
 // SimpleProxyResolver is a simple Resolver implementation that handles a single
 // default proxy, multiple URI-scheme-specific proxies, and a list of hosts that
 // proxies should not be used for.

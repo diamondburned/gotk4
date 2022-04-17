@@ -110,8 +110,7 @@ func (context *GLContext) baseGLContext() *GLContext {
 	return context
 }
 
-// BaseGLContext returns the underlying base object from the
-// interface.
+// BaseGLContext returns the underlying base object.
 func BaseGLContext(obj GLContexter) *GLContext {
 	return obj.baseGLContext()
 }

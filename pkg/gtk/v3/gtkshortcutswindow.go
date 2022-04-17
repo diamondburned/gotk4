@@ -37,12 +37,6 @@ type ShortcutsWindowOverrider interface {
 	Search()
 }
 
-// WrapShortcutsWindowOverrider wraps the ShortcutsWindowOverrider
-// interface implementation to access the instance methods.
-func WrapShortcutsWindowOverrider(obj ShortcutsWindowOverrider) *ShortcutsWindow {
-	return wrapShortcutsWindow(externglib.BaseObject(obj))
-}
-
 // ShortcutsWindow shows brief information about the keyboard shortcuts and
 // gestures of an application. The shortcuts can be grouped, and you can have
 // multiple sections in this window, corresponding to the major modes of your

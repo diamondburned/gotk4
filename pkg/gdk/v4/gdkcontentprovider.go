@@ -93,12 +93,6 @@ type ContentProviderOverrider interface {
 	WriteMIMETypeFinish(result gio.AsyncResultOverrider) error
 }
 
-// WrapContentProviderOverrider wraps the ContentProviderOverrider
-// interface implementation to access the instance methods.
-func WrapContentProviderOverrider(obj ContentProviderOverrider) *ContentProvider {
-	return wrapContentProvider(externglib.BaseObject(obj))
-}
-
 // ContentProvider: GdkContentProvider is used to provide content for the
 // clipboard or for drag-and-drop operations in a number of formats.
 //

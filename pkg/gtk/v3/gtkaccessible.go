@@ -42,12 +42,6 @@ type AccessibleOverrider interface {
 	WidgetUnset()
 }
 
-// WrapAccessibleOverrider wraps the AccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapAccessibleOverrider(obj AccessibleOverrider) *Accessible {
-	return wrapAccessible(externglib.BaseObject(obj))
-}
-
 // Accessible class is the base class for accessible implementations for Widget
 // subclasses. It is a thin wrapper around Object, which adds facilities for
 // associating a widget with its accessible object.

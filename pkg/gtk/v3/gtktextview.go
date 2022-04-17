@@ -233,12 +233,6 @@ type TextViewOverrider interface {
 	ToggleOverwrite()
 }
 
-// WrapTextViewOverrider wraps the TextViewOverrider
-// interface implementation to access the instance methods.
-func WrapTextViewOverrider(obj TextViewOverrider) *TextView {
-	return wrapTextView(externglib.BaseObject(obj))
-}
-
 // TextView: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.

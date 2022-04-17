@@ -35,12 +35,6 @@ type ConstraintLayoutOverrider interface {
 	externglib.Objector
 }
 
-// WrapConstraintLayoutOverrider wraps the ConstraintLayoutOverrider
-// interface implementation to access the instance methods.
-func WrapConstraintLayoutOverrider(obj ConstraintLayoutOverrider) *ConstraintLayout {
-	return wrapConstraintLayout(externglib.BaseObject(obj))
-}
-
 // ConstraintLayout: layout manager using constraints to describe relations
 // between widgets.
 //
@@ -600,12 +594,6 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 // ConstraintLayoutChildOverrider contains methods that are overridable.
 type ConstraintLayoutChildOverrider interface {
 	externglib.Objector
-}
-
-// WrapConstraintLayoutChildOverrider wraps the ConstraintLayoutChildOverrider
-// interface implementation to access the instance methods.
-func WrapConstraintLayoutChildOverrider(obj ConstraintLayoutChildOverrider) *ConstraintLayoutChild {
-	return wrapConstraintLayoutChild(externglib.BaseObject(obj))
 }
 
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a

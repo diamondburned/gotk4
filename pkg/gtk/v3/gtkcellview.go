@@ -34,12 +34,6 @@ type CellViewOverrider interface {
 	externglib.Objector
 }
 
-// WrapCellViewOverrider wraps the CellViewOverrider
-// interface implementation to access the instance methods.
-func WrapCellViewOverrider(obj CellViewOverrider) *CellView {
-	return wrapCellView(externglib.BaseObject(obj))
-}
-
 // CellView displays a single row of a TreeModel using a CellArea and
 // CellAreaContext. A CellAreaContext can be provided to the CellView at
 // construction time in order to keep the cellview in context of a group of cell

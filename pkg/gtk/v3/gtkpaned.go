@@ -69,12 +69,6 @@ type PanedOverrider interface {
 	ToggleHandleFocus() bool
 }
 
-// WrapPanedOverrider wraps the PanedOverrider
-// interface implementation to access the instance methods.
-func WrapPanedOverrider(obj PanedOverrider) *Paned {
-	return wrapPaned(externglib.BaseObject(obj))
-}
-
 // Paned has two panes, arranged either horizontally or vertically. The division
 // between the two panes is adjustable by the user by dragging a handle.
 //

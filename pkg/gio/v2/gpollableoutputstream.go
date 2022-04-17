@@ -141,12 +141,6 @@ type PollableOutputStreamOverrider interface {
 	WritevNonblocking(vectors []OutputVector) (uint, PollableReturn, error)
 }
 
-// WrapPollableOutputStreamOverrider wraps the PollableOutputStreamOverrider
-// interface implementation to access the instance methods.
-func WrapPollableOutputStreamOverrider(obj PollableOutputStreamOverrider) *PollableOutputStream {
-	return wrapPollableOutputStream(externglib.BaseObject(obj))
-}
-
 // PollableOutputStream is implemented by Streams that can be polled for
 // readiness to write. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.

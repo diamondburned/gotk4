@@ -64,12 +64,6 @@ type SocketAddressOverrider interface {
 	ToNative(dest cgo.Handle, destlen uint) error
 }
 
-// WrapSocketAddressOverrider wraps the SocketAddressOverrider
-// interface implementation to access the instance methods.
-func WrapSocketAddressOverrider(obj SocketAddressOverrider) *SocketAddress {
-	return wrapSocketAddress(externglib.BaseObject(obj))
-}
-
 // SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
 // This is an abstract class; use SocketAddress for internet sockets, or
 // SocketAddress for UNIX domain sockets.
@@ -184,8 +178,7 @@ func (address *SocketAddress) baseSocketAddress() *SocketAddress {
 	return address
 }
 
-// BaseSocketAddress returns the underlying base object from the
-// interface.
+// BaseSocketAddress returns the underlying base object.
 func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
 	return obj.baseSocketAddress()
 }

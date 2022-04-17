@@ -48,12 +48,6 @@ type StatusbarOverrider interface {
 	TextPushed(contextId uint, text string)
 }
 
-// WrapStatusbarOverrider wraps the StatusbarOverrider
-// interface implementation to access the instance methods.
-func WrapStatusbarOverrider(obj StatusbarOverrider) *Statusbar {
-	return wrapStatusbar(externglib.BaseObject(obj))
-}
-
 // Statusbar is usually placed along the bottom of an application's main Window.
 // It may provide a regular commentary of the application's status (as is
 // usually the case in a web browser, for example), or may be used to simply

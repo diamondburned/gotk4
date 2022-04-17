@@ -29,12 +29,6 @@ type WidgetPaintableOverrider interface {
 	externglib.Objector
 }
 
-// WrapWidgetPaintableOverrider wraps the WidgetPaintableOverrider
-// interface implementation to access the instance methods.
-func WrapWidgetPaintableOverrider(obj WidgetPaintableOverrider) *WidgetPaintable {
-	return wrapWidgetPaintable(externglib.BaseObject(obj))
-}
-
 // WidgetPaintable: GtkWidgetPaintable is a GdkPaintable that displays the
 // contents of a widget.
 //

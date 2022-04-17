@@ -41,12 +41,6 @@ type CheckMenuItemOverrider interface {
 	Toggled()
 }
 
-// WrapCheckMenuItemOverrider wraps the CheckMenuItemOverrider
-// interface implementation to access the instance methods.
-func WrapCheckMenuItemOverrider(obj CheckMenuItemOverrider) *CheckMenuItem {
-	return wrapCheckMenuItem(externglib.BaseObject(obj))
-}
-
 // CheckMenuItem is a menu item that maintains the state of a boolean value in
 // addition to a MenuItem usual role in activating application code.
 //

@@ -31,12 +31,6 @@ type AspectFrameOverrider interface {
 	externglib.Objector
 }
 
-// WrapAspectFrameOverrider wraps the AspectFrameOverrider
-// interface implementation to access the instance methods.
-func WrapAspectFrameOverrider(obj AspectFrameOverrider) *AspectFrame {
-	return wrapAspectFrame(externglib.BaseObject(obj))
-}
-
 // AspectFrame is useful when you want pack a widget so that it can resize but
 // always retains the same aspect ratio. For instance, one might be drawing a
 // small preview of a larger image. AspectFrame derives from Frame, so it can

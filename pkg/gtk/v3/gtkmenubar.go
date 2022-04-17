@@ -32,12 +32,6 @@ type MenuBarOverrider interface {
 	externglib.Objector
 }
 
-// WrapMenuBarOverrider wraps the MenuBarOverrider
-// interface implementation to access the instance methods.
-func WrapMenuBarOverrider(obj MenuBarOverrider) *MenuBar {
-	return wrapMenuBar(externglib.BaseObject(obj))
-}
-
 // MenuBar is a subclass of MenuShell which contains one or more MenuItems. The
 // result is a standard menu bar which can hold many menu items.
 //

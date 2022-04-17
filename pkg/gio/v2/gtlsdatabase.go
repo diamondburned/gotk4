@@ -260,12 +260,6 @@ type TLSDatabaseOverrider interface {
 	VerifyChainFinish(result AsyncResultOverrider) (TLSCertificateFlags, error)
 }
 
-// WrapTLSDatabaseOverrider wraps the TLSDatabaseOverrider
-// interface implementation to access the instance methods.
-func WrapTLSDatabaseOverrider(obj TLSDatabaseOverrider) *TLSDatabase {
-	return wrapTLSDatabase(externglib.BaseObject(obj))
-}
-
 // TLSDatabase is used to look up certificates and other information from a
 // certificate or key store. It is an abstract base class which TLS library
 // specific subtypes override.
@@ -753,8 +747,7 @@ func (self *TLSDatabase) baseTLSDatabase() *TLSDatabase {
 	return self
 }
 
-// BaseTLSDatabase returns the underlying base object from the
-// interface.
+// BaseTLSDatabase returns the underlying base object.
 func BaseTLSDatabase(obj TLSDatabaser) *TLSDatabase {
 	return obj.baseTLSDatabase()
 }

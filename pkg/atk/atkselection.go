@@ -124,12 +124,6 @@ type SelectionOverrider interface {
 	SelectionChanged()
 }
 
-// WrapSelectionOverrider wraps the SelectionOverrider
-// interface implementation to access the instance methods.
-func WrapSelectionOverrider(obj SelectionOverrider) *Selection {
-	return wrapSelection(externglib.BaseObject(obj))
-}
-
 // Selection should be implemented by UI components with children which are
 // exposed by #atk_object_ref_child and #atk_object_get_n_children, if the use
 // of the parent UI component ordinarily involves selection of one or more of

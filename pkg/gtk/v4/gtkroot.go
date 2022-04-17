@@ -29,12 +29,6 @@ type RootOverrider interface {
 	externglib.Objector
 }
 
-// WrapRootOverrider wraps the RootOverrider
-// interface implementation to access the instance methods.
-func WrapRootOverrider(obj RootOverrider) *Root {
-	return wrapRoot(externglib.BaseObject(obj))
-}
-
 // Root: GtkRoot is the interface implemented by all widgets that can act as a
 // toplevel widget.
 //

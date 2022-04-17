@@ -28,12 +28,6 @@ type TreeExpanderOverrider interface {
 	externglib.Objector
 }
 
-// WrapTreeExpanderOverrider wraps the TreeExpanderOverrider
-// interface implementation to access the instance methods.
-func WrapTreeExpanderOverrider(obj TreeExpanderOverrider) *TreeExpander {
-	return wrapTreeExpander(externglib.BaseObject(obj))
-}
-
 // TreeExpander: GtkTreeExpander is a widget that provides an expander for a
 // list.
 //

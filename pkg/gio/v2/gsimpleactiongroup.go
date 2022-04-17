@@ -30,12 +30,6 @@ type SimpleActionGroupOverrider interface {
 	externglib.Objector
 }
 
-// WrapSimpleActionGroupOverrider wraps the SimpleActionGroupOverrider
-// interface implementation to access the instance methods.
-func WrapSimpleActionGroupOverrider(obj SimpleActionGroupOverrider) *SimpleActionGroup {
-	return wrapSimpleActionGroup(externglib.BaseObject(obj))
-}
-
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
 // the Group and Map interfaces.
 type SimpleActionGroup struct {

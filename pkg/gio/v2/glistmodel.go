@@ -69,12 +69,6 @@ type ListModelOverrider interface {
 	NItems() uint
 }
 
-// WrapListModelOverrider wraps the ListModelOverrider
-// interface implementation to access the instance methods.
-func WrapListModelOverrider(obj ListModelOverrider) *ListModel {
-	return wrapListModel(externglib.BaseObject(obj))
-}
-
 // ListModel is an interface that represents a mutable list of #GObjects. Its
 // main intention is as a model for various widgets in user interfaces, such as
 // list views, but it can also be used as a convenient method of returning lists

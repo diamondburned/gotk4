@@ -30,12 +30,6 @@ type ImageCellAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapImageCellAccessibleOverrider wraps the ImageCellAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapImageCellAccessibleOverrider(obj ImageCellAccessibleOverrider) *ImageCellAccessible {
-	return wrapImageCellAccessible(externglib.BaseObject(obj))
-}
-
 type ImageCellAccessible struct {
 	_ [0]func() // equal guard
 	RendererCellAccessible

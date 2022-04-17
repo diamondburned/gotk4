@@ -39,12 +39,6 @@ type SocketServiceOverrider interface {
 	Incoming(connection *SocketConnection, sourceObject *externglib.Object) bool
 }
 
-// WrapSocketServiceOverrider wraps the SocketServiceOverrider
-// interface implementation to access the instance methods.
-func WrapSocketServiceOverrider(obj SocketServiceOverrider) *SocketService {
-	return wrapSocketService(externglib.BaseObject(obj))
-}
-
 // SocketService is an object that represents a service that is provided to the
 // network or over local sockets. When a new connection is made to the service
 // the Service::incoming signal is emitted.

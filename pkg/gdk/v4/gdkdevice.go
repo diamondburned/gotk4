@@ -120,8 +120,7 @@ func (device *Device) baseDevice() *Device {
 	return device
 }
 
-// BaseDevice returns the underlying base object from the
-// interface.
+// BaseDevice returns the underlying base object.
 func BaseDevice(obj Devicer) *Device {
 	return obj.baseDevice()
 }

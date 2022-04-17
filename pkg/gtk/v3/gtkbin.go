@@ -31,12 +31,6 @@ type BinOverrider interface {
 	externglib.Objector
 }
 
-// WrapBinOverrider wraps the BinOverrider
-// interface implementation to access the instance methods.
-func WrapBinOverrider(obj BinOverrider) *Bin {
-	return wrapBin(externglib.BaseObject(obj))
-}
-
 // Bin widget is a container with just one child. It is not very useful itself,
 // but it is useful for deriving subclasses, since it provides common code
 // needed for handling a single child widget.
@@ -98,8 +92,7 @@ func (bin *Bin) baseBin() *Bin {
 	return bin
 }
 
-// BaseBin returns the underlying base object from the
-// interface.
+// BaseBin returns the underlying base object.
 func BaseBin(obj Binner) *Bin {
 	return obj.baseBin()
 }

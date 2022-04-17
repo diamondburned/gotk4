@@ -137,8 +137,7 @@ func (drag *Drag) baseDrag() *Drag {
 	return drag
 }
 
-// BaseDrag returns the underlying base object from the
-// interface.
+// BaseDrag returns the underlying base object.
 func BaseDrag(obj Dragger) *Drag {
 	return obj.baseDrag()
 }

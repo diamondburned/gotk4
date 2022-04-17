@@ -31,12 +31,6 @@ type RendererCellAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapRendererCellAccessibleOverrider wraps the RendererCellAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapRendererCellAccessibleOverrider(obj RendererCellAccessibleOverrider) *RendererCellAccessible {
-	return wrapRendererCellAccessible(externglib.BaseObject(obj))
-}
-
 type RendererCellAccessible struct {
 	_ [0]func() // equal guard
 	CellAccessible

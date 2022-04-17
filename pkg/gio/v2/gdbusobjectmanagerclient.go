@@ -48,12 +48,6 @@ type DBusObjectManagerClientOverrider interface {
 	InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 }
 
-// WrapDBusObjectManagerClientOverrider wraps the DBusObjectManagerClientOverrider
-// interface implementation to access the instance methods.
-func WrapDBusObjectManagerClientOverrider(obj DBusObjectManagerClientOverrider) *DBusObjectManagerClient {
-	return wrapDBusObjectManagerClient(externglib.BaseObject(obj))
-}
-
 // DBusObjectManagerClient is used to create, monitor and delete object proxies
 // for remote objects exported by a BusObjectManagerServer (or any code
 // implementing the org.freedesktop.DBus.ObjectManager

@@ -43,12 +43,6 @@ type ScrollableOverrider interface {
 	Border() (*Border, bool)
 }
 
-// WrapScrollableOverrider wraps the ScrollableOverrider
-// interface implementation to access the instance methods.
-func WrapScrollableOverrider(obj ScrollableOverrider) *Scrollable {
-	return wrapScrollable(externglib.BaseObject(obj))
-}
-
 // Scrollable is an interface that is implemented by widgets with native
 // scrolling ability.
 //

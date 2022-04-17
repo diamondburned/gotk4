@@ -174,12 +174,6 @@ type TextBufferOverrider interface {
 	Undo()
 }
 
-// WrapTextBufferOverrider wraps the TextBufferOverrider
-// interface implementation to access the instance methods.
-func WrapTextBufferOverrider(obj TextBufferOverrider) *TextBuffer {
-	return wrapTextBuffer(externglib.BaseObject(obj))
-}
-
 // TextBuffer stores text and attributes for display in a GtkTextView.
 //
 // You may wish to begin by reading the text widget conceptual overview

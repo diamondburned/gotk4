@@ -66,12 +66,6 @@ type RemoteActionGroupOverrider interface {
 	ChangeActionStateFull(actionName string, value, platformData *glib.Variant)
 }
 
-// WrapRemoteActionGroupOverrider wraps the RemoteActionGroupOverrider
-// interface implementation to access the instance methods.
-func WrapRemoteActionGroupOverrider(obj RemoteActionGroupOverrider) *RemoteActionGroup {
-	return wrapRemoteActionGroup(externglib.BaseObject(obj))
-}
-
 // RemoteActionGroup interface is implemented by Group instances that either
 // transmit action invocations to other processes or receive action invocations
 // in the local process from other processes.

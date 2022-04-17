@@ -29,12 +29,6 @@ type NetworkAddressOverrider interface {
 	externglib.Objector
 }
 
-// WrapNetworkAddressOverrider wraps the NetworkAddressOverrider
-// interface implementation to access the instance methods.
-func WrapNetworkAddressOverrider(obj NetworkAddressOverrider) *NetworkAddress {
-	return wrapNetworkAddress(externglib.BaseObject(obj))
-}
-
 // NetworkAddress provides an easy way to resolve a hostname and then attempt to
 // connect to that host, handling the possibility of multiple IP addresses and
 // multiple address families.

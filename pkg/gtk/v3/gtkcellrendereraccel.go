@@ -80,12 +80,6 @@ type CellRendererAccelOverrider interface {
 	AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 }
 
-// WrapCellRendererAccelOverrider wraps the CellRendererAccelOverrider
-// interface implementation to access the instance methods.
-func WrapCellRendererAccelOverrider(obj CellRendererAccelOverrider) *CellRendererAccel {
-	return wrapCellRendererAccel(externglib.BaseObject(obj))
-}
-
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
 // like Control + a). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.

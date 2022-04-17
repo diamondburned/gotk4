@@ -31,12 +31,6 @@ type AlignmentOverrider interface {
 	externglib.Objector
 }
 
-// WrapAlignmentOverrider wraps the AlignmentOverrider
-// interface implementation to access the instance methods.
-func WrapAlignmentOverrider(obj AlignmentOverrider) *Alignment {
-	return wrapAlignment(externglib.BaseObject(obj))
-}
-
 // Alignment widget controls the alignment and size of its child widget. It has
 // four settings: xscale, yscale, xalign, and yalign.
 //

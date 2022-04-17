@@ -30,12 +30,6 @@ type RecentActionOverrider interface {
 	externglib.Objector
 }
 
-// WrapRecentActionOverrider wraps the RecentActionOverrider
-// interface implementation to access the instance methods.
-func WrapRecentActionOverrider(obj RecentActionOverrider) *RecentAction {
-	return wrapRecentAction(externglib.BaseObject(obj))
-}
-
 // RecentAction represents a list of recently used files, which can be shown by
 // widgets such as RecentChooserDialog or RecentChooserMenu.
 //

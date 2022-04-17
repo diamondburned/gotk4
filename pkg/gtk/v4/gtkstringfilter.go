@@ -64,12 +64,6 @@ type StringFilterOverrider interface {
 	externglib.Objector
 }
 
-// WrapStringFilterOverrider wraps the StringFilterOverrider
-// interface implementation to access the instance methods.
-func WrapStringFilterOverrider(obj StringFilterOverrider) *StringFilter {
-	return wrapStringFilter(externglib.BaseObject(obj))
-}
-
 // StringFilter: GtkStringFilter determines whether to include items by
 // comparing strings to a fixed search term.
 //

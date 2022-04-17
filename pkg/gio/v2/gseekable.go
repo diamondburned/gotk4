@@ -97,12 +97,6 @@ type SeekableOverrider interface {
 	TruncateFn(ctx context.Context, offset int64) error
 }
 
-// WrapSeekableOverrider wraps the SeekableOverrider
-// interface implementation to access the instance methods.
-func WrapSeekableOverrider(obj SeekableOverrider) *Seekable {
-	return wrapSeekable(externglib.BaseObject(obj))
-}
-
 // Seekable is implemented by streams (implementations of Stream or Stream) that
 // support seeking.
 //

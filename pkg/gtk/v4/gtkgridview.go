@@ -29,12 +29,6 @@ type GridViewOverrider interface {
 	externglib.Objector
 }
 
-// WrapGridViewOverrider wraps the GridViewOverrider
-// interface implementation to access the instance methods.
-func WrapGridViewOverrider(obj GridViewOverrider) *GridView {
-	return wrapGridView(externglib.BaseObject(obj))
-}
-
 // GridView: GtkGridView presents a large dynamic grid of items.
 //
 // GtkGridView uses its factory to generate one child widget for each visible

@@ -85,12 +85,6 @@ type EditableTextOverrider interface {
 	SetTextContents(str string)
 }
 
-// WrapEditableTextOverrider wraps the EditableTextOverrider
-// interface implementation to access the instance methods.
-func WrapEditableTextOverrider(obj EditableTextOverrider) *EditableText {
-	return wrapEditableText(externglib.BaseObject(obj))
-}
-
 // EditableText should be implemented by UI components which contain text which
 // the user can edit, via the Object corresponding to that component (see
 // Object).

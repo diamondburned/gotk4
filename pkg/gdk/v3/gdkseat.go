@@ -195,8 +195,7 @@ func (seat *Seat) baseSeat() *Seat {
 	return seat
 }
 
-// BaseSeat returns the underlying base object from the
-// interface.
+// BaseSeat returns the underlying base object.
 func BaseSeat(obj Seater) *Seat {
 	return obj.baseSeat()
 }

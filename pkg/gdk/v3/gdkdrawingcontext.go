@@ -29,12 +29,6 @@ type DrawingContextOverrider interface {
 	externglib.Objector
 }
 
-// WrapDrawingContextOverrider wraps the DrawingContextOverrider
-// interface implementation to access the instance methods.
-func WrapDrawingContextOverrider(obj DrawingContextOverrider) *DrawingContext {
-	return wrapDrawingContext(externglib.BaseObject(obj))
-}
-
 // DrawingContext is an object that represents the current drawing state of a
 // Window.
 //

@@ -28,12 +28,6 @@ type WaylandMonitorOverrider interface {
 	externglib.Objector
 }
 
-// WrapWaylandMonitorOverrider wraps the WaylandMonitorOverrider
-// interface implementation to access the instance methods.
-func WrapWaylandMonitorOverrider(obj WaylandMonitorOverrider) *WaylandMonitor {
-	return wrapWaylandMonitor(externglib.BaseObject(obj))
-}
-
 // WaylandMonitor: wayland implementation of GdkMonitor.
 //
 // Beyond the gdk.Monitor API, the Wayland implementation offers access to the

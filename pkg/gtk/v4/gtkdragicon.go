@@ -29,12 +29,6 @@ type DragIconOverrider interface {
 	externglib.Objector
 }
 
-// WrapDragIconOverrider wraps the DragIconOverrider
-// interface implementation to access the instance methods.
-func WrapDragIconOverrider(obj DragIconOverrider) *DragIcon {
-	return wrapDragIcon(externglib.BaseObject(obj))
-}
-
 // DragIcon: GtkDragIcon is a GtkRoot implementation for drag icons.
 //
 // A drag icon moves with the pointer during a Drag-and-Drop operation and is

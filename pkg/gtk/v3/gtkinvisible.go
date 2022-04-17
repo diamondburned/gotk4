@@ -32,12 +32,6 @@ type InvisibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapInvisibleOverrider wraps the InvisibleOverrider
-// interface implementation to access the instance methods.
-func WrapInvisibleOverrider(obj InvisibleOverrider) *Invisible {
-	return wrapInvisible(externglib.BaseObject(obj))
-}
-
 // Invisible widget is used internally in GTK+, and is probably not very useful
 // for application developers.
 //

@@ -30,12 +30,6 @@ type CredentialsOverrider interface {
 	externglib.Objector
 }
 
-// WrapCredentialsOverrider wraps the CredentialsOverrider
-// interface implementation to access the instance methods.
-func WrapCredentialsOverrider(obj CredentialsOverrider) *Credentials {
-	return wrapCredentials(externglib.BaseObject(obj))
-}
-
 // Credentials type is a reference-counted wrapper for native credentials. This
 // information is typically used for identifying, authenticating and authorizing
 // other processes.

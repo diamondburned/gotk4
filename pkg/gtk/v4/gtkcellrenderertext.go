@@ -37,12 +37,6 @@ type CellRendererTextOverrider interface {
 	Edited(path, newText string)
 }
 
-// WrapCellRendererTextOverrider wraps the CellRendererTextOverrider
-// interface implementation to access the instance methods.
-func WrapCellRendererTextOverrider(obj CellRendererTextOverrider) *CellRendererText {
-	return wrapCellRendererText(externglib.BaseObject(obj))
-}
-
 // CellRendererText renders text in a cell
 //
 // A CellRendererText renders a given text in its cell, using the font, color

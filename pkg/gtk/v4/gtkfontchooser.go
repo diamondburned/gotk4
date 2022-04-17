@@ -247,12 +247,6 @@ type FontChooserOverrider interface {
 	SetFontMap(fontmap pango.FontMapper)
 }
 
-// WrapFontChooserOverrider wraps the FontChooserOverrider
-// interface implementation to access the instance methods.
-func WrapFontChooserOverrider(obj FontChooserOverrider) *FontChooser {
-	return wrapFontChooser(externglib.BaseObject(obj))
-}
-
 // FontChooser: GtkFontChooser is an interface that can be implemented by
 // widgets for choosing fonts.
 //

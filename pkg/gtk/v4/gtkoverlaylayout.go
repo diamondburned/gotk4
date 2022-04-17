@@ -32,12 +32,6 @@ type OverlayLayoutOverrider interface {
 	externglib.Objector
 }
 
-// WrapOverlayLayoutOverrider wraps the OverlayLayoutOverrider
-// interface implementation to access the instance methods.
-func WrapOverlayLayoutOverrider(obj OverlayLayoutOverrider) *OverlayLayout {
-	return wrapOverlayLayout(externglib.BaseObject(obj))
-}
-
 // OverlayLayout: GtkOverlayLayout is the layout manager used by GtkOverlay.
 //
 // It places widgets as overlays on top of the main child.
@@ -94,12 +88,6 @@ func NewOverlayLayout() *OverlayLayout {
 // OverlayLayoutChildOverrider contains methods that are overridable.
 type OverlayLayoutChildOverrider interface {
 	externglib.Objector
-}
-
-// WrapOverlayLayoutChildOverrider wraps the OverlayLayoutChildOverrider
-// interface implementation to access the instance methods.
-func WrapOverlayLayoutChildOverrider(obj OverlayLayoutChildOverrider) *OverlayLayoutChild {
-	return wrapOverlayLayoutChild(externglib.BaseObject(obj))
 }
 
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a

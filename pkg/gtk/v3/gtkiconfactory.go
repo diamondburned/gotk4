@@ -241,12 +241,6 @@ type IconFactoryOverrider interface {
 	externglib.Objector
 }
 
-// WrapIconFactoryOverrider wraps the IconFactoryOverrider
-// interface implementation to access the instance methods.
-func WrapIconFactoryOverrider(obj IconFactoryOverrider) *IconFactory {
-	return wrapIconFactory(externglib.BaseObject(obj))
-}
-
 // IconFactory: icon factory manages a collection of IconSet; a IconSet manages
 // a set of variants of a particular icon (i.e. a IconSet contains variants for
 // different sizes and widget states). Icons in an icon factory are named by a

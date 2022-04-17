@@ -56,12 +56,6 @@ type X11WindowOverrider interface {
 	externglib.Objector
 }
 
-// WrapX11WindowOverrider wraps the X11WindowOverrider
-// interface implementation to access the instance methods.
-func WrapX11WindowOverrider(obj X11WindowOverrider) *X11Window {
-	return wrapX11Window(externglib.BaseObject(obj))
-}
-
 type X11Window struct {
 	_ [0]func() // equal guard
 	gdk.Window

@@ -30,12 +30,6 @@ type ScaleAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapScaleAccessibleOverrider wraps the ScaleAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapScaleAccessibleOverrider(obj ScaleAccessibleOverrider) *ScaleAccessible {
-	return wrapScaleAccessible(externglib.BaseObject(obj))
-}
-
 type ScaleAccessible struct {
 	_ [0]func() // equal guard
 	RangeAccessible

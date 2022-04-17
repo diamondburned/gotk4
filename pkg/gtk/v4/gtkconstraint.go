@@ -32,12 +32,6 @@ type ConstraintTargetOverrider interface {
 	externglib.Objector
 }
 
-// WrapConstraintTargetOverrider wraps the ConstraintTargetOverrider
-// interface implementation to access the instance methods.
-func WrapConstraintTargetOverrider(obj ConstraintTargetOverrider) *ConstraintTarget {
-	return wrapConstraintTarget(externglib.BaseObject(obj))
-}
-
 // ConstraintTarget: GtkConstraintTarget interface is implemented by objects
 // that can be used as source or target in GtkConstraints.
 //
@@ -77,8 +71,7 @@ func (v *ConstraintTarget) baseConstraintTarget() *ConstraintTarget {
 	return v
 }
 
-// BaseConstraintTarget returns the underlying base object from the
-// interface.
+// BaseConstraintTarget returns the underlying base object.
 func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 	return obj.baseConstraintTarget()
 }
@@ -86,12 +79,6 @@ func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 // ConstraintOverrider contains methods that are overridable.
 type ConstraintOverrider interface {
 	externglib.Objector
-}
-
-// WrapConstraintOverrider wraps the ConstraintOverrider
-// interface implementation to access the instance methods.
-func WrapConstraintOverrider(obj ConstraintOverrider) *Constraint {
-	return wrapConstraint(externglib.BaseObject(obj))
 }
 
 // Constraint: GtkConstraint describes a constraint between attributes of two

@@ -35,12 +35,6 @@ type FrameOverrider interface {
 	ComputeChildAllocation(allocation *Allocation)
 }
 
-// WrapFrameOverrider wraps the FrameOverrider
-// interface implementation to access the instance methods.
-func WrapFrameOverrider(obj FrameOverrider) *Frame {
-	return wrapFrame(externglib.BaseObject(obj))
-}
-
 // Frame: GtkFrame is a widget that surrounds its child with a decorative frame
 // and an optional label.
 //

@@ -28,12 +28,6 @@ type TextTagOverrider interface {
 	externglib.Objector
 }
 
-// WrapTextTagOverrider wraps the TextTagOverrider
-// interface implementation to access the instance methods.
-func WrapTextTagOverrider(obj TextTagOverrider) *TextTag {
-	return wrapTextTag(externglib.BaseObject(obj))
-}
-
 // TextTag: tag that can be applied to text contained in a GtkTextBuffer.
 //
 // You may wish to begin by reading the text widget conceptual overview

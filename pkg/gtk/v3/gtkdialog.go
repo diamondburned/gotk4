@@ -215,12 +215,6 @@ type DialogOverrider interface {
 	Response(responseId int)
 }
 
-// WrapDialogOverrider wraps the DialogOverrider
-// interface implementation to access the instance methods.
-func WrapDialogOverrider(obj DialogOverrider) *Dialog {
-	return wrapDialog(externglib.BaseObject(obj))
-}
-
 // Dialog boxes are a convenient way to prompt the user for a small amount of
 // input, e.g. to display a message, ask a question, or anything else that does
 // not require extensive effort on the user’s part.

@@ -66,8 +66,7 @@ func (self *CairoContext) baseCairoContext() *CairoContext {
 	return self
 }
 
-// BaseCairoContext returns the underlying base object from the
-// interface.
+// BaseCairoContext returns the underlying base object.
 func BaseCairoContext(obj CairoContexter) *CairoContext {
 	return obj.baseCairoContext()
 }

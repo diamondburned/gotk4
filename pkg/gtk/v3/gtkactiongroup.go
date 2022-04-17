@@ -52,12 +52,6 @@ type ActionGroupOverrider interface {
 	Action(actionName string) *Action
 }
 
-// WrapActionGroupOverrider wraps the ActionGroupOverrider
-// interface implementation to access the instance methods.
-func WrapActionGroupOverrider(obj ActionGroupOverrider) *ActionGroup {
-	return wrapActionGroup(externglib.BaseObject(obj))
-}
-
 // ActionGroup actions are organised into groups. An action group is essentially
 // a map from names to Action objects.
 //

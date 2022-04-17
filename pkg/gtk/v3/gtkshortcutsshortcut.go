@@ -94,12 +94,6 @@ type ShortcutsShortcutOverrider interface {
 	externglib.Objector
 }
 
-// WrapShortcutsShortcutOverrider wraps the ShortcutsShortcutOverrider
-// interface implementation to access the instance methods.
-func WrapShortcutsShortcutOverrider(obj ShortcutsShortcutOverrider) *ShortcutsShortcut {
-	return wrapShortcutsShortcut(externglib.BaseObject(obj))
-}
-
 // ShortcutsShortcut represents a single keyboard shortcut or gesture with a
 // short text. This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsShortcut struct {

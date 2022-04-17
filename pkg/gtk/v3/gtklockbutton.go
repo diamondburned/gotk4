@@ -32,12 +32,6 @@ type LockButtonOverrider interface {
 	externglib.Objector
 }
 
-// WrapLockButtonOverrider wraps the LockButtonOverrider
-// interface implementation to access the instance methods.
-func WrapLockButtonOverrider(obj LockButtonOverrider) *LockButton {
-	return wrapLockButton(externglib.BaseObject(obj))
-}
-
 // LockButton is a widget that can be used in control panels or preference
 // dialogs to allow users to obtain and revoke authorizations needed to operate
 // the controls. The required authorization is represented by a #GPermission

@@ -29,12 +29,6 @@ type GesturePanOverrider interface {
 	externglib.Objector
 }
 
-// WrapGesturePanOverrider wraps the GesturePanOverrider
-// interface implementation to access the instance methods.
-func WrapGesturePanOverrider(obj GesturePanOverrider) *GesturePan {
-	return wrapGesturePan(externglib.BaseObject(obj))
-}
-
 // GesturePan: GtkGesturePan is a GtkGesture for pan gestures.
 //
 // These are drags that are locked to happen along one axis. The axis that a

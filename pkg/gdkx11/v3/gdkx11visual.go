@@ -28,12 +28,6 @@ type X11VisualOverrider interface {
 	externglib.Objector
 }
 
-// WrapX11VisualOverrider wraps the X11VisualOverrider
-// interface implementation to access the instance methods.
-func WrapX11VisualOverrider(obj X11VisualOverrider) *X11Visual {
-	return wrapX11Visual(externglib.BaseObject(obj))
-}
-
 type X11Visual struct {
 	_ [0]func() // equal guard
 	gdk.Visual

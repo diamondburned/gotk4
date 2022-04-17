@@ -31,12 +31,6 @@ type PictureOverrider interface {
 	externglib.Objector
 }
 
-// WrapPictureOverrider wraps the PictureOverrider
-// interface implementation to access the instance methods.
-func WrapPictureOverrider(obj PictureOverrider) *Picture {
-	return wrapPicture(externglib.BaseObject(obj))
-}
-
 // Picture: GtkPicture widget displays a GdkPaintable.
 //
 // !An example GtkPicture (picture.png)

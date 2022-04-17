@@ -44,12 +44,6 @@ type OverlayOverrider interface {
 	ChildPosition(widget Widgetter, allocation *Allocation) bool
 }
 
-// WrapOverlayOverrider wraps the OverlayOverrider
-// interface implementation to access the instance methods.
-func WrapOverlayOverrider(obj OverlayOverrider) *Overlay {
-	return wrapOverlay(externglib.BaseObject(obj))
-}
-
 // Overlay is a container which contains a single main child, on top of which it
 // can place “overlay” widgets. The position of each overlay widget is
 // determined by its Widget:halign and Widget:valign properties. E.g. a widget

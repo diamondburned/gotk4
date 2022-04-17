@@ -66,12 +66,6 @@ type DBusInterfaceSkeletonOverrider interface {
 	Properties() *glib.Variant
 }
 
-// WrapDBusInterfaceSkeletonOverrider wraps the DBusInterfaceSkeletonOverrider
-// interface implementation to access the instance methods.
-func WrapDBusInterfaceSkeletonOverrider(obj DBusInterfaceSkeletonOverrider) *DBusInterfaceSkeleton {
-	return wrapDBusInterfaceSkeleton(externglib.BaseObject(obj))
-}
-
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
 type DBusInterfaceSkeleton struct {
@@ -195,8 +189,7 @@ func (interface_ *DBusInterfaceSkeleton) baseDBusInterfaceSkeleton() *DBusInterf
 	return interface_
 }
 
-// BaseDBusInterfaceSkeleton returns the underlying base object from the
-// interface.
+// BaseDBusInterfaceSkeleton returns the underlying base object.
 func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkeleton {
 	return obj.baseDBusInterfaceSkeleton()
 }

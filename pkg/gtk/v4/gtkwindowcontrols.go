@@ -28,12 +28,6 @@ type WindowControlsOverrider interface {
 	externglib.Objector
 }
 
-// WrapWindowControlsOverrider wraps the WindowControlsOverrider
-// interface implementation to access the instance methods.
-func WrapWindowControlsOverrider(obj WindowControlsOverrider) *WindowControls {
-	return wrapWindowControls(externglib.BaseObject(obj))
-}
-
 // WindowControls: GtkWindowControls shows window frame controls.
 //
 // Typical window frame controls are minimize, maximize and close buttons, and

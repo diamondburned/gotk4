@@ -531,12 +531,6 @@ type FileInfoOverrider interface {
 	externglib.Objector
 }
 
-// WrapFileInfoOverrider wraps the FileInfoOverrider
-// interface implementation to access the instance methods.
-func WrapFileInfoOverrider(obj FileInfoOverrider) *FileInfo {
-	return wrapFileInfo(externglib.BaseObject(obj))
-}
-
 // FileInfo: functionality for manipulating basic metadata for files. Info
 // implements methods for getting information that all files should contain, and
 // allows for manipulation of extended attributes.

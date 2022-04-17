@@ -30,12 +30,6 @@ type MountOperationOverrider interface {
 	externglib.Objector
 }
 
-// WrapMountOperationOverrider wraps the MountOperationOverrider
-// interface implementation to access the instance methods.
-func WrapMountOperationOverrider(obj MountOperationOverrider) *MountOperation {
-	return wrapMountOperation(externglib.BaseObject(obj))
-}
-
 // MountOperation: GtkMountOperation is an implementation of GMountOperation.
 //
 // The functions and objects described here make working with GTK and GIO more

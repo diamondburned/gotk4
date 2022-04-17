@@ -31,12 +31,6 @@ type ShortcutsSectionOverrider interface {
 	externglib.Objector
 }
 
-// WrapShortcutsSectionOverrider wraps the ShortcutsSectionOverrider
-// interface implementation to access the instance methods.
-func WrapShortcutsSectionOverrider(obj ShortcutsSectionOverrider) *ShortcutsSection {
-	return wrapShortcutsSection(externglib.BaseObject(obj))
-}
-
 // ShortcutsSection collects all the keyboard shortcuts and gestures for a major
 // application mode. If your application needs multiple sections, you should
 // give each section a unique ShortcutsSection:section-name and a

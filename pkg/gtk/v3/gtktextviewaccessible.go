@@ -30,12 +30,6 @@ type TextViewAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapTextViewAccessibleOverrider wraps the TextViewAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapTextViewAccessibleOverrider(obj TextViewAccessibleOverrider) *TextViewAccessible {
-	return wrapTextViewAccessible(externglib.BaseObject(obj))
-}
-
 type TextViewAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

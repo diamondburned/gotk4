@@ -63,12 +63,6 @@ type TLSClientConnectionOverrider interface {
 	CopySessionState(source TLSClientConnectionOverrider)
 }
 
-// WrapTLSClientConnectionOverrider wraps the TLSClientConnectionOverrider
-// interface implementation to access the instance methods.
-func WrapTLSClientConnectionOverrider(obj TLSClientConnectionOverrider) *TLSClientConnection {
-	return wrapTLSClientConnection(externglib.BaseObject(obj))
-}
-
 // TLSClientConnection is the client-side subclass of Connection, representing a
 // client-side TLS connection.
 type TLSClientConnection struct {

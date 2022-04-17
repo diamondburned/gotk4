@@ -30,12 +30,6 @@ type IMMulticontextOverrider interface {
 	externglib.Objector
 }
 
-// WrapIMMulticontextOverrider wraps the IMMulticontextOverrider
-// interface implementation to access the instance methods.
-func WrapIMMulticontextOverrider(obj IMMulticontextOverrider) *IMMulticontext {
-	return wrapIMMulticontext(externglib.BaseObject(obj))
-}
-
 type IMMulticontext struct {
 	_ [0]func() // equal guard
 	IMContext

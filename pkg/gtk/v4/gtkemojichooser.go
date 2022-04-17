@@ -28,12 +28,6 @@ type EmojiChooserOverrider interface {
 	externglib.Objector
 }
 
-// WrapEmojiChooserOverrider wraps the EmojiChooserOverrider
-// interface implementation to access the instance methods.
-func WrapEmojiChooserOverrider(obj EmojiChooserOverrider) *EmojiChooser {
-	return wrapEmojiChooser(externglib.BaseObject(obj))
-}
-
 // EmojiChooser: GtkEmojiChooser is used by text widgets such as GtkEntry or
 // GtkTextView to let users insert Emoji characters.
 //

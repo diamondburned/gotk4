@@ -154,12 +154,6 @@ type ActionOverrider interface {
 	StateType() *glib.VariantType
 }
 
-// WrapActionOverrider wraps the ActionOverrider
-// interface implementation to access the instance methods.
-func WrapActionOverrider(obj ActionOverrider) *Action {
-	return wrapAction(externglib.BaseObject(obj))
-}
-
 // Action represents a single named action.
 //
 // The main interface to an action is that it can be activated with

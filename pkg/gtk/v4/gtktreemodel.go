@@ -423,12 +423,6 @@ type TreeModelOverrider interface {
 	UnrefNode(iter *TreeIter)
 }
 
-// WrapTreeModelOverrider wraps the TreeModelOverrider
-// interface implementation to access the instance methods.
-func WrapTreeModelOverrider(obj TreeModelOverrider) *TreeModel {
-	return wrapTreeModel(externglib.BaseObject(obj))
-}
-
 // TreeModel: tree interface used by GtkTreeView
 //
 // The TreeModel interface defines a generic tree interface for use by the

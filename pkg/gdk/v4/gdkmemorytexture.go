@@ -108,12 +108,6 @@ type MemoryTextureOverrider interface {
 	externglib.Objector
 }
 
-// WrapMemoryTextureOverrider wraps the MemoryTextureOverrider
-// interface implementation to access the instance methods.
-func WrapMemoryTextureOverrider(obj MemoryTextureOverrider) *MemoryTexture {
-	return wrapMemoryTexture(externglib.BaseObject(obj))
-}
-
 // MemoryTexture: GdkTexture representing image data in memory.
 type MemoryTexture struct {
 	_ [0]func() // equal guard

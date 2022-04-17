@@ -38,12 +38,6 @@ type PopoverOverrider interface {
 	Closed()
 }
 
-// WrapPopoverOverrider wraps the PopoverOverrider
-// interface implementation to access the instance methods.
-func WrapPopoverOverrider(obj PopoverOverrider) *Popover {
-	return wrapPopover(externglib.BaseObject(obj))
-}
-
 // Popover is a bubble-like context window, primarily meant to provide
 // context-dependent information or options. Popovers are attached to a widget,
 // passed at construction time on gtk_popover_new(), or updated afterwards

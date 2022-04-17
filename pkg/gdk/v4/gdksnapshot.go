@@ -27,12 +27,6 @@ type SnapshotOverrider interface {
 	externglib.Objector
 }
 
-// WrapSnapshotOverrider wraps the SnapshotOverrider
-// interface implementation to access the instance methods.
-func WrapSnapshotOverrider(obj SnapshotOverrider) *Snapshot {
-	return wrapSnapshot(externglib.BaseObject(obj))
-}
-
 // Snapshot: base type for snapshot operations.
 //
 // The subclass of GdkSnapshot used by GTK is gtk.Snapshot.
@@ -78,8 +72,7 @@ func (v *Snapshot) baseSnapshot() *Snapshot {
 	return v
 }
 
-// BaseSnapshot returns the underlying base object from the
-// interface.
+// BaseSnapshot returns the underlying base object.
 func BaseSnapshot(obj Snapshotter) *Snapshot {
 	return obj.baseSnapshot()
 }

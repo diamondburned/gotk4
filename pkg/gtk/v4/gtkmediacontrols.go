@@ -28,12 +28,6 @@ type MediaControlsOverrider interface {
 	externglib.Objector
 }
 
-// WrapMediaControlsOverrider wraps the MediaControlsOverrider
-// interface implementation to access the instance methods.
-func WrapMediaControlsOverrider(obj MediaControlsOverrider) *MediaControls {
-	return wrapMediaControls(externglib.BaseObject(obj))
-}
-
 // MediaControls: GtkMediaControls is a widget to show controls for a video.
 //
 // !An example GtkMediaControls (media-controls.png)

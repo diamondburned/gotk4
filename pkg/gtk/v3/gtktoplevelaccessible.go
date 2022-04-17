@@ -32,12 +32,6 @@ type ToplevelAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapToplevelAccessibleOverrider wraps the ToplevelAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapToplevelAccessibleOverrider(obj ToplevelAccessibleOverrider) *ToplevelAccessible {
-	return wrapToplevelAccessible(externglib.BaseObject(obj))
-}
-
 type ToplevelAccessible struct {
 	_ [0]func() // equal guard
 	atk.ObjectClass

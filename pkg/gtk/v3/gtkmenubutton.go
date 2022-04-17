@@ -32,12 +32,6 @@ type MenuButtonOverrider interface {
 	externglib.Objector
 }
 
-// WrapMenuButtonOverrider wraps the MenuButtonOverrider
-// interface implementation to access the instance methods.
-func WrapMenuButtonOverrider(obj MenuButtonOverrider) *MenuButton {
-	return wrapMenuButton(externglib.BaseObject(obj))
-}
-
 // MenuButton widget is used to display a popup when clicked on. This popup can
 // be provided either as a Menu, a Popover or an abstract Model.
 //

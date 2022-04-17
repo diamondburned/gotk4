@@ -31,12 +31,6 @@ type MiscOverrider interface {
 	externglib.Objector
 }
 
-// WrapMiscOverrider wraps the MiscOverrider
-// interface implementation to access the instance methods.
-func WrapMiscOverrider(obj MiscOverrider) *Misc {
-	return wrapMisc(externglib.BaseObject(obj))
-}
-
 // Misc widget is an abstract widget which is not useful itself, but is used to
 // derive subclasses which have alignment and padding attributes.
 //
@@ -105,8 +99,7 @@ func (misc *Misc) baseMisc() *Misc {
 	return misc
 }
 
-// BaseMisc returns the underlying base object from the
-// interface.
+// BaseMisc returns the underlying base object.
 func BaseMisc(obj Miscer) *Misc {
 	return obj.baseMisc()
 }

@@ -31,12 +31,6 @@ type MemoryOutputStreamOverrider interface {
 	externglib.Objector
 }
 
-// WrapMemoryOutputStreamOverrider wraps the MemoryOutputStreamOverrider
-// interface implementation to access the instance methods.
-func WrapMemoryOutputStreamOverrider(obj MemoryOutputStreamOverrider) *MemoryOutputStream {
-	return wrapMemoryOutputStream(externglib.BaseObject(obj))
-}
-
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
 // GIO streaming output operations.
 //

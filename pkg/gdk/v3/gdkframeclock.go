@@ -119,12 +119,6 @@ type FrameClockOverrider interface {
 	externglib.Objector
 }
 
-// WrapFrameClockOverrider wraps the FrameClockOverrider
-// interface implementation to access the instance methods.
-func WrapFrameClockOverrider(obj FrameClockOverrider) *FrameClock {
-	return wrapFrameClock(externglib.BaseObject(obj))
-}
-
 // FrameClock tells the application when to update and repaint a window. This
 // may be synced to the vertical refresh rate of the monitor, for example. Even
 // when the frame clock uses a simple timer rather than a hardware-based
@@ -196,8 +190,7 @@ func (frameClock *FrameClock) baseFrameClock() *FrameClock {
 	return frameClock
 }
 
-// BaseFrameClock returns the underlying base object from the
-// interface.
+// BaseFrameClock returns the underlying base object.
 func BaseFrameClock(obj FrameClocker) *FrameClock {
 	return obj.baseFrameClock()
 }

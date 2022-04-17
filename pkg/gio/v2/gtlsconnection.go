@@ -94,12 +94,6 @@ type TLSConnectionOverrider interface {
 	HandshakeFinish(result AsyncResultOverrider) error
 }
 
-// WrapTLSConnectionOverrider wraps the TLSConnectionOverrider
-// interface implementation to access the instance methods.
-func WrapTLSConnectionOverrider(obj TLSConnectionOverrider) *TLSConnection {
-	return wrapTLSConnection(externglib.BaseObject(obj))
-}
-
 // TLSConnection is the base TLS connection class type, which wraps a OStream
 // and provides TLS encryption on top of it. Its subclasses, ClientConnection
 // and ServerConnection, implement client-side and server-side TLS,
@@ -297,8 +291,7 @@ func (conn *TLSConnection) baseTLSConnection() *TLSConnection {
 	return conn
 }
 
-// BaseTLSConnection returns the underlying base object from the
-// interface.
+// BaseTLSConnection returns the underlying base object.
 func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
 	return obj.baseTLSConnection()
 }

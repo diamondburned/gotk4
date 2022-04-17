@@ -30,12 +30,6 @@ type LabelAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapLabelAccessibleOverrider wraps the LabelAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapLabelAccessibleOverrider(obj LabelAccessibleOverrider) *LabelAccessible {
-	return wrapLabelAccessible(externglib.BaseObject(obj))
-}
-
 type LabelAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

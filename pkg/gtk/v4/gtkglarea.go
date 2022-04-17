@@ -47,12 +47,6 @@ type GLAreaOverrider interface {
 	Resize(width, height int)
 }
 
-// WrapGLAreaOverrider wraps the GLAreaOverrider
-// interface implementation to access the instance methods.
-func WrapGLAreaOverrider(obj GLAreaOverrider) *GLArea {
-	return wrapGLArea(externglib.BaseObject(obj))
-}
-
 // GLArea: GtkGLArea is a widget that allows drawing with OpenGL.
 //
 // !An example GtkGLArea (glarea.png)

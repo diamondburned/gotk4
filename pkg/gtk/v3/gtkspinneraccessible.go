@@ -30,12 +30,6 @@ type SpinnerAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapSpinnerAccessibleOverrider wraps the SpinnerAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapSpinnerAccessibleOverrider(obj SpinnerAccessibleOverrider) *SpinnerAccessible {
-	return wrapSpinnerAccessible(externglib.BaseObject(obj))
-}
-
 type SpinnerAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

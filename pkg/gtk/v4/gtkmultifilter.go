@@ -35,12 +35,6 @@ type AnyFilterOverrider interface {
 	externglib.Objector
 }
 
-// WrapAnyFilterOverrider wraps the AnyFilterOverrider
-// interface implementation to access the instance methods.
-func WrapAnyFilterOverrider(obj AnyFilterOverrider) *AnyFilter {
-	return wrapAnyFilter(externglib.BaseObject(obj))
-}
-
 // AnyFilter: GtkAnyFilter matches an item when at least one of its filters
 // matches.
 //
@@ -110,12 +104,6 @@ func NewAnyFilter() *AnyFilter {
 // EveryFilterOverrider contains methods that are overridable.
 type EveryFilterOverrider interface {
 	externglib.Objector
-}
-
-// WrapEveryFilterOverrider wraps the EveryFilterOverrider
-// interface implementation to access the instance methods.
-func WrapEveryFilterOverrider(obj EveryFilterOverrider) *EveryFilter {
-	return wrapEveryFilter(externglib.BaseObject(obj))
 }
 
 // EveryFilter: GtkEveryFilter matches an item when each of its filters matches.
@@ -188,12 +176,6 @@ type MultiFilterOverrider interface {
 	externglib.Objector
 }
 
-// WrapMultiFilterOverrider wraps the MultiFilterOverrider
-// interface implementation to access the instance methods.
-func WrapMultiFilterOverrider(obj MultiFilterOverrider) *MultiFilter {
-	return wrapMultiFilter(externglib.BaseObject(obj))
-}
-
 // MultiFilter: GtkMultiFilter is the base class for filters that combine
 // multiple filters.
 type MultiFilter struct {
@@ -251,8 +233,7 @@ func (self *MultiFilter) baseMultiFilter() *MultiFilter {
 	return self
 }
 
-// BaseMultiFilter returns the underlying base object from the
-// interface.
+// BaseMultiFilter returns the underlying base object.
 func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
 	return obj.baseMultiFilter()
 }

@@ -37,12 +37,6 @@ type RadioActionOverrider interface {
 	Changed(current *RadioAction)
 }
 
-// WrapRadioActionOverrider wraps the RadioActionOverrider
-// interface implementation to access the instance methods.
-func WrapRadioActionOverrider(obj RadioActionOverrider) *RadioAction {
-	return wrapRadioAction(externglib.BaseObject(obj))
-}
-
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
 type RadioAction struct {

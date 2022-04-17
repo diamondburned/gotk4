@@ -28,12 +28,6 @@ type TCPWrapperConnectionOverrider interface {
 	externglib.Objector
 }
 
-// WrapTCPWrapperConnectionOverrider wraps the TCPWrapperConnectionOverrider
-// interface implementation to access the instance methods.
-func WrapTCPWrapperConnectionOverrider(obj TCPWrapperConnectionOverrider) *TCPWrapperConnection {
-	return wrapTCPWrapperConnection(externglib.BaseObject(obj))
-}
-
 // TCPWrapperConnection can be used to wrap a OStream that is based on a
 // #GSocket, but which is not actually a Connection. This is used by Client so
 // that it can always return a Connection, even when the connection it has

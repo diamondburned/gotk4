@@ -29,12 +29,6 @@ type MultiSelectionOverrider interface {
 	externglib.Objector
 }
 
-// WrapMultiSelectionOverrider wraps the MultiSelectionOverrider
-// interface implementation to access the instance methods.
-func WrapMultiSelectionOverrider(obj MultiSelectionOverrider) *MultiSelection {
-	return wrapMultiSelection(externglib.BaseObject(obj))
-}
-
 // MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
 // selecting multiple elements.
 type MultiSelection struct {

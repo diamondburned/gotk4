@@ -30,12 +30,6 @@ type IMContextSimpleOverrider interface {
 	externglib.Objector
 }
 
-// WrapIMContextSimpleOverrider wraps the IMContextSimpleOverrider
-// interface implementation to access the instance methods.
-func WrapIMContextSimpleOverrider(obj IMContextSimpleOverrider) *IMContextSimple {
-	return wrapIMContextSimple(externglib.BaseObject(obj))
-}
-
 // IMContextSimple: GtkIMContextSimple is an input method supporting table-based
 // input methods.
 //

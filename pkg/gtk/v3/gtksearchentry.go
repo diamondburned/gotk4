@@ -46,12 +46,6 @@ type SearchEntryOverrider interface {
 	StopSearch()
 }
 
-// WrapSearchEntryOverrider wraps the SearchEntryOverrider
-// interface implementation to access the instance methods.
-func WrapSearchEntryOverrider(obj SearchEntryOverrider) *SearchEntry {
-	return wrapSearchEntry(externglib.BaseObject(obj))
-}
-
 // SearchEntry is a subclass of Entry that has been tailored for use as a search
 // entry.
 //

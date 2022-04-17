@@ -31,12 +31,6 @@ type DataOutputStreamOverrider interface {
 	externglib.Objector
 }
 
-// WrapDataOutputStreamOverrider wraps the DataOutputStreamOverrider
-// interface implementation to access the instance methods.
-func WrapDataOutputStreamOverrider(obj DataOutputStreamOverrider) *DataOutputStream {
-	return wrapDataOutputStream(externglib.BaseObject(obj))
-}
-
 // DataOutputStream: data output stream implements Stream and includes functions
 // for writing data directly to an output stream.
 type DataOutputStream struct {

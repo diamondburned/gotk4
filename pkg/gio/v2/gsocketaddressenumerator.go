@@ -72,12 +72,6 @@ type SocketAddressEnumeratorOverrider interface {
 	NextFinish(result AsyncResultOverrider) (SocketAddresser, error)
 }
 
-// WrapSocketAddressEnumeratorOverrider wraps the SocketAddressEnumeratorOverrider
-// interface implementation to access the instance methods.
-func WrapSocketAddressEnumeratorOverrider(obj SocketAddressEnumeratorOverrider) *SocketAddressEnumerator {
-	return wrapSocketAddressEnumerator(externglib.BaseObject(obj))
-}
-
 // SocketAddressEnumerator is an enumerator type for Address instances. It is
 // returned by enumeration functions such as g_socket_connectable_enumerate(),
 // which returns a AddressEnumerator to list each Address which could be used to
@@ -210,8 +204,7 @@ func (enumerator *SocketAddressEnumerator) baseSocketAddressEnumerator() *Socket
 	return enumerator
 }
 
-// BaseSocketAddressEnumerator returns the underlying base object from the
-// interface.
+// BaseSocketAddressEnumerator returns the underlying base object.
 func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressEnumerator {
 	return obj.baseSocketAddressEnumerator()
 }

@@ -203,12 +203,6 @@ type UIManagerOverrider interface {
 	PreActivate(action *Action)
 }
 
-// WrapUIManagerOverrider wraps the UIManagerOverrider
-// interface implementation to access the instance methods.
-func WrapUIManagerOverrider(obj UIManagerOverrider) *UIManager {
-	return wrapUIManager(externglib.BaseObject(obj))
-}
-
 // UIManager: > GtkUIManager is deprecated since GTK+ 3.10. To construct user
 // interfaces > from XML definitions, you should use Builder, Model, et al. To >
 // work with actions, use #GAction, Actionable et al. These newer classes >

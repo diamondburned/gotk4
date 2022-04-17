@@ -30,12 +30,6 @@ type FileChooserDialogOverrider interface {
 	externglib.Objector
 }
 
-// WrapFileChooserDialogOverrider wraps the FileChooserDialogOverrider
-// interface implementation to access the instance methods.
-func WrapFileChooserDialogOverrider(obj FileChooserDialogOverrider) *FileChooserDialog {
-	return wrapFileChooserDialog(externglib.BaseObject(obj))
-}
-
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
 // “File/Save as” commands. This widget works by putting a FileChooserWidget
 // inside a Dialog. It exposes the FileChooser interface, so you can use all of

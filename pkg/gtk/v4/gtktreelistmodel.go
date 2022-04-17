@@ -70,12 +70,6 @@ type TreeListModelOverrider interface {
 	externglib.Objector
 }
 
-// WrapTreeListModelOverrider wraps the TreeListModelOverrider
-// interface implementation to access the instance methods.
-func WrapTreeListModelOverrider(obj TreeListModelOverrider) *TreeListModel {
-	return wrapTreeListModel(externglib.BaseObject(obj))
-}
-
 // TreeListModel: GtkTreeListModel is a list model that can create child models
 // on demand.
 type TreeListModel struct {
@@ -366,12 +360,6 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 // TreeListRowOverrider contains methods that are overridable.
 type TreeListRowOverrider interface {
 	externglib.Objector
-}
-
-// WrapTreeListRowOverrider wraps the TreeListRowOverrider
-// interface implementation to access the instance methods.
-func WrapTreeListRowOverrider(obj TreeListRowOverrider) *TreeListRow {
-	return wrapTreeListRow(externglib.BaseObject(obj))
 }
 
 // TreeListRow: GtkTreeListRow is used by GtkTreeListModel to represent items.

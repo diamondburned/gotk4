@@ -307,12 +307,6 @@ type UtilOverrider interface {
 	externglib.Objector
 }
 
-// WrapUtilOverrider wraps the UtilOverrider
-// interface implementation to access the instance methods.
-func WrapUtilOverrider(obj UtilOverrider) *Util {
-	return wrapUtil(externglib.BaseObject(obj))
-}
-
 // Util: set of ATK utility functions which are used to support event
 // registration of various types, and obtaining the 'root' accessible of a
 // process and information about the current ATK implementation and toolkit

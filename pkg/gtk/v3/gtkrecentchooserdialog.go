@@ -30,12 +30,6 @@ type RecentChooserDialogOverrider interface {
 	externglib.Objector
 }
 
-// WrapRecentChooserDialogOverrider wraps the RecentChooserDialogOverrider
-// interface implementation to access the instance methods.
-func WrapRecentChooserDialogOverrider(obj RecentChooserDialogOverrider) *RecentChooserDialog {
-	return wrapRecentChooserDialog(externglib.BaseObject(obj))
-}
-
 // RecentChooserDialog is a dialog box suitable for displaying the recently used
 // documents. This widgets works by putting a RecentChooserWidget inside a
 // Dialog. It exposes the RecentChooserIface interface, so you can use all the

@@ -101,12 +101,6 @@ type PermissionOverrider interface {
 	ReleaseFinish(result AsyncResultOverrider) error
 }
 
-// WrapPermissionOverrider wraps the PermissionOverrider
-// interface implementation to access the instance methods.
-func WrapPermissionOverrider(obj PermissionOverrider) *Permission {
-	return wrapPermission(externglib.BaseObject(obj))
-}
-
 // Permission represents the status of the caller's permission to perform a
 // certain action.
 //
@@ -306,8 +300,7 @@ func (permission *Permission) basePermission() *Permission {
 	return permission
 }
 
-// BasePermission returns the underlying base object from the
-// interface.
+// BasePermission returns the underlying base object.
 func BasePermission(obj Permissioner) *Permission {
 	return obj.basePermission()
 }

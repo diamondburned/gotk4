@@ -30,12 +30,6 @@ type ShortcutControllerOverrider interface {
 	externglib.Objector
 }
 
-// WrapShortcutControllerOverrider wraps the ShortcutControllerOverrider
-// interface implementation to access the instance methods.
-func WrapShortcutControllerOverrider(obj ShortcutControllerOverrider) *ShortcutController {
-	return wrapShortcutController(externglib.BaseObject(obj))
-}
-
 // ShortcutController: GtkShortcutController is an event controller that manages
 // shortcuts.
 //

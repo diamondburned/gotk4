@@ -76,12 +76,6 @@ type PrintOperationPreviewOverrider interface {
 	RenderPage(pageNr int)
 }
 
-// WrapPrintOperationPreviewOverrider wraps the PrintOperationPreviewOverrider
-// interface implementation to access the instance methods.
-func WrapPrintOperationPreviewOverrider(obj PrintOperationPreviewOverrider) *PrintOperationPreview {
-	return wrapPrintOperationPreview(externglib.BaseObject(obj))
-}
-
 type PrintOperationPreview struct {
 	_ [0]func() // equal guard
 	*externglib.Object

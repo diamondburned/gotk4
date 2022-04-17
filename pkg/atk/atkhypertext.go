@@ -67,12 +67,6 @@ type HypertextOverrider interface {
 	LinkSelected(linkIndex int)
 }
 
-// WrapHypertextOverrider wraps the HypertextOverrider
-// interface implementation to access the instance methods.
-func WrapHypertextOverrider(obj HypertextOverrider) *Hypertext {
-	return wrapHypertext(externglib.BaseObject(obj))
-}
-
 // Hypertext: interface used for objects which implement linking between
 // multiple resource or content locations, or multiple 'markers' within a single
 // document. A Hypertext instance is associated with one or more Hyperlinks,

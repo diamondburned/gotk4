@@ -27,12 +27,6 @@ type BinLayoutOverrider interface {
 	externglib.Objector
 }
 
-// WrapBinLayoutOverrider wraps the BinLayoutOverrider
-// interface implementation to access the instance methods.
-func WrapBinLayoutOverrider(obj BinLayoutOverrider) *BinLayout {
-	return wrapBinLayout(externglib.BaseObject(obj))
-}
-
 // BinLayout: GtkBinLayout is a GtkLayoutManager subclass useful for create
 // "bins" of widgets.
 //

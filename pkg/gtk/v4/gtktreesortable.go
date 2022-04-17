@@ -143,12 +143,6 @@ type TreeSortableOverrider interface {
 	SortColumnChanged()
 }
 
-// WrapTreeSortableOverrider wraps the TreeSortableOverrider
-// interface implementation to access the instance methods.
-func WrapTreeSortableOverrider(obj TreeSortableOverrider) *TreeSortable {
-	return wrapTreeSortable(externglib.BaseObject(obj))
-}
-
 // TreeSortable: interface for sortable models used by GtkTreeView
 //
 // TreeSortable is an interface to be implemented by tree models which support

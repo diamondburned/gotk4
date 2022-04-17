@@ -64,12 +64,6 @@ type ButtonOverrider interface {
 	Released()
 }
 
-// WrapButtonOverrider wraps the ButtonOverrider
-// interface implementation to access the instance methods.
-func WrapButtonOverrider(obj ButtonOverrider) *Button {
-	return wrapButton(externglib.BaseObject(obj))
-}
-
 // Button widget is generally used to trigger a callback function that is called
 // when the button is pressed. The various signals and how to use them are
 // outlined below.

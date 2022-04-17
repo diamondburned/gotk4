@@ -31,12 +31,6 @@ type NotebookPageAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapNotebookPageAccessibleOverrider wraps the NotebookPageAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapNotebookPageAccessibleOverrider(obj NotebookPageAccessibleOverrider) *NotebookPageAccessible {
-	return wrapNotebookPageAccessible(externglib.BaseObject(obj))
-}
-
 type NotebookPageAccessible struct {
 	_ [0]func() // equal guard
 	atk.ObjectClass

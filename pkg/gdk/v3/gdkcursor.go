@@ -410,8 +410,7 @@ func (cursor *Cursor) baseCursor() *Cursor {
 	return cursor
 }
 
-// BaseCursor returns the underlying base object from the
-// interface.
+// BaseCursor returns the underlying base object.
 func BaseCursor(obj Cursorrer) *Cursor {
 	return obj.baseCursor()
 }

@@ -58,12 +58,6 @@ type RangeOverrider interface {
 	ValueChanged()
 }
 
-// WrapRangeOverrider wraps the RangeOverrider
-// interface implementation to access the instance methods.
-func WrapRangeOverrider(obj RangeOverrider) *Range {
-	return wrapRange(externglib.BaseObject(obj))
-}
-
 // Range: GtkRange is the common base class for widgets which visualize an
 // adjustment.
 //

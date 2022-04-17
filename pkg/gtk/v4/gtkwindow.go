@@ -53,12 +53,6 @@ type WindowOverrider interface {
 	KeysChanged()
 }
 
-// WrapWindowOverrider wraps the WindowOverrider
-// interface implementation to access the instance methods.
-func WrapWindowOverrider(obj WindowOverrider) *Window {
-	return wrapWindow(externglib.BaseObject(obj))
-}
-
 // Window: GtkWindow is a toplevel window which can contain other widgets.
 //
 // !An example GtkWindow (window.png)

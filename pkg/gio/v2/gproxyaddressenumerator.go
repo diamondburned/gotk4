@@ -27,12 +27,6 @@ type ProxyAddressEnumeratorOverrider interface {
 	externglib.Objector
 }
 
-// WrapProxyAddressEnumeratorOverrider wraps the ProxyAddressEnumeratorOverrider
-// interface implementation to access the instance methods.
-func WrapProxyAddressEnumeratorOverrider(obj ProxyAddressEnumeratorOverrider) *ProxyAddressEnumerator {
-	return wrapProxyAddressEnumerator(externglib.BaseObject(obj))
-}
-
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
 // instances, using the given AddressEnumerator:proxy-resolver.

@@ -28,12 +28,6 @@ type X11DragOverrider interface {
 	externglib.Objector
 }
 
-// WrapX11DragOverrider wraps the X11DragOverrider
-// interface implementation to access the instance methods.
-func WrapX11DragOverrider(obj X11DragOverrider) *X11Drag {
-	return wrapX11Drag(externglib.BaseObject(obj))
-}
-
 type X11Drag struct {
 	_ [0]func() // equal guard
 	gdk.Drag

@@ -69,12 +69,6 @@ type MountOperationOverrider interface {
 	ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 }
 
-// WrapMountOperationOverrider wraps the MountOperationOverrider
-// interface implementation to access the instance methods.
-func WrapMountOperationOverrider(obj MountOperationOverrider) *MountOperation {
-	return wrapMountOperation(externglib.BaseObject(obj))
-}
-
 // MountOperation provides a mechanism for interacting with the user. It can be
 // used for authenticating mountable operations, such as loop mounting files,
 // hard drive partitions or server locations. It can also be used to ask the

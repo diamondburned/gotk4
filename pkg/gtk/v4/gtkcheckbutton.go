@@ -35,12 +35,6 @@ type CheckButtonOverrider interface {
 	Toggled()
 }
 
-// WrapCheckButtonOverrider wraps the CheckButtonOverrider
-// interface implementation to access the instance methods.
-func WrapCheckButtonOverrider(obj CheckButtonOverrider) *CheckButton {
-	return wrapCheckButton(externglib.BaseObject(obj))
-}
-
 // CheckButton: GtkCheckButton places a label next to an indicator.
 //
 // !Example GtkCheckButtons (check-button.png)

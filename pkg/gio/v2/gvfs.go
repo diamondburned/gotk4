@@ -157,12 +157,6 @@ type VFSOverrider interface {
 	ParseName(parseName string) FileOverrider
 }
 
-// WrapVFSOverrider wraps the VFSOverrider
-// interface implementation to access the instance methods.
-func WrapVFSOverrider(obj VFSOverrider) *VFS {
-	return wrapVFS(externglib.BaseObject(obj))
-}
-
 // VFS: entry point for using GIO functionality.
 type VFS struct {
 	_ [0]func() // equal guard

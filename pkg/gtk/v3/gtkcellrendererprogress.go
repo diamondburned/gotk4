@@ -29,12 +29,6 @@ type CellRendererProgressOverrider interface {
 	externglib.Objector
 }
 
-// WrapCellRendererProgressOverrider wraps the CellRendererProgressOverrider
-// interface implementation to access the instance methods.
-func WrapCellRendererProgressOverrider(obj CellRendererProgressOverrider) *CellRendererProgress {
-	return wrapCellRendererProgress(externglib.BaseObject(obj))
-}
-
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
 //

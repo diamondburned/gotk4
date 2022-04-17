@@ -31,12 +31,6 @@ type VBoxOverrider interface {
 	externglib.Objector
 }
 
-// WrapVBoxOverrider wraps the VBoxOverrider
-// interface implementation to access the instance methods.
-func WrapVBoxOverrider(obj VBoxOverrider) *VBox {
-	return wrapVBox(externglib.BaseObject(obj))
-}
-
 // VBox is a container that organizes child widgets into a single column.
 //
 // Use the Box packing interface to determine the arrangement, spacing, height,

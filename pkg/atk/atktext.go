@@ -876,12 +876,6 @@ type TextOverrider interface {
 	TextSelectionChanged()
 }
 
-// WrapTextOverrider wraps the TextOverrider
-// interface implementation to access the instance methods.
-func WrapTextOverrider(obj TextOverrider) *Text {
-	return wrapText(externglib.BaseObject(obj))
-}
-
 // Text should be implemented by Objects on behalf of widgets that have text
 // content which is either attributed or otherwise non-trivial. Objects whose
 // text content is simple, unattributed, and very brief may expose that content

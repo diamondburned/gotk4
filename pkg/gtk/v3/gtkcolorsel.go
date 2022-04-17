@@ -37,12 +37,6 @@ type ColorSelectionOverrider interface {
 	ColorChanged()
 }
 
-// WrapColorSelectionOverrider wraps the ColorSelectionOverrider
-// interface implementation to access the instance methods.
-func WrapColorSelectionOverrider(obj ColorSelectionOverrider) *ColorSelection {
-	return wrapColorSelection(externglib.BaseObject(obj))
-}
-
 type ColorSelection struct {
 	_ [0]func() // equal guard
 	Box

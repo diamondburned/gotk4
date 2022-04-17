@@ -93,12 +93,6 @@ type RecentManagerOverrider interface {
 	Changed()
 }
 
-// WrapRecentManagerOverrider wraps the RecentManagerOverrider
-// interface implementation to access the instance methods.
-func WrapRecentManagerOverrider(obj RecentManagerOverrider) *RecentManager {
-	return wrapRecentManager(externglib.BaseObject(obj))
-}
-
 // RecentManager: GtkRecentManager manages and looks up recently used files.
 //
 // Each recently used file is identified by its URI, and has meta-data

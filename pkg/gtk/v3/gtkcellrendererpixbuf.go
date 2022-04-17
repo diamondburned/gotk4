@@ -29,12 +29,6 @@ type CellRendererPixbufOverrider interface {
 	externglib.Objector
 }
 
-// WrapCellRendererPixbufOverrider wraps the CellRendererPixbufOverrider
-// interface implementation to access the instance methods.
-func WrapCellRendererPixbufOverrider(obj CellRendererPixbufOverrider) *CellRendererPixbuf {
-	return wrapCellRendererPixbuf(externglib.BaseObject(obj))
-}
-
 // CellRendererPixbuf can be used to render an image in a cell. It allows to
 // render either a given Pixbuf (set via the CellRendererPixbuf:pixbuf property)
 // or a named icon (set via the CellRendererPixbuf:icon-name property).

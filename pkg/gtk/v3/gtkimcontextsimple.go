@@ -33,12 +33,6 @@ type IMContextSimpleOverrider interface {
 	externglib.Objector
 }
 
-// WrapIMContextSimpleOverrider wraps the IMContextSimpleOverrider
-// interface implementation to access the instance methods.
-func WrapIMContextSimpleOverrider(obj IMContextSimpleOverrider) *IMContextSimple {
-	return wrapIMContextSimple(externglib.BaseObject(obj))
-}
-
 // IMContextSimple is a simple input method context supporting table-based input
 // methods. It has a built-in table of compose sequences that is derived from
 // the X11 Compose files.

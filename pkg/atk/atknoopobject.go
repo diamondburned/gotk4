@@ -28,12 +28,6 @@ type NoOpObjectOverrider interface {
 	externglib.Objector
 }
 
-// WrapNoOpObjectOverrider wraps the NoOpObjectOverrider
-// interface implementation to access the instance methods.
-func WrapNoOpObjectOverrider(obj NoOpObjectOverrider) *NoOpObject {
-	return wrapNoOpObject(externglib.BaseObject(obj))
-}
-
 // NoOpObject is an AtkObject which purports to implement all ATK interfaces. It
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.

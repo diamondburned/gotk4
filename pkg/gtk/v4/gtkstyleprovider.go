@@ -58,12 +58,6 @@ type StyleProviderOverrider interface {
 	externglib.Objector
 }
 
-// WrapStyleProviderOverrider wraps the StyleProviderOverrider
-// interface implementation to access the instance methods.
-func WrapStyleProviderOverrider(obj StyleProviderOverrider) *StyleProvider {
-	return wrapStyleProvider(externglib.BaseObject(obj))
-}
-
 // StyleProvider: GtkStyleProvider is an interface for style information used by
 // GtkStyleContext.
 //
@@ -103,8 +97,7 @@ func (v *StyleProvider) baseStyleProvider() *StyleProvider {
 	return v
 }
 
-// BaseStyleProvider returns the underlying base object from the
-// interface.
+// BaseStyleProvider returns the underlying base object.
 func BaseStyleProvider(obj StyleProviderer) *StyleProvider {
 	return obj.baseStyleProvider()
 }

@@ -32,12 +32,6 @@ type FilenameCompleterOverrider interface {
 	GotCompletionData()
 }
 
-// WrapFilenameCompleterOverrider wraps the FilenameCompleterOverrider
-// interface implementation to access the instance methods.
-func WrapFilenameCompleterOverrider(obj FilenameCompleterOverrider) *FilenameCompleter {
-	return wrapFilenameCompleter(externglib.BaseObject(obj))
-}
-
 // FilenameCompleter completes partial file and directory names given a partial
 // string by looking in the file system for clues. Can return a list of possible
 // completion strings for widget implementations.

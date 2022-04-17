@@ -29,12 +29,6 @@ type NativeVolumeMonitorOverrider interface {
 	externglib.Objector
 }
 
-// WrapNativeVolumeMonitorOverrider wraps the NativeVolumeMonitorOverrider
-// interface implementation to access the instance methods.
-func WrapNativeVolumeMonitorOverrider(obj NativeVolumeMonitorOverrider) *NativeVolumeMonitor {
-	return wrapNativeVolumeMonitor(externglib.BaseObject(obj))
-}
-
 type NativeVolumeMonitor struct {
 	_ [0]func() // equal guard
 	VolumeMonitor
@@ -79,8 +73,7 @@ func (v *NativeVolumeMonitor) baseNativeVolumeMonitor() *NativeVolumeMonitor {
 	return v
 }
 
-// BaseNativeVolumeMonitor returns the underlying base object from the
-// interface.
+// BaseNativeVolumeMonitor returns the underlying base object.
 func BaseNativeVolumeMonitor(obj NativeVolumeMonitorrer) *NativeVolumeMonitor {
 	return obj.baseNativeVolumeMonitor()
 }

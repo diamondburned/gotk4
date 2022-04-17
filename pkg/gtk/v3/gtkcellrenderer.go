@@ -332,12 +332,6 @@ type CellRendererOverrider interface {
 	StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) CellEditableOverrider
 }
 
-// WrapCellRendererOverrider wraps the CellRendererOverrider
-// interface implementation to access the instance methods.
-func WrapCellRendererOverrider(obj CellRendererOverrider) *CellRenderer {
-	return wrapCellRenderer(externglib.BaseObject(obj))
-}
-
 // CellRenderer is a base class of a set of objects used for rendering a cell to
 // a #cairo_t. These objects are used primarily by the TreeView widget, though
 // they aren’t tied to them in any specific way. It is worth noting that
@@ -891,8 +885,7 @@ func (cell *CellRenderer) baseCellRenderer() *CellRenderer {
 	return cell
 }
 
-// BaseCellRenderer returns the underlying base object from the
-// interface.
+// BaseCellRenderer returns the underlying base object.
 func BaseCellRenderer(obj CellRendererer) *CellRenderer {
 	return obj.baseCellRenderer()
 }

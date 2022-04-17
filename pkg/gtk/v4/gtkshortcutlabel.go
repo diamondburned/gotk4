@@ -28,12 +28,6 @@ type ShortcutLabelOverrider interface {
 	externglib.Objector
 }
 
-// WrapShortcutLabelOverrider wraps the ShortcutLabelOverrider
-// interface implementation to access the instance methods.
-func WrapShortcutLabelOverrider(obj ShortcutLabelOverrider) *ShortcutLabel {
-	return wrapShortcutLabel(externglib.BaseObject(obj))
-}
-
 // ShortcutLabel: GtkShortcutLabel displays a single keyboard shortcut or
 // gesture.
 //

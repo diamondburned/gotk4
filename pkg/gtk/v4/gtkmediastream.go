@@ -97,12 +97,6 @@ type MediaStreamOverrider interface {
 	UpdateAudio(muted bool, volume float64)
 }
 
-// WrapMediaStreamOverrider wraps the MediaStreamOverrider
-// interface implementation to access the instance methods.
-func WrapMediaStreamOverrider(obj MediaStreamOverrider) *MediaStream {
-	return wrapMediaStream(externglib.BaseObject(obj))
-}
-
 // MediaStream: GtkMediaStream is the integration point for media playback
 // inside GTK.
 //
@@ -301,8 +295,7 @@ func (self *MediaStream) baseMediaStream() *MediaStream {
 	return self
 }
 
-// BaseMediaStream returns the underlying base object from the
-// interface.
+// BaseMediaStream returns the underlying base object.
 func BaseMediaStream(obj MediaStreamer) *MediaStream {
 	return obj.baseMediaStream()
 }

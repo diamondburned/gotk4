@@ -121,12 +121,6 @@ type ContainerOverrider interface {
 	SetFocusChild(child Widgetter)
 }
 
-// WrapContainerOverrider wraps the ContainerOverrider
-// interface implementation to access the instance methods.
-func WrapContainerOverrider(obj ContainerOverrider) *Container {
-	return wrapContainer(externglib.BaseObject(obj))
-}
-
 // Container: GTK+ user interface is constructed by nesting widgets inside
 // widgets. Container widgets are the inner nodes in the resulting tree of
 // widgets: they contain other widgets. So, for example, you might have a Window
@@ -555,8 +549,7 @@ func (container *Container) baseContainer() *Container {
 	return container
 }
 
-// BaseContainer returns the underlying base object from the
-// interface.
+// BaseContainer returns the underlying base object.
 func BaseContainer(obj Containerer) *Container {
 	return obj.baseContainer()
 }

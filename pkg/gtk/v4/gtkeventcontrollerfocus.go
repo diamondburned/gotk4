@@ -30,12 +30,6 @@ type EventControllerFocusOverrider interface {
 	externglib.Objector
 }
 
-// WrapEventControllerFocusOverrider wraps the EventControllerFocusOverrider
-// interface implementation to access the instance methods.
-func WrapEventControllerFocusOverrider(obj EventControllerFocusOverrider) *EventControllerFocus {
-	return wrapEventControllerFocus(externglib.BaseObject(obj))
-}
-
 // EventControllerFocus: GtkEventControllerFocus is an event controller to keep
 // track of keyboard focus.
 //

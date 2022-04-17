@@ -28,12 +28,6 @@ type X11DeviceManagerCoreOverrider interface {
 	externglib.Objector
 }
 
-// WrapX11DeviceManagerCoreOverrider wraps the X11DeviceManagerCoreOverrider
-// interface implementation to access the instance methods.
-func WrapX11DeviceManagerCoreOverrider(obj X11DeviceManagerCoreOverrider) *X11DeviceManagerCore {
-	return wrapX11DeviceManagerCore(externglib.BaseObject(obj))
-}
-
 type X11DeviceManagerCore struct {
 	_ [0]func() // equal guard
 	gdk.DeviceManager

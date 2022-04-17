@@ -37,12 +37,6 @@ type EventControllerKeyOverrider interface {
 	externglib.Objector
 }
 
-// WrapEventControllerKeyOverrider wraps the EventControllerKeyOverrider
-// interface implementation to access the instance methods.
-func WrapEventControllerKeyOverrider(obj EventControllerKeyOverrider) *EventControllerKey {
-	return wrapEventControllerKey(externglib.BaseObject(obj))
-}
-
 // EventControllerKey is an event controller meant for situations where you need
 // access to key events.
 //

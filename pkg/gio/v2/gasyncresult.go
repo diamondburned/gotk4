@@ -60,12 +60,6 @@ type AsyncResultOverrider interface {
 	IsTagged(sourceTag cgo.Handle) bool
 }
 
-// WrapAsyncResultOverrider wraps the AsyncResultOverrider
-// interface implementation to access the instance methods.
-func WrapAsyncResultOverrider(obj AsyncResultOverrider) *AsyncResult {
-	return wrapAsyncResult(externglib.BaseObject(obj))
-}
-
 // AsyncResult provides a base class for implementing asynchronous function
 // results.
 //

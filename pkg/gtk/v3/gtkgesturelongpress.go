@@ -32,12 +32,6 @@ type GestureLongPressOverrider interface {
 	externglib.Objector
 }
 
-// WrapGestureLongPressOverrider wraps the GestureLongPressOverrider
-// interface implementation to access the instance methods.
-func WrapGestureLongPressOverrider(obj GestureLongPressOverrider) *GestureLongPress {
-	return wrapGestureLongPress(externglib.BaseObject(obj))
-}
-
 // GestureLongPress is a Gesture implementation able to recognize long presses,
 // triggering the GestureLongPress::pressed after the timeout is exceeded.
 //

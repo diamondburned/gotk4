@@ -28,12 +28,6 @@ type WaylandSeatOverrider interface {
 	externglib.Objector
 }
 
-// WrapWaylandSeatOverrider wraps the WaylandSeatOverrider
-// interface implementation to access the instance methods.
-func WrapWaylandSeatOverrider(obj WaylandSeatOverrider) *WaylandSeat {
-	return wrapWaylandSeat(externglib.BaseObject(obj))
-}
-
 // WaylandSeat: wayland implementation of GdkSeat.
 //
 // Beyond the regular gdk.Seat API, the Wayland implementation provides access

@@ -27,12 +27,6 @@ type NoOpObjectFactoryOverrider interface {
 	externglib.Objector
 }
 
-// WrapNoOpObjectFactoryOverrider wraps the NoOpObjectFactoryOverrider
-// interface implementation to access the instance methods.
-func WrapNoOpObjectFactoryOverrider(obj NoOpObjectFactoryOverrider) *NoOpObjectFactory {
-	return wrapNoOpObjectFactory(externglib.BaseObject(obj))
-}
-
 // NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject. An
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.

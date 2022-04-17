@@ -29,12 +29,6 @@ type SortListModelOverrider interface {
 	externglib.Objector
 }
 
-// WrapSortListModelOverrider wraps the SortListModelOverrider
-// interface implementation to access the instance methods.
-func WrapSortListModelOverrider(obj SortListModelOverrider) *SortListModel {
-	return wrapSortListModel(externglib.BaseObject(obj))
-}
-
 // SortListModel: GtkSortListModel is a list model that sorts the elements of
 // the underlying model according to a GtkSorter.
 //

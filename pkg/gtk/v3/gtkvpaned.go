@@ -30,12 +30,6 @@ type VPanedOverrider interface {
 	externglib.Objector
 }
 
-// WrapVPanedOverrider wraps the VPanedOverrider
-// interface implementation to access the instance methods.
-func WrapVPanedOverrider(obj VPanedOverrider) *VPaned {
-	return wrapVPaned(externglib.BaseObject(obj))
-}
-
 // VPaned widget is a container widget with two children arranged vertically.
 // The division between the two panes is adjustable by the user by dragging a
 // handle. See Paned for details.

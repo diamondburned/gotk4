@@ -30,12 +30,6 @@ type TextCellAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapTextCellAccessibleOverrider wraps the TextCellAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapTextCellAccessibleOverrider(obj TextCellAccessibleOverrider) *TextCellAccessible {
-	return wrapTextCellAccessible(externglib.BaseObject(obj))
-}
-
 type TextCellAccessible struct {
 	_ [0]func() // equal guard
 	RendererCellAccessible

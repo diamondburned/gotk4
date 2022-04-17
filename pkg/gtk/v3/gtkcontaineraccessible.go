@@ -30,12 +30,6 @@ type ContainerAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapContainerAccessibleOverrider wraps the ContainerAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapContainerAccessibleOverrider(obj ContainerAccessibleOverrider) *ContainerAccessible {
-	return wrapContainerAccessible(externglib.BaseObject(obj))
-}
-
 type ContainerAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

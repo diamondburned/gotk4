@@ -253,12 +253,6 @@ type DatagramBasedOverrider interface {
 	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
 }
 
-// WrapDatagramBasedOverrider wraps the DatagramBasedOverrider
-// interface implementation to access the instance methods.
-func WrapDatagramBasedOverrider(obj DatagramBasedOverrider) *DatagramBased {
-	return wrapDatagramBased(externglib.BaseObject(obj))
-}
-
 // DatagramBased is a networking interface for representing datagram-based
 // communications. It is a more or less direct mapping of the core parts of the
 // BSD socket API in a portable GObject interface. It is implemented by

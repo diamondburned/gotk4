@@ -1187,12 +1187,6 @@ type FlowBoxChildOverrider interface {
 	Activate()
 }
 
-// WrapFlowBoxChildOverrider wraps the FlowBoxChildOverrider
-// interface implementation to access the instance methods.
-func WrapFlowBoxChildOverrider(obj FlowBoxChildOverrider) *FlowBoxChild {
-	return wrapFlowBoxChild(externglib.BaseObject(obj))
-}
-
 // FlowBoxChild: GtkFlowBoxChild is the kind of widget that can be added to a
 // GtkFlowBox.
 type FlowBoxChild struct {

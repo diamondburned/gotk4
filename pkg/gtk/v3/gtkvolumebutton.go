@@ -30,12 +30,6 @@ type VolumeButtonOverrider interface {
 	externglib.Objector
 }
 
-// WrapVolumeButtonOverrider wraps the VolumeButtonOverrider
-// interface implementation to access the instance methods.
-func WrapVolumeButtonOverrider(obj VolumeButtonOverrider) *VolumeButton {
-	return wrapVolumeButton(externglib.BaseObject(obj))
-}
-
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
 // volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton struct {

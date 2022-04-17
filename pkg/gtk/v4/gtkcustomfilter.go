@@ -62,12 +62,6 @@ type CustomFilterOverrider interface {
 	externglib.Objector
 }
 
-// WrapCustomFilterOverrider wraps the CustomFilterOverrider
-// interface implementation to access the instance methods.
-func WrapCustomFilterOverrider(obj CustomFilterOverrider) *CustomFilter {
-	return wrapCustomFilter(externglib.BaseObject(obj))
-}
-
 // CustomFilter: GtkCustomFilter determines whether to include items with a
 // callback.
 type CustomFilter struct {

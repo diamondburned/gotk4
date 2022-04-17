@@ -29,12 +29,6 @@ type CharsetConverterOverrider interface {
 	externglib.Objector
 }
 
-// WrapCharsetConverterOverrider wraps the CharsetConverterOverrider
-// interface implementation to access the instance methods.
-func WrapCharsetConverterOverrider(obj CharsetConverterOverrider) *CharsetConverter {
-	return wrapCharsetConverter(externglib.BaseObject(obj))
-}
-
 // CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter struct {
 	_ [0]func() // equal guard

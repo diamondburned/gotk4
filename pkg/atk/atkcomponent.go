@@ -318,12 +318,6 @@ type ComponentOverrider interface {
 	SetSize(width, height int) bool
 }
 
-// WrapComponentOverrider wraps the ComponentOverrider
-// interface implementation to access the instance methods.
-func WrapComponentOverrider(obj ComponentOverrider) *Component {
-	return wrapComponent(externglib.BaseObject(obj))
-}
-
 // Component should be implemented by most if not all UI elements with an actual
 // on-screen presence, i.e. components which can be said to have a
 // screen-coordinate bounding box. Virtually all widgets will need to have

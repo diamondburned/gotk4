@@ -35,12 +35,6 @@ type ShortcutManagerOverrider interface {
 	RemoveController(controller *ShortcutController)
 }
 
-// WrapShortcutManagerOverrider wraps the ShortcutManagerOverrider
-// interface implementation to access the instance methods.
-func WrapShortcutManagerOverrider(obj ShortcutManagerOverrider) *ShortcutManager {
-	return wrapShortcutManager(externglib.BaseObject(obj))
-}
-
 // ShortcutManager: GtkShortcutManager interface is used to implement shortcut
 // scopes.
 //
@@ -115,8 +109,7 @@ func (self *ShortcutManager) baseShortcutManager() *ShortcutManager {
 	return self
 }
 
-// BaseShortcutManager returns the underlying base object from the
-// interface.
+// BaseShortcutManager returns the underlying base object.
 func BaseShortcutManager(obj ShortcutManagerer) *ShortcutManager {
 	return obj.baseShortcutManager()
 }

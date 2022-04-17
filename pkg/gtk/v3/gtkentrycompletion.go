@@ -105,12 +105,6 @@ type EntryCompletionOverrider interface {
 	NoMatches()
 }
 
-// WrapEntryCompletionOverrider wraps the EntryCompletionOverrider
-// interface implementation to access the instance methods.
-func WrapEntryCompletionOverrider(obj EntryCompletionOverrider) *EntryCompletion {
-	return wrapEntryCompletion(externglib.BaseObject(obj))
-}
-
 // EntryCompletion is an auxiliary object to be used in conjunction with Entry
 // to provide the completion functionality. It implements the CellLayout
 // interface, to allow the user to add extra cells to the TreeView with

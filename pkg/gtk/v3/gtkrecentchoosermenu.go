@@ -31,12 +31,6 @@ type RecentChooserMenuOverrider interface {
 	externglib.Objector
 }
 
-// WrapRecentChooserMenuOverrider wraps the RecentChooserMenuOverrider
-// interface implementation to access the instance methods.
-func WrapRecentChooserMenuOverrider(obj RecentChooserMenuOverrider) *RecentChooserMenu {
-	return wrapRecentChooserMenu(externglib.BaseObject(obj))
-}
-
 // RecentChooserMenu is a widget suitable for displaying recently used files
 // inside a menu. It can be used to set a sub-menu of a MenuItem using
 // gtk_menu_item_set_submenu(), or as the menu of a MenuToolButton.

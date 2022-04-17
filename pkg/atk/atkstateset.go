@@ -28,12 +28,6 @@ type StateSetOverrider interface {
 	externglib.Objector
 }
 
-// WrapStateSetOverrider wraps the StateSetOverrider
-// interface implementation to access the instance methods.
-func WrapStateSetOverrider(obj StateSetOverrider) *StateSet {
-	return wrapStateSet(externglib.BaseObject(obj))
-}
-
 // StateSet is a read-only representation of the full set of States that apply
 // to an object at a given time. This set is not meant to be modified, but
 // rather created when #atk_object_ref_state_set() is called.

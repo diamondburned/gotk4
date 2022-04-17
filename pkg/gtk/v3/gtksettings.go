@@ -32,12 +32,6 @@ type SettingsOverrider interface {
 	externglib.Objector
 }
 
-// WrapSettingsOverrider wraps the SettingsOverrider
-// interface implementation to access the instance methods.
-func WrapSettingsOverrider(obj SettingsOverrider) *Settings {
-	return wrapSettings(externglib.BaseObject(obj))
-}
-
 // Settings provide a mechanism to share global settings between applications.
 //
 // On the X window system, this sharing is realized by an XSettings

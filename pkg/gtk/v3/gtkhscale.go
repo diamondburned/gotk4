@@ -31,12 +31,6 @@ type HScaleOverrider interface {
 	externglib.Objector
 }
 
-// WrapHScaleOverrider wraps the HScaleOverrider
-// interface implementation to access the instance methods.
-func WrapHScaleOverrider(obj HScaleOverrider) *HScale {
-	return wrapHScale(externglib.BaseObject(obj))
-}
-
 // HScale widget is used to allow the user to select a value using a horizontal
 // slider. To create one, use gtk_hscale_new_with_range().
 //

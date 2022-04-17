@@ -108,12 +108,6 @@ type ApplicationOverrider interface {
 	WindowRemoved(window *Window)
 }
 
-// WrapApplicationOverrider wraps the ApplicationOverrider
-// interface implementation to access the instance methods.
-func WrapApplicationOverrider(obj ApplicationOverrider) *Application {
-	return wrapApplication(externglib.BaseObject(obj))
-}
-
 // Application: GtkApplication is a high-level API for writing applications.
 //
 // It supports many aspects of writing a GTK application in a convenient

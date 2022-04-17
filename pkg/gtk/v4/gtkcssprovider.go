@@ -32,12 +32,6 @@ type CSSProviderOverrider interface {
 	externglib.Objector
 }
 
-// WrapCSSProviderOverrider wraps the CSSProviderOverrider
-// interface implementation to access the instance methods.
-func WrapCSSProviderOverrider(obj CSSProviderOverrider) *CSSProvider {
-	return wrapCSSProvider(externglib.BaseObject(obj))
-}
-
 // CSSProvider: GtkCssProvider is an object implementing the GtkStyleProvider
 // interface for CSS.
 //

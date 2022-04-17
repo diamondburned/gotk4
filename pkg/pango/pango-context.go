@@ -176,12 +176,6 @@ type ContextOverrider interface {
 	externglib.Objector
 }
 
-// WrapContextOverrider wraps the ContextOverrider
-// interface implementation to access the instance methods.
-func WrapContextOverrider(obj ContextOverrider) *Context {
-	return wrapContext(externglib.BaseObject(obj))
-}
-
 // Context: PangoContext stores global information used to control the
 // itemization process.
 //

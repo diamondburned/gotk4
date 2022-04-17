@@ -150,12 +150,6 @@ type StackOverrider interface {
 	externglib.Objector
 }
 
-// WrapStackOverrider wraps the StackOverrider
-// interface implementation to access the instance methods.
-func WrapStackOverrider(obj StackOverrider) *Stack {
-	return wrapStack(externglib.BaseObject(obj))
-}
-
 // Stack widget is a container which only shows one of its children at a time.
 // In contrast to GtkNotebook, GtkStack does not provide a means for users to
 // change the visible child. Instead, the StackSwitcher widget can be used with

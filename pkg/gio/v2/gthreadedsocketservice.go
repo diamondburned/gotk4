@@ -39,12 +39,6 @@ type ThreadedSocketServiceOverrider interface {
 	Run(connection *SocketConnection, sourceObject *externglib.Object) bool
 }
 
-// WrapThreadedSocketServiceOverrider wraps the ThreadedSocketServiceOverrider
-// interface implementation to access the instance methods.
-func WrapThreadedSocketServiceOverrider(obj ThreadedSocketServiceOverrider) *ThreadedSocketService {
-	return wrapThreadedSocketService(externglib.BaseObject(obj))
-}
-
 // ThreadedSocketService is a simple subclass of Service that handles incoming
 // connections by creating a worker thread and dispatching the connection to it
 // by emitting the SocketService::run signal in the new thread.

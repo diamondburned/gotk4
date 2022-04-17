@@ -2306,8 +2306,7 @@ func (node *RenderNode) baseRenderNode() *RenderNode {
 	return node
 }
 
-// BaseRenderNode returns the underlying base object from the
-// interface.
+// BaseRenderNode returns the underlying base object.
 func BaseRenderNode(obj RenderNoder) *RenderNode {
 	return obj.baseRenderNode()
 }

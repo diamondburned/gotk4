@@ -196,12 +196,6 @@ type CellLayoutOverrider interface {
 	Reorder(cell CellRendererer, position int)
 }
 
-// WrapCellLayoutOverrider wraps the CellLayoutOverrider
-// interface implementation to access the instance methods.
-func WrapCellLayoutOverrider(obj CellLayoutOverrider) *CellLayout {
-	return wrapCellLayout(externglib.BaseObject(obj))
-}
-
 // CellLayout: interface for packing cells
 //
 // CellLayout is an interface to be implemented by all objects which want to

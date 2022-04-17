@@ -152,12 +152,6 @@ type ActionOverrider interface {
 	SetDescription(i int, desc string) bool
 }
 
-// WrapActionOverrider wraps the ActionOverrider
-// interface implementation to access the instance methods.
-func WrapActionOverrider(obj ActionOverrider) *Action {
-	return wrapAction(externglib.BaseObject(obj))
-}
-
 // Action should be implemented by instances of Object classes with which the
 // user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
 // components which are not "passive" providers of UI information.

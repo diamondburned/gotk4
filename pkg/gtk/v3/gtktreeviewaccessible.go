@@ -30,12 +30,6 @@ type TreeViewAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapTreeViewAccessibleOverrider wraps the TreeViewAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapTreeViewAccessibleOverrider(obj TreeViewAccessibleOverrider) *TreeViewAccessible {
-	return wrapTreeViewAccessible(externglib.BaseObject(obj))
-}
-
 type TreeViewAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

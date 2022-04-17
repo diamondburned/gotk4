@@ -29,12 +29,6 @@ type AppChooserOverrider interface {
 	externglib.Objector
 }
 
-// WrapAppChooserOverrider wraps the AppChooserOverrider
-// interface implementation to access the instance methods.
-func WrapAppChooserOverrider(obj AppChooserOverrider) *AppChooser {
-	return wrapAppChooser(externglib.BaseObject(obj))
-}
-
 // AppChooser: GtkAppChooser is an interface for widgets which allow the user to
 // choose an application.
 //

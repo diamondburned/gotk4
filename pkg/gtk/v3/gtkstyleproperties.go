@@ -39,12 +39,6 @@ type StylePropertiesOverrider interface {
 	externglib.Objector
 }
 
-// WrapStylePropertiesOverrider wraps the StylePropertiesOverrider
-// interface implementation to access the instance methods.
-func WrapStylePropertiesOverrider(obj StylePropertiesOverrider) *StyleProperties {
-	return wrapStyleProperties(externglib.BaseObject(obj))
-}
-
 // StyleProperties provides the storage for style information that is used by
 // StyleContext and other StyleProvider implementations.
 //

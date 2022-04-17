@@ -31,12 +31,6 @@ type GridOverrider interface {
 	externglib.Objector
 }
 
-// WrapGridOverrider wraps the GridOverrider
-// interface implementation to access the instance methods.
-func WrapGridOverrider(obj GridOverrider) *Grid {
-	return wrapGrid(externglib.BaseObject(obj))
-}
-
 // Grid is a container which arranges its child widgets in rows and columns,
 // with arbitrary positions and horizontal/vertical spans.
 //

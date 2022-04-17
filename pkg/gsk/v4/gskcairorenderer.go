@@ -27,12 +27,6 @@ type CairoRendererOverrider interface {
 	externglib.Objector
 }
 
-// WrapCairoRendererOverrider wraps the CairoRendererOverrider
-// interface implementation to access the instance methods.
-func WrapCairoRendererOverrider(obj CairoRendererOverrider) *CairoRenderer {
-	return wrapCairoRenderer(externglib.BaseObject(obj))
-}
-
 // CairoRenderer: GSK renderer that is using cairo.
 //
 // Since it is using cairo, this renderer cannot support 3D transformations.

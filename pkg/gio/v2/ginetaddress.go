@@ -38,12 +38,6 @@ type InetAddressOverrider interface {
 	String() string
 }
 
-// WrapInetAddressOverrider wraps the InetAddressOverrider
-// interface implementation to access the instance methods.
-func WrapInetAddressOverrider(obj InetAddressOverrider) *InetAddress {
-	return wrapInetAddress(externglib.BaseObject(obj))
-}
-
 // InetAddress represents an IPv4 or IPv6 internet address. Use
 // g_resolver_lookup_by_name() or g_resolver_lookup_by_name_async() to look up
 // the Address for a hostname. Use g_resolver_lookup_by_address() or

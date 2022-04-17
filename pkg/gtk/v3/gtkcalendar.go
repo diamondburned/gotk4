@@ -161,12 +161,6 @@ type CalendarOverrider interface {
 	PrevYear()
 }
 
-// WrapCalendarOverrider wraps the CalendarOverrider
-// interface implementation to access the instance methods.
-func WrapCalendarOverrider(obj CalendarOverrider) *Calendar {
-	return wrapCalendar(externglib.BaseObject(obj))
-}
-
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
 // It can be created with gtk_calendar_new().
 //

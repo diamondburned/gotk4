@@ -28,12 +28,6 @@ type TCPConnectionOverrider interface {
 	externglib.Objector
 }
 
-// WrapTCPConnectionOverrider wraps the TCPConnectionOverrider
-// interface implementation to access the instance methods.
-func WrapTCPConnectionOverrider(obj TCPConnectionOverrider) *TCPConnection {
-	return wrapTCPConnection(externglib.BaseObject(obj))
-}
-
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
 type TCPConnection struct {

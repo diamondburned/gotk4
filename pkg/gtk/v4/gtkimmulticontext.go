@@ -28,12 +28,6 @@ type IMMulticontextOverrider interface {
 	externglib.Objector
 }
 
-// WrapIMMulticontextOverrider wraps the IMMulticontextOverrider
-// interface implementation to access the instance methods.
-func WrapIMMulticontextOverrider(obj IMMulticontextOverrider) *IMMulticontext {
-	return wrapIMMulticontext(externglib.BaseObject(obj))
-}
-
 // IMMulticontext: GtkIMMulticontext is input method supporting multiple,
 // switchable input methods.
 //

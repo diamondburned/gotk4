@@ -221,12 +221,6 @@ type ListBoxOverrider interface {
 	UnselectAll()
 }
 
-// WrapListBoxOverrider wraps the ListBoxOverrider
-// interface implementation to access the instance methods.
-func WrapListBoxOverrider(obj ListBoxOverrider) *ListBox {
-	return wrapListBox(externglib.BaseObject(obj))
-}
-
 // ListBox is a vertical container that contains GtkListBoxRow children. These
 // rows can by dynamically sorted and filtered, and headers can be added
 // dynamically depending on the row content. It also allows keyboard and mouse
@@ -1262,12 +1256,6 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 type ListBoxRowOverrider interface {
 	externglib.Objector
 	Activate()
-}
-
-// WrapListBoxRowOverrider wraps the ListBoxRowOverrider
-// interface implementation to access the instance methods.
-func WrapListBoxRowOverrider(obj ListBoxRowOverrider) *ListBoxRow {
-	return wrapListBoxRow(externglib.BaseObject(obj))
 }
 
 type ListBoxRow struct {

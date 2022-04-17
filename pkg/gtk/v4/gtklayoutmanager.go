@@ -92,12 +92,6 @@ type LayoutManagerOverrider interface {
 	Unroot()
 }
 
-// WrapLayoutManagerOverrider wraps the LayoutManagerOverrider
-// interface implementation to access the instance methods.
-func WrapLayoutManagerOverrider(obj LayoutManagerOverrider) *LayoutManager {
-	return wrapLayoutManager(externglib.BaseObject(obj))
-}
-
 // LayoutManager: layout managers are delegate classes that handle the preferred
 // size and the allocation of a widget.
 //
@@ -401,8 +395,7 @@ func (manager *LayoutManager) baseLayoutManager() *LayoutManager {
 	return manager
 }
 
-// BaseLayoutManager returns the underlying base object from the
-// interface.
+// BaseLayoutManager returns the underlying base object.
 func BaseLayoutManager(obj LayoutManagerer) *LayoutManager {
 	return obj.baseLayoutManager()
 }

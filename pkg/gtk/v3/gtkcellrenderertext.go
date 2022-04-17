@@ -39,12 +39,6 @@ type CellRendererTextOverrider interface {
 	Edited(path, newText string)
 }
 
-// WrapCellRendererTextOverrider wraps the CellRendererTextOverrider
-// interface implementation to access the instance methods.
-func WrapCellRendererTextOverrider(obj CellRendererTextOverrider) *CellRendererText {
-	return wrapCellRendererText(externglib.BaseObject(obj))
-}
-
 // CellRendererText renders a given text in its cell, using the font, color and
 // style information provided by its properties. The text will be ellipsized if
 // it is too long and the CellRendererText:ellipsize property allows it.

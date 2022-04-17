@@ -37,12 +37,6 @@ type ToggleButtonOverrider interface {
 	Toggled()
 }
 
-// WrapToggleButtonOverrider wraps the ToggleButtonOverrider
-// interface implementation to access the instance methods.
-func WrapToggleButtonOverrider(obj ToggleButtonOverrider) *ToggleButton {
-	return wrapToggleButton(externglib.BaseObject(obj))
-}
-
 // ToggleButton is a Button which will remain “pressed-in” when clicked.
 // Clicking again will cause the toggle button to return to its normal state.
 //

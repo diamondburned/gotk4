@@ -31,12 +31,6 @@ type ComboBoxTextOverrider interface {
 	externglib.Objector
 }
 
-// WrapComboBoxTextOverrider wraps the ComboBoxTextOverrider
-// interface implementation to access the instance methods.
-func WrapComboBoxTextOverrider(obj ComboBoxTextOverrider) *ComboBoxText {
-	return wrapComboBoxText(externglib.BaseObject(obj))
-}
-
 // ComboBoxText is a simple variant of ComboBox that hides the model-view
 // complexity for simple text-only use cases.
 //

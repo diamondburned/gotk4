@@ -30,12 +30,6 @@ type ScrolledWindowAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapScrolledWindowAccessibleOverrider wraps the ScrolledWindowAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapScrolledWindowAccessibleOverrider(obj ScrolledWindowAccessibleOverrider) *ScrolledWindowAccessible {
-	return wrapScrolledWindowAccessible(externglib.BaseObject(obj))
-}
-
 type ScrolledWindowAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

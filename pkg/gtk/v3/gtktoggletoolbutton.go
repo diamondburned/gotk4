@@ -35,12 +35,6 @@ type ToggleToolButtonOverrider interface {
 	Toggled()
 }
 
-// WrapToggleToolButtonOverrider wraps the ToggleToolButtonOverrider
-// interface implementation to access the instance methods.
-func WrapToggleToolButtonOverrider(obj ToggleToolButtonOverrider) *ToggleToolButton {
-	return wrapToggleToolButton(externglib.BaseObject(obj))
-}
-
 // ToggleToolButton is a ToolItem that contains a toggle button.
 //
 // Use gtk_toggle_tool_button_new() to create a new GtkToggleToolButton.

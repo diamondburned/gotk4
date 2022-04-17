@@ -32,12 +32,6 @@ type ToolItemGroupOverrider interface {
 	externglib.Objector
 }
 
-// WrapToolItemGroupOverrider wraps the ToolItemGroupOverrider
-// interface implementation to access the instance methods.
-func WrapToolItemGroupOverrider(obj ToolItemGroupOverrider) *ToolItemGroup {
-	return wrapToolItemGroup(externglib.BaseObject(obj))
-}
-
 // ToolItemGroup is used together with ToolPalette to add ToolItems to a palette
 // like container with different categories and drag and drop support.
 //

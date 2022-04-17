@@ -64,12 +64,6 @@ type SocketControlMessageOverrider interface {
 	Serialize(data cgo.Handle)
 }
 
-// WrapSocketControlMessageOverrider wraps the SocketControlMessageOverrider
-// interface implementation to access the instance methods.
-func WrapSocketControlMessageOverrider(obj SocketControlMessageOverrider) *SocketControlMessage {
-	return wrapSocketControlMessage(externglib.BaseObject(obj))
-}
-
 // SocketControlMessage is a special-purpose utility message that can be sent to
 // or received from a #GSocket. These types of messages are often called
 // "ancillary data".
@@ -198,8 +192,7 @@ func (message *SocketControlMessage) baseSocketControlMessage() *SocketControlMe
 	return message
 }
 
-// BaseSocketControlMessage returns the underlying base object from the
-// interface.
+// BaseSocketControlMessage returns the underlying base object.
 func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
 	return obj.baseSocketControlMessage()
 }

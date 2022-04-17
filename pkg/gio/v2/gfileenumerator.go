@@ -93,12 +93,6 @@ type FileEnumeratorOverrider interface {
 	NextFilesFinish(result AsyncResultOverrider) ([]FileInfo, error)
 }
 
-// WrapFileEnumeratorOverrider wraps the FileEnumeratorOverrider
-// interface implementation to access the instance methods.
-func WrapFileEnumeratorOverrider(obj FileEnumeratorOverrider) *FileEnumerator {
-	return wrapFileEnumerator(externglib.BaseObject(obj))
-}
-
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
 // structure for each file enumerated (e.g. g_file_enumerate_children() will
 // return a Enumerator for each of the children within a directory).

@@ -35,12 +35,6 @@ type MenuToolButtonOverrider interface {
 	ShowMenu()
 }
 
-// WrapMenuToolButtonOverrider wraps the MenuToolButtonOverrider
-// interface implementation to access the instance methods.
-func WrapMenuToolButtonOverrider(obj MenuToolButtonOverrider) *MenuToolButton {
-	return wrapMenuToolButton(externglib.BaseObject(obj))
-}
-
 // MenuToolButton is a ToolItem that contains a button and a small additional
 // button with an arrow. When clicked, the arrow button pops up a dropdown menu.
 //

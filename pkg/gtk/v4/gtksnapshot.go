@@ -35,12 +35,6 @@ type SnapshotOverrider interface {
 	externglib.Objector
 }
 
-// WrapSnapshotOverrider wraps the SnapshotOverrider
-// interface implementation to access the instance methods.
-func WrapSnapshotOverrider(obj SnapshotOverrider) *Snapshot {
-	return wrapSnapshot(externglib.BaseObject(obj))
-}
-
 // Snapshot: GtkSnapshot assists in creating GskRenderNodes for widgets.
 //
 // It functions in a similar way to a cairo context, and maintains a stack of

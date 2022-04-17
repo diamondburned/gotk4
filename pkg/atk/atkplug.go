@@ -33,12 +33,6 @@ type PlugOverrider interface {
 	ObjectID() string
 }
 
-// WrapPlugOverrider wraps the PlugOverrider
-// interface implementation to access the instance methods.
-func WrapPlugOverrider(obj PlugOverrider) *Plug {
-	return wrapPlug(externglib.BaseObject(obj))
-}
-
 // Plug: see Socket.
 type Plug struct {
 	_ [0]func() // equal guard

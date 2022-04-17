@@ -162,12 +162,6 @@ type HyperlinkOverrider interface {
 	LinkState() uint
 }
 
-// WrapHyperlinkOverrider wraps the HyperlinkOverrider
-// interface implementation to access the instance methods.
-func WrapHyperlinkOverrider(obj HyperlinkOverrider) *Hyperlink {
-	return wrapHyperlink(externglib.BaseObject(obj))
-}
-
 // Hyperlink: ATK object which encapsulates a link or set of links (for instance
 // in the case of client-side image maps) in a hypertext document. It may
 // implement the AtkAction interface. AtkHyperlink may also be used to refer to

@@ -31,12 +31,6 @@ type ActionBarOverrider interface {
 	externglib.Objector
 }
 
-// WrapActionBarOverrider wraps the ActionBarOverrider
-// interface implementation to access the instance methods.
-func WrapActionBarOverrider(obj ActionBarOverrider) *ActionBar {
-	return wrapActionBar(externglib.BaseObject(obj))
-}
-
 // ActionBar is designed to present contextual actions. It is expected to be
 // displayed below the content and expand horizontally to fill the area.
 //

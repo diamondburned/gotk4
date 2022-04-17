@@ -28,12 +28,6 @@ type StringSorterOverrider interface {
 	externglib.Objector
 }
 
-// WrapStringSorterOverrider wraps the StringSorterOverrider
-// interface implementation to access the instance methods.
-func WrapStringSorterOverrider(obj StringSorterOverrider) *StringSorter {
-	return wrapStringSorter(externglib.BaseObject(obj))
-}
-
 // StringSorter: GtkStringSorter is a GtkSorter that compares strings.
 //
 // It does the comparison in a linguistically correct way using the current

@@ -458,8 +458,7 @@ func (self *Expression) baseExpression() *Expression {
 	return self
 }
 
-// BaseExpression returns the underlying base object from the
-// interface.
+// BaseExpression returns the underlying base object.
 func BaseExpression(obj Expressioner) *Expression {
 	return obj.baseExpression()
 }

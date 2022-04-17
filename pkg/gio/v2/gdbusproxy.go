@@ -44,12 +44,6 @@ type DBusProxyOverrider interface {
 	GSignal(senderName, signalName string, parameters *glib.Variant)
 }
 
-// WrapDBusProxyOverrider wraps the DBusProxyOverrider
-// interface implementation to access the instance methods.
-func WrapDBusProxyOverrider(obj DBusProxyOverrider) *DBusProxy {
-	return wrapDBusProxy(externglib.BaseObject(obj))
-}
-
 // DBusProxy is a base class used for proxies to access a D-Bus interface on a
 // remote object. A BusProxy can be constructed for both well-known and unique
 // names.

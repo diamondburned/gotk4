@@ -28,12 +28,6 @@ type TreeListRowSorterOverrider interface {
 	externglib.Objector
 }
 
-// WrapTreeListRowSorterOverrider wraps the TreeListRowSorterOverrider
-// interface implementation to access the instance methods.
-func WrapTreeListRowSorterOverrider(obj TreeListRowSorterOverrider) *TreeListRowSorter {
-	return wrapTreeListRowSorter(externglib.BaseObject(obj))
-}
-
 // TreeListRowSorter: GtkTreeListRowSorter is a special-purpose sorter that will
 // apply a given sorter to the levels in a tree.
 //

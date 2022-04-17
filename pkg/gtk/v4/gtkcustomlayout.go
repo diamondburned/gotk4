@@ -27,12 +27,6 @@ type CustomLayoutOverrider interface {
 	externglib.Objector
 }
 
-// WrapCustomLayoutOverrider wraps the CustomLayoutOverrider
-// interface implementation to access the instance methods.
-func WrapCustomLayoutOverrider(obj CustomLayoutOverrider) *CustomLayout {
-	return wrapCustomLayout(externglib.BaseObject(obj))
-}
-
 // CustomLayout: GtkCustomLayout uses closures for size negotiation.
 //
 // A GtkCustomLayout uses closures matching to the old GtkWidget virtual

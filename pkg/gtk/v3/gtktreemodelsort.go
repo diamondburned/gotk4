@@ -31,12 +31,6 @@ type TreeModelSortOverrider interface {
 	externglib.Objector
 }
 
-// WrapTreeModelSortOverrider wraps the TreeModelSortOverrider
-// interface implementation to access the instance methods.
-func WrapTreeModelSortOverrider(obj TreeModelSortOverrider) *TreeModelSort {
-	return wrapTreeModelSort(externglib.BaseObject(obj))
-}
-
 // TreeModelSort is a model which implements the TreeSortable interface. It does
 // not hold any data itself, but rather is created with a child model and
 // proxies its data. It has identical column types to this child model, and the

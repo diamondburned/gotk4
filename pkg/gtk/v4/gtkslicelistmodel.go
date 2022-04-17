@@ -29,12 +29,6 @@ type SliceListModelOverrider interface {
 	externglib.Objector
 }
 
-// WrapSliceListModelOverrider wraps the SliceListModelOverrider
-// interface implementation to access the instance methods.
-func WrapSliceListModelOverrider(obj SliceListModelOverrider) *SliceListModel {
-	return wrapSliceListModel(externglib.BaseObject(obj))
-}
-
 // SliceListModel: GtkSliceListModel is a list model that presents a slice of
 // another model.
 //

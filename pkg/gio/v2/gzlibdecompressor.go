@@ -28,12 +28,6 @@ type ZlibDecompressorOverrider interface {
 	externglib.Objector
 }
 
-// WrapZlibDecompressorOverrider wraps the ZlibDecompressorOverrider
-// interface implementation to access the instance methods.
-func WrapZlibDecompressorOverrider(obj ZlibDecompressorOverrider) *ZlibDecompressor {
-	return wrapZlibDecompressor(externglib.BaseObject(obj))
-}
-
 // ZlibDecompressor: zlib decompression.
 type ZlibDecompressor struct {
 	_ [0]func() // equal guard

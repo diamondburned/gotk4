@@ -384,12 +384,6 @@ type CellAreaOverrider interface {
 	Snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 }
 
-// WrapCellAreaOverrider wraps the CellAreaOverrider
-// interface implementation to access the instance methods.
-func WrapCellAreaOverrider(obj CellAreaOverrider) *CellArea {
-	return wrapCellArea(externglib.BaseObject(obj))
-}
-
 // CellArea: abstract class for laying out GtkCellRenderers
 //
 // The CellArea is an abstract class for CellLayout widgets (also referred to as
@@ -1119,8 +1113,7 @@ func (area *CellArea) baseCellArea() *CellArea {
 	return area
 }
 
-// BaseCellArea returns the underlying base object from the
-// interface.
+// BaseCellArea returns the underlying base object.
 func BaseCellArea(obj CellAreaer) *CellArea {
 	return obj.baseCellArea()
 }

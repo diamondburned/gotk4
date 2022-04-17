@@ -28,12 +28,6 @@ type WaylandGLContextOverrider interface {
 	externglib.Objector
 }
 
-// WrapWaylandGLContextOverrider wraps the WaylandGLContextOverrider
-// interface implementation to access the instance methods.
-func WrapWaylandGLContextOverrider(obj WaylandGLContextOverrider) *WaylandGLContext {
-	return wrapWaylandGLContext(externglib.BaseObject(obj))
-}
-
 // WaylandGLContext: wayland implementation of GdkGLContext.
 type WaylandGLContext struct {
 	_ [0]func() // equal guard

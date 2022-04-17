@@ -30,12 +30,6 @@ type ATContextOverrider interface {
 	externglib.Objector
 }
 
-// WrapATContextOverrider wraps the ATContextOverrider
-// interface implementation to access the instance methods.
-func WrapATContextOverrider(obj ATContextOverrider) *ATContext {
-	return wrapATContext(externglib.BaseObject(obj))
-}
-
 // ATContext: GtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
 //
@@ -84,8 +78,7 @@ func (self *ATContext) baseATContext() *ATContext {
 	return self
 }
 
-// BaseATContext returns the underlying base object from the
-// interface.
+// BaseATContext returns the underlying base object.
 func BaseATContext(obj ATContexter) *ATContext {
 	return obj.baseATContext()
 }

@@ -69,12 +69,6 @@ type SimpleAsyncResultOverrider interface {
 	externglib.Objector
 }
 
-// WrapSimpleAsyncResultOverrider wraps the SimpleAsyncResultOverrider
-// interface implementation to access the instance methods.
-func WrapSimpleAsyncResultOverrider(obj SimpleAsyncResultOverrider) *SimpleAsyncResult {
-	return wrapSimpleAsyncResult(externglib.BaseObject(obj))
-}
-
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
 // #GTask, which provides a simpler API.
 //

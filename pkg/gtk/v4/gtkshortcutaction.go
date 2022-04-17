@@ -152,12 +152,6 @@ type ActivateActionOverrider interface {
 	externglib.Objector
 }
 
-// WrapActivateActionOverrider wraps the ActivateActionOverrider
-// interface implementation to access the instance methods.
-func WrapActivateActionOverrider(obj ActivateActionOverrider) *ActivateAction {
-	return wrapActivateAction(externglib.BaseObject(obj))
-}
-
 // ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {
 	_ [0]func() // equal guard
@@ -212,12 +206,6 @@ func ActivateActionGet() *ActivateAction {
 // CallbackActionOverrider contains methods that are overridable.
 type CallbackActionOverrider interface {
 	externglib.Objector
-}
-
-// WrapCallbackActionOverrider wraps the CallbackActionOverrider
-// interface implementation to access the instance methods.
-func WrapCallbackActionOverrider(obj CallbackActionOverrider) *CallbackAction {
-	return wrapCallbackAction(externglib.BaseObject(obj))
 }
 
 // CallbackAction: GtkShortcutAction that invokes a callback.
@@ -288,12 +276,6 @@ type MnemonicActionOverrider interface {
 	externglib.Objector
 }
 
-// WrapMnemonicActionOverrider wraps the MnemonicActionOverrider
-// interface implementation to access the instance methods.
-func WrapMnemonicActionOverrider(obj MnemonicActionOverrider) *MnemonicAction {
-	return wrapMnemonicAction(externglib.BaseObject(obj))
-}
-
 // MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
 	_ [0]func() // equal guard
@@ -348,12 +330,6 @@ func MnemonicActionGet() *MnemonicAction {
 // NamedActionOverrider contains methods that are overridable.
 type NamedActionOverrider interface {
 	externglib.Objector
-}
-
-// WrapNamedActionOverrider wraps the NamedActionOverrider
-// interface implementation to access the instance methods.
-func WrapNamedActionOverrider(obj NamedActionOverrider) *NamedAction {
-	return wrapNamedAction(externglib.BaseObject(obj))
 }
 
 // NamedAction: GtkShortcutAction that activates an action by name.
@@ -445,12 +421,6 @@ type NothingActionOverrider interface {
 	externglib.Objector
 }
 
-// WrapNothingActionOverrider wraps the NothingActionOverrider
-// interface implementation to access the instance methods.
-func WrapNothingActionOverrider(obj NothingActionOverrider) *NothingAction {
-	return wrapNothingAction(externglib.BaseObject(obj))
-}
-
 // NothingAction: GtkShortcutAction that does nothing.
 type NothingAction struct {
 	_ [0]func() // equal guard
@@ -504,12 +474,6 @@ func NothingActionGet() *NothingAction {
 // ShortcutActionOverrider contains methods that are overridable.
 type ShortcutActionOverrider interface {
 	externglib.Objector
-}
-
-// WrapShortcutActionOverrider wraps the ShortcutActionOverrider
-// interface implementation to access the instance methods.
-func WrapShortcutActionOverrider(obj ShortcutActionOverrider) *ShortcutAction {
-	return wrapShortcutAction(externglib.BaseObject(obj))
 }
 
 // ShortcutAction: GtkShortcutAction encodes an action that can be triggered by
@@ -581,8 +545,7 @@ func (self *ShortcutAction) baseShortcutAction() *ShortcutAction {
 	return self
 }
 
-// BaseShortcutAction returns the underlying base object from the
-// interface.
+// BaseShortcutAction returns the underlying base object.
 func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
 	return obj.baseShortcutAction()
 }
@@ -707,12 +670,6 @@ func (self *ShortcutAction) String() string {
 // SignalActionOverrider contains methods that are overridable.
 type SignalActionOverrider interface {
 	externglib.Objector
-}
-
-// WrapSignalActionOverrider wraps the SignalActionOverrider
-// interface implementation to access the instance methods.
-func WrapSignalActionOverrider(obj SignalActionOverrider) *SignalAction {
-	return wrapSignalAction(externglib.BaseObject(obj))
 }
 
 // SignalAction: GtkShortcutAction that emits a signal.

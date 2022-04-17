@@ -32,12 +32,6 @@ type ContainerCellAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapContainerCellAccessibleOverrider wraps the ContainerCellAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapContainerCellAccessibleOverrider(obj ContainerCellAccessibleOverrider) *ContainerCellAccessible {
-	return wrapContainerCellAccessible(externglib.BaseObject(obj))
-}
-
 type ContainerCellAccessible struct {
 	_ [0]func() // equal guard
 	CellAccessible

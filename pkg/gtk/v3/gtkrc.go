@@ -994,12 +994,6 @@ type RCStyleOverrider interface {
 	Parse(settings *Settings, scanner *glib.Scanner) uint
 }
 
-// WrapRCStyleOverrider wraps the RCStyleOverrider
-// interface implementation to access the instance methods.
-func WrapRCStyleOverrider(obj RCStyleOverrider) *RCStyle {
-	return wrapRCStyle(externglib.BaseObject(obj))
-}
-
 // RCStyle is used to represent a set of information about the appearance of a
 // widget. This can later be composited together with other RcStyle-struct<!--
 // -->s to form a Style.

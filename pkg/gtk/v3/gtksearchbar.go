@@ -33,12 +33,6 @@ type SearchBarOverrider interface {
 	externglib.Objector
 }
 
-// WrapSearchBarOverrider wraps the SearchBarOverrider
-// interface implementation to access the instance methods.
-func WrapSearchBarOverrider(obj SearchBarOverrider) *SearchBar {
-	return wrapSearchBar(externglib.BaseObject(obj))
-}
-
 // SearchBar is a container made to have a search entry (possibly with
 // additional connex widgets, such as drop-down menus, or buttons) built-in. The
 // search bar would appear when a search is started through typing on the

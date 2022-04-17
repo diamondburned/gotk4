@@ -79,12 +79,6 @@ type ColorChooserOverrider interface {
 	SetRGBA(color *gdk.RGBA)
 }
 
-// WrapColorChooserOverrider wraps the ColorChooserOverrider
-// interface implementation to access the instance methods.
-func WrapColorChooserOverrider(obj ColorChooserOverrider) *ColorChooser {
-	return wrapColorChooser(externglib.BaseObject(obj))
-}
-
 // ColorChooser is an interface that is implemented by widgets for choosing
 // colors. Depending on the situation, colors may be allowed to have alpha
 // (translucency).

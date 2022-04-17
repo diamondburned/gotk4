@@ -28,12 +28,6 @@ type ThemedIconOverrider interface {
 	externglib.Objector
 }
 
-// WrapThemedIconOverrider wraps the ThemedIconOverrider
-// interface implementation to access the instance methods.
-func WrapThemedIconOverrider(obj ThemedIconOverrider) *ThemedIcon {
-	return wrapThemedIcon(externglib.BaseObject(obj))
-}
-
 // ThemedIcon is an implementation of #GIcon that supports icon themes. Icon
 // contains a list of all of the icons present in an icon theme, so that icons
 // can be looked up quickly. Icon does not provide actual pixmaps for icons,

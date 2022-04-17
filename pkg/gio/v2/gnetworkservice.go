@@ -28,12 +28,6 @@ type NetworkServiceOverrider interface {
 	externglib.Objector
 }
 
-// WrapNetworkServiceOverrider wraps the NetworkServiceOverrider
-// interface implementation to access the instance methods.
-func WrapNetworkServiceOverrider(obj NetworkServiceOverrider) *NetworkService {
-	return wrapNetworkService(externglib.BaseObject(obj))
-}
-
 // NetworkService: like Address does with hostnames, Service provides an easy
 // way to resolve a SRV record, and then attempt to connect to one of the hosts
 // that implements that service, handling service priority/weighting, multiple

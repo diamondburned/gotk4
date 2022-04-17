@@ -99,12 +99,6 @@ type CellAccessibleParentOverrider interface {
 	UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet)
 }
 
-// WrapCellAccessibleParentOverrider wraps the CellAccessibleParentOverrider
-// interface implementation to access the instance methods.
-func WrapCellAccessibleParentOverrider(obj CellAccessibleParentOverrider) *CellAccessibleParent {
-	return wrapCellAccessibleParent(externglib.BaseObject(obj))
-}
-
 type CellAccessibleParent struct {
 	_ [0]func() // equal guard
 	*externglib.Object

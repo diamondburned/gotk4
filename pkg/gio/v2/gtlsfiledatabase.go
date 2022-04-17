@@ -29,12 +29,6 @@ type TLSFileDatabaseOverrider interface {
 	externglib.Objector
 }
 
-// WrapTLSFileDatabaseOverrider wraps the TLSFileDatabaseOverrider
-// interface implementation to access the instance methods.
-func WrapTLSFileDatabaseOverrider(obj TLSFileDatabaseOverrider) *TLSFileDatabase {
-	return wrapTLSFileDatabase(externglib.BaseObject(obj))
-}
-
 // TLSFileDatabase is implemented by Database objects which load their
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
@@ -75,8 +69,7 @@ func (v *TLSFileDatabase) baseTLSFileDatabase() *TLSFileDatabase {
 	return v
 }
 
-// BaseTLSFileDatabase returns the underlying base object from the
-// interface.
+// BaseTLSFileDatabase returns the underlying base object.
 func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 	return obj.baseTLSFileDatabase()
 }

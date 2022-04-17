@@ -32,12 +32,6 @@ type MountOperationOverrider interface {
 	externglib.Objector
 }
 
-// WrapMountOperationOverrider wraps the MountOperationOverrider
-// interface implementation to access the instance methods.
-func WrapMountOperationOverrider(obj MountOperationOverrider) *MountOperation {
-	return wrapMountOperation(externglib.BaseObject(obj))
-}
-
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation struct {

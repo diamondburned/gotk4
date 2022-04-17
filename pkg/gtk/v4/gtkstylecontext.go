@@ -100,12 +100,6 @@ type StyleContextOverrider interface {
 	Changed()
 }
 
-// WrapStyleContextOverrider wraps the StyleContextOverrider
-// interface implementation to access the instance methods.
-func WrapStyleContextOverrider(obj StyleContextOverrider) *StyleContext {
-	return wrapStyleContext(externglib.BaseObject(obj))
-}
-
 // StyleContext: GtkStyleContext stores styling information affecting a widget.
 //
 // In order to construct the final style information, GtkStyleContext queries

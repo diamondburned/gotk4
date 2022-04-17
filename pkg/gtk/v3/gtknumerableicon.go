@@ -31,12 +31,6 @@ type NumerableIconOverrider interface {
 	externglib.Objector
 }
 
-// WrapNumerableIconOverrider wraps the NumerableIconOverrider
-// interface implementation to access the instance methods.
-func WrapNumerableIconOverrider(obj NumerableIconOverrider) *NumerableIcon {
-	return wrapNumerableIcon(externglib.BaseObject(obj))
-}
-
 // NumerableIcon is a subclass of Icon that can show a number or short string as
 // an emblem. The number can be overlayed on top of another emblem, if desired.
 //

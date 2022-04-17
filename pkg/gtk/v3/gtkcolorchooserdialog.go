@@ -31,12 +31,6 @@ type ColorChooserDialogOverrider interface {
 	externglib.Objector
 }
 
-// WrapColorChooserDialogOverrider wraps the ColorChooserDialogOverrider
-// interface implementation to access the instance methods.
-func WrapColorChooserDialogOverrider(obj ColorChooserDialogOverrider) *ColorChooserDialog {
-	return wrapColorChooserDialog(externglib.BaseObject(obj))
-}
-
 // ColorChooserDialog widget is a dialog for choosing a color. It implements the
 // ColorChooser interface.
 type ColorChooserDialog struct {

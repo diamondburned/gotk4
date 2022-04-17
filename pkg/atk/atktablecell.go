@@ -82,12 +82,6 @@ type TableCellOverrider interface {
 	Table() *ObjectClass
 }
 
-// WrapTableCellOverrider wraps the TableCellOverrider
-// interface implementation to access the instance methods.
-func WrapTableCellOverrider(obj TableCellOverrider) *TableCell {
-	return wrapTableCell(externglib.BaseObject(obj))
-}
-
 // TableCell: being Table a component which present elements ordered via rows
 // and columns, an TableCell is the interface which each of those elements, so
 // "cells" should implement.

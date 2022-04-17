@@ -35,12 +35,6 @@ type CellAccessibleOverrider interface {
 	UpdateCache(emitSignal bool)
 }
 
-// WrapCellAccessibleOverrider wraps the CellAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapCellAccessibleOverrider(obj CellAccessibleOverrider) *CellAccessible {
-	return wrapCellAccessible(externglib.BaseObject(obj))
-}
-
 type CellAccessible struct {
 	_ [0]func() // equal guard
 	Accessible

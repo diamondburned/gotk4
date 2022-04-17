@@ -121,12 +121,6 @@ type ApplicationOverrider interface {
 	Startup()
 }
 
-// WrapApplicationOverrider wraps the ApplicationOverrider
-// interface implementation to access the instance methods.
-func WrapApplicationOverrider(obj ApplicationOverrider) *Application {
-	return wrapApplication(externglib.BaseObject(obj))
-}
-
 // Application is the foundation of an application. It wraps some low-level
 // platform-specific services and is intended to act as the foundation for
 // higher-level application classes such as Application or Application. In

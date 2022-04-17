@@ -30,12 +30,6 @@ type HPanedOverrider interface {
 	externglib.Objector
 }
 
-// WrapHPanedOverrider wraps the HPanedOverrider
-// interface implementation to access the instance methods.
-func WrapHPanedOverrider(obj HPanedOverrider) *HPaned {
-	return wrapHPaned(externglib.BaseObject(obj))
-}
-
 // HPaned widget is a container widget with two children arranged horizontally.
 // The division between the two panes is adjustable by the user by dragging a
 // handle. See Paned for details.

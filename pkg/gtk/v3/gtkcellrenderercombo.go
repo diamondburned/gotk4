@@ -31,12 +31,6 @@ type CellRendererComboOverrider interface {
 	externglib.Objector
 }
 
-// WrapCellRendererComboOverrider wraps the CellRendererComboOverrider
-// interface implementation to access the instance methods.
-func WrapCellRendererComboOverrider(obj CellRendererComboOverrider) *CellRendererCombo {
-	return wrapCellRendererCombo(externglib.BaseObject(obj))
-}
-
 // CellRendererCombo renders text in a cell like CellRendererText from which it
 // is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererCombo offers a ComboBox widget to edit the text. The values

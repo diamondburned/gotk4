@@ -30,12 +30,6 @@ type ComboBoxAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapComboBoxAccessibleOverrider wraps the ComboBoxAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapComboBoxAccessibleOverrider(obj ComboBoxAccessibleOverrider) *ComboBoxAccessible {
-	return wrapComboBoxAccessible(externglib.BaseObject(obj))
-}
-
 type ComboBoxAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

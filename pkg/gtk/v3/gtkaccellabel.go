@@ -32,12 +32,6 @@ type AccelLabelOverrider interface {
 	externglib.Objector
 }
 
-// WrapAccelLabelOverrider wraps the AccelLabelOverrider
-// interface implementation to access the instance methods.
-func WrapAccelLabelOverrider(obj AccelLabelOverrider) *AccelLabel {
-	return wrapAccelLabel(externglib.BaseObject(obj))
-}
-
 // AccelLabel widget is a subclass of Label that also displays an accelerator
 // key on the right of the label text, e.g. “Ctrl+S”. It is commonly used in
 // menus to show the keyboard short-cuts for commands.

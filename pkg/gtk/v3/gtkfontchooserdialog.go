@@ -31,12 +31,6 @@ type FontChooserDialogOverrider interface {
 	externglib.Objector
 }
 
-// WrapFontChooserDialogOverrider wraps the FontChooserDialogOverrider
-// interface implementation to access the instance methods.
-func WrapFontChooserDialogOverrider(obj FontChooserDialogOverrider) *FontChooserDialog {
-	return wrapFontChooserDialog(externglib.BaseObject(obj))
-}
-
 // FontChooserDialog widget is a dialog for selecting a font. It implements the
 // FontChooser interface.
 //

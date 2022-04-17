@@ -35,12 +35,6 @@ type ExpanderOverrider interface {
 	Activate()
 }
 
-// WrapExpanderOverrider wraps the ExpanderOverrider
-// interface implementation to access the instance methods.
-func WrapExpanderOverrider(obj ExpanderOverrider) *Expander {
-	return wrapExpander(externglib.BaseObject(obj))
-}
-
 // Expander allows the user to hide or show its child by clicking on an expander
 // triangle similar to the triangles used in a TreeView.
 //

@@ -29,12 +29,6 @@ type SelectionFilterModelOverrider interface {
 	externglib.Objector
 }
 
-// WrapSelectionFilterModelOverrider wraps the SelectionFilterModelOverrider
-// interface implementation to access the instance methods.
-func WrapSelectionFilterModelOverrider(obj SelectionFilterModelOverrider) *SelectionFilterModel {
-	return wrapSelectionFilterModel(externglib.BaseObject(obj))
-}
-
 // SelectionFilterModel: GtkSelectionFilterModel is a list model that presents
 // the selection from a GtkSelectionModel.
 type SelectionFilterModel struct {

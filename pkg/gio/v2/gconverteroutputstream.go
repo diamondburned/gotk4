@@ -28,12 +28,6 @@ type ConverterOutputStreamOverrider interface {
 	externglib.Objector
 }
 
-// WrapConverterOutputStreamOverrider wraps the ConverterOutputStreamOverrider
-// interface implementation to access the instance methods.
-func WrapConverterOutputStreamOverrider(obj ConverterOutputStreamOverrider) *ConverterOutputStream {
-	return wrapConverterOutputStream(externglib.BaseObject(obj))
-}
-
 // ConverterOutputStream: converter output stream implements Stream and allows
 // conversion of data of various types during reading.
 //

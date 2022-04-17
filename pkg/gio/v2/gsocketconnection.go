@@ -56,12 +56,6 @@ type SocketConnectionOverrider interface {
 	externglib.Objector
 }
 
-// WrapSocketConnectionOverrider wraps the SocketConnectionOverrider
-// interface implementation to access the instance methods.
-func WrapSocketConnectionOverrider(obj SocketConnectionOverrider) *SocketConnection {
-	return wrapSocketConnection(externglib.BaseObject(obj))
-}
-
 // SocketConnection is a OStream for a connected socket. They can be created
 // either by Client when connecting to a host, or by Listener when accepting a
 // new client.

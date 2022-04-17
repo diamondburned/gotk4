@@ -28,12 +28,6 @@ type TextMarkOverrider interface {
 	externglib.Objector
 }
 
-// WrapTextMarkOverrider wraps the TextMarkOverrider
-// interface implementation to access the instance methods.
-func WrapTextMarkOverrider(obj TextMarkOverrider) *TextMark {
-	return wrapTextMark(externglib.BaseObject(obj))
-}
-
 // TextMark: GtkTextMark is a position in a GtkTextbuffer that is preserved
 // across modifications.
 //

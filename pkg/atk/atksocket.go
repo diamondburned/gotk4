@@ -44,12 +44,6 @@ type SocketOverrider interface {
 	Embed(plugId string)
 }
 
-// WrapSocketOverrider wraps the SocketOverrider
-// interface implementation to access the instance methods.
-func WrapSocketOverrider(obj SocketOverrider) *Socket {
-	return wrapSocket(externglib.BaseObject(obj))
-}
-
 // Socket: together with Plug, Socket provides the ability to embed accessibles
 // from one process into another in a fashion that is transparent to assistive
 // technologies. Socket works as the container of Plug, embedding it using the

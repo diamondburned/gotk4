@@ -1605,12 +1605,6 @@ type StyleOverrider interface {
 	Unrealize()
 }
 
-// WrapStyleOverrider wraps the StyleOverrider
-// interface implementation to access the instance methods.
-func WrapStyleOverrider(obj StyleOverrider) *Style {
-	return wrapStyle(externglib.BaseObject(obj))
-}
-
 // Style object encapsulates the information that provides the look and feel for
 // a widget.
 //

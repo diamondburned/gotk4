@@ -28,12 +28,6 @@ type InetSocketAddressOverrider interface {
 	externglib.Objector
 }
 
-// WrapInetSocketAddressOverrider wraps the InetSocketAddressOverrider
-// interface implementation to access the instance methods.
-func WrapInetSocketAddressOverrider(obj InetSocketAddressOverrider) *InetSocketAddress {
-	return wrapInetSocketAddress(externglib.BaseObject(obj))
-}
-
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
 // Address and a port number.
 type InetSocketAddress struct {

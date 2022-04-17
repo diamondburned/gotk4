@@ -91,12 +91,6 @@ type ActionableOverrider interface {
 	SetActionTargetValue(targetValue *glib.Variant)
 }
 
-// WrapActionableOverrider wraps the ActionableOverrider
-// interface implementation to access the instance methods.
-func WrapActionableOverrider(obj ActionableOverrider) *Actionable {
-	return wrapActionable(externglib.BaseObject(obj))
-}
-
 // Actionable: GtkActionable interface provides a convenient way of asscociating
 // widgets with actions.
 //

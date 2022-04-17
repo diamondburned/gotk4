@@ -124,12 +124,6 @@ type DocumentOverrider interface {
 	SetDocumentAttribute(attributeName, attributeValue string) bool
 }
 
-// WrapDocumentOverrider wraps the DocumentOverrider
-// interface implementation to access the instance methods.
-func WrapDocumentOverrider(obj DocumentOverrider) *Document {
-	return wrapDocument(externglib.BaseObject(obj))
-}
-
 // Document interface should be supported by any object whose content is a
 // representation or view of a document. The AtkDocument interface should appear
 // on the toplevel container for the document content; however AtkDocument

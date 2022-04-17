@@ -32,12 +32,6 @@ type WindowGroupOverrider interface {
 	externglib.Objector
 }
 
-// WrapWindowGroupOverrider wraps the WindowGroupOverrider
-// interface implementation to access the instance methods.
-func WrapWindowGroupOverrider(obj WindowGroupOverrider) *WindowGroup {
-	return wrapWindowGroup(externglib.BaseObject(obj))
-}
-
 // WindowGroup restricts the effect of grabs to windows in the same group,
 // thereby making window groups almost behave like separate applications.
 //

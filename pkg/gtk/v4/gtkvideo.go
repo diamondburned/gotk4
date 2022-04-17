@@ -29,12 +29,6 @@ type VideoOverrider interface {
 	externglib.Objector
 }
 
-// WrapVideoOverrider wraps the VideoOverrider
-// interface implementation to access the instance methods.
-func WrapVideoOverrider(obj VideoOverrider) *Video {
-	return wrapVideo(externglib.BaseObject(obj))
-}
-
 // Video: GtkVideo is a widget to show a GtkMediaStream with media controls.
 //
 // !An example GtkVideo (video.png)

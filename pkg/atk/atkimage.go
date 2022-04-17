@@ -94,12 +94,6 @@ type ImageOverrider interface {
 	SetImageDescription(description string) bool
 }
 
-// WrapImageOverrider wraps the ImageOverrider
-// interface implementation to access the instance methods.
-func WrapImageOverrider(obj ImageOverrider) *Image {
-	return wrapImage(externglib.BaseObject(obj))
-}
-
 // Image should be implemented by Object subtypes on behalf of components which
 // display image/pixmap information onscreen, and which provide information
 // (other than just widget borders, etc.) via that image content. For instance,

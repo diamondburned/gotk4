@@ -125,12 +125,6 @@ type PlacesSidebarOverrider interface {
 	externglib.Objector
 }
 
-// WrapPlacesSidebarOverrider wraps the PlacesSidebarOverrider
-// interface implementation to access the instance methods.
-func WrapPlacesSidebarOverrider(obj PlacesSidebarOverrider) *PlacesSidebar {
-	return wrapPlacesSidebar(externglib.BaseObject(obj))
-}
-
 // PlacesSidebar is a widget that displays a list of frequently-used places in
 // the file system: the user’s home directory, the user’s bookmarks, and volumes
 // and drives. This widget is used as a sidebar in FileChooser and may be used

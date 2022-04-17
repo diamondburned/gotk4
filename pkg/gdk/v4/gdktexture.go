@@ -31,12 +31,6 @@ type TextureOverrider interface {
 	externglib.Objector
 }
 
-// WrapTextureOverrider wraps the TextureOverrider
-// interface implementation to access the instance methods.
-func WrapTextureOverrider(obj TextureOverrider) *Texture {
-	return wrapTexture(externglib.BaseObject(obj))
-}
-
 // Texture: GdkTexture is the basic element used to refer to pixel data.
 //
 // It is primarily meant for pixel data that will not change over multiple
@@ -97,8 +91,7 @@ func (texture *Texture) baseTexture() *Texture {
 	return texture
 }
 
-// BaseTexture returns the underlying base object from the
-// interface.
+// BaseTexture returns the underlying base object.
 func BaseTexture(obj Texturer) *Texture {
 	return obj.baseTexture()
 }

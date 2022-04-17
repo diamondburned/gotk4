@@ -142,12 +142,6 @@ type AssistantOverrider interface {
 	Prepare(page Widgetter)
 }
 
-// WrapAssistantOverrider wraps the AssistantOverrider
-// interface implementation to access the instance methods.
-func WrapAssistantOverrider(obj AssistantOverrider) *Assistant {
-	return wrapAssistant(externglib.BaseObject(obj))
-}
-
 // Assistant is a widget used to represent a generally complex operation
 // splitted in several steps, guiding the user through its pages and controlling
 // the page flow to collect the necessary data.

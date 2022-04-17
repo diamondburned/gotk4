@@ -81,12 +81,6 @@ type ProxyOverrider interface {
 	SupportsHostname() bool
 }
 
-// WrapProxyOverrider wraps the ProxyOverrider
-// interface implementation to access the instance methods.
-func WrapProxyOverrider(obj ProxyOverrider) *Proxy {
-	return wrapProxy(externglib.BaseObject(obj))
-}
-
 // Proxy handles connecting to a remote host via a given type of proxy server.
 // It is implemented by the 'gio-proxy' extension point. The extensions are
 // named after their proxy protocol name. As an example, a SOCKS5 proxy

@@ -104,12 +104,6 @@ type EntryBufferOverrider interface {
 	InsertedText(position uint, chars string, nChars uint)
 }
 
-// WrapEntryBufferOverrider wraps the EntryBufferOverrider
-// interface implementation to access the instance methods.
-func WrapEntryBufferOverrider(obj EntryBufferOverrider) *EntryBuffer {
-	return wrapEntryBuffer(externglib.BaseObject(obj))
-}
-
 // EntryBuffer class contains the actual text displayed in a Entry widget.
 //
 // A single EntryBuffer object can be shared by multiple Entry widgets which

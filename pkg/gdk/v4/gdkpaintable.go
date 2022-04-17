@@ -187,12 +187,6 @@ type PaintableOverrider interface {
 	Snapshot(snapshot Snapshotter, width, height float64)
 }
 
-// WrapPaintableOverrider wraps the PaintableOverrider
-// interface implementation to access the instance methods.
-func WrapPaintableOverrider(obj PaintableOverrider) *Paintable {
-	return wrapPaintable(externglib.BaseObject(obj))
-}
-
 // Paintable: GdkPaintable is a simple interface used by GTK to represent
 // content that can be painted.
 //

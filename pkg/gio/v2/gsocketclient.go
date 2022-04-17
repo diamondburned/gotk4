@@ -42,12 +42,6 @@ type SocketClientOverrider interface {
 	Event(event SocketClientEvent, connectable SocketConnectableOverrider, connection IOStreamer)
 }
 
-// WrapSocketClientOverrider wraps the SocketClientOverrider
-// interface implementation to access the instance methods.
-func WrapSocketClientOverrider(obj SocketClientOverrider) *SocketClient {
-	return wrapSocketClient(externglib.BaseObject(obj))
-}
-
 // SocketClient is a lightweight high-level utility class for connecting to a
 // network host using a connection oriented socket type.
 //

@@ -51,12 +51,6 @@ type NativeDialogOverrider interface {
 	Show()
 }
 
-// WrapNativeDialogOverrider wraps the NativeDialogOverrider
-// interface implementation to access the instance methods.
-func WrapNativeDialogOverrider(obj NativeDialogOverrider) *NativeDialog {
-	return wrapNativeDialog(externglib.BaseObject(obj))
-}
-
 // NativeDialog: native dialogs are platform dialogs that don't use GtkDialog.
 //
 // They are used in order to integrate better with a platform, by looking the
@@ -157,8 +151,7 @@ func (self *NativeDialog) baseNativeDialog() *NativeDialog {
 	return self
 }
 
-// BaseNativeDialog returns the underlying base object from the
-// interface.
+// BaseNativeDialog returns the underlying base object.
 func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
 	return obj.baseNativeDialog()
 }

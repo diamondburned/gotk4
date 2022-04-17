@@ -87,12 +87,6 @@ type ProxyResolverOverrider interface {
 	LookupFinish(result AsyncResultOverrider) ([]string, error)
 }
 
-// WrapProxyResolverOverrider wraps the ProxyResolverOverrider
-// interface implementation to access the instance methods.
-func WrapProxyResolverOverrider(obj ProxyResolverOverrider) *ProxyResolver {
-	return wrapProxyResolver(externglib.BaseObject(obj))
-}
-
 // ProxyResolver provides synchronous and asynchronous network proxy resolution.
 // Resolver is used within Client through the method
 // g_socket_connectable_proxy_enumerate().

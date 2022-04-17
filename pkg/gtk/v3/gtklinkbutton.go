@@ -37,12 +37,6 @@ type LinkButtonOverrider interface {
 	ActivateLink() bool
 }
 
-// WrapLinkButtonOverrider wraps the LinkButtonOverrider
-// interface implementation to access the instance methods.
-func WrapLinkButtonOverrider(obj LinkButtonOverrider) *LinkButton {
-	return wrapLinkButton(externglib.BaseObject(obj))
-}
-
 // LinkButton is a Button with a hyperlink, similar to the one used by web
 // browsers, which triggers an action when clicked. It is useful to show quick
 // links to resources.

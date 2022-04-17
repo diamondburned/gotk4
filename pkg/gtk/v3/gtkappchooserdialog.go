@@ -32,12 +32,6 @@ type AppChooserDialogOverrider interface {
 	externglib.Objector
 }
 
-// WrapAppChooserDialogOverrider wraps the AppChooserDialogOverrider
-// interface implementation to access the instance methods.
-func WrapAppChooserDialogOverrider(obj AppChooserDialogOverrider) *AppChooserDialog {
-	return wrapAppChooserDialog(externglib.BaseObject(obj))
-}
-
 // AppChooserDialog shows a AppChooserWidget inside a Dialog.
 //
 // Note that AppChooserDialog does not have any interesting methods of its own.

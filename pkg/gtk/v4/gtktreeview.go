@@ -348,12 +348,6 @@ type TreeViewOverrider interface {
 	UnselectAll() bool
 }
 
-// WrapTreeViewOverrider wraps the TreeViewOverrider
-// interface implementation to access the instance methods.
-func WrapTreeViewOverrider(obj TreeViewOverrider) *TreeView {
-	return wrapTreeView(externglib.BaseObject(obj))
-}
-
 // TreeView: widget for displaying both trees and lists
 //
 // Widget that displays any object that implements the gtk.TreeModel interface.

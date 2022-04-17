@@ -36,12 +36,6 @@ type RadioButtonOverrider interface {
 	GroupChanged()
 }
 
-// WrapRadioButtonOverrider wraps the RadioButtonOverrider
-// interface implementation to access the instance methods.
-func WrapRadioButtonOverrider(obj RadioButtonOverrider) *RadioButton {
-	return wrapRadioButton(externglib.BaseObject(obj))
-}
-
 // RadioButton: single radio button performs the same basic function as a
 // CheckButton, as its position in the object hierarchy reflects. It is only
 // when multiple radio buttons are grouped together that they become a different

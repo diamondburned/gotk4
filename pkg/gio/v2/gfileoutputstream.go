@@ -112,12 +112,6 @@ type FileOutputStreamOverrider interface {
 	TruncateFn(ctx context.Context, size int64) error
 }
 
-// WrapFileOutputStreamOverrider wraps the FileOutputStreamOverrider
-// interface implementation to access the instance methods.
-func WrapFileOutputStreamOverrider(obj FileOutputStreamOverrider) *FileOutputStream {
-	return wrapFileOutputStream(externglib.BaseObject(obj))
-}
-
 // FileOutputStream provides output streams that write their content to a file.
 //
 // GFileOutputStream implements #GSeekable, which allows the output stream to

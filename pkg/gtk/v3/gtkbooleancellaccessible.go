@@ -30,12 +30,6 @@ type BooleanCellAccessibleOverrider interface {
 	externglib.Objector
 }
 
-// WrapBooleanCellAccessibleOverrider wraps the BooleanCellAccessibleOverrider
-// interface implementation to access the instance methods.
-func WrapBooleanCellAccessibleOverrider(obj BooleanCellAccessibleOverrider) *BooleanCellAccessible {
-	return wrapBooleanCellAccessible(externglib.BaseObject(obj))
-}
-
 type BooleanCellAccessible struct {
 	_ [0]func() // equal guard
 	RendererCellAccessible

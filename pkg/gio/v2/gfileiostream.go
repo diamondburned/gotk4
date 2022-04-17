@@ -112,12 +112,6 @@ type FileIOStreamOverrider interface {
 	TruncateFn(ctx context.Context, size int64) error
 }
 
-// WrapFileIOStreamOverrider wraps the FileIOStreamOverrider
-// interface implementation to access the instance methods.
-func WrapFileIOStreamOverrider(obj FileIOStreamOverrider) *FileIOStream {
-	return wrapFileIOStream(externglib.BaseObject(obj))
-}
-
 // FileIOStream provides io streams that both read and write to the same file
 // handle.
 //

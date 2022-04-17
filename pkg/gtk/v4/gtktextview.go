@@ -211,12 +211,6 @@ type TextViewOverrider interface {
 	ToggleOverwrite()
 }
 
-// WrapTextViewOverrider wraps the TextViewOverrider
-// interface implementation to access the instance methods.
-func WrapTextViewOverrider(obj TextViewOverrider) *TextView {
-	return wrapTextView(externglib.BaseObject(obj))
-}
-
 // TextView: widget that displays the contents of a gtk.TextBuffer.
 //
 // !An example GtkTextview (multiline-text.png)

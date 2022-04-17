@@ -265,12 +265,6 @@ type IMContextOverrider interface {
 	SetUsePreedit(usePreedit bool)
 }
 
-// WrapIMContextOverrider wraps the IMContextOverrider
-// interface implementation to access the instance methods.
-func WrapIMContextOverrider(obj IMContextOverrider) *IMContext {
-	return wrapIMContext(externglib.BaseObject(obj))
-}
-
 // IMContext: GtkIMContext defines the interface for GTK input methods.
 //
 // GtkIMContext is used by GTK text input widgets like GtkText to map from key
@@ -700,8 +694,7 @@ func (context *IMContext) baseIMContext() *IMContext {
 	return context
 }
 
-// BaseIMContext returns the underlying base object from the
-// interface.
+// BaseIMContext returns the underlying base object.
 func BaseIMContext(obj IMContexter) *IMContext {
 	return obj.baseIMContext()
 }

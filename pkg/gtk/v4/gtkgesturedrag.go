@@ -31,12 +31,6 @@ type GestureDragOverrider interface {
 	externglib.Objector
 }
 
-// WrapGestureDragOverrider wraps the GestureDragOverrider
-// interface implementation to access the instance methods.
-func WrapGestureDragOverrider(obj GestureDragOverrider) *GestureDrag {
-	return wrapGestureDrag(externglib.BaseObject(obj))
-}
-
 // GestureDrag: GtkGestureDrag is a GtkGesture implementation for drags.
 //
 // The drag operation itself can be tracked throughout the

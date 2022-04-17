@@ -28,12 +28,6 @@ type GLTextureOverrider interface {
 	externglib.Objector
 }
 
-// WrapGLTextureOverrider wraps the GLTextureOverrider
-// interface implementation to access the instance methods.
-func WrapGLTextureOverrider(obj GLTextureOverrider) *GLTexture {
-	return wrapGLTexture(externglib.BaseObject(obj))
-}
-
 // GLTexture: gdkTexture representing a GL texture object.
 type GLTexture struct {
 	_ [0]func() // equal guard

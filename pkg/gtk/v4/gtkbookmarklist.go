@@ -29,12 +29,6 @@ type BookmarkListOverrider interface {
 	externglib.Objector
 }
 
-// WrapBookmarkListOverrider wraps the BookmarkListOverrider
-// interface implementation to access the instance methods.
-func WrapBookmarkListOverrider(obj BookmarkListOverrider) *BookmarkList {
-	return wrapBookmarkList(externglib.BaseObject(obj))
-}
-
 // BookmarkList: GtkBookmarkList is a list model that wraps GBookmarkFile.
 //
 // It presents a GListModel and fills it asynchronously with the GFileInfos

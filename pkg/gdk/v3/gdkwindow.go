@@ -872,12 +872,6 @@ type WindowOverrider interface {
 	ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
 }
 
-// WrapWindowOverrider wraps the WindowOverrider
-// interface implementation to access the instance methods.
-func WrapWindowOverrider(obj WindowOverrider) *Window {
-	return wrapWindow(externglib.BaseObject(obj))
-}
-
 type Window struct {
 	_ [0]func() // equal guard
 	*externglib.Object
@@ -1002,8 +996,7 @@ func (window *Window) baseWindow() *Window {
 	return window
 }
 
-// BaseWindow returns the underlying base object from the
-// interface.
+// BaseWindow returns the underlying base object.
 func BaseWindow(obj Windower) *Window {
 	return obj.baseWindow()
 }

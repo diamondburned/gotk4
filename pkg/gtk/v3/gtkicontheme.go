@@ -166,12 +166,6 @@ type IconInfoOverrider interface {
 	externglib.Objector
 }
 
-// WrapIconInfoOverrider wraps the IconInfoOverrider
-// interface implementation to access the instance methods.
-func WrapIconInfoOverrider(obj IconInfoOverrider) *IconInfo {
-	return wrapIconInfo(externglib.BaseObject(obj))
-}
-
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo struct {
 	_ [0]func() // equal guard
@@ -1119,12 +1113,6 @@ func (iconInfo *IconInfo) SetRawCoordinates(rawCoordinates bool) {
 type IconThemeOverrider interface {
 	externglib.Objector
 	Changed()
-}
-
-// WrapIconThemeOverrider wraps the IconThemeOverrider
-// interface implementation to access the instance methods.
-func WrapIconThemeOverrider(obj IconThemeOverrider) *IconTheme {
-	return wrapIconTheme(externglib.BaseObject(obj))
 }
 
 // IconTheme provides a facility for looking up icons by name and size. The main

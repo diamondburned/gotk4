@@ -28,12 +28,6 @@ type X11DisplayManagerOverrider interface {
 	externglib.Objector
 }
 
-// WrapX11DisplayManagerOverrider wraps the X11DisplayManagerOverrider
-// interface implementation to access the instance methods.
-func WrapX11DisplayManagerOverrider(obj X11DisplayManagerOverrider) *X11DisplayManager {
-	return wrapX11DisplayManager(externglib.BaseObject(obj))
-}
-
 type X11DisplayManager struct {
 	_ [0]func() // equal guard
 	gdk.DisplayManager

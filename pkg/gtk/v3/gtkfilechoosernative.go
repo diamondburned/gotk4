@@ -30,12 +30,6 @@ type FileChooserNativeOverrider interface {
 	externglib.Objector
 }
 
-// WrapFileChooserNativeOverrider wraps the FileChooserNativeOverrider
-// interface implementation to access the instance methods.
-func WrapFileChooserNativeOverrider(obj FileChooserNativeOverrider) *FileChooserNative {
-	return wrapFileChooserNative(externglib.BaseObject(obj))
-}
-
 // FileChooserNative is an abstraction of a dialog box suitable for use with
 // “File/Open” or “File/Save as” commands. By default, this just uses a
 // FileChooserDialog to implement the actual dialog. However, on certain

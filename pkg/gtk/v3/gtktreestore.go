@@ -31,12 +31,6 @@ type TreeStoreOverrider interface {
 	externglib.Objector
 }
 
-// WrapTreeStoreOverrider wraps the TreeStoreOverrider
-// interface implementation to access the instance methods.
-func WrapTreeStoreOverrider(obj TreeStoreOverrider) *TreeStore {
-	return wrapTreeStore(externglib.BaseObject(obj))
-}
-
 // TreeStore object is a list model for use with a TreeView widget. It
 // implements the TreeModel interface, and consequentially, can use all of the
 // methods available there. It also implements the TreeSortable interface so it

@@ -51,12 +51,6 @@ type AppChooserWidgetOverrider interface {
 	PopulatePopup(menu *Menu, appInfo gio.AppInfoOverrider)
 }
 
-// WrapAppChooserWidgetOverrider wraps the AppChooserWidgetOverrider
-// interface implementation to access the instance methods.
-func WrapAppChooserWidgetOverrider(obj AppChooserWidgetOverrider) *AppChooserWidget {
-	return wrapAppChooserWidget(externglib.BaseObject(obj))
-}
-
 // AppChooserWidget is a widget for selecting applications. It is the main
 // building block for AppChooserDialog. Most applications only need to use the
 // latter; but you can use this widget as part of a larger widget if you have

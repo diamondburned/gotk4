@@ -99,12 +99,6 @@ type InputStreamOverrider interface {
 	SkipFinish(result AsyncResultOverrider) (int, error)
 }
 
-// WrapInputStreamOverrider wraps the InputStreamOverrider
-// interface implementation to access the instance methods.
-func WrapInputStreamOverrider(obj InputStreamOverrider) *InputStream {
-	return wrapInputStream(externglib.BaseObject(obj))
-}
-
 // InputStream has functions to read from a stream (g_input_stream_read()), to
 // close a stream (g_input_stream_close()) and to skip some content
 // (g_input_stream_skip()).
@@ -349,8 +343,7 @@ func (stream *InputStream) baseInputStream() *InputStream {
 	return stream
 }
 
-// BaseInputStream returns the underlying base object from the
-// interface.
+// BaseInputStream returns the underlying base object.
 func BaseInputStream(obj InputStreamer) *InputStream {
 	return obj.baseInputStream()
 }

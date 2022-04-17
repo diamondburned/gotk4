@@ -30,12 +30,6 @@ type X11MonitorOverrider interface {
 	externglib.Objector
 }
 
-// WrapX11MonitorOverrider wraps the X11MonitorOverrider
-// interface implementation to access the instance methods.
-func WrapX11MonitorOverrider(obj X11MonitorOverrider) *X11Monitor {
-	return wrapX11Monitor(externglib.BaseObject(obj))
-}
-
 type X11Monitor struct {
 	_ [0]func() // equal guard
 	gdk.Monitor

@@ -29,12 +29,6 @@ type WindowGroupOverrider interface {
 	externglib.Objector
 }
 
-// WrapWindowGroupOverrider wraps the WindowGroupOverrider
-// interface implementation to access the instance methods.
-func WrapWindowGroupOverrider(obj WindowGroupOverrider) *WindowGroup {
-	return wrapWindowGroup(externglib.BaseObject(obj))
-}
-
 // WindowGroup: GtkWindowGroup makes group of windows behave like separate
 // applications.
 //

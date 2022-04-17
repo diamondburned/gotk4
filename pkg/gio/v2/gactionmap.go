@@ -67,12 +67,6 @@ type ActionMapOverrider interface {
 	RemoveAction(actionName string)
 }
 
-// WrapActionMapOverrider wraps the ActionMapOverrider
-// interface implementation to access the instance methods.
-func WrapActionMapOverrider(obj ActionMapOverrider) *ActionMap {
-	return wrapActionMap(externglib.BaseObject(obj))
-}
-
 // ActionMap interface is implemented by Group implementations that operate by
 // containing a number of named #GAction instances, such as ActionGroup.
 //

@@ -86,12 +86,6 @@ type ToolPaletteOverrider interface {
 	externglib.Objector
 }
 
-// WrapToolPaletteOverrider wraps the ToolPaletteOverrider
-// interface implementation to access the instance methods.
-func WrapToolPaletteOverrider(obj ToolPaletteOverrider) *ToolPalette {
-	return wrapToolPalette(externglib.BaseObject(obj))
-}
-
 // ToolPalette allows you to add ToolItems to a palette-like container with
 // different categories and drag and drop support.
 //

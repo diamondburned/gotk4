@@ -611,6 +611,7 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 		{"NewValue", []string{"v interface{}"}, "*Value"},
 		{"SourceRemove", []string{"src SourceHandle"}, "bool"},
 		{"ObjectEq", []string{"obj1 Objector", "obj2 Objector"}, "bool"},
+		{"BaseObject", []string{"obj Objector"}, "*Object"},
 	}
 
 	p := fg.Pen()

@@ -64,6 +64,11 @@ func ObjectEq(obj1 Objector, obj2 Objector) bool {
 	return externglib.ObjectEq(obj1, obj2)
 }
 
+// BaseObject is an alias for pkg/core/glib.BaseObject.
+func BaseObject(obj Objector) *Object {
+	return externglib.BaseObject(obj)
+}
+
 // Object is an alias for pkg/core/glib.Object.
 type Object = externglib.Object
 

@@ -534,13 +534,20 @@ type Object struct {
 	box *intern.Box
 }
 
-// InternObject gets the internal Object type. This is used for calling methods
+// BaseObject gets the internal Object type. This is used for calling methods
 // not in the Objector.
-func InternObject(obj Objector) *Object {
+func BaseObject(obj Objector) *Object {
 	if obj == nil {
 		return nil
 	}
 	return obj.baseObject()
+}
+
+// InternObject calls BaseObject.
+//
+// Deprecated: Use BaseObject.
+func InternObject(obj Objector) *Object {
+	return BaseObject(obj)
 }
 
 // Take wraps a unsafe.Pointer as a Object, taking ownership of it.

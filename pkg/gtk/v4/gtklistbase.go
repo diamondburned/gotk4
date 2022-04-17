@@ -24,7 +24,6 @@ func init() {
 
 // ListBaseOverrider contains methods that are overridable.
 type ListBaseOverrider interface {
-	externglib.Objector
 }
 
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.

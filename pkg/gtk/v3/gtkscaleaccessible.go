@@ -27,7 +27,6 @@ func init() {
 
 // ScaleAccessibleOverrider contains methods that are overridable.
 type ScaleAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ScaleAccessible struct {

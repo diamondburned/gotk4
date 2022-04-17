@@ -28,7 +28,6 @@ func init() {
 
 // ShortcutLabelOverrider contains methods that are overridable.
 type ShortcutLabelOverrider interface {
-	externglib.Objector
 }
 
 // ShortcutLabel is a widget that represents a single keyboard shortcut or

@@ -45,7 +45,6 @@ func init() {
 
 // ActionGroupOverrider contains methods that are overridable.
 type ActionGroupOverrider interface {
-	externglib.Objector
 	// ActionAdded emits the Group::action-added signal on action_group.
 	//
 	// This function should only be called by Group implementations.

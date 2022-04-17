@@ -72,20 +72,11 @@ func (ts *TypeStruct) init() bool {
 		}
 	}
 
-	// This commented out snippet makes the code more correct, but:
-	//
-	//   1. We don't have subclassing support yet, so it's useless to generate
-	//      something that requires implementing everything, and
-	//   2. This is also used for the return type, but since some methods cannot
-	//      be generated in some cases, we still want it to be useful.
-	//
-
 	// If this is an interface, then we must implement all methods. If any of
 	// them cannot be converted, then we failed.
-	// if ts.igen.IsInterface() && len(ts.igen.virtuals) != len(ts.Methods) {
-	// 	ts.Logln(logger.Debug, "generated TypeStruct is missing some virtual methods")
-	// 	return false
-	// }
+	if ts.igen.IsInterface() && len(ts.igen.virtuals) != len(ts.Methods) {
+		return false
+	}
 
 	return true
 }
@@ -93,10 +84,6 @@ func (ts *TypeStruct) init() bool {
 func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *Method) (TypeStructMethod, bool) {
 	field := ts.findTypeStructField(virtual)
 	if field == nil {
-		ts.Logln(logger.Debug, fmt.Sprintf(
-			"cannot find virtual with name %q (invoker %q)",
-			virtual.Name, virtual.Invoker,
-		))
 		return TypeStructMethod{}, false
 	}
 
@@ -132,7 +119,6 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 	}
 
 	if !cbgen.Use(&virtual.CallableAttrs) {
-		ts.Logln(logger.Debug, "virtual", virtual.Name, "cannot be generated")
 		return TypeStructMethod{}, false
 	}
 
@@ -146,22 +132,17 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 }
 
 func (ts *TypeStruct) findTypeStructField(virtual *gir.VirtualMethod) *gir.Field {
-	var field *gir.Field
-	// if virtual.Invoker != "" {
-	// 	field = ts.findTypeStructFieldName(virtual.Invoker)
-	// }
-	if field == nil {
-		field = ts.findTypeStructFieldName(virtual.Name)
+	name := virtual.Name
+	if virtual.Invoker != "" {
+		name = virtual.Invoker
 	}
-	return field
-}
 
-func (ts *TypeStruct) findTypeStructFieldName(name string) *gir.Field {
 	for i, field := range ts.Record.Fields {
 		if field.Name == name {
 			return &ts.Record.Fields[i]
 		}
 	}
+
 	return nil
 }
 

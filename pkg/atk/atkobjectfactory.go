@@ -27,7 +27,6 @@ func init() {
 
 // ObjectFactoryOverrider contains methods that are overridable.
 type ObjectFactoryOverrider interface {
-	externglib.Objector
 	// Invalidate: inform factory that it is no longer being used to create
 	// accessibles. When called, factory may need to inform Objects which it has
 	// created that they need to be re-instantiated. Note: primarily used for

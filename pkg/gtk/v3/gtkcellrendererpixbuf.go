@@ -26,7 +26,6 @@ func init() {
 
 // CellRendererPixbufOverrider contains methods that are overridable.
 type CellRendererPixbufOverrider interface {
-	externglib.Objector
 }
 
 // CellRendererPixbuf can be used to render an image in a cell. It allows to

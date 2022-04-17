@@ -28,7 +28,6 @@ func init() {
 
 // GestureZoomOverrider contains methods that are overridable.
 type GestureZoomOverrider interface {
-	externglib.Objector
 }
 
 // GestureZoom is a Gesture implementation able to recognize pinch/zoom

@@ -28,7 +28,6 @@ func init() {
 
 // PlugAccessibleOverrider contains methods that are overridable.
 type PlugAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type PlugAccessible struct {

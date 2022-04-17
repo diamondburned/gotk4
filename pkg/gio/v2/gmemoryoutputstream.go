@@ -28,7 +28,6 @@ func init() {
 
 // MemoryOutputStreamOverrider contains methods that are overridable.
 type MemoryOutputStreamOverrider interface {
-	externglib.Objector
 }
 
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for

@@ -27,7 +27,6 @@ func init() {
 
 // SpinnerAccessibleOverrider contains methods that are overridable.
 type SpinnerAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type SpinnerAccessible struct {

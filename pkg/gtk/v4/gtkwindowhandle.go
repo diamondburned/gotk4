@@ -25,7 +25,6 @@ func init() {
 
 // WindowHandleOverrider contains methods that are overridable.
 type WindowHandleOverrider interface {
-	externglib.Objector
 }
 
 // WindowHandle: GtkWindowHandle is a titlebar area widget.

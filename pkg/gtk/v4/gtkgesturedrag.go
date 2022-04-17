@@ -28,7 +28,6 @@ func init() {
 
 // GestureDragOverrider contains methods that are overridable.
 type GestureDragOverrider interface {
-	externglib.Objector
 }
 
 // GestureDrag: GtkGestureDrag is a GtkGesture implementation for drags.

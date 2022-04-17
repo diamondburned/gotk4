@@ -31,7 +31,6 @@ func init() {
 
 // ExpanderOverrider contains methods that are overridable.
 type ExpanderOverrider interface {
-	externglib.Objector
 	Activate()
 }
 

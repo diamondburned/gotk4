@@ -31,7 +31,6 @@ func init() {
 
 // SocketAddressOverrider contains methods that are overridable.
 type SocketAddressOverrider interface {
-	externglib.Objector
 	// Family gets the socket family type of address.
 	//
 	// The function returns the following values:

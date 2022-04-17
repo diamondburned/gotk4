@@ -82,7 +82,6 @@ func (r RenderPart) String() string {
 
 // RendererOverrider contains methods that are overridable.
 type RendererOverrider interface {
-	externglib.Objector
 	Begin()
 	// DrawErrorUnderline: draw a squiggly line that approximately covers the
 	// given rectangle in the style of an underline used to indicate a spelling

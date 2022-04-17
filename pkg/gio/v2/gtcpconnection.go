@@ -25,7 +25,6 @@ func init() {
 
 // TCPConnectionOverrider contains methods that are overridable.
 type TCPConnectionOverrider interface {
-	externglib.Objector
 }
 
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP

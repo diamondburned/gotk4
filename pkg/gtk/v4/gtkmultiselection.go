@@ -26,7 +26,6 @@ func init() {
 
 // MultiSelectionOverrider contains methods that are overridable.
 type MultiSelectionOverrider interface {
-	externglib.Objector
 }
 
 // MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
@@ -75,7 +74,7 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 //
 //    - multiSelection: new GtkMultiSelection.
 //
-func NewMultiSelection(model gio.ListModelOverrider) *MultiSelection {
+func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in
 
@@ -100,7 +99,7 @@ func NewMultiSelection(model gio.ListModelOverrider) *MultiSelection {
 //
 //    - listModel: underlying model.
 //
-func (self *MultiSelection) Model() gio.ListModelOverrider {
+func (self *MultiSelection) Model() gio.ListModeller {
 	var _arg0 *C.GtkMultiSelection // out
 	var _cret *C.GListModel        // in
 
@@ -109,7 +108,7 @@ func (self *MultiSelection) Model() gio.ListModelOverrider {
 	_cret = C.gtk_multi_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -119,10 +118,10 @@ func (self *MultiSelection) Model() gio.ListModelOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModelOverrider)
+			_, ok := obj.(gio.ListModeller)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModelOverrider)
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -140,7 +139,7 @@ func (self *MultiSelection) Model() gio.ListModelOverrider {
 //
 //    - model (optional): GListModel to wrap.
 //
-func (self *MultiSelection) SetModel(model gio.ListModelOverrider) {
+func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMultiSelection // out
 	var _arg1 *C.GListModel        // out
 

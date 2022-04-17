@@ -29,7 +29,6 @@ func init() {
 
 // RadioToolButtonOverrider contains methods that are overridable.
 type RadioToolButtonOverrider interface {
-	externglib.Objector
 }
 
 // RadioToolButton is a ToolItem that contains a radio button, that is, a button

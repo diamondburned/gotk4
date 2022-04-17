@@ -27,7 +27,6 @@ func init() {
 
 // FixedOverrider contains methods that are overridable.
 type FixedOverrider interface {
-	externglib.Objector
 }
 
 // Fixed: GtkFixed places its child widgets at fixed positions and with fixed

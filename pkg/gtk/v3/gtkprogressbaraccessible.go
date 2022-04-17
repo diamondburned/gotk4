@@ -27,7 +27,6 @@ func init() {
 
 // ProgressBarAccessibleOverrider contains methods that are overridable.
 type ProgressBarAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ProgressBarAccessible struct {

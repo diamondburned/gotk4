@@ -30,7 +30,6 @@ func init() {
 
 // DragSourceOverrider contains methods that are overridable.
 type DragSourceOverrider interface {
-	externglib.Objector
 }
 
 // DragSource: GtkDragSource is an event controller to initiate Drag-And-Drop
@@ -505,7 +504,7 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 //    - hotX: hotspot X coordinate on the icon.
 //    - hotY: hotspot Y coordinate on the icon.
 //
-func (source *DragSource) SetIcon(paintable gdk.PaintableOverrider, hotX, hotY int) {
+func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 	var _arg0 *C.GtkDragSource // out
 	var _arg1 *C.GdkPaintable  // out
 	var _arg2 C.int            // out

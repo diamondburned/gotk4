@@ -27,7 +27,6 @@ func init() {
 
 // ImageAccessibleOverrider contains methods that are overridable.
 type ImageAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ImageAccessible struct {

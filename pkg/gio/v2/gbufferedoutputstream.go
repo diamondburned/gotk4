@@ -25,7 +25,6 @@ func init() {
 
 // BufferedOutputStreamOverrider contains methods that are overridable.
 type BufferedOutputStreamOverrider interface {
-	externglib.Objector
 }
 
 // BufferedOutputStream: buffered output stream implements OutputStream and

@@ -63,7 +63,6 @@ func (p PadActionType) String() string {
 
 // PadControllerOverrider contains methods that are overridable.
 type PadControllerOverrider interface {
-	externglib.Objector
 }
 
 // PadController: GtkPadController is an event controller for the pads found in
@@ -163,7 +162,7 @@ func marshalPadController(p uintptr) (interface{}, error) {
 //
 //    - padController: newly created GtkPadController.
 //
-func NewPadController(group gio.ActionGroupOverrider, pad gdk.Devicer) *PadController {
+func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg1 *C.GActionGroup     // out
 	var _arg2 *C.GdkDevice        // out
 	var _cret *C.GtkPadController // in

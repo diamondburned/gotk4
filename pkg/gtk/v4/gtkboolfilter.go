@@ -25,7 +25,6 @@ func init() {
 
 // BoolFilterOverrider contains methods that are overridable.
 type BoolFilterOverrider interface {
-	externglib.Objector
 }
 
 // BoolFilter: GtkBoolFilter evaluates a boolean GtkExpression to determine

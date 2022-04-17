@@ -40,7 +40,6 @@ func init() {
 
 // ContentProviderOverrider contains methods that are overridable.
 type ContentProviderOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	AttachClipboard(clipboard *Clipboard)
@@ -90,7 +89,7 @@ type ContentProviderOverrider interface {
 	//
 	//    - result: GAsyncResult.
 	//
-	WriteMIMETypeFinish(result gio.AsyncResultOverrider) error
+	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
 // ContentProvider: GdkContentProvider is used to provide content for the
@@ -149,7 +148,7 @@ func classInitContentProviderer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		WriteMIMETypeFinish(result gio.AsyncResultOverrider) error
+		WriteMIMETypeFinish(result gio.AsyncResulter) error
 	}); ok {
 		pclass.write_mime_type_finish = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_write_mime_type_finish)
 	}
@@ -235,10 +234,10 @@ func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentPro
 func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.GdkContentProvider, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		WriteMIMETypeFinish(result gio.AsyncResultOverrider) error
+		WriteMIMETypeFinish(result gio.AsyncResulter) error
 	})
 
-	var _result gio.AsyncResultOverrider // out
+	var _result gio.AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -248,10 +247,10 @@ func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.GdkContentP
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.AsyncResultOverrider)
+			_, ok := obj.(gio.AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(gio.AsyncResultOverrider)
+		rv, ok := casted.(gio.AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -465,7 +464,7 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 //
 //    - result: GAsyncResult.
 //
-func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResultOverrider) error {
+func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GAsyncResult       // out
 	var _cerr *C.GError             // in

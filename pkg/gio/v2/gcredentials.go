@@ -27,7 +27,6 @@ func init() {
 
 // CredentialsOverrider contains methods that are overridable.
 type CredentialsOverrider interface {
-	externglib.Objector
 }
 
 // Credentials type is a reference-counted wrapper for native credentials. This

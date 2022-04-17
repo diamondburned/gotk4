@@ -27,7 +27,6 @@ func init() {
 
 // InetAddressOverrider contains methods that are overridable.
 type InetAddressOverrider interface {
-	externglib.Objector
 	// String converts address to string form.
 	//
 	// The function returns the following values:

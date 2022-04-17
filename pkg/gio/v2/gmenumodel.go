@@ -88,7 +88,6 @@ const MENU_LINK_SUBMENU = "submenu"
 
 // MenuAttributeIterOverrider contains methods that are overridable.
 type MenuAttributeIterOverrider interface {
-	externglib.Objector
 	// Next: this function combines g_menu_attribute_iter_next() with
 	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 	//
@@ -338,7 +337,6 @@ func (iter *MenuAttributeIter) Next() bool {
 
 // MenuLinkIterOverrider contains methods that are overridable.
 type MenuLinkIterOverrider interface {
-	externglib.Objector
 	// Next: this function combines g_menu_link_iter_next() with
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
 	//
@@ -604,7 +602,6 @@ func (iter *MenuLinkIter) Next() bool {
 
 // MenuModelOverrider contains methods that are overridable.
 type MenuModelOverrider interface {
-	externglib.Objector
 	// ItemAttributeValue queries the item at position item_index in model for
 	// the attribute specified by attribute.
 	//

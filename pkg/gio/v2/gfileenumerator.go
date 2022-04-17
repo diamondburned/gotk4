@@ -35,7 +35,6 @@ func init() {
 
 // FileEnumeratorOverrider contains methods that are overridable.
 type FileEnumeratorOverrider interface {
-	externglib.Objector
 	// CloseFinish finishes closing a file enumerator, started from
 	// g_file_enumerator_close_async().
 	//
@@ -53,7 +52,7 @@ type FileEnumeratorOverrider interface {
 	//
 	//    - result: Result.
 	//
-	CloseFinish(result AsyncResultOverrider) error
+	CloseFinish(result AsyncResulter) error
 	// The function takes the following parameters:
 	//
 	CloseFn(ctx context.Context) error
@@ -90,7 +89,7 @@ type FileEnumeratorOverrider interface {
 	//    - list of Infos. You must free the list with g_list_free() and unref
 	//      the infos with g_object_unref() when you're done with them.
 	//
-	NextFilesFinish(result AsyncResultOverrider) ([]FileInfo, error)
+	NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
 }
 
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
@@ -137,7 +136,7 @@ func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		CloseFinish(result AsyncResultOverrider) error
+		CloseFinish(result AsyncResulter) error
 	}); ok {
 		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_close_finish)
 	}
@@ -155,7 +154,7 @@ func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		NextFilesFinish(result AsyncResultOverrider) ([]FileInfo, error)
+		NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
 	}); ok {
 		pclass.next_files_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
 	}
@@ -165,10 +164,10 @@ func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		CloseFinish(result AsyncResultOverrider) error
+		CloseFinish(result AsyncResulter) error
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -178,10 +177,10 @@ func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -249,10 +248,10 @@ func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.
 func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		NextFilesFinish(result AsyncResultOverrider) ([]FileInfo, error)
+		NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -262,10 +261,10 @@ func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, 
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -389,7 +388,7 @@ func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int
 //
 //    - result: Result.
 //
-func (enumerator *FileEnumerator) CloseFinish(result AsyncResultOverrider) error {
+func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cerr *C.GError          // in
@@ -428,7 +427,7 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResultOverrider) error
 //
 //    - file for the Info passed it.
 //
-func (enumerator *FileEnumerator) Child(info *FileInfo) FileOverrider {
+func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
 	var _cret *C.GFile           // in
@@ -440,7 +439,7 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) FileOverrider {
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(info)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -450,10 +449,10 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -469,7 +468,7 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) FileOverrider {
 //
 //    - file which is being enumerated.
 //
-func (enumerator *FileEnumerator) Container() FileOverrider {
+func (enumerator *FileEnumerator) Container() Filer {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret *C.GFile           // in
 
@@ -478,7 +477,7 @@ func (enumerator *FileEnumerator) Container() FileOverrider {
 	_cret = C.g_file_enumerator_get_container(_arg0)
 	runtime.KeepAlive(enumerator)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -488,10 +487,10 @@ func (enumerator *FileEnumerator) Container() FileOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -592,7 +591,7 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 //    - outInfo (optional): output location for the next Info, or NULL.
 //    - outChild (optional): output location for the next #GFile, or NULL.
 //
-func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, FileOverrider, error) {
+func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg3 *C.GCancellable    // out
 	var _arg1 *C.GFileInfo       // in
@@ -610,9 +609,9 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, FileOver
 	runtime.KeepAlive(direnum)
 	runtime.KeepAlive(ctx)
 
-	var _outInfo *FileInfo      // out
-	var _outChild FileOverrider // out
-	var _goerr error            // out
+	var _outInfo *FileInfo // out
+	var _outChild Filer    // out
+	var _goerr error       // out
 
 	if _arg1 != nil {
 		_outInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_arg1)))
@@ -623,10 +622,10 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, FileOver
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(FileOverrider)
+				_, ok := obj.(Filer)
 				return ok
 			})
-			rv, ok := casted.(FileOverrider)
+			rv, ok := casted.(Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -758,7 +757,7 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, 
 //    - list of Infos. You must free the list with g_list_free() and unref the
 //      infos with g_object_unref() when you're done with them.
 //
-func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResultOverrider) ([]FileInfo, error) {
+func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GList           // in

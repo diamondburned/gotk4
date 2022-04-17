@@ -26,7 +26,6 @@ func init() {
 
 // ColumnViewColumnOverrider contains methods that are overridable.
 type ColumnViewColumnOverrider interface {
-	externglib.Objector
 }
 
 // ColumnViewColumn: GtkColumnViewColumn represents the columns being added to

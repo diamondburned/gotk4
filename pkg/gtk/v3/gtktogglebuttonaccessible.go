@@ -27,7 +27,6 @@ func init() {
 
 // ToggleButtonAccessibleOverrider contains methods that are overridable.
 type ToggleButtonAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ToggleButtonAccessible struct {

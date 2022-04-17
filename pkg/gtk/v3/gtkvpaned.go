@@ -27,7 +27,6 @@ func init() {
 
 // VPanedOverrider contains methods that are overridable.
 type VPanedOverrider interface {
-	externglib.Objector
 }
 
 // VPaned widget is a container widget with two children arranged vertically.

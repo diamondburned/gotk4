@@ -38,7 +38,6 @@ func init() {
 
 // ToolShellOverrider contains methods that are overridable.
 type ToolShellOverrider interface {
-	externglib.Objector
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_ellipsize_mode() instead.

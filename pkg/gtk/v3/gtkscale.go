@@ -34,7 +34,6 @@ func init() {
 
 // ScaleOverrider contains methods that are overridable.
 type ScaleOverrider interface {
-	externglib.Objector
 	DrawValue()
 	// The function takes the following parameters:
 	//

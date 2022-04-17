@@ -845,7 +845,6 @@ func OffscreenWindowSetEmbedder(window, embedder Windower) {
 
 // WindowOverrider contains methods that are overridable.
 type WindowOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - width

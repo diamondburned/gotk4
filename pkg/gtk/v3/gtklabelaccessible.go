@@ -27,7 +27,6 @@ func init() {
 
 // LabelAccessibleOverrider contains methods that are overridable.
 type LabelAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type LabelAccessible struct {

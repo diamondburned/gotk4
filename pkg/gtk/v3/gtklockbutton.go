@@ -29,7 +29,6 @@ func init() {
 
 // LockButtonOverrider contains methods that are overridable.
 type LockButtonOverrider interface {
-	externglib.Objector
 }
 
 // LockButton is a widget that can be used in control panels or preference

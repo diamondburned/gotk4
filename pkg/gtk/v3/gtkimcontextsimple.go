@@ -30,7 +30,6 @@ const MAX_COMPOSE_LEN = 7
 
 // IMContextSimpleOverrider contains methods that are overridable.
 type IMContextSimpleOverrider interface {
-	externglib.Objector
 }
 
 // IMContextSimple is a simple input method context supporting table-based input

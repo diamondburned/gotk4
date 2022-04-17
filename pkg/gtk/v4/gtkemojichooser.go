@@ -25,7 +25,6 @@ func init() {
 
 // EmojiChooserOverrider contains methods that are overridable.
 type EmojiChooserOverrider interface {
-	externglib.Objector
 }
 
 // EmojiChooser: GtkEmojiChooser is used by text widgets such as GtkEntry or

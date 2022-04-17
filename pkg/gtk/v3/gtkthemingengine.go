@@ -50,7 +50,6 @@ func init() {
 
 // ThemingEngineOverrider contains methods that are overridable.
 type ThemingEngineOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - cr

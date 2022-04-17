@@ -25,7 +25,6 @@ func init() {
 
 // FileIconOverrider contains methods that are overridable.
 type FileIconOverrider interface {
-	externglib.Objector
 }
 
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
@@ -73,7 +72,7 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 //
 //    - fileIcon for the given file, or NULL on error.
 //
-func NewFileIcon(file FileOverrider) *FileIcon {
+func NewFileIcon(file Filer) *FileIcon {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
 
@@ -95,7 +94,7 @@ func NewFileIcon(file FileOverrider) *FileIcon {
 //
 //    - file: #GFile.
 //
-func (icon *FileIcon) File() FileOverrider {
+func (icon *FileIcon) File() Filer {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
 
@@ -104,7 +103,7 @@ func (icon *FileIcon) File() FileOverrider {
 	_cret = C.g_file_icon_get_file(_arg0)
 	runtime.KeepAlive(icon)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -114,10 +113,10 @@ func (icon *FileIcon) File() FileOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}

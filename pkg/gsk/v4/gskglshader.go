@@ -33,7 +33,6 @@ func init() {
 
 // GLShaderOverrider contains methods that are overridable.
 type GLShaderOverrider interface {
-	externglib.Objector
 }
 
 // GLShader: GskGLShader is a snippet of GLSL that is meant to run in the

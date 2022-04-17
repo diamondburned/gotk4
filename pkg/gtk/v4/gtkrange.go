@@ -37,7 +37,6 @@ func init() {
 
 // RangeOverrider contains methods that are overridable.
 type RangeOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	AdjustBounds(newValue float64)

@@ -32,7 +32,6 @@ func init() {
 
 // ConstraintLayoutOverrider contains methods that are overridable.
 type ConstraintLayoutOverrider interface {
-	externglib.Objector
 }
 
 // ConstraintLayout: layout manager using constraints to describe relations
@@ -369,7 +368,7 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //
 //    - list of gtk.Constraint instances that were added to the layout.
 //
-func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetOverrider) ([]Constraint, error) {
+func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]Constraint, error) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 **C.char               // out
 	var _arg2 C.gsize
@@ -465,7 +464,7 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 //
 //    - listModel: a GListModel tracking the layout's constraints.
 //
-func (layout *ConstraintLayout) ObserveConstraints() gio.ListModelOverrider {
+func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
@@ -474,7 +473,7 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModelOverrider {
 	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -484,10 +483,10 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModelOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModelOverrider)
+			_, ok := obj.(gio.ListModeller)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModelOverrider)
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -511,7 +510,7 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModelOverrider {
 //
 //    - listModel: a GListModel tracking the layout's guides.
 //
-func (layout *ConstraintLayout) ObserveGuides() gio.ListModelOverrider {
+func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
@@ -520,7 +519,7 @@ func (layout *ConstraintLayout) ObserveGuides() gio.ListModelOverrider {
 	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -530,10 +529,10 @@ func (layout *ConstraintLayout) ObserveGuides() gio.ListModelOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModelOverrider)
+			_, ok := obj.(gio.ListModeller)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModelOverrider)
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -593,7 +592,6 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 
 // ConstraintLayoutChildOverrider contains methods that are overridable.
 type ConstraintLayoutChildOverrider interface {
-	externglib.Objector
 }
 
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a

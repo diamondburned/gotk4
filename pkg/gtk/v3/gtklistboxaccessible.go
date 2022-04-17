@@ -27,7 +27,6 @@ func init() {
 
 // ListBoxAccessibleOverrider contains methods that are overridable.
 type ListBoxAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ListBoxAccessible struct {

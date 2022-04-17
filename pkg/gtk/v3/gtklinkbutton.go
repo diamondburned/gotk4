@@ -31,7 +31,6 @@ func init() {
 
 // LinkButtonOverrider contains methods that are overridable.
 type LinkButtonOverrider interface {
-	externglib.Objector
 	// The function returns the following values:
 	//
 	ActivateLink() bool

@@ -27,7 +27,6 @@ func init() {
 
 // ColumnViewOverrider contains methods that are overridable.
 type ColumnViewOverrider interface {
-	externglib.Objector
 }
 
 // ColumnView: GtkColumnView presents a large dynamic list of items using
@@ -185,7 +184,7 @@ func (self *ColumnView) ConnectActivate(f func(position uint)) externglib.Signal
 //
 //    - columnView: new GtkColumnView.
 //
-func NewColumnView(model SelectionModelOverrider) *ColumnView {
+func NewColumnView(model SelectionModeller) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
 	var _cret *C.GtkWidget         // in
 
@@ -232,7 +231,7 @@ func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 //
 //    - listModel: list managing the columns.
 //
-func (self *ColumnView) Columns() gio.ListModelOverrider {
+func (self *ColumnView) Columns() gio.ListModeller {
 	var _arg0 *C.GtkColumnView // out
 	var _cret *C.GListModel    // in
 
@@ -241,7 +240,7 @@ func (self *ColumnView) Columns() gio.ListModelOverrider {
 	_cret = C.gtk_column_view_get_columns(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -251,10 +250,10 @@ func (self *ColumnView) Columns() gio.ListModelOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModelOverrider)
+			_, ok := obj.(gio.ListModeller)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModelOverrider)
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -295,7 +294,7 @@ func (self *ColumnView) EnableRubberband() bool {
 //
 //    - selectionModel (optional): model in use.
 //
-func (self *ColumnView) Model() SelectionModelOverrider {
+func (self *ColumnView) Model() SelectionModeller {
 	var _arg0 *C.GtkColumnView     // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -304,7 +303,7 @@ func (self *ColumnView) Model() SelectionModelOverrider {
 	_cret = C.gtk_column_view_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel SelectionModelOverrider // out
+	var _selectionModel SelectionModeller // out
 
 	if _cret != nil {
 		{
@@ -312,10 +311,10 @@ func (self *ColumnView) Model() SelectionModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SelectionModelOverrider)
+				_, ok := obj.(SelectionModeller)
 				return ok
 			})
-			rv, ok := casted.(SelectionModelOverrider)
+			rv, ok := casted.(SelectionModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 			}
@@ -536,7 +535,7 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 //
 //    - model (optional) to use or NULL for none.
 //
-func (self *ColumnView) SetModel(model SelectionModelOverrider) {
+func (self *ColumnView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkColumnView     // out
 	var _arg1 *C.GtkSelectionModel // out
 

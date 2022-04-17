@@ -27,7 +27,6 @@ func init() {
 
 // PanedAccessibleOverrider contains methods that are overridable.
 type PanedAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type PanedAccessible struct {

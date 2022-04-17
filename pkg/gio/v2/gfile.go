@@ -41,8 +41,6 @@ import (
 // extern GFileInfo* _gotk4_gio2_FileIface_query_info(GFile*, char*, GFileQueryInfoFlags, GCancellable*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileIface_query_info_finish(GFile*, GAsyncResult*, GError**);
 // extern GFileInputStream* _gotk4_gio2_FileIface_read_finish(GFile*, GAsyncResult*, GError**);
-// extern GFileInputStream* _gotk4_gio2_FileIface_read_fn(GFile*, GCancellable*, GError**);
-// extern GFileMonitor* _gotk4_gio2_FileIface_monitor_dir(GFile*, GFileMonitorFlags, GCancellable*, GError**);
 // extern GFileMonitor* _gotk4_gio2_FileIface_monitor_file(GFile*, GFileMonitorFlags, GCancellable*, GError**);
 // extern GFileOutputStream* _gotk4_gio2_FileIface_append_to(GFile*, GFileCreateFlags, GCancellable*, GError**);
 // extern GFileOutputStream* _gotk4_gio2_FileIface_append_to_finish(GFile*, GAsyncResult*, GError**);
@@ -59,8 +57,6 @@ import (
 // extern char* _gotk4_gio2_FileIface_get_uri(GFile*);
 // extern char* _gotk4_gio2_FileIface_get_uri_scheme(GFile*);
 // extern gboolean _gotk4_gio2_FileIface_copy_finish(GFile*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_delete_file(GFile*, GCancellable*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_delete_file_finish(GFile*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_eject_mountable_finish(GFile*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_eject_mountable_with_operation_finish(GFile*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_equal(GFile*, GFile*);
@@ -72,7 +68,6 @@ import (
 // extern gboolean _gotk4_gio2_FileIface_measure_disk_usage_finish(GFile*, GAsyncResult*, guint64*, guint64*, guint64*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_mount_enclosing_volume_finish(GFile*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_poll_mountable_finish(GFile*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_prefix_matches(GFile*, GFile*);
 // extern gboolean _gotk4_gio2_FileIface_set_attribute(GFile*, char*, GFileAttributeType, gpointer, GFileQueryInfoFlags, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_set_attributes_finish(GFile*, GAsyncResult*, GFileInfo**, GError**);
 // extern gboolean _gotk4_gio2_FileIface_set_attributes_from_info(GFile*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**);
@@ -94,1142 +89,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: GTypeFile, F: marshalFile},
 	})
-}
-
-// FileOverrider contains methods that are overridable.
-type FileOverrider interface {
-	externglib.Objector
-	// AppendTo gets an output stream for appending data to the file. If the
-	// file doesn't already exist it is created.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// Some file systems don't allow all file names, and may return an
-	// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
-	// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
-	// too, and depend on what kind of filesystem the file is on.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags: set of CreateFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileOutputStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
-	// AppendToFinish finishes an asynchronous file append operation started
-	// with g_file_append_to_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileOutputStream: valid OutputStream or NULL on error. Free the
-	//      returned object with g_object_unref().
-	//
-	AppendToFinish(res AsyncResultOverrider) (*FileOutputStream, error)
-	// CopyFinish finishes copying the file started with g_file_copy_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	CopyFinish(res AsyncResultOverrider) error
-	// Create creates a new file and returns an output stream for writing to it.
-	// The file must not already exist.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If a file or directory with this name already exists the
-	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
-	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
-	// if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
-	// Other errors are possible too, and depend on what kind of filesystem the
-	// file is on.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags: set of CreateFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileOutputStream for the newly created file, or NULL on error. Free
-	//      the returned object with g_object_unref().
-	//
-	Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
-	// CreateFinish finishes an asynchronous file create operation started with
-	// g_file_create_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileOutputStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	CreateFinish(res AsyncResultOverrider) (*FileOutputStream, error)
-	// CreateReadwrite creates a new file and returns a stream for reading and
-	// writing to it. The file must not already exist.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If a file or directory with this name already exists, the
-	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
-	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
-	// if the name is too long, G_IO_ERROR_FILENAME_TOO_LONG will be returned.
-	// Other errors are possible too, and depend on what kind of filesystem the
-	// file is on.
-	//
-	// Note that in many non-local file cases read and write streams are not
-	// supported, so make sure you really need to do read and write streaming,
-	// rather than just opening for reading or writing.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags: set of CreateFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileIOStream for the newly created file, or NULL on error. Free the
-	//      returned object with g_object_unref().
-	//
-	CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error)
-	// CreateReadwriteFinish finishes an asynchronous file create operation
-	// started with g_file_create_readwrite_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileIOStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	CreateReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error)
-	// DeleteFile deletes a file. If the file is a directory, it will only be
-	// deleted if it is empty. This has the same semantics as g_unlink().
-	//
-	// If file doesn’t exist, G_IO_ERROR_NOT_FOUND will be returned. This allows
-	// for deletion to be implemented avoiding time-of-check to time-of-use
-	// races (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
-	//
-	//    g_autoptr(GError) local_error = NULL;
-	//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
-	//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-	//      {
-	//        // deletion failed for some reason other than the file not existing:
-	//        // so report the error
-	//        g_warning ("Failed to delete s: s",
-	//                   g_file_peek_path (my_file), local_error->message);
-	//      }
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//
-	DeleteFile(ctx context.Context) error
-	// DeleteFileFinish finishes deleting a file started with
-	// g_file_delete_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	DeleteFileFinish(result AsyncResultOverrider) error
-	// Dup duplicates a #GFile handle. This operation does not duplicate the
-	// actual file or directory represented by the #GFile; see g_file_copy() if
-	// attempting to copy a file.
-	//
-	// g_file_dup() is useful when a second handle is needed to the same
-	// underlying file, for use in a separate thread (#GFile is not
-	// thread-safe). For use within the same thread, use g_object_ref() to
-	// increment the existing object’s reference count.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - ret: new #GFile that is a duplicate of the given #GFile.
-	//
-	Dup() FileOverrider
-	// EjectMountableFinish finishes an asynchronous eject operation started by
-	// g_file_eject_mountable().
-	//
-	// Deprecated: Use g_file_eject_mountable_with_operation_finish() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectMountableFinish(result AsyncResultOverrider) error
-	// EjectMountableWithOperationFinish finishes an asynchronous eject
-	// operation started by g_file_eject_mountable_with_operation().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	EjectMountableWithOperationFinish(result AsyncResultOverrider) error
-	// EnumerateChildren gets the requested information about the files in a
-	// directory. The result is a Enumerator object that will give out Info
-	// objects for all the files in the directory.
-	//
-	// The attributes value is a string that specifies the file attributes that
-	// should be gathered. It is not an error if it's not possible to read a
-	// particular requested attribute from a file - it just won't be set.
-	// attributes should be a comma-separated list of attributes or attribute
-	// wildcards. The wildcard "*" means all attributes, and a wildcard like
-	// "standard::*" means all attributes in the standard namespace. An example
-	// attribute query be "standard::*,owner::user". The standard attributes are
-	// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY
-	// error will be returned. Other errors are possible too.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - attributes: attribute query string.
-	//    - flags: set of QueryInfoFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileEnumerator if successful, NULL on error. Free the returned object
-	//      with g_object_unref().
-	//
-	EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error)
-	// EnumerateChildrenFinish finishes an async enumerate children operation.
-	// See g_file_enumerate_children_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileEnumerator or NULL if an error occurred. Free the returned object
-	//      with g_object_unref().
-	//
-	EnumerateChildrenFinish(res AsyncResultOverrider) (*FileEnumerator, error)
-	// Equal checks if the two given #GFiles refer to the same file.
-	//
-	// Note that two #GFiles that differ can still refer to the same file on the
-	// filesystem due to various forms of filename aliasing.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function takes the following parameters:
-	//
-	//    - file2: second #GFile.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if file1 and file2 are equal.
-	//
-	Equal(file2 FileOverrider) bool
-	// FindEnclosingMount gets a #GMount for the #GFile.
-	//
-	// #GMount is returned only for user interesting locations, see Monitor. If
-	// the Iface for file does not have a #mount, error will be set to
-	// G_IO_ERROR_NOT_FOUND and NULL #will be returned.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//
-	// The function returns the following values:
-	//
-	//    - mount where the file is located or NULL on error. Free the returned
-	//      object with g_object_unref().
-	//
-	FindEnclosingMount(ctx context.Context) (MountOverrider, error)
-	// FindEnclosingMountFinish finishes an asynchronous find mount request. See
-	// g_file_find_enclosing_mount_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - mount for given file or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	FindEnclosingMountFinish(res AsyncResultOverrider) (MountOverrider, error)
-	// Basename gets the base name (the last component of the path) for a given
-	// #GFile.
-	//
-	// If called for the top level of a system (such as the filesystem root or a
-	// uri like sftp://host/) it will return a single directory separator (and
-	// on Windows, possibly a drive letter).
-	//
-	// The base name is a byte string (not UTF-8). It has no defined encoding or
-	// rules other than it may not contain zero bytes. If you want to use
-	// filenames in a user interface you should use the display name that you
-	// can get by requesting the G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
-	// attribute with g_file_query_info().
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - filename (optional): string containing the #GFile's base name, or
-	//      NULL if given #GFile is invalid. The returned string should be freed
-	//      with g_free() when no longer needed.
-	//
-	Basename() string
-	// ChildForDisplayName gets the child of file for a given display_name (i.e.
-	// a UTF-8 version of the name). If this function fails, it returns NULL and
-	// error will be set. This is very useful when constructing a #GFile for a
-	// new file and the user entered the filename in the user interface, for
-	// instance when you select a directory and type a filename in the file
-	// selector.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function takes the following parameters:
-	//
-	//    - displayName: string to a possible child.
-	//
-	// The function returns the following values:
-	//
-	//    - ret to the specified child, or NULL if the display name couldn't be
-	//      converted. Free the returned object with g_object_unref().
-	//
-	ChildForDisplayName(displayName string) (FileOverrider, error)
-	// Parent gets the parent directory for the file. If the file represents the
-	// root directory of the file system, then NULL will be returned.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - ret (optional) structure to the parent of the given #GFile or NULL if
-	//      there is no parent. Free the returned object with g_object_unref().
-	//
-	Parent() FileOverrider
-	// ParseName gets the parse name of the file. A parse name is a UTF-8 string
-	// that describes the file such that one can get the #GFile back using
-	// g_file_parse_name().
-	//
-	// This is generally used to show the #GFile as a nice full-pathname kind of
-	// string in a user interface, like in a location entry.
-	//
-	// For local files with names that can safely be converted to UTF-8 the
-	// pathname is used, otherwise the IRI is used (a form of URI that allows
-	// UTF-8 characters unescaped).
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: string containing the #GFile's parse name. The returned string
-	//      should be freed with g_free() when no longer needed.
-	//
-	ParseName() string
-	// Path gets the local pathname for #GFile, if one exists. If non-NULL, this
-	// is guaranteed to be an absolute, canonical path. It might contain
-	// symlinks.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - filename (optional): string containing the #GFile's path, or NULL if
-	//      no such path exists. The returned string should be freed with
-	//      g_free() when no longer needed.
-	//
-	Path() string
-	// RelativePath gets the path for descendant relative to parent.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function takes the following parameters:
-	//
-	//    - descendant: input #GFile.
-	//
-	// The function returns the following values:
-	//
-	//    - filename (optional): string with the relative path from descendant to
-	//      parent, or NULL if descendant doesn't have parent as prefix. The
-	//      returned string should be freed with g_free() when no longer needed.
-	//
-	RelativePath(descendant FileOverrider) string
-	// URI gets the URI for the file.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: string containing the #GFile's URI. If the #GFile was
-	//      constructed with an invalid URI, an invalid URI is returned. The
-	//      returned string should be freed with g_free() when no longer needed.
-	//
-	URI() string
-	// URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme
-	// as:
-	//
-	//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-	//
-	// Common schemes include "file", "http", "ftp", etc.
-	//
-	// The scheme can be different from the one used to construct the #GFile, in
-	// that it might be replaced with one that is logically equivalent to the
-	// #GFile.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): string containing the URI scheme for the given
-	//      #GFile or NULL if the #GFile was constructed with an invalid URI. The
-	//      returned string should be freed with g_free() when no longer needed.
-	//
-	URIScheme() string
-	// HasURIScheme checks to see if a #GFile has a given URI scheme.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function takes the following parameters:
-	//
-	//    - uriScheme: string containing a URI scheme.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if #GFile's backend supports the given URI scheme, FALSE if
-	//      URI scheme is NULL, not supported, or #GFile is invalid.
-	//
-	HasURIScheme(uriScheme string) bool
-	// Hash creates a hash value for a #GFile.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - guint: 0 if file is not a valid #GFile, otherwise an integer that can
-	//      be used as hash value for the #GFile. This function is intended for
-	//      easily hashing a #GFile to add to a Table or similar data structure.
-	//
-	Hash() uint
-	// IsNative checks to see if a file is native to the platform.
-	//
-	// A native file is one expressed in the platform-native filename format,
-	// e.g. "C:\Windows" or "/usr/bin/". This does not mean the file is local,
-	// as it might be on a locally mounted remote filesystem.
-	//
-	// On some systems non-native files may be available using the native
-	// filesystem via a userspace filesystem (FUSE), in these cases this call
-	// will return FALSE, but g_file_get_path() will still return a native path.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if file is native.
-	//
-	IsNative() bool
-	// MakeDirectory creates a directory. Note that this will only create a
-	// child directory of the immediate parent directory of the path or URI
-	// given by the #GFile. To recursively create directories, see
-	// g_file_make_directory_with_parents(). This function will fail if the
-	// parent directory does not exist, setting error to G_IO_ERROR_NOT_FOUND.
-	// If the file system doesn't support creating directories, this function
-	// will fail, setting error to G_IO_ERROR_NOT_SUPPORTED.
-	//
-	// For a local #GFile the newly created directory will have the default
-	// (current) ownership and permissions of the current process.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//
-	MakeDirectory(ctx context.Context) error
-	// MakeDirectoryFinish finishes an asynchronous directory creation, started
-	// with g_file_make_directory_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	MakeDirectoryFinish(result AsyncResultOverrider) error
-	// MakeSymbolicLink creates a symbolic link named file which contains the
-	// string symlink_value.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - symlinkValue: string with the path for the target of the new symlink.
-	//
-	MakeSymbolicLink(ctx context.Context, symlinkValue string) error
-	// MeasureDiskUsageFinish collects the results from an earlier call to
-	// g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for
-	// more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result passed to your ReadyCallback.
-	//
-	// The function returns the following values:
-	//
-	//    - diskUsage (optional): number of bytes of disk space used.
-	//    - numDirs (optional): number of directories encountered.
-	//    - numFiles (optional): number of non-directories encountered.
-	//
-	MeasureDiskUsageFinish(result AsyncResultOverrider) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error)
-	// MonitorDir obtains a directory monitor for the given file. This may fail
-	// if directory monitoring is not supported.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// It does not make sense for flags to contain
-	// G_FILE_MONITOR_WATCH_HARD_LINKS, since hard links can not be made to
-	// directories. It is not possible to monitor all the files in a directory
-	// for changes made via hard links; if you want to do this then you must
-	// register individual watches with g_file_monitor().
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags: set of MonitorFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileMonitor for the given file, or NULL on error. Free the returned
-	//      object with g_object_unref().
-	//
-	MonitorDir(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
-	// MonitorFile obtains a file monitor for the given file. If no file
-	// notification mechanism exists, then regular polling of the file is used.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If flags contains G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor will
-	// also attempt to report changes made to the file via another filename (ie,
-	// a hard link). Without this flag, you can only rely on changes made
-	// through the filename contained in file to be reported. Using this flag
-	// may result in an increase in resource usage, and may not have any effect
-	// depending on the Monitor backend and/or filesystem type.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - flags: set of MonitorFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileMonitor for the given file, or NULL on error. Free the returned
-	//      object with g_object_unref().
-	//
-	MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
-	// MountEnclosingVolumeFinish finishes a mount operation started by
-	// g_file_mount_enclosing_volume().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	MountEnclosingVolumeFinish(result AsyncResultOverrider) error
-	// MountMountableFinish finishes a mount operation. See
-	// g_file_mount_mountable() for details.
-	//
-	// Finish an asynchronous mount operation that was started with
-	// g_file_mount_mountable().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - ret or NULL on error. Free the returned object with g_object_unref().
-	//
-	MountMountableFinish(result AsyncResultOverrider) (FileOverrider, error)
-	// OpenReadwrite opens an existing file for reading and writing. The result
-	// is a IOStream that can be used to read and write the contents of the
-	// file.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
-	// will be returned. Other errors are possible too, and depend on what kind
-	// of filesystem the file is on. Note that in many non-local file cases read
-	// and write streams are not supported, so make sure you really need to do
-	// read and write streaming, rather than just opening for reading or
-	// writing.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): #GCancellable.
-	//
-	// The function returns the following values:
-	//
-	//    - fileIOStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	OpenReadwrite(ctx context.Context) (*FileIOStream, error)
-	// OpenReadwriteFinish finishes an asynchronous file read operation started
-	// with g_file_open_readwrite_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileIOStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	OpenReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error)
-	// PollMountableFinish finishes a poll operation. See
-	// g_file_poll_mountable() for details.
-	//
-	// Finish an asynchronous poll operation that was polled with
-	// g_file_poll_mountable().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	PollMountableFinish(result AsyncResultOverrider) error
-	// PrefixMatches checks whether file has the prefix specified by prefix.
-	//
-	// In other words, if the names of initial elements of file's pathname match
-	// prefix. Only full pathname elements are matched, so a path like /foo is
-	// not considered a prefix of /foobar, only of /foo/bar.
-	//
-	// A #GFile is not a prefix of itself. If you want to check for equality,
-	// use g_file_equal().
-	//
-	// This call does no I/O, as it works purely on names. As such it can
-	// sometimes return FALSE even if file is inside a prefix (from a filesystem
-	// point of view), because the prefix of file is an alias of prefix.
-	//
-	// The function takes the following parameters:
-	//
-	//    - file: input #GFile.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the file's parent, grandparent, etc is prefix, FALSE
-	//      otherwise.
-	//
-	PrefixMatches(file FileOverrider) bool
-	// QueryFilesystemInfo: similar to g_file_query_info(), but obtains
-	// information about the filesystem the file is on, rather than the file
-	// itself. For instance the amount of space available and the type of the
-	// filesystem.
-	//
-	// The attributes value is a string that specifies the attributes that
-	// should be gathered. It is not an error if it's not possible to read a
-	// particular requested attribute from a file - it just won't be set.
-	// attributes should be a comma-separated list of attributes or attribute
-	// wildcards. The wildcard "*" means all attributes, and a wildcard like
-	// "filesystem::*" means all attributes in the filesystem namespace. The
-	// standard namespace for filesystem attributes is "filesystem". Common
-	// attributes of interest are FILE_ATTRIBUTE_FILESYSTEM_SIZE (the total size
-	// of the filesystem in bytes), FILE_ATTRIBUTE_FILESYSTEM_FREE (number of
-	// bytes available), and FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the
-	// filesystem).
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. Other errors are possible too, and depend on what kind of
-	// filesystem the file is on.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - attributes: attribute query string.
-	//
-	// The function returns the following values:
-	//
-	//    - fileInfo or NULL if there was an error. Free the returned object with
-	//      g_object_unref().
-	//
-	QueryFilesystemInfo(ctx context.Context, attributes string) (*FileInfo, error)
-	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
-	// See g_file_query_filesystem_info_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileInfo for given file or NULL on error. Free the returned object
-	//      with g_object_unref().
-	//
-	QueryFilesystemInfoFinish(res AsyncResultOverrider) (*FileInfo, error)
-	// QueryInfo gets the requested information about specified file. The result
-	// is a Info object that contains key-value attributes (such as the type or
-	// size of the file).
-	//
-	// The attributes value is a string that specifies the file attributes that
-	// should be gathered. It is not an error if it's not possible to read a
-	// particular requested attribute from a file - it just won't be set.
-	// attributes should be a comma-separated list of attributes or attribute
-	// wildcards. The wildcard "*" means all attributes, and a wildcard like
-	// "standard::*" means all attributes in the standard namespace. An example
-	// attribute query be "standard::*,owner::user". The standard attributes are
-	// available as defines, like FILE_ATTRIBUTE_STANDARD_NAME.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// For symlinks, normally the information about the target of the symlink is
-	// returned, rather than information about the symlink itself. However if
-	// you pass FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in flags the information about
-	// the symlink itself will be returned. Also, for symlinks that point to
-	// non-existing files the information about the symlink itself will be
-	// returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. Other errors are possible too, and depend on what kind of
-	// filesystem the file is on.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - attributes: attribute query string.
-	//    - flags: set of QueryInfoFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileInfo for the given file, or NULL on error. Free the returned
-	//      object with g_object_unref().
-	//
-	QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error)
-	// QueryInfoFinish finishes an asynchronous file info query. See
-	// g_file_query_info_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileInfo for given file or NULL on error. Free the returned object
-	//      with g_object_unref().
-	//
-	QueryInfoFinish(res AsyncResultOverrider) (*FileInfo, error)
-	// QuerySettableAttributes: obtain the list of settable attributes for the
-	// file.
-	//
-	// Returns the type and full attribute name of all the attributes that can
-	// be set on this file. This doesn't mean setting it will always succeed
-	// though, you might get an access failure, or some specific file may not
-	// support a specific attribute.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//
-	// The function returns the following values:
-	//
-	//    - fileAttributeInfoList describing the settable attributes. When you
-	//      are done with it, release it with g_file_attribute_info_list_unref().
-	//
-	QuerySettableAttributes(ctx context.Context) (*FileAttributeInfoList, error)
-	// QueryWritableNamespaces: obtain the list of attribute namespaces where
-	// new attributes can be created by a user. An example of this is extended
-	// attributes (in the "xattr" namespace).
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//
-	// The function returns the following values:
-	//
-	//    - fileAttributeInfoList describing the writable namespaces. When you
-	//      are done with it, release it with g_file_attribute_info_list_unref().
-	//
-	QueryWritableNamespaces(ctx context.Context) (*FileAttributeInfoList, error)
-	// ReadFinish finishes an asynchronous file read operation started with
-	// g_file_read_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileInputStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	ReadFinish(res AsyncResultOverrider) (*FileInputStream, error)
-	// ReadFn opens a file for reading. The result is a InputStream that can be
-	// used to read the contents of the file.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
-	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
-	// will be returned. Other errors are possible too, and depend on what kind
-	// of filesystem the file is on.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): #GCancellable.
-	//
-	// The function returns the following values:
-	//
-	//    - fileInputStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	ReadFn(ctx context.Context) (*FileInputStream, error)
-	// Replace returns an output stream for overwriting the file, possibly
-	// creating a backup copy of the file first. If the file doesn't exist, it
-	// will be created.
-	//
-	// This will try to replace the file in the safest way possible so that any
-	// errors during the writing will not affect an already existing copy of the
-	// file. For instance, for local files it may write to a temporary file and
-	// then atomically rename over the destination when the stream is closed.
-	//
-	// By default files created are generally readable by everyone, but if you
-	// pass FILE_CREATE_PRIVATE in flags the file will be made readable only to
-	// the current user, to the level that is supported on the target
-	// filesystem.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// If you pass in a non-NULL etag value and file already exists, then this
-	// value is compared to the current entity tag of the file, and if they
-	// differ an G_IO_ERROR_WRONG_ETAG error is returned. This generally means
-	// that the file has been changed since you last read it. You can get the
-	// new etag from g_file_output_stream_get_etag() after you've finished
-	// writing and closed the OutputStream. When you load a new file you can use
-	// g_file_input_stream_query_info() to get the etag of the file.
-	//
-	// If make_backup is TRUE, this function will attempt to make a backup of
-	// the current file before overwriting it. If this fails a
-	// G_IO_ERROR_CANT_CREATE_BACKUP error will be returned. If you want to
-	// replace anyway, try again with make_backup set to FALSE.
-	//
-	// If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
-	// returned, and if the file is some other form of non-regular file then a
-	// G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file systems
-	// don't allow all file names, and may return an G_IO_ERROR_INVALID_FILENAME
-	// error, and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be
-	// returned. Other errors are possible too, and depend on what kind of
-	// filesystem the file is on.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - etag (optional): optional [entity tag][gfile-etag] for the current
-	//      #GFile, or LL to ignore.
-	//    - makeBackup: TRUE if a backup should be created.
-	//    - flags: set of CreateFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileOutputStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error)
-	// ReplaceFinish finishes an asynchronous file replace operation started
-	// with g_file_replace_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileOutputStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	ReplaceFinish(res AsyncResultOverrider) (*FileOutputStream, error)
-	// ReplaceReadwrite returns an output stream for overwriting the file in
-	// readwrite mode, possibly creating a backup copy of the file first. If the
-	// file doesn't exist, it will be created.
-	//
-	// For details about the behaviour, see g_file_replace() which does the same
-	// thing but returns an output stream only.
-	//
-	// Note that in many non-local file cases read and write streams are not
-	// supported, so make sure you really need to do read and write streaming,
-	// rather than just opening for reading or writing.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - etag (optional): optional [entity tag][gfile-etag] for the current
-	//      #GFile, or LL to ignore.
-	//    - makeBackup: TRUE if a backup should be created.
-	//    - flags: set of CreateFlags.
-	//
-	// The function returns the following values:
-	//
-	//    - fileIOStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	ReplaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error)
-	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
-	// started with g_file_replace_readwrite_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - fileIOStream or NULL on error. Free the returned object with
-	//      g_object_unref().
-	//
-	ReplaceReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error)
-	// ResolveRelativePath resolves a relative path for file to an absolute
-	// path.
-	//
-	// This call does no blocking I/O.
-	//
-	// The function takes the following parameters:
-	//
-	//    - relativePath: given relative path string.
-	//
-	// The function returns the following values:
-	//
-	//    - ret to the resolved path. NULL if relative_path is NULL or if file is
-	//      invalid. Free the returned object with g_object_unref().
-	//
-	ResolveRelativePath(relativePath string) FileOverrider
-	// SetAttribute sets an attribute in the file with attribute name attribute
-	// to value_p.
-	//
-	// Some attributes can be unset by setting type to
-	// G_FILE_ATTRIBUTE_TYPE_INVALID and value_p to NULL.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - attribute: string containing the attribute's name.
-	//    - typ: type of the attribute.
-	//    - valueP (optional): pointer to the value (or the pointer itself if the
-	//      type is a pointer type).
-	//    - flags: set of QueryInfoFlags.
-	//
-	SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP cgo.Handle, flags FileQueryInfoFlags) error
-	// SetAttributesFinish finishes setting an attribute started in
-	// g_file_set_attributes_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - info: Info.
-	//
-	SetAttributesFinish(result AsyncResultOverrider) (*FileInfo, error)
-	// SetAttributesFromInfo tries to set all attributes in the Info on the
-	// target values, not stopping on the first error.
-	//
-	// If there is any error during this operation then error will be set to the
-	// first error. Error on particular fields are flagged by setting the
-	// "status" field in the attribute value to
-	// G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING, which means you can also detect
-	// further errors.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - info: Info.
-	//    - flags: QueryInfoFlags.
-	//
-	SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error
-	// SetDisplayName renames file to the specified display name.
-	//
-	// The display name is converted from UTF-8 to the correct encoding for the
-	// target filesystem if possible and the file is renamed to this.
-	//
-	// If you want to implement a rename operation in the user interface the
-	// edit name (FILE_ATTRIBUTE_STANDARD_EDIT_NAME) should be used as the
-	// initial value in the rename widget, and then the result after editing
-	// should be passed to g_file_set_display_name().
-	//
-	// On success the resulting converted filename is returned.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - displayName: string.
-	//
-	// The function returns the following values:
-	//
-	//    - ret specifying what file was renamed to, or NULL if there was an
-	//      error. Free the returned object with g_object_unref().
-	//
-	SetDisplayName(ctx context.Context, displayName string) (FileOverrider, error)
-	// SetDisplayNameFinish finishes setting a display name started with
-	// g_file_set_display_name_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	// The function returns the following values:
-	//
-	//    - ret or NULL on error. Free the returned object with g_object_unref().
-	//
-	SetDisplayNameFinish(res AsyncResultOverrider) (FileOverrider, error)
-	// StartMountableFinish finishes a start operation. See
-	// g_file_start_mountable() for details.
-	//
-	// Finish an asynchronous start operation that was started with
-	// g_file_start_mountable().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	StartMountableFinish(result AsyncResultOverrider) error
-	// StopMountableFinish finishes a stop operation, see
-	// g_file_stop_mountable() for details.
-	//
-	// Finish an asynchronous stop operation that was started with
-	// g_file_stop_mountable().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	StopMountableFinish(result AsyncResultOverrider) error
-	// Trash sends file to the "Trashcan", if possible. This is similar to
-	// deleting it, but the user can recover it before emptying the trashcan.
-	// Not all file systems support trashing, so this call can return the
-	// G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the x-gvfs-notrash unix
-	// mount option can be used to disable g_file_trash() support for certain
-	// mounts, the G_IO_ERROR_NOT_SUPPORTED error will be returned in that case.
-	//
-	// If cancellable is not NULL, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//
-	Trash(ctx context.Context) error
-	// TrashFinish finishes an asynchronous file trashing operation, started
-	// with g_file_trash_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	TrashFinish(result AsyncResultOverrider) error
-	// UnmountMountableFinish finishes an unmount operation, see
-	// g_file_unmount_mountable() for details.
-	//
-	// Finish an asynchronous unmount operation that was started with
-	// g_file_unmount_mountable().
-	//
-	// Deprecated: Use g_file_unmount_mountable_with_operation_finish() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	UnmountMountableFinish(result AsyncResultOverrider) error
-	// UnmountMountableWithOperationFinish finishes an unmount operation, see
-	// g_file_unmount_mountable_with_operation() for details.
-	//
-	// Finish an asynchronous unmount operation that was started with
-	// g_file_unmount_mountable_with_operation().
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	UnmountMountableWithOperationFinish(result AsyncResultOverrider) error
 }
 
 // File is a high level abstraction for manipulating files on a virtual file
@@ -1339,16 +198,16 @@ type Filer interface {
 	AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// AppendToFinish finishes an asynchronous file append operation started
 	// with g_file_append_to_async().
-	AppendToFinish(res AsyncResultOverrider) (*FileOutputStream, error)
+	AppendToFinish(res AsyncResulter) (*FileOutputStream, error)
 	// BuildAttributeListForCopy prepares the file attribute query string for
 	// copying to file.
 	BuildAttributeListForCopy(ctx context.Context, flags FileCopyFlags) (string, error)
 	// Copy copies the file source to the location specified by destination.
-	Copy(ctx context.Context, destination FileOverrider, flags FileCopyFlags, progressCallback FileProgressCallback) error
+	Copy(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error
 	// CopyAttributes copies the file attributes from source to destination.
-	CopyAttributes(ctx context.Context, destination FileOverrider, flags FileCopyFlags) error
+	CopyAttributes(ctx context.Context, destination Filer, flags FileCopyFlags) error
 	// CopyFinish finishes copying the file started with g_file_copy_async().
-	CopyFinish(res AsyncResultOverrider) error
+	CopyFinish(res AsyncResulter) error
 	// Create creates a new file and returns an output stream for writing to it.
 	Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
 	// CreateAsync: asynchronously creates a new file and returns an output
@@ -1356,7 +215,7 @@ type Filer interface {
 	CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// CreateFinish finishes an asynchronous file create operation started with
 	// g_file_create_async().
-	CreateFinish(res AsyncResultOverrider) (*FileOutputStream, error)
+	CreateFinish(res AsyncResulter) (*FileOutputStream, error)
 	// CreateReadwrite creates a new file and returns a stream for reading and
 	// writing to it.
 	CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error)
@@ -1365,25 +224,25 @@ type Filer interface {
 	CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// CreateReadwriteFinish finishes an asynchronous file create operation
 	// started with g_file_create_readwrite_async().
-	CreateReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error)
+	CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// Delete deletes a file.
 	Delete(ctx context.Context) error
 	// DeleteAsync: asynchronously delete a file.
 	DeleteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// DeleteFinish finishes deleting a file started with g_file_delete_async().
-	DeleteFinish(result AsyncResultOverrider) error
+	DeleteFinish(result AsyncResulter) error
 	// Dup duplicates a #GFile handle.
-	Dup() FileOverrider
+	Dup() Filer
 	// EjectMountable starts an asynchronous eject on a mountable.
 	EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectMountableFinish finishes an asynchronous eject operation started by
 	// g_file_eject_mountable().
-	EjectMountableFinish(result AsyncResultOverrider) error
+	EjectMountableFinish(result AsyncResulter) error
 	// EjectMountableWithOperation starts an asynchronous eject on a mountable.
 	EjectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectMountableWithOperationFinish finishes an asynchronous eject
 	// operation started by g_file_eject_mountable_with_operation().
-	EjectMountableWithOperationFinish(result AsyncResultOverrider) error
+	EjectMountableWithOperationFinish(result AsyncResulter) error
 	// EnumerateChildren gets the requested information about the files in a
 	// directory.
 	EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error)
@@ -1391,38 +250,38 @@ type Filer interface {
 	// about the files in a directory.
 	EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// EnumerateChildrenFinish finishes an async enumerate children operation.
-	EnumerateChildrenFinish(res AsyncResultOverrider) (*FileEnumerator, error)
+	EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error)
 	// Equal checks if the two given #GFiles refer to the same file.
-	Equal(file2 FileOverrider) bool
+	Equal(file2 Filer) bool
 	// FindEnclosingMount gets a #GMount for the #GFile.
-	FindEnclosingMount(ctx context.Context) (MountOverrider, error)
+	FindEnclosingMount(ctx context.Context) (Mounter, error)
 	// FindEnclosingMountAsync: asynchronously gets the mount for the file.
 	FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an asynchronous find mount request.
-	FindEnclosingMountFinish(res AsyncResultOverrider) (MountOverrider, error)
+	FindEnclosingMountFinish(res AsyncResulter) (Mounter, error)
 	// Basename gets the base name (the last component of the path) for a given
 	// #GFile.
 	Basename() string
 	// Child gets a child of file with basename equal to name.
-	Child(name string) FileOverrider
+	Child(name string) Filer
 	// ChildForDisplayName gets the child of file for a given display_name (i.e.
-	ChildForDisplayName(displayName string) (FileOverrider, error)
+	ChildForDisplayName(displayName string) (Filer, error)
 	// Parent gets the parent directory for the file.
-	Parent() FileOverrider
+	Parent() Filer
 	// ParseName gets the parse name of the file.
 	ParseName() string
 	// Path gets the local pathname for #GFile, if one exists.
 	Path() string
 	// RelativePath gets the path for descendant relative to parent.
-	RelativePath(descendant FileOverrider) string
+	RelativePath(descendant Filer) string
 	// URI gets the URI for the file.
 	URI() string
 	// URIScheme gets the URI scheme for a #GFile.
 	URIScheme() string
 	// HasParent checks if file has a parent, and optionally, if it is parent.
-	HasParent(parent FileOverrider) bool
+	HasParent(parent Filer) bool
 	// HasPrefix checks whether file has the prefix specified by prefix.
-	HasPrefix(prefix FileOverrider) bool
+	HasPrefix(prefix Filer) bool
 	// HasURIScheme checks to see if a #GFile has a given URI scheme.
 	HasURIScheme(uriScheme string) bool
 	// Hash creates a hash value for a #GFile.
@@ -1435,23 +294,23 @@ type Filer interface {
 	LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback)
 	// LoadBytesFinish completes an asynchronous request to
 	// g_file_load_bytes_async().
-	LoadBytesFinish(result AsyncResultOverrider) (string, *glib.Bytes, error)
+	LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error)
 	// LoadContents loads the content of the file into memory.
 	LoadContents(ctx context.Context) ([]byte, string, error)
 	// LoadContentsAsync starts an asynchronous load of the file's contents.
 	LoadContentsAsync(ctx context.Context, callback AsyncReadyCallback)
 	// LoadContentsFinish finishes an asynchronous load of the file's contents.
-	LoadContentsFinish(res AsyncResultOverrider) ([]byte, string, error)
+	LoadContentsFinish(res AsyncResulter) ([]byte, string, error)
 	// LoadPartialContentsFinish finishes an asynchronous partial load operation
 	// that was started with g_file_load_partial_contents_async().
-	LoadPartialContentsFinish(res AsyncResultOverrider) ([]byte, string, error)
+	LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, error)
 	// MakeDirectory creates a directory.
 	MakeDirectory(ctx context.Context) error
 	// MakeDirectoryAsync: asynchronously creates a directory.
 	MakeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// MakeDirectoryFinish finishes an asynchronous directory creation, started
 	// with g_file_make_directory_async().
-	MakeDirectoryFinish(result AsyncResultOverrider) error
+	MakeDirectoryFinish(result AsyncResulter) error
 	// MakeDirectoryWithParents creates a directory and any parent directories
 	// that may not exist similar to 'mkdir -p'.
 	MakeDirectoryWithParents(ctx context.Context) error
@@ -1460,7 +319,7 @@ type Filer interface {
 	MakeSymbolicLink(ctx context.Context, symlinkValue string) error
 	// MeasureDiskUsageFinish collects the results from an earlier call to
 	// g_file_measure_disk_usage_async().
-	MeasureDiskUsageFinish(result AsyncResultOverrider) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error)
+	MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error)
 	// Monitor obtains a file or directory monitor for the given file, depending
 	// on the type of the file.
 	Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
@@ -1473,37 +332,37 @@ type Filer interface {
 	MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountEnclosingVolumeFinish finishes a mount operation started by
 	// g_file_mount_enclosing_volume().
-	MountEnclosingVolumeFinish(result AsyncResultOverrider) error
+	MountEnclosingVolumeFinish(result AsyncResulter) error
 	// MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE.
 	MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountMountableFinish finishes a mount operation.
-	MountMountableFinish(result AsyncResultOverrider) (FileOverrider, error)
+	MountMountableFinish(result AsyncResulter) (Filer, error)
 	// Move tries to move the file or directory source to the location specified
 	// by destination.
-	Move(ctx context.Context, destination FileOverrider, flags FileCopyFlags, progressCallback FileProgressCallback) error
+	Move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error
 	// OpenReadwrite opens an existing file for reading and writing.
 	OpenReadwrite(ctx context.Context) (*FileIOStream, error)
 	// OpenReadwriteAsync: asynchronously opens file for reading and writing.
 	OpenReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// OpenReadwriteFinish finishes an asynchronous file read operation started
 	// with g_file_open_readwrite_async().
-	OpenReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error)
+	OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// PeekPath: exactly like g_file_get_path(), but caches the result via
 	// g_object_set_qdata_full().
 	PeekPath() string
 	// PollMountable polls a file of type FILE_TYPE_MOUNTABLE.
 	PollMountable(ctx context.Context, callback AsyncReadyCallback)
 	// PollMountableFinish finishes a poll operation.
-	PollMountableFinish(result AsyncResultOverrider) error
+	PollMountableFinish(result AsyncResulter) error
 	// QueryDefaultHandler returns the Info that is registered as the default
 	// application to handle the file specified by file.
-	QueryDefaultHandler(ctx context.Context) (AppInfoOverrider, error)
+	QueryDefaultHandler(ctx context.Context) (AppInfor, error)
 	// QueryDefaultHandlerAsync: async version of
 	// g_file_query_default_handler().
 	QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 	// operation.
-	QueryDefaultHandlerFinish(result AsyncResultOverrider) (AppInfoOverrider, error)
+	QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, error)
 	// QueryExists: utility function to check if a particular file exists.
 	QueryExists(ctx context.Context) bool
 	// QueryFileType: utility function to inspect the Type of a file.
@@ -1516,14 +375,14 @@ type Filer interface {
 	// about the filesystem that the specified file is on.
 	QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback)
 	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
-	QueryFilesystemInfoFinish(res AsyncResultOverrider) (*FileInfo, error)
+	QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error)
 	// QueryInfo gets the requested information about specified file.
 	QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error)
 	// QueryInfoAsync: asynchronously gets the requested information about
 	// specified file.
 	QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous file info query.
-	QueryInfoFinish(res AsyncResultOverrider) (*FileInfo, error)
+	QueryInfoFinish(res AsyncResulter) (*FileInfo, error)
 	// QuerySettableAttributes: obtain the list of settable attributes for the
 	// file.
 	QuerySettableAttributes(ctx context.Context) (*FileAttributeInfoList, error)
@@ -1536,7 +395,7 @@ type Filer interface {
 	ReadAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// ReadFinish finishes an asynchronous file read operation started with
 	// g_file_read_async().
-	ReadFinish(res AsyncResultOverrider) (*FileInputStream, error)
+	ReadFinish(res AsyncResulter) (*FileInputStream, error)
 	// Replace returns an output stream for overwriting the file, possibly
 	// creating a backup copy of the file first.
 	Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error)
@@ -1553,10 +412,10 @@ type Filer interface {
 	// takes a #GBytes input instead.
 	ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
 	// ReplaceContentsFinish finishes an asynchronous replace of the given file.
-	ReplaceContentsFinish(res AsyncResultOverrider) (string, error)
+	ReplaceContentsFinish(res AsyncResulter) (string, error)
 	// ReplaceFinish finishes an asynchronous file replace operation started
 	// with g_file_replace_async().
-	ReplaceFinish(res AsyncResultOverrider) (*FileOutputStream, error)
+	ReplaceFinish(res AsyncResulter) (*FileOutputStream, error)
 	// ReplaceReadwrite returns an output stream for overwriting the file in
 	// readwrite mode, possibly creating a backup copy of the file first.
 	ReplaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error)
@@ -1566,10 +425,10 @@ type Filer interface {
 	ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
 	// started with g_file_replace_readwrite_async().
-	ReplaceReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error)
+	ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// ResolveRelativePath resolves a relative path for file to an absolute
 	// path.
-	ResolveRelativePath(relativePath string) FileOverrider
+	ResolveRelativePath(relativePath string) Filer
 	// SetAttribute sets an attribute in the file with attribute name attribute
 	// to value_p.
 	SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP cgo.Handle, flags FileQueryInfoFlags) error
@@ -1595,27 +454,27 @@ type Filer interface {
 	SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
-	SetAttributesFinish(result AsyncResultOverrider) (*FileInfo, error)
+	SetAttributesFinish(result AsyncResulter) (*FileInfo, error)
 	// SetAttributesFromInfo tries to set all attributes in the Info on the
 	// target values, not stopping on the first error.
 	SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error
 	// SetDisplayName renames file to the specified display name.
-	SetDisplayName(ctx context.Context, displayName string) (FileOverrider, error)
+	SetDisplayName(ctx context.Context, displayName string) (Filer, error)
 	// SetDisplayNameAsync: asynchronously sets the display name for a given
 	// #GFile.
 	SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
-	SetDisplayNameFinish(res AsyncResultOverrider) (FileOverrider, error)
+	SetDisplayNameFinish(res AsyncResulter) (Filer, error)
 	// StartMountable starts a file of type FILE_TYPE_MOUNTABLE.
 	StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback)
 	// StartMountableFinish finishes a start operation.
-	StartMountableFinish(result AsyncResultOverrider) error
+	StartMountableFinish(result AsyncResulter) error
 	// StopMountable stops a file of type FILE_TYPE_MOUNTABLE.
 	StopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StopMountableFinish finishes a stop operation, see
 	// g_file_stop_mountable() for details.
-	StopMountableFinish(result AsyncResultOverrider) error
+	StopMountableFinish(result AsyncResulter) error
 	// SupportsThreadContexts checks if file supports [thread-default
 	// contexts][g-main-context-push-thread-default-context].
 	SupportsThreadContexts() bool
@@ -1625,1841 +484,21 @@ type Filer interface {
 	TrashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// TrashFinish finishes an asynchronous file trashing operation, started
 	// with g_file_trash_async().
-	TrashFinish(result AsyncResultOverrider) error
+	TrashFinish(result AsyncResulter) error
 	// UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
 	UnmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// UnmountMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable() for details.
-	UnmountMountableFinish(result AsyncResultOverrider) error
+	UnmountMountableFinish(result AsyncResulter) error
 	// UnmountMountableWithOperation unmounts a file of type
 	// FILE_TYPE_MOUNTABLE.
 	UnmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// UnmountMountableWithOperationFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
-	UnmountMountableWithOperationFinish(result AsyncResultOverrider) error
+	UnmountMountableWithOperationFinish(result AsyncResulter) error
 }
 
 var _ Filer = (*File)(nil)
-
-func ifaceInitFiler(gifacePtr, data C.gpointer) {
-	iface := (*C.GFileIface)(unsafe.Pointer(gifacePtr))
-	iface.append_to = (*[0]byte)(C._gotk4_gio2_FileIface_append_to)
-	iface.append_to_finish = (*[0]byte)(C._gotk4_gio2_FileIface_append_to_finish)
-	iface.copy_finish = (*[0]byte)(C._gotk4_gio2_FileIface_copy_finish)
-	iface.create = (*[0]byte)(C._gotk4_gio2_FileIface_create)
-	iface.create_finish = (*[0]byte)(C._gotk4_gio2_FileIface_create_finish)
-	iface.create_readwrite = (*[0]byte)(C._gotk4_gio2_FileIface_create_readwrite)
-	iface.create_readwrite_finish = (*[0]byte)(C._gotk4_gio2_FileIface_create_readwrite_finish)
-	iface.delete_file = (*[0]byte)(C._gotk4_gio2_FileIface_delete_file)
-	iface.delete_file_finish = (*[0]byte)(C._gotk4_gio2_FileIface_delete_file_finish)
-	iface.dup = (*[0]byte)(C._gotk4_gio2_FileIface_dup)
-	iface.eject_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_eject_mountable_finish)
-	iface.eject_mountable_with_operation_finish = (*[0]byte)(C._gotk4_gio2_FileIface_eject_mountable_with_operation_finish)
-	iface.enumerate_children = (*[0]byte)(C._gotk4_gio2_FileIface_enumerate_children)
-	iface.enumerate_children_finish = (*[0]byte)(C._gotk4_gio2_FileIface_enumerate_children_finish)
-	iface.equal = (*[0]byte)(C._gotk4_gio2_FileIface_equal)
-	iface.find_enclosing_mount = (*[0]byte)(C._gotk4_gio2_FileIface_find_enclosing_mount)
-	iface.find_enclosing_mount_finish = (*[0]byte)(C._gotk4_gio2_FileIface_find_enclosing_mount_finish)
-	iface.get_basename = (*[0]byte)(C._gotk4_gio2_FileIface_get_basename)
-	iface.get_child_for_display_name = (*[0]byte)(C._gotk4_gio2_FileIface_get_child_for_display_name)
-	iface.get_parent = (*[0]byte)(C._gotk4_gio2_FileIface_get_parent)
-	iface.get_parse_name = (*[0]byte)(C._gotk4_gio2_FileIface_get_parse_name)
-	iface.get_path = (*[0]byte)(C._gotk4_gio2_FileIface_get_path)
-	iface.get_relative_path = (*[0]byte)(C._gotk4_gio2_FileIface_get_relative_path)
-	iface.get_uri = (*[0]byte)(C._gotk4_gio2_FileIface_get_uri)
-	iface.get_uri_scheme = (*[0]byte)(C._gotk4_gio2_FileIface_get_uri_scheme)
-	iface.has_uri_scheme = (*[0]byte)(C._gotk4_gio2_FileIface_has_uri_scheme)
-	iface.hash = (*[0]byte)(C._gotk4_gio2_FileIface_hash)
-	iface.is_native = (*[0]byte)(C._gotk4_gio2_FileIface_is_native)
-	iface.make_directory = (*[0]byte)(C._gotk4_gio2_FileIface_make_directory)
-	iface.make_directory_finish = (*[0]byte)(C._gotk4_gio2_FileIface_make_directory_finish)
-	iface.make_symbolic_link = (*[0]byte)(C._gotk4_gio2_FileIface_make_symbolic_link)
-	iface.measure_disk_usage_finish = (*[0]byte)(C._gotk4_gio2_FileIface_measure_disk_usage_finish)
-	iface.monitor_dir = (*[0]byte)(C._gotk4_gio2_FileIface_monitor_dir)
-	iface.monitor_file = (*[0]byte)(C._gotk4_gio2_FileIface_monitor_file)
-	iface.mount_enclosing_volume_finish = (*[0]byte)(C._gotk4_gio2_FileIface_mount_enclosing_volume_finish)
-	iface.mount_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_mount_mountable_finish)
-	iface.open_readwrite = (*[0]byte)(C._gotk4_gio2_FileIface_open_readwrite)
-	iface.open_readwrite_finish = (*[0]byte)(C._gotk4_gio2_FileIface_open_readwrite_finish)
-	iface.poll_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_poll_mountable_finish)
-	iface.prefix_matches = (*[0]byte)(C._gotk4_gio2_FileIface_prefix_matches)
-	iface.query_filesystem_info = (*[0]byte)(C._gotk4_gio2_FileIface_query_filesystem_info)
-	iface.query_filesystem_info_finish = (*[0]byte)(C._gotk4_gio2_FileIface_query_filesystem_info_finish)
-	iface.query_info = (*[0]byte)(C._gotk4_gio2_FileIface_query_info)
-	iface.query_info_finish = (*[0]byte)(C._gotk4_gio2_FileIface_query_info_finish)
-	iface.query_settable_attributes = (*[0]byte)(C._gotk4_gio2_FileIface_query_settable_attributes)
-	iface.query_writable_namespaces = (*[0]byte)(C._gotk4_gio2_FileIface_query_writable_namespaces)
-	iface.read_finish = (*[0]byte)(C._gotk4_gio2_FileIface_read_finish)
-	iface.read_fn = (*[0]byte)(C._gotk4_gio2_FileIface_read_fn)
-	iface.replace = (*[0]byte)(C._gotk4_gio2_FileIface_replace)
-	iface.replace_finish = (*[0]byte)(C._gotk4_gio2_FileIface_replace_finish)
-	iface.replace_readwrite = (*[0]byte)(C._gotk4_gio2_FileIface_replace_readwrite)
-	iface.replace_readwrite_finish = (*[0]byte)(C._gotk4_gio2_FileIface_replace_readwrite_finish)
-	iface.resolve_relative_path = (*[0]byte)(C._gotk4_gio2_FileIface_resolve_relative_path)
-	iface.set_attribute = (*[0]byte)(C._gotk4_gio2_FileIface_set_attribute)
-	iface.set_attributes_finish = (*[0]byte)(C._gotk4_gio2_FileIface_set_attributes_finish)
-	iface.set_attributes_from_info = (*[0]byte)(C._gotk4_gio2_FileIface_set_attributes_from_info)
-	iface.set_display_name = (*[0]byte)(C._gotk4_gio2_FileIface_set_display_name)
-	iface.set_display_name_finish = (*[0]byte)(C._gotk4_gio2_FileIface_set_display_name_finish)
-	iface.start_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_start_mountable_finish)
-	iface.stop_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_stop_mountable_finish)
-	iface.trash = (*[0]byte)(C._gotk4_gio2_FileIface_trash)
-	iface.trash_finish = (*[0]byte)(C._gotk4_gio2_FileIface_trash_finish)
-	iface.unmount_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_unmount_mountable_finish)
-	iface.unmount_mountable_with_operation_finish = (*[0]byte)(C._gotk4_gio2_FileIface_unmount_mountable_with_operation_finish)
-}
-
-//export _gotk4_gio2_FileIface_append_to
-func _gotk4_gio2_FileIface_append_to(arg0 *C.GFile, arg1 C.GFileCreateFlags, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileOutputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _flags FileCreateFlags       // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_flags = FileCreateFlags(arg1)
-
-	fileOutputStream, _goerr := iface.AppendTo(_cancellable, _flags)
-
-	cret = (*C.GFileOutputStream)(unsafe.Pointer(externglib.InternObject(fileOutputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileOutputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_append_to_finish
-func _gotk4_gio2_FileIface_append_to_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileOutputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileOutputStream, _goerr := iface.AppendToFinish(_res)
-
-	cret = (*C.GFileOutputStream)(unsafe.Pointer(externglib.InternObject(fileOutputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileOutputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_copy_finish
-func _gotk4_gio2_FileIface_copy_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	_goerr := iface.CopyFinish(_res)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_create
-func _gotk4_gio2_FileIface_create(arg0 *C.GFile, arg1 C.GFileCreateFlags, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileOutputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _flags FileCreateFlags       // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_flags = FileCreateFlags(arg1)
-
-	fileOutputStream, _goerr := iface.Create(_cancellable, _flags)
-
-	cret = (*C.GFileOutputStream)(unsafe.Pointer(externglib.InternObject(fileOutputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileOutputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_create_finish
-func _gotk4_gio2_FileIface_create_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileOutputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileOutputStream, _goerr := iface.CreateFinish(_res)
-
-	cret = (*C.GFileOutputStream)(unsafe.Pointer(externglib.InternObject(fileOutputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileOutputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_create_readwrite
-func _gotk4_gio2_FileIface_create_readwrite(arg0 *C.GFile, arg1 C.GFileCreateFlags, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileIOStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _flags FileCreateFlags       // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_flags = FileCreateFlags(arg1)
-
-	fileIOStream, _goerr := iface.CreateReadwrite(_cancellable, _flags)
-
-	cret = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(fileIOStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileIOStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_create_readwrite_finish
-func _gotk4_gio2_FileIface_create_readwrite_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileIOStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileIOStream, _goerr := iface.CreateReadwriteFinish(_res)
-
-	cret = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(fileIOStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileIOStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_delete_file
-func _gotk4_gio2_FileIface_delete_file(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	_goerr := iface.DeleteFile(_cancellable)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_delete_file_finish
-func _gotk4_gio2_FileIface_delete_file_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.DeleteFileFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_dup
-func _gotk4_gio2_FileIface_dup(arg0 *C.GFile) (cret *C.GFile) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	ret := iface.Dup()
-
-	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_eject_mountable_finish
-func _gotk4_gio2_FileIface_eject_mountable_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.EjectMountableFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_eject_mountable_with_operation_finish
-func _gotk4_gio2_FileIface_eject_mountable_with_operation_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.EjectMountableWithOperationFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_enumerate_children
-func _gotk4_gio2_FileIface_enumerate_children(arg0 *C.GFile, arg1 *C.char, arg2 C.GFileQueryInfoFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GFileEnumerator) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _attributes string           // out
-	var _flags FileQueryInfoFlags    // out
-
-	if arg3 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
-	}
-	_attributes = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_flags = FileQueryInfoFlags(arg2)
-
-	fileEnumerator, _goerr := iface.EnumerateChildren(_cancellable, _attributes, _flags)
-
-	cret = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(fileEnumerator).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileEnumerator).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_enumerate_children_finish
-func _gotk4_gio2_FileIface_enumerate_children_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileEnumerator) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileEnumerator, _goerr := iface.EnumerateChildrenFinish(_res)
-
-	cret = (*C.GFileEnumerator)(unsafe.Pointer(externglib.InternObject(fileEnumerator).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileEnumerator).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_equal
-func _gotk4_gio2_FileIface_equal(arg0 *C.GFile, arg1 *C.GFile) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _file2 FileOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
-			return ok
-		})
-		rv, ok := casted.(FileOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file2 = rv
-	}
-
-	ok := iface.Equal(_file2)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_find_enclosing_mount
-func _gotk4_gio2_FileIface_find_enclosing_mount(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GMount) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	mount, _goerr := iface.FindEnclosingMount(_cancellable)
-
-	cret = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(mount).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_find_enclosing_mount_finish
-func _gotk4_gio2_FileIface_find_enclosing_mount_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GMount) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	mount, _goerr := iface.FindEnclosingMountFinish(_res)
-
-	cret = (*C.GMount)(unsafe.Pointer(externglib.InternObject(mount).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(mount).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_basename
-func _gotk4_gio2_FileIface_get_basename(arg0 *C.GFile) (cret *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	filename := iface.Basename()
-
-	if filename != "" {
-		cret = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_child_for_display_name
-func _gotk4_gio2_FileIface_get_child_for_display_name(arg0 *C.GFile, arg1 *C.char, _cerr **C.GError) (cret *C.GFile) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _displayName string // out
-
-	_displayName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ret, _goerr := iface.ChildForDisplayName(_displayName)
-
-	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_parent
-func _gotk4_gio2_FileIface_get_parent(arg0 *C.GFile) (cret *C.GFile) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	ret := iface.Parent()
-
-	if ret != nil {
-		cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_parse_name
-func _gotk4_gio2_FileIface_get_parse_name(arg0 *C.GFile) (cret *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	utf8 := iface.ParseName()
-
-	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_path
-func _gotk4_gio2_FileIface_get_path(arg0 *C.GFile) (cret *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	filename := iface.Path()
-
-	if filename != "" {
-		cret = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_relative_path
-func _gotk4_gio2_FileIface_get_relative_path(arg0 *C.GFile, arg1 *C.GFile) (cret *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _descendant FileOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
-			return ok
-		})
-		rv, ok := casted.(FileOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_descendant = rv
-	}
-
-	filename := iface.RelativePath(_descendant)
-
-	if filename != "" {
-		cret = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_uri
-func _gotk4_gio2_FileIface_get_uri(arg0 *C.GFile) (cret *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	utf8 := iface.URI()
-
-	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_get_uri_scheme
-func _gotk4_gio2_FileIface_get_uri_scheme(arg0 *C.GFile) (cret *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	utf8 := iface.URIScheme()
-
-	if utf8 != "" {
-		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_has_uri_scheme
-func _gotk4_gio2_FileIface_has_uri_scheme(arg0 *C.GFile, arg1 *C.char) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _uriScheme string // out
-
-	_uriScheme = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ok := iface.HasURIScheme(_uriScheme)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_hash
-func _gotk4_gio2_FileIface_hash(arg0 *C.GFile) (cret C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	guint := iface.Hash()
-
-	cret = C.guint(guint)
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_is_native
-func _gotk4_gio2_FileIface_is_native(arg0 *C.GFile) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	ok := iface.IsNative()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_make_directory
-func _gotk4_gio2_FileIface_make_directory(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	_goerr := iface.MakeDirectory(_cancellable)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_make_directory_finish
-func _gotk4_gio2_FileIface_make_directory_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.MakeDirectoryFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_make_symbolic_link
-func _gotk4_gio2_FileIface_make_symbolic_link(arg0 *C.GFile, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _symlinkValue string         // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_symlinkValue = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	_goerr := iface.MakeSymbolicLink(_cancellable, _symlinkValue)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_measure_disk_usage_finish
-func _gotk4_gio2_FileIface_measure_disk_usage_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, arg2 *C.guint64, arg3 *C.guint64, arg4 *C.guint64, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	diskUsage, numDirs, numFiles, _goerr := iface.MeasureDiskUsageFinish(_result)
-
-	*arg2 = C.guint64(diskUsage)
-	*arg3 = C.guint64(numDirs)
-	*arg4 = C.guint64(numFiles)
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_monitor_dir
-func _gotk4_gio2_FileIface_monitor_dir(arg0 *C.GFile, arg1 C.GFileMonitorFlags, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileMonitor) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _flags FileMonitorFlags      // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_flags = FileMonitorFlags(arg1)
-
-	fileMonitor, _goerr := iface.MonitorDir(_cancellable, _flags)
-
-	cret = (*C.GFileMonitor)(unsafe.Pointer(externglib.InternObject(fileMonitor).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileMonitor).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_monitor_file
-func _gotk4_gio2_FileIface_monitor_file(arg0 *C.GFile, arg1 C.GFileMonitorFlags, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileMonitor) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _flags FileMonitorFlags      // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_flags = FileMonitorFlags(arg1)
-
-	fileMonitor, _goerr := iface.MonitorFile(_cancellable, _flags)
-
-	cret = (*C.GFileMonitor)(unsafe.Pointer(externglib.InternObject(fileMonitor).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileMonitor).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_mount_enclosing_volume_finish
-func _gotk4_gio2_FileIface_mount_enclosing_volume_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.MountEnclosingVolumeFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_mount_mountable_finish
-func _gotk4_gio2_FileIface_mount_mountable_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFile) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	ret, _goerr := iface.MountMountableFinish(_result)
-
-	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_open_readwrite
-func _gotk4_gio2_FileIface_open_readwrite(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileIOStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	fileIOStream, _goerr := iface.OpenReadwrite(_cancellable)
-
-	cret = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(fileIOStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileIOStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_open_readwrite_finish
-func _gotk4_gio2_FileIface_open_readwrite_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileIOStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileIOStream, _goerr := iface.OpenReadwriteFinish(_res)
-
-	cret = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(fileIOStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileIOStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_poll_mountable_finish
-func _gotk4_gio2_FileIface_poll_mountable_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.PollMountableFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_prefix_matches
-func _gotk4_gio2_FileIface_prefix_matches(arg0 *C.GFile, arg1 *C.GFile) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _file FileOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
-			return ok
-		})
-		rv, ok := casted.(FileOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
-
-	ok := iface.PrefixMatches(_file)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_query_filesystem_info
-func _gotk4_gio2_FileIface_query_filesystem_info(arg0 *C.GFile, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _attributes string           // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_attributes = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	fileInfo, _goerr := iface.QueryFilesystemInfo(_cancellable, _attributes)
-
-	cret = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(fileInfo).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileInfo).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_query_filesystem_info_finish
-func _gotk4_gio2_FileIface_query_filesystem_info_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileInfo, _goerr := iface.QueryFilesystemInfoFinish(_res)
-
-	cret = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(fileInfo).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileInfo).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_query_info
-func _gotk4_gio2_FileIface_query_info(arg0 *C.GFile, arg1 *C.char, arg2 C.GFileQueryInfoFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _attributes string           // out
-	var _flags FileQueryInfoFlags    // out
-
-	if arg3 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
-	}
-	_attributes = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_flags = FileQueryInfoFlags(arg2)
-
-	fileInfo, _goerr := iface.QueryInfo(_cancellable, _attributes, _flags)
-
-	cret = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(fileInfo).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileInfo).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_query_info_finish
-func _gotk4_gio2_FileIface_query_info_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileInfo, _goerr := iface.QueryInfoFinish(_res)
-
-	cret = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(fileInfo).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileInfo).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_query_settable_attributes
-func _gotk4_gio2_FileIface_query_settable_attributes(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileAttributeInfoList) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	fileAttributeInfoList, _goerr := iface.QuerySettableAttributes(_cancellable)
-
-	cret = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(fileAttributeInfoList)))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_query_writable_namespaces
-func _gotk4_gio2_FileIface_query_writable_namespaces(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileAttributeInfoList) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	fileAttributeInfoList, _goerr := iface.QueryWritableNamespaces(_cancellable)
-
-	cret = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(fileAttributeInfoList)))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_read_finish
-func _gotk4_gio2_FileIface_read_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileInputStream, _goerr := iface.ReadFinish(_res)
-
-	cret = (*C.GFileInputStream)(unsafe.Pointer(externglib.InternObject(fileInputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileInputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_read_fn
-func _gotk4_gio2_FileIface_read_fn(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	fileInputStream, _goerr := iface.ReadFn(_cancellable)
-
-	cret = (*C.GFileInputStream)(unsafe.Pointer(externglib.InternObject(fileInputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileInputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_replace
-func _gotk4_gio2_FileIface_replace(arg0 *C.GFile, arg1 *C.char, arg2 C.gboolean, arg3 C.GFileCreateFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GFileOutputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _etag string                 // out
-	var _makeBackup bool             // out
-	var _flags FileCreateFlags       // out
-
-	if arg4 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg4))
-	}
-	if arg1 != nil {
-		_etag = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	}
-	if arg2 != 0 {
-		_makeBackup = true
-	}
-	_flags = FileCreateFlags(arg3)
-
-	fileOutputStream, _goerr := iface.Replace(_cancellable, _etag, _makeBackup, _flags)
-
-	cret = (*C.GFileOutputStream)(unsafe.Pointer(externglib.InternObject(fileOutputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileOutputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_replace_finish
-func _gotk4_gio2_FileIface_replace_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileOutputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileOutputStream, _goerr := iface.ReplaceFinish(_res)
-
-	cret = (*C.GFileOutputStream)(unsafe.Pointer(externglib.InternObject(fileOutputStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileOutputStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_replace_readwrite
-func _gotk4_gio2_FileIface_replace_readwrite(arg0 *C.GFile, arg1 *C.char, arg2 C.gboolean, arg3 C.GFileCreateFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GFileIOStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _etag string                 // out
-	var _makeBackup bool             // out
-	var _flags FileCreateFlags       // out
-
-	if arg4 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg4))
-	}
-	if arg1 != nil {
-		_etag = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	}
-	if arg2 != 0 {
-		_makeBackup = true
-	}
-	_flags = FileCreateFlags(arg3)
-
-	fileIOStream, _goerr := iface.ReplaceReadwrite(_cancellable, _etag, _makeBackup, _flags)
-
-	cret = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(fileIOStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileIOStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_replace_readwrite_finish
-func _gotk4_gio2_FileIface_replace_readwrite_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileIOStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fileIOStream, _goerr := iface.ReplaceReadwriteFinish(_res)
-
-	cret = (*C.GFileIOStream)(unsafe.Pointer(externglib.InternObject(fileIOStream).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(fileIOStream).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_resolve_relative_path
-func _gotk4_gio2_FileIface_resolve_relative_path(arg0 *C.GFile, arg1 *C.char) (cret *C.GFile) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _relativePath string // out
-
-	_relativePath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ret := iface.ResolveRelativePath(_relativePath)
-
-	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_set_attribute
-func _gotk4_gio2_FileIface_set_attribute(arg0 *C.GFile, arg1 *C.char, arg2 C.GFileAttributeType, arg3 C.gpointer, arg4 C.GFileQueryInfoFlags, arg5 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _attribute string            // out
-	var _typ FileAttributeType       // out
-	var _valueP cgo.Handle           // out
-	var _flags FileQueryInfoFlags    // out
-
-	if arg5 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg5))
-	}
-	_attribute = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_typ = FileAttributeType(arg2)
-	_valueP = (cgo.Handle)(unsafe.Pointer(arg3))
-	_flags = FileQueryInfoFlags(arg4)
-
-	_goerr := iface.SetAttribute(_cancellable, _attribute, _typ, _valueP, _flags)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_set_attributes_finish
-func _gotk4_gio2_FileIface_set_attributes_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, arg2 **C.GFileInfo, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	info, _goerr := iface.SetAttributesFinish(_result)
-
-	*arg2 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(info).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_set_attributes_from_info
-func _gotk4_gio2_FileIface_set_attributes_from_info(arg0 *C.GFile, arg1 *C.GFileInfo, arg2 C.GFileQueryInfoFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _info *FileInfo              // out
-	var _flags FileQueryInfoFlags    // out
-
-	if arg3 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
-	}
-	_info = wrapFileInfo(externglib.Take(unsafe.Pointer(arg1)))
-	_flags = FileQueryInfoFlags(arg2)
-
-	_goerr := iface.SetAttributesFromInfo(_cancellable, _info, _flags)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_set_display_name
-func _gotk4_gio2_FileIface_set_display_name(arg0 *C.GFile, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFile) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-	var _displayName string          // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_displayName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ret, _goerr := iface.SetDisplayName(_cancellable, _displayName)
-
-	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_set_display_name_finish
-func _gotk4_gio2_FileIface_set_display_name_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFile) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _res AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	ret, _goerr := iface.SetDisplayNameFinish(_res)
-
-	cret = (*C.GFile)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_start_mountable_finish
-func _gotk4_gio2_FileIface_start_mountable_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.StartMountableFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_stop_mountable_finish
-func _gotk4_gio2_FileIface_stop_mountable_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.StopMountableFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_trash
-func _gotk4_gio2_FileIface_trash(arg0 *C.GFile, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	_goerr := iface.Trash(_cancellable)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_trash_finish
-func _gotk4_gio2_FileIface_trash_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.TrashFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_unmount_mountable_finish
-func _gotk4_gio2_FileIface_unmount_mountable_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.UnmountMountableFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileIface_unmount_mountable_with_operation_finish
-func _gotk4_gio2_FileIface_unmount_mountable_with_operation_finish(arg0 *C.GFile, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FileOverrider)
-
-	var _result AsyncResultOverrider // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
-			return ok
-		})
-		rv, ok := casted.(AsyncResultOverrider)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.UnmountMountableWithOperationFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
 
 func wrapFile(obj *externglib.Object) *File {
 	return &File{
@@ -3584,7 +623,7 @@ func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPr
 //    - fileOutputStream: valid OutputStream or NULL on error. Free the returned
 //      object with g_object_unref().
 //
-func (file *File) AppendToFinish(res AsyncResultOverrider) (*FileOutputStream, error) {
+func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileOutputStream // in
@@ -3709,7 +748,7 @@ func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyF
 //    - progressCallback (optional): function to callback with progress
 //      information, or NULL if progress information is not needed.
 //
-func (source *File) Copy(ctx context.Context, destination FileOverrider, flags FileCopyFlags, progressCallback FileProgressCallback) error {
+func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	var _arg0 *C.GFile                // out
 	var _arg3 *C.GCancellable         // out
 	var _arg1 *C.GFile                // out
@@ -3762,7 +801,7 @@ func (source *File) Copy(ctx context.Context, destination FileOverrider, flags F
 //    - destination to copy attributes to.
 //    - flags: set of CopyFlags.
 //
-func (source *File) CopyAttributes(ctx context.Context, destination FileOverrider, flags FileCopyFlags) error {
+func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags FileCopyFlags) error {
 	var _arg0 *C.GFile         // out
 	var _arg3 *C.GCancellable  // out
 	var _arg1 *C.GFile         // out
@@ -3799,7 +838,7 @@ func (source *File) CopyAttributes(ctx context.Context, destination FileOverride
 //
 //    - res: Result.
 //
-func (file *File) CopyFinish(res AsyncResultOverrider) error {
+func (file *File) CopyFinish(res AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -3935,7 +974,7 @@ func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPrio
 //    - fileOutputStream or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) CreateFinish(res AsyncResultOverrider) (*FileOutputStream, error) {
+func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileOutputStream // in
@@ -4078,7 +1117,7 @@ func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlag
 //    - fileIOStream or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) CreateReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error) {
+func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileIOStream // in
@@ -4194,7 +1233,7 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback Asyn
 //
 //    - result: Result.
 //
-func (file *File) DeleteFinish(result AsyncResultOverrider) error {
+func (file *File) DeleteFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -4230,7 +1269,7 @@ func (file *File) DeleteFinish(result AsyncResultOverrider) error {
 //
 //    - ret: new #GFile that is a duplicate of the given #GFile.
 //
-func (file *File) Dup() FileOverrider {
+func (file *File) Dup() Filer {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
@@ -4239,7 +1278,7 @@ func (file *File) Dup() FileOverrider {
 	_cret = C.g_file_dup(_arg0)
 	runtime.KeepAlive(file)
 
-	var _ret FileOverrider // out
+	var _ret Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -4249,10 +1288,10 @@ func (file *File) Dup() FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -4313,7 +1352,7 @@ func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, c
 //
 //    - result: Result.
 //
-func (file *File) EjectMountableFinish(result AsyncResultOverrider) error {
+func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -4388,7 +1427,7 @@ func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUn
 //
 //    - result: Result.
 //
-func (file *File) EjectMountableWithOperationFinish(result AsyncResultOverrider) error {
+func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -4539,7 +1578,7 @@ func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string,
 //    - fileEnumerator or NULL if an error occurred. Free the returned object
 //      with g_object_unref().
 //
-func (file *File) EnumerateChildrenFinish(res AsyncResultOverrider) (*FileEnumerator, error) {
+func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error) {
 	var _arg0 *C.GFile           // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GFileEnumerator // in
@@ -4578,7 +1617,7 @@ func (file *File) EnumerateChildrenFinish(res AsyncResultOverrider) (*FileEnumer
 //
 //    - ok: TRUE if file1 and file2 are equal.
 //
-func (file1 *File) Equal(file2 FileOverrider) bool {
+func (file1 *File) Equal(file2 Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
@@ -4618,7 +1657,7 @@ func (file1 *File) Equal(file2 FileOverrider) bool {
 //    - mount where the file is located or NULL on error. Free the returned
 //      object with g_object_unref().
 //
-func (file *File) FindEnclosingMount(ctx context.Context) (MountOverrider, error) {
+func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GMount       // in
@@ -4635,8 +1674,8 @@ func (file *File) FindEnclosingMount(ctx context.Context) (MountOverrider, error
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
-	var _mount MountOverrider // out
-	var _goerr error          // out
+	var _mount Mounter // out
+	var _goerr error   // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -4646,10 +1685,10 @@ func (file *File) FindEnclosingMount(ctx context.Context) (MountOverrider, error
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(MountOverrider)
+			_, ok := obj.(Mounter)
 			return ok
 		})
-		rv, ok := casted.(MountOverrider)
+		rv, ok := casted.(Mounter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -4714,7 +1753,7 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, c
 //    - mount for given file or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) FindEnclosingMountFinish(res AsyncResultOverrider) (MountOverrider, error) {
+func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GMount       // in
@@ -4727,8 +1766,8 @@ func (file *File) FindEnclosingMountFinish(res AsyncResultOverrider) (MountOverr
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
-	var _mount MountOverrider // out
-	var _goerr error          // out
+	var _mount Mounter // out
+	var _goerr error   // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -4738,10 +1777,10 @@ func (file *File) FindEnclosingMountFinish(res AsyncResultOverrider) (MountOverr
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(MountOverrider)
+			_, ok := obj.(Mounter)
 			return ok
 		})
-		rv, ok := casted.(MountOverrider)
+		rv, ok := casted.(Mounter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
 		}
@@ -4811,7 +1850,7 @@ func (file *File) Basename() string {
 //    - ret to a child specified by name. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) Child(name string) FileOverrider {
+func (file *File) Child(name string) Filer {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -4824,7 +1863,7 @@ func (file *File) Child(name string) FileOverrider {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(name)
 
-	var _ret FileOverrider // out
+	var _ret Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -4834,10 +1873,10 @@ func (file *File) Child(name string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -4864,7 +1903,7 @@ func (file *File) Child(name string) FileOverrider {
 //    - ret to the specified child, or NULL if the display name couldn't be
 //      converted. Free the returned object with g_object_unref().
 //
-func (file *File) ChildForDisplayName(displayName string) (FileOverrider, error) {
+func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 	var _arg0 *C.GFile  // out
 	var _arg1 *C.char   // out
 	var _cret *C.GFile  // in
@@ -4878,8 +1917,8 @@ func (file *File) ChildForDisplayName(displayName string) (FileOverrider, error)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(displayName)
 
-	var _ret FileOverrider // out
-	var _goerr error       // out
+	var _ret Filer   // out
+	var _goerr error // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -4889,10 +1928,10 @@ func (file *File) ChildForDisplayName(displayName string) (FileOverrider, error)
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -4915,7 +1954,7 @@ func (file *File) ChildForDisplayName(displayName string) (FileOverrider, error)
 //    - ret (optional) structure to the parent of the given #GFile or NULL if
 //      there is no parent. Free the returned object with g_object_unref().
 //
-func (file *File) Parent() FileOverrider {
+func (file *File) Parent() Filer {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
@@ -4924,7 +1963,7 @@ func (file *File) Parent() FileOverrider {
 	_cret = C.g_file_get_parent(_arg0)
 	runtime.KeepAlive(file)
 
-	var _ret FileOverrider // out
+	var _ret Filer // out
 
 	if _cret != nil {
 		{
@@ -4932,10 +1971,10 @@ func (file *File) Parent() FileOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(FileOverrider)
+				_, ok := obj.(Filer)
 				return ok
 			})
-			rv, ok := casted.(FileOverrider)
+			rv, ok := casted.(Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -5025,7 +2064,7 @@ func (file *File) Path() string {
 //      parent, or NULL if descendant doesn't have parent as prefix. The returned
 //      string should be freed with g_free() when no longer needed.
 //
-func (parent *File) RelativePath(descendant FileOverrider) string {
+func (parent *File) RelativePath(descendant Filer) string {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.GFile // out
 	var _cret *C.char  // in
@@ -5126,7 +2165,7 @@ func (file *File) URIScheme() string {
 //    - ok: TRUE if file is an immediate child of parent (or any parent in the
 //      case that parent is NULL).
 //
-func (file *File) HasParent(parent FileOverrider) bool {
+func (file *File) HasParent(parent Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
@@ -5171,7 +2210,7 @@ func (file *File) HasParent(parent FileOverrider) bool {
 //    - ok: TRUE if the file's parent, grandparent, etc is prefix, FALSE
 //      otherwise.
 //
-func (file *File) HasPrefix(prefix FileOverrider) bool {
+func (file *File) HasPrefix(prefix Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
 	var _cret C.gboolean // in
@@ -5409,7 +2448,7 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 //      file, or NULL if the entity tag is not needed.
 //    - bytes or NULL and error is set.
 //
-func (file *File) LoadBytesFinish(result AsyncResultOverrider) (string, *glib.Bytes, error) {
+func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.gchar        // in
@@ -5557,7 +2596,7 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 //    - etagOut (optional): location to place the current entity tag for the
 //      file, or NULL if the entity tag is not needed.
 //
-func (file *File) LoadContentsFinish(res AsyncResultOverrider) ([]byte, string, error) {
+func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -5605,7 +2644,7 @@ func (file *File) LoadContentsFinish(res AsyncResultOverrider) ([]byte, string, 
 //    - etagOut (optional): location to place the current entity tag for the
 //      file, or NULL if the entity tag is not needed.
 //
-func (file *File) LoadPartialContentsFinish(res AsyncResultOverrider) ([]byte, string, error) {
+func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -5723,7 +2762,7 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callba
 //
 //    - result: Result.
 //
-func (file *File) MakeDirectoryFinish(result AsyncResultOverrider) error {
+func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -5842,7 +2881,7 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 //    - numDirs (optional): number of directories encountered.
 //    - numFiles (optional): number of non-directories encountered.
 //
-func (file *File) MeasureDiskUsageFinish(result AsyncResultOverrider) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
+func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 C.guint64       // in
@@ -6133,7 +3172,7 @@ func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMount
 //
 //    - result: Result.
 //
-func (location *File) MountEnclosingVolumeFinish(result AsyncResultOverrider) error {
+func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -6217,7 +3256,7 @@ func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mou
 //
 //    - ret or NULL on error. Free the returned object with g_object_unref().
 //
-func (file *File) MountMountableFinish(result AsyncResultOverrider) (FileOverrider, error) {
+func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFile        // in
@@ -6230,8 +3269,8 @@ func (file *File) MountMountableFinish(result AsyncResultOverrider) (FileOverrid
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
-	var _ret FileOverrider // out
-	var _goerr error       // out
+	var _ret Filer   // out
+	var _goerr error // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -6241,10 +3280,10 @@ func (file *File) MountMountableFinish(result AsyncResultOverrider) (FileOverrid
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -6298,7 +3337,7 @@ func (file *File) MountMountableFinish(result AsyncResultOverrider) (FileOverrid
 //    - flags: set of CopyFlags.
 //    - progressCallback (optional): ProgressCallback function for updates.
 //
-func (source *File) Move(ctx context.Context, destination FileOverrider, flags FileCopyFlags, progressCallback FileProgressCallback) error {
+func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	var _arg0 *C.GFile                // out
 	var _arg3 *C.GCancellable         // out
 	var _arg1 *C.GFile                // out
@@ -6440,7 +3479,7 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callba
 //    - fileIOStream or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) OpenReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error) {
+func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileIOStream // in
@@ -6541,7 +3580,7 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 //
 //    - result: Result.
 //
-func (file *File) PollMountableFinish(result AsyncResultOverrider) error {
+func (file *File) PollMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -6578,7 +3617,7 @@ func (file *File) PollMountableFinish(result AsyncResultOverrider) error {
 //    - appInfo if the handle was found, NULL if there were errors. When you are
 //      done with it, release it with g_object_unref().
 //
-func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfoOverrider, error) {
+func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GAppInfo     // in
@@ -6595,8 +3634,8 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfoOverrider, er
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
-	var _appInfo AppInfoOverrider // out
-	var _goerr error              // out
+	var _appInfo AppInfor // out
+	var _goerr error      // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -6606,10 +3645,10 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfoOverrider, er
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfoOverrider)
+			_, ok := obj.(AppInfor)
 			return ok
 		})
-		rv, ok := casted.(AppInfoOverrider)
+		rv, ok := casted.(AppInfor)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -6668,7 +3707,7 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, 
 //    - appInfo if the handle was found, NULL if there were errors. When you are
 //      done with it, release it with g_object_unref().
 //
-func (file *File) QueryDefaultHandlerFinish(result AsyncResultOverrider) (AppInfoOverrider, error) {
+func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GAppInfo     // in
@@ -6681,8 +3720,8 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResultOverrider) (AppInf
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
-	var _appInfo AppInfoOverrider // out
-	var _goerr error              // out
+	var _appInfo AppInfor // out
+	var _goerr error      // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -6692,10 +3731,10 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResultOverrider) (AppInf
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfoOverrider)
+			_, ok := obj.(AppInfor)
 			return ok
 		})
-		rv, ok := casted.(AppInfoOverrider)
+		rv, ok := casted.(AppInfor)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 		}
@@ -6931,7 +3970,7 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 //    - fileInfo for given file or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) QueryFilesystemInfoFinish(res AsyncResultOverrider) (*FileInfo, error) {
+func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFileInfo    // in
@@ -7091,7 +4130,7 @@ func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags F
 //    - fileInfo for given file or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) QueryInfoFinish(res AsyncResultOverrider) (*FileInfo, error) {
+func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFileInfo    // in
@@ -7321,7 +4360,7 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncR
 //    - fileInputStream or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) ReadFinish(res AsyncResultOverrider) (*FileInputStream, error) {
+func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GAsyncResult     // out
 	var _cret *C.GFileInputStream // in
@@ -7724,7 +4763,7 @@ func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.
 //      document. This should be freed with g_free() when it is no longer needed,
 //      or NULL.
 //
-func (file *File) ReplaceContentsFinish(res AsyncResultOverrider) (string, error) {
+func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -7763,7 +4802,7 @@ func (file *File) ReplaceContentsFinish(res AsyncResultOverrider) (string, error
 //    - fileOutputStream or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) ReplaceFinish(res AsyncResultOverrider) (*FileOutputStream, error) {
+func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cret *C.GFileOutputStream // in
@@ -7924,7 +4963,7 @@ func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBa
 //    - fileIOStream or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) ReplaceReadwriteFinish(res AsyncResultOverrider) (*FileIOStream, error) {
+func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
 	var _cret *C.GFileIOStream // in
@@ -7961,7 +5000,7 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResultOverrider) (*FileIOStrea
 //    - ret to the resolved path. NULL if relative_path is NULL or if file is
 //      invalid. Free the returned object with g_object_unref().
 //
-func (file *File) ResolveRelativePath(relativePath string) FileOverrider {
+func (file *File) ResolveRelativePath(relativePath string) Filer {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -7974,7 +5013,7 @@ func (file *File) ResolveRelativePath(relativePath string) FileOverrider {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(relativePath)
 
-	var _ret FileOverrider // out
+	var _ret Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -7984,10 +5023,10 @@ func (file *File) ResolveRelativePath(relativePath string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -8410,7 +5449,7 @@ func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags 
 //
 //    - info: Info.
 //
-func (file *File) SetAttributesFinish(result AsyncResultOverrider) (*FileInfo, error) {
+func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GFileInfo    // in
@@ -8509,7 +5548,7 @@ func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, fla
 //    - ret specifying what file was renamed to, or NULL if there was an error.
 //      Free the returned object with g_object_unref().
 //
-func (file *File) SetDisplayName(ctx context.Context, displayName string) (FileOverrider, error) {
+func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer, error) {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
 	var _arg1 *C.char         // out
@@ -8530,8 +5569,8 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (FileO
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(displayName)
 
-	var _ret FileOverrider // out
-	var _goerr error       // out
+	var _ret Filer   // out
+	var _goerr error // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -8541,10 +5580,10 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (FileO
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -8613,7 +5652,7 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 //
 //    - ret or NULL on error. Free the returned object with g_object_unref().
 //
-func (file *File) SetDisplayNameFinish(res AsyncResultOverrider) (FileOverrider, error) {
+func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFile        // in
@@ -8626,8 +5665,8 @@ func (file *File) SetDisplayNameFinish(res AsyncResultOverrider) (FileOverrider,
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
-	var _ret FileOverrider // out
-	var _goerr error       // out
+	var _ret Filer   // out
+	var _goerr error // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -8637,10 +5676,10 @@ func (file *File) SetDisplayNameFinish(res AsyncResultOverrider) (FileOverrider,
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -8712,7 +5751,7 @@ func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, sta
 //
 //    - result: Result.
 //
-func (file *File) StartMountableFinish(result AsyncResultOverrider) error {
+func (file *File) StartMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -8790,7 +5829,7 @@ func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mo
 //
 //    - result: Result.
 //
-func (file *File) StopMountableFinish(result AsyncResultOverrider) error {
+func (file *File) StopMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -8919,7 +5958,7 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback Async
 //
 //    - result: Result.
 //
-func (file *File) TrashFinish(result AsyncResultOverrider) error {
+func (file *File) TrashFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -8995,7 +6034,7 @@ func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags,
 //
 //    - result: Result.
 //
-func (file *File) UnmountMountableFinish(result AsyncResultOverrider) error {
+func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -9073,7 +6112,7 @@ func (file *File) UnmountMountableWithOperation(ctx context.Context, flags Mount
 //
 //    - result: Result.
 //
-func (file *File) UnmountMountableWithOperationFinish(result AsyncResultOverrider) error {
+func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -9116,7 +6155,7 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResultOverride
 //
 //    - file: new #GFile. Free the returned object with g_object_unref().
 //
-func NewFileForCommandlineArg(arg string) FileOverrider {
+func NewFileForCommandlineArg(arg string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -9126,7 +6165,7 @@ func NewFileForCommandlineArg(arg string) FileOverrider {
 	_cret = C.g_file_new_for_commandline_arg(_arg1)
 	runtime.KeepAlive(arg)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -9136,10 +6175,10 @@ func NewFileForCommandlineArg(arg string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -9170,7 +6209,7 @@ func NewFileForCommandlineArg(arg string) FileOverrider {
 //
 //    - file: new #GFile.
 //
-func NewFileForCommandlineArgAndCwd(arg, cwd string) FileOverrider {
+func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.GFile // in
@@ -9184,7 +6223,7 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) FileOverrider {
 	runtime.KeepAlive(arg)
 	runtime.KeepAlive(cwd)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -9194,10 +6233,10 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -9221,7 +6260,7 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) FileOverrider {
 //    - file: new #GFile for the given path. Free the returned object with
 //      g_object_unref().
 //
-func NewFileForPath(path string) FileOverrider {
+func NewFileForPath(path string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -9231,7 +6270,7 @@ func NewFileForPath(path string) FileOverrider {
 	_cret = C.g_file_new_for_path(_arg1)
 	runtime.KeepAlive(path)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -9241,10 +6280,10 @@ func NewFileForPath(path string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -9267,7 +6306,7 @@ func NewFileForPath(path string) FileOverrider {
 //    - file: new #GFile for the given uri. Free the returned object with
 //      g_object_unref().
 //
-func NewFileForURI(uri string) FileOverrider {
+func NewFileForURI(uri string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -9277,7 +6316,7 @@ func NewFileForURI(uri string) FileOverrider {
 	_cret = C.g_file_new_for_uri(_arg1)
 	runtime.KeepAlive(uri)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -9287,10 +6326,10 @@ func NewFileForURI(uri string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -9321,7 +6360,7 @@ func NewFileForURI(uri string) FileOverrider {
 //    - iostream: on return, a IOStream for the created file.
 //    - file: new #GFile. Free the returned object with g_object_unref().
 //
-func NewFileTmp(tmpl string) (*FileIOStream, FileOverrider, error) {
+func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 	var _arg1 *C.char          // out
 	var _arg2 *C.GFileIOStream // in
 	var _cret *C.GFile         // in
@@ -9336,7 +6375,7 @@ func NewFileTmp(tmpl string) (*FileIOStream, FileOverrider, error) {
 	runtime.KeepAlive(tmpl)
 
 	var _iostream *FileIOStream // out
-	var _file FileOverrider     // out
+	var _file Filer             // out
 	var _goerr error            // out
 
 	_iostream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
@@ -9348,10 +6387,10 @@ func NewFileTmp(tmpl string) (*FileIOStream, FileOverrider, error) {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -9377,7 +6416,7 @@ func NewFileTmp(tmpl string) (*FileIOStream, FileOverrider, error) {
 //
 //    - file: new #GFile.
 //
-func FileParseName(parseName string) FileOverrider {
+func FileParseName(parseName string) Filer {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -9387,7 +6426,7 @@ func FileParseName(parseName string) FileOverrider {
 	_cret = C.g_file_parse_name(_arg1)
 	runtime.KeepAlive(parseName)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -9397,10 +6436,10 @@ func FileParseName(parseName string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}

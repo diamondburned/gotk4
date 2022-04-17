@@ -87,7 +87,6 @@ func (a AttachOptions) Has(other AttachOptions) bool {
 
 // TableOverrider contains methods that are overridable.
 type TableOverrider interface {
-	externglib.Objector
 }
 
 // Table functions allow the programmer to arrange widgets in rows and columns,

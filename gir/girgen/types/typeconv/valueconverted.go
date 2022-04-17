@@ -407,11 +407,6 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	}
 
 	switch {
-	case !value.KeepType && resolved.IsInterface():
-		// The Overrider type is what classes actually implements, not the
-		// Public type.
-		vType.GoType = vType.Resolved.OverriderType(vType.NeedsNamespace)
-		vType.IsPublic = true
 	case !value.KeepType && resolved.IsAbstract():
 		vType.GoType = vType.Resolved.PublicType(vType.NeedsNamespace)
 		vType.IsPublic = true

@@ -29,7 +29,6 @@ func init() {
 
 // ViewportOverrider contains methods that are overridable.
 type ViewportOverrider interface {
-	externglib.Objector
 }
 
 // Viewport widget acts as an adaptor class, implementing scrollability for

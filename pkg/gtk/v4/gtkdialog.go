@@ -157,7 +157,6 @@ func (d DialogFlags) Has(other DialogFlags) bool {
 
 // DialogOverrider contains methods that are overridable.
 type DialogOverrider interface {
-	externglib.Objector
 	Close()
 	// Response emits the ::response signal with the given response ID.
 	//

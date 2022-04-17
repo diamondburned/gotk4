@@ -33,7 +33,6 @@ func init() {
 
 // DBusObjectOverrider contains methods that are overridable.
 type DBusObjectOverrider interface {
-	externglib.Objector
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
 	//
@@ -46,7 +45,7 @@ type DBusObjectOverrider interface {
 	//    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
 	//      that must be freed with g_object_unref().
 	//
-	Interface(interfaceName string) DBusInterfaceOverrider
+	Interface(interfaceName string) DBusInterfacer
 	// Interfaces gets the D-Bus interfaces associated with object.
 	//
 	// The function returns the following values:
@@ -55,7 +54,7 @@ type DBusObjectOverrider interface {
 	//      g_list_free() after each element has been freed with
 	//      g_object_unref().
 	//
-	Interfaces() []DBusInterfaceOverrider
+	Interfaces() []DBusInterfacer
 	// ObjectPath gets the object path for object.
 	//
 	// The function returns the following values:
@@ -65,10 +64,10 @@ type DBusObjectOverrider interface {
 	ObjectPath() string
 	// The function takes the following parameters:
 	//
-	InterfaceAdded(interface_ DBusInterfaceOverrider)
+	InterfaceAdded(interface_ DBusInterfacer)
 	// The function takes the following parameters:
 	//
-	InterfaceRemoved(interface_ DBusInterfaceOverrider)
+	InterfaceRemoved(interface_ DBusInterfacer)
 }
 
 // DBusObject type is the base type for D-Bus objects on both the service side
@@ -89,16 +88,16 @@ type DBusObjector interface {
 
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
-	Interface(interfaceName string) DBusInterfaceOverrider
+	Interface(interfaceName string) DBusInterfacer
 	// Interfaces gets the D-Bus interfaces associated with object.
-	Interfaces() []DBusInterfaceOverrider
+	Interfaces() []DBusInterfacer
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
 
 	// Interface-added is emitted when interface is added to object.
-	ConnectInterfaceAdded(func(iface DBusInterfaceOverrider)) externglib.SignalHandle
+	ConnectInterfaceAdded(func(iface DBusInterfacer)) externglib.SignalHandle
 	// Interface-removed is emitted when interface is removed from object.
-	ConnectInterfaceRemoved(func(iface DBusInterfaceOverrider)) externglib.SignalHandle
+	ConnectInterfaceRemoved(func(iface DBusInterfacer)) externglib.SignalHandle
 }
 
 var _ DBusObjector = (*DBusObject)(nil)
@@ -167,7 +166,7 @@ func _gotk4_gio2_DBusObjectIface_interface_added(arg0 *C.GDBusObject, arg1 *C.GD
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
-	var _interface_ DBusInterfaceOverrider // out
+	var _interface_ DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -177,10 +176,10 @@ func _gotk4_gio2_DBusObjectIface_interface_added(arg0 *C.GDBusObject, arg1 *C.GD
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -195,7 +194,7 @@ func _gotk4_gio2_DBusObjectIface_interface_removed(arg0 *C.GDBusObject, arg1 *C.
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
-	var _interface_ DBusInterfaceOverrider // out
+	var _interface_ DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -205,10 +204,10 @@ func _gotk4_gio2_DBusObjectIface_interface_removed(arg0 *C.GDBusObject, arg1 *C.
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -230,7 +229,7 @@ func marshalDBusObject(p uintptr) (interface{}, error) {
 
 //export _gotk4_gio2_DBusObject_ConnectInterfaceAdded
 func _gotk4_gio2_DBusObject_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBusInterface, arg2 C.guintptr) {
-	var f func(iface DBusInterfaceOverrider)
+	var f func(iface DBusInterfacer)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -238,10 +237,10 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBus
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(iface DBusInterfaceOverrider))
+		f = closure.Func.(func(iface DBusInterfacer))
 	}
 
-	var _iface DBusInterfaceOverrider // out
+	var _iface DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -251,10 +250,10 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBus
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -265,13 +264,13 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBus
 }
 
 // ConnectInterfaceAdded is emitted when interface is added to object.
-func (object *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfaceOverrider)) externglib.SignalHandle {
+func (object *DBusObject) ConnectInterfaceAdded(f func(iface DBusInterfacer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(object, "interface-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObject_ConnectInterfaceAdded), f)
 }
 
 //export _gotk4_gio2_DBusObject_ConnectInterfaceRemoved
 func _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDBusInterface, arg2 C.guintptr) {
-	var f func(iface DBusInterfaceOverrider)
+	var f func(iface DBusInterfacer)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -279,10 +278,10 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDB
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(iface DBusInterfaceOverrider))
+		f = closure.Func.(func(iface DBusInterfacer))
 	}
 
-	var _iface DBusInterfaceOverrider // out
+	var _iface DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -292,10 +291,10 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDB
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -306,7 +305,7 @@ func _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDB
 }
 
 // ConnectInterfaceRemoved is emitted when interface is removed from object.
-func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfaceOverrider)) externglib.SignalHandle {
+func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(object, "interface-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObject_ConnectInterfaceRemoved), f)
 }
 
@@ -322,7 +321,7 @@ func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfaceOver
 //    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
 //      that must be freed with g_object_unref().
 //
-func (object *DBusObject) Interface(interfaceName string) DBusInterfaceOverrider {
+func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
@@ -335,7 +334,7 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfaceOverrider
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interfaceName)
 
-	var _dBusInterface DBusInterfaceOverrider // out
+	var _dBusInterface DBusInterfacer // out
 
 	if _cret != nil {
 		{
@@ -343,10 +342,10 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfaceOverrider
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(DBusInterfaceOverrider)
+				_, ok := obj.(DBusInterfacer)
 				return ok
 			})
-			rv, ok := casted.(DBusInterfaceOverrider)
+			rv, ok := casted.(DBusInterfacer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 			}
@@ -364,7 +363,7 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfaceOverrider
 //    - list of BusInterface instances. The returned list must be freed by
 //      g_list_free() after each element has been freed with g_object_unref().
 //
-func (object *DBusObject) Interfaces() []DBusInterfaceOverrider {
+func (object *DBusObject) Interfaces() []DBusInterfacer {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.GList       // in
 
@@ -373,12 +372,12 @@ func (object *DBusObject) Interfaces() []DBusInterfaceOverrider {
 	_cret = C.g_dbus_object_get_interfaces(_arg0)
 	runtime.KeepAlive(object)
 
-	var _list []DBusInterfaceOverrider // out
+	var _list []DBusInterfacer // out
 
-	_list = make([]DBusInterfaceOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]DBusInterfacer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDBusInterface)(v)
-		var dst DBusInterfaceOverrider // out
+		var dst DBusInterfacer // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -387,10 +386,10 @@ func (object *DBusObject) Interfaces() []DBusInterfaceOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(DBusInterfaceOverrider)
+				_, ok := obj.(DBusInterfacer)
 				return ok
 			})
-			rv, ok := casted.(DBusInterfaceOverrider)
+			rv, ok := casted.(DBusInterfacer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 			}

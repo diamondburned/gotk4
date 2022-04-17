@@ -29,7 +29,6 @@ func init() {
 
 // FrameOverrider contains methods that are overridable.
 type FrameOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	ComputeChildAllocation(allocation *Allocation)

@@ -25,7 +25,6 @@ func init() {
 
 // NumericSorterOverrider contains methods that are overridable.
 type NumericSorterOverrider interface {
-	externglib.Objector
 }
 
 // NumericSorter: GtkNumericSorter is a GtkSorter that compares numbers.

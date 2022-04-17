@@ -31,7 +31,6 @@ func init() {
 
 // ToggleToolButtonOverrider contains methods that are overridable.
 type ToggleToolButtonOverrider interface {
-	externglib.Objector
 	Toggled()
 }
 

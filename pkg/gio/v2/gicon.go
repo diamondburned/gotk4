@@ -32,7 +32,6 @@ func init() {
 
 // IconOverrider contains methods that are overridable.
 type IconOverrider interface {
-	externglib.Objector
 	// Equal checks if two icons are equal.
 	//
 	// The function takes the following parameters:
@@ -43,7 +42,7 @@ type IconOverrider interface {
 	//
 	//    - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
 	//
-	Equal(icon2 IconOverrider) bool
+	Equal(icon2 Iconner) bool
 	// Hash gets a hash for an icon.
 	//
 	// The function returns the following values:
@@ -106,7 +105,7 @@ type Iconner interface {
 	externglib.Objector
 
 	// Equal checks if two icons are equal.
-	Equal(icon2 IconOverrider) bool
+	Equal(icon2 Iconner) bool
 	// Serialize serializes a #GIcon into a #GVariant.
 	Serialize() *glib.Variant
 	// String generates a textual representation of icon that can be used for
@@ -129,7 +128,7 @@ func _gotk4_gio2_IconIface_equal(arg0 *C.GIcon, arg1 *C.GIcon) (cret C.gboolean)
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
-	var _icon2 IconOverrider // out
+	var _icon2 Iconner // out
 
 	if arg1 != nil {
 		{
@@ -137,10 +136,10 @@ func _gotk4_gio2_IconIface_equal(arg0 *C.GIcon, arg1 *C.GIcon) (cret C.gboolean)
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(IconOverrider)
+				_, ok := obj.(Iconner)
 				return ok
 			})
-			rv, ok := casted.(IconOverrider)
+			rv, ok := casted.(Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -203,7 +202,7 @@ func marshalIcon(p uintptr) (interface{}, error) {
 //
 //    - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
 //
-func (icon1 *Icon) Equal(icon2 IconOverrider) bool {
+func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in
@@ -314,7 +313,7 @@ func (icon *Icon) String() string {
 //
 //    - icon (optional) or NULL when deserialization fails.
 //
-func IconDeserialize(value *glib.Variant) IconOverrider {
+func IconDeserialize(value *glib.Variant) Iconner {
 	var _arg1 *C.GVariant // out
 	var _cret *C.GIcon    // in
 
@@ -323,7 +322,7 @@ func IconDeserialize(value *glib.Variant) IconOverrider {
 	_cret = C.g_icon_deserialize(_arg1)
 	runtime.KeepAlive(value)
 
-	var _icon IconOverrider // out
+	var _icon Iconner // out
 
 	if _cret != nil {
 		{
@@ -331,10 +330,10 @@ func IconDeserialize(value *glib.Variant) IconOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(IconOverrider)
+				_, ok := obj.(Iconner)
 				return ok
 			})
-			rv, ok := casted.(IconOverrider)
+			rv, ok := casted.(Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -387,7 +386,7 @@ func IconHash(icon cgo.Handle) uint {
 //
 //    - icon: object implementing the #GIcon interface or NULL if error is set.
 //
-func NewIconForString(str string) (IconOverrider, error) {
+func NewIconForString(str string) (Iconner, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GIcon  // in
 	var _cerr *C.GError // in
@@ -398,8 +397,8 @@ func NewIconForString(str string) (IconOverrider, error) {
 	_cret = C.g_icon_new_for_string(_arg1, &_cerr)
 	runtime.KeepAlive(str)
 
-	var _icon IconOverrider // out
-	var _goerr error        // out
+	var _icon Iconner // out
+	var _goerr error  // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -409,10 +408,10 @@ func NewIconForString(str string) (IconOverrider, error) {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(IconOverrider)
+			_, ok := obj.(Iconner)
 			return ok
 		})
-		rv, ok := casted.(IconOverrider)
+		rv, ok := casted.(Iconner)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 		}

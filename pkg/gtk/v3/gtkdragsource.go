@@ -134,7 +134,7 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 //
 //    - icon: #GIcon.
 //
-func (widget *Widget) DragSourceSetIconGIcon(icon gio.IconOverrider) {
+func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GIcon     // out
 

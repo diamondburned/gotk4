@@ -26,7 +26,6 @@ func init() {
 
 // BookmarkListOverrider contains methods that are overridable.
 type BookmarkListOverrider interface {
-	externglib.Objector
 }
 
 // BookmarkList: GtkBookmarkList is a list model that wraps GBookmarkFile.

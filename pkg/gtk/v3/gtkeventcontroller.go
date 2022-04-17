@@ -29,7 +29,6 @@ func init() {
 
 // EventControllerOverrider contains methods that are overridable.
 type EventControllerOverrider interface {
-	externglib.Objector
 }
 
 // EventController is a base, low-level implementation for event controllers.

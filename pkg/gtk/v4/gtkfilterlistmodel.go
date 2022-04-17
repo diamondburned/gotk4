@@ -26,7 +26,6 @@ func init() {
 
 // FilterListModelOverrider contains methods that are overridable.
 type FilterListModelOverrider interface {
-	externglib.Objector
 }
 
 // FilterListModel: GtkFilterListModel is a list model that filters the elements
@@ -82,7 +81,7 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 //
 //    - filterListModel: new GtkFilterListModel.
 //
-func NewFilterListModel(model gio.ListModelOverrider, filter *Filter) *FilterListModel {
+func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel {
 	var _arg1 *C.GListModel         // out
 	var _arg2 *C.GtkFilter          // out
 	var _cret *C.GtkFilterListModel // in
@@ -163,7 +162,7 @@ func (self *FilterListModel) Incremental() bool {
 //
 //    - listModel (optional): model that gets filtered.
 //
-func (self *FilterListModel) Model() gio.ListModelOverrider {
+func (self *FilterListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret *C.GListModel         // in
 
@@ -172,7 +171,7 @@ func (self *FilterListModel) Model() gio.ListModelOverrider {
 	_cret = C.gtk_filter_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	if _cret != nil {
 		{
@@ -180,10 +179,10 @@ func (self *FilterListModel) Model() gio.ListModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModelOverrider)
+				_, ok := obj.(gio.ListModeller)
 				return ok
 			})
-			rv, ok := casted.(gio.ListModelOverrider)
+			rv, ok := casted.(gio.ListModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
@@ -294,7 +293,7 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 //
 //    - model (optional) to be filtered.
 //
-func (self *FilterListModel) SetModel(model gio.ListModelOverrider) {
+func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GListModel         // out
 

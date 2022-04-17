@@ -31,7 +31,6 @@ func init() {
 
 // ToolButtonOverrider contains methods that are overridable.
 type ToolButtonOverrider interface {
-	externglib.Objector
 	Clicked()
 }
 

@@ -27,7 +27,6 @@ func init() {
 
 // PlugOverrider contains methods that are overridable.
 type PlugOverrider interface {
-	externglib.Objector
 	// The function returns the following values:
 	//
 	ObjectID() string

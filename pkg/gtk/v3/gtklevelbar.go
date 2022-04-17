@@ -43,7 +43,6 @@ const LEVEL_BAR_OFFSET_LOW = "low"
 
 // LevelBarOverrider contains methods that are overridable.
 type LevelBarOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	OffsetChanged(name string)

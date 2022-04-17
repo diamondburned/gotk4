@@ -49,7 +49,6 @@ func init() {
 
 // NotebookOverrider contains methods that are overridable.
 type NotebookOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:

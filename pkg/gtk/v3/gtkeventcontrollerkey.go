@@ -34,7 +34,6 @@ func init() {
 
 // EventControllerKeyOverrider contains methods that are overridable.
 type EventControllerKeyOverrider interface {
-	externglib.Objector
 }
 
 // EventControllerKey is an event controller meant for situations where you need

@@ -17,8 +17,6 @@ import (
 // extern gboolean _gotk4_gtk4_EditableInterface_get_selection_bounds(GtkEditable*, int*, int*);
 // extern void _gotk4_gtk4_EditableInterface_changed(GtkEditable*);
 // extern void _gotk4_gtk4_EditableInterface_delete_text(GtkEditable*, int, int);
-// extern void _gotk4_gtk4_EditableInterface_do_delete_text(GtkEditable*, int, int);
-// extern void _gotk4_gtk4_EditableInterface_set_selection_bounds(GtkEditable*, int, int);
 // extern void _gotk4_gtk4_Editable_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_Editable_ConnectDeleteText(gpointer, gint, gint, guintptr);
 import "C"
@@ -30,90 +28,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: GTypeEditable, F: marshalEditable},
 	})
-}
-
-// EditableOverrider contains methods that are overridable.
-type EditableOverrider interface {
-	externglib.Objector
-	Changed()
-	// DeleteText deletes a sequence of characters.
-	//
-	// The characters that are deleted are those characters at positions from
-	// start_pos up to, but not including end_pos. If end_pos is negative, then
-	// the characters deleted are those from start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start position.
-	//    - endPos: end position.
-	//
-	DeleteText(startPos, endPos int)
-	// DoDeleteText deletes a sequence of characters.
-	//
-	// The characters that are deleted are those characters at positions from
-	// start_pos up to, but not including end_pos. If end_pos is negative, then
-	// the characters deleted are those from start_pos to the end of the text.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start position.
-	//    - endPos: end position.
-	//
-	DoDeleteText(startPos, endPos int)
-	// Delegate gets the GtkEditable that editable is delegating its
-	// implementation to.
-	//
-	// Typically, the delegate is a gtk.Text widget.
-	//
-	// The function returns the following values:
-	//
-	//    - ret (optional): delegate GtkEditable.
-	//
-	Delegate() EditableOverrider
-	// SelectionBounds retrieves the selection bound of the editable.
-	//
-	// start_pos will be filled with the start of the selection and end_pos with
-	// end. If no text was selected both will be identical and FALSE will be
-	// returned.
-	//
-	// Note that positions are specified in characters, not bytes.
-	//
-	// The function returns the following values:
-	//
-	//    - startPos (optional): location to store the starting position, or
-	//      NULL.
-	//    - endPos (optional): location to store the end position, or NULL.
-	//    - ok: TRUE if there is a non-empty selection, FALSE otherwise.
-	//
-	SelectionBounds() (startPos int, endPos int, ok bool)
-	// Text retrieves the contents of editable.
-	//
-	// The returned string is owned by GTK and must not be modified or freed.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: pointer to the contents of the editable.
-	//
-	Text() string
-	// SetSelectionBounds selects a region of text.
-	//
-	// The characters that are selected are those characters at positions from
-	// start_pos up to, but not including end_pos. If end_pos is negative, then
-	// the characters selected are those characters from start_pos to the end of
-	// the text.
-	//
-	// Note that positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//    - startPos: start of region.
-	//    - endPos: end of region.
-	//
-	SetSelectionBounds(startPos, endPos int)
 }
 
 // Editable: GtkEditable is an interface for text editing widgets.
@@ -263,7 +177,7 @@ type Editabler interface {
 	Chars(startPos, endPos int) string
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
-	Delegate() EditableOverrider
+	Delegate() Editabler
 	// Editable retrieves whether editable is editable.
 	Editable() bool
 	// EnableUndo gets if undo/redo actions are enabled for editable.
@@ -312,110 +226,6 @@ type Editabler interface {
 }
 
 var _ Editabler = (*Editable)(nil)
-
-func ifaceInitEditabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkEditableInterface)(unsafe.Pointer(gifacePtr))
-	iface.changed = (*[0]byte)(C._gotk4_gtk4_EditableInterface_changed)
-	iface.delete_text = (*[0]byte)(C._gotk4_gtk4_EditableInterface_delete_text)
-	iface.do_delete_text = (*[0]byte)(C._gotk4_gtk4_EditableInterface_do_delete_text)
-	iface.get_delegate = (*[0]byte)(C._gotk4_gtk4_EditableInterface_get_delegate)
-	iface.get_selection_bounds = (*[0]byte)(C._gotk4_gtk4_EditableInterface_get_selection_bounds)
-	iface.get_text = (*[0]byte)(C._gotk4_gtk4_EditableInterface_get_text)
-	iface.set_selection_bounds = (*[0]byte)(C._gotk4_gtk4_EditableInterface_set_selection_bounds)
-}
-
-//export _gotk4_gtk4_EditableInterface_changed
-func _gotk4_gtk4_EditableInterface_changed(arg0 *C.GtkEditable) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(EditableOverrider)
-
-	iface.Changed()
-}
-
-//export _gotk4_gtk4_EditableInterface_delete_text
-func _gotk4_gtk4_EditableInterface_delete_text(arg0 *C.GtkEditable, arg1 C.int, arg2 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(EditableOverrider)
-
-	var _startPos int // out
-	var _endPos int   // out
-
-	_startPos = int(arg1)
-	_endPos = int(arg2)
-
-	iface.DeleteText(_startPos, _endPos)
-}
-
-//export _gotk4_gtk4_EditableInterface_do_delete_text
-func _gotk4_gtk4_EditableInterface_do_delete_text(arg0 *C.GtkEditable, arg1 C.int, arg2 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(EditableOverrider)
-
-	var _startPos int // out
-	var _endPos int   // out
-
-	_startPos = int(arg1)
-	_endPos = int(arg2)
-
-	iface.DoDeleteText(_startPos, _endPos)
-}
-
-//export _gotk4_gtk4_EditableInterface_get_delegate
-func _gotk4_gtk4_EditableInterface_get_delegate(arg0 *C.GtkEditable) (cret *C.GtkEditable) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(EditableOverrider)
-
-	ret := iface.Delegate()
-
-	if ret != nil {
-		cret = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_EditableInterface_get_selection_bounds
-func _gotk4_gtk4_EditableInterface_get_selection_bounds(arg0 *C.GtkEditable, arg1 *C.int, arg2 *C.int) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(EditableOverrider)
-
-	startPos, endPos, ok := iface.SelectionBounds()
-
-	*arg1 = C.int(startPos)
-	*arg2 = C.int(endPos)
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_EditableInterface_get_text
-func _gotk4_gtk4_EditableInterface_get_text(arg0 *C.GtkEditable) (cret *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(EditableOverrider)
-
-	utf8 := iface.Text()
-
-	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-	defer C.free(unsafe.Pointer(cret))
-
-	return cret
-}
-
-//export _gotk4_gtk4_EditableInterface_set_selection_bounds
-func _gotk4_gtk4_EditableInterface_set_selection_bounds(arg0 *C.GtkEditable, arg1 C.int, arg2 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(EditableOverrider)
-
-	var _startPos int // out
-	var _endPos int   // out
-
-	_startPos = int(arg1)
-	_endPos = int(arg2)
-
-	iface.SetSelectionBounds(_startPos, _endPos)
-}
 
 func wrapEditable(obj *externglib.Object) *Editable {
 	return &Editable{
@@ -631,7 +441,7 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 //
 //    - ret (optional): delegate GtkEditable.
 //
-func (editable *Editable) Delegate() EditableOverrider {
+func (editable *Editable) Delegate() Editabler {
 	var _arg0 *C.GtkEditable // out
 	var _cret *C.GtkEditable // in
 
@@ -640,7 +450,7 @@ func (editable *Editable) Delegate() EditableOverrider {
 	_cret = C.gtk_editable_get_delegate(_arg0)
 	runtime.KeepAlive(editable)
 
-	var _ret EditableOverrider // out
+	var _ret Editabler // out
 
 	if _cret != nil {
 		{
@@ -648,10 +458,10 @@ func (editable *Editable) Delegate() EditableOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(EditableOverrider)
+				_, ok := obj.(Editabler)
 				return ok
 			})
-			rv, ok := casted.(EditableOverrider)
+			rv, ok := casted.(Editabler)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Editabler")
 			}

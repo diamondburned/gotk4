@@ -97,7 +97,6 @@ func (t TextBufferTargetInfo) String() string {
 
 // TextBufferOverrider contains methods that are overridable.
 type TextBufferOverrider interface {
-	externglib.Objector
 	// ApplyTag emits the “apply-tag” signal on buffer. The default handler for
 	// the signal applies tag to the given range. start and end do not have to
 	// be in order.

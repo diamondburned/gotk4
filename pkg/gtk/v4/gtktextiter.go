@@ -2123,7 +2123,7 @@ func (iter *TextIter) Offset() int {
 //
 //    - paintable at iter.
 //
-func (iter *TextIter) Paintable() gdk.PaintableOverrider {
+func (iter *TextIter) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkTextIter  // out
 	var _cret *C.GdkPaintable // in
 
@@ -2132,7 +2132,7 @@ func (iter *TextIter) Paintable() gdk.PaintableOverrider {
 	_cret = C.gtk_text_iter_get_paintable(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _paintable gdk.PaintableOverrider // out
+	var _paintable gdk.Paintabler // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -2142,10 +2142,10 @@ func (iter *TextIter) Paintable() gdk.PaintableOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.PaintableOverrider)
+			_, ok := obj.(gdk.Paintabler)
 			return ok
 		})
-		rv, ok := casted.(gdk.PaintableOverrider)
+		rv, ok := casted.(gdk.Paintabler)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 		}

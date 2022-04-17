@@ -151,7 +151,6 @@ func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.GtkCalendar, arg2 C.guint, arg3 C.gu
 
 // CalendarOverrider contains methods that are overridable.
 type CalendarOverrider interface {
-	externglib.Objector
 	DaySelected()
 	DaySelectedDoubleClick()
 	MonthChanged()

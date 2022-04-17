@@ -28,7 +28,6 @@ func init() {
 
 // MiscOverrider contains methods that are overridable.
 type MiscOverrider interface {
-	externglib.Objector
 	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
 	// (This method is implemented by the toolkit ATK implementation layer; for
 	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).

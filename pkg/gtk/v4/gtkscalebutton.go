@@ -30,7 +30,6 @@ func init() {
 
 // ScaleButtonOverrider contains methods that are overridable.
 type ScaleButtonOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	ValueChanged(value float64)

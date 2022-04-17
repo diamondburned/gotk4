@@ -28,7 +28,6 @@ func init() {
 
 // AlignmentOverrider contains methods that are overridable.
 type AlignmentOverrider interface {
-	externglib.Objector
 }
 
 // Alignment widget controls the alignment and size of its child widget. It has

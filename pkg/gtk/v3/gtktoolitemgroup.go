@@ -29,7 +29,6 @@ func init() {
 
 // ToolItemGroupOverrider contains methods that are overridable.
 type ToolItemGroupOverrider interface {
-	externglib.Objector
 }
 
 // ToolItemGroup is used together with ToolPalette to add ToolItems to a palette

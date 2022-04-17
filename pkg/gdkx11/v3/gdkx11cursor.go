@@ -25,7 +25,6 @@ func init() {
 
 // X11CursorOverrider contains methods that are overridable.
 type X11CursorOverrider interface {
-	externglib.Objector
 }
 
 type X11Cursor struct {

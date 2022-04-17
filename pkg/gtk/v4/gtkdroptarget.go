@@ -32,7 +32,6 @@ func init() {
 
 // DropTargetOverrider contains methods that are overridable.
 type DropTargetOverrider interface {
-	externglib.Objector
 }
 
 // DropTarget: GtkDropTarget is an event controller to receive Drag-and-Drop

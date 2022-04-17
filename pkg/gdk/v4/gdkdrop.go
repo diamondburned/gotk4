@@ -376,7 +376,7 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 //    - outMimeType: return location for the used mime type.
 //    - inputStream (optional): GInputStream, or NULL.
 //
-func (self *Drop) ReadFinish(result gio.AsyncResultOverrider) (string, gio.InputStreamer, error) {
+func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -477,7 +477,7 @@ func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPri
 //
 //    - value: GValue containing the result.
 //
-func (self *Drop) ReadValueFinish(result gio.AsyncResultOverrider) (*externglib.Value, error) {
+func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GValue       // in

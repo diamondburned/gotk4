@@ -27,7 +27,6 @@ func init() {
 
 // MountOperationOverrider contains methods that are overridable.
 type MountOperationOverrider interface {
-	externglib.Objector
 }
 
 // MountOperation: GtkMountOperation is an implementation of GMountOperation.

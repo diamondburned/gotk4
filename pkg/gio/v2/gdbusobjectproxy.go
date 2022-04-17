@@ -25,7 +25,6 @@ func init() {
 
 // DBusObjectProxyOverrider contains methods that are overridable.
 type DBusObjectProxyOverrider interface {
-	externglib.Objector
 }
 
 // DBusObjectProxy is an object used to represent a remote object with one or

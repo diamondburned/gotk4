@@ -392,7 +392,6 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 
 // WidgetOverrider contains methods that are overridable.
 type WidgetOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	AdjustBaselineAllocation(baseline *int)
@@ -6034,7 +6033,7 @@ func (widget *Widget) Accessible() *atk.ObjectClass {
 //
 //    - actionGroup (optional) or NULL.
 //
-func (widget *Widget) ActionGroup(prefix string) gio.ActionGroupOverrider {
+func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GActionGroup // in
@@ -6047,7 +6046,7 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGroupOverrider {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(prefix)
 
-	var _actionGroup gio.ActionGroupOverrider // out
+	var _actionGroup gio.ActionGrouper // out
 
 	if _cret != nil {
 		{
@@ -6055,10 +6054,10 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGroupOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ActionGroupOverrider)
+				_, ok := obj.(gio.ActionGrouper)
 				return ok
 			})
-			rv, ok := casted.(gio.ActionGroupOverrider)
+			rv, ok := casted.(gio.ActionGrouper)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ActionGrouper")
 			}
@@ -8673,7 +8672,7 @@ func (widget *Widget) InputShapeCombineRegion(region *cairo.Region) {
 //    - name: prefix for actions in group.
 //    - group (optional) or NULL.
 //
-func (widget *Widget) InsertActionGroup(name string, group gio.ActionGroupOverrider) {
+func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.GActionGroup // out

@@ -26,7 +26,6 @@ func init() {
 
 // SortListModelOverrider contains methods that are overridable.
 type SortListModelOverrider interface {
-	externglib.Objector
 }
 
 // SortListModel: GtkSortListModel is a list model that sorts the elements of
@@ -83,7 +82,7 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 //
 //    - sortListModel: new GtkSortListModel.
 //
-func NewSortListModel(model gio.ListModelOverrider, sorter *Sorter) *SortListModel {
+func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 	var _arg1 *C.GListModel       // out
 	var _arg2 *C.GtkSorter        // out
 	var _cret *C.GtkSortListModel // in
@@ -140,7 +139,7 @@ func (self *SortListModel) Incremental() bool {
 //
 //    - listModel (optional): model that gets sorted.
 //
-func (self *SortListModel) Model() gio.ListModelOverrider {
+func (self *SortListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret *C.GListModel       // in
 
@@ -149,7 +148,7 @@ func (self *SortListModel) Model() gio.ListModelOverrider {
 	_cret = C.gtk_sort_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	if _cret != nil {
 		{
@@ -157,10 +156,10 @@ func (self *SortListModel) Model() gio.ListModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModelOverrider)
+				_, ok := obj.(gio.ListModeller)
 				return ok
 			})
-			rv, ok := casted.(gio.ListModelOverrider)
+			rv, ok := casted.(gio.ListModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
@@ -274,7 +273,7 @@ func (self *SortListModel) SetIncremental(incremental bool) {
 //
 //    - model (optional) to be sorted.
 //
-func (self *SortListModel) SetModel(model gio.ListModelOverrider) {
+func (self *SortListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 *C.GListModel       // out
 

@@ -67,7 +67,6 @@ func (e EntryIconPosition) String() string {
 
 // EntryOverrider contains methods that are overridable.
 type EntryOverrider interface {
-	externglib.Objector
 	Activate()
 }
 
@@ -717,7 +716,7 @@ func (entry *Entry) IconAtPos(x, y int) int {
 //    - icon (optional): GIcon, or NULL if no icon is set or if the icon is not a
 //      GIcon.
 //
-func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.IconOverrider {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -729,7 +728,7 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.IconOverrider {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(iconPos)
 
-	var _icon gio.IconOverrider // out
+	var _icon gio.Iconner // out
 
 	if _cret != nil {
 		{
@@ -737,10 +736,10 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.IconOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.IconOverrider)
+				_, ok := obj.(gio.Iconner)
 				return ok
 			})
-			rv, ok := casted.(gio.IconOverrider)
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -799,7 +798,7 @@ func (entry *Entry) IconName(iconPos EntryIconPosition) string {
 //    - paintable (optional): GdkPaintable, or NULL if no icon is set for this
 //      position or the icon set is not a GdkPaintable.
 //
-func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.PaintableOverrider {
+func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintabler {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GdkPaintable        // in
@@ -811,7 +810,7 @@ func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.PaintableOverri
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(iconPos)
 
-	var _paintable gdk.PaintableOverrider // out
+	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
 		{
@@ -819,10 +818,10 @@ func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.PaintableOverri
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gdk.PaintableOverrider)
+				_, ok := obj.(gdk.Paintabler)
 				return ok
 			})
-			rv, ok := casted.(gdk.PaintableOverrider)
+			rv, ok := casted.(gdk.Paintabler)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 			}
@@ -1514,7 +1513,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, provider *gdk.C
 //    - iconPos: position at which to set the icon.
 //    - icon (optional) to set, or NULL.
 //
-func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.IconOverrider) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out
@@ -1572,7 +1571,7 @@ func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName stri
 //    - iconPos: icon position.
 //    - paintable (optional): GdkPaintable, or NULL.
 //
-func (entry *Entry) SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.PaintableOverrider) {
+func (entry *Entry) SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.Paintabler) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GdkPaintable        // out

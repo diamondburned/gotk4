@@ -90,7 +90,6 @@ func (p PaintableFlags) Has(other PaintableFlags) bool {
 
 // PaintableOverrider contains methods that are overridable.
 type PaintableOverrider interface {
-	externglib.Objector
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by paintable.
 	//
@@ -103,7 +102,7 @@ type PaintableOverrider interface {
 	//
 	//    - ret: immutable paintable for the current contents of paintable.
 	//
-	CurrentImage() PaintableOverrider
+	CurrentImage() Paintabler
 	// Flags: get flags for the paintable.
 	//
 	// This is oftentimes useful for optimizations.
@@ -248,7 +247,7 @@ type Paintabler interface {
 	ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by paintable.
-	CurrentImage() PaintableOverrider
+	CurrentImage() Paintabler
 	// Flags: get flags for the paintable.
 	Flags() PaintableFlags
 	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
@@ -513,7 +512,7 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 //
 //    - ret: immutable paintable for the current contents of paintable.
 //
-func (paintable *Paintable) CurrentImage() PaintableOverrider {
+func (paintable *Paintable) CurrentImage() Paintabler {
 	var _arg0 *C.GdkPaintable // out
 	var _cret *C.GdkPaintable // in
 
@@ -522,7 +521,7 @@ func (paintable *Paintable) CurrentImage() PaintableOverrider {
 	_cret = C.gdk_paintable_get_current_image(_arg0)
 	runtime.KeepAlive(paintable)
 
-	var _ret PaintableOverrider // out
+	var _ret Paintabler // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -532,10 +531,10 @@ func (paintable *Paintable) CurrentImage() PaintableOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(PaintableOverrider)
+			_, ok := obj.(Paintabler)
 			return ok
 		})
-		rv, ok := casted.(PaintableOverrider)
+		rv, ok := casted.(Paintabler)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 		}
@@ -757,7 +756,7 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64
 //
 //    - paintable: GdkPaintable.
 //
-func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) PaintableOverrider {
+func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) Paintabler {
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
 	var _cret *C.GdkPaintable // in
@@ -769,7 +768,7 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) PaintableOverrider {
 	runtime.KeepAlive(intrinsicWidth)
 	runtime.KeepAlive(intrinsicHeight)
 
-	var _paintable PaintableOverrider // out
+	var _paintable Paintabler // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -779,10 +778,10 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) PaintableOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(PaintableOverrider)
+			_, ok := obj.(Paintabler)
 			return ok
 		})
-		rv, ok := casted.(PaintableOverrider)
+		rv, ok := casted.(Paintabler)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 		}

@@ -28,7 +28,6 @@ func init() {
 
 // PictureOverrider contains methods that are overridable.
 type PictureOverrider interface {
-	externglib.Objector
 }
 
 // Picture: GtkPicture widget displays a GdkPaintable.
@@ -153,7 +152,7 @@ func NewPicture() *Picture {
 //
 //    - picture: new GtkPicture.
 //
-func NewPictureForFile(file gio.FileOverrider) *Picture {
+func NewPictureForFile(file gio.Filer) *Picture {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
 
@@ -216,7 +215,7 @@ func NewPictureForFilename(filename string) *Picture {
 //
 //    - picture: new GtkPicture.
 //
-func NewPictureForPaintable(paintable gdk.PaintableOverrider) *Picture {
+func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 	var _arg1 *C.GdkPaintable // out
 	var _cret *C.GtkWidget    // in
 
@@ -360,7 +359,7 @@ func (self *Picture) CanShrink() bool {
 //
 //    - file (optional): GFile displayed by self.
 //
-func (self *Picture) File() gio.FileOverrider {
+func (self *Picture) File() gio.Filer {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.GFile      // in
 
@@ -369,7 +368,7 @@ func (self *Picture) File() gio.FileOverrider {
 	_cret = C.gtk_picture_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	if _cret != nil {
 		{
@@ -377,10 +376,10 @@ func (self *Picture) File() gio.FileOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -423,7 +422,7 @@ func (self *Picture) KeepAspectRatio() bool {
 //    - paintable (optional): displayed paintable, or NULL if the picture is
 //      empty.
 //
-func (self *Picture) Paintable() gdk.PaintableOverrider {
+func (self *Picture) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkPicture   // out
 	var _cret *C.GdkPaintable // in
 
@@ -432,7 +431,7 @@ func (self *Picture) Paintable() gdk.PaintableOverrider {
 	_cret = C.gtk_picture_get_paintable(_arg0)
 	runtime.KeepAlive(self)
 
-	var _paintable gdk.PaintableOverrider // out
+	var _paintable gdk.Paintabler // out
 
 	if _cret != nil {
 		{
@@ -440,10 +439,10 @@ func (self *Picture) Paintable() gdk.PaintableOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gdk.PaintableOverrider)
+				_, ok := obj.(gdk.Paintabler)
 				return ok
 			})
-			rv, ok := casted.(gdk.PaintableOverrider)
+			rv, ok := casted.(gdk.Paintabler)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 			}
@@ -519,7 +518,7 @@ func (self *Picture) SetCanShrink(canShrink bool) {
 //
 //    - file (optional): GFile or NULL.
 //
-func (self *Picture) SetFile(file gio.FileOverrider) {
+func (self *Picture) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GFile      // out
 
@@ -593,7 +592,7 @@ func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 //
 //    - paintable (optional): GdkPaintable or NULL.
 //
-func (self *Picture) SetPaintable(paintable gdk.PaintableOverrider) {
+func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkPicture   // out
 	var _arg1 *C.GdkPaintable // out
 

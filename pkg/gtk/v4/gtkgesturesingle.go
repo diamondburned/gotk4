@@ -27,7 +27,6 @@ func init() {
 
 // GestureSingleOverrider contains methods that are overridable.
 type GestureSingleOverrider interface {
-	externglib.Objector
 }
 
 // GestureSingle: GtkGestureSingle is a GtkGestures subclass optimized for

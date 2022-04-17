@@ -27,7 +27,6 @@ func init() {
 
 // HPanedOverrider contains methods that are overridable.
 type HPanedOverrider interface {
-	externglib.Objector
 }
 
 // HPaned widget is a container widget with two children arranged horizontally.

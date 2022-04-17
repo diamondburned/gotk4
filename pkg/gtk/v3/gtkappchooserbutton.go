@@ -32,7 +32,6 @@ func init() {
 
 // AppChooserButtonOverrider contains methods that are overridable.
 type AppChooserButtonOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	CustomItemActivated(itemName string)
@@ -227,7 +226,7 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 //    - label for the custom item.
 //    - icon for the custom item.
 //
-func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.IconOverrider) {
+func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Iconner) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out

@@ -95,7 +95,6 @@ func (i ImageType) String() string {
 
 // ImageOverrider contains methods that are overridable.
 type ImageOverrider interface {
-	externglib.Objector
 }
 
 // Image widget displays an image. Various kinds of object can be displayed as
@@ -300,7 +299,7 @@ func NewImageFromFile(filename string) *Image {
 //
 //    - image: new Image displaying the themed icon.
 //
-func NewImageFromGIcon(icon gio.IconOverrider, size int) *Image {
+func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -590,7 +589,7 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 //    - gicon (optional): place to store a #GIcon, or NULL.
 //    - size (optional): place to store an icon size (IconSize), or NULL.
 //
-func (image *Image) GIcon() (gio.IconOverrider, int) {
+func (image *Image) GIcon() (gio.Iconner, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // in
 	var _arg2 C.GtkIconSize // in
@@ -600,8 +599,8 @@ func (image *Image) GIcon() (gio.IconOverrider, int) {
 	C.gtk_image_get_gicon(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(image)
 
-	var _gicon gio.IconOverrider // out
-	var _size int                // out
+	var _gicon gio.Iconner // out
+	var _size int          // out
 
 	if _arg1 != nil {
 		{
@@ -609,10 +608,10 @@ func (image *Image) GIcon() (gio.IconOverrider, int) {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.IconOverrider)
+				_, ok := obj.(gio.Iconner)
 				return ok
 			})
-			rv, ok := casted.(gio.IconOverrider)
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -857,7 +856,7 @@ func (image *Image) SetFromFile(filename string) {
 //    - icon: icon.
 //    - size: icon size (IconSize).
 //
-func (image *Image) SetFromGIcon(icon gio.IconOverrider, size int) {
+func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out

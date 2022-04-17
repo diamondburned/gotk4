@@ -30,7 +30,6 @@ func init() {
 
 // TableCellOverrider contains methods that are overridable.
 type TableCellOverrider interface {
-	externglib.Objector
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
 	//

@@ -27,7 +27,6 @@ func init() {
 
 // VButtonBoxOverrider contains methods that are overridable.
 type VButtonBoxOverrider interface {
-	externglib.Objector
 }
 
 type VButtonBox struct {

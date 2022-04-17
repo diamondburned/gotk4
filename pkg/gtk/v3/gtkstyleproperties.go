@@ -36,7 +36,6 @@ func init() {
 
 // StylePropertiesOverrider contains methods that are overridable.
 type StylePropertiesOverrider interface {
-	externglib.Objector
 }
 
 // StyleProperties provides the storage for style information that is used by

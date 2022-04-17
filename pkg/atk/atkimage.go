@@ -30,7 +30,6 @@ func init() {
 
 // ImageOverrider contains methods that are overridable.
 type ImageOverrider interface {
-	externglib.Objector
 	// ImageDescription: get a textual description of this image.
 	//
 	// The function returns the following values:

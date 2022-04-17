@@ -26,7 +26,6 @@ func init() {
 
 // PopupOverrider contains methods that are overridable.
 type PopupOverrider interface {
-	externglib.Objector
 }
 
 // Popup: GdkPopup is a surface that is attached to another surface.

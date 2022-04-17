@@ -26,7 +26,6 @@ func init() {
 
 // SelectionFilterModelOverrider contains methods that are overridable.
 type SelectionFilterModelOverrider interface {
-	externglib.Objector
 }
 
 // SelectionFilterModel: GtkSelectionFilterModel is a list model that presents
@@ -74,7 +73,7 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 //
 //    - selectionFilterModel: new GtkSelectionFilterModel.
 //
-func NewSelectionFilterModel(model SelectionModelOverrider) *SelectionFilterModel {
+func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
 	var _cret *C.GtkSelectionFilterModel // in
 
@@ -98,7 +97,7 @@ func NewSelectionFilterModel(model SelectionModelOverrider) *SelectionFilterMode
 //
 //    - selectionModel (optional): model that gets filtered.
 //
-func (self *SelectionFilterModel) Model() SelectionModelOverrider {
+func (self *SelectionFilterModel) Model() SelectionModeller {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _cret *C.GtkSelectionModel       // in
 
@@ -107,7 +106,7 @@ func (self *SelectionFilterModel) Model() SelectionModelOverrider {
 	_cret = C.gtk_selection_filter_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel SelectionModelOverrider // out
+	var _selectionModel SelectionModeller // out
 
 	if _cret != nil {
 		{
@@ -115,10 +114,10 @@ func (self *SelectionFilterModel) Model() SelectionModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SelectionModelOverrider)
+				_, ok := obj.(SelectionModeller)
 				return ok
 			})
-			rv, ok := casted.(SelectionModelOverrider)
+			rv, ok := casted.(SelectionModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
 			}
@@ -139,7 +138,7 @@ func (self *SelectionFilterModel) Model() SelectionModelOverrider {
 //
 //    - model (optional) to be filtered.
 //
-func (self *SelectionFilterModel) SetModel(model SelectionModelOverrider) {
+func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _arg1 *C.GtkSelectionModel       // out
 

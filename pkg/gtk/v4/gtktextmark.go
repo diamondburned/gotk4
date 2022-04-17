@@ -25,7 +25,6 @@ func init() {
 
 // TextMarkOverrider contains methods that are overridable.
 type TextMarkOverrider interface {
-	externglib.Objector
 }
 
 // TextMark: GtkTextMark is a position in a GtkTextbuffer that is preserved

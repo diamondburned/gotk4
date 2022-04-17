@@ -29,7 +29,6 @@ func init() {
 
 // LayoutOverrider contains methods that are overridable.
 type LayoutOverrider interface {
-	externglib.Objector
 }
 
 // Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t do

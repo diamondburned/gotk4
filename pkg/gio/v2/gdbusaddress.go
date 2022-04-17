@@ -156,7 +156,7 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 //      from address, if any.
 //    - ioStream or NULL if error is set.
 //
-func DBusAddressGetStreamFinish(res AsyncResultOverrider) (string, IOStreamer, error) {
+func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.gchar        // in
 	var _cret *C.GIOStream    // in

@@ -27,7 +27,6 @@ func init() {
 
 // ColorChooserWidgetOverrider contains methods that are overridable.
 type ColorChooserWidgetOverrider interface {
-	externglib.Objector
 }
 
 // ColorChooserWidget widget lets the user select a color. By default, the

@@ -28,7 +28,6 @@ func init() {
 
 // RecentChooserMenuOverrider contains methods that are overridable.
 type RecentChooserMenuOverrider interface {
-	externglib.Objector
 }
 
 // RecentChooserMenu is a widget suitable for displaying recently used files

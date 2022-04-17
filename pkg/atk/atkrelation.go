@@ -108,7 +108,6 @@ func RelationTypeRegister(name string) RelationType {
 
 // RelationOverrider contains methods that are overridable.
 type RelationOverrider interface {
-	externglib.Objector
 }
 
 // Relation describes a relation between an object and one or more other

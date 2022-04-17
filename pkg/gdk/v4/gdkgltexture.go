@@ -25,7 +25,6 @@ func init() {
 
 // GLTextureOverrider contains methods that are overridable.
 type GLTextureOverrider interface {
-	externglib.Objector
 }
 
 // GLTexture: gdkTexture representing a GL texture object.

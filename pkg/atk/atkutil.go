@@ -304,7 +304,6 @@ func RemoveKeyEventListener(listenerId uint) {
 
 // UtilOverrider contains methods that are overridable.
 type UtilOverrider interface {
-	externglib.Objector
 }
 
 // Util: set of ATK utility functions which are used to support event

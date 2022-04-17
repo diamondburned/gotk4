@@ -25,7 +25,6 @@ func init() {
 
 // X11VisualOverrider contains methods that are overridable.
 type X11VisualOverrider interface {
-	externglib.Objector
 }
 
 type X11Visual struct {

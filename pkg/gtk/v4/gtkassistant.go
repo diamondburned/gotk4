@@ -661,7 +661,7 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 //
 //    - listModel: list model of the pages.
 //
-func (assistant *Assistant) Pages() gio.ListModelOverrider {
+func (assistant *Assistant) Pages() gio.ListModeller {
 	var _arg0 *C.GtkAssistant // out
 	var _cret *C.GListModel   // in
 
@@ -670,7 +670,7 @@ func (assistant *Assistant) Pages() gio.ListModelOverrider {
 	_cret = C.gtk_assistant_get_pages(_arg0)
 	runtime.KeepAlive(assistant)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -680,10 +680,10 @@ func (assistant *Assistant) Pages() gio.ListModelOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModelOverrider)
+			_, ok := obj.(gio.ListModeller)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModelOverrider)
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}

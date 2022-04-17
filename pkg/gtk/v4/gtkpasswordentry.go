@@ -27,7 +27,6 @@ func init() {
 
 // PasswordEntryOverrider contains methods that are overridable.
 type PasswordEntryOverrider interface {
-	externglib.Objector
 }
 
 // PasswordEntry: GtkPasswordEntry is an entry that has been tailored for

@@ -133,7 +133,7 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch
 func _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(arg0 C.gpointer, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(model TreeModelOverrider, iter *TreeIter) (ok bool)
+	var f func(model TreeModeller, iter *TreeIter) (ok bool)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -141,11 +141,11 @@ func _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(arg0 C.gpointer, arg1 *C.G
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(model TreeModelOverrider, iter *TreeIter) (ok bool))
+		f = closure.Func.(func(model TreeModeller, iter *TreeIter) (ok bool))
 	}
 
-	var _model TreeModelOverrider // out
-	var _iter *TreeIter           // out
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -155,10 +155,10 @@ func _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(arg0 C.gpointer, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModelOverrider)
+			_, ok := obj.(TreeModeller)
 			return ok
 		})
-		rv, ok := casted.(TreeModelOverrider)
+		rv, ok := casted.(TreeModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -183,7 +183,7 @@ func _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(arg0 C.gpointer, arg1 *C.G
 //
 // Note that model is the model that was passed to
 // gtk.EntryCompletion.SetModel().
-func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModelOverrider, iter *TreeIter) (ok bool)) externglib.SignalHandle {
+func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModeller, iter *TreeIter) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(completion, "cursor-on-match", false, unsafe.Pointer(C._gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch), f)
 }
 
@@ -227,7 +227,7 @@ func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) (ok
 
 //export _gotk4_gtk4_EntryCompletion_ConnectMatchSelected
 func _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(arg0 C.gpointer, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(model TreeModelOverrider, iter *TreeIter) (ok bool)
+	var f func(model TreeModeller, iter *TreeIter) (ok bool)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -235,11 +235,11 @@ func _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(arg0 C.gpointer, arg1 *C.G
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(model TreeModelOverrider, iter *TreeIter) (ok bool))
+		f = closure.Func.(func(model TreeModeller, iter *TreeIter) (ok bool))
 	}
 
-	var _model TreeModelOverrider // out
-	var _iter *TreeIter           // out
+	var _model TreeModeller // out
+	var _iter *TreeIter     // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -249,10 +249,10 @@ func _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(arg0 C.gpointer, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModelOverrider)
+			_, ok := obj.(TreeModeller)
 			return ok
 		})
-		rv, ok := casted.(TreeModelOverrider)
+		rv, ok := casted.(TreeModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -276,7 +276,7 @@ func _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(arg0 C.gpointer, arg1 *C.G
 //
 // Note that model is the model that was passed to
 // gtk.EntryCompletion.SetModel().
-func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModelOverrider, iter *TreeIter) (ok bool)) externglib.SignalHandle {
+func (completion *EntryCompletion) ConnectMatchSelected(f func(model TreeModeller, iter *TreeIter) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(completion, "match-selected", false, unsafe.Pointer(C._gotk4_gtk4_EntryCompletion_ConnectMatchSelected), f)
 }
 
@@ -546,7 +546,7 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 //
 //    - treeModel (optional) or NULL if none is currently being used.
 //
-func (completion *EntryCompletion) Model() TreeModelOverrider {
+func (completion *EntryCompletion) Model() TreeModeller {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkTreeModel       // in
 
@@ -555,7 +555,7 @@ func (completion *EntryCompletion) Model() TreeModelOverrider {
 	_cret = C.gtk_entry_completion_get_model(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _treeModel TreeModelOverrider // out
+	var _treeModel TreeModeller // out
 
 	if _cret != nil {
 		{
@@ -563,10 +563,10 @@ func (completion *EntryCompletion) Model() TreeModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModelOverrider)
+				_, ok := obj.(TreeModeller)
 				return ok
 			})
-			rv, ok := casted.(TreeModelOverrider)
+			rv, ok := casted.(TreeModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -784,7 +784,7 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 //
 //    - model (optional): GtkTreeModel.
 //
-func (completion *EntryCompletion) SetModel(model TreeModelOverrider) {
+func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
 

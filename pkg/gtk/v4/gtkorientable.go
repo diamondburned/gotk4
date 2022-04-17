@@ -25,7 +25,6 @@ func init() {
 
 // OrientableOverrider contains methods that are overridable.
 type OrientableOverrider interface {
-	externglib.Objector
 }
 
 // Orientable: GtkOrientable interface is implemented by all widgets that can be

@@ -25,7 +25,6 @@ func init() {
 
 // ConstraintGuideOverrider contains methods that are overridable.
 type ConstraintGuideOverrider interface {
-	externglib.Objector
 }
 
 // ConstraintGuide: GtkConstraintGuide is an invisible layout element in a

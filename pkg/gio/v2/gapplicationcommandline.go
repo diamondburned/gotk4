@@ -31,7 +31,6 @@ func init() {
 
 // ApplicationCommandLineOverrider contains methods that are overridable.
 type ApplicationCommandLineOverrider interface {
-	externglib.Objector
 	// Stdin gets the stdin of the invoking process.
 	//
 	// The Stream can be used to read data passed to the standard input of the
@@ -223,7 +222,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 //
 //    - file: new #GFile.
 //
-func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) FileOverrider {
+func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
@@ -236,7 +235,7 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) FileOverride
 	runtime.KeepAlive(cmdline)
 	runtime.KeepAlive(arg)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -246,10 +245,10 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) FileOverride
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}

@@ -26,7 +26,6 @@ func init() {
 
 // CellRendererProgressOverrider contains methods that are overridable.
 type CellRendererProgressOverrider interface {
-	externglib.Objector
 }
 
 // CellRendererProgress renders a numeric value as a progress par in a cell.

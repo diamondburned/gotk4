@@ -26,7 +26,6 @@ func init() {
 
 // NativeSocketAddressOverrider contains methods that are overridable.
 type NativeSocketAddressOverrider interface {
-	externglib.Objector
 }
 
 // NativeSocketAddress: socket address of some unknown native type.

@@ -32,7 +32,6 @@ const TLS_BACKEND_EXTENSION_POINT_NAME = "gio-tls-backend"
 
 // TLSBackendOverrider contains methods that are overridable.
 type TLSBackendOverrider interface {
-	externglib.Objector
 	// DefaultDatabase gets the default Database used to verify TLS connections.
 	//
 	// The function returns the following values:
@@ -421,12 +420,12 @@ func (backend *TLSBackend) SupportsTLS() bool {
 //
 //    - tlsBackend which will be a dummy object if no TLS backend is available.
 //
-func TLSBackendGetDefault() TLSBackendOverrider {
+func TLSBackendGetDefault() TLSBackender {
 	var _cret *C.GTlsBackend // in
 
 	_cret = C.g_tls_backend_get_default()
 
-	var _tlsBackend TLSBackendOverrider // out
+	var _tlsBackend TLSBackender // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -436,10 +435,10 @@ func TLSBackendGetDefault() TLSBackendOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSBackendOverrider)
+			_, ok := obj.(TLSBackender)
 			return ok
 		})
-		rv, ok := casted.(TLSBackendOverrider)
+		rv, ok := casted.(TLSBackender)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSBackender")
 		}

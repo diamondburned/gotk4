@@ -27,7 +27,6 @@ const MAX_COMPOSE_LEN = 7
 
 // IMContextSimpleOverrider contains methods that are overridable.
 type IMContextSimpleOverrider interface {
-	externglib.Objector
 }
 
 // IMContextSimple: GtkIMContextSimple is an input method supporting table-based

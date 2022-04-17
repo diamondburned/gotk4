@@ -32,7 +32,6 @@ func init() {
 
 // ShortcutsWindowOverrider contains methods that are overridable.
 type ShortcutsWindowOverrider interface {
-	externglib.Objector
 	Close()
 	Search()
 }

@@ -53,7 +53,6 @@ func init() {
 
 // IMContextOverrider contains methods that are overridable.
 type IMContextOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	Commit(str string)

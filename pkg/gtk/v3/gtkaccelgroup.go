@@ -507,7 +507,6 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 
 // AccelGroupOverrider contains methods that are overridable.
 type AccelGroupOverrider interface {
-	externglib.Objector
 }
 
 // AccelGroup represents a group of keyboard accelerators, typically attached to

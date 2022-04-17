@@ -36,7 +36,6 @@ func init() {
 
 // ActionGroupOverrider contains methods that are overridable.
 type ActionGroupOverrider interface {
-	externglib.Objector
 	// Action looks up an action in the action group by name.
 	//
 	// Deprecated: since version 3.10.

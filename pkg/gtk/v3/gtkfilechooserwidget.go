@@ -40,7 +40,6 @@ func init() {
 
 // FileChooserWidgetOverrider contains methods that are overridable.
 type FileChooserWidgetOverrider interface {
-	externglib.Objector
 }
 
 // FileChooserWidget is a widget for choosing files. It exposes the FileChooser

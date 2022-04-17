@@ -25,7 +25,6 @@ func init() {
 
 // TextTagOverrider contains methods that are overridable.
 type TextTagOverrider interface {
-	externglib.Objector
 }
 
 // TextTag: tag that can be applied to text contained in a GtkTextBuffer.

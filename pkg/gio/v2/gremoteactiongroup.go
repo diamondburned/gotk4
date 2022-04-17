@@ -29,7 +29,6 @@ func init() {
 
 // RemoteActionGroupOverrider contains methods that are overridable.
 type RemoteActionGroupOverrider interface {
-	externglib.Objector
 	// ActivateActionFull activates the remote action.
 	//
 	// This is the same as g_action_group_activate_action() except that it

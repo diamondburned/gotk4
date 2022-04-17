@@ -24,7 +24,6 @@ func init() {
 
 // NoOpObjectFactoryOverrider contains methods that are overridable.
 type NoOpObjectFactoryOverrider interface {
-	externglib.Objector
 }
 
 // NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject. An

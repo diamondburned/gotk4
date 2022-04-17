@@ -25,7 +25,6 @@ func init() {
 
 // WaylandSeatOverrider contains methods that are overridable.
 type WaylandSeatOverrider interface {
-	externglib.Objector
 }
 
 // WaylandSeat: wayland implementation of GdkSeat.

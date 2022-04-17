@@ -34,7 +34,6 @@ func init() {
 
 // DBusProxyOverrider contains methods that are overridable.
 type DBusProxyOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - senderName
@@ -205,7 +204,7 @@ func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, par
 //
 //    - dBusProxy or NULL if error is set. Free with g_object_unref().
 //
-func NewDBusProxyFinish(res AsyncResultOverrider) (*DBusProxy, error) {
+func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
@@ -237,7 +236,7 @@ func NewDBusProxyFinish(res AsyncResultOverrider) (*DBusProxy, error) {
 //
 //    - dBusProxy or NULL if error is set. Free with g_object_unref().
 //
-func NewDBusProxyForBusFinish(res AsyncResultOverrider) (*DBusProxy, error) {
+func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
 	var _cerr *C.GError       // in
@@ -516,7 +515,7 @@ func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters 
 //    - variant: NULL if error is set. Otherwise a #GVariant tuple with return
 //      values. Free with g_variant_unref().
 //
-func (proxy *DBusProxy) CallFinish(res AsyncResultOverrider) (*glib.Variant, error) {
+func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GVariant     // in

@@ -25,7 +25,6 @@ func init() {
 
 // ListItemOverrider contains methods that are overridable.
 type ListItemOverrider interface {
-	externglib.Objector
 }
 
 // ListItem: GtkListItem is used by list widgets to represent items in a

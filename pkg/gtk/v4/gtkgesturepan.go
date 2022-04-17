@@ -26,7 +26,6 @@ func init() {
 
 // GesturePanOverrider contains methods that are overridable.
 type GesturePanOverrider interface {
-	externglib.Objector
 }
 
 // GesturePan: GtkGesturePan is a GtkGesture for pan gestures.

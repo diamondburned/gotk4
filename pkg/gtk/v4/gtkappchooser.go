@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// AppChooserOverrider contains methods that are overridable.
-type AppChooserOverrider interface {
-	externglib.Objector
-}
-
 // AppChooser: GtkAppChooser is an interface for widgets which allow the user to
 // choose an application.
 //
@@ -60,7 +55,7 @@ type AppChooserer interface {
 	externglib.Objector
 
 	// AppInfo returns the currently selected application.
-	AppInfo() gio.AppInfoOverrider
+	AppInfo() gio.AppInfor
 	// ContentType returns the content type for which the GtkAppChooser shows
 	// applications.
 	ContentType() string
@@ -101,7 +96,7 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //    - appInfo (optional): GAppInfo for the currently selected application, or
 //      NULL if none is selected. Free with g_object_unref().
 //
-func (self *AppChooser) AppInfo() gio.AppInfoOverrider {
+func (self *AppChooser) AppInfo() gio.AppInfor {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.GAppInfo      // in
 
@@ -110,7 +105,7 @@ func (self *AppChooser) AppInfo() gio.AppInfoOverrider {
 	_cret = C.gtk_app_chooser_get_app_info(_arg0)
 	runtime.KeepAlive(self)
 
-	var _appInfo gio.AppInfoOverrider // out
+	var _appInfo gio.AppInfor // out
 
 	if _cret != nil {
 		{
@@ -118,10 +113,10 @@ func (self *AppChooser) AppInfo() gio.AppInfoOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.AppInfoOverrider)
+				_, ok := obj.(gio.AppInfor)
 				return ok
 			})
-			rv, ok := casted.(gio.AppInfoOverrider)
+			rv, ok := casted.(gio.AppInfor)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}

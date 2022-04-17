@@ -27,7 +27,6 @@ func init() {
 
 // SimpleActionGroupOverrider contains methods that are overridable.
 type SimpleActionGroupOverrider interface {
-	externglib.Objector
 }
 
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
@@ -133,7 +132,7 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 //
 //    - action: #GAction.
 //
-func (simple *SimpleActionGroup) Insert(action ActionOverrider) {
+func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
 
@@ -159,7 +158,7 @@ func (simple *SimpleActionGroup) Insert(action ActionOverrider) {
 //
 //    - action or NULL.
 //
-func (simple *SimpleActionGroup) Lookup(actionName string) ActionOverrider {
+func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
@@ -172,7 +171,7 @@ func (simple *SimpleActionGroup) Lookup(actionName string) ActionOverrider {
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(actionName)
 
-	var _action ActionOverrider // out
+	var _action Actioner // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -182,10 +181,10 @@ func (simple *SimpleActionGroup) Lookup(actionName string) ActionOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(ActionOverrider)
+			_, ok := obj.(Actioner)
 			return ok
 		})
-		rv, ok := casted.(ActionOverrider)
+		rv, ok := casted.(Actioner)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
 		}

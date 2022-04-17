@@ -35,7 +35,6 @@ func init() {
 
 // CellEditableOverrider contains methods that are overridable.
 type CellEditableOverrider interface {
-	externglib.Objector
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.

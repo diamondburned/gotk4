@@ -32,7 +32,6 @@ func init() {
 
 // TextTagOverrider contains methods that are overridable.
 type TextTagOverrider interface {
-	externglib.Objector
 	// Event emits the “event” signal on the TextTag.
 	//
 	// The function takes the following parameters:

@@ -58,7 +58,6 @@ func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 
 // X11GLContextOverrider contains methods that are overridable.
 type X11GLContextOverrider interface {
-	externglib.Objector
 }
 
 type X11GLContext struct {

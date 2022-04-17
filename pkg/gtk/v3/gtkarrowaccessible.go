@@ -27,7 +27,6 @@ func init() {
 
 // ArrowAccessibleOverrider contains methods that are overridable.
 type ArrowAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ArrowAccessible struct {

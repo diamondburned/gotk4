@@ -122,7 +122,6 @@ func (p PolicyType) String() string {
 
 // ScrolledWindowOverrider contains methods that are overridable.
 type ScrolledWindowOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	MoveFocusOut(direction DirectionType)

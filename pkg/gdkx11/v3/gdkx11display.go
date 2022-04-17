@@ -84,7 +84,6 @@ func X11SetSmClientID(smClientId string) {
 
 // X11DisplayOverrider contains methods that are overridable.
 type X11DisplayOverrider interface {
-	externglib.Objector
 }
 
 type X11Display struct {

@@ -29,7 +29,6 @@ func init() {
 
 // FileMonitorOverrider contains methods that are overridable.
 type FileMonitorOverrider interface {
-	externglib.Objector
 	// Cancel cancels a file monitor.
 	//
 	// The function returns the following values:
@@ -43,7 +42,7 @@ type FileMonitorOverrider interface {
 	//    - otherFile
 	//    - eventType
 	//
-	Changed(file, otherFile FileOverrider, eventType FileMonitorEvent)
+	Changed(file, otherFile Filer, eventType FileMonitorEvent)
 }
 
 // FileMonitor monitors a file or directory for changes.
@@ -93,7 +92,7 @@ func classInitFileMonitorrer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Changed(file, otherFile FileOverrider, eventType FileMonitorEvent)
+		Changed(file, otherFile Filer, eventType FileMonitorEvent)
 	}); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_changed)
 	}
@@ -117,11 +116,11 @@ func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean)
 func _gotk4_gio2_FileMonitorClass_changed(arg0 *C.GFileMonitor, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Changed(file, otherFile FileOverrider, eventType FileMonitorEvent)
+		Changed(file, otherFile Filer, eventType FileMonitorEvent)
 	})
 
-	var _file FileOverrider         // out
-	var _otherFile FileOverrider    // out
+	var _file Filer                 // out
+	var _otherFile Filer            // out
 	var _eventType FileMonitorEvent // out
 
 	{
@@ -132,10 +131,10 @@ func _gotk4_gio2_FileMonitorClass_changed(arg0 *C.GFileMonitor, arg1 *C.GFile, a
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -149,10 +148,10 @@ func _gotk4_gio2_FileMonitorClass_changed(arg0 *C.GFileMonitor, arg1 *C.GFile, a
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -184,7 +183,7 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 
 //export _gotk4_gio2_FileMonitor_ConnectChanged
 func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent, arg4 C.guintptr) {
-	var f func(file, otherFile FileOverrider, eventType FileMonitorEvent)
+	var f func(file, otherFile Filer, eventType FileMonitorEvent)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -192,11 +191,11 @@ func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(file, otherFile FileOverrider, eventType FileMonitorEvent))
+		f = closure.Func.(func(file, otherFile Filer, eventType FileMonitorEvent))
 	}
 
-	var _file FileOverrider         // out
-	var _otherFile FileOverrider    // out
+	var _file Filer                 // out
+	var _otherFile Filer            // out
 	var _eventType FileMonitorEvent // out
 
 	{
@@ -207,10 +206,10 @@ func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -222,10 +221,10 @@ func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(FileOverrider)
+				_, ok := obj.(Filer)
 				return ok
 			})
-			rv, ok := casted.(FileOverrider)
+			rv, ok := casted.(Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -263,7 +262,7 @@ func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2
 // path, and other_file will be set to a #GFile containing the new path.
 //
 // In all the other cases, other_file will be set to LL.
-func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile FileOverrider, eventType FileMonitorEvent)) externglib.SignalHandle {
+func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventType FileMonitorEvent)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(monitor, "changed", false, unsafe.Pointer(C._gotk4_gio2_FileMonitor_ConnectChanged), f)
 }
 
@@ -304,7 +303,7 @@ func (monitor *FileMonitor) Cancel() bool {
 //    - otherFile: #GFile.
 //    - eventType: set of MonitorEvent flags.
 //
-func (monitor *FileMonitor) EmitEvent(child, otherFile FileOverrider, eventType FileMonitorEvent) {
+func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
 	var _arg2 *C.GFile            // out

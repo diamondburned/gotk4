@@ -27,7 +27,6 @@ func init() {
 
 // MenuAccessibleOverrider contains methods that are overridable.
 type MenuAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type MenuAccessible struct {

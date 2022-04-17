@@ -69,7 +69,6 @@ func (t ToolbarSpaceStyle) String() string {
 
 // ToolbarOverrider contains methods that are overridable.
 type ToolbarOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	OrientationChanged(orientation Orientation)

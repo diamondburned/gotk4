@@ -25,7 +25,6 @@ func init() {
 
 // SimpleProxyResolverOverrider contains methods that are overridable.
 type SimpleProxyResolverOverrider interface {
-	externglib.Objector
 }
 
 // SimpleProxyResolver is a simple Resolver implementation that handles a single

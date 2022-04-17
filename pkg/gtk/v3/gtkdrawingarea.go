@@ -27,7 +27,6 @@ func init() {
 
 // DrawingAreaOverrider contains methods that are overridable.
 type DrawingAreaOverrider interface {
-	externglib.Objector
 }
 
 // DrawingArea widget is used for creating custom user interface elements. It’s

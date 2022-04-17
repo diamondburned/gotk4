@@ -270,7 +270,7 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 //    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
 //      the file.
 //
-func PixbufGetFileInfoFinish(asyncResult gio.AsyncResultOverrider) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
+func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in

@@ -34,7 +34,6 @@ func init() {
 
 // GestureOverrider contains methods that are overridable.
 type GestureOverrider interface {
-	externglib.Objector
 }
 
 // Gesture is the base object for gesture recognition, although this object is

@@ -33,7 +33,6 @@ func init() {
 
 // ColorButtonOverrider contains methods that are overridable.
 type ColorButtonOverrider interface {
-	externglib.Objector
 	ColorSet()
 }
 

@@ -29,7 +29,6 @@ func init() {
 
 // TLSCertificateOverrider contains methods that are overridable.
 type TLSCertificateOverrider interface {
-	externglib.Objector
 	// Verify: this verifies cert and returns a set of CertificateFlags
 	// indicating any problems found with it. This can be used to verify a
 	// certificate outside the context of making a connection, or to check a
@@ -57,7 +56,7 @@ type TLSCertificateOverrider interface {
 	//
 	//    - tlsCertificateFlags: appropriate CertificateFlags.
 	//
-	Verify(identity SocketConnectableOverrider, trustedCa TLSCertificater) TLSCertificateFlags
+	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
 // TLSCertificate: certificate used for TLS authentication and encryption. This
@@ -96,7 +95,7 @@ func classInitTLSCertificater(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GTlsCertificateClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		Verify(identity SocketConnectableOverrider, trustedCa TLSCertificater) TLSCertificateFlags
+		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 	}); ok {
 		pclass.verify = (*[0]byte)(C._gotk4_gio2_TlsCertificateClass_verify)
 	}
@@ -106,11 +105,11 @@ func classInitTLSCertificater(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_TlsCertificateClass_verify(arg0 *C.GTlsCertificate, arg1 *C.GSocketConnectable, arg2 *C.GTlsCertificate) (cret C.GTlsCertificateFlags) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Verify(identity SocketConnectableOverrider, trustedCa TLSCertificater) TLSCertificateFlags
+		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 	})
 
-	var _identity SocketConnectableOverrider // out
-	var _trustedCa TLSCertificater           // out
+	var _identity SocketConnectabler // out
+	var _trustedCa TLSCertificater   // out
 
 	if arg1 != nil {
 		{
@@ -118,10 +117,10 @@ func _gotk4_gio2_TlsCertificateClass_verify(arg0 *C.GTlsCertificate, arg1 *C.GSo
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SocketConnectableOverrider)
+				_, ok := obj.(SocketConnectabler)
 				return ok
 			})
-			rv, ok := casted.(SocketConnectableOverrider)
+			rv, ok := casted.(SocketConnectabler)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
 			}
@@ -470,7 +469,7 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 //
 //    - tlsCertificateFlags: appropriate CertificateFlags.
 //
-func (cert *TLSCertificate) Verify(identity SocketConnectableOverrider, trustedCa TLSCertificater) TLSCertificateFlags {
+func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out
 	var _arg2 *C.GTlsCertificate     // out

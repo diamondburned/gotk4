@@ -164,7 +164,6 @@ func ValueTypeGetName(valueType ValueType) string {
 
 // ValueOverrider contains methods that are overridable.
 type ValueOverrider interface {
-	externglib.Objector
 	// CurrentValue gets the value of this object.
 	//
 	// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.

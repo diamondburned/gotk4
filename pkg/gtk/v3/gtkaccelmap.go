@@ -31,7 +31,6 @@ func init() {
 
 // AccelMapOverrider contains methods that are overridable.
 type AccelMapOverrider interface {
-	externglib.Objector
 }
 
 // AccelMap: accelerator maps are used to define runtime configurable

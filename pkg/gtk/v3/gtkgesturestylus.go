@@ -32,7 +32,6 @@ func init() {
 
 // GestureStylusOverrider contains methods that are overridable.
 type GestureStylusOverrider interface {
-	externglib.Objector
 }
 
 // GestureStylus is a Gesture implementation specific to stylus input. The

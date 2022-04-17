@@ -27,7 +27,6 @@ func init() {
 
 // IconViewAccessibleOverrider contains methods that are overridable.
 type IconViewAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type IconViewAccessible struct {

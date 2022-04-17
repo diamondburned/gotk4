@@ -26,7 +26,6 @@ func init() {
 
 // TLSFileDatabaseOverrider contains methods that are overridable.
 type TLSFileDatabaseOverrider interface {
-	externglib.Objector
 }
 
 // TLSFileDatabase is implemented by Database objects which load their
@@ -87,7 +86,7 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 //
 //    - tlsFileDatabase: new FileDatabase, or NULL on error.
 //
-func NewTLSFileDatabase(anchors string) (TLSFileDatabaseOverrider, error) {
+func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GTlsDatabase // in
 	var _cerr *C.GError       // in
@@ -98,8 +97,8 @@ func NewTLSFileDatabase(anchors string) (TLSFileDatabaseOverrider, error) {
 	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
 	runtime.KeepAlive(anchors)
 
-	var _tlsFileDatabase TLSFileDatabaseOverrider // out
-	var _goerr error                              // out
+	var _tlsFileDatabase TLSFileDatabaser // out
+	var _goerr error                      // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -109,10 +108,10 @@ func NewTLSFileDatabase(anchors string) (TLSFileDatabaseOverrider, error) {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSFileDatabaseOverrider)
+			_, ok := obj.(TLSFileDatabaser)
 			return ok
 		})
-		rv, ok := casted.(TLSFileDatabaseOverrider)
+		rv, ok := casted.(TLSFileDatabaser)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSFileDatabaser")
 		}

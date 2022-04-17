@@ -43,7 +43,6 @@ func init() {
 
 // MenuItemOverrider contains methods that are overridable.
 type MenuItemOverrider interface {
-	externglib.Objector
 	// Activate emits the MenuItem::activate signal on the given item.
 	Activate()
 	ActivateItem()

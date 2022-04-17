@@ -30,7 +30,6 @@ func init() {
 
 // HypertextOverrider contains methods that are overridable.
 type HypertextOverrider interface {
-	externglib.Objector
 	// Link gets the link in this hypertext document at index link_index.
 	//
 	// The function takes the following parameters:

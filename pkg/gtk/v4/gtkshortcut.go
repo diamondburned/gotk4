@@ -27,7 +27,6 @@ func init() {
 
 // ShortcutOverrider contains methods that are overridable.
 type ShortcutOverrider interface {
-	externglib.Objector
 }
 
 // Shortcut: GtkShortcut describes a keyboard shortcut.

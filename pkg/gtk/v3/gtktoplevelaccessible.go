@@ -29,7 +29,6 @@ func init() {
 
 // ToplevelAccessibleOverrider contains methods that are overridable.
 type ToplevelAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ToplevelAccessible struct {

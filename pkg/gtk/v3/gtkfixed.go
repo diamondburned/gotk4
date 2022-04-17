@@ -28,7 +28,6 @@ func init() {
 
 // FixedOverrider contains methods that are overridable.
 type FixedOverrider interface {
-	externglib.Objector
 }
 
 // Fixed widget is a container which can place child widgets at fixed positions

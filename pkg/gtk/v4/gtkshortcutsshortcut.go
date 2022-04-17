@@ -99,7 +99,6 @@ func (s ShortcutType) String() string {
 
 // ShortcutsShortcutOverrider contains methods that are overridable.
 type ShortcutsShortcutOverrider interface {
-	externglib.Objector
 }
 
 // ShortcutsShortcut: GtkShortcutsShortcut represents a single keyboard shortcut

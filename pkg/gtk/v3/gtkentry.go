@@ -94,7 +94,6 @@ func (e EntryIconPosition) String() string {
 
 // EntryOverrider contains methods that are overridable.
 type EntryOverrider interface {
-	externglib.Objector
 	Activate()
 	Backspace()
 	CopyClipboard()
@@ -1280,7 +1279,7 @@ func (entry *Entry) IconAtPos(x, y int) int {
 //
 //    - icon (optional) or NULL if no icon is set or if the icon is not a #GIcon.
 //
-func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.IconOverrider {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -1292,7 +1291,7 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.IconOverrider {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(iconPos)
 
-	var _icon gio.IconOverrider // out
+	var _icon gio.Iconner // out
 
 	if _cret != nil {
 		{
@@ -1300,10 +1299,10 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.IconOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.IconOverrider)
+				_, ok := obj.(gio.Iconner)
 				return ok
 			})
-			rv, ok := casted.(gio.IconOverrider)
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -2365,7 +2364,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *Tar
 //    - iconPos: position at which to set the icon.
 //    - icon (optional) to set, or NULL.
 //
-func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.IconOverrider) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out

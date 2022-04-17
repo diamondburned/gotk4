@@ -29,7 +29,6 @@ func init() {
 
 // CustomSorterOverrider contains methods that are overridable.
 type CustomSorterOverrider interface {
-	externglib.Objector
 }
 
 // CustomSorter: GtkCustomSorter is a GtkSorter implementation that sorts via a

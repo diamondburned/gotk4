@@ -49,7 +49,6 @@ const TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER = "1.3.6.1.5.5.7.3.1"
 
 // TLSDatabaseOverrider contains methods that are overridable.
 type TLSDatabaseOverrider interface {
-	externglib.Objector
 	// CreateCertificateHandle: create a handle string for the certificate. The
 	// database will only be able to create a handle for certificates that
 	// originate from the database. In cases where the database cannot create a
@@ -111,7 +110,7 @@ type TLSDatabaseOverrider interface {
 	//    - tlsCertificate: newly allocated Certificate object. Use
 	//      g_object_unref() to release the certificate.
 	//
-	LookupCertificateForHandleFinish(result AsyncResultOverrider) (TLSCertificater, error)
+	LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error)
 	// LookupCertificateIssuer: look up the issuer of certificate in the
 	// database.
 	//
@@ -148,7 +147,7 @@ type TLSDatabaseOverrider interface {
 	//    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
 	//      g_object_unref() to release the certificate.
 	//
-	LookupCertificateIssuerFinish(result AsyncResultOverrider) (TLSCertificater, error)
+	LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error)
 	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
 	// the database.
 	//
@@ -184,7 +183,7 @@ type TLSDatabaseOverrider interface {
 	//      g_object_unref() on each certificate, and g_list_free() on the
 	//      release the list.
 	//
-	LookupCertificatesIssuedByFinish(result AsyncResultOverrider) ([]TLSCertificater, error)
+	LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
 	// VerifyChain determines the validity of a certificate chain after looking
 	// up and adding any missing certificates to the chain.
 	//
@@ -236,7 +235,7 @@ type TLSDatabaseOverrider interface {
 	//    - tlsCertificateFlags: appropriate CertificateFlags which represents
 	//      the result of verification.
 	//
-	VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectableOverrider, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
+	VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
 	// VerifyChainFinish: finish an asynchronous verify chain operation. See
 	// g_tls_database_verify_chain() for more information.
 	//
@@ -257,7 +256,7 @@ type TLSDatabaseOverrider interface {
 	//    - tlsCertificateFlags: appropriate CertificateFlags which represents
 	//      the result of verification.
 	//
-	VerifyChainFinish(result AsyncResultOverrider) (TLSCertificateFlags, error)
+	VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 }
 
 // TLSDatabase is used to look up certificates and other information from a
@@ -313,7 +312,7 @@ func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		LookupCertificateForHandleFinish(result AsyncResultOverrider) (TLSCertificater, error)
+		LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error)
 	}); ok {
 		pclass.lookup_certificate_for_handle_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish)
 	}
@@ -325,7 +324,7 @@ func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		LookupCertificateIssuerFinish(result AsyncResultOverrider) (TLSCertificater, error)
+		LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error)
 	}); ok {
 		pclass.lookup_certificate_issuer_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish)
 	}
@@ -337,19 +336,19 @@ func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		LookupCertificatesIssuedByFinish(result AsyncResultOverrider) ([]TLSCertificater, error)
+		LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
 	}); ok {
 		pclass.lookup_certificates_issued_by_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish)
 	}
 
 	if _, ok := goval.(interface {
-		VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectableOverrider, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
+		VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
 	}); ok {
 		pclass.verify_chain = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_verify_chain)
 	}
 
 	if _, ok := goval.(interface {
-		VerifyChainFinish(result AsyncResultOverrider) (TLSCertificateFlags, error)
+		VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 	}); ok {
 		pclass.verify_chain_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_verify_chain_finish)
 	}
@@ -429,10 +428,10 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle(arg0 *C.GTlsData
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		LookupCertificateForHandleFinish(result AsyncResultOverrider) (TLSCertificater, error)
+		LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error)
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -442,10 +441,10 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -515,10 +514,10 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer(arg0 *C.GTlsDatabase
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		LookupCertificateIssuerFinish(result AsyncResultOverrider) (TLSCertificater, error)
+		LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error)
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -528,10 +527,10 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsD
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -591,10 +590,10 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by(arg0 *C.GTlsData
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		LookupCertificatesIssuedByFinish(result AsyncResultOverrider) ([]TLSCertificater, error)
+		LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -604,10 +603,10 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -634,15 +633,15 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.G
 func _gotk4_gio2_TlsDatabaseClass_verify_chain(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate, arg2 *C.gchar, arg3 *C.GSocketConnectable, arg4 *C.GTlsInteraction, arg5 C.GTlsDatabaseVerifyFlags, arg6 *C.GCancellable, _cerr **C.GError) (cret C.GTlsCertificateFlags) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectableOverrider, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
+		VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
 	})
 
-	var _cancellable context.Context         // out
-	var _chain TLSCertificater               // out
-	var _purpose string                      // out
-	var _identity SocketConnectableOverrider // out
-	var _interaction *TLSInteraction         // out
-	var _flags TLSDatabaseVerifyFlags        // out
+	var _cancellable context.Context  // out
+	var _chain TLSCertificater        // out
+	var _purpose string               // out
+	var _identity SocketConnectabler  // out
+	var _interaction *TLSInteraction  // out
+	var _flags TLSDatabaseVerifyFlags // out
 
 	if arg6 != nil {
 		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg6))
@@ -671,10 +670,10 @@ func _gotk4_gio2_TlsDatabaseClass_verify_chain(arg0 *C.GTlsDatabase, arg1 *C.GTl
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SocketConnectableOverrider)
+				_, ok := obj.(SocketConnectabler)
 				return ok
 			})
-			rv, ok := casted.(SocketConnectableOverrider)
+			rv, ok := casted.(SocketConnectabler)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
 			}
@@ -700,10 +699,10 @@ func _gotk4_gio2_TlsDatabaseClass_verify_chain(arg0 *C.GTlsDatabase, arg1 *C.GTl
 func _gotk4_gio2_TlsDatabaseClass_verify_chain_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsCertificateFlags) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		VerifyChainFinish(result AsyncResultOverrider) (TLSCertificateFlags, error)
+		VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -713,10 +712,10 @@ func _gotk4_gio2_TlsDatabaseClass_verify_chain_finish(arg0 *C.GTlsDatabase, arg1
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -935,7 +934,7 @@ func (self *TLSDatabase) LookupCertificateForHandleAsync(ctx context.Context, ha
 //    - tlsCertificate: newly allocated Certificate object. Use g_object_unref()
 //      to release the certificate.
 //
-func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResultOverrider) (TLSCertificater, error) {
+func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -1109,7 +1108,7 @@ func (self *TLSDatabase) LookupCertificateIssuerAsync(ctx context.Context, certi
 //    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
 //      g_object_unref() to release the certificate.
 //
-func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResultOverrider) (TLSCertificater, error) {
+func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GTlsCertificate // in
@@ -1300,7 +1299,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, is
 //    - list: newly allocated list of Certificate objects. Use g_object_unref()
 //      on each certificate, and g_list_free() on the release the list.
 //
-func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResultOverrider) ([]TLSCertificater, error) {
+func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -1395,7 +1394,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResultOver
 //    - tlsCertificateFlags: appropriate CertificateFlags which represents the
 //      result of verification.
 //
-func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectableOverrider, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error) {
+func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg6 *C.GCancellable           // out
 	var _arg1 *C.GTlsCertificate        // out
@@ -1457,7 +1456,7 @@ func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater,
 //    - flags: additional verify flags.
 //    - callback (optional) to call when the operation completes.
 //
-func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectableOverrider, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
+func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg6 *C.GCancellable           // out
 	var _arg1 *C.GTlsCertificate        // out
@@ -1519,7 +1518,7 @@ func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertific
 //    - tlsCertificateFlags: appropriate CertificateFlags which represents the
 //      result of verification.
 //
-func (self *TLSDatabase) VerifyChainFinish(result AsyncResultOverrider) (TLSCertificateFlags, error) {
+func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
 	var _cret C.GTlsCertificateFlags // in

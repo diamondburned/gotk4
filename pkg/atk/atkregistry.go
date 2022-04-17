@@ -48,7 +48,6 @@ func GetDefaultRegistry() *Registry {
 
 // RegistryOverrider contains methods that are overridable.
 type RegistryOverrider interface {
-	externglib.Objector
 }
 
 // Registry is normally used to create appropriate ATK "peers" for user

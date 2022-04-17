@@ -28,7 +28,6 @@ func init() {
 
 // ComboBoxTextOverrider contains methods that are overridable.
 type ComboBoxTextOverrider interface {
-	externglib.Objector
 }
 
 // ComboBoxText is a simple variant of ComboBox that hides the model-view

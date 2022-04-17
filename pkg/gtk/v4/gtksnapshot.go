@@ -32,7 +32,6 @@ func init() {
 
 // SnapshotOverrider contains methods that are overridable.
 type SnapshotOverrider interface {
-	externglib.Objector
 }
 
 // Snapshot: GtkSnapshot assists in creating GskRenderNodes for widgets.
@@ -1225,7 +1224,7 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 //
 //    - paintable: new Paintable.
 //
-func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.PaintableOverrider {
+func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.graphene_size_t // out
 	var _cret *C.GdkPaintable    // in
@@ -1239,7 +1238,7 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.PaintableOverride
 	runtime.KeepAlive(snapshot)
 	runtime.KeepAlive(size)
 
-	var _paintable gdk.PaintableOverrider // out
+	var _paintable gdk.Paintabler // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -1249,10 +1248,10 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.PaintableOverride
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.PaintableOverrider)
+			_, ok := obj.(gdk.Paintabler)
 			return ok
 		})
-		rv, ok := casted.(gdk.PaintableOverrider)
+		rv, ok := casted.(gdk.Paintabler)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 		}

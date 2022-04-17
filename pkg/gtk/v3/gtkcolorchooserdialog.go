@@ -28,7 +28,6 @@ func init() {
 
 // ColorChooserDialogOverrider contains methods that are overridable.
 type ColorChooserDialogOverrider interface {
-	externglib.Objector
 }
 
 // ColorChooserDialog widget is a dialog for choosing a color. It implements the

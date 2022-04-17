@@ -28,7 +28,6 @@ func init() {
 
 // HeaderBarOverrider contains methods that are overridable.
 type HeaderBarOverrider interface {
-	externglib.Objector
 }
 
 // HeaderBar is similar to a horizontal Box. It allows children to be placed at

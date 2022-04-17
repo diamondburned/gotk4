@@ -70,7 +70,6 @@ func (a ArrowPlacement) String() string {
 
 // MenuOverrider contains methods that are overridable.
 type MenuOverrider interface {
-	externglib.Objector
 }
 
 // Menu is a MenuShell that implements a drop down menu consisting of a list of

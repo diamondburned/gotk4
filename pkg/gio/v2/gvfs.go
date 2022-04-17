@@ -49,7 +49,7 @@ const VFS_EXTENSION_POINT_NAME = "gio-vfs"
 //
 // The client should return a reference to the new file that has been created
 // for uri, or NULL to continue with the default implementation.
-type VFSFileLookupFunc func(vfs *VFS, identifier string) (file FileOverrider)
+type VFSFileLookupFunc func(vfs *VFS, identifier string) (file Filer)
 
 //export _gotk4_gio2_VFSFileLookupFunc
 func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.GVfs, arg2 *C.char, arg3 C.gpointer) (cret *C.GFile) {
@@ -78,7 +78,6 @@ func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.GVfs, arg2 *C.char, arg3 C.gpointer) 
 
 // VFSOverrider contains methods that are overridable.
 type VFSOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	AddWritableNamespaces(list *FileAttributeInfoList)
@@ -92,7 +91,7 @@ type VFSOverrider interface {
 	//
 	//    - file: #GFile. Free the returned object with g_object_unref().
 	//
-	FileForPath(path string) FileOverrider
+	FileForPath(path string) Filer
 	// FileForURI gets a #GFile for uri.
 	//
 	// This operation never fails, but the returned object might not support any
@@ -107,7 +106,7 @@ type VFSOverrider interface {
 	//
 	//    - file: #GFile. Free the returned object with g_object_unref().
 	//
-	FileForURI(uri string) FileOverrider
+	FileForURI(uri string) Filer
 	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	//
 	// The function returns the following values:
@@ -154,7 +153,7 @@ type VFSOverrider interface {
 	//    - file for the given parse_name. Free the returned object with
 	//      g_object_unref().
 	//
-	ParseName(parseName string) FileOverrider
+	ParseName(parseName string) Filer
 }
 
 // VFS: entry point for using GIO functionality.
@@ -184,15 +183,11 @@ func classInitVFSer(gclassPtr, data C.gpointer) {
 		pclass.add_writable_namespaces = (*[0]byte)(C._gotk4_gio2_VfsClass_add_writable_namespaces)
 	}
 
-	if _, ok := goval.(interface {
-		FileForPath(path string) FileOverrider
-	}); ok {
+	if _, ok := goval.(interface{ FileForPath(path string) Filer }); ok {
 		pclass.get_file_for_path = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_path)
 	}
 
-	if _, ok := goval.(interface {
-		FileForURI(uri string) FileOverrider
-	}); ok {
+	if _, ok := goval.(interface{ FileForURI(uri string) Filer }); ok {
 		pclass.get_file_for_uri = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_uri)
 	}
 
@@ -218,9 +213,7 @@ func classInitVFSer(gclassPtr, data C.gpointer) {
 		pclass.local_file_set_attributes = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_set_attributes)
 	}
 
-	if _, ok := goval.(interface {
-		ParseName(parseName string) FileOverrider
-	}); ok {
+	if _, ok := goval.(interface{ ParseName(parseName string) Filer }); ok {
 		pclass.parse_name = (*[0]byte)(C._gotk4_gio2_VfsClass_parse_name)
 	}
 }
@@ -249,9 +242,7 @@ func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAtt
 //export _gotk4_gio2_VfsClass_get_file_for_path
 func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		FileForPath(path string) FileOverrider
-	})
+	iface := goval.(interface{ FileForPath(path string) Filer })
 
 	var _path string // out
 
@@ -268,9 +259,7 @@ func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C
 //export _gotk4_gio2_VfsClass_get_file_for_uri
 func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		FileForURI(uri string) FileOverrider
-	})
+	iface := goval.(interface{ FileForURI(uri string) Filer })
 
 	var _uri string // out
 
@@ -379,9 +368,7 @@ func _gotk4_gio2_VfsClass_local_file_set_attributes(arg0 *C.GVfs, arg1 *C.char, 
 //export _gotk4_gio2_VfsClass_parse_name
 func _gotk4_gio2_VfsClass_parse_name(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ParseName(parseName string) FileOverrider
-	})
+	iface := goval.(interface{ ParseName(parseName string) Filer })
 
 	var _parseName string // out
 
@@ -415,7 +402,7 @@ func marshalVFS(p uintptr) (interface{}, error) {
 //
 //    - file: #GFile. Free the returned object with g_object_unref().
 //
-func (vfs *VFS) FileForPath(path string) FileOverrider {
+func (vfs *VFS) FileForPath(path string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -428,7 +415,7 @@ func (vfs *VFS) FileForPath(path string) FileOverrider {
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(path)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -438,10 +425,10 @@ func (vfs *VFS) FileForPath(path string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -464,7 +451,7 @@ func (vfs *VFS) FileForPath(path string) FileOverrider {
 //
 //    - file: #GFile. Free the returned object with g_object_unref().
 //
-func (vfs *VFS) FileForURI(uri string) FileOverrider {
+func (vfs *VFS) FileForURI(uri string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -477,7 +464,7 @@ func (vfs *VFS) FileForURI(uri string) FileOverrider {
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(uri)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -487,10 +474,10 @@ func (vfs *VFS) FileForURI(uri string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -572,7 +559,7 @@ func (vfs *VFS) IsActive() bool {
 //    - file for the given parse_name. Free the returned object with
 //      g_object_unref().
 //
-func (vfs *VFS) ParseName(parseName string) FileOverrider {
+func (vfs *VFS) ParseName(parseName string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -585,7 +572,7 @@ func (vfs *VFS) ParseName(parseName string) FileOverrider {
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(parseName)
 
-	var _file FileOverrider // out
+	var _file Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -595,10 +582,10 @@ func (vfs *VFS) ParseName(parseName string) FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(FileOverrider)
+			_, ok := obj.(Filer)
 			return ok
 		})
-		rv, ok := casted.(FileOverrider)
+		rv, ok := casted.(Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}

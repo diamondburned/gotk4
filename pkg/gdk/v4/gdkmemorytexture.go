@@ -105,7 +105,6 @@ func (m MemoryFormat) String() string {
 
 // MemoryTextureOverrider contains methods that are overridable.
 type MemoryTextureOverrider interface {
-	externglib.Objector
 }
 
 // MemoryTexture: GdkTexture representing image data in memory.

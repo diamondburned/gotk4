@@ -198,7 +198,6 @@ func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListB
 
 // ListBoxOverrider contains methods that are overridable.
 type ListBoxOverrider interface {
-	externglib.Objector
 	ActivateCursorRow()
 	// The function takes the following parameters:
 	//
@@ -648,7 +647,7 @@ func NewListBox() *ListBox {
 //    - createWidgetFunc (optional): function that creates widgets for items or
 //      NULL in case you also passed NULL as model.
 //
-func (box *ListBox) BindModel(model gio.ListModelOverrider, createWidgetFunc ListBoxCreateWidgetFunc) {
+func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkListBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkListBoxCreateWidgetFunc // out
@@ -1254,7 +1253,6 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 
 // ListBoxRowOverrider contains methods that are overridable.
 type ListBoxRowOverrider interface {
-	externglib.Objector
 	Activate()
 }
 

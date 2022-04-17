@@ -53,7 +53,6 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 
 // SocketConnectionOverrider contains methods that are overridable.
 type SocketConnectionOverrider interface {
-	externglib.Objector
 }
 
 // SocketConnection is a OStream for a connected socket. They can be created
@@ -181,7 +180,7 @@ func (connection *SocketConnection) ConnectAsync(ctx context.Context, address So
 //
 //    - result: Result.
 //
-func (connection *SocketConnection) ConnectFinish(result AsyncResultOverrider) error {
+func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
 	var _cerr *C.GError            // in

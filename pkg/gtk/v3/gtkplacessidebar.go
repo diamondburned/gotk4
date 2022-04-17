@@ -122,7 +122,6 @@ func (p PlacesOpenFlags) Has(other PlacesOpenFlags) bool {
 
 // PlacesSidebarOverrider contains methods that are overridable.
 type PlacesSidebarOverrider interface {
-	externglib.Objector
 }
 
 // PlacesSidebar is a widget that displays a list of frequently-used places in
@@ -273,7 +272,7 @@ func (sidebar *PlacesSidebar) ConnectMount(f func(mountOperation *gio.MountOpera
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation
 func _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation(arg0 C.gpointer, arg1 *C.GFile, arg2 C.GtkPlacesOpenFlags, arg3 C.guintptr) {
-	var f func(location gio.FileOverrider, openFlags PlacesOpenFlags)
+	var f func(location gio.Filer, openFlags PlacesOpenFlags)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -281,11 +280,11 @@ func _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation(arg0 C.gpointer, arg1 *C.GFil
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(location gio.FileOverrider, openFlags PlacesOpenFlags))
+		f = closure.Func.(func(location gio.Filer, openFlags PlacesOpenFlags))
 	}
 
-	var _location gio.FileOverrider // out
-	var _openFlags PlacesOpenFlags  // out
+	var _location gio.Filer        // out
+	var _openFlags PlacesOpenFlags // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -295,10 +294,10 @@ func _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation(arg0 C.gpointer, arg1 *C.GFil
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.FileOverrider)
+			_, ok := obj.(gio.Filer)
 			return ok
 		})
-		rv, ok := casted.(gio.FileOverrider)
+		rv, ok := casted.(gio.Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -313,13 +312,13 @@ func _gotk4_gtk3_PlacesSidebar_ConnectOpenLocation(arg0 C.gpointer, arg1 *C.GFil
 // location in it. The calling application should display the contents of that
 // location; for example, a file manager should show a list of files in the
 // specified location.
-func (sidebar *PlacesSidebar) ConnectOpenLocation(f func(location gio.FileOverrider, openFlags PlacesOpenFlags)) externglib.SignalHandle {
+func (sidebar *PlacesSidebar) ConnectOpenLocation(f func(location gio.Filer, openFlags PlacesOpenFlags)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(sidebar, "open-location", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectOpenLocation), f)
 }
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup
 func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 *C.GFile, arg3 *C.GVolume, arg4 C.guintptr) {
-	var f func(container Widgetter, selectedItem gio.FileOverrider, selectedVolume gio.VolumeOverrider)
+	var f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -327,12 +326,12 @@ func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.Gtk
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(container Widgetter, selectedItem gio.FileOverrider, selectedVolume gio.VolumeOverrider))
+		f = closure.Func.(func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer))
 	}
 
-	var _container Widgetter                // out
-	var _selectedItem gio.FileOverrider     // out
-	var _selectedVolume gio.VolumeOverrider // out
+	var _container Widgetter        // out
+	var _selectedItem gio.Filer     // out
+	var _selectedVolume gio.Volumer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -357,10 +356,10 @@ func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.Gtk
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -373,10 +372,10 @@ func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.Gtk
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.VolumeOverrider)
+				_, ok := obj.(gio.Volumer)
 				return ok
 			})
-			rv, ok := casted.(gio.VolumeOverrider)
+			rv, ok := casted.(gio.Volumer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
 			}
@@ -412,7 +411,7 @@ func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.Gtk
 // If your application can deal with this situation, you can set
 // PlacesSidebar::populate-all to TRUE to request that this signal is emitted
 // for populating popovers as well.
-func (sidebar *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, selectedItem gio.FileOverrider, selectedVolume gio.VolumeOverrider)) externglib.SignalHandle {
+func (sidebar *PlacesSidebar) ConnectPopulatePopup(f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(sidebar, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup), f)
 }
 
@@ -644,7 +643,7 @@ func NewPlacesSidebar() *PlacesSidebar {
 //
 //    - location to add as an application-specific shortcut.
 //
-func (sidebar *PlacesSidebar) AddShortcut(location gio.FileOverrider) {
+func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 *C.GFile            // out
 
@@ -696,7 +695,7 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 //    - file (optional) with the selected location, or NULL if nothing is
 //      visually selected.
 //
-func (sidebar *PlacesSidebar) Location() gio.FileOverrider {
+func (sidebar *PlacesSidebar) Location() gio.Filer {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret *C.GFile            // in
 
@@ -705,7 +704,7 @@ func (sidebar *PlacesSidebar) Location() gio.FileOverrider {
 	_cret = C.gtk_places_sidebar_get_location(_arg0)
 	runtime.KeepAlive(sidebar)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	if _cret != nil {
 		{
@@ -713,10 +712,10 @@ func (sidebar *PlacesSidebar) Location() gio.FileOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -742,7 +741,7 @@ func (sidebar *PlacesSidebar) Location() gio.FileOverrider {
 //      index exist. Note that the indices start at 0, even though the file
 //      chooser starts them with the keyboard shortcut "Alt-1".
 //
-func (sidebar *PlacesSidebar) NthBookmark(n int) gio.FileOverrider {
+func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gint              // out
 	var _cret *C.GFile            // in
@@ -754,7 +753,7 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.FileOverrider {
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(n)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	if _cret != nil {
 		{
@@ -762,10 +761,10 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.FileOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -987,7 +986,7 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 //
 //         g_slist_free_full (list, (GDestroyNotify) g_object_unref);.
 //
-func (sidebar *PlacesSidebar) ListShortcuts() []gio.FileOverrider {
+func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret *C.GSList           // in
 
@@ -996,12 +995,12 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.FileOverrider {
 	_cret = C.gtk_places_sidebar_list_shortcuts(_arg0)
 	runtime.KeepAlive(sidebar)
 
-	var _sList []gio.FileOverrider // out
+	var _sList []gio.Filer // out
 
-	_sList = make([]gio.FileOverrider, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
-		var dst gio.FileOverrider // out
+		var dst gio.Filer // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1010,10 +1009,10 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.FileOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -1033,7 +1032,7 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.FileOverrider {
 //
 //    - location to remove.
 //
-func (sidebar *PlacesSidebar) RemoveShortcut(location gio.FileOverrider) {
+func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 *C.GFile            // out
 
@@ -1108,7 +1107,7 @@ func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 //
 //    - location (optional) to select, or NULL for no current path.
 //
-func (sidebar *PlacesSidebar) SetLocation(location gio.FileOverrider) {
+func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 *C.GFile            // out
 

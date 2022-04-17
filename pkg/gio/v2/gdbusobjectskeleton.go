@@ -28,7 +28,6 @@ func init() {
 
 // DBusObjectSkeletonOverrider contains methods that are overridable.
 type DBusObjectSkeletonOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - interface_

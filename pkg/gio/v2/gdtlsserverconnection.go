@@ -26,7 +26,6 @@ func init() {
 
 // DTLSServerConnectionOverrider contains methods that are overridable.
 type DTLSServerConnectionOverrider interface {
-	externglib.Objector
 }
 
 // DTLSServerConnection is the server-side subclass of Connection, representing
@@ -84,7 +83,7 @@ func BaseDTLSServerConnection(obj DTLSServerConnectioner) *DTLSServerConnection 
 //
 //    - dtlsServerConnection: new ServerConnection, or NULL on error.
 //
-func NewDTLSServerConnection(baseSocket DatagramBasedOverrider, certificate TLSCertificater) (DTLSServerConnectionOverrider, error) {
+func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertificater) (DTLSServerConnectioner, error) {
 	var _arg1 *C.GDatagramBased  // out
 	var _arg2 *C.GTlsCertificate // out
 	var _cret *C.GDatagramBased  // in
@@ -99,8 +98,8 @@ func NewDTLSServerConnection(baseSocket DatagramBasedOverrider, certificate TLSC
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(certificate)
 
-	var _dtlsServerConnection DTLSServerConnectionOverrider // out
-	var _goerr error                                        // out
+	var _dtlsServerConnection DTLSServerConnectioner // out
+	var _goerr error                                 // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -110,10 +109,10 @@ func NewDTLSServerConnection(baseSocket DatagramBasedOverrider, certificate TLSC
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DTLSServerConnectionOverrider)
+			_, ok := obj.(DTLSServerConnectioner)
 			return ok
 		})
-		rv, ok := casted.(DTLSServerConnectionOverrider)
+		rv, ok := casted.(DTLSServerConnectioner)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DTLSServerConnectioner")
 		}

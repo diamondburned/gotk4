@@ -118,7 +118,7 @@ func (t TreeModelFlags) Has(other TreeModelFlags) bool {
 
 // TreeModelForEachFunc: type of the callback passed to gtk_tree_model_foreach()
 // to iterate over the rows in a tree model.
-type TreeModelForEachFunc func(model TreeModelOverrider, path *TreePath, iter *TreeIter) (ok bool)
+type TreeModelForEachFunc func(model TreeModeller, path *TreePath, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeModelForEachFunc
 func _gotk4_gtk3_TreeModelForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
@@ -131,9 +131,9 @@ func _gotk4_gtk3_TreeModelForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath,
 		fn = v.(TreeModelForEachFunc)
 	}
 
-	var _model TreeModelOverrider // out
-	var _path *TreePath           // out
-	var _iter *TreeIter           // out
+	var _model TreeModeller // out
+	var _path *TreePath     // out
+	var _iter *TreeIter     // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -143,10 +143,10 @@ func _gotk4_gtk3_TreeModelForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath,
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModelOverrider)
+			_, ok := obj.(TreeModeller)
 			return ok
 		})
-		rv, ok := casted.(TreeModelOverrider)
+		rv, ok := casted.(TreeModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}
@@ -166,7 +166,6 @@ func _gotk4_gtk3_TreeModelForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath,
 
 // TreeModelOverrider contains methods that are overridable.
 type TreeModelOverrider interface {
-	externglib.Objector
 	// ColumnType returns the type of the column.
 	//
 	// The function takes the following parameters:
@@ -2426,7 +2425,7 @@ func marshalTreeRowReference(p uintptr) (interface{}, error) {
 }
 
 // NewTreeRowReference constructs a struct TreeRowReference.
-func NewTreeRowReference(model TreeModelOverrider, path *TreePath) *TreeRowReference {
+func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GtkTreeModel        // out
 	var _arg2 *C.GtkTreePath         // out
 	var _cret *C.GtkTreeRowReference // in
@@ -2452,7 +2451,7 @@ func NewTreeRowReference(model TreeModelOverrider, path *TreePath) *TreeRowRefer
 }
 
 // NewTreeRowReferenceProxy constructs a struct TreeRowReference.
-func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModelOverrider, path *TreePath) *TreeRowReference {
+func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeller, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GObject             // out
 	var _arg2 *C.GtkTreeModel        // out
 	var _arg3 *C.GtkTreePath         // out
@@ -2514,7 +2513,7 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 //
 //    - treeModel: model.
 //
-func (reference *TreeRowReference) Model() TreeModelOverrider {
+func (reference *TreeRowReference) Model() TreeModeller {
 	var _arg0 *C.GtkTreeRowReference // out
 	var _cret *C.GtkTreeModel        // in
 
@@ -2523,7 +2522,7 @@ func (reference *TreeRowReference) Model() TreeModelOverrider {
 	_cret = C.gtk_tree_row_reference_get_model(_arg0)
 	runtime.KeepAlive(reference)
 
-	var _treeModel TreeModelOverrider // out
+	var _treeModel TreeModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -2533,10 +2532,10 @@ func (reference *TreeRowReference) Model() TreeModelOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModelOverrider)
+			_, ok := obj.(TreeModeller)
 			return ok
 		})
-		rv, ok := casted.(TreeModelOverrider)
+		rv, ok := casted.(TreeModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 		}

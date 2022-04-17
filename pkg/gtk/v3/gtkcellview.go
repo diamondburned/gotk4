@@ -31,7 +31,6 @@ func init() {
 
 // CellViewOverrider contains methods that are overridable.
 type CellViewOverrider interface {
-	externglib.Objector
 }
 
 // CellView displays a single row of a TreeModel using a CellArea and
@@ -325,7 +324,7 @@ func (cellView *CellView) FitModel() bool {
 //
 //    - treeModel (optional) used or NULL.
 //
-func (cellView *CellView) Model() TreeModelOverrider {
+func (cellView *CellView) Model() TreeModeller {
 	var _arg0 *C.GtkCellView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -334,7 +333,7 @@ func (cellView *CellView) Model() TreeModelOverrider {
 	_cret = C.gtk_cell_view_get_model(_arg0)
 	runtime.KeepAlive(cellView)
 
-	var _treeModel TreeModelOverrider // out
+	var _treeModel TreeModeller // out
 
 	if _cret != nil {
 		{
@@ -342,10 +341,10 @@ func (cellView *CellView) Model() TreeModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModelOverrider)
+				_, ok := obj.(TreeModeller)
 				return ok
 			})
-			rv, ok := casted.(TreeModelOverrider)
+			rv, ok := casted.(TreeModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
 			}
@@ -515,7 +514,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 //
 //    - model (optional): TreeModel.
 //
-func (cellView *CellView) SetModel(model TreeModelOverrider) {
+func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 

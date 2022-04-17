@@ -359,7 +359,6 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 
 // PrintOperationOverrider contains methods that are overridable.
 type PrintOperationOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	BeginPrint(context *PrintContext)
@@ -391,7 +390,7 @@ type PrintOperationOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Preview(preview PrintOperationPreviewOverrider, context *PrintContext, parent *Window) bool
+	Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	// The function takes the following parameters:
 	//
 	//    - context
@@ -521,7 +520,7 @@ func classInitPrintOperationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Preview(preview PrintOperationPreviewOverrider, context *PrintContext, parent *Window) bool
+		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	}); ok {
 		pclass.preview = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_preview)
 	}
@@ -649,12 +648,12 @@ func _gotk4_gtk4_PrintOperationClass_paginate(arg0 *C.GtkPrintOperation, arg1 *C
 func _gotk4_gtk4_PrintOperationClass_preview(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintOperationPreview, arg2 *C.GtkPrintContext, arg3 *C.GtkWindow) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Preview(preview PrintOperationPreviewOverrider, context *PrintContext, parent *Window) bool
+		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	})
 
-	var _preview PrintOperationPreviewOverrider // out
-	var _context *PrintContext                  // out
-	var _parent *Window                         // out
+	var _preview PrintOperationPreviewer // out
+	var _context *PrintContext           // out
+	var _parent *Window                  // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -664,10 +663,10 @@ func _gotk4_gtk4_PrintOperationClass_preview(arg0 *C.GtkPrintOperation, arg1 *C.
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(PrintOperationPreviewOverrider)
+			_, ok := obj.(PrintOperationPreviewer)
 			return ok
 		})
-		rv, ok := casted.(PrintOperationPreviewOverrider)
+		rv, ok := casted.(PrintOperationPreviewer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.PrintOperationPreviewer")
 		}
@@ -1047,7 +1046,7 @@ func (op *PrintOperation) ConnectPaginate(f func(context *PrintContext) (ok bool
 
 //export _gotk4_gtk4_PrintOperation_ConnectPreview
 func _gotk4_gtk4_PrintOperation_ConnectPreview(arg0 C.gpointer, arg1 *C.GtkPrintOperationPreview, arg2 *C.GtkPrintContext, arg3 *C.GtkWindow, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(preview PrintOperationPreviewOverrider, context *PrintContext, parent *Window) (ok bool)
+	var f func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -1055,12 +1054,12 @@ func _gotk4_gtk4_PrintOperation_ConnectPreview(arg0 C.gpointer, arg1 *C.GtkPrint
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(preview PrintOperationPreviewOverrider, context *PrintContext, parent *Window) (ok bool))
+		f = closure.Func.(func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool))
 	}
 
-	var _preview PrintOperationPreviewOverrider // out
-	var _context *PrintContext                  // out
-	var _parent *Window                         // out
+	var _preview PrintOperationPreviewer // out
+	var _context *PrintContext           // out
+	var _parent *Window                  // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -1070,10 +1069,10 @@ func _gotk4_gtk4_PrintOperation_ConnectPreview(arg0 C.gpointer, arg1 *C.GtkPrint
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(PrintOperationPreviewOverrider)
+			_, ok := obj.(PrintOperationPreviewer)
 			return ok
 		})
-		rv, ok := casted.(PrintOperationPreviewOverrider)
+		rv, ok := casted.(PrintOperationPreviewer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.PrintOperationPreviewer")
 		}
@@ -1110,7 +1109,7 @@ func _gotk4_gtk4_PrintOperation_ConnectPreview(arg0 C.gpointer, arg1 *C.GtkPrint
 // print and render them. The preview must be finished by calling
 // gtk.PrintOperationPreview.EndPreview() (typically in response to the user
 // clicking a close button).
-func (op *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewOverrider, context *PrintContext, parent *Window) (ok bool)) externglib.SignalHandle {
+func (op *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(op, "preview", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectPreview), f)
 }
 

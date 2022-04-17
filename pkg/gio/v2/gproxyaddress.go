@@ -25,7 +25,6 @@ func init() {
 
 // ProxyAddressOverrider contains methods that are overridable.
 type ProxyAddressOverrider interface {
-	externglib.Objector
 }
 
 // ProxyAddress: support for proxied SocketAddress.

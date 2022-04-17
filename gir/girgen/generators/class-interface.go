@@ -2,6 +2,7 @@ package generators
 
 import (
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 
@@ -9,16 +10,13 @@ import (
 )
 
 var classInterfaceTmpl = gotmpl.NewGoTemplate(`
-	{{ if (or .GLibTypeStruct .IsInterface) }}
+	{{ if .GLibTypeStruct }}
 	// {{ .StructName }}Overrider contains methods that are overridable.
 	type {{ .StructName }}Overrider interface {
-		externglib.Objector
-		{{ if .GLibTypeStruct -}}
 		{{ range .GLibTypeStruct.Methods -}}
 		{{ if $.IsInSameFile . -}}
 		{{- GoDoc .Go 1 TrailingNewLine -}}
 		{{- .Go.Name }}{{ .Go.Tail }}
-		{{ end -}}
 		{{ end -}}
 		{{ end -}}
 	}
@@ -243,7 +241,7 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	}
 
 	writer.Pen().WriteTmpl(classInterfaceTmpl, data)
-	writer.Header().ApplyFrom(igen.Header())
+	file.ApplyHeader(writer, igen)
 
 	for _, ctor := range igen.Constructors {
 		writer := FileWriterFromType(gen, ctor)

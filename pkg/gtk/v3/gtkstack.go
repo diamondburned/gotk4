@@ -147,7 +147,6 @@ func (s StackTransitionType) String() string {
 
 // StackOverrider contains methods that are overridable.
 type StackOverrider interface {
-	externglib.Objector
 }
 
 // Stack widget is a container which only shows one of its children at a time.

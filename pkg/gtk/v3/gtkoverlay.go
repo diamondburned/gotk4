@@ -33,7 +33,6 @@ func init() {
 
 // OverlayOverrider contains methods that are overridable.
 type OverlayOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - widget

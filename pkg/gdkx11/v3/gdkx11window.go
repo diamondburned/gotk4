@@ -53,7 +53,6 @@ func X11GetServerTime(window *X11Window) uint32 {
 
 // X11WindowOverrider contains methods that are overridable.
 type X11WindowOverrider interface {
-	externglib.Objector
 }
 
 type X11Window struct {

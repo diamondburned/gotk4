@@ -25,7 +25,6 @@ func init() {
 
 // FileChooserNativeOverrider contains methods that are overridable.
 type FileChooserNativeOverrider interface {
-	externglib.Objector
 }
 
 // FileChooserNative: GtkFileChooserNative is an abstraction of a dialog

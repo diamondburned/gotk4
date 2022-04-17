@@ -27,7 +27,6 @@ func init() {
 
 // RadioButtonAccessibleOverrider contains methods that are overridable.
 type RadioButtonAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type RadioButtonAccessible struct {

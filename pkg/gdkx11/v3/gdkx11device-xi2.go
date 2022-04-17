@@ -25,7 +25,6 @@ func init() {
 
 // X11DeviceXI2Overrider contains methods that are overridable.
 type X11DeviceXI2Overrider interface {
-	externglib.Objector
 }
 
 type X11DeviceXI2 struct {

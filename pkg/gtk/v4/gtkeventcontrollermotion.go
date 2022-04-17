@@ -28,7 +28,6 @@ func init() {
 
 // EventControllerMotionOverrider contains methods that are overridable.
 type EventControllerMotionOverrider interface {
-	externglib.Objector
 }
 
 // EventControllerMotion: GtkEventControllerMotion is an event controller

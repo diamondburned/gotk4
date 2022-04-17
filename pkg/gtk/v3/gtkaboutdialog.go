@@ -136,7 +136,6 @@ func (l License) String() string {
 
 // AboutDialogOverrider contains methods that are overridable.
 type AboutDialogOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:

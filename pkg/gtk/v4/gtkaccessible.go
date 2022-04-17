@@ -76,7 +76,6 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 
 // AccessibleOverrider contains methods that are overridable.
 type AccessibleOverrider interface {
-	externglib.Objector
 }
 
 // Accessible: GtkAccessible is an interface for describing UI elements for

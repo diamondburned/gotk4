@@ -55,7 +55,6 @@ func _gotk4_gtk3_TextTagTableForEach(arg1 *C.GtkTextTag, arg2 C.gpointer) {
 
 // TextTagTableOverrider contains methods that are overridable.
 type TextTagTableOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	TagAdded(tag *TextTag)

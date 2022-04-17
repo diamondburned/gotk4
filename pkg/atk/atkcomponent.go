@@ -105,7 +105,6 @@ func (s ScrollType) String() string {
 
 // ComponentOverrider contains methods that are overridable.
 type ComponentOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	BoundsChanged(bounds *Rectangle)

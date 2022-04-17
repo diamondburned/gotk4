@@ -31,7 +31,6 @@ func init() {
 
 // CancellableOverrider contains methods that are overridable.
 type CancellableOverrider interface {
-	externglib.Objector
 	Cancelled()
 }
 

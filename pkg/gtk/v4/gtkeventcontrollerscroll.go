@@ -100,7 +100,6 @@ func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
 
 // EventControllerScrollOverrider contains methods that are overridable.
 type EventControllerScrollOverrider interface {
-	externglib.Objector
 }
 
 // EventControllerScroll: GtkEventControllerScroll is an event controller that

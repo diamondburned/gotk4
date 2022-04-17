@@ -27,7 +27,6 @@ func init() {
 
 // FileChooserNativeOverrider contains methods that are overridable.
 type FileChooserNativeOverrider interface {
-	externglib.Objector
 }
 
 // FileChooserNative is an abstraction of a dialog box suitable for use with

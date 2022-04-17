@@ -486,7 +486,6 @@ func (t TextGranularity) String() string {
 
 // TextOverrider contains methods that are overridable.
 type TextOverrider interface {
-	externglib.Objector
 	// AddSelection adds a selection bounded by the specified offsets.
 	//
 	// The function takes the following parameters:

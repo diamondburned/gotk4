@@ -39,7 +39,6 @@ func init() {
 
 // WindowOverrider contains methods that are overridable.
 type WindowOverrider interface {
-	externglib.Objector
 	ActivateDefault()
 	ActivateFocus()
 	// The function returns the following values:
@@ -1841,12 +1840,12 @@ func WindowGetDefaultIconName() string {
 //
 //    - listModel: list of toplevel widgets.
 //
-func WindowGetToplevels() gio.ListModelOverrider {
+func WindowGetToplevels() gio.ListModeller {
 	var _cret *C.GListModel // in
 
 	_cret = C.gtk_window_get_toplevels()
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -1856,10 +1855,10 @@ func WindowGetToplevels() gio.ListModelOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModelOverrider)
+			_, ok := obj.(gio.ListModeller)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModelOverrider)
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}

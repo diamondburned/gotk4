@@ -25,7 +25,6 @@ func init() {
 
 // RelationSetOverrider contains methods that are overridable.
 type RelationSetOverrider interface {
-	externglib.Objector
 }
 
 // RelationSet held by an object establishes its relationships with objects

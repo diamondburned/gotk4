@@ -25,7 +25,6 @@ func init() {
 
 // FilterOutputStreamOverrider contains methods that are overridable.
 type FilterOutputStreamOverrider interface {
-	externglib.Objector
 }
 
 // FilterOutputStream: base class for output stream implementations that perform

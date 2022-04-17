@@ -29,7 +29,6 @@ func init() {
 
 // InitableOverrider contains methods that are overridable.
 type InitableOverrider interface {
-	externglib.Objector
 	// Init initializes the object implementing the interface.
 	//
 	// This method is intended for language bindings. If writing in C,

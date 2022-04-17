@@ -44,7 +44,7 @@ import "C"
 //
 //    - guint: ID of the export (never zero), or 0 in case of failure.
 //
-func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroupOverrider) (uint, error) {
+func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GActionGroup    // out

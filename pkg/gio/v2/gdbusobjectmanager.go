@@ -38,7 +38,6 @@ func init() {
 
 // DBusObjectManagerOverrider contains methods that are overridable.
 type DBusObjectManagerOverrider interface {
-	externglib.Objector
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
 	//
@@ -51,7 +50,7 @@ type DBusObjectManagerOverrider interface {
 	//
 	//    - dBusInterface instance or NULL. Free with g_object_unref().
 	//
-	Interface(objectPath, interfaceName string) DBusInterfaceOverrider
+	Interface(objectPath, interfaceName string) DBusInterfacer
 	// GetObject gets the BusObjectProxy at object_path, if any.
 	//
 	// The function takes the following parameters:
@@ -62,7 +61,7 @@ type DBusObjectManagerOverrider interface {
 	//
 	//    - dBusObject or NULL. Free with g_object_unref().
 	//
-	GetObject(objectPath string) DBusObjectOverrider
+	GetObject(objectPath string) DBusObjector
 	// ObjectPath gets the object path that manager is for.
 	//
 	// The function returns the following values:
@@ -78,25 +77,25 @@ type DBusObjectManagerOverrider interface {
 	//      g_list_free() after each element has been freed with
 	//      g_object_unref().
 	//
-	Objects() []DBusObjectOverrider
+	Objects() []DBusObjector
 	// The function takes the following parameters:
 	//
 	//    - object
 	//    - interface_
 	//
-	InterfaceAdded(object DBusObjectOverrider, interface_ DBusInterfaceOverrider)
+	InterfaceAdded(object DBusObjector, interface_ DBusInterfacer)
 	// The function takes the following parameters:
 	//
 	//    - object
 	//    - interface_
 	//
-	InterfaceRemoved(object DBusObjectOverrider, interface_ DBusInterfaceOverrider)
+	InterfaceRemoved(object DBusObjector, interface_ DBusInterfacer)
 	// The function takes the following parameters:
 	//
-	ObjectAdded(object DBusObjectOverrider)
+	ObjectAdded(object DBusObjector)
 	// The function takes the following parameters:
 	//
-	ObjectRemoved(object DBusObjectOverrider)
+	ObjectRemoved(object DBusObjector)
 }
 
 // DBusObjectManager type is the base type for service- and client-side
@@ -121,22 +120,22 @@ type DBusObjectManagerer interface {
 
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
-	Interface(objectPath, interfaceName string) DBusInterfaceOverrider
+	Interface(objectPath, interfaceName string) DBusInterfacer
 	// GetObject gets the BusObjectProxy at object_path, if any.
-	GetObject(objectPath string) DBusObjectOverrider
+	GetObject(objectPath string) DBusObjector
 	// ObjectPath gets the object path that manager is for.
 	ObjectPath() string
 	// Objects gets all BusObject objects known to manager.
-	Objects() []DBusObjectOverrider
+	Objects() []DBusObjector
 
 	// Interface-added is emitted when interface is added to object.
-	ConnectInterfaceAdded(func(object DBusObjectOverrider, iface DBusInterfaceOverrider)) externglib.SignalHandle
+	ConnectInterfaceAdded(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
 	// Interface-removed is emitted when interface has been removed from object.
-	ConnectInterfaceRemoved(func(object DBusObjectOverrider, iface DBusInterfaceOverrider)) externglib.SignalHandle
+	ConnectInterfaceRemoved(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
 	// Object-added is emitted when object is added to manager.
-	ConnectObjectAdded(func(object DBusObjectOverrider)) externglib.SignalHandle
+	ConnectObjectAdded(func(object DBusObjector)) externglib.SignalHandle
 	// Object-removed is emitted when object is removed from manager.
-	ConnectObjectRemoved(func(object DBusObjectOverrider)) externglib.SignalHandle
+	ConnectObjectRemoved(func(object DBusObjector)) externglib.SignalHandle
 }
 
 var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
@@ -225,8 +224,8 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManag
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
-	var _object DBusObjectOverrider        // out
-	var _interface_ DBusInterfaceOverrider // out
+	var _object DBusObjector       // out
+	var _interface_ DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -236,10 +235,10 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManag
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -253,10 +252,10 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManag
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -271,8 +270,8 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectMan
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
-	var _object DBusObjectOverrider        // out
-	var _interface_ DBusInterfaceOverrider // out
+	var _object DBusObjector       // out
+	var _interface_ DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -282,10 +281,10 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectMan
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -299,10 +298,10 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectMan
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -317,7 +316,7 @@ func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager,
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
-	var _object DBusObjectOverrider // out
+	var _object DBusObjector // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -327,10 +326,10 @@ func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager,
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -345,7 +344,7 @@ func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManage
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
-	var _object DBusObjectOverrider // out
+	var _object DBusObjector // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -355,10 +354,10 @@ func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManage
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -380,7 +379,7 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 
 //export _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded
 func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
-	var f func(object DBusObjectOverrider, iface DBusInterfaceOverrider)
+	var f func(object DBusObjector, iface DBusInterfacer)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -388,11 +387,11 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object DBusObjectOverrider, iface DBusInterfaceOverrider))
+		f = closure.Func.(func(object DBusObjector, iface DBusInterfacer))
 	}
 
-	var _object DBusObjectOverrider   // out
-	var _iface DBusInterfaceOverrider // out
+	var _object DBusObjector  // out
+	var _iface DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -402,10 +401,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -419,10 +418,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -436,13 +435,13 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
-func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjectOverrider, iface DBusInterfaceOverrider)) externglib.SignalHandle {
+func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(manager, "interface-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded), f)
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved
 func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
-	var f func(object DBusObjectOverrider, iface DBusInterfaceOverrider)
+	var f func(object DBusObjector, iface DBusInterfacer)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -450,11 +449,11 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object DBusObjectOverrider, iface DBusInterfaceOverrider))
+		f = closure.Func.(func(object DBusObjector, iface DBusInterfacer))
 	}
 
-	var _object DBusObjectOverrider   // out
-	var _iface DBusInterfaceOverrider // out
+	var _object DBusObjector  // out
+	var _iface DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -464,10 +463,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -481,10 +480,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -499,13 +498,13 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
-func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjectOverrider, iface DBusInterfaceOverrider)) externglib.SignalHandle {
+func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(manager, "interface-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved), f)
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectObjectAdded
 func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
-	var f func(object DBusObjectOverrider)
+	var f func(object DBusObjector)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -513,10 +512,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.G
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object DBusObjectOverrider))
+		f = closure.Func.(func(object DBusObjector))
 	}
 
-	var _object DBusObjectOverrider // out
+	var _object DBusObjector // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -526,10 +525,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.G
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -540,13 +539,13 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.G
 }
 
 // ConnectObjectAdded is emitted when object is added to manager.
-func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjectOverrider)) externglib.SignalHandle {
+func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(manager, "object-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectAdded), f)
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved
 func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
-	var f func(object DBusObjectOverrider)
+	var f func(object DBusObjector)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -554,10 +553,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object DBusObjectOverrider))
+		f = closure.Func.(func(object DBusObjector))
 	}
 
-	var _object DBusObjectOverrider // out
+	var _object DBusObjector // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -567,10 +566,10 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -581,7 +580,7 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C
 }
 
 // ConnectObjectRemoved is emitted when object is removed from manager.
-func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjectOverrider)) externglib.SignalHandle {
+func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(manager, "object-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectRemoved), f)
 }
 
@@ -596,7 +595,7 @@ func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjectO
 //
 //    - dBusInterface instance or NULL. Free with g_object_unref().
 //
-func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DBusInterfaceOverrider {
+func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -613,7 +612,7 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DB
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(interfaceName)
 
-	var _dBusInterface DBusInterfaceOverrider // out
+	var _dBusInterface DBusInterfacer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -623,10 +622,10 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DB
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusInterfaceOverrider)
+			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
-		rv, ok := casted.(DBusInterfaceOverrider)
+		rv, ok := casted.(DBusInterfacer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
 		}
@@ -646,7 +645,7 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) DB
 //
 //    - dBusObject or NULL. Free with g_object_unref().
 //
-func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjectOverrider {
+func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GDBusObject        // in
@@ -659,7 +658,7 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjectOverrid
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 
-	var _dBusObject DBusObjectOverrider // out
+	var _dBusObject DBusObjector // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -669,10 +668,10 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjectOverrid
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DBusObjectOverrider)
+			_, ok := obj.(DBusObjector)
 			return ok
 		})
-		rv, ok := casted.(DBusObjectOverrider)
+		rv, ok := casted.(DBusObjector)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 		}
@@ -711,7 +710,7 @@ func (manager *DBusObjectManager) ObjectPath() string {
 //    - list of BusObject objects. The returned list should be freed with
 //      g_list_free() after each element has been freed with g_object_unref().
 //
-func (manager *DBusObjectManager) Objects() []DBusObjectOverrider {
+func (manager *DBusObjectManager) Objects() []DBusObjector {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.GList              // in
 
@@ -720,12 +719,12 @@ func (manager *DBusObjectManager) Objects() []DBusObjectOverrider {
 	_cret = C.g_dbus_object_manager_get_objects(_arg0)
 	runtime.KeepAlive(manager)
 
-	var _list []DBusObjectOverrider // out
+	var _list []DBusObjector // out
 
-	_list = make([]DBusObjectOverrider, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]DBusObjector, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDBusObject)(v)
-		var dst DBusObjectOverrider // out
+		var dst DBusObjector // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -734,10 +733,10 @@ func (manager *DBusObjectManager) Objects() []DBusObjectOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(DBusObjectOverrider)
+				_, ok := obj.(DBusObjector)
 				return ok
 			})
-			rv, ok := casted.(DBusObjectOverrider)
+			rv, ok := casted.(DBusObjector)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusObjector")
 			}

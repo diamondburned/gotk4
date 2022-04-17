@@ -30,7 +30,6 @@ func init() {
 
 // ButtonOverrider contains methods that are overridable.
 type ButtonOverrider interface {
-	externglib.Objector
 	Activate()
 	Clicked()
 }

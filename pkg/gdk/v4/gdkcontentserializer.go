@@ -87,7 +87,7 @@ func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeT
 //
 //    - result: GAsyncResult.
 //
-func ContentSerializeFinish(result gio.AsyncResultOverrider) error {
+func ContentSerializeFinish(result gio.AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 

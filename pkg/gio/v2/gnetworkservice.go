@@ -25,7 +25,6 @@ func init() {
 
 // NetworkServiceOverrider contains methods that are overridable.
 type NetworkServiceOverrider interface {
-	externglib.Objector
 }
 
 // NetworkService: like Address does with hostnames, Service provides an easy

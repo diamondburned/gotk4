@@ -25,7 +25,6 @@ func init() {
 
 // BoxLayoutOverrider contains methods that are overridable.
 type BoxLayoutOverrider interface {
-	externglib.Objector
 }
 
 // BoxLayout: GtkBoxLayout is a layout manager that arranges children in a

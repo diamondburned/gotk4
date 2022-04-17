@@ -112,7 +112,6 @@ func (f FilterMatch) String() string {
 
 // FilterOverrider contains methods that are overridable.
 type FilterOverrider interface {
-	externglib.Objector
 	// Strictness gets the known strictness of filters. If the strictness is not
 	// known, GTK_FILTER_MATCH_SOME is returned.
 	//

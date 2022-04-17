@@ -31,7 +31,6 @@ func init() {
 
 // FixedLayoutOverrider contains methods that are overridable.
 type FixedLayoutOverrider interface {
-	externglib.Objector
 }
 
 // FixedLayout: GtkFixedLayout is a layout manager which can place child widgets
@@ -112,7 +111,6 @@ func NewFixedLayout() *FixedLayout {
 
 // FixedLayoutChildOverrider contains methods that are overridable.
 type FixedLayoutChildOverrider interface {
-	externglib.Objector
 }
 
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.

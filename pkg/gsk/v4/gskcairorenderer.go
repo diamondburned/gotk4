@@ -24,7 +24,6 @@ func init() {
 
 // CairoRendererOverrider contains methods that are overridable.
 type CairoRendererOverrider interface {
-	externglib.Objector
 }
 
 // CairoRenderer: GSK renderer that is using cairo.

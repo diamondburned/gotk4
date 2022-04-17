@@ -33,7 +33,6 @@ func init() {
 
 // SwitchOverrider contains methods that are overridable.
 type SwitchOverrider interface {
-	externglib.Objector
 	Activate()
 	// The function takes the following parameters:
 	//

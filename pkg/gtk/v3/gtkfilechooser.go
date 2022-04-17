@@ -173,11 +173,6 @@ func FileChooserErrorQuark() glib.Quark {
 	return _quark
 }
 
-// FileChooserOverrider contains methods that are overridable.
-type FileChooserOverrider interface {
-	externglib.Objector
-}
-
 // FileChooser is an interface that can be implemented by file selection
 // widgets. In GTK+, the main objects that implement this interface are
 // FileChooserWidget, FileChooserDialog, and FileChooserButton. You do not need
@@ -282,7 +277,7 @@ type FileChooserer interface {
 	// CurrentFolder gets the current folder of chooser as a local filename.
 	CurrentFolder() string
 	// CurrentFolderFile gets the current folder of chooser as #GFile.
-	CurrentFolderFile() gio.FileOverrider
+	CurrentFolderFile() gio.Filer
 	// CurrentFolderURI gets the current folder of chooser as an URI.
 	CurrentFolderURI() string
 	// CurrentName gets the current name in the file selector, as entered by the
@@ -296,7 +291,7 @@ type FileChooserer interface {
 	ExtraWidget() Widgetter
 	// File gets the #GFile for the currently selected file in the file
 	// selector.
-	File() gio.FileOverrider
+	File() gio.Filer
 	// Filename gets the filename for the currently selected file in the file
 	// selector.
 	Filename() string
@@ -305,7 +300,7 @@ type FileChooserer interface {
 	Filenames() []string
 	// Files lists all the selected files and subfolders in the current folder
 	// of chooser as #GFile.
-	Files() []gio.FileOverrider
+	Files() []gio.Filer
 	// Filter gets the current filter; see gtk_file_chooser_set_filter().
 	Filter() *FileFilter
 	// LocalOnly gets whether only local files can be selected in the file
@@ -313,7 +308,7 @@ type FileChooserer interface {
 	LocalOnly() bool
 	// PreviewFile gets the #GFile that should be previewed in a custom preview
 	// Internal function, see gtk_file_chooser_get_preview_uri().
-	PreviewFile() gio.FileOverrider
+	PreviewFile() gio.Filer
 	// PreviewFilename gets the filename that should be previewed in a custom
 	// preview widget.
 	PreviewFilename() string
@@ -365,7 +360,7 @@ type FileChooserer interface {
 	// SelectAll selects all the files in the current folder of a file chooser.
 	SelectAll()
 	// SelectFile selects the file referred to by file.
-	SelectFile(file gio.FileOverrider) error
+	SelectFile(file gio.Filer) error
 	// SelectFilename selects a filename.
 	SelectFilename(filename string) bool
 	// SelectURI selects the file to by uri.
@@ -383,7 +378,7 @@ type FileChooserer interface {
 	// filename.
 	SetCurrentFolder(filename string) bool
 	// SetCurrentFolderFile sets the current folder for chooser from a #GFile.
-	SetCurrentFolderFile(file gio.FileOverrider) error
+	SetCurrentFolderFile(file gio.Filer) error
 	// SetCurrentFolderURI sets the current folder for chooser from an URI.
 	SetCurrentFolderURI(uri string) bool
 	// SetCurrentName sets the current name in the file selector, as if entered
@@ -399,7 +394,7 @@ type FileChooserer interface {
 	// SetFile sets file as the current filename for the file chooser, by
 	// changing to the file’s parent folder and actually selecting the file in
 	// list.
-	SetFile(file gio.FileOverrider) error
+	SetFile(file gio.Filer) error
 	// SetFilename sets filename as the current filename for the file chooser,
 	// by changing to the file’s parent folder and actually selecting the file
 	// in list; all other files will be unselected.
@@ -435,7 +430,7 @@ type FileChooserer interface {
 	// chooser.
 	UnselectAll()
 	// UnselectFile unselects the file referred to by file.
-	UnselectFile(file gio.FileOverrider)
+	UnselectFile(file gio.Filer)
 	// UnselectFilename unselects a currently selected filename.
 	UnselectFilename(filename string)
 	// UnselectURI unselects the file referred to by uri.
@@ -958,7 +953,7 @@ func (chooser *FileChooser) CurrentFolder() string {
 //
 //    - file for the current folder.
 //
-func (chooser *FileChooser) CurrentFolderFile() gio.FileOverrider {
+func (chooser *FileChooser) CurrentFolderFile() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -967,7 +962,7 @@ func (chooser *FileChooser) CurrentFolderFile() gio.FileOverrider {
 	_cret = C.gtk_file_chooser_get_current_folder_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -977,10 +972,10 @@ func (chooser *FileChooser) CurrentFolderFile() gio.FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.FileOverrider)
+			_, ok := obj.(gio.Filer)
 			return ok
 		})
-		rv, ok := casted.(gio.FileOverrider)
+		rv, ok := casted.(gio.Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -1137,7 +1132,7 @@ func (chooser *FileChooser) ExtraWidget() Widgetter {
 //    - file: selected #GFile. You own the returned file; use g_object_unref() to
 //      release it.
 //
-func (chooser *FileChooser) File() gio.FileOverrider {
+func (chooser *FileChooser) File() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -1146,7 +1141,7 @@ func (chooser *FileChooser) File() gio.FileOverrider {
 	_cret = C.gtk_file_chooser_get_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -1156,10 +1151,10 @@ func (chooser *FileChooser) File() gio.FileOverrider {
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.FileOverrider)
+			_, ok := obj.(gio.Filer)
 			return ok
 		})
-		rv, ok := casted.(gio.FileOverrider)
+		rv, ok := casted.(gio.Filer)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 		}
@@ -1244,7 +1239,7 @@ func (chooser *FileChooser) Filenames() []string {
 //      the current folder. Free the returned list with g_slist_free(), and the
 //      files with g_object_unref().
 //
-func (chooser *FileChooser) Files() []gio.FileOverrider {
+func (chooser *FileChooser) Files() []gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -1253,12 +1248,12 @@ func (chooser *FileChooser) Files() []gio.FileOverrider {
 	_cret = C.gtk_file_chooser_get_files(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []gio.FileOverrider // out
+	var _sList []gio.Filer // out
 
-	_sList = make([]gio.FileOverrider, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
-		var dst gio.FileOverrider // out
+		var dst gio.Filer // out
 		{
 			objptr := unsafe.Pointer(src)
 			if objptr == nil {
@@ -1267,10 +1262,10 @@ func (chooser *FileChooser) Files() []gio.FileOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -1339,7 +1334,7 @@ func (chooser *FileChooser) LocalOnly() bool {
 //    - file (optional) for the file to preview, or NULL if no file is selected.
 //      Free with g_object_unref().
 //
-func (chooser *FileChooser) PreviewFile() gio.FileOverrider {
+func (chooser *FileChooser) PreviewFile() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -1348,7 +1343,7 @@ func (chooser *FileChooser) PreviewFile() gio.FileOverrider {
 	_cret = C.gtk_file_chooser_get_preview_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	if _cret != nil {
 		{
@@ -1356,10 +1351,10 @@ func (chooser *FileChooser) PreviewFile() gio.FileOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -1841,7 +1836,7 @@ func (chooser *FileChooser) SelectAll() {
 //
 //    - file to select.
 //
-func (chooser *FileChooser) SelectFile(file gio.FileOverrider) error {
+func (chooser *FileChooser) SelectFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in
@@ -2047,7 +2042,7 @@ func (chooser *FileChooser) SetCurrentFolder(filename string) bool {
 //
 //    - file for the new folder.
 //
-func (chooser *FileChooser) SetCurrentFolderFile(file gio.FileOverrider) error {
+func (chooser *FileChooser) SetCurrentFolderFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in
@@ -2219,7 +2214,7 @@ func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 //
 //    - file to set as current.
 //
-func (chooser *FileChooser) SetFile(file gio.FileOverrider) error {
+func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 	var _cerr *C.GError         // in
@@ -2551,7 +2546,7 @@ func (chooser *FileChooser) UnselectAll() {
 //
 //    - file: #GFile.
 //
-func (chooser *FileChooser) UnselectFile(file gio.FileOverrider) {
+func (chooser *FileChooser) UnselectFile(file gio.Filer) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
 

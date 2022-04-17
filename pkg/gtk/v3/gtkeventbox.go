@@ -28,7 +28,6 @@ func init() {
 
 // EventBoxOverrider contains methods that are overridable.
 type EventBoxOverrider interface {
-	externglib.Objector
 }
 
 // EventBox widget is a subclass of Bin which also has its own window. It is

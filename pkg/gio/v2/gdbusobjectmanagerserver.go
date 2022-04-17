@@ -25,7 +25,6 @@ func init() {
 
 // DBusObjectManagerServerOverrider contains methods that are overridable.
 type DBusObjectManagerServerOverrider interface {
-	externglib.Objector
 }
 
 // DBusObjectManagerServer is used to export BusObject instances using the

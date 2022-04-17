@@ -26,7 +26,6 @@ func init() {
 
 // CharsetConverterOverrider contains methods that are overridable.
 type CharsetConverterOverrider interface {
-	externglib.Objector
 }
 
 // CharsetConverter is an implementation of #GConverter based on GIConv.

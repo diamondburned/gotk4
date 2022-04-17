@@ -149,7 +149,6 @@ func (w WrapMode) String() string {
 
 // LayoutOverrider contains methods that are overridable.
 type LayoutOverrider interface {
-	externglib.Objector
 }
 
 // Layout: PangoLayout structure represents an entire paragraph of text.

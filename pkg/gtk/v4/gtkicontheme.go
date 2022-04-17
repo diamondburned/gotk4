@@ -160,7 +160,7 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 //    - iconPaintable: GtkIconPaintable containing for the icon. Unref with
 //      g_object_unref().
 //
-func NewIconPaintableForFile(file gio.FileOverrider, size, scale int) *IconPaintable {
+func NewIconPaintableForFile(file gio.Filer, size, scale int) *IconPaintable {
 	var _arg1 *C.GFile            // out
 	var _arg2 C.int               // out
 	var _arg3 C.int               // out
@@ -190,7 +190,7 @@ func NewIconPaintableForFile(file gio.FileOverrider, size, scale int) *IconPaint
 //
 //    - file (optional) for the icon, or NULL. Free with g_object_unref().
 //
-func (self *IconPaintable) File() gio.FileOverrider {
+func (self *IconPaintable) File() gio.Filer {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret *C.GFile            // in
 
@@ -199,7 +199,7 @@ func (self *IconPaintable) File() gio.FileOverrider {
 	_cret = C.gtk_icon_paintable_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	if _cret != nil {
 		{
@@ -207,10 +207,10 @@ func (self *IconPaintable) File() gio.FileOverrider {
 
 			object := externglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -656,7 +656,7 @@ func (self *IconTheme) ThemeName() string {
 //
 //    - ok: TRUE if self includes an icon for gicon.
 //
-func (self *IconTheme) HasGIcon(gicon gio.IconOverrider) bool {
+func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.GIcon        // out
 	var _cret C.gboolean      // in
@@ -727,7 +727,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //    - iconPaintable: GtkIconPaintable containing information about the icon.
 //      Unref with g_object_unref().
 //
-func (self *IconTheme) LookupByGIcon(icon gio.IconOverrider, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.int                // out

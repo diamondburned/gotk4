@@ -30,7 +30,6 @@ func init() {
 
 // RendererOverrider contains methods that are overridable.
 type RendererOverrider interface {
-	externglib.Objector
 }
 
 // Renderer: GskRenderer is a class that renders a scene graph defined via a

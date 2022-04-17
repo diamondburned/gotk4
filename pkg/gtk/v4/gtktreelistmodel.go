@@ -38,7 +38,7 @@ func init() {
 // leaf node and will never have children. If it does not have children but may
 // get children later, it should return an empty model that is filled once
 // children arrive.
-type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel gio.ListModelOverrider)
+type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel gio.ListModeller)
 
 //export _gotk4_gtk4_TreeListModelCreateModelFunc
 func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GListModel) {
@@ -67,7 +67,6 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) 
 
 // TreeListModelOverrider contains methods that are overridable.
 type TreeListModelOverrider interface {
-	externglib.Objector
 }
 
 // TreeListModel: GtkTreeListModel is a list model that can create child models
@@ -120,7 +119,7 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 //
 //    - treeListModel: newly created GtkTreeListModel.
 //
-func NewTreeListModel(root gio.ListModelOverrider, passthrough, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
+func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
 	var _arg1 *C.GListModel                     // out
 	var _arg2 C.gboolean                        // out
 	var _arg3 C.gboolean                        // out
@@ -225,7 +224,7 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 //
 //    - listModel: root model.
 //
-func (self *TreeListModel) Model() gio.ListModelOverrider {
+func (self *TreeListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret *C.GListModel       // in
 
@@ -234,7 +233,7 @@ func (self *TreeListModel) Model() gio.ListModelOverrider {
 	_cret = C.gtk_tree_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -244,10 +243,10 @@ func (self *TreeListModel) Model() gio.ListModelOverrider {
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModelOverrider)
+			_, ok := obj.(gio.ListModeller)
 			return ok
 		})
-		rv, ok := casted.(gio.ListModelOverrider)
+		rv, ok := casted.(gio.ListModeller)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 		}
@@ -359,7 +358,6 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 
 // TreeListRowOverrider contains methods that are overridable.
 type TreeListRowOverrider interface {
-	externglib.Objector
 }
 
 // TreeListRow: GtkTreeListRow is used by GtkTreeListModel to represent items.
@@ -443,7 +441,7 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 //
 //    - listModel (optional): model containing the children.
 //
-func (self *TreeListRow) Children() gio.ListModelOverrider {
+func (self *TreeListRow) Children() gio.ListModeller {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GListModel     // in
 
@@ -452,7 +450,7 @@ func (self *TreeListRow) Children() gio.ListModelOverrider {
 	_cret = C.gtk_tree_list_row_get_children(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	if _cret != nil {
 		{
@@ -460,10 +458,10 @@ func (self *TreeListRow) Children() gio.ListModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModelOverrider)
+				_, ok := obj.(gio.ListModeller)
 				return ok
 			})
-			rv, ok := casted.(gio.ListModelOverrider)
+			rv, ok := casted.(gio.ListModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}

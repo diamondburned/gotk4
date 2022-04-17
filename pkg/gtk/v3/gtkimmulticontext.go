@@ -27,7 +27,6 @@ func init() {
 
 // IMMulticontextOverrider contains methods that are overridable.
 type IMMulticontextOverrider interface {
-	externglib.Objector
 }
 
 type IMMulticontext struct {

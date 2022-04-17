@@ -27,7 +27,6 @@ func init() {
 
 // ContainerAccessibleOverrider contains methods that are overridable.
 type ContainerAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type ContainerAccessible struct {

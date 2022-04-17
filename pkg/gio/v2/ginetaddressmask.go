@@ -26,7 +26,6 @@ func init() {
 
 // InetAddressMaskOverrider contains methods that are overridable.
 type InetAddressMaskOverrider interface {
-	externglib.Objector
 }
 
 // InetAddressMask represents a range of IPv4 or IPv6 addresses described by a

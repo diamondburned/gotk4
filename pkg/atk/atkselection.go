@@ -34,7 +34,6 @@ func init() {
 
 // SelectionOverrider contains methods that are overridable.
 type SelectionOverrider interface {
-	externglib.Objector
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
 	//

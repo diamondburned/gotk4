@@ -33,7 +33,6 @@ func init() {
 
 // StatusbarOverrider contains methods that are overridable.
 type StatusbarOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - contextId

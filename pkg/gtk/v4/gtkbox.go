@@ -25,7 +25,6 @@ func init() {
 
 // BoxOverrider contains methods that are overridable.
 type BoxOverrider interface {
-	externglib.Objector
 }
 
 // Box: GtkBox widget arranges child widgets into a single row or column.

@@ -32,7 +32,6 @@ func init() {
 
 // SurfaceOverrider contains methods that are overridable.
 type SurfaceOverrider interface {
-	externglib.Objector
 }
 
 // Surface: GdkSurface is a rectangular region on the screen.

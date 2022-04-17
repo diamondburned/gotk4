@@ -31,7 +31,6 @@ func init() {
 
 // RadioActionOverrider contains methods that are overridable.
 type RadioActionOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	Changed(current *RadioAction)

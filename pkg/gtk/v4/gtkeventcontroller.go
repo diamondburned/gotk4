@@ -26,7 +26,6 @@ func init() {
 
 // EventControllerOverrider contains methods that are overridable.
 type EventControllerOverrider interface {
-	externglib.Objector
 }
 
 // EventController: GtkEventController is the base class for event controllers.

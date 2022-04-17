@@ -25,7 +25,6 @@ func init() {
 
 // TCPWrapperConnectionOverrider contains methods that are overridable.
 type TCPWrapperConnectionOverrider interface {
-	externglib.Objector
 }
 
 // TCPWrapperConnection can be used to wrap a OStream that is based on a

@@ -29,7 +29,6 @@ func init() {
 
 // MenuBarOverrider contains methods that are overridable.
 type MenuBarOverrider interface {
-	externglib.Objector
 }
 
 // MenuBar is a subclass of MenuShell which contains one or more MenuItems. The

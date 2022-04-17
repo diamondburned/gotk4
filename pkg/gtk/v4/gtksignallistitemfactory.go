@@ -28,7 +28,6 @@ func init() {
 
 // SignalListItemFactoryOverrider contains methods that are overridable.
 type SignalListItemFactoryOverrider interface {
-	externglib.Objector
 }
 
 // SignalListItemFactory: GtkSignalListItemFactory is a GtkListItemFactory that

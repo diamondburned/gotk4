@@ -132,7 +132,7 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 //
 //    - appChooserDialog: newly created GtkAppChooserDialog.
 //
-func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.FileOverrider) *AppChooserDialog {
+func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
 	var _arg3 *C.GFile         // out

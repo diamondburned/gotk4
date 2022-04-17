@@ -25,7 +25,6 @@ func init() {
 
 // ShortcutsSectionOverrider contains methods that are overridable.
 type ShortcutsSectionOverrider interface {
-	externglib.Objector
 }
 
 // ShortcutsSection: GtkShortcutsSection collects all the keyboard shortcuts and

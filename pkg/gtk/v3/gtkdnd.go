@@ -148,7 +148,7 @@ func DragSetIconDefault(context *gdk.DragContext) {
 //    - hotX: x offset of the hotspot within the icon.
 //    - hotY: y offset of the hotspot within the icon.
 //
-func DragSetIconGIcon(context *gdk.DragContext, icon gio.IconOverrider, hotX, hotY int) {
+func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GIcon          // out
 	var _arg3 C.gint            // out

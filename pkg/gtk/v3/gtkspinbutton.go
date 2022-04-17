@@ -127,7 +127,6 @@ func (s SpinType) String() string {
 
 // SpinButtonOverrider contains methods that are overridable.
 type SpinButtonOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	ChangeValue(scroll ScrollType)

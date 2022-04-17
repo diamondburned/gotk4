@@ -46,7 +46,6 @@ func init() {
 
 // StatusIconOverrider contains methods that are overridable.
 type StatusIconOverrider interface {
-	externglib.Objector
 	Activate()
 	// The function takes the following parameters:
 	//
@@ -636,7 +635,7 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 //    - statusIcon: new StatusIcon.
 //
-func NewStatusIconFromGIcon(icon gio.IconOverrider) *StatusIcon {
+func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
 
@@ -825,7 +824,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientati
 //
 //    - icon (optional): displayed icon, or NULL if the image is empty.
 //
-func (statusIcon *StatusIcon) GIcon() gio.IconOverrider {
+func (statusIcon *StatusIcon) GIcon() gio.Iconner {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.GIcon         // in
 
@@ -834,7 +833,7 @@ func (statusIcon *StatusIcon) GIcon() gio.IconOverrider {
 	_cret = C.gtk_status_icon_get_gicon(_arg0)
 	runtime.KeepAlive(statusIcon)
 
-	var _icon gio.IconOverrider // out
+	var _icon gio.Iconner // out
 
 	if _cret != nil {
 		{
@@ -842,10 +841,10 @@ func (statusIcon *StatusIcon) GIcon() gio.IconOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.IconOverrider)
+				_, ok := obj.(gio.Iconner)
 				return ok
 			})
-			rv, ok := casted.(gio.IconOverrider)
+			rv, ok := casted.(gio.Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -1287,7 +1286,7 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 //
 //    - icon: GIcon.
 //
-func (statusIcon *StatusIcon) SetFromGIcon(icon gio.IconOverrider) {
+func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GIcon         // out
 

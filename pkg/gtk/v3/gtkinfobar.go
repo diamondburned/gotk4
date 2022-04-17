@@ -33,7 +33,6 @@ func init() {
 
 // InfoBarOverrider contains methods that are overridable.
 type InfoBarOverrider interface {
-	externglib.Objector
 	Close()
 	// Response emits the “response” signal with the given response_id.
 	//

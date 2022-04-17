@@ -59,7 +59,6 @@ func _gotk4_gtk4_MapListModelMapFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.g
 
 // MapListModelOverrider contains methods that are overridable.
 type MapListModelOverrider interface {
-	externglib.Objector
 }
 
 // MapListModel: GtkMapListModel maps the items in a list model to different
@@ -134,7 +133,7 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 //
 //    - mapListModel: new GtkMapListModel.
 //
-func NewMapListModel(model gio.ListModelOverrider, mapFunc MapListModelMapFunc) *MapListModel {
+func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapListModel {
 	var _arg1 *C.GListModel            // out
 	var _arg2 C.GtkMapListModelMapFunc // out
 	var _arg3 C.gpointer
@@ -168,7 +167,7 @@ func NewMapListModel(model gio.ListModelOverrider, mapFunc MapListModelMapFunc) 
 //
 //    - listModel (optional): model that gets mapped.
 //
-func (self *MapListModel) Model() gio.ListModelOverrider {
+func (self *MapListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret *C.GListModel      // in
 
@@ -177,7 +176,7 @@ func (self *MapListModel) Model() gio.ListModelOverrider {
 	_cret = C.gtk_map_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModelOverrider // out
+	var _listModel gio.ListModeller // out
 
 	if _cret != nil {
 		{
@@ -185,10 +184,10 @@ func (self *MapListModel) Model() gio.ListModelOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModelOverrider)
+				_, ok := obj.(gio.ListModeller)
 				return ok
 			})
-			rv, ok := casted.(gio.ListModelOverrider)
+			rv, ok := casted.(gio.ListModeller)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
 			}
@@ -267,7 +266,7 @@ func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 //
 //    - model (optional) to be mapped.
 //
-func (self *MapListModel) SetModel(model gio.ListModelOverrider) {
+func (self *MapListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkMapListModel // out
 	var _arg1 *C.GListModel      // out
 

@@ -26,7 +26,6 @@ const NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-native-volume-monitor"
 
 // NativeVolumeMonitorOverrider contains methods that are overridable.
 type NativeVolumeMonitorOverrider interface {
-	externglib.Objector
 }
 
 type NativeVolumeMonitor struct {

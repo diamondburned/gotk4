@@ -26,7 +26,6 @@ func init() {
 
 // MultiSorterOverrider contains methods that are overridable.
 type MultiSorterOverrider interface {
-	externglib.Objector
 }
 
 // MultiSorter: GtkMultiSorter combines multiple sorters by trying them in turn.

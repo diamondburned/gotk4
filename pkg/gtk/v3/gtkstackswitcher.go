@@ -28,7 +28,6 @@ func init() {
 
 // StackSwitcherOverrider contains methods that are overridable.
 type StackSwitcherOverrider interface {
-	externglib.Objector
 }
 
 // StackSwitcher widget acts as a controller for a Stack; it shows a row of

@@ -83,7 +83,6 @@ func (t ToolPaletteDragTargets) Has(other ToolPaletteDragTargets) bool {
 
 // ToolPaletteOverrider contains methods that are overridable.
 type ToolPaletteOverrider interface {
-	externglib.Objector
 }
 
 // ToolPalette allows you to add ToolItems to a palette-like container with

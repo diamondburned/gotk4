@@ -30,7 +30,6 @@ func init() {
 
 // DataInputStreamOverrider contains methods that are overridable.
 type DataInputStreamOverrider interface {
-	externglib.Objector
 }
 
 // DataInputStream: data input stream implements Stream and includes functions
@@ -439,7 +438,7 @@ func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int
 //      If there's no content to read, it will still return NULL, but error won't
 //      be set.
 //
-func (stream *DataInputStream) ReadLineFinish(result AsyncResultOverrider) (uint, []byte, error) {
+func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -497,7 +496,7 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResultOverrider) (uint
 //      errors, the set error domain is G_CONVERT_ERROR. If there's no content to
 //      read, it will still return NULL, but error won't be set.
 //
-func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResultOverrider) (uint, string, error) {
+func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -850,7 +849,7 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 //      stop characters. Set length to a #gsize to get the length of the string.
 //      This function will return NULL on an error.
 //
-func (stream *DataInputStream) ReadUntilFinish(result AsyncResultOverrider) (uint, string, error) {
+func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in
@@ -1016,7 +1015,7 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 //      stop characters. Set length to a #gsize to get the length of the string.
 //      This function will return NULL on an error.
 //
-func (stream *DataInputStream) ReadUptoFinish(result AsyncResultOverrider) (uint, string, error) {
+func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
 	var _arg2 C.gsize             // in

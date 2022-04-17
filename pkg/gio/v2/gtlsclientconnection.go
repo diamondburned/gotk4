@@ -27,7 +27,6 @@ func init() {
 
 // TLSClientConnectionOverrider contains methods that are overridable.
 type TLSClientConnectionOverrider interface {
-	externglib.Objector
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
 	// but may be used when the same session needs to be used between different
@@ -60,7 +59,7 @@ type TLSClientConnectionOverrider interface {
 	//
 	//    - source: ClientConnection.
 	//
-	CopySessionState(source TLSClientConnectionOverrider)
+	CopySessionState(source TLSClientConnectioner)
 }
 
 // TLSClientConnection is the client-side subclass of Connection, representing a
@@ -80,9 +79,9 @@ type TLSClientConnectioner interface {
 
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption.
-	CopySessionState(source TLSClientConnectionOverrider)
+	CopySessionState(source TLSClientConnectioner)
 	// ServerIdentity gets conn's expected server identity.
-	ServerIdentity() SocketConnectableOverrider
+	ServerIdentity() SocketConnectabler
 	// UseSSL3: SSL 3.0 is no longer supported.
 	UseSSL3() bool
 	// ValidationFlags gets conn's validation flags.
@@ -91,7 +90,7 @@ type TLSClientConnectioner interface {
 	// both to tell servers on virtual hosts which certificate to present, and
 	// also to let conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
-	SetServerIdentity(identity SocketConnectableOverrider)
+	SetServerIdentity(identity SocketConnectabler)
 	// SetUseSSL3: since GLib 2.42.1, SSL 3.0 is no longer supported.
 	SetUseSSL3(useSsl3 bool)
 	// SetValidationFlags sets conn's validation flags, to override the default
@@ -111,7 +110,7 @@ func _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(arg0 *C.GTlsCli
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TLSClientConnectionOverrider)
 
-	var _source TLSClientConnectionOverrider // out
+	var _source TLSClientConnectioner // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -121,10 +120,10 @@ func _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(arg0 *C.GTlsCli
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSClientConnectionOverrider)
+			_, ok := obj.(TLSClientConnectioner)
 			return ok
 		})
-		rv, ok := casted.(TLSClientConnectionOverrider)
+		rv, ok := casted.(TLSClientConnectioner)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSClientConnectioner")
 		}
@@ -179,7 +178,7 @@ func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 //
 //    - source: ClientConnection.
 //
-func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectionOverrider) {
+func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GTlsClientConnection // out
 
@@ -198,7 +197,7 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectionOver
 //    - socketConnectable (optional) describing the expected server identity, or
 //      NULL if the expected identity is not known.
 //
-func (conn *TLSClientConnection) ServerIdentity() SocketConnectableOverrider {
+func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
 
@@ -207,7 +206,7 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectableOverrider {
 	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
 	runtime.KeepAlive(conn)
 
-	var _socketConnectable SocketConnectableOverrider // out
+	var _socketConnectable SocketConnectabler // out
 
 	if _cret != nil {
 		{
@@ -215,10 +214,10 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectableOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SocketConnectableOverrider)
+				_, ok := obj.(SocketConnectabler)
 				return ok
 			})
-			rv, ok := casted.(SocketConnectableOverrider)
+			rv, ok := casted.(SocketConnectabler)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
 			}
@@ -287,7 +286,7 @@ func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 //
 //    - identity describing the expected server identity.
 //
-func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectableOverrider) {
+func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GSocketConnectable   // out
 
@@ -366,7 +365,7 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 //
 //    - tlsClientConnection: new ClientConnection, or NULL on error.
 //
-func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectableOverrider) (TLSClientConnectionOverrider, error) {
+func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (TLSClientConnectioner, error) {
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GIOStream          // in
@@ -381,8 +380,8 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(serverIdentity)
 
-	var _tlsClientConnection TLSClientConnectionOverrider // out
-	var _goerr error                                      // out
+	var _tlsClientConnection TLSClientConnectioner // out
+	var _goerr error                               // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -392,10 +391,10 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSClientConnectionOverrider)
+			_, ok := obj.(TLSClientConnectioner)
 			return ok
 		})
-		rv, ok := casted.(TLSClientConnectionOverrider)
+		rv, ok := casted.(TLSClientConnectioner)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSClientConnectioner")
 		}

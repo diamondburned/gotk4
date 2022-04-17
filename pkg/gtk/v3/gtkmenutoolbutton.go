@@ -31,7 +31,6 @@ func init() {
 
 // MenuToolButtonOverrider contains methods that are overridable.
 type MenuToolButtonOverrider interface {
-	externglib.Objector
 	ShowMenu()
 }
 

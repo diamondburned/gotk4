@@ -26,7 +26,6 @@ func init() {
 
 // TLSServerConnectionOverrider contains methods that are overridable.
 type TLSServerConnectionOverrider interface {
-	externglib.Objector
 }
 
 // TLSServerConnection is the server-side subclass of Connection, representing a
@@ -91,7 +90,7 @@ func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 //
 //    - tlsServerConnection: new ServerConnection, or NULL on error.
 //
-func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (TLSServerConnectionOverrider, error) {
+func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (TLSServerConnectioner, error) {
 	var _arg1 *C.GIOStream       // out
 	var _arg2 *C.GTlsCertificate // out
 	var _cret *C.GIOStream       // in
@@ -106,8 +105,8 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(certificate)
 
-	var _tlsServerConnection TLSServerConnectionOverrider // out
-	var _goerr error                                      // out
+	var _tlsServerConnection TLSServerConnectioner // out
+	var _goerr error                               // out
 
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -117,10 +116,10 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 
 		object := externglib.AssumeOwnership(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSServerConnectionOverrider)
+			_, ok := obj.(TLSServerConnectioner)
 			return ok
 		})
-		rv, ok := casted.(TLSServerConnectionOverrider)
+		rv, ok := casted.(TLSServerConnectioner)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSServerConnectioner")
 		}

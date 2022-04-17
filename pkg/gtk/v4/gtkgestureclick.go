@@ -30,7 +30,6 @@ func init() {
 
 // GestureClickOverrider contains methods that are overridable.
 type GestureClickOverrider interface {
-	externglib.Objector
 }
 
 // GestureClick: GtkGestureClick is a GtkGesture implementation for clicks.

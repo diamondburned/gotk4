@@ -98,7 +98,7 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 //
 //    - paintable (optional) or NULL.
 //
-func (tooltip *Tooltip) SetIcon(paintable gdk.PaintableOverrider) {
+func (tooltip *Tooltip) SetIcon(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkTooltip   // out
 	var _arg1 *C.GdkPaintable // out
 
@@ -120,7 +120,7 @@ func (tooltip *Tooltip) SetIcon(paintable gdk.PaintableOverrider) {
 //
 //    - gicon (optional) representing the icon, or NULL.
 //
-func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.IconOverrider) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 

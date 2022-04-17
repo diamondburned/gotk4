@@ -31,7 +31,6 @@ func init() {
 
 // EditableTextOverrider contains methods that are overridable.
 type EditableTextOverrider interface {
-	externglib.Objector
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
 	//

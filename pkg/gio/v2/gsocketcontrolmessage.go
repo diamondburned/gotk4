@@ -31,7 +31,6 @@ func init() {
 
 // SocketControlMessageOverrider contains methods that are overridable.
 type SocketControlMessageOverrider interface {
-	externglib.Objector
 	// Level returns the "level" (i.e. the originating protocol) of the control
 	// message. This is often SOL_SOCKET.
 	//

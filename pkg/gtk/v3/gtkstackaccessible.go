@@ -27,7 +27,6 @@ func init() {
 
 // StackAccessibleOverrider contains methods that are overridable.
 type StackAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type StackAccessible struct {

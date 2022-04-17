@@ -28,7 +28,6 @@ func init() {
 
 // ConverterOverrider contains methods that are overridable.
 type ConverterOverrider interface {
-	externglib.Objector
 	// Convert: this is the main operation used when converting data. It is to
 	// be called multiple times in a loop, and each time it will do some work,
 	// i.e. producing some output (in outbuf) or consuming some input (from

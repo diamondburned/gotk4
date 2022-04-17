@@ -34,7 +34,6 @@ func init() {
 
 // ActionableOverrider contains methods that are overridable.
 type ActionableOverrider interface {
-	externglib.Objector
 	// ActionName gets the action name for actionable.
 	//
 	// See gtk_actionable_set_action_name() for more information.

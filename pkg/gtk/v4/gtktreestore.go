@@ -26,7 +26,6 @@ func init() {
 
 // TreeStoreOverrider contains methods that are overridable.
 type TreeStoreOverrider interface {
-	externglib.Objector
 }
 
 // TreeStore: tree-like data structure that can be used with the GtkTreeView

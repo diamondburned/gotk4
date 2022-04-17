@@ -31,7 +31,6 @@ func init() {
 
 // FontButtonOverrider contains methods that are overridable.
 type FontButtonOverrider interface {
-	externglib.Objector
 	FontSet()
 }
 

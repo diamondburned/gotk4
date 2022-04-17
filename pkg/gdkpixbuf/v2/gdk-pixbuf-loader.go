@@ -37,7 +37,6 @@ func init() {
 
 // PixbufLoaderOverrider contains methods that are overridable.
 type PixbufLoaderOverrider interface {
-	externglib.Objector
 	AreaPrepared()
 	// The function takes the following parameters:
 	//

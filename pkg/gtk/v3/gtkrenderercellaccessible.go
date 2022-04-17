@@ -28,7 +28,6 @@ func init() {
 
 // RendererCellAccessibleOverrider contains methods that are overridable.
 type RendererCellAccessibleOverrider interface {
-	externglib.Objector
 }
 
 type RendererCellAccessible struct {

@@ -35,7 +35,6 @@ func init() {
 
 // TLSConnectionOverrider contains methods that are overridable.
 type TLSConnectionOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - peerCert
@@ -91,7 +90,7 @@ type TLSConnectionOverrider interface {
 	//
 	//    - result: Result.
 	//
-	HandshakeFinish(result AsyncResultOverrider) error
+	HandshakeFinish(result AsyncResulter) error
 }
 
 // TLSConnection is the base TLS connection class type, which wraps a OStream
@@ -150,7 +149,7 @@ func classInitTLSConnectioner(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		HandshakeFinish(result AsyncResultOverrider) error
+		HandshakeFinish(result AsyncResulter) error
 	}); ok {
 		pclass.handshake_finish = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_handshake_finish)
 	}
@@ -243,10 +242,10 @@ func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GC
 func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		HandshakeFinish(result AsyncResultOverrider) error
+		HandshakeFinish(result AsyncResulter) error
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -256,10 +255,10 @@ func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -831,7 +830,7 @@ func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, c
 //
 //    - result: Result.
 //
-func (conn *TLSConnection) HandshakeFinish(result AsyncResultOverrider) error {
+func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cerr *C.GError         // in

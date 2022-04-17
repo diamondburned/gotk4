@@ -28,7 +28,6 @@ func init() {
 
 // SeparatorOverrider contains methods that are overridable.
 type SeparatorOverrider interface {
-	externglib.Objector
 }
 
 // Separator is a horizontal or vertical separator widget, depending on the

@@ -29,7 +29,6 @@ func init() {
 
 // GridLayoutOverrider contains methods that are overridable.
 type GridLayoutOverrider interface {
-	externglib.Objector
 }
 
 // GridLayout: GtkGridLayout is a layout manager which arranges child widgets in
@@ -366,7 +365,6 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 
 // GridLayoutChildOverrider contains methods that are overridable.
 type GridLayoutChildOverrider interface {
-	externglib.Objector
 }
 
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.

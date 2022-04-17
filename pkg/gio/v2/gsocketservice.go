@@ -28,7 +28,6 @@ func init() {
 
 // SocketServiceOverrider contains methods that are overridable.
 type SocketServiceOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - connection

@@ -34,14 +34,13 @@ func init() {
 
 // IOStreamOverrider contains methods that are overridable.
 type IOStreamOverrider interface {
-	externglib.Objector
 	// CloseFinish closes a stream.
 	//
 	// The function takes the following parameters:
 	//
 	//    - result: Result.
 	//
-	CloseFinish(result AsyncResultOverrider) error
+	CloseFinish(result AsyncResulter) error
 	// The function takes the following parameters:
 	//
 	CloseFn(ctx context.Context) error
@@ -139,7 +138,7 @@ func classInitIOStreamer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GIOStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		CloseFinish(result AsyncResultOverrider) error
+		CloseFinish(result AsyncResulter) error
 	}); ok {
 		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_IOStreamClass_close_finish)
 	}
@@ -163,10 +162,10 @@ func classInitIOStreamer(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		CloseFinish(result AsyncResultOverrider) error
+		CloseFinish(result AsyncResulter) error
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -176,10 +175,10 @@ func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncRes
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -380,7 +379,7 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback
 //
 //    - result: Result.
 //
-func (stream *IOStream) CloseFinish(result AsyncResultOverrider) error {
+func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -599,7 +598,7 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 //
 //    - result: Result.
 //
-func IOStreamSpliceFinish(result AsyncResultOverrider) error {
+func IOStreamSpliceFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
 

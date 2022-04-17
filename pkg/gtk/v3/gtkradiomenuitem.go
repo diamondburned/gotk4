@@ -32,7 +32,6 @@ func init() {
 
 // RadioMenuItemOverrider contains methods that are overridable.
 type RadioMenuItemOverrider interface {
-	externglib.Objector
 	GroupChanged()
 }
 

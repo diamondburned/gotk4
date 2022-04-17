@@ -47,7 +47,6 @@ func X11GetDefaultScreen() int {
 
 // X11ScreenOverrider contains methods that are overridable.
 type X11ScreenOverrider interface {
-	externglib.Objector
 }
 
 type X11Screen struct {

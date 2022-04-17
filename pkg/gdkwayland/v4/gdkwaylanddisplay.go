@@ -26,7 +26,6 @@ func init() {
 
 // WaylandDisplayOverrider contains methods that are overridable.
 type WaylandDisplayOverrider interface {
-	externglib.Objector
 }
 
 // WaylandDisplay: wayland implementation of GdkDisplay.

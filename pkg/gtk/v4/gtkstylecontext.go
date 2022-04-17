@@ -96,7 +96,6 @@ func (s StyleContextPrintFlags) Has(other StyleContextPrintFlags) bool {
 
 // StyleContextOverrider contains methods that are overridable.
 type StyleContextOverrider interface {
-	externglib.Objector
 	Changed()
 }
 
@@ -230,7 +229,7 @@ func (context *StyleContext) AddClass(className string) {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func (context *StyleContext) AddProvider(provider StyleProviderOverrider, priority uint) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
@@ -501,7 +500,7 @@ func (context *StyleContext) RemoveClass(className string) {
 //
 //    - provider: GtkStyleProvider.
 //
-func (context *StyleContext) RemoveProvider(provider StyleProviderOverrider) {
+func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 
@@ -659,7 +658,7 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderOverrider, priority uint) {
+func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkDisplay       // out
 	var _arg2 *C.GtkStyleProvider // out
 	var _arg3 C.guint             // out
@@ -682,7 +681,7 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 //    - display: GdkDisplay.
 //    - provider: GtkStyleProvider.
 //
-func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StyleProviderOverrider) {
+func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StyleProviderer) {
 	var _arg1 *C.GdkDisplay       // out
 	var _arg2 *C.GtkStyleProvider // out
 

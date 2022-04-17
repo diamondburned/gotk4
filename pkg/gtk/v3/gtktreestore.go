@@ -28,7 +28,6 @@ func init() {
 
 // TreeStoreOverrider contains methods that are overridable.
 type TreeStoreOverrider interface {
-	externglib.Objector
 }
 
 // TreeStore object is a list model for use with a TreeView widget. It

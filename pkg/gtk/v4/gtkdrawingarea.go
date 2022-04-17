@@ -66,7 +66,6 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, ar
 
 // DrawingAreaOverrider contains methods that are overridable.
 type DrawingAreaOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	//    - width

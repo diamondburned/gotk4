@@ -24,7 +24,6 @@ func init() {
 
 // SnapshotOverrider contains methods that are overridable.
 type SnapshotOverrider interface {
-	externglib.Objector
 }
 
 // Snapshot: base type for snapshot operations.

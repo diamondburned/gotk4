@@ -58,7 +58,6 @@ func init() {
 
 // TextBufferOverrider contains methods that are overridable.
 type TextBufferOverrider interface {
-	externglib.Objector
 	// ApplyTag emits the “apply-tag” signal on buffer.
 	//
 	// The default handler for the signal applies tag to the given range. start
@@ -135,7 +134,7 @@ type TextBufferOverrider interface {
 	//    - iter: location to insert the paintable.
 	//    - paintable: GdkPaintable.
 	//
-	InsertPaintable(iter *TextIter, paintable gdk.PaintableOverrider)
+	InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	// The function takes the following parameters:
 	//
 	//    - pos
@@ -228,7 +227,7 @@ func classInitTextBufferer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		InsertPaintable(iter *TextIter, paintable gdk.PaintableOverrider)
+		InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	}); ok {
 		pclass.insert_paintable = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_paintable)
 	}
@@ -350,11 +349,11 @@ func _gotk4_gtk4_TextBufferClass_insert_child_anchor(arg0 *C.GtkTextBuffer, arg1
 func _gotk4_gtk4_TextBufferClass_insert_paintable(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GdkPaintable) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		InsertPaintable(iter *TextIter, paintable gdk.PaintableOverrider)
+		InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	})
 
-	var _iter *TextIter                   // out
-	var _paintable gdk.PaintableOverrider // out
+	var _iter *TextIter           // out
+	var _paintable gdk.Paintabler // out
 
 	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	{
@@ -365,10 +364,10 @@ func _gotk4_gtk4_TextBufferClass_insert_paintable(arg0 *C.GtkTextBuffer, arg1 *C
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.PaintableOverrider)
+			_, ok := obj.(gdk.Paintabler)
 			return ok
 		})
-		rv, ok := casted.(gdk.PaintableOverrider)
+		rv, ok := casted.(gdk.Paintabler)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 		}
@@ -681,7 +680,7 @@ func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, an
 
 //export _gotk4_gtk4_TextBuffer_ConnectInsertPaintable
 func _gotk4_gtk4_TextBuffer_ConnectInsertPaintable(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GdkPaintable, arg3 C.guintptr) {
-	var f func(location *TextIter, paintable gdk.PaintableOverrider)
+	var f func(location *TextIter, paintable gdk.Paintabler)
 	{
 		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -689,11 +688,11 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertPaintable(arg0 C.gpointer, arg1 *C.GtkT
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(location *TextIter, paintable gdk.PaintableOverrider))
+		f = closure.Func.(func(location *TextIter, paintable gdk.Paintabler))
 	}
 
-	var _location *TextIter               // out
-	var _paintable gdk.PaintableOverrider // out
+	var _location *TextIter       // out
+	var _paintable gdk.Paintabler // out
 
 	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	{
@@ -704,10 +703,10 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertPaintable(arg0 C.gpointer, arg1 *C.GtkT
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.PaintableOverrider)
+			_, ok := obj.(gdk.Paintabler)
 			return ok
 		})
-		rv, ok := casted.(gdk.PaintableOverrider)
+		rv, ok := casted.(gdk.Paintabler)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
 		}
@@ -727,7 +726,7 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertPaintable(arg0 C.gpointer, arg1 *C.GtkT
 // handler revalidates it to be placed after the inserted paintable.
 //
 // See also: gtk.TextBuffer.InsertPaintable().
-func (buffer *TextBuffer) ConnectInsertPaintable(f func(location *TextIter, paintable gdk.PaintableOverrider)) externglib.SignalHandle {
+func (buffer *TextBuffer) ConnectInsertPaintable(f func(location *TextIter, paintable gdk.Paintabler)) externglib.SignalHandle {
 	return externglib.ConnectGeneratedClosure(buffer, "insert-paintable", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectInsertPaintable), f)
 }
 
@@ -2547,7 +2546,7 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 //    - iter: location to insert the paintable.
 //    - paintable: GdkPaintable.
 //
-func (buffer *TextBuffer) InsertPaintable(iter *TextIter, paintable gdk.PaintableOverrider) {
+func (buffer *TextBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintabler) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GdkPaintable  // out

@@ -42,7 +42,6 @@ func init() {
 
 // ButtonOverrider contains methods that are overridable.
 type ButtonOverrider interface {
-	externglib.Objector
 	Activate()
 	// Clicked emits a Button::clicked signal to the given Button.
 	Clicked()

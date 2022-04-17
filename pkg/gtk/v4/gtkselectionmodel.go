@@ -37,7 +37,6 @@ func init() {
 
 // SelectionModelOverrider contains methods that are overridable.
 type SelectionModelOverrider interface {
-	externglib.Objector
 	// SelectionInRange gets the set of selected items in a range.
 	//
 	// This function is an optimization for gtk.SelectionModel.GetSelection()

@@ -528,7 +528,6 @@ const FILE_ATTRIBUTE_UNIX_UID = "unix::uid"
 
 // FileInfoOverrider contains methods that are overridable.
 type FileInfoOverrider interface {
-	externglib.Objector
 }
 
 // FileInfo: functionality for manipulating basic metadata for files. Info
@@ -1260,7 +1259,7 @@ func (info *FileInfo) FileType() FileType {
 //
 //    - icon (optional) for the given info.
 //
-func (info *FileInfo) Icon() IconOverrider {
+func (info *FileInfo) Icon() Iconner {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
 
@@ -1269,7 +1268,7 @@ func (info *FileInfo) Icon() IconOverrider {
 	_cret = C.g_file_info_get_icon(_arg0)
 	runtime.KeepAlive(info)
 
-	var _icon IconOverrider // out
+	var _icon Iconner // out
 
 	if _cret != nil {
 		{
@@ -1277,10 +1276,10 @@ func (info *FileInfo) Icon() IconOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(IconOverrider)
+				_, ok := obj.(Iconner)
 				return ok
 			})
-			rv, ok := casted.(IconOverrider)
+			rv, ok := casted.(Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -1499,7 +1498,7 @@ func (info *FileInfo) SortOrder() int32 {
 //
 //    - icon (optional) for the given info.
 //
-func (info *FileInfo) SymbolicIcon() IconOverrider {
+func (info *FileInfo) SymbolicIcon() Iconner {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
 
@@ -1508,7 +1507,7 @@ func (info *FileInfo) SymbolicIcon() IconOverrider {
 	_cret = C.g_file_info_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(info)
 
-	var _icon IconOverrider // out
+	var _icon Iconner // out
 
 	if _cret != nil {
 		{
@@ -1516,10 +1515,10 @@ func (info *FileInfo) SymbolicIcon() IconOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(IconOverrider)
+				_, ok := obj.(Iconner)
 				return ok
 			})
-			rv, ok := casted.(IconOverrider)
+			rv, ok := casted.(Iconner)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
 			}
@@ -2095,7 +2094,7 @@ func (info *FileInfo) SetFileType(typ FileType) {
 //
 //    - icon: #GIcon.
 //
-func (info *FileInfo) SetIcon(icon IconOverrider) {
+func (info *FileInfo) SetIcon(icon Iconner) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 
@@ -2257,7 +2256,7 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 //
 //    - icon: #GIcon.
 //
-func (info *FileInfo) SetSymbolicIcon(icon IconOverrider) {
+func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 

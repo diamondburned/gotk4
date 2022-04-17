@@ -27,7 +27,6 @@ func init() {
 
 // DirectoryListOverrider contains methods that are overridable.
 type DirectoryListOverrider interface {
-	externglib.Objector
 }
 
 // DirectoryList: GtkDirectoryList is a list model that wraps
@@ -97,7 +96,7 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 //
 //    - directoryList: new GtkDirectoryList.
 //
-func NewDirectoryList(attributes string, file gio.FileOverrider) *DirectoryList {
+func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	var _arg1 *C.char             // out
 	var _arg2 *C.GFile            // out
 	var _cret *C.GtkDirectoryList // in
@@ -182,7 +181,7 @@ func (self *DirectoryList) Error() error {
 //
 //    - file (optional) whose children are enumerated.
 //
-func (self *DirectoryList) File() gio.FileOverrider {
+func (self *DirectoryList) File() gio.Filer {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.GFile            // in
 
@@ -191,7 +190,7 @@ func (self *DirectoryList) File() gio.FileOverrider {
 	_cret = C.gtk_directory_list_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.FileOverrider // out
+	var _file gio.Filer // out
 
 	if _cret != nil {
 		{
@@ -199,10 +198,10 @@ func (self *DirectoryList) File() gio.FileOverrider {
 
 			object := externglib.Take(objptr)
 			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.FileOverrider)
+				_, ok := obj.(gio.Filer)
 				return ok
 			})
-			rv, ok := casted.(gio.FileOverrider)
+			rv, ok := casted.(gio.Filer)
 			if !ok {
 				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
 			}
@@ -320,7 +319,7 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 //
 //    - file (optional) to be enumerated.
 //
-func (self *DirectoryList) SetFile(file gio.FileOverrider) {
+func (self *DirectoryList) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.GFile            // out
 

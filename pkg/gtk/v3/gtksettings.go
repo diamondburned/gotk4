@@ -29,7 +29,6 @@ func init() {
 
 // SettingsOverrider contains methods that are overridable.
 type SettingsOverrider interface {
-	externglib.Objector
 }
 
 // Settings provide a mechanism to share global settings between applications.

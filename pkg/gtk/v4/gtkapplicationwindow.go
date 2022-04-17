@@ -26,7 +26,6 @@ func init() {
 
 // ApplicationWindowOverrider contains methods that are overridable.
 type ApplicationWindowOverrider interface {
-	externglib.Objector
 }
 
 // ApplicationWindow: GtkApplicationWindow is a GtkWindow subclass that

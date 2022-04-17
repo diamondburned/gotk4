@@ -53,11 +53,6 @@ const STYLE_PROVIDER_PRIORITY_THEME = 200
 // word.
 const STYLE_PROVIDER_PRIORITY_USER = 800
 
-// StyleProviderOverrider contains methods that are overridable.
-type StyleProviderOverrider interface {
-	externglib.Objector
-}
-
 // StyleProvider: GtkStyleProvider is an interface for style information used by
 // GtkStyleContext.
 //

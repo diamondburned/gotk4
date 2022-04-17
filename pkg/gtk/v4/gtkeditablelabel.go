@@ -25,7 +25,6 @@ func init() {
 
 // EditableLabelOverrider contains methods that are overridable.
 type EditableLabelOverrider interface {
-	externglib.Objector
 }
 
 // EditableLabel: GtkEditableLabel is a label that allows users to edit the text

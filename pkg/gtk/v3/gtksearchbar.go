@@ -30,7 +30,6 @@ func init() {
 
 // SearchBarOverrider contains methods that are overridable.
 type SearchBarOverrider interface {
-	externglib.Objector
 }
 
 // SearchBar is a container made to have a search entry (possibly with

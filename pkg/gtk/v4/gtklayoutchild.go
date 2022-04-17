@@ -25,7 +25,6 @@ func init() {
 
 // LayoutChildOverrider contains methods that are overridable.
 type LayoutChildOverrider interface {
-	externglib.Objector
 }
 
 // LayoutChild: GtkLayoutChild is the base class for objects that are meant to

@@ -47,7 +47,6 @@ func init() {
 
 // MenuShellOverrider contains methods that are overridable.
 type MenuShellOverrider interface {
-	externglib.Objector
 	// The function takes the following parameters:
 	//
 	ActivateCurrent(forceHide bool)

@@ -34,7 +34,6 @@ func init() {
 
 // TLSInteractionOverrider contains methods that are overridable.
 type TLSInteractionOverrider interface {
-	externglib.Objector
 	// AskPassword: run synchronous interaction to ask the user for a password.
 	// In general, g_tls_interaction_invoke_ask_password() should be used
 	// instead of this function.
@@ -78,7 +77,7 @@ type TLSInteractionOverrider interface {
 	//
 	//    - tlsInteractionResult status of the ask password interaction.
 	//
-	AskPasswordFinish(result AsyncResultOverrider) (TLSInteractionResult, error)
+	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
 	// RequestCertificate: run synchronous interaction to ask the user to choose
 	// a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
@@ -130,7 +129,7 @@ type TLSInteractionOverrider interface {
 	//
 	//    - tlsInteractionResult status of the request certificate interaction.
 	//
-	RequestCertificateFinish(result AsyncResultOverrider) (TLSInteractionResult, error)
+	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 }
 
 // TLSInteraction provides a mechanism for the TLS connection and database code
@@ -179,7 +178,7 @@ func classInitTLSInteractioner(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		AskPasswordFinish(result AsyncResultOverrider) (TLSInteractionResult, error)
+		AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
 	}); ok {
 		pclass.ask_password_finish = (*[0]byte)(C._gotk4_gio2_TlsInteractionClass_ask_password_finish)
 	}
@@ -191,7 +190,7 @@ func classInitTLSInteractioner(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		RequestCertificateFinish(result AsyncResultOverrider) (TLSInteractionResult, error)
+		RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 	}); ok {
 		pclass.request_certificate_finish = (*[0]byte)(C._gotk4_gio2_TlsInteractionClass_request_certificate_finish)
 	}
@@ -226,10 +225,10 @@ func _gotk4_gio2_TlsInteractionClass_ask_password(arg0 *C.GTlsInteraction, arg1 
 func _gotk4_gio2_TlsInteractionClass_ask_password_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		AskPasswordFinish(result AsyncResultOverrider) (TLSInteractionResult, error)
+		AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -239,10 +238,10 @@ func _gotk4_gio2_TlsInteractionClass_ask_password_finish(arg0 *C.GTlsInteraction
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -306,10 +305,10 @@ func _gotk4_gio2_TlsInteractionClass_request_certificate(arg0 *C.GTlsInteraction
 func _gotk4_gio2_TlsInteractionClass_request_certificate_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		RequestCertificateFinish(result AsyncResultOverrider) (TLSInteractionResult, error)
+		RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 	})
 
-	var _result AsyncResultOverrider // out
+	var _result AsyncResulter // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -319,10 +318,10 @@ func _gotk4_gio2_TlsInteractionClass_request_certificate_finish(arg0 *C.GTlsInte
 
 		object := externglib.Take(objptr)
 		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AsyncResultOverrider)
+			_, ok := obj.(AsyncResulter)
 			return ok
 		})
-		rv, ok := casted.(AsyncResultOverrider)
+		rv, ok := casted.(AsyncResulter)
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
 		}
@@ -470,7 +469,7 @@ func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, passwor
 //
 //    - tlsInteractionResult status of the ask password interaction.
 //
-func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResultOverrider) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in
@@ -747,7 +746,7 @@ func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, 
 //
 //    - tlsInteractionResult status of the request certificate interaction.
 //
-func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResultOverrider) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
 	var _cret C.GTlsInteractionResult // in

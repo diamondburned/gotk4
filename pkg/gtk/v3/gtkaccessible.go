@@ -32,7 +32,6 @@ func init() {
 
 // AccessibleOverrider contains methods that are overridable.
 type AccessibleOverrider interface {
-	externglib.Objector
 	// ConnectWidgetDestroyed: this function specifies the callback function to
 	// be called when the widget corresponding to a GtkAccessible is destroyed.
 	//

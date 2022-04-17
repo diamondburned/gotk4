@@ -230,6 +230,9 @@ type PaintableOverrider interface {
 // for implementing subclasses and should not be used by applications:
 // gdk.Paintable.InvalidateContents(), gdk.Paintable.InvalidateSize(),
 // gdk.Paintable().NewEmpty.
+//
+// Paintable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Paintable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

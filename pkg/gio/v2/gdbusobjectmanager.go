@@ -105,6 +105,9 @@ type DBusObjectManagerOverrider interface {
 //
 // See BusObjectManagerClient for the client-side implementation and
 // BusObjectManagerServer for the service-side implementation.
+//
+// DBusObjectManager wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DBusObjectManager struct {
 	_ [0]func() // equal guard
 	*externglib.Object

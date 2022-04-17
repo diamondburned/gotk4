@@ -35,6 +35,9 @@ type ConstraintTargetOverrider interface {
 // that can be used as source or target in GtkConstraints.
 //
 // Besides GtkWidget, it is also implemented by GtkConstraintGuide.
+//
+// ConstraintTarget wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ConstraintTarget struct {
 	_ [0]func() // equal guard
 	*externglib.Object

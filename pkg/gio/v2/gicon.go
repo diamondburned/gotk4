@@ -91,6 +91,9 @@ type IconOverrider interface {
 // Additionally, you must provide an implementation of g_icon_serialize() that
 // gives a result that is understood by g_icon_deserialize(), yielding one of
 // the built-in icon types.
+//
+// Icon wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Icon struct {
 	_ [0]func() // equal guard
 	*externglib.Object

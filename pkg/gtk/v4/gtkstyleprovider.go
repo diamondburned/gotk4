@@ -60,6 +60,9 @@ const STYLE_PROVIDER_PRIORITY_USER = 800
 // gtk.StyleContext().AddProviderForDisplay for adding GtkStyleProviders.
 //
 // GTK uses the GtkStyleProvider implementation for CSS in gtk.CSSProvider.
+//
+// StyleProvider wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type StyleProvider struct {
 	_ [0]func() // equal guard
 	*externglib.Object

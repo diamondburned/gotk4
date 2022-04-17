@@ -43,6 +43,9 @@ func init() {
 // #GSeekable on resizable streams is approximately the same as POSIX lseek() on
 // a normal file. Seeking past the end and writing data will usually cause the
 // stream to resize by introducing zero bytes.
+//
+// Seekable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Seekable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

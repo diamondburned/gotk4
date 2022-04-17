@@ -139,6 +139,9 @@ type AsyncResultOverrider interface {
 // Priorities are integers, with lower numbers indicating higher priority. It is
 // recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
 // with G_PRIORITY_DEFAULT as a default.
+//
+// AsyncResult wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type AsyncResult struct {
 	_ [0]func() // equal guard
 	*externglib.Object

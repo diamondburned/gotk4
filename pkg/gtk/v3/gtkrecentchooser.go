@@ -162,6 +162,9 @@ func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, ar
 // RecentChooserMenu.
 //
 // Recently used files are supported since GTK+ 2.10.
+//
+// RecentChooser wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type RecentChooser struct {
 	_ [0]func() // equal guard
 	*externglib.Object

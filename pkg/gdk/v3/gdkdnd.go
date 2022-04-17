@@ -308,7 +308,7 @@ func DragDropSucceeded(context *DragContext) bool {
 //    - destWindow: location to store the destination window in.
 //    - protocol: location to store the DND protocol in.
 //
-func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot, yRoot int) (Windower, DragProtocol) {
+func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot, yRoot int) (*Window, DragProtocol) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
 	var _arg3 *C.GdkScreen      // out
@@ -330,26 +330,10 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	runtime.KeepAlive(xRoot)
 	runtime.KeepAlive(yRoot)
 
-	var _destWindow Windower   // out
+	var _destWindow *Window    // out
 	var _protocol DragProtocol // out
 
-	{
-		objptr := unsafe.Pointer(_arg6)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Windower)
-			return ok
-		})
-		rv, ok := casted.(Windower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-		}
-		_destWindow = rv
-	}
+	_destWindow = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))
 	_protocol = DragProtocol(_arg7)
 
 	return _destWindow, _protocol

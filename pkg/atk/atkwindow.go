@@ -37,6 +37,9 @@ type WindowOverrider interface {
 
 // Window should be implemented by the UI elements that represent a top-level
 // window, such as the main window of an application or dialog.
+//
+// Window wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Window struct {
 	_ [0]func() // equal guard
 	ObjectClass

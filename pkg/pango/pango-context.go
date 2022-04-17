@@ -590,7 +590,7 @@ func (context *Context) Serial() uint {
 //    - families: location to store a pointer to an array of PangoFontFamily.
 //      This array should be freed with g_free().
 //
-func (context *Context) ListFamilies() []FontFamilier {
+func (context *Context) ListFamilies() []*FontFamily {
 	var _arg0 *C.PangoContext     // out
 	var _arg1 **C.PangoFontFamily // in
 	var _arg2 C.int               // in
@@ -600,30 +600,14 @@ func (context *Context) ListFamilies() []FontFamilier {
 	C.pango_context_list_families(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _families []FontFamilier // out
+	var _families []*FontFamily // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		src := unsafe.Slice((**C.PangoFontFamily)(_arg1), _arg2)
-		_families = make([]FontFamilier, _arg2)
+		_families = make([]*FontFamily, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			{
-				objptr := unsafe.Pointer(src[i])
-				if objptr == nil {
-					panic("object of type pango.FontFamilier is nil")
-				}
-
-				object := externglib.Take(objptr)
-				casted := object.WalkCast(func(obj externglib.Objector) bool {
-					_, ok := obj.(FontFamilier)
-					return ok
-				})
-				rv, ok := casted.(FontFamilier)
-				if !ok {
-					panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
-				}
-				_families[i] = rv
-			}
+			_families[i] = wrapFontFamily(externglib.Take(unsafe.Pointer(src[i])))
 		}
 	}
 

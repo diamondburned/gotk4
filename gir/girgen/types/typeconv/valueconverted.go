@@ -407,7 +407,7 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	}
 
 	switch {
-	case !value.KeepType && resolved.IsAbstract():
+	case !value.KeepType && resolved.IsAbstract() && !value.ParameterIsOutput():
 		vType.GoType = vType.Resolved.PublicType(vType.NeedsNamespace)
 		vType.IsPublic = true
 	default:

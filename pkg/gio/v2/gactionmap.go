@@ -72,6 +72,9 @@ type ActionMapOverrider interface {
 // One useful application of this interface is to map the names of actions from
 // various action groups to unique, prefixed names (e.g. by prepending "app." or
 // "win."). This is the motivation for the 'Map' part of the interface name.
+//
+// ActionMap wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ActionMap struct {
 	_ [0]func() // equal guard
 	*externglib.Object

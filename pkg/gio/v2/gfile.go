@@ -179,6 +179,9 @@ func init() {
 // version on the file system. See the HTTP 1.1 specification
 // (http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) for HTTP Etag
 // headers, which are a very similar concept.
+//
+// File wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type File struct {
 	_ [0]func() // equal guard
 	*externglib.Object

@@ -179,6 +179,9 @@ type ActionOverrider interface {
 //
 // Probably the only useful thing to do with a #GAction is to put it inside of a
 // ActionGroup.
+//
+// Action wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Action struct {
 	_ [0]func() // equal guard
 	*externglib.Object

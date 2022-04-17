@@ -82,6 +82,9 @@ type RemoteActionGroupOverrider interface {
 // exported Group implements ActionGroup and use the _full variants of the calls
 // if available. This provides a mechanism by which to receive platform data for
 // action invocations that arrive by way of D-Bus.
+//
+// RemoteActionGroup wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type RemoteActionGroup struct {
 	_ [0]func() // equal guard
 	ActionGroup

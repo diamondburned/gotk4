@@ -42,6 +42,9 @@ const PROXY_RESOLVER_EXTENSION_POINT_NAME = "gio-proxy-resolver"
 // Implementations of Resolver based on libproxy and GNOME settings can be found
 // in glib-networking. GIO comes with an implementation for use inside Flatpak
 // portals.
+//
+// ProxyResolver wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ProxyResolver struct {
 	_ [0]func() // equal guard
 	*externglib.Object

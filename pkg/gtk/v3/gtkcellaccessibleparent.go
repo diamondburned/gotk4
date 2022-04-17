@@ -98,6 +98,9 @@ type CellAccessibleParentOverrider interface {
 	UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet)
 }
 
+//
+// CellAccessibleParent wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type CellAccessibleParent struct {
 	_ [0]func() // equal guard
 	*externglib.Object

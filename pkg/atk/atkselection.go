@@ -132,6 +132,9 @@ type SelectionOverrider interface {
 // Note that other types of "selection" (for instance text selection) are
 // accomplished a other ATK interfaces - Selection is limited to the
 // selection/deselection of children.
+//
+// Selection wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Selection struct {
 	_ [0]func() // equal guard
 	*externglib.Object

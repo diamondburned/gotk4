@@ -41,6 +41,9 @@ const NETWORK_MONITOR_EXTENSION_POINT_NAME = "gio-network-monitor"
 // the kernel's netlink interface and on NetworkManager.
 //
 // There is also an implementation for use inside Flatpak sandboxes.
+//
+// NetworkMonitor wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type NetworkMonitor struct {
 	_ [0]func() // equal guard
 	Initable

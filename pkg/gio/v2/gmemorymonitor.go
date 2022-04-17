@@ -86,6 +86,9 @@ type MemoryMonitorOverrider interface {
 //
 // Don't forget to disconnect the Monitor::low-memory-warning signal, and unref
 // the Monitor itself when exiting.
+//
+// MemoryMonitor wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type MemoryMonitor struct {
 	_ [0]func() // equal guard
 	Initable

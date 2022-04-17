@@ -58,6 +58,9 @@ type TLSBackendOverrider interface {
 }
 
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
+//
+// TLSBackend wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TLSBackend struct {
 	_ [0]func() // equal guard
 	*externglib.Object

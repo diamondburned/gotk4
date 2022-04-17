@@ -169,6 +169,9 @@ type BuildableOverrider interface {
 //
 // An object only needs to implement this interface if it needs to extend the
 // Builder format or run any extra routines at deserialization time.
+//
+// Buildable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Buildable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

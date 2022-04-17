@@ -357,6 +357,9 @@ type ActionGroupOverrider interface {
 // functions g_action_group_list_actions() and g_action_group_query_action().
 // The other virtual functions should not be implemented - their "wrappers" are
 // actually implemented with calls to g_action_group_query_action().
+//
+// ActionGroup wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ActionGroup struct {
 	_ [0]func() // equal guard
 	*externglib.Object

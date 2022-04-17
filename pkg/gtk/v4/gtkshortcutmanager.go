@@ -46,6 +46,9 @@ type ShortcutManagerOverrider interface {
 //
 // Every widget that implements GtkShortcutManager will be used as a
 // GTK_SHORTCUT_SCOPE_MANAGED.
+//
+// ShortcutManager wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ShortcutManager struct {
 	_ [0]func() // equal guard
 	*externglib.Object

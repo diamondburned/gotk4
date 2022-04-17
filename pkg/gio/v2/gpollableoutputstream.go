@@ -143,6 +143,9 @@ type PollableOutputStreamOverrider interface {
 // PollableOutputStream is implemented by Streams that can be polled for
 // readiness to write. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
+//
+// PollableOutputStream wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type PollableOutputStream struct {
 	_ [0]func() // equal guard
 	OutputStream

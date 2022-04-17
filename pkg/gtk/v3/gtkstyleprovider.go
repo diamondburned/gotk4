@@ -95,6 +95,9 @@ type StyleProviderOverrider interface {
 // StyleProvider is an interface used to provide style information to a
 // StyleContext. See gtk_style_context_add_provider() and
 // gtk_style_context_add_provider_for_screen().
+//
+// StyleProvider wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type StyleProvider struct {
 	_ [0]func() // equal guard
 	*externglib.Object

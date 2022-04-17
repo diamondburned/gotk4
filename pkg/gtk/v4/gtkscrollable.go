@@ -69,6 +69,9 @@ type ScrollableOverrider interface {
 //
 // - When any of the adjustments emits the gtk.Adjustment::value-changed signal,
 // the scrollable widget should scroll its contents.
+//
+// Scrollable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Scrollable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

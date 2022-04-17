@@ -41,6 +41,9 @@ type RootOverrider interface {
 //
 // GtkRoot also maintains the location of keyboard focus inside its widget
 // hierarchy, with gtk.Root.SetFocus() and gtk.Root.GetFocus().
+//
+// Root wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Root struct {
 	_ [0]func() // equal guard
 	NativeSurface

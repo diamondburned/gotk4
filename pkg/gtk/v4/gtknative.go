@@ -45,6 +45,9 @@ type NativeSurfaceOverrider interface {
 // rendering on that surface. To get the renderer, use gtk.Native.GetRenderer().
 //
 // This type has been renamed from Native.
+//
+// NativeSurface wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type NativeSurface struct {
 	_ [0]func() // equal guard
 	Widget

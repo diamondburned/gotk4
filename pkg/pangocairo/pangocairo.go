@@ -588,6 +588,9 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 //
 // The actual type of the font will depend on the particular font technology
 // Cairo was compiled to use.
+//
+// Font wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Font struct {
 	_ [0]func() // equal guard
 	pango.Font
@@ -632,6 +635,9 @@ func BaseFont(obj Fonter) *Font {
 //
 // The actual type of the font map will depend on the particular font technology
 // Cairo was compiled to use.
+//
+// FontMap wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type FontMap struct {
 	_ [0]func() // equal guard
 	pango.FontMap

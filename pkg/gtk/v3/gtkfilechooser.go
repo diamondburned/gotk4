@@ -242,6 +242,9 @@ func FileChooserErrorQuark() glib.Quark {
 // If you want to set more than one extra widget in the file chooser, you can a
 // container such as a Box or a Grid and include your widgets in it. Then, set
 // the container as the whole extra widget.
+//
+// FileChooser wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type FileChooser struct {
 	_ [0]func() // equal guard
 	*externglib.Object

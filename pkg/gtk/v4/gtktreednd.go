@@ -86,7 +86,7 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 //    - ok: TRUE if selection_data had target type GTK_TYPE_TREE_ROW_DATA is
 //      otherwise valid.
 //
-func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool) {
+func TreeGetRowDragData(value *externglib.Value) (*TreeModel, *TreePath, bool) {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GtkTreeModel // in
 	var _arg3 *C.GtkTreePath  // in
@@ -97,25 +97,12 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool)
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(value)
 
-	var _treeModel TreeModeller // out
-	var _path *TreePath         // out
-	var _ok bool                // out
+	var _treeModel *TreeModel // out
+	var _path *TreePath       // out
+	var _ok bool              // out
 
 	if _arg2 != nil {
-		{
-			objptr := unsafe.Pointer(_arg2)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_treeModel = rv
-		}
+		_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg2)))
 	}
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
@@ -171,6 +158,9 @@ type TreeDragDestOverrider interface {
 }
 
 // TreeDragDest: interface for Drag-and-Drop destinations in GtkTreeView.
+//
+// TreeDragDest wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TreeDragDest struct {
 	_ [0]func() // equal guard
 	*externglib.Object
@@ -373,6 +363,9 @@ type TreeDragSourceOverrider interface {
 }
 
 // TreeDragSource: interface for Drag-and-Drop destinations in GtkTreeView.
+//
+// TreeDragSource wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TreeDragSource struct {
 	_ [0]func() // equal guard
 	*externglib.Object

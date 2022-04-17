@@ -73,6 +73,9 @@ type HypertextOverrider interface {
 // content. While this interface is derived from Text, there is no requirement
 // that Hypertext instances have textual content; they may implement Image as
 // well, and Hyperlinks need not have non-zero text offsets.
+//
+// Hypertext wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Hypertext struct {
 	_ [0]func() // equal guard
 	*externglib.Object

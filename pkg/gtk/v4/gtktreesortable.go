@@ -102,6 +102,9 @@ func _gotk4_gtk4_TreeIterCompareFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, 
 // TreeSortable is an interface to be implemented by tree models which support
 // sorting. The TreeView uses the methods provided by this interface to sort the
 // model.
+//
+// TreeSortable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TreeSortable struct {
 	_ [0]func() // equal guard
 	TreeModel

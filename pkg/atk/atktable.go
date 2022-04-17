@@ -458,6 +458,9 @@ type TableOverrider interface {
 // the cells. The practice showed that that forcing made Table implementation
 // complex, and hard to expose other kind of children, like rows or captions.
 // Right now, index-based methods are deprecated.
+//
+// Table wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Table struct {
 	_ [0]func() // equal guard
 	*externglib.Object

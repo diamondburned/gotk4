@@ -30,6 +30,9 @@ type DTLSServerConnectionOverrider interface {
 
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
+//
+// DTLSServerConnection wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DTLSServerConnection struct {
 	_ [0]func() // equal guard
 	DTLSConnection

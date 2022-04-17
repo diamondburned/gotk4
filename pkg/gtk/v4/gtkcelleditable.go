@@ -61,6 +61,9 @@ type CellEditableOverrider interface {
 // The CellEditable interface must be implemented for widgets to be usable to
 // edit the contents of a TreeView cell. It provides a way to specify how
 // temporary widgets should be configured for editing, get the new value, etc.
+//
+// CellEditable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type CellEditable struct {
 	_ [0]func() // equal guard
 	Widget

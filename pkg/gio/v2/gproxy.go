@@ -40,6 +40,9 @@ const PROXY_EXTENSION_POINT_NAME = "gio-proxy"
 // named after their proxy protocol name. As an example, a SOCKS5 proxy
 // implementation can be retrieved with the name 'socks5' using the function
 // g_io_extension_point_get_extension_by_name().
+//
+// Proxy wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Proxy struct {
 	_ [0]func() // equal guard
 	*externglib.Object

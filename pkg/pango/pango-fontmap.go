@@ -76,7 +76,7 @@ type FontMapOverrider interface {
 	//    - families: location to store a pointer to an array of PangoFontFamily
 	//      *. This array should be freed with g_free().
 	//
-	ListFamilies() []FontFamilier
+	ListFamilies() []*FontFamily
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// desc.
 	//
@@ -158,7 +158,7 @@ func classInitFontMapper(gclassPtr, data C.gpointer) {
 		pclass.get_serial = (*[0]byte)(C._gotk4_pango1_FontMapClass_get_serial)
 	}
 
-	if _, ok := goval.(interface{ ListFamilies() []FontFamilier }); ok {
+	if _, ok := goval.(interface{ ListFamilies() []*FontFamily }); ok {
 		pclass.list_families = (*[0]byte)(C._gotk4_pango1_FontMapClass_list_families)
 	}
 
@@ -216,7 +216,7 @@ func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.PangoFontMap) (cret C.guint) 
 //export _gotk4_pango1_FontMapClass_list_families
 func _gotk4_pango1_FontMapClass_list_families(arg0 *C.PangoFontMap, arg1 ***C.PangoFontFamily, arg2 *C.int) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ListFamilies() []FontFamilier })
+	iface := goval.(interface{ ListFamilies() []*FontFamily })
 
 	families := iface.ListFamilies()
 
@@ -428,7 +428,7 @@ func (fontmap *FontMap) Serial() uint {
 //    - families: location to store a pointer to an array of PangoFontFamily *.
 //      This array should be freed with g_free().
 //
-func (fontmap *FontMap) ListFamilies() []FontFamilier {
+func (fontmap *FontMap) ListFamilies() []*FontFamily {
 	var _arg0 *C.PangoFontMap     // out
 	var _arg1 **C.PangoFontFamily // in
 	var _arg2 C.int               // in
@@ -438,30 +438,14 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(fontmap)
 
-	var _families []FontFamilier // out
+	var _families []*FontFamily // out
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		src := unsafe.Slice((**C.PangoFontFamily)(_arg1), _arg2)
-		_families = make([]FontFamilier, _arg2)
+		_families = make([]*FontFamily, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			{
-				objptr := unsafe.Pointer(src[i])
-				if objptr == nil {
-					panic("object of type pango.FontFamilier is nil")
-				}
-
-				object := externglib.Take(objptr)
-				casted := object.WalkCast(func(obj externglib.Objector) bool {
-					_, ok := obj.(FontFamilier)
-					return ok
-				})
-				rv, ok := casted.(FontFamilier)
-				if !ok {
-					panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
-				}
-				_families[i] = rv
-			}
+			_families[i] = wrapFontFamily(externglib.Take(unsafe.Pointer(src[i])))
 		}
 	}
 

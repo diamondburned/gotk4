@@ -43,6 +43,9 @@ func init() {
 //
 // To obtain the application that has been selected in a AppChooser, use
 // gtk_app_chooser_get_app_info().
+//
+// AppChooser wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type AppChooser struct {
 	_ [0]func() // equal guard
 	Widget

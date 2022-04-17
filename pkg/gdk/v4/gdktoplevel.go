@@ -230,6 +230,9 @@ type ToplevelOverrider interface {
 // The GdkToplevel interface provides useful APIs for interacting with the
 // windowing system, such as controlling maximization and size of the surface,
 // setting icons and transient parents for dialogs.
+//
+// Toplevel wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Toplevel struct {
 	_ [0]func() // equal guard
 	Surface

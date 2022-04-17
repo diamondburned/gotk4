@@ -66,6 +66,9 @@ func init() {
 //
 //      g_free (result);
 //    }.
+//
+// Editable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Editable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

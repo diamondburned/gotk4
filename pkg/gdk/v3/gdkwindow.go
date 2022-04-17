@@ -2502,7 +2502,7 @@ func (window *Window) Display() *Display {
 //      Drag and Drop.
 //    - dragProtocol: supported DND protocol.
 //
-func (window *Window) DragProtocol() (Windower, DragProtocol) {
+func (window *Window) DragProtocol() (*Window, DragProtocol) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkWindow      // in
 	var _cret C.GdkDragProtocol // in
@@ -2512,24 +2512,11 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	_cret = C.gdk_window_get_drag_protocol(_arg0, &_arg1)
 	runtime.KeepAlive(window)
 
-	var _target Windower           // out
+	var _target *Window            // out
 	var _dragProtocol DragProtocol // out
 
 	if _arg1 != nil {
-		{
-			objptr := unsafe.Pointer(_arg1)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Windower)
-				return ok
-			})
-			rv, ok := casted.(Windower)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-			}
-			_target = rv
-		}
+		_target = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
 	}
 	_dragProtocol = DragProtocol(_cret)
 

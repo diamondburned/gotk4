@@ -105,6 +105,9 @@ func init() {
 // should be noted that it's generally not safe for applications to rely on the
 // format of a particular URIs. Different launcher applications (e.g. file
 // managers) may have different ideas of what a given URI means.
+//
+// AppInfo wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type AppInfo struct {
 	_ [0]func() // equal guard
 	*externglib.Object

@@ -116,6 +116,9 @@ type ToolShellOverrider interface {
 
 // ToolShell interface allows container widgets to provide additional
 // information when embedding ToolItem widgets.
+//
+// ToolShell wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ToolShell struct {
 	_ [0]func() // equal guard
 	Widget

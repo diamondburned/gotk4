@@ -163,6 +163,9 @@ func FileChooserErrorQuark() glib.Quark {
 // can have multiple options. If a choice has no option, it will be rendered as
 // a check button with the given label; if a choice has options, it will be
 // rendered as a combo box.
+//
+// FileChooser wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type FileChooser struct {
 	_ [0]func() // equal guard
 	*externglib.Object

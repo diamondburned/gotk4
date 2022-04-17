@@ -297,6 +297,9 @@ type DatagramBasedOverrider interface {
 // Like most other APIs in GLib, Based is not inherently thread safe. To use a
 // Based concurrently from multiple threads, you must implement your own
 // locking.
+//
+// DatagramBased wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DatagramBased struct {
 	_ [0]func() // equal guard
 	*externglib.Object

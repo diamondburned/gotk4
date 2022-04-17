@@ -135,6 +135,9 @@ type ConverterOverrider interface {
 //
 // Some example conversions are: character set conversion, compression,
 // decompression and regular expression replace.
+//
+// Converter wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Converter struct {
 	_ [0]func() // equal guard
 	*externglib.Object

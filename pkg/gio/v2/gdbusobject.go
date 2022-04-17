@@ -73,6 +73,9 @@ type DBusObjectOverrider interface {
 // DBusObject type is the base type for D-Bus objects on both the service side
 // (see BusObjectSkeleton) and the client side (see BusObjectProxy). It is
 // essentially just a container of interfaces.
+//
+// DBusObject wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DBusObject struct {
 	_ [0]func() // equal guard
 	*externglib.Object

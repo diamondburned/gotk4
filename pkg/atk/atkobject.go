@@ -961,6 +961,9 @@ func _gotk4_atk1_Function(arg1 C.gpointer) (cret C.gboolean) {
 // ImplementorIface: atkImplementor interface is implemented by objects for
 // which AtkObject peers may be obtained via calls to
 // iface->(ref_accessible)(implementor);.
+//
+// ImplementorIface wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ImplementorIface struct {
 	_ [0]func() // equal guard
 	*externglib.Object

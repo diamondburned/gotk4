@@ -80,6 +80,9 @@ type PrintOperationPreviewOverrider interface {
 //
 // A GtkPrintOperationPreview object is passed to the
 // gtk.PrintOperation::preview signal by gtk.PrintOperation.
+//
+// PrintOperationPreview wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type PrintOperationPreview struct {
 	_ [0]func() // equal guard
 	*externglib.Object

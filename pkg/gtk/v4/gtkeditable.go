@@ -152,6 +152,9 @@ func init() {
 // wish to connect to the gtk.Editable::insert-text and
 // gtk.Editable::delete-text signals, you will need to connect to them on the
 // delegate obtained via gtk.Editable.GetDelegate().
+//
+// Editable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Editable struct {
 	_ [0]func() // equal guard
 	Widget

@@ -86,6 +86,9 @@ type TableCellOverrider interface {
 // "cells" should implement.
 //
 // See also Table.
+//
+// TableCell wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TableCell struct {
 	_ [0]func() // equal guard
 	ObjectClass

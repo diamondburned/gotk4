@@ -88,6 +88,9 @@ const DRIVE_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
 //
 // For porting from GnomeVFS note that there is no equivalent of #GDrive in that
 // API.
+//
+// Drive wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Drive struct {
 	_ [0]func() // equal guard
 	*externglib.Object

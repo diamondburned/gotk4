@@ -2690,7 +2690,7 @@ func (treeView *TreeView) TooltipColumn() int {
 //    - iter (optional): pointer to receive a TreeIter or NULL.
 //    - ok: whether or not the given tooltip context points to a row.
 //
-func (treeView *TreeView) TooltipContext(x, y int, keyboardTip bool) (TreeModeller, *TreePath, *TreeIter, bool) {
+func (treeView *TreeView) TooltipContext(x, y int, keyboardTip bool) (*TreeModel, *TreePath, *TreeIter, bool) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -2713,26 +2713,13 @@ func (treeView *TreeView) TooltipContext(x, y int, keyboardTip bool) (TreeModell
 	runtime.KeepAlive(y)
 	runtime.KeepAlive(keyboardTip)
 
-	var _model TreeModeller // out
-	var _path *TreePath     // out
-	var _iter *TreeIter     // out
-	var _ok bool            // out
+	var _model *TreeModel // out
+	var _path *TreePath   // out
+	var _iter *TreeIter   // out
+	var _ok bool          // out
 
 	if _arg4 != nil {
-		{
-			objptr := unsafe.Pointer(_arg4)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_model = rv
-		}
+		_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg4)))
 	}
 	if _arg5 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))

@@ -70,6 +70,9 @@ func init() {
 // data to see if the operation was completed successfully. If an error is
 // present when g_mount_unmount_with_operation_finish() is called, then it will
 // be filled with any error information.
+//
+// Mount wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Mount struct {
 	_ [0]func() // equal guard
 	*externglib.Object

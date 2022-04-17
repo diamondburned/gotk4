@@ -99,6 +99,9 @@ type StreamableContentOverrider interface {
 // performance issues. Unlike most ATK interfaces, this interface is not
 // strongly tied to the current user-agent view of the a particular document,
 // but may in some cases give access to the underlying model data.
+//
+// StreamableContent wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type StreamableContent struct {
 	_ [0]func() // equal guard
 	*externglib.Object

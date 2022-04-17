@@ -116,6 +116,9 @@ type SocketConnectableOverrider interface {
 //          return NULL;
 //        }
 //    }.
+//
+// SocketConnectable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type SocketConnectable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

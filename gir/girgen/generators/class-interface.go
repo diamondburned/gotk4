@@ -23,6 +23,11 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ GoDoc . 0 (OverrideSelfName .StructName) }}
+	{{ if not .IsClass -}}
+	//
+	// {{ .StructName }} wraps an interface. This means the user can get the
+	// underlying type by calling Cast().
+	{{ end -}}
 	type {{ .StructName }} struct {
 		_ [0]func() // equal guard
 		{{ index .Tree.ImplTypes 0 }}
@@ -44,7 +49,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .IsClass }}
 	// {{ .InterfaceName }} describes types inherited from class {{ .StructName }}.
-	{{- $needsPrivate = true }}
+	{{ $needsPrivate = true -}}
 	//
 	// To get the original type, the caller must assert this to an interface or
 	// another type.

@@ -219,6 +219,9 @@ type SelectionModelOverrider interface {
 // Selections may happen asynchronously, so the only reliable way to find out
 // when an item was selected is to listen to the signals that indicate
 // selection.
+//
+// SelectionModel wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type SelectionModel struct {
 	_ [0]func() // equal guard
 	gio.ListModel

@@ -174,6 +174,9 @@ func _gotk4_gtk4_FontFilterFunc(arg1 *C.PangoFontFamily, arg2 *C.PangoFontFace, 
 //
 // In GTK, the main objects that implement this interface are
 // gtk.FontChooserWidget, gtk.FontChooserDialog and gtk.FontButton.
+//
+// FontChooser wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type FontChooser struct {
 	_ [0]func() // equal guard
 	*externglib.Object

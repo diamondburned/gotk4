@@ -199,6 +199,9 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRender
 // important, then this does not have to concern you. If you want to support
 // alternative cell areas, you can do so by moving the problematic calls out of
 // init() and into a constructor() for your class.
+//
+// CellLayout wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type CellLayout struct {
 	_ [0]func() // equal guard
 	*externglib.Object

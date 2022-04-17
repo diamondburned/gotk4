@@ -251,7 +251,7 @@ func (selection *TreeSelection) Mode() SelectionMode {
 //    - iter (optional) or NULL.
 //    - ok: TRUE, if there is a selected node.
 //
-func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
+func (selection *TreeSelection) Selected() (*TreeModel, *TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _arg2 C.GtkTreeIter       // in
@@ -262,25 +262,12 @@ func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(selection)
 
-	var _model TreeModeller // out
-	var _iter *TreeIter     // out
-	var _ok bool            // out
+	var _model *TreeModel // out
+	var _iter *TreeIter   // out
+	var _ok bool          // out
 
 	if _arg1 != nil {
-		{
-			objptr := unsafe.Pointer(_arg1)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_model = rv
-		}
+		_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg1)))
 	}
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
@@ -304,7 +291,7 @@ func (selection *TreeSelection) Selected() (TreeModeller, *TreeIter, bool) {
 //    - model (optional): pointer to set to the TreeModel, or NULL.
 //    - list containing a TreePath for each selected row.
 //
-func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
+func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _cret *C.GList            // in
@@ -314,24 +301,11 @@ func (selection *TreeSelection) SelectedRows() (TreeModeller, []*TreePath) {
 	_cret = C.gtk_tree_selection_get_selected_rows(_arg0, &_arg1)
 	runtime.KeepAlive(selection)
 
-	var _model TreeModeller // out
-	var _list []*TreePath   // out
+	var _model *TreeModel // out
+	var _list []*TreePath // out
 
 	if _arg1 != nil {
-		{
-			objptr := unsafe.Pointer(_arg1)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_model = rv
-		}
+		_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg1)))
 	}
 	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {

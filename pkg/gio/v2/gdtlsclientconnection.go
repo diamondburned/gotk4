@@ -30,6 +30,9 @@ type DTLSClientConnectionOverrider interface {
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
+//
+// DTLSClientConnection wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DTLSClientConnection struct {
 	_ [0]func() // equal guard
 	DTLSConnection

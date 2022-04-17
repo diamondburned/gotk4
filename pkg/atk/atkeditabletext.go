@@ -92,6 +92,9 @@ type EditableTextOverrider interface {
 // EditableText is by definition an Text implementor as well.
 //
 // See also: Text.
+//
+// EditableText wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type EditableText struct {
 	_ [0]func() // equal guard
 	*externglib.Object

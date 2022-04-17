@@ -106,6 +106,9 @@ type ActionableOverrider interface {
 // or “app.” prefix that are associated with the ApplicationWindow or
 // Application, but other action groups that are added with
 // gtk_widget_insert_action_group() will be consulted as well.
+//
+// Actionable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Actionable struct {
 	_ [0]func() // equal guard
 	Widget

@@ -110,6 +110,9 @@ type ListModelOverrider interface {
 // implementation, but typically it will be from the thread that owns the
 // [thread-default main context][g-main-context-push-thread-default] in effect
 // at the time that the model was created.
+//
+// ListModel wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type ListModel struct {
 	_ [0]func() // equal guard
 	*externglib.Object

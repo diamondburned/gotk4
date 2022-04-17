@@ -32,6 +32,9 @@ type OrientableOverrider interface {
 //
 // GtkOrientable is more flexible in that it allows the orientation to be
 // changed at runtime, allowing the widgets to “flip”.
+//
+// Orientable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Orientable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

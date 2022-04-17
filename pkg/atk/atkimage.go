@@ -104,6 +104,9 @@ type ImageOverrider interface {
 // magnifiers), and descriptive information. The descriptive information is
 // provided for alternative, text-only presentation of the most significant
 // information present in the image.
+//
+// Image wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Image struct {
 	_ [0]func() // equal guard
 	*externglib.Object

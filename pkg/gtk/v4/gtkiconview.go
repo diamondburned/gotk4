@@ -715,7 +715,7 @@ func (iconView *IconView) Columns() int {
 //    - cell (optional): return location the current focus cell, or NULL.
 //    - ok: TRUE if the cursor is set.
 //
-func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
+func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 *C.GtkTreePath     // in
 	var _arg2 *C.GtkCellRenderer // in
@@ -726,9 +726,9 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	_cret = C.gtk_icon_view_get_cursor(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconView)
 
-	var _path *TreePath      // out
-	var _cell CellRendererer // out
-	var _ok bool             // out
+	var _path *TreePath     // out
+	var _cell *CellRenderer // out
+	var _ok bool            // out
 
 	if _arg1 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
@@ -740,20 +740,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 		)
 	}
 	if _arg2 != nil {
-		{
-			objptr := unsafe.Pointer(_arg2)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(CellRendererer)
-				return ok
-			})
-			rv, ok := casted.(CellRendererer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
-			}
-			_cell = rv
-		}
+		_cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(_arg2)))
 	}
 	if _cret != 0 {
 		_ok = true
@@ -863,7 +850,7 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 //      cell at (x, y), or NULL.
 //    - ok: TRUE if an item exists at the specified position.
 //
-func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) {
+func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, *CellRenderer, bool) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -880,9 +867,9 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) 
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _path *TreePath      // out
-	var _cell CellRendererer // out
-	var _ok bool             // out
+	var _path *TreePath     // out
+	var _cell *CellRenderer // out
+	var _ok bool            // out
 
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
@@ -894,20 +881,7 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) 
 		)
 	}
 	if _arg4 != nil {
-		{
-			objptr := unsafe.Pointer(_arg4)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(CellRendererer)
-				return ok
-			})
-			rv, ok := casted.(CellRendererer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
-			}
-			_cell = rv
-		}
+		_cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(_arg4)))
 	}
 	if _cret != 0 {
 		_ok = true
@@ -1391,7 +1365,7 @@ func (iconView *IconView) TooltipColumn() int {
 //    - iter (optional): pointer to receive a TreeIter or NULL.
 //    - ok: whether or not the given tooltip context points to an item.
 //
-func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModeller, *TreePath, *TreeIter, bool) {
+func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (*TreeModel, *TreePath, *TreeIter, bool) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -1414,26 +1388,13 @@ func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (TreeModell
 	runtime.KeepAlive(y)
 	runtime.KeepAlive(keyboardTip)
 
-	var _model TreeModeller // out
-	var _path *TreePath     // out
-	var _iter *TreeIter     // out
-	var _ok bool            // out
+	var _model *TreeModel // out
+	var _path *TreePath   // out
+	var _iter *TreeIter   // out
+	var _ok bool          // out
 
 	if _arg4 != nil {
-		{
-			objptr := unsafe.Pointer(_arg4)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_model = rv
-		}
+		_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg4)))
 	}
 	if _arg5 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))

@@ -116,6 +116,9 @@ type BuilderScopeOverrider interface {
 //
 // By default, GTK will use its own implementation of GtkBuilderScope for the C
 // language which can be created via gtk.BuilderCScope.New.
+//
+// BuilderScope wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type BuilderScope struct {
 	_ [0]func() // equal guard
 	*externglib.Object

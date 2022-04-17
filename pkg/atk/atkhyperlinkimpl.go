@@ -60,6 +60,9 @@ type HyperlinkImplOverrider interface {
 // AtkHyperlink was defined as an object type, not an interface. Thus, in order
 // to interact with AtkObjects via AtkHyperlink semantics, a new interface was
 // required.
+//
+// HyperlinkImpl wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type HyperlinkImpl struct {
 	_ [0]func() // equal guard
 	*externglib.Object

@@ -55,7 +55,7 @@ func init() {
 //    - ok: TRUE if selection_data had target type GTK_TREE_MODEL_ROW and is
 //      otherwise valid.
 //
-func TreeGetRowDragData(selectionData *SelectionData) (TreeModeller, *TreePath, bool) {
+func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bool) {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // in
 	var _arg3 *C.GtkTreePath      // in
@@ -66,25 +66,12 @@ func TreeGetRowDragData(selectionData *SelectionData) (TreeModeller, *TreePath, 
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(selectionData)
 
-	var _treeModel TreeModeller // out
-	var _path *TreePath         // out
-	var _ok bool                // out
+	var _treeModel *TreeModel // out
+	var _path *TreePath       // out
+	var _ok bool              // out
 
 	if _arg2 != nil {
-		{
-			objptr := unsafe.Pointer(_arg2)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_treeModel = rv
-		}
+		_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg2)))
 	}
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
@@ -177,6 +164,9 @@ type TreeDragDestOverrider interface {
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
+//
+// TreeDragDest wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TreeDragDest struct {
 	_ [0]func() // equal guard
 	*externglib.Object
@@ -380,6 +370,9 @@ type TreeDragSourceOverrider interface {
 	RowDraggable(path *TreePath) bool
 }
 
+//
+// TreeDragSource wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TreeDragSource struct {
 	_ [0]func() // equal guard
 	*externglib.Object

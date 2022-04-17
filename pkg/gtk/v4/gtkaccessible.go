@@ -95,6 +95,9 @@ type AccessibleOverrider interface {
 // that should be reflected by assistive technologies. For instance, if a
 // GtkWidget visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will also
 // change to reflect the gtk.Widget:visible property.
+//
+// Accessible wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Accessible struct {
 	_ [0]func() // equal guard
 	*externglib.Object

@@ -369,6 +369,9 @@ type ValueOverrider interface {
 // that if there is a textual description associated with the new numeric value,
 // that description should be included regardless of whether or not it has also
 // changed. </para> </refsect1>.
+//
+// Value wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Value struct {
 	_ [0]func() // equal guard
 	*externglib.Object

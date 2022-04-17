@@ -38,6 +38,9 @@ func init() {
 // instances may be nested (i.e. an AtkDocument may be a descendant of another
 // AtkDocument) in those cases where one document contains "embedded content"
 // which can reasonably be considered a document in its own right.
+//
+// Document wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Document struct {
 	_ [0]func() // equal guard
 	*externglib.Object

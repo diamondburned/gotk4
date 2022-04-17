@@ -591,7 +591,7 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 //    - outInfo (optional): output location for the next Info, or NULL.
 //    - outChild (optional): output location for the next #GFile, or NULL.
 //
-func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, error) {
+func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, *File, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg3 *C.GCancellable    // out
 	var _arg1 *C.GFileInfo       // in
@@ -610,27 +610,14 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 	runtime.KeepAlive(ctx)
 
 	var _outInfo *FileInfo // out
-	var _outChild Filer    // out
+	var _outChild *File    // out
 	var _goerr error       // out
 
 	if _arg1 != nil {
 		_outInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_arg1)))
 	}
 	if _arg2 != nil {
-		{
-			objptr := unsafe.Pointer(_arg2)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Filer)
-				return ok
-			})
-			rv, ok := casted.(Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			_outChild = rv
-		}
+		_outChild = wrapFile(externglib.Take(unsafe.Pointer(_arg2)))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

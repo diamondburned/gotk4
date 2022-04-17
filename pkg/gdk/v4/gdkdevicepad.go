@@ -79,6 +79,9 @@ type DevicePadOverrider interface {
 // modes. The number of available modes in a group can be found out through
 // gdk.DevicePad.GetGroupNModes(), and the current mode for a given group will
 // be notified through events of type K_PAD_GROUP_MODE.
+//
+// DevicePad wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DevicePad struct {
 	_ [0]func() // equal guard
 	Device

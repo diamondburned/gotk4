@@ -31,6 +31,9 @@ type TLSFileDatabaseOverrider interface {
 // TLSFileDatabase is implemented by Database objects which load their
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
+//
+// TLSFileDatabase wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type TLSFileDatabase struct {
 	_ [0]func() // equal guard
 	TLSDatabase

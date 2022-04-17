@@ -34,6 +34,9 @@ type PopupOverrider interface {
 //
 // GdkPopups are typically used to implement menus and similar popups. They can
 // be modal, which is indicated by the gdkpopup:autohide property.
+//
+// Popup wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Popup struct {
 	_ [0]func() // equal guard
 	Surface

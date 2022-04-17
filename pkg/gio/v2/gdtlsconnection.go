@@ -54,6 +54,9 @@ func init() {
 // base Based if it is a #GSocket — it is up to the caller to do that if they
 // wish. If they do not, and g_socket_close() is called on the base socket, the
 // Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
+//
+// DTLSConnection wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DTLSConnection struct {
 	_ [0]func() // equal guard
 	DatagramBased

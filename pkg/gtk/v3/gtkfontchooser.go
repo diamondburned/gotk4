@@ -172,6 +172,9 @@ func _gotk4_gtk3_FontFilterFunc(arg1 *C.PangoFontFamily, arg2 *C.PangoFontFace, 
 // list of fonts. In GTK+, the main objects that implement this interface are
 // FontChooserWidget, FontChooserDialog and FontButton. The GtkFontChooser
 // interface has been introducted in GTK+ 3.2.
+//
+// FontChooser wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type FontChooser struct {
 	_ [0]func() // equal guard
 	*externglib.Object

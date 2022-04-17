@@ -32,6 +32,9 @@ func init() {
 
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
+//
+// LoadableIcon wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type LoadableIcon struct {
 	_ [0]func() // equal guard
 	Icon

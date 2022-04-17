@@ -75,6 +75,9 @@ type PrintOperationPreviewOverrider interface {
 	RenderPage(pageNr int)
 }
 
+//
+// PrintOperationPreview wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type PrintOperationPreview struct {
 	_ [0]func() // equal guard
 	*externglib.Object

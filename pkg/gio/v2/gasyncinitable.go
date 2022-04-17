@@ -126,6 +126,9 @@ func init() {
 //      iface->init_async = foo_init_async;
 //      iface->init_finish = foo_init_finish;
 //    }.
+//
+// AsyncInitable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type AsyncInitable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

@@ -97,6 +97,9 @@ type InitableOverrider interface {
 // the binding could check for objects implementing GInitable during normal
 // construction and automatically initialize them, throwing an exception on
 // failure.
+//
+// Initable wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Initable struct {
 	_ [0]func() // equal guard
 	*externglib.Object

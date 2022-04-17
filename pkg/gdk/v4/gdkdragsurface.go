@@ -28,6 +28,9 @@ type DragSurfaceOverrider interface {
 }
 
 // DragSurface is an interface for surfaces used during DND.
+//
+// DragSurface wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type DragSurface struct {
 	_ [0]func() // equal guard
 	Surface

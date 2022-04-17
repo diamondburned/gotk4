@@ -892,6 +892,9 @@ type TextOverrider interface {
 // therefore potentially multi-byte, and caret-to-byte offset mapping makes no
 // assumptions about the character length; also bounding box glyph-to-offset
 // mapping may be complex for languages which use ligatures.
+//
+// Text wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Text struct {
 	_ [0]func() // equal guard
 	*externglib.Object

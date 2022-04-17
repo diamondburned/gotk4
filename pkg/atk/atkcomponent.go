@@ -327,6 +327,9 @@ type ComponentOverrider interface {
 // A possible exception might be textual information with a transparent
 // background, in which case text glyph bounding box information is provided by
 // Text.
+//
+// Component wraps an interface. This means the user can get the
+// underlying type by calling Cast().
 type Component struct {
 	_ [0]func() // equal guard
 	*externglib.Object

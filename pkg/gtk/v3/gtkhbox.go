@@ -31,6 +31,12 @@ type HBoxOverrider interface {
 	externglib.Objector
 }
 
+// WrapHBoxOverrider wraps the HBoxOverrider
+// interface implementation to access the instance methods.
+func WrapHBoxOverrider(obj HBoxOverrider) *HBox {
+	return wrapHBox(externglib.BaseObject(obj))
+}
+
 // HBox is a container that organizes child widgets into a single row.
 //
 // Use the Box packing interface to determine the arrangement, spacing, width,

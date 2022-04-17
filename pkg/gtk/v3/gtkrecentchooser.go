@@ -236,6 +236,12 @@ type RecentChooserOverrider interface {
 	UnselectURI(uri string)
 }
 
+// WrapRecentChooserOverrider wraps the RecentChooserOverrider
+// interface implementation to access the instance methods.
+func WrapRecentChooserOverrider(obj RecentChooserOverrider) *RecentChooser {
+	return wrapRecentChooser(externglib.BaseObject(obj))
+}
+
 // RecentChooser is an interface that can be implemented by widgets displaying
 // the list of recently used files. In GTK+, the main objects that implement
 // this interface are RecentChooserWidget, RecentChooserDialog and

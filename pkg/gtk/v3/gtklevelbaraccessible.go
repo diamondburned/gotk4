@@ -30,6 +30,12 @@ type LevelBarAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapLevelBarAccessibleOverrider wraps the LevelBarAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapLevelBarAccessibleOverrider(obj LevelBarAccessibleOverrider) *LevelBarAccessible {
+	return wrapLevelBarAccessible(externglib.BaseObject(obj))
+}
+
 type LevelBarAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

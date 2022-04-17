@@ -29,6 +29,12 @@ type NativeSocketAddressOverrider interface {
 	externglib.Objector
 }
 
+// WrapNativeSocketAddressOverrider wraps the NativeSocketAddressOverrider
+// interface implementation to access the instance methods.
+func WrapNativeSocketAddressOverrider(obj NativeSocketAddressOverrider) *NativeSocketAddress {
+	return wrapNativeSocketAddress(externglib.BaseObject(obj))
+}
+
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress struct {
 	_ [0]func() // equal guard

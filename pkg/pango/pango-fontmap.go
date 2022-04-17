@@ -109,6 +109,12 @@ type FontMapOverrider interface {
 	LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
 }
 
+// WrapFontMapOverrider wraps the FontMapOverrider
+// interface implementation to access the instance methods.
+func WrapFontMapOverrider(obj FontMapOverrider) *FontMap {
+	return wrapFontMap(externglib.BaseObject(obj))
+}
+
 // FontMap: PangoFontMap represents the set of fonts available for a particular
 // rendering system.
 //
@@ -293,7 +299,8 @@ func (fontmap *FontMap) baseFontMap() *FontMap {
 	return fontmap
 }
 
-// BaseFontMap returns the underlying base object.
+// BaseFontMap returns the underlying base object from the
+// interface.
 func BaseFontMap(obj FontMapper) *FontMap {
 	return obj.baseFontMap()
 }

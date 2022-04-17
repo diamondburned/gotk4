@@ -37,6 +37,12 @@ type ToggleActionOverrider interface {
 	Toggled()
 }
 
+// WrapToggleActionOverrider wraps the ToggleActionOverrider
+// interface implementation to access the instance methods.
+func WrapToggleActionOverrider(obj ToggleActionOverrider) *ToggleAction {
+	return wrapToggleAction(externglib.BaseObject(obj))
+}
+
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
 type ToggleAction struct {

@@ -33,6 +33,12 @@ type GestureClickOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureClickOverrider wraps the GestureClickOverrider
+// interface implementation to access the instance methods.
+func WrapGestureClickOverrider(obj GestureClickOverrider) *GestureClick {
+	return wrapGestureClick(externglib.BaseObject(obj))
+}
+
 // GestureClick: GtkGestureClick is a GtkGesture implementation for clicks.
 //
 // It is able to recognize multiple clicks on a nearby zone, which can be

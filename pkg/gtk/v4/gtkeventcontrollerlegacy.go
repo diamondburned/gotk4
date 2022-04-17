@@ -29,6 +29,12 @@ type EventControllerLegacyOverrider interface {
 	externglib.Objector
 }
 
+// WrapEventControllerLegacyOverrider wraps the EventControllerLegacyOverrider
+// interface implementation to access the instance methods.
+func WrapEventControllerLegacyOverrider(obj EventControllerLegacyOverrider) *EventControllerLegacy {
+	return wrapEventControllerLegacy(externglib.BaseObject(obj))
+}
+
 // EventControllerLegacy: GtkEventControllerLegacy is an event controller that
 // provides raw access to the event stream.
 //

@@ -103,6 +103,12 @@ type BuilderScopeOverrider interface {
 	TypeFromName(builder *Builder, typeName string) externglib.Type
 }
 
+// WrapBuilderScopeOverrider wraps the BuilderScopeOverrider
+// interface implementation to access the instance methods.
+func WrapBuilderScopeOverrider(obj BuilderScopeOverrider) *BuilderScope {
+	return wrapBuilderScope(externglib.BaseObject(obj))
+}
+
 // BuilderScope: GtkBuilderScope is an interface to provide language binding
 // support to GtkBuilder.
 //
@@ -191,7 +197,8 @@ func (self *BuilderScope) baseBuilderScope() *BuilderScope {
 	return self
 }
 
-// BaseBuilderScope returns the underlying base object.
+// BaseBuilderScope returns the underlying base object from the
+// interface.
 func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 	return obj.baseBuilderScope()
 }
@@ -199,6 +206,12 @@ func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 // BuilderCScopeOverrider contains methods that are overridable.
 type BuilderCScopeOverrider interface {
 	externglib.Objector
+}
+
+// WrapBuilderCScopeOverrider wraps the BuilderCScopeOverrider
+// interface implementation to access the instance methods.
+func WrapBuilderCScopeOverrider(obj BuilderCScopeOverrider) *BuilderCScope {
+	return wrapBuilderCScope(externglib.BaseObject(obj))
 }
 
 // BuilderCScope: GtkBuilderScope implementation for the C language.

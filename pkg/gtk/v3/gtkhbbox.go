@@ -30,6 +30,12 @@ type HButtonBoxOverrider interface {
 	externglib.Objector
 }
 
+// WrapHButtonBoxOverrider wraps the HButtonBoxOverrider
+// interface implementation to access the instance methods.
+func WrapHButtonBoxOverrider(obj HButtonBoxOverrider) *HButtonBox {
+	return wrapHButtonBox(externglib.BaseObject(obj))
+}
+
 type HButtonBox struct {
 	_ [0]func() // equal guard
 	ButtonBox

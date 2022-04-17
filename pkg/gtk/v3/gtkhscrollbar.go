@@ -31,6 +31,12 @@ type HScrollbarOverrider interface {
 	externglib.Objector
 }
 
+// WrapHScrollbarOverrider wraps the HScrollbarOverrider
+// interface implementation to access the instance methods.
+func WrapHScrollbarOverrider(obj HScrollbarOverrider) *HScrollbar {
+	return wrapHScrollbar(externglib.BaseObject(obj))
+}
+
 // HScrollbar widget is a widget arranged horizontally creating a scrollbar. See
 // Scrollbar for details on scrollbars. Adjustment pointers may be added to
 // handle the adjustment of the scrollbar or it may be left NULL in which case

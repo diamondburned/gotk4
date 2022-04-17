@@ -37,6 +37,12 @@ type MediaFileOverrider interface {
 	Open()
 }
 
+// WrapMediaFileOverrider wraps the MediaFileOverrider
+// interface implementation to access the instance methods.
+func WrapMediaFileOverrider(obj MediaFileOverrider) *MediaFile {
+	return wrapMediaFile(externglib.BaseObject(obj))
+}
+
 // MediaFile: GtkMediaFile implements GtkMediaStream for files.
 //
 // This provides a simple way to play back video files with GTK.
@@ -120,7 +126,8 @@ func (self *MediaFile) baseMediaFile() *MediaFile {
 	return self
 }
 
-// BaseMediaFile returns the underlying base object.
+// BaseMediaFile returns the underlying base object from the
+// interface.
 func BaseMediaFile(obj MediaFiler) *MediaFile {
 	return obj.baseMediaFile()
 }

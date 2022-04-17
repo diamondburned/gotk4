@@ -32,6 +32,12 @@ type CustomSorterOverrider interface {
 	externglib.Objector
 }
 
+// WrapCustomSorterOverrider wraps the CustomSorterOverrider
+// interface implementation to access the instance methods.
+func WrapCustomSorterOverrider(obj CustomSorterOverrider) *CustomSorter {
+	return wrapCustomSorter(externglib.BaseObject(obj))
+}
+
 // CustomSorter: GtkCustomSorter is a GtkSorter implementation that sorts via a
 // callback function.
 type CustomSorter struct {

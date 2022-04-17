@@ -88,6 +88,12 @@ type MenuShellOverrider interface {
 	SelectionDone()
 }
 
+// WrapMenuShellOverrider wraps the MenuShellOverrider
+// interface implementation to access the instance methods.
+func WrapMenuShellOverrider(obj MenuShellOverrider) *MenuShell {
+	return wrapMenuShell(externglib.BaseObject(obj))
+}
+
 // MenuShell is the abstract base class used to derive the Menu and MenuBar
 // subclasses.
 //
@@ -353,7 +359,8 @@ func (menuShell *MenuShell) baseMenuShell() *MenuShell {
 	return menuShell
 }
 
-// BaseMenuShell returns the underlying base object.
+// BaseMenuShell returns the underlying base object from the
+// interface.
 func BaseMenuShell(obj MenuSheller) *MenuShell {
 	return obj.baseMenuShell()
 }

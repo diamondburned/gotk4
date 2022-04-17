@@ -87,6 +87,12 @@ type ToolbarOverrider interface {
 	StyleChanged(style ToolbarStyle)
 }
 
+// WrapToolbarOverrider wraps the ToolbarOverrider
+// interface implementation to access the instance methods.
+func WrapToolbarOverrider(obj ToolbarOverrider) *Toolbar {
+	return wrapToolbar(externglib.BaseObject(obj))
+}
+
 // Toolbar: toolbar is created with a call to gtk_toolbar_new().
 //
 // A toolbar can contain instances of a subclass of ToolItem. To add a ToolItem

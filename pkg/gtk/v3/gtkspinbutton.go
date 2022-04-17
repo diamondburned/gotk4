@@ -143,6 +143,12 @@ type SpinButtonOverrider interface {
 	Wrapped()
 }
 
+// WrapSpinButtonOverrider wraps the SpinButtonOverrider
+// interface implementation to access the instance methods.
+func WrapSpinButtonOverrider(obj SpinButtonOverrider) *SpinButton {
+	return wrapSpinButton(externglib.BaseObject(obj))
+}
+
 // SpinButton is an ideal way to allow the user to set the value of some
 // attribute. Rather than having to directly type a number into a Entry,
 // GtkSpinButton allows the user to click on one of two arrows to increment or

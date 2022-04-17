@@ -157,6 +157,12 @@ type DTLSConnectionOverrider interface {
 	ShutdownFinish(result AsyncResultOverrider) error
 }
 
+// WrapDTLSConnectionOverrider wraps the DTLSConnectionOverrider
+// interface implementation to access the instance methods.
+func WrapDTLSConnectionOverrider(obj DTLSConnectionOverrider) *DTLSConnection {
+	return wrapDTLSConnection(externglib.BaseObject(obj))
+}
+
 // DTLSConnection is the base DTLS connection class type, which wraps a Based
 // and provides DTLS encryption on top of it. Its subclasses, ClientConnection
 // and ServerConnection, implement client-side and server-side DTLS,

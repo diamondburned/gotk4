@@ -30,6 +30,12 @@ type DirectoryListOverrider interface {
 	externglib.Objector
 }
 
+// WrapDirectoryListOverrider wraps the DirectoryListOverrider
+// interface implementation to access the instance methods.
+func WrapDirectoryListOverrider(obj DirectoryListOverrider) *DirectoryList {
+	return wrapDirectoryList(externglib.BaseObject(obj))
+}
+
 // DirectoryList: GtkDirectoryList is a list model that wraps
 // g_file_enumerate_children_async().
 //

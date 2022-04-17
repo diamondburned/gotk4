@@ -185,6 +185,12 @@ type FlowBoxOverrider interface {
 	UnselectAll()
 }
 
+// WrapFlowBoxOverrider wraps the FlowBoxOverrider
+// interface implementation to access the instance methods.
+func WrapFlowBoxOverrider(obj FlowBoxOverrider) *FlowBox {
+	return wrapFlowBox(externglib.BaseObject(obj))
+}
+
 // FlowBox positions child widgets in sequence according to its orientation.
 //
 // For instance, with the horizontal orientation, the widgets will be arranged
@@ -1290,6 +1296,12 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 type FlowBoxChildOverrider interface {
 	externglib.Objector
 	Activate()
+}
+
+// WrapFlowBoxChildOverrider wraps the FlowBoxChildOverrider
+// interface implementation to access the instance methods.
+func WrapFlowBoxChildOverrider(obj FlowBoxChildOverrider) *FlowBoxChild {
+	return wrapFlowBoxChild(externglib.BaseObject(obj))
 }
 
 type FlowBoxChild struct {

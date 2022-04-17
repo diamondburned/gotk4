@@ -77,7 +77,8 @@ func (v *VulkanContext) baseVulkanContext() *VulkanContext {
 	return v
 }
 
-// BaseVulkanContext returns the underlying base object.
+// BaseVulkanContext returns the underlying base object from the
+// interface.
 func BaseVulkanContext(obj VulkanContexter) *VulkanContext {
 	return obj.baseVulkanContext()
 }

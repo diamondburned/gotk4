@@ -226,6 +226,12 @@ type ToplevelOverrider interface {
 	externglib.Objector
 }
 
+// WrapToplevelOverrider wraps the ToplevelOverrider
+// interface implementation to access the instance methods.
+func WrapToplevelOverrider(obj ToplevelOverrider) *Toplevel {
+	return wrapToplevel(externglib.BaseObject(obj))
+}
+
 // Toplevel: GdkToplevel is a freestanding toplevel surface.
 //
 // The GdkToplevel interface provides useful APIs for interacting with the

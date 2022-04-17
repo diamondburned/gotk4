@@ -28,6 +28,12 @@ type OrientableOverrider interface {
 	externglib.Objector
 }
 
+// WrapOrientableOverrider wraps the OrientableOverrider
+// interface implementation to access the instance methods.
+func WrapOrientableOverrider(obj OrientableOverrider) *Orientable {
+	return wrapOrientable(externglib.BaseObject(obj))
+}
+
 // Orientable: GtkOrientable interface is implemented by all widgets that can be
 // oriented horizontally or vertically.
 //

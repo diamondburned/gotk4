@@ -261,6 +261,12 @@ type DriveOverrider interface {
 	StopFinish(result AsyncResultOverrider) error
 }
 
+// WrapDriveOverrider wraps the DriveOverrider
+// interface implementation to access the instance methods.
+func WrapDriveOverrider(obj DriveOverrider) *Drive {
+	return wrapDrive(externglib.BaseObject(obj))
+}
+
 // Drive - this represent a piece of hardware connected to the machine. It's
 // generally only created for removable hardware or hardware with removable
 // media.

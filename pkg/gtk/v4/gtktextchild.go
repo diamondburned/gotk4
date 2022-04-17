@@ -28,6 +28,12 @@ type TextChildAnchorOverrider interface {
 	externglib.Objector
 }
 
+// WrapTextChildAnchorOverrider wraps the TextChildAnchorOverrider
+// interface implementation to access the instance methods.
+func WrapTextChildAnchorOverrider(obj TextChildAnchorOverrider) *TextChildAnchor {
+	return wrapTextChildAnchor(externglib.BaseObject(obj))
+}
+
 // TextChildAnchor: GtkTextChildAnchor is a spot in a GtkTextBuffer where child
 // widgets can be “anchored”.
 //

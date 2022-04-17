@@ -30,6 +30,12 @@ type ColumnViewOverrider interface {
 	externglib.Objector
 }
 
+// WrapColumnViewOverrider wraps the ColumnViewOverrider
+// interface implementation to access the instance methods.
+func WrapColumnViewOverrider(obj ColumnViewOverrider) *ColumnView {
+	return wrapColumnView(externglib.BaseObject(obj))
+}
+
 // ColumnView: GtkColumnView presents a large dynamic list of items using
 // multiple columns with headers.
 //

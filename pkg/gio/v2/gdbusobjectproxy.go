@@ -28,6 +28,12 @@ type DBusObjectProxyOverrider interface {
 	externglib.Objector
 }
 
+// WrapDBusObjectProxyOverrider wraps the DBusObjectProxyOverrider
+// interface implementation to access the instance methods.
+func WrapDBusObjectProxyOverrider(obj DBusObjectProxyOverrider) *DBusObjectProxy {
+	return wrapDBusObjectProxy(externglib.BaseObject(obj))
+}
+
 // DBusObjectProxy is an object used to represent a remote object with one or
 // more D-Bus interfaces. Normally, you don't instantiate a BusObjectProxy
 // yourself - typically BusObjectManagerClient is used to obtain it.

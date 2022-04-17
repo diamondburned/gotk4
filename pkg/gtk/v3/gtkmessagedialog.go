@@ -87,6 +87,12 @@ type MessageDialogOverrider interface {
 	externglib.Objector
 }
 
+// WrapMessageDialogOverrider wraps the MessageDialogOverrider
+// interface implementation to access the instance methods.
+func WrapMessageDialogOverrider(obj MessageDialogOverrider) *MessageDialog {
+	return wrapMessageDialog(externglib.BaseObject(obj))
+}
+
 // MessageDialog presents a dialog with some message text. It’s simply a
 // convenience widget; you could construct the equivalent of MessageDialog from
 // Dialog without too much effort, but MessageDialog saves typing.

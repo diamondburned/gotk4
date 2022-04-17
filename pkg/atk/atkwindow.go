@@ -36,6 +36,12 @@ type WindowOverrider interface {
 	externglib.Objector
 }
 
+// WrapWindowOverrider wraps the WindowOverrider
+// interface implementation to access the instance methods.
+func WrapWindowOverrider(obj WindowOverrider) *Window {
+	return wrapWindow(externglib.BaseObject(obj))
+}
+
 // Window should be implemented by the UI elements that represent a top-level
 // window, such as the main window of an application or dialog.
 type Window struct {
@@ -75,7 +81,8 @@ func (v *Window) baseWindow() *Window {
 	return v
 }
 
-// BaseWindow returns the underlying base object.
+// BaseWindow returns the underlying base object from the
+// interface.
 func BaseWindow(obj Windower) *Window {
 	return obj.baseWindow()
 }

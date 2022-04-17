@@ -79,6 +79,12 @@ type RevealerOverrider interface {
 	externglib.Objector
 }
 
+// WrapRevealerOverrider wraps the RevealerOverrider
+// interface implementation to access the instance methods.
+func WrapRevealerOverrider(obj RevealerOverrider) *Revealer {
+	return wrapRevealer(externglib.BaseObject(obj))
+}
+
 // Revealer widget is a container which animates the transition of its child
 // from invisible to visible.
 //

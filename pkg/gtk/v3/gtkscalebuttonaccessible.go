@@ -30,6 +30,12 @@ type ScaleButtonAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapScaleButtonAccessibleOverrider wraps the ScaleButtonAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapScaleButtonAccessibleOverrider(obj ScaleButtonAccessibleOverrider) *ScaleButtonAccessible {
+	return wrapScaleButtonAccessible(externglib.BaseObject(obj))
+}
+
 type ScaleButtonAccessible struct {
 	_ [0]func() // equal guard
 	ButtonAccessible

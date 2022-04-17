@@ -30,6 +30,12 @@ type PanedAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapPanedAccessibleOverrider wraps the PanedAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapPanedAccessibleOverrider(obj PanedAccessibleOverrider) *PanedAccessible {
+	return wrapPanedAccessible(externglib.BaseObject(obj))
+}
+
 type PanedAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

@@ -171,6 +171,12 @@ type TreeDragDestOverrider interface {
 	RowDropPossible(destPath *TreePath, value *externglib.Value) bool
 }
 
+// WrapTreeDragDestOverrider wraps the TreeDragDestOverrider
+// interface implementation to access the instance methods.
+func WrapTreeDragDestOverrider(obj TreeDragDestOverrider) *TreeDragDest {
+	return wrapTreeDragDest(externglib.BaseObject(obj))
+}
+
 // TreeDragDest: interface for Drag-and-Drop destinations in GtkTreeView.
 type TreeDragDest struct {
 	_ [0]func() // equal guard
@@ -372,6 +378,12 @@ type TreeDragSourceOverrider interface {
 	//    - ok: TRUE if the row can be dragged.
 	//
 	RowDraggable(path *TreePath) bool
+}
+
+// WrapTreeDragSourceOverrider wraps the TreeDragSourceOverrider
+// interface implementation to access the instance methods.
+func WrapTreeDragSourceOverrider(obj TreeDragSourceOverrider) *TreeDragSource {
+	return wrapTreeDragSource(externglib.BaseObject(obj))
 }
 
 // TreeDragSource: interface for Drag-and-Drop destinations in GtkTreeView.

@@ -152,6 +152,12 @@ type LayoutOverrider interface {
 	externglib.Objector
 }
 
+// WrapLayoutOverrider wraps the LayoutOverrider
+// interface implementation to access the instance methods.
+func WrapLayoutOverrider(obj LayoutOverrider) *Layout {
+	return wrapLayout(externglib.BaseObject(obj))
+}
+
 // Layout: PangoLayout structure represents an entire paragraph of text.
 //
 // While complete access to the layout capabilities of Pango is provided using

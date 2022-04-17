@@ -99,6 +99,12 @@ type DBusObjectManagerOverrider interface {
 	ObjectRemoved(object DBusObjectOverrider)
 }
 
+// WrapDBusObjectManagerOverrider wraps the DBusObjectManagerOverrider
+// interface implementation to access the instance methods.
+func WrapDBusObjectManagerOverrider(obj DBusObjectManagerOverrider) *DBusObjectManager {
+	return wrapDBusObjectManager(externglib.BaseObject(obj))
+}
+
 // DBusObjectManager type is the base type for service- and client-side
 // implementations of the standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)

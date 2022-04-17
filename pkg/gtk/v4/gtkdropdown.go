@@ -29,6 +29,12 @@ type DropDownOverrider interface {
 	externglib.Objector
 }
 
+// WrapDropDownOverrider wraps the DropDownOverrider
+// interface implementation to access the instance methods.
+func WrapDropDownOverrider(obj DropDownOverrider) *DropDown {
+	return wrapDropDown(externglib.BaseObject(obj))
+}
+
 // DropDown: GtkDropDown is a widget that allows the user to choose an item from
 // a list of options.
 //

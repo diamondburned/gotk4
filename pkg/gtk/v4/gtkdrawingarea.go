@@ -75,6 +75,12 @@ type DrawingAreaOverrider interface {
 	Resize(width, height int)
 }
 
+// WrapDrawingAreaOverrider wraps the DrawingAreaOverrider
+// interface implementation to access the instance methods.
+func WrapDrawingAreaOverrider(obj DrawingAreaOverrider) *DrawingArea {
+	return wrapDrawingArea(externglib.BaseObject(obj))
+}
+
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
 //
 // !An example GtkDrawingArea (drawingarea.png)

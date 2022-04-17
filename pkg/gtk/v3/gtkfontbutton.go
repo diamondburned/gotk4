@@ -35,6 +35,12 @@ type FontButtonOverrider interface {
 	FontSet()
 }
 
+// WrapFontButtonOverrider wraps the FontButtonOverrider
+// interface implementation to access the instance methods.
+func WrapFontButtonOverrider(obj FontButtonOverrider) *FontButton {
+	return wrapFontButton(externglib.BaseObject(obj))
+}
+
 // FontButton is a button which displays the currently selected font an allows
 // to open a font chooser dialog to change the font. It is suitable widget for
 // selecting a font in a preference dialog.

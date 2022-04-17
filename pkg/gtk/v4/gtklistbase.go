@@ -27,6 +27,12 @@ type ListBaseOverrider interface {
 	externglib.Objector
 }
 
+// WrapListBaseOverrider wraps the ListBaseOverrider
+// interface implementation to access the instance methods.
+func WrapListBaseOverrider(obj ListBaseOverrider) *ListBase {
+	return wrapListBase(externglib.BaseObject(obj))
+}
+
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.
 type ListBase struct {
 	_ [0]func() // equal guard
@@ -96,7 +102,8 @@ func (v *ListBase) baseListBase() *ListBase {
 	return v
 }
 
-// BaseListBase returns the underlying base object.
+// BaseListBase returns the underlying base object from the
+// interface.
 func BaseListBase(obj ListBaser) *ListBase {
 	return obj.baseListBase()
 }

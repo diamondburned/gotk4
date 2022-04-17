@@ -1020,6 +1020,12 @@ type WidgetOverrider interface {
 	WindowStateEvent(event *gdk.EventWindowState) bool
 }
 
+// WrapWidgetOverrider wraps the WidgetOverrider
+// interface implementation to access the instance methods.
+func WrapWidgetOverrider(obj WidgetOverrider) *Widget {
+	return wrapWidget(externglib.BaseObject(obj))
+}
+
 // Widget is the base class all widgets in GTK+ derive from. It manages the
 // widget lifecycle, states and style.
 //
@@ -3007,7 +3013,8 @@ func (widget *Widget) baseWidget() *Widget {
 	return widget
 }
 
-// BaseWidget returns the underlying base object.
+// BaseWidget returns the underlying base object from the
+// interface.
 func BaseWidget(obj Widgetter) *Widget {
 	return obj.baseWidget()
 }

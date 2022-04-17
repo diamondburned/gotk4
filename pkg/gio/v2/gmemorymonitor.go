@@ -36,6 +36,12 @@ type MemoryMonitorOverrider interface {
 	LowMemoryWarning(level MemoryMonitorWarningLevel)
 }
 
+// WrapMemoryMonitorOverrider wraps the MemoryMonitorOverrider
+// interface implementation to access the instance methods.
+func WrapMemoryMonitorOverrider(obj MemoryMonitorOverrider) *MemoryMonitor {
+	return wrapMemoryMonitor(externglib.BaseObject(obj))
+}
+
 // MemoryMonitor will monitor system memory and suggest to the application when
 // to free memory so as to leave more room for other applications. It is
 // implemented on Linux using the Low Memory Monitor
@@ -136,7 +142,8 @@ func (monitor *MemoryMonitor) baseMemoryMonitor() *MemoryMonitor {
 	return monitor
 }
 
-// BaseMemoryMonitor returns the underlying base object.
+// BaseMemoryMonitor returns the underlying base object from the
+// interface.
 func BaseMemoryMonitor(obj MemoryMonitorrer) *MemoryMonitor {
 	return obj.baseMemoryMonitor()
 }

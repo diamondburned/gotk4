@@ -30,6 +30,12 @@ type CellAreaBoxOverrider interface {
 	externglib.Objector
 }
 
+// WrapCellAreaBoxOverrider wraps the CellAreaBoxOverrider
+// interface implementation to access the instance methods.
+func WrapCellAreaBoxOverrider(obj CellAreaBoxOverrider) *CellAreaBox {
+	return wrapCellAreaBox(externglib.BaseObject(obj))
+}
+
 // CellAreaBox renders cell renderers into a row or a column depending on its
 // Orientation.
 //

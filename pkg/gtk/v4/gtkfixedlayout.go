@@ -34,6 +34,12 @@ type FixedLayoutOverrider interface {
 	externglib.Objector
 }
 
+// WrapFixedLayoutOverrider wraps the FixedLayoutOverrider
+// interface implementation to access the instance methods.
+func WrapFixedLayoutOverrider(obj FixedLayoutOverrider) *FixedLayout {
+	return wrapFixedLayout(externglib.BaseObject(obj))
+}
+
 // FixedLayout: GtkFixedLayout is a layout manager which can place child widgets
 // at fixed positions.
 //
@@ -113,6 +119,12 @@ func NewFixedLayout() *FixedLayout {
 // FixedLayoutChildOverrider contains methods that are overridable.
 type FixedLayoutChildOverrider interface {
 	externglib.Objector
+}
+
+// WrapFixedLayoutChildOverrider wraps the FixedLayoutChildOverrider
+// interface implementation to access the instance methods.
+func WrapFixedLayoutChildOverrider(obj FixedLayoutChildOverrider) *FixedLayoutChild {
+	return wrapFixedLayoutChild(externglib.BaseObject(obj))
 }
 
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.

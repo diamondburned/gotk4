@@ -30,6 +30,12 @@ type ProgressBarAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapProgressBarAccessibleOverrider wraps the ProgressBarAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapProgressBarAccessibleOverrider(obj ProgressBarAccessibleOverrider) *ProgressBarAccessible {
+	return wrapProgressBarAccessible(externglib.BaseObject(obj))
+}
+
 type ProgressBarAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

@@ -30,6 +30,12 @@ type IconViewAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapIconViewAccessibleOverrider wraps the IconViewAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapIconViewAccessibleOverrider(obj IconViewAccessibleOverrider) *IconViewAccessible {
+	return wrapIconViewAccessible(externglib.BaseObject(obj))
+}
+
 type IconViewAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

@@ -90,6 +90,12 @@ type TableOverrider interface {
 	externglib.Objector
 }
 
+// WrapTableOverrider wraps the TableOverrider
+// interface implementation to access the instance methods.
+func WrapTableOverrider(obj TableOverrider) *Table {
+	return wrapTable(externglib.BaseObject(obj))
+}
+
 // Table functions allow the programmer to arrange widgets in rows and columns,
 // making it easy to align many widgets next to each other, horizontally and
 // vertically.

@@ -28,6 +28,12 @@ type BoolFilterOverrider interface {
 	externglib.Objector
 }
 
+// WrapBoolFilterOverrider wraps the BoolFilterOverrider
+// interface implementation to access the instance methods.
+func WrapBoolFilterOverrider(obj BoolFilterOverrider) *BoolFilter {
+	return wrapBoolFilter(externglib.BaseObject(obj))
+}
+
 // BoolFilter: GtkBoolFilter evaluates a boolean GtkExpression to determine
 // whether to include items.
 type BoolFilter struct {

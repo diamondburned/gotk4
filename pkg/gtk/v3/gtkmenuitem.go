@@ -76,6 +76,12 @@ type MenuItemOverrider interface {
 	ToggleSizeAllocate(allocation int)
 }
 
+// WrapMenuItemOverrider wraps the MenuItemOverrider
+// interface implementation to access the instance methods.
+func WrapMenuItemOverrider(obj MenuItemOverrider) *MenuItem {
+	return wrapMenuItem(externglib.BaseObject(obj))
+}
+
 // MenuItem widget and the derived widgets are the only valid children for
 // menus. Their function is to correctly handle highlighting, alignment, events
 // and submenus.

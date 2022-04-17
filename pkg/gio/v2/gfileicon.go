@@ -28,6 +28,12 @@ type FileIconOverrider interface {
 	externglib.Objector
 }
 
+// WrapFileIconOverrider wraps the FileIconOverrider
+// interface implementation to access the instance methods.
+func WrapFileIconOverrider(obj FileIconOverrider) *FileIcon {
+	return wrapFileIcon(externglib.BaseObject(obj))
+}
+
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon struct {
 	_ [0]func() // equal guard

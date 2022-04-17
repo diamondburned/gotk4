@@ -30,6 +30,12 @@ type PopoverAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapPopoverAccessibleOverrider wraps the PopoverAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapPopoverAccessibleOverrider(obj PopoverAccessibleOverrider) *PopoverAccessible {
+	return wrapPopoverAccessible(externglib.BaseObject(obj))
+}
+
 type PopoverAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

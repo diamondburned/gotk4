@@ -69,6 +69,12 @@ type RangeOverrider interface {
 	ValueChanged()
 }
 
+// WrapRangeOverrider wraps the RangeOverrider
+// interface implementation to access the instance methods.
+func WrapRangeOverrider(obj RangeOverrider) *Range {
+	return wrapRange(externglib.BaseObject(obj))
+}
+
 // Range is the common base class for widgets which visualize an adjustment, e.g
 // Scale or Scrollbar.
 //
@@ -253,7 +259,8 @@ func (_range *Range) baseRange() *Range {
 	return _range
 }
 
-// BaseRange returns the underlying base object.
+// BaseRange returns the underlying base object from the
+// interface.
 func BaseRange(obj Ranger) *Range {
 	return obj.baseRange()
 }

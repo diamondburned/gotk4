@@ -32,6 +32,12 @@ type GridLayoutOverrider interface {
 	externglib.Objector
 }
 
+// WrapGridLayoutOverrider wraps the GridLayoutOverrider
+// interface implementation to access the instance methods.
+func WrapGridLayoutOverrider(obj GridLayoutOverrider) *GridLayout {
+	return wrapGridLayout(externglib.BaseObject(obj))
+}
+
 // GridLayout: GtkGridLayout is a layout manager which arranges child widgets in
 // rows and columns.
 //
@@ -367,6 +373,12 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 // GridLayoutChildOverrider contains methods that are overridable.
 type GridLayoutChildOverrider interface {
 	externglib.Objector
+}
+
+// WrapGridLayoutChildOverrider wraps the GridLayoutChildOverrider
+// interface implementation to access the instance methods.
+func WrapGridLayoutChildOverrider(obj GridLayoutChildOverrider) *GridLayoutChild {
+	return wrapGridLayoutChild(externglib.BaseObject(obj))
 }
 
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.

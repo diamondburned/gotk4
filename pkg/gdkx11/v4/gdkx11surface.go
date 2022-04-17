@@ -56,6 +56,12 @@ type X11SurfaceOverrider interface {
 	externglib.Objector
 }
 
+// WrapX11SurfaceOverrider wraps the X11SurfaceOverrider
+// interface implementation to access the instance methods.
+func WrapX11SurfaceOverrider(obj X11SurfaceOverrider) *X11Surface {
+	return wrapX11Surface(externglib.BaseObject(obj))
+}
+
 type X11Surface struct {
 	_ [0]func() // equal guard
 	gdk.Surface

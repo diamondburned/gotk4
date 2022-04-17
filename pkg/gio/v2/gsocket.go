@@ -33,6 +33,12 @@ type SocketOverrider interface {
 	externglib.Objector
 }
 
+// WrapSocketOverrider wraps the SocketOverrider
+// interface implementation to access the instance methods.
+func WrapSocketOverrider(obj SocketOverrider) *Socket {
+	return wrapSocket(externglib.BaseObject(obj))
+}
+
 // Socket is a low-level networking primitive. It is a more or less direct
 // mapping of the BSD socket API in a portable GObject based API. It supports
 // both the UNIX socket implementations and winsock2 on Windows.

@@ -31,6 +31,12 @@ type StackSidebarOverrider interface {
 	externglib.Objector
 }
 
+// WrapStackSidebarOverrider wraps the StackSidebarOverrider
+// interface implementation to access the instance methods.
+func WrapStackSidebarOverrider(obj StackSidebarOverrider) *StackSidebar {
+	return wrapStackSidebar(externglib.BaseObject(obj))
+}
+
 // StackSidebar enables you to quickly and easily provide a consistent "sidebar"
 // object for your user interface.
 //

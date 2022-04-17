@@ -33,6 +33,12 @@ type RendererOverrider interface {
 	externglib.Objector
 }
 
+// WrapRendererOverrider wraps the RendererOverrider
+// interface implementation to access the instance methods.
+func WrapRendererOverrider(obj RendererOverrider) *Renderer {
+	return wrapRenderer(externglib.BaseObject(obj))
+}
+
 // Renderer: GskRenderer is a class that renders a scene graph defined via a
 // tree of gsk.RenderNode instances.
 //
@@ -84,7 +90,8 @@ func (renderer *Renderer) baseRenderer() *Renderer {
 	return renderer
 }
 
-// BaseRenderer returns the underlying base object.
+// BaseRenderer returns the underlying base object from the
+// interface.
 func BaseRenderer(obj Rendererer) *Renderer {
 	return obj.baseRenderer()
 }

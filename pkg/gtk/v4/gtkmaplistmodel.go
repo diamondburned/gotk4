@@ -62,6 +62,12 @@ type MapListModelOverrider interface {
 	externglib.Objector
 }
 
+// WrapMapListModelOverrider wraps the MapListModelOverrider
+// interface implementation to access the instance methods.
+func WrapMapListModelOverrider(obj MapListModelOverrider) *MapListModel {
+	return wrapMapListModel(externglib.BaseObject(obj))
+}
+
 // MapListModel: GtkMapListModel maps the items in a list model to different
 // items.
 //

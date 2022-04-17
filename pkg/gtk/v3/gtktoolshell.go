@@ -115,6 +115,12 @@ type ToolShellOverrider interface {
 	RebuildMenu()
 }
 
+// WrapToolShellOverrider wraps the ToolShellOverrider
+// interface implementation to access the instance methods.
+func WrapToolShellOverrider(obj ToolShellOverrider) *ToolShell {
+	return wrapToolShell(externglib.BaseObject(obj))
+}
+
 // ToolShell interface allows container widgets to provide additional
 // information when embedding ToolItem widgets.
 type ToolShell struct {

@@ -112,6 +112,12 @@ type NotebookOverrider interface {
 	SwitchPage(page Widgetter, pageNum uint)
 }
 
+// WrapNotebookOverrider wraps the NotebookOverrider
+// interface implementation to access the instance methods.
+func WrapNotebookOverrider(obj NotebookOverrider) *Notebook {
+	return wrapNotebook(externglib.BaseObject(obj))
+}
+
 // Notebook widget is a Container whose children are pages that can be switched
 // between using tab labels along one edge.
 //

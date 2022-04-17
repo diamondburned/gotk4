@@ -32,6 +32,12 @@ type ApplicationWindowOverrider interface {
 	externglib.Objector
 }
 
+// WrapApplicationWindowOverrider wraps the ApplicationWindowOverrider
+// interface implementation to access the instance methods.
+func WrapApplicationWindowOverrider(obj ApplicationWindowOverrider) *ApplicationWindow {
+	return wrapApplicationWindow(externglib.BaseObject(obj))
+}
+
 // ApplicationWindow is a Window subclass that offers some extra functionality
 // for better integration with Application features. Notably, it can handle both
 // the application menu as well as the menubar. See

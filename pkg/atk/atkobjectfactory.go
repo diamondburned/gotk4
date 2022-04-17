@@ -35,6 +35,12 @@ type ObjectFactoryOverrider interface {
 	Invalidate()
 }
 
+// WrapObjectFactoryOverrider wraps the ObjectFactoryOverrider
+// interface implementation to access the instance methods.
+func WrapObjectFactoryOverrider(obj ObjectFactoryOverrider) *ObjectFactory {
+	return wrapObjectFactory(externglib.BaseObject(obj))
+}
+
 // ObjectFactory: this class is the base object class for a factory used to
 // create an accessible object for a specific GType. The function
 // atk_registry_set_factory_type() is normally called to store in the registry

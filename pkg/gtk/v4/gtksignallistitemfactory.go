@@ -31,6 +31,12 @@ type SignalListItemFactoryOverrider interface {
 	externglib.Objector
 }
 
+// WrapSignalListItemFactoryOverrider wraps the SignalListItemFactoryOverrider
+// interface implementation to access the instance methods.
+func WrapSignalListItemFactoryOverrider(obj SignalListItemFactoryOverrider) *SignalListItemFactory {
+	return wrapSignalListItemFactory(externglib.BaseObject(obj))
+}
+
 // SignalListItemFactory: GtkSignalListItemFactory is a GtkListItemFactory that
 // emits signals to to manage listitems.
 //

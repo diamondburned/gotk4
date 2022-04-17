@@ -78,7 +78,8 @@ func (self *Drop) baseDrop() *Drop {
 	return self
 }
 
-// BaseDrop returns the underlying base object.
+// BaseDrop returns the underlying base object from the
+// interface.
 func BaseDrop(obj Dropper) *Drop {
 	return obj.baseDrop()
 }

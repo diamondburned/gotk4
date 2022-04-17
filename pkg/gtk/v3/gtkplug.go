@@ -36,6 +36,12 @@ type PlugOverrider interface {
 	Embedded()
 }
 
+// WrapPlugOverrider wraps the PlugOverrider
+// interface implementation to access the instance methods.
+func WrapPlugOverrider(obj PlugOverrider) *Plug {
+	return wrapPlug(externglib.BaseObject(obj))
+}
+
 // Plug: together with Socket, Plug provides the ability to embed widgets from
 // one process into another process in a fashion that is transparent to the
 // user. One process creates a Socket widget and passes the ID of that widget’s

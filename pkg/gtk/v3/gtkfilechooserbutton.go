@@ -35,6 +35,12 @@ type FileChooserButtonOverrider interface {
 	FileSet()
 }
 
+// WrapFileChooserButtonOverrider wraps the FileChooserButtonOverrider
+// interface implementation to access the instance methods.
+func WrapFileChooserButtonOverrider(obj FileChooserButtonOverrider) *FileChooserButton {
+	return wrapFileChooserButton(externglib.BaseObject(obj))
+}
+
 // FileChooserButton is a widget that lets the user select a file. It implements
 // the FileChooser interface. Visually, it is a file name with a button to bring
 // up a FileChooserDialog. The user can then use that dialog to change the file

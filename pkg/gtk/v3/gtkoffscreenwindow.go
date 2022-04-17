@@ -34,6 +34,12 @@ type OffscreenWindowOverrider interface {
 	externglib.Objector
 }
 
+// WrapOffscreenWindowOverrider wraps the OffscreenWindowOverrider
+// interface implementation to access the instance methods.
+func WrapOffscreenWindowOverrider(obj OffscreenWindowOverrider) *OffscreenWindow {
+	return wrapOffscreenWindow(externglib.BaseObject(obj))
+}
+
 // OffscreenWindow is strictly intended to be used for obtaining snapshots of
 // widgets that are not part of a normal widget hierarchy. Since OffscreenWindow
 // is a toplevel widget you cannot obtain snapshots of a full window with it

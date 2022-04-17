@@ -30,6 +30,12 @@ type PasswordEntryOverrider interface {
 	externglib.Objector
 }
 
+// WrapPasswordEntryOverrider wraps the PasswordEntryOverrider
+// interface implementation to access the instance methods.
+func WrapPasswordEntryOverrider(obj PasswordEntryOverrider) *PasswordEntry {
+	return wrapPasswordEntry(externglib.BaseObject(obj))
+}
+
 // PasswordEntry: GtkPasswordEntry is an entry that has been tailored for
 // entering secrets.
 //

@@ -31,6 +31,12 @@ type HeaderBarOverrider interface {
 	externglib.Objector
 }
 
+// WrapHeaderBarOverrider wraps the HeaderBarOverrider
+// interface implementation to access the instance methods.
+func WrapHeaderBarOverrider(obj HeaderBarOverrider) *HeaderBar {
+	return wrapHeaderBar(externglib.BaseObject(obj))
+}
+
 // HeaderBar is similar to a horizontal Box. It allows children to be placed at
 // the start or the end. In addition, it allows a title and subtitle to be
 // displayed. The title will be centered with respect to the width of the box,

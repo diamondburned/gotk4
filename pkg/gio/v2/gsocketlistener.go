@@ -43,6 +43,12 @@ type SocketListenerOverrider interface {
 	Event(event SocketListenerEvent, socket *Socket)
 }
 
+// WrapSocketListenerOverrider wraps the SocketListenerOverrider
+// interface implementation to access the instance methods.
+func WrapSocketListenerOverrider(obj SocketListenerOverrider) *SocketListener {
+	return wrapSocketListener(externglib.BaseObject(obj))
+}
+
 // SocketListener is an object that keeps track of a set of server sockets and
 // helps you accept sockets from any of the socket, either sync or async.
 //

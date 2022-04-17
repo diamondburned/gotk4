@@ -88,6 +88,12 @@ type ActionOverrider interface {
 	DisconnectProxy(proxy Widgetter)
 }
 
+// WrapActionOverrider wraps the ActionOverrider
+// interface implementation to access the instance methods.
+func WrapActionOverrider(obj ActionOverrider) *Action {
+	return wrapAction(externglib.BaseObject(obj))
+}
+
 // Action: > In GTK+ 3.10, GtkAction has been deprecated. Use #GAction >
 // instead, and associate actions with Actionable widgets. Use > Model for
 // creating menus with gtk_menu_new_from_model().

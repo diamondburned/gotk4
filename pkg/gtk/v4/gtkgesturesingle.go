@@ -30,6 +30,12 @@ type GestureSingleOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureSingleOverrider wraps the GestureSingleOverrider
+// interface implementation to access the instance methods.
+func WrapGestureSingleOverrider(obj GestureSingleOverrider) *GestureSingle {
+	return wrapGestureSingle(externglib.BaseObject(obj))
+}
+
 // GestureSingle: GtkGestureSingle is a GtkGestures subclass optimized for
 // singe-touch and mouse gestures.
 //

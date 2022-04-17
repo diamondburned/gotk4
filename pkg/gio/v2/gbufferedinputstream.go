@@ -82,6 +82,12 @@ type BufferedInputStreamOverrider interface {
 	FillFinish(result AsyncResultOverrider) (int, error)
 }
 
+// WrapBufferedInputStreamOverrider wraps the BufferedInputStreamOverrider
+// interface implementation to access the instance methods.
+func WrapBufferedInputStreamOverrider(obj BufferedInputStreamOverrider) *BufferedInputStream {
+	return wrapBufferedInputStream(externglib.BaseObject(obj))
+}
+
 // BufferedInputStream: buffered input stream implements InputStream and
 // provides for buffered reads.
 //

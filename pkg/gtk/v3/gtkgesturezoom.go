@@ -31,6 +31,12 @@ type GestureZoomOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureZoomOverrider wraps the GestureZoomOverrider
+// interface implementation to access the instance methods.
+func WrapGestureZoomOverrider(obj GestureZoomOverrider) *GestureZoom {
+	return wrapGestureZoom(externglib.BaseObject(obj))
+}
+
 // GestureZoom is a Gesture implementation able to recognize pinch/zoom
 // gestures, whenever the distance between both tracked sequences changes, the
 // GestureZoom::scale-changed signal is emitted to report the scale factor.

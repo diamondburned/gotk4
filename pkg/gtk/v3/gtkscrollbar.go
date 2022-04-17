@@ -31,6 +31,12 @@ type ScrollbarOverrider interface {
 	externglib.Objector
 }
 
+// WrapScrollbarOverrider wraps the ScrollbarOverrider
+// interface implementation to access the instance methods.
+func WrapScrollbarOverrider(obj ScrollbarOverrider) *Scrollbar {
+	return wrapScrollbar(externglib.BaseObject(obj))
+}
+
 // Scrollbar widget is a horizontal or vertical scrollbar, depending on the
 // value of the Orientable:orientation property.
 //

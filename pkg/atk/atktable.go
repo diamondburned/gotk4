@@ -435,6 +435,12 @@ type TableOverrider interface {
 	SetSummary(accessible *ObjectClass)
 }
 
+// WrapTableOverrider wraps the TableOverrider
+// interface implementation to access the instance methods.
+func WrapTableOverrider(obj TableOverrider) *Table {
+	return wrapTable(externglib.BaseObject(obj))
+}
+
 // Table should be implemented by components which present elements ordered via
 // rows and columns. It may also be used to present tree-structured information
 // if the nodes of the trees can be said to contain multiple "columns".

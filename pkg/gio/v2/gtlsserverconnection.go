@@ -29,6 +29,12 @@ type TLSServerConnectionOverrider interface {
 	externglib.Objector
 }
 
+// WrapTLSServerConnectionOverrider wraps the TLSServerConnectionOverrider
+// interface implementation to access the instance methods.
+func WrapTLSServerConnectionOverrider(obj TLSServerConnectionOverrider) *TLSServerConnection {
+	return wrapTLSServerConnection(externglib.BaseObject(obj))
+}
+
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
 type TLSServerConnection struct {
@@ -70,7 +76,8 @@ func (v *TLSServerConnection) baseTLSServerConnection() *TLSServerConnection {
 	return v
 }
 
-// BaseTLSServerConnection returns the underlying base object.
+// BaseTLSServerConnection returns the underlying base object from the
+// interface.
 func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 	return obj.baseTLSServerConnection()
 }

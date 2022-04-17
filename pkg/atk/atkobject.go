@@ -963,6 +963,12 @@ type ImplementorIfaceOverrider interface {
 	externglib.Objector
 }
 
+// WrapImplementorIfaceOverrider wraps the ImplementorIfaceOverrider
+// interface implementation to access the instance methods.
+func WrapImplementorIfaceOverrider(obj ImplementorIfaceOverrider) *ImplementorIface {
+	return wrapImplementorIface(externglib.BaseObject(obj))
+}
+
 // ImplementorIface: atkImplementor interface is implemented by objects for
 // which AtkObject peers may be obtained via calls to
 // iface->(ref_accessible)(implementor);.
@@ -998,7 +1004,8 @@ func (v *ImplementorIface) baseImplementorIface() *ImplementorIface {
 	return v
 }
 
-// BaseImplementorIface returns the underlying base object.
+// BaseImplementorIface returns the underlying base object from the
+// interface.
 func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
 	return obj.baseImplementorIface()
 }
@@ -1178,6 +1185,12 @@ type ObjectClassOverrider interface {
 	//
 	StateChange(name string, stateSet bool)
 	VisibleDataChanged()
+}
+
+// WrapObjectClassOverrider wraps the ObjectClassOverrider
+// interface implementation to access the instance methods.
+func WrapObjectClassOverrider(obj ObjectClassOverrider) *ObjectClass {
+	return wrapObject(externglib.BaseObject(obj))
 }
 
 // ObjectClass: this class is the primary class for accessibility support via

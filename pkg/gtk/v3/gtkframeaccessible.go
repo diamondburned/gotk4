@@ -30,6 +30,12 @@ type FrameAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapFrameAccessibleOverrider wraps the FrameAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapFrameAccessibleOverrider(obj FrameAccessibleOverrider) *FrameAccessible {
+	return wrapFrameAccessible(externglib.BaseObject(obj))
+}
+
 type FrameAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

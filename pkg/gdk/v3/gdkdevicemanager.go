@@ -165,7 +165,8 @@ func (deviceManager *DeviceManager) baseDeviceManager() *DeviceManager {
 	return deviceManager
 }
 
-// BaseDeviceManager returns the underlying base object.
+// BaseDeviceManager returns the underlying base object from the
+// interface.
 func BaseDeviceManager(obj DeviceManagerer) *DeviceManager {
 	return obj.baseDeviceManager()
 }

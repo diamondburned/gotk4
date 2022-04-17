@@ -28,6 +28,12 @@ type CenterBoxOverrider interface {
 	externglib.Objector
 }
 
+// WrapCenterBoxOverrider wraps the CenterBoxOverrider
+// interface implementation to access the instance methods.
+func WrapCenterBoxOverrider(obj CenterBoxOverrider) *CenterBox {
+	return wrapCenterBox(externglib.BaseObject(obj))
+}
+
 // CenterBox: GtkCenterBox arranges three children in a row, keeping the middle
 // child centered as well as possible.
 //

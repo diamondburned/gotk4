@@ -31,6 +31,12 @@ type ArrowOverrider interface {
 	externglib.Objector
 }
 
+// WrapArrowOverrider wraps the ArrowOverrider
+// interface implementation to access the instance methods.
+func WrapArrowOverrider(obj ArrowOverrider) *Arrow {
+	return wrapArrow(externglib.BaseObject(obj))
+}
+
 // Arrow should be used to draw simple arrows that need to point in one of the
 // four cardinal directions (up, down, left, or right). The style of the arrow
 // can be one of shadow in, shadow out, etched in, or etched out. Note that

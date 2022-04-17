@@ -42,6 +42,12 @@ type SwitchOverrider interface {
 	StateSet(state bool) bool
 }
 
+// WrapSwitchOverrider wraps the SwitchOverrider
+// interface implementation to access the instance methods.
+func WrapSwitchOverrider(obj SwitchOverrider) *Switch {
+	return wrapSwitch(externglib.BaseObject(obj))
+}
+
 // Switch is a widget that has two states: on or off. The user can control which
 // state should be active by clicking the empty area, or by dragging the handle.
 //

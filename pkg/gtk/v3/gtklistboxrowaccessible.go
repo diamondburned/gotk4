@@ -30,6 +30,12 @@ type ListBoxRowAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapListBoxRowAccessibleOverrider wraps the ListBoxRowAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapListBoxRowAccessibleOverrider(obj ListBoxRowAccessibleOverrider) *ListBoxRowAccessible {
+	return wrapListBoxRowAccessible(externglib.BaseObject(obj))
+}
+
 type ListBoxRowAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

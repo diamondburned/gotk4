@@ -86,6 +86,12 @@ type StatusIconOverrider interface {
 	SizeChanged(size int) bool
 }
 
+// WrapStatusIconOverrider wraps the StatusIconOverrider
+// interface implementation to access the instance methods.
+func WrapStatusIconOverrider(obj StatusIconOverrider) *StatusIcon {
+	return wrapStatusIcon(externglib.BaseObject(obj))
+}
+
 // StatusIcon: “system tray” or notification area is normally used for transient
 // icons that indicate some special state. For example, a system tray icon might
 // appear to tell the user that they have new mail, or have an incoming instant

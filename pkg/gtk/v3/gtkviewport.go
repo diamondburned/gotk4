@@ -32,6 +32,12 @@ type ViewportOverrider interface {
 	externglib.Objector
 }
 
+// WrapViewportOverrider wraps the ViewportOverrider
+// interface implementation to access the instance methods.
+func WrapViewportOverrider(obj ViewportOverrider) *Viewport {
+	return wrapViewport(externglib.BaseObject(obj))
+}
+
 // Viewport widget acts as an adaptor class, implementing scrollability for
 // child widgets that lack their own scrolling capabilities. Use GtkViewport to
 // scroll child widgets such as Grid, Box, and so on.

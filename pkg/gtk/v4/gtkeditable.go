@@ -116,6 +116,12 @@ type EditableOverrider interface {
 	SetSelectionBounds(startPos, endPos int)
 }
 
+// WrapEditableOverrider wraps the EditableOverrider
+// interface implementation to access the instance methods.
+func WrapEditableOverrider(obj EditableOverrider) *Editable {
+	return wrapEditable(externglib.BaseObject(obj))
+}
+
 // Editable: GtkEditable is an interface for text editing widgets.
 //
 // Typical examples of editable widgets are gtk.Entry and gtk.SpinButton. It

@@ -49,6 +49,12 @@ type ComboBoxOverrider interface {
 	FormatEntryText(path string) string
 }
 
+// WrapComboBoxOverrider wraps the ComboBoxOverrider
+// interface implementation to access the instance methods.
+func WrapComboBoxOverrider(obj ComboBoxOverrider) *ComboBox {
+	return wrapComboBox(externglib.BaseObject(obj))
+}
+
 // ComboBox is a widget that allows the user to choose from a list of valid
 // choices. The GtkComboBox displays the selected choice. When activated, the
 // GtkComboBox displays a popup which allows the user to make a new choice. The

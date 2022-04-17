@@ -33,6 +33,12 @@ type DataInputStreamOverrider interface {
 	externglib.Objector
 }
 
+// WrapDataInputStreamOverrider wraps the DataInputStreamOverrider
+// interface implementation to access the instance methods.
+func WrapDataInputStreamOverrider(obj DataInputStreamOverrider) *DataInputStream {
+	return wrapDataInputStream(externglib.BaseObject(obj))
+}
+
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
 type DataInputStream struct {

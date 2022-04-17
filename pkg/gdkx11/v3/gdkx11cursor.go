@@ -28,6 +28,12 @@ type X11CursorOverrider interface {
 	externglib.Objector
 }
 
+// WrapX11CursorOverrider wraps the X11CursorOverrider
+// interface implementation to access the instance methods.
+func WrapX11CursorOverrider(obj X11CursorOverrider) *X11Cursor {
+	return wrapX11Cursor(externglib.BaseObject(obj))
+}
+
 type X11Cursor struct {
 	_ [0]func() // equal guard
 	gdk.Cursor

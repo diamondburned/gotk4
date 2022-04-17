@@ -29,6 +29,12 @@ type WaylandDisplayOverrider interface {
 	externglib.Objector
 }
 
+// WrapWaylandDisplayOverrider wraps the WaylandDisplayOverrider
+// interface implementation to access the instance methods.
+func WrapWaylandDisplayOverrider(obj WaylandDisplayOverrider) *WaylandDisplay {
+	return wrapWaylandDisplay(externglib.BaseObject(obj))
+}
+
 // WaylandDisplay: wayland implementation of GdkDisplay.
 //
 // Beyond the regular gdk.Display API, the Wayland implementation provides

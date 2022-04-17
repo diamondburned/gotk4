@@ -64,6 +64,12 @@ type LoadableIconOverrider interface {
 	LoadFinish(res AsyncResultOverrider) (string, InputStreamer, error)
 }
 
+// WrapLoadableIconOverrider wraps the LoadableIconOverrider
+// interface implementation to access the instance methods.
+func WrapLoadableIconOverrider(obj LoadableIconOverrider) *LoadableIcon {
+	return wrapLoadableIcon(externglib.BaseObject(obj))
+}
+
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon struct {

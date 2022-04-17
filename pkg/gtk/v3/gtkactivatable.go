@@ -50,6 +50,12 @@ type ActivatableOverrider interface {
 	Update(action *Action, propertyName string)
 }
 
+// WrapActivatableOverrider wraps the ActivatableOverrider
+// interface implementation to access the instance methods.
+func WrapActivatableOverrider(obj ActivatableOverrider) *Activatable {
+	return wrapActivatable(externglib.BaseObject(obj))
+}
+
 // Activatable widgets can be connected to a Action and reflects the state of
 // its action. A Activatable can also provide feedback through its action, as
 // they are responsible for activating their related actions.

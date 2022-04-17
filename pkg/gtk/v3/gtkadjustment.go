@@ -49,6 +49,12 @@ type AdjustmentOverrider interface {
 	ValueChanged()
 }
 
+// WrapAdjustmentOverrider wraps the AdjustmentOverrider
+// interface implementation to access the instance methods.
+func WrapAdjustmentOverrider(obj AdjustmentOverrider) *Adjustment {
+	return wrapAdjustment(externglib.BaseObject(obj))
+}
+
 // Adjustment object represents a value which has an associated lower and upper
 // bound, together with step and page increments, and a page size. It is used
 // within several GTK+ widgets, including SpinButton, Viewport, and Range (which

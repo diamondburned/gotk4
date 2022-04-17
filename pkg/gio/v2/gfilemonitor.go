@@ -46,6 +46,12 @@ type FileMonitorOverrider interface {
 	Changed(file, otherFile FileOverrider, eventType FileMonitorEvent)
 }
 
+// WrapFileMonitorOverrider wraps the FileMonitorOverrider
+// interface implementation to access the instance methods.
+func WrapFileMonitorOverrider(obj FileMonitorOverrider) *FileMonitor {
+	return wrapFileMonitor(externglib.BaseObject(obj))
+}
+
 // FileMonitor monitors a file or directory for changes.
 //
 // To obtain a Monitor for a file or directory, use g_file_monitor(),
@@ -177,7 +183,8 @@ func (monitor *FileMonitor) baseFileMonitor() *FileMonitor {
 	return monitor
 }
 
-// BaseFileMonitor returns the underlying base object.
+// BaseFileMonitor returns the underlying base object from the
+// interface.
 func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 	return obj.baseFileMonitor()
 }

@@ -35,6 +35,12 @@ type GestureStylusOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureStylusOverrider wraps the GestureStylusOverrider
+// interface implementation to access the instance methods.
+func WrapGestureStylusOverrider(obj GestureStylusOverrider) *GestureStylus {
+	return wrapGestureStylus(externglib.BaseObject(obj))
+}
+
 // GestureStylus is a Gesture implementation specific to stylus input. The
 // provided signals just provide the basic information.
 type GestureStylus struct {

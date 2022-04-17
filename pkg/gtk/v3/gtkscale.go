@@ -57,6 +57,12 @@ type ScaleOverrider interface {
 	LayoutOffsets() (x int, y int)
 }
 
+// WrapScaleOverrider wraps the ScaleOverrider
+// interface implementation to access the instance methods.
+func WrapScaleOverrider(obj ScaleOverrider) *Scale {
+	return wrapScale(externglib.BaseObject(obj))
+}
+
 // Scale is a slider control used to select a numeric value. To use it, you’ll
 // probably want to investigate the methods on its base class, Range, in
 // addition to the methods for GtkScale itself. To set the value of a scale, you

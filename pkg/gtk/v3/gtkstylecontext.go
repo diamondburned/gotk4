@@ -718,6 +718,12 @@ type StyleContextOverrider interface {
 	Changed()
 }
 
+// WrapStyleContextOverrider wraps the StyleContextOverrider
+// interface implementation to access the instance methods.
+func WrapStyleContextOverrider(obj StyleContextOverrider) *StyleContext {
+	return wrapStyleContext(externglib.BaseObject(obj))
+}
+
 // StyleContext is an object that stores styling information affecting a widget
 // defined by WidgetPath.
 //

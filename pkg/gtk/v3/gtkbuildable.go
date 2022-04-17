@@ -158,6 +158,12 @@ type BuildableOverrider interface {
 	SetName(name string)
 }
 
+// WrapBuildableOverrider wraps the BuildableOverrider
+// interface implementation to access the instance methods.
+func WrapBuildableOverrider(obj BuildableOverrider) *Buildable {
+	return wrapBuildable(externglib.BaseObject(obj))
+}
+
 // Buildable allows objects to extend and customize their deserialization from
 // [GtkBuilder UI descriptions][BUILDER-UI]. The interface includes methods for
 // setting names and properties of objects, parsing custom tags and constructing

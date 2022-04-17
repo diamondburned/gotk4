@@ -35,6 +35,12 @@ type AdjustmentOverrider interface {
 	ValueChanged()
 }
 
+// WrapAdjustmentOverrider wraps the AdjustmentOverrider
+// interface implementation to access the instance methods.
+func WrapAdjustmentOverrider(obj AdjustmentOverrider) *Adjustment {
+	return wrapAdjustment(externglib.BaseObject(obj))
+}
+
 // Adjustment: GtkAdjustment is a model for a numeric value.
 //
 // The `GtkAdjustment has an associated lower and upper bound. It also contains

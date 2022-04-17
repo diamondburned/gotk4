@@ -35,6 +35,12 @@ type GestureMultiPressOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureMultiPressOverrider wraps the GestureMultiPressOverrider
+// interface implementation to access the instance methods.
+func WrapGestureMultiPressOverrider(obj GestureMultiPressOverrider) *GestureMultiPress {
+	return wrapGestureMultiPress(externglib.BaseObject(obj))
+}
+
 // GestureMultiPress is a Gesture implementation able to recognize multiple
 // clicks on a nearby zone, which can be listened for through the
 // GestureMultiPress::pressed signal. Whenever time or distance between clicks

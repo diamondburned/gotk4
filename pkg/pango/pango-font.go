@@ -407,6 +407,12 @@ type FontOverrider interface {
 	Metrics(language *Language) *FontMetrics
 }
 
+// WrapFontOverrider wraps the FontOverrider
+// interface implementation to access the instance methods.
+func WrapFontOverrider(obj FontOverrider) *Font {
+	return wrapFont(externglib.BaseObject(obj))
+}
+
 // Font: PangoFont is used to represent a font in a rendering-system-independent
 // manner.
 type Font struct {
@@ -589,7 +595,8 @@ func (font *Font) baseFont() *Font {
 	return font
 }
 
-// BaseFont returns the underlying base object.
+// BaseFont returns the underlying base object from the
+// interface.
 func BaseFont(obj Fonter) *Font {
 	return obj.baseFont()
 }
@@ -952,6 +959,12 @@ type FontFaceOverrider interface {
 	ListSizes() []int
 }
 
+// WrapFontFaceOverrider wraps the FontFaceOverrider
+// interface implementation to access the instance methods.
+func WrapFontFaceOverrider(obj FontFaceOverrider) *FontFace {
+	return wrapFontFace(externglib.BaseObject(obj))
+}
+
 // FontFace: PangoFontFace is used to represent a group of fonts with the same
 // family, slant, weight, and width, but varying sizes.
 type FontFace struct {
@@ -1089,7 +1102,8 @@ func (face *FontFace) baseFontFace() *FontFace {
 	return face
 }
 
-// BaseFontFace returns the underlying base object.
+// BaseFontFace returns the underlying base object from the
+// interface.
 func BaseFontFace(obj FontFacer) *FontFace {
 	return obj.baseFontFace()
 }
@@ -1321,6 +1335,12 @@ type FontFamilyOverrider interface {
 	ListFaces() []FontFacer
 }
 
+// WrapFontFamilyOverrider wraps the FontFamilyOverrider
+// interface implementation to access the instance methods.
+func WrapFontFamilyOverrider(obj FontFamilyOverrider) *FontFamily {
+	return wrapFontFamily(externglib.BaseObject(obj))
+}
+
 // FontFamily: PangoFontFamily is used to represent a family of related font
 // faces.
 //
@@ -1472,7 +1492,8 @@ func (family *FontFamily) baseFontFamily() *FontFamily {
 	return family
 }
 
-// BaseFontFamily returns the underlying base object.
+// BaseFontFamily returns the underlying base object from the
+// interface.
 func BaseFontFamily(obj FontFamilier) *FontFamily {
 	return obj.baseFontFamily()
 }

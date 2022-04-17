@@ -30,6 +30,12 @@ type VButtonBoxOverrider interface {
 	externglib.Objector
 }
 
+// WrapVButtonBoxOverrider wraps the VButtonBoxOverrider
+// interface implementation to access the instance methods.
+func WrapVButtonBoxOverrider(obj VButtonBoxOverrider) *VButtonBox {
+	return wrapVButtonBox(externglib.BaseObject(obj))
+}
+
 type VButtonBox struct {
 	_ [0]func() // equal guard
 	ButtonBox

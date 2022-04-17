@@ -30,6 +30,12 @@ type SeparatorMenuItemOverrider interface {
 	externglib.Objector
 }
 
+// WrapSeparatorMenuItemOverrider wraps the SeparatorMenuItemOverrider
+// interface implementation to access the instance methods.
+func WrapSeparatorMenuItemOverrider(obj SeparatorMenuItemOverrider) *SeparatorMenuItem {
+	return wrapSeparatorMenuItem(externglib.BaseObject(obj))
+}
+
 // SeparatorMenuItem is a separator used to group items within a menu. It
 // displays a horizontal line with a shadow to make it appear sunken into the
 // interface.

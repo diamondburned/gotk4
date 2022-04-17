@@ -28,6 +28,12 @@ type EmblemOverrider interface {
 	externglib.Objector
 }
 
+// WrapEmblemOverrider wraps the EmblemOverrider
+// interface implementation to access the instance methods.
+func WrapEmblemOverrider(obj EmblemOverrider) *Emblem {
+	return wrapEmblem(externglib.BaseObject(obj))
+}
+
 // Emblem is an implementation of #GIcon that supports having an emblem, which
 // is an icon with additional properties. It can than be added to a Icon.
 //

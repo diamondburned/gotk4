@@ -71,6 +71,12 @@ type EntryOverrider interface {
 	Activate()
 }
 
+// WrapEntryOverrider wraps the EntryOverrider
+// interface implementation to access the instance methods.
+func WrapEntryOverrider(obj EntryOverrider) *Entry {
+	return wrapEntry(externglib.BaseObject(obj))
+}
+
 // Entry: GtkEntry is a single line text entry widget.
 //
 // !An example GtkEntry (entry.png)

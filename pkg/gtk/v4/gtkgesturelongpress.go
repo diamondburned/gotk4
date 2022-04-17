@@ -30,6 +30,12 @@ type GestureLongPressOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureLongPressOverrider wraps the GestureLongPressOverrider
+// interface implementation to access the instance methods.
+func WrapGestureLongPressOverrider(obj GestureLongPressOverrider) *GestureLongPress {
+	return wrapGestureLongPress(externglib.BaseObject(obj))
+}
+
 // GestureLongPress: GtkGestureLongPress is a GtkGesture for long presses.
 //
 // This gesture is also known as “Press and Hold”.

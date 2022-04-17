@@ -27,6 +27,12 @@ type ListItemFactoryOverrider interface {
 	externglib.Objector
 }
 
+// WrapListItemFactoryOverrider wraps the ListItemFactoryOverrider
+// interface implementation to access the instance methods.
+func WrapListItemFactoryOverrider(obj ListItemFactoryOverrider) *ListItemFactory {
+	return wrapListItemFactory(externglib.BaseObject(obj))
+}
+
 // ListItemFactory: GtkListItemFactory creates widgets for the items taken from
 // a GListModel.
 //

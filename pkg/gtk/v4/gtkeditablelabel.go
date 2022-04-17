@@ -28,6 +28,12 @@ type EditableLabelOverrider interface {
 	externglib.Objector
 }
 
+// WrapEditableLabelOverrider wraps the EditableLabelOverrider
+// interface implementation to access the instance methods.
+func WrapEditableLabelOverrider(obj EditableLabelOverrider) *EditableLabel {
+	return wrapEditableLabel(externglib.BaseObject(obj))
+}
+
 // EditableLabel: GtkEditableLabel is a label that allows users to edit the text
 // by switching to an “edit mode”.
 //

@@ -76,6 +76,12 @@ type InitableOverrider interface {
 	Init(ctx context.Context) error
 }
 
+// WrapInitableOverrider wraps the InitableOverrider
+// interface implementation to access the instance methods.
+func WrapInitableOverrider(obj InitableOverrider) *Initable {
+	return wrapInitable(externglib.BaseObject(obj))
+}
+
 // Initable is implemented by objects that can fail during initialization. If an
 // object implements this interface then it must be initialized as the first
 // thing after construction, either via g_initable_init() or

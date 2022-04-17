@@ -48,6 +48,12 @@ type TLSPasswordOverrider interface {
 	Value(length *uint) *byte
 }
 
+// WrapTLSPasswordOverrider wraps the TLSPasswordOverrider
+// interface implementation to access the instance methods.
+func WrapTLSPasswordOverrider(obj TLSPasswordOverrider) *TLSPassword {
+	return wrapTLSPassword(externglib.BaseObject(obj))
+}
+
 // TLSPassword holds a password used in TLS.
 type TLSPassword struct {
 	_ [0]func() // equal guard

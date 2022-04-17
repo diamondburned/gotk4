@@ -42,6 +42,12 @@ type AsyncInitableOverrider interface {
 	InitFinish(res AsyncResultOverrider) error
 }
 
+// WrapAsyncInitableOverrider wraps the AsyncInitableOverrider
+// interface implementation to access the instance methods.
+func WrapAsyncInitableOverrider(obj AsyncInitableOverrider) *AsyncInitable {
+	return wrapAsyncInitable(externglib.BaseObject(obj))
+}
+
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
 // same in all ways except that initialization is asynchronous. For more details
 // see the descriptions on #GInitable.

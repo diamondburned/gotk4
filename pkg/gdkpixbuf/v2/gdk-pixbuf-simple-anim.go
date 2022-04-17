@@ -28,6 +28,12 @@ type PixbufSimpleAnimOverrider interface {
 	externglib.Objector
 }
 
+// WrapPixbufSimpleAnimOverrider wraps the PixbufSimpleAnimOverrider
+// interface implementation to access the instance methods.
+func WrapPixbufSimpleAnimOverrider(obj PixbufSimpleAnimOverrider) *PixbufSimpleAnim {
+	return wrapPixbufSimpleAnim(externglib.BaseObject(obj))
+}
+
 // PixbufSimpleAnim: opaque struct representing a simple animation.
 type PixbufSimpleAnim struct {
 	_ [0]func() // equal guard

@@ -67,7 +67,8 @@ func (context *DrawContext) baseDrawContext() *DrawContext {
 	return context
 }
 
-// BaseDrawContext returns the underlying base object.
+// BaseDrawContext returns the underlying base object from the
+// interface.
 func BaseDrawContext(obj DrawContexter) *DrawContext {
 	return obj.baseDrawContext()
 }

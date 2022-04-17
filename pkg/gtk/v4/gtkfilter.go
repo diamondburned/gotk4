@@ -140,6 +140,12 @@ type FilterOverrider interface {
 	Match(item *externglib.Object) bool
 }
 
+// WrapFilterOverrider wraps the FilterOverrider
+// interface implementation to access the instance methods.
+func WrapFilterOverrider(obj FilterOverrider) *Filter {
+	return wrapFilter(externglib.BaseObject(obj))
+}
+
 // Filter: GtkFilter object describes the filtering to be performed by a
 // GtkFilterListModel.
 //

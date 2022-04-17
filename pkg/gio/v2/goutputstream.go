@@ -194,6 +194,12 @@ type OutputStreamOverrider interface {
 	WritevFn(ctx context.Context, vectors []OutputVector) (uint, error)
 }
 
+// WrapOutputStreamOverrider wraps the OutputStreamOverrider
+// interface implementation to access the instance methods.
+func WrapOutputStreamOverrider(obj OutputStreamOverrider) *OutputStream {
+	return wrapOutputStream(externglib.BaseObject(obj))
+}
+
 // OutputStream has functions to write to a stream (g_output_stream_write()), to
 // close a stream (g_output_stream_close()) and to flush pending writes
 // (g_output_stream_flush()).
@@ -640,7 +646,8 @@ func (stream *OutputStream) baseOutputStream() *OutputStream {
 	return stream
 }
 
-// BaseOutputStream returns the underlying base object.
+// BaseOutputStream returns the underlying base object from the
+// interface.
 func BaseOutputStream(obj OutputStreamer) *OutputStream {
 	return obj.baseOutputStream()
 }

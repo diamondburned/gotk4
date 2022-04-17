@@ -30,6 +30,12 @@ type StackAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapStackAccessibleOverrider wraps the StackAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapStackAccessibleOverrider(obj StackAccessibleOverrider) *StackAccessible {
+	return wrapStackAccessible(externglib.BaseObject(obj))
+}
+
 type StackAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

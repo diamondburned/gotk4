@@ -29,6 +29,12 @@ type GestureRotateOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureRotateOverrider wraps the GestureRotateOverrider
+// interface implementation to access the instance methods.
+func WrapGestureRotateOverrider(obj GestureRotateOverrider) *GestureRotate {
+	return wrapGestureRotate(externglib.BaseObject(obj))
+}
+
 // GestureRotate: GtkGestureRotate is a GtkGesture for 2-finger rotations.
 //
 // Whenever the angle between both handled sequences changes, the

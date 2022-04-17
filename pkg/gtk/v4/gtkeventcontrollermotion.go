@@ -31,6 +31,12 @@ type EventControllerMotionOverrider interface {
 	externglib.Objector
 }
 
+// WrapEventControllerMotionOverrider wraps the EventControllerMotionOverrider
+// interface implementation to access the instance methods.
+func WrapEventControllerMotionOverrider(obj EventControllerMotionOverrider) *EventControllerMotion {
+	return wrapEventControllerMotion(externglib.BaseObject(obj))
+}
+
 // EventControllerMotion: GtkEventControllerMotion is an event controller
 // tracking the pointer position.
 //

@@ -58,6 +58,12 @@ type TLSBackendOverrider interface {
 	SupportsTLS() bool
 }
 
+// WrapTLSBackendOverrider wraps the TLSBackendOverrider
+// interface implementation to access the instance methods.
+func WrapTLSBackendOverrider(obj TLSBackendOverrider) *TLSBackend {
+	return wrapTLSBackend(externglib.BaseObject(obj))
+}
+
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
 type TLSBackend struct {
 	_ [0]func() // equal guard

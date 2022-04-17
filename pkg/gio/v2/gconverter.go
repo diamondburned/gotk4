@@ -131,6 +131,12 @@ type ConverterOverrider interface {
 	Reset()
 }
 
+// WrapConverterOverrider wraps the ConverterOverrider
+// interface implementation to access the instance methods.
+func WrapConverterOverrider(obj ConverterOverrider) *Converter {
+	return wrapConverter(externglib.BaseObject(obj))
+}
+
 // Converter is implemented by objects that convert binary data in various ways.
 // The conversion can be stateful and may fail at any place.
 //

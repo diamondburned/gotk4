@@ -135,6 +135,12 @@ type TreeSelectionOverrider interface {
 	Changed()
 }
 
+// WrapTreeSelectionOverrider wraps the TreeSelectionOverrider
+// interface implementation to access the instance methods.
+func WrapTreeSelectionOverrider(obj TreeSelectionOverrider) *TreeSelection {
+	return wrapTreeSelection(externglib.BaseObject(obj))
+}
+
 // TreeSelection object is a helper object to manage the selection for a
 // TreeView widget. The TreeSelection object is automatically created when a new
 // TreeView widget is created, and cannot exist independently of this widget.

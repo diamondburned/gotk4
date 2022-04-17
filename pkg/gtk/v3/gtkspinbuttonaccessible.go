@@ -30,6 +30,12 @@ type SpinButtonAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapSpinButtonAccessibleOverrider wraps the SpinButtonAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapSpinButtonAccessibleOverrider(obj SpinButtonAccessibleOverrider) *SpinButtonAccessible {
+	return wrapSpinButtonAccessible(externglib.BaseObject(obj))
+}
+
 type SpinButtonAccessible struct {
 	_ [0]func() // equal guard
 	EntryAccessible

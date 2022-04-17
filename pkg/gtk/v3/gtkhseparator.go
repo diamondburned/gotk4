@@ -30,6 +30,12 @@ type HSeparatorOverrider interface {
 	externglib.Objector
 }
 
+// WrapHSeparatorOverrider wraps the HSeparatorOverrider
+// interface implementation to access the instance methods.
+func WrapHSeparatorOverrider(obj HSeparatorOverrider) *HSeparator {
+	return wrapHSeparator(externglib.BaseObject(obj))
+}
+
 // HSeparator widget is a horizontal separator, used to group the widgets within
 // a window. It displays a horizontal line with a shadow to make it appear
 // sunken into the interface.

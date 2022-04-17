@@ -126,6 +126,12 @@ type BuilderOverrider interface {
 	externglib.Objector
 }
 
+// WrapBuilderOverrider wraps the BuilderOverrider
+// interface implementation to access the instance methods.
+func WrapBuilderOverrider(obj BuilderOverrider) *Builder {
+	return wrapBuilder(externglib.BaseObject(obj))
+}
+
 // Builder: GtkBuilder reads XML descriptions of a user interface and
 // instantiates the described objects.
 //

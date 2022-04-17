@@ -29,6 +29,12 @@ type GestureZoomOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureZoomOverrider wraps the GestureZoomOverrider
+// interface implementation to access the instance methods.
+func WrapGestureZoomOverrider(obj GestureZoomOverrider) *GestureZoom {
+	return wrapGestureZoom(externglib.BaseObject(obj))
+}
+
 // GestureZoom: GtkGestureZoom is a GtkGesture for 2-finger pinch/zoom gestures.
 //
 // Whenever the distance between both tracked sequences changes, the

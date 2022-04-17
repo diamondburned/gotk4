@@ -36,6 +36,12 @@ type TaskOverrider interface {
 	externglib.Objector
 }
 
+// WrapTaskOverrider wraps the TaskOverrider
+// interface implementation to access the instance methods.
+func WrapTaskOverrider(obj TaskOverrider) *Task {
+	return wrapTask(externglib.BaseObject(obj))
+}
+
 // Task represents and manages a cancellable "task".
 //
 //

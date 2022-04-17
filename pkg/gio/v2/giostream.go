@@ -63,6 +63,12 @@ type IOStreamOverrider interface {
 	OutputStream() OutputStreamer
 }
 
+// WrapIOStreamOverrider wraps the IOStreamOverrider
+// interface implementation to access the instance methods.
+func WrapIOStreamOverrider(obj IOStreamOverrider) *IOStream {
+	return wrapIOStream(externglib.BaseObject(obj))
+}
+
 // IOStream represents an object that has both read and write streams. Generally
 // the two streams act as separate input and output streams, but they share some
 // common resources and state. For instance, for seekable streams, both streams
@@ -255,7 +261,8 @@ func (stream *IOStream) baseIOStream() *IOStream {
 	return stream
 }
 
-// BaseIOStream returns the underlying base object.
+// BaseIOStream returns the underlying base object from the
+// interface.
 func BaseIOStream(obj IOStreamer) *IOStream {
 	return obj.baseIOStream()
 }

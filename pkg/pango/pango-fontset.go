@@ -124,6 +124,12 @@ type FontsetOverrider interface {
 	Metrics() *FontMetrics
 }
 
+// WrapFontsetOverrider wraps the FontsetOverrider
+// interface implementation to access the instance methods.
+func WrapFontsetOverrider(obj FontsetOverrider) *Fontset {
+	return wrapFontset(externglib.BaseObject(obj))
+}
+
 // Fontset: PangoFontset represents a set of PangoFont to use when rendering
 // text.
 //
@@ -231,7 +237,8 @@ func (fontset *Fontset) baseFontset() *Fontset {
 	return fontset
 }
 
-// BaseFontset returns the underlying base object.
+// BaseFontset returns the underlying base object from the
+// interface.
 func BaseFontset(obj Fontsetter) *Fontset {
 	return obj.baseFontset()
 }
@@ -339,6 +346,12 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 // FontsetSimpleOverrider contains methods that are overridable.
 type FontsetSimpleOverrider interface {
 	externglib.Objector
+}
+
+// WrapFontsetSimpleOverrider wraps the FontsetSimpleOverrider
+// interface implementation to access the instance methods.
+func WrapFontsetSimpleOverrider(obj FontsetSimpleOverrider) *FontsetSimple {
+	return wrapFontsetSimple(externglib.BaseObject(obj))
 }
 
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract

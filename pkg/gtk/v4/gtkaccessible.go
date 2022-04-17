@@ -79,6 +79,12 @@ type AccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapAccessibleOverrider wraps the AccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapAccessibleOverrider(obj AccessibleOverrider) *Accessible {
+	return wrapAccessible(externglib.BaseObject(obj))
+}
+
 // Accessible: GtkAccessible is an interface for describing UI elements for
 // Assistive Technologies.
 //

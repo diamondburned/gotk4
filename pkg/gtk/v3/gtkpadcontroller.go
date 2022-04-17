@@ -68,6 +68,12 @@ type PadControllerOverrider interface {
 	externglib.Objector
 }
 
+// WrapPadControllerOverrider wraps the PadControllerOverrider
+// interface implementation to access the instance methods.
+func WrapPadControllerOverrider(obj PadControllerOverrider) *PadController {
+	return wrapPadController(externglib.BaseObject(obj))
+}
+
 // PadController is an event controller for the pads found in drawing tablets
 // (The collection of buttons and tactile sensors often found around the
 // stylus-sensitive area).

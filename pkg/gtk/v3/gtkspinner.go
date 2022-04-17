@@ -31,6 +31,12 @@ type SpinnerOverrider interface {
 	externglib.Objector
 }
 
+// WrapSpinnerOverrider wraps the SpinnerOverrider
+// interface implementation to access the instance methods.
+func WrapSpinnerOverrider(obj SpinnerOverrider) *Spinner {
+	return wrapSpinner(externglib.BaseObject(obj))
+}
+
 // Spinner widget displays an icon-size spinning animation. It is often used as
 // an alternative to a ProgressBar for displaying indefinite activity, instead
 // of actual progress.

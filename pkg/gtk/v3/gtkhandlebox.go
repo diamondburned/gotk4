@@ -42,6 +42,12 @@ type HandleBoxOverrider interface {
 	ChildDetached(child Widgetter)
 }
 
+// WrapHandleBoxOverrider wraps the HandleBoxOverrider
+// interface implementation to access the instance methods.
+func WrapHandleBoxOverrider(obj HandleBoxOverrider) *HandleBox {
+	return wrapHandleBox(externglib.BaseObject(obj))
+}
+
 // HandleBox widget allows a portion of a window to be "torn off". It is a bin
 // widget which displays its child and a handle that the user can drag to tear
 // off a separate window (the “float window”) containing the child widget. A

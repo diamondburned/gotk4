@@ -146,6 +146,12 @@ type SorterOverrider interface {
 	Order() SorterOrder
 }
 
+// WrapSorterOverrider wraps the SorterOverrider
+// interface implementation to access the instance methods.
+func WrapSorterOverrider(obj SorterOverrider) *Sorter {
+	return wrapSorter(externglib.BaseObject(obj))
+}
+
 // Sorter: GtkSorter is an object to describe sorting criteria.
 //
 //

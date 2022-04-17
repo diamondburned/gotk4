@@ -28,6 +28,12 @@ type ProxyAddressOverrider interface {
 	externglib.Objector
 }
 
+// WrapProxyAddressOverrider wraps the ProxyAddressOverrider
+// interface implementation to access the instance methods.
+func WrapProxyAddressOverrider(obj ProxyAddressOverrider) *ProxyAddress {
+	return wrapProxyAddress(externglib.BaseObject(obj))
+}
+
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
 	_ [0]func() // equal guard

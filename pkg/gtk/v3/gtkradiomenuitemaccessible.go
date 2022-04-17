@@ -30,6 +30,12 @@ type RadioMenuItemAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapRadioMenuItemAccessibleOverrider wraps the RadioMenuItemAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapRadioMenuItemAccessibleOverrider(obj RadioMenuItemAccessibleOverrider) *RadioMenuItemAccessible {
+	return wrapRadioMenuItemAccessible(externglib.BaseObject(obj))
+}
+
 type RadioMenuItemAccessible struct {
 	_ [0]func() // equal guard
 	CheckMenuItemAccessible

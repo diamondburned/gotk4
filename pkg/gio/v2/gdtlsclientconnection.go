@@ -29,6 +29,12 @@ type DTLSClientConnectionOverrider interface {
 	externglib.Objector
 }
 
+// WrapDTLSClientConnectionOverrider wraps the DTLSClientConnectionOverrider
+// interface implementation to access the instance methods.
+func WrapDTLSClientConnectionOverrider(obj DTLSClientConnectionOverrider) *DTLSClientConnection {
+	return wrapDTLSClientConnection(externglib.BaseObject(obj))
+}
+
 // DTLSClientConnection is the client-side subclass of Connection, representing
 // a client-side DTLS connection.
 type DTLSClientConnection struct {

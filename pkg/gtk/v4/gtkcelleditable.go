@@ -57,6 +57,12 @@ type CellEditableOverrider interface {
 	StartEditing(event gdk.Eventer)
 }
 
+// WrapCellEditableOverrider wraps the CellEditableOverrider
+// interface implementation to access the instance methods.
+func WrapCellEditableOverrider(obj CellEditableOverrider) *CellEditable {
+	return wrapCellEditable(externglib.BaseObject(obj))
+}
+
 // CellEditable: interface for widgets that can be used for editing cells
 //
 // The CellEditable interface must be implemented for widgets to be usable to

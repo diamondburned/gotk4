@@ -152,6 +152,12 @@ type WindowOverrider interface {
 	SetFocus(focus Widgetter)
 }
 
+// WrapWindowOverrider wraps the WindowOverrider
+// interface implementation to access the instance methods.
+func WrapWindowOverrider(obj WindowOverrider) *Window {
+	return wrapWindow(externglib.BaseObject(obj))
+}
+
 // Window is a toplevel window which can contain other widgets. Windows normally
 // have decorations that are under the control of the windowing system and allow
 // the user to manipulate the window (resize it, move it, close it,...).

@@ -32,6 +32,12 @@ type DropControllerMotionOverrider interface {
 	externglib.Objector
 }
 
+// WrapDropControllerMotionOverrider wraps the DropControllerMotionOverrider
+// interface implementation to access the instance methods.
+func WrapDropControllerMotionOverrider(obj DropControllerMotionOverrider) *DropControllerMotion {
+	return wrapDropControllerMotion(externglib.BaseObject(obj))
+}
+
 // DropControllerMotion: GtkDropControllerMotion is an event controller tracking
 // the pointer during Drag-and-Drop operations.
 //

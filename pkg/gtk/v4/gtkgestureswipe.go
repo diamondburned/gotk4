@@ -29,6 +29,12 @@ type GestureSwipeOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureSwipeOverrider wraps the GestureSwipeOverrider
+// interface implementation to access the instance methods.
+func WrapGestureSwipeOverrider(obj GestureSwipeOverrider) *GestureSwipe {
+	return wrapGestureSwipe(externglib.BaseObject(obj))
+}
+
 // GestureSwipe: GtkGestureSwipe is a GtkGesture for swipe gestures.
 //
 // After a press/move/.../move/release sequence happens, the

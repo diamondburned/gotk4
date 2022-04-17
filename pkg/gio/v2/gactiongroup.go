@@ -317,6 +317,12 @@ type ActionGroupOverrider interface {
 	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
+// WrapActionGroupOverrider wraps the ActionGroupOverrider
+// interface implementation to access the instance methods.
+func WrapActionGroupOverrider(obj ActionGroupOverrider) *ActionGroup {
+	return wrapActionGroup(externglib.BaseObject(obj))
+}
+
 // ActionGroup represents a group of actions. Actions can be used to expose
 // functionality in a structured way, either from one part of a program to
 // another, or to the outside world. Action groups are often used together with

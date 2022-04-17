@@ -56,6 +56,12 @@ type PixbufLoaderOverrider interface {
 	SizePrepared(width, height int)
 }
 
+// WrapPixbufLoaderOverrider wraps the PixbufLoaderOverrider
+// interface implementation to access the instance methods.
+func WrapPixbufLoaderOverrider(obj PixbufLoaderOverrider) *PixbufLoader {
+	return wrapPixbufLoader(externglib.BaseObject(obj))
+}
+
 // PixbufLoader: incremental image loader.
 //
 // GdkPixbufLoader provides a way for applications to drive the process of

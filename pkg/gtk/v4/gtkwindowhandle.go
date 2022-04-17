@@ -28,6 +28,12 @@ type WindowHandleOverrider interface {
 	externglib.Objector
 }
 
+// WrapWindowHandleOverrider wraps the WindowHandleOverrider
+// interface implementation to access the instance methods.
+func WrapWindowHandleOverrider(obj WindowHandleOverrider) *WindowHandle {
+	return wrapWindowHandle(externglib.BaseObject(obj))
+}
+
 // WindowHandle: GtkWindowHandle is a titlebar area widget.
 //
 // When added into a window, it can be dragged to move the window, and handles

@@ -31,6 +31,12 @@ type StackSwitcherOverrider interface {
 	externglib.Objector
 }
 
+// WrapStackSwitcherOverrider wraps the StackSwitcherOverrider
+// interface implementation to access the instance methods.
+func WrapStackSwitcherOverrider(obj StackSwitcherOverrider) *StackSwitcher {
+	return wrapStackSwitcher(externglib.BaseObject(obj))
+}
+
 // StackSwitcher widget acts as a controller for a Stack; it shows a row of
 // buttons to switch between the various pages of the associated stack widget.
 //

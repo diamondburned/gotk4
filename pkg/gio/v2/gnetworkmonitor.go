@@ -74,6 +74,12 @@ type NetworkMonitorOverrider interface {
 	NetworkChanged(networkAvailable bool)
 }
 
+// WrapNetworkMonitorOverrider wraps the NetworkMonitorOverrider
+// interface implementation to access the instance methods.
+func WrapNetworkMonitorOverrider(obj NetworkMonitorOverrider) *NetworkMonitor {
+	return wrapNetworkMonitor(externglib.BaseObject(obj))
+}
+
 // NetworkMonitor provides an easy-to-use cross-platform API for monitoring
 // network connectivity. On Linux, the available implementations are based on
 // the kernel's netlink interface and on NetworkManager.

@@ -30,6 +30,12 @@ type FixedOverrider interface {
 	externglib.Objector
 }
 
+// WrapFixedOverrider wraps the FixedOverrider
+// interface implementation to access the instance methods.
+func WrapFixedOverrider(obj FixedOverrider) *Fixed {
+	return wrapFixed(externglib.BaseObject(obj))
+}
+
 // Fixed: GtkFixed places its child widgets at fixed positions and with fixed
 // sizes.
 //

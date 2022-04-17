@@ -30,6 +30,12 @@ type WindowAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapWindowAccessibleOverrider wraps the WindowAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapWindowAccessibleOverrider(obj WindowAccessibleOverrider) *WindowAccessible {
+	return wrapWindowAccessible(externglib.BaseObject(obj))
+}
+
 type WindowAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

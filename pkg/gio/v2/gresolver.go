@@ -287,6 +287,12 @@ type ResolverOverrider interface {
 	Reload()
 }
 
+// WrapResolverOverrider wraps the ResolverOverrider
+// interface implementation to access the instance methods.
+func WrapResolverOverrider(obj ResolverOverrider) *Resolver {
+	return wrapResolver(externglib.BaseObject(obj))
+}
+
 // Resolver provides cancellable synchronous and asynchronous DNS resolution,
 // for hostnames (g_resolver_lookup_by_address(), g_resolver_lookup_by_name()
 // and their async variants) and SRV (service) records
@@ -736,7 +742,8 @@ func (resolver *Resolver) baseResolver() *Resolver {
 	return resolver
 }
 
-// BaseResolver returns the underlying base object.
+// BaseResolver returns the underlying base object from the
+// interface.
 func BaseResolver(obj Resolverer) *Resolver {
 	return obj.baseResolver()
 }

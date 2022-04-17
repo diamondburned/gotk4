@@ -250,6 +250,12 @@ type SettingsOverrider interface {
 	WritableChanged(key string)
 }
 
+// WrapSettingsOverrider wraps the SettingsOverrider
+// interface implementation to access the instance methods.
+func WrapSettingsOverrider(obj SettingsOverrider) *Settings {
+	return wrapSettings(externglib.BaseObject(obj))
+}
+
 // Settings class provides a convenient API for storing and retrieving
 // application settings.
 //

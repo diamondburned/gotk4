@@ -28,6 +28,12 @@ type CenterLayoutOverrider interface {
 	externglib.Objector
 }
 
+// WrapCenterLayoutOverrider wraps the CenterLayoutOverrider
+// interface implementation to access the instance methods.
+func WrapCenterLayoutOverrider(obj CenterLayoutOverrider) *CenterLayout {
+	return wrapCenterLayout(externglib.BaseObject(obj))
+}
+
 // CenterLayout: GtkCenterLayout is a layout manager that manages up to three
 // children.
 //

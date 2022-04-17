@@ -37,6 +37,12 @@ type HyperlinkImplOverrider interface {
 	Hyperlink() *Hyperlink
 }
 
+// WrapHyperlinkImplOverrider wraps the HyperlinkImplOverrider
+// interface implementation to access the instance methods.
+func WrapHyperlinkImplOverrider(obj HyperlinkImplOverrider) *HyperlinkImpl {
+	return wrapHyperlinkImpl(externglib.BaseObject(obj))
+}
+
 // HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
 // instance, if one exists. AtkHyperlinkImpl differs from AtkHyperlink in that
 // AtkHyperlinkImpl is an interface, whereas AtkHyperlink is a object type. The

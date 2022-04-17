@@ -30,6 +30,12 @@ type RangeAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapRangeAccessibleOverrider wraps the RangeAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapRangeAccessibleOverrider(obj RangeAccessibleOverrider) *RangeAccessible {
+	return wrapRangeAccessible(externglib.BaseObject(obj))
+}
+
 type RangeAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

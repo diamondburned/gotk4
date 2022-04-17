@@ -30,6 +30,12 @@ type ColorChooserWidgetOverrider interface {
 	externglib.Objector
 }
 
+// WrapColorChooserWidgetOverrider wraps the ColorChooserWidgetOverrider
+// interface implementation to access the instance methods.
+func WrapColorChooserWidgetOverrider(obj ColorChooserWidgetOverrider) *ColorChooserWidget {
+	return wrapColorChooserWidget(externglib.BaseObject(obj))
+}
+
 // ColorChooserWidget widget lets the user select a color. By default, the
 // chooser presents a predefined palette of colors, plus a small number of
 // settable custom colors. It is also possible to select a different color with

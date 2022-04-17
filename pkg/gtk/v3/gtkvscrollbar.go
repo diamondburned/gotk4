@@ -31,6 +31,12 @@ type VScrollbarOverrider interface {
 	externglib.Objector
 }
 
+// WrapVScrollbarOverrider wraps the VScrollbarOverrider
+// interface implementation to access the instance methods.
+func WrapVScrollbarOverrider(obj VScrollbarOverrider) *VScrollbar {
+	return wrapVScrollbar(externglib.BaseObject(obj))
+}
+
 // VScrollbar widget is a widget arranged vertically creating a scrollbar. See
 // Scrollbar for details on scrollbars. Adjustment pointers may be added to
 // handle the adjustment of the scrollbar or it may be left NULL in which case

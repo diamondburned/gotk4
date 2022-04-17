@@ -28,6 +28,12 @@ type ConstraintGuideOverrider interface {
 	externglib.Objector
 }
 
+// WrapConstraintGuideOverrider wraps the ConstraintGuideOverrider
+// interface implementation to access the instance methods.
+func WrapConstraintGuideOverrider(obj ConstraintGuideOverrider) *ConstraintGuide {
+	return wrapConstraintGuide(externglib.BaseObject(obj))
+}
+
 // ConstraintGuide: GtkConstraintGuide is an invisible layout element in a
 // GtkConstraintLayout.
 //

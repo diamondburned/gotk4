@@ -29,6 +29,12 @@ type FlattenListModelOverrider interface {
 	externglib.Objector
 }
 
+// WrapFlattenListModelOverrider wraps the FlattenListModelOverrider
+// interface implementation to access the instance methods.
+func WrapFlattenListModelOverrider(obj FlattenListModelOverrider) *FlattenListModel {
+	return wrapFlattenListModel(externglib.BaseObject(obj))
+}
+
 // FlattenListModel: GtkFlattenListModel is a list model that concatenates other
 // list models.
 //

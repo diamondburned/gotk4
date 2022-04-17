@@ -242,6 +242,12 @@ type MountOverrider interface {
 	Unmounted()
 }
 
+// WrapMountOverrider wraps the MountOverrider
+// interface implementation to access the instance methods.
+func WrapMountOverrider(obj MountOverrider) *Mount {
+	return wrapMount(externglib.BaseObject(obj))
+}
+
 // Mount interface represents user-visible mounts. Note, when porting from
 // GnomeVFS, #GMount is the moral equivalent of VFSVolume.
 //

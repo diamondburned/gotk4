@@ -144,6 +144,12 @@ type AboutDialogOverrider interface {
 	ActivateLink(uri string) bool
 }
 
+// WrapAboutDialogOverrider wraps the AboutDialogOverrider
+// interface implementation to access the instance methods.
+func WrapAboutDialogOverrider(obj AboutDialogOverrider) *AboutDialog {
+	return wrapAboutDialog(externglib.BaseObject(obj))
+}
+
 // AboutDialog offers a simple way to display information about a program like
 // its logo, name, copyright, website and license. It is also possible to give
 // credits to the authors, documenters, translators and artists who have worked

@@ -65,6 +65,12 @@ type X11GLContextOverrider interface {
 	externglib.Objector
 }
 
+// WrapX11GLContextOverrider wraps the X11GLContextOverrider
+// interface implementation to access the instance methods.
+func WrapX11GLContextOverrider(obj X11GLContextOverrider) *X11GLContext {
+	return wrapX11GLContext(externglib.BaseObject(obj))
+}
+
 type X11GLContext struct {
 	_ [0]func() // equal guard
 	gdk.GLContext

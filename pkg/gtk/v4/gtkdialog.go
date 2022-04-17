@@ -170,6 +170,12 @@ type DialogOverrider interface {
 	Response(responseId int)
 }
 
+// WrapDialogOverrider wraps the DialogOverrider
+// interface implementation to access the instance methods.
+func WrapDialogOverrider(obj DialogOverrider) *Dialog {
+	return wrapDialog(externglib.BaseObject(obj))
+}
+
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
 // input.
 //

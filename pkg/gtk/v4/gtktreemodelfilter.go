@@ -193,6 +193,12 @@ type TreeModelFilterOverrider interface {
 	Visible(childModel TreeModelOverrider, iter *TreeIter) bool
 }
 
+// WrapTreeModelFilterOverrider wraps the TreeModelFilterOverrider
+// interface implementation to access the instance methods.
+func WrapTreeModelFilterOverrider(obj TreeModelFilterOverrider) *TreeModelFilter {
+	return wrapTreeModelFilter(externglib.BaseObject(obj))
+}
+
 // TreeModelFilter: gtkTreeModel which hides parts of an underlying tree model
 //
 // A TreeModelFilter is a tree model which wraps another tree model, and can do

@@ -37,6 +37,12 @@ type GestureOverrider interface {
 	externglib.Objector
 }
 
+// WrapGestureOverrider wraps the GestureOverrider
+// interface implementation to access the instance methods.
+func WrapGestureOverrider(obj GestureOverrider) *Gesture {
+	return wrapGesture(externglib.BaseObject(obj))
+}
+
 // Gesture is the base object for gesture recognition, although this object is
 // quite generalized to serve as a base for multi-touch gestures, it is suitable
 // to implement single-touch and pointer-based gestures (using the special NULL
@@ -179,7 +185,8 @@ func (gesture *Gesture) baseGesture() *Gesture {
 	return gesture
 }
 
-// BaseGesture returns the underlying base object.
+// BaseGesture returns the underlying base object from the
+// interface.
 func BaseGesture(obj Gesturer) *Gesture {
 	return obj.baseGesture()
 }

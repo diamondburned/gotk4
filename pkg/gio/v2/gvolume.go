@@ -250,6 +250,12 @@ type VolumeOverrider interface {
 	ShouldAutomount() bool
 }
 
+// WrapVolumeOverrider wraps the VolumeOverrider
+// interface implementation to access the instance methods.
+func WrapVolumeOverrider(obj VolumeOverrider) *Volume {
+	return wrapVolume(externglib.BaseObject(obj))
+}
+
 // Volume interface represents user-visible objects that can be mounted. Note,
 // when porting from GnomeVFS, #GVolume is the moral equivalent of VFSDrive.
 //

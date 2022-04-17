@@ -111,6 +111,12 @@ type RelationOverrider interface {
 	externglib.Objector
 }
 
+// WrapRelationOverrider wraps the RelationOverrider
+// interface implementation to access the instance methods.
+func WrapRelationOverrider(obj RelationOverrider) *Relation {
+	return wrapRelation(externglib.BaseObject(obj))
+}
+
 // Relation describes a relation between an object and one or more other
 // objects. The actual relations that an object has with other objects are
 // defined as an AtkRelationSet, which is a set of AtkRelations.

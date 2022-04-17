@@ -30,6 +30,12 @@ type ShortcutOverrider interface {
 	externglib.Objector
 }
 
+// WrapShortcutOverrider wraps the ShortcutOverrider
+// interface implementation to access the instance methods.
+func WrapShortcutOverrider(obj ShortcutOverrider) *Shortcut {
+	return wrapShortcut(externglib.BaseObject(obj))
+}
+
 // Shortcut: GtkShortcut describes a keyboard shortcut.
 //
 // It contains a description of how to trigger the shortcut via a

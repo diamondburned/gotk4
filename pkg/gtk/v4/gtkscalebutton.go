@@ -36,6 +36,12 @@ type ScaleButtonOverrider interface {
 	ValueChanged(value float64)
 }
 
+// WrapScaleButtonOverrider wraps the ScaleButtonOverrider
+// interface implementation to access the instance methods.
+func WrapScaleButtonOverrider(obj ScaleButtonOverrider) *ScaleButton {
+	return wrapScaleButton(externglib.BaseObject(obj))
+}
+
 // ScaleButton: GtkScaleButton provides a button which pops up a scale widget.
 //
 // This kind of widget is commonly used for volume controls in multimedia

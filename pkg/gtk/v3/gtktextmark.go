@@ -30,6 +30,12 @@ type TextMarkOverrider interface {
 	externglib.Objector
 }
 
+// WrapTextMarkOverrider wraps the TextMarkOverrider
+// interface implementation to access the instance methods.
+func WrapTextMarkOverrider(obj TextMarkOverrider) *TextMark {
+	return wrapTextMark(externglib.BaseObject(obj))
+}
+
 // TextMark: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.

@@ -387,6 +387,12 @@ type CellAreaOverrider interface {
 	Render(context *CellAreaContext, widget Widgetter, cr *cairo.Context, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 }
 
+// WrapCellAreaOverrider wraps the CellAreaOverrider
+// interface implementation to access the instance methods.
+func WrapCellAreaOverrider(obj CellAreaOverrider) *CellArea {
+	return wrapCellArea(externglib.BaseObject(obj))
+}
+
 // CellArea is an abstract class for CellLayout widgets (also referred to as
 // "layouting widgets") to interface with an arbitrary number of CellRenderers
 // and interact with the user for a given TreeModel row.
@@ -1107,7 +1113,8 @@ func (area *CellArea) baseCellArea() *CellArea {
 	return area
 }
 
-// BaseCellArea returns the underlying base object.
+// BaseCellArea returns the underlying base object from the
+// interface.
 func BaseCellArea(obj CellAreaer) *CellArea {
 	return obj.baseCellArea()
 }

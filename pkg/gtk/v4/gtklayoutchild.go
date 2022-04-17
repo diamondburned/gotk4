@@ -28,6 +28,12 @@ type LayoutChildOverrider interface {
 	externglib.Objector
 }
 
+// WrapLayoutChildOverrider wraps the LayoutChildOverrider
+// interface implementation to access the instance methods.
+func WrapLayoutChildOverrider(obj LayoutChildOverrider) *LayoutChild {
+	return wrapLayoutChild(externglib.BaseObject(obj))
+}
+
 // LayoutChild: GtkLayoutChild is the base class for objects that are meant to
 // hold layout properties.
 //
@@ -79,7 +85,8 @@ func (layoutChild *LayoutChild) baseLayoutChild() *LayoutChild {
 	return layoutChild
 }
 
-// BaseLayoutChild returns the underlying base object.
+// BaseLayoutChild returns the underlying base object from the
+// interface.
 func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
 	return obj.baseLayoutChild()
 }

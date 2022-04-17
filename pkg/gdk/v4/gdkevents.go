@@ -844,7 +844,8 @@ func (event *Event) baseEvent() *Event {
 	return event
 }
 
-// BaseEvent returns the underlying base object.
+// BaseEvent returns the underlying base object from the
+// interface.
 func BaseEvent(obj Eventer) *Event {
 	return obj.baseEvent()
 }

@@ -78,6 +78,12 @@ type MonitorOverrider interface {
 	externglib.Objector
 }
 
+// WrapMonitorOverrider wraps the MonitorOverrider
+// interface implementation to access the instance methods.
+func WrapMonitorOverrider(obj MonitorOverrider) *Monitor {
+	return wrapMonitor(externglib.BaseObject(obj))
+}
+
 // Monitor objects represent the individual outputs that are associated with a
 // Display. GdkDisplay has APIs to enumerate monitors with
 // gdk_display_get_n_monitors() and gdk_display_get_monitor(), and to find

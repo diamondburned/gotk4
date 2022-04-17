@@ -1232,6 +1232,12 @@ type FileOverrider interface {
 	UnmountMountableWithOperationFinish(result AsyncResultOverrider) error
 }
 
+// WrapFileOverrider wraps the FileOverrider
+// interface implementation to access the instance methods.
+func WrapFileOverrider(obj FileOverrider) *File {
+	return wrapFile(externglib.BaseObject(obj))
+}
+
 // File is a high level abstraction for manipulating files on a virtual file
 // system. #GFiles are lightweight, immutable objects that do no I/O upon
 // creation. It is necessary to understand that #GFile objects do not represent

@@ -29,6 +29,12 @@ type DTLSServerConnectionOverrider interface {
 	externglib.Objector
 }
 
+// WrapDTLSServerConnectionOverrider wraps the DTLSServerConnectionOverrider
+// interface implementation to access the instance methods.
+func WrapDTLSServerConnectionOverrider(obj DTLSServerConnectionOverrider) *DTLSServerConnection {
+	return wrapDTLSServerConnection(externglib.BaseObject(obj))
+}
+
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection struct {
@@ -68,7 +74,8 @@ func (v *DTLSServerConnection) baseDTLSServerConnection() *DTLSServerConnection 
 	return v
 }
 
-// BaseDTLSServerConnection returns the underlying base object.
+// BaseDTLSServerConnection returns the underlying base object from the
+// interface.
 func BaseDTLSServerConnection(obj DTLSServerConnectioner) *DTLSServerConnection {
 	return obj.baseDTLSServerConnection()
 }

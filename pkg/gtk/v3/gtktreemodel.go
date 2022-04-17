@@ -425,6 +425,12 @@ type TreeModelOverrider interface {
 	UnrefNode(iter *TreeIter)
 }
 
+// WrapTreeModelOverrider wraps the TreeModelOverrider
+// interface implementation to access the instance methods.
+func WrapTreeModelOverrider(obj TreeModelOverrider) *TreeModel {
+	return wrapTreeModel(externglib.BaseObject(obj))
+}
+
 // TreeModel interface defines a generic tree interface for use by the TreeView
 // widget. It is an abstract interface, and is designed to be usable with any
 // appropriate data structure. The programmer just has to implement this

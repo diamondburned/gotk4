@@ -107,6 +107,12 @@ type CellAreaContextOverrider interface {
 	Reset()
 }
 
+// WrapCellAreaContextOverrider wraps the CellAreaContextOverrider
+// interface implementation to access the instance methods.
+func WrapCellAreaContextOverrider(obj CellAreaContextOverrider) *CellAreaContext {
+	return wrapCellAreaContext(externglib.BaseObject(obj))
+}
+
 // CellAreaContext stores geometrical information for a series of rows in a
 // GtkCellArea
 //

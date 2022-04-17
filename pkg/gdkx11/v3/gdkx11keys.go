@@ -29,6 +29,12 @@ type X11KeymapOverrider interface {
 	externglib.Objector
 }
 
+// WrapX11KeymapOverrider wraps the X11KeymapOverrider
+// interface implementation to access the instance methods.
+func WrapX11KeymapOverrider(obj X11KeymapOverrider) *X11Keymap {
+	return wrapX11Keymap(externglib.BaseObject(obj))
+}
+
 type X11Keymap struct {
 	_ [0]func() // equal guard
 	gdk.Keymap

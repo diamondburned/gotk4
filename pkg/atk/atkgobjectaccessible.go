@@ -28,6 +28,12 @@ type GObjectAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapGObjectAccessibleOverrider wraps the GObjectAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapGObjectAccessibleOverrider(obj GObjectAccessibleOverrider) *GObjectAccessible {
+	return wrapGObjectAccessible(externglib.BaseObject(obj))
+}
+
 // GObjectAccessible: this object class is derived from AtkObject. It can be
 // used as a basis for implementing accessible objects for GObjects which are
 // not derived from GtkWidget. One example of its use is in providing an

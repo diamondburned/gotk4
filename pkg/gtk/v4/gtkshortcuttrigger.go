@@ -39,6 +39,12 @@ type AlternativeTriggerOverrider interface {
 	externglib.Objector
 }
 
+// WrapAlternativeTriggerOverrider wraps the AlternativeTriggerOverrider
+// interface implementation to access the instance methods.
+func WrapAlternativeTriggerOverrider(obj AlternativeTriggerOverrider) *AlternativeTrigger {
+	return wrapAlternativeTrigger(externglib.BaseObject(obj))
+}
+
 // AlternativeTrigger: GtkShortcutTrigger that combines two triggers.
 //
 // The GtkAlternativeTrigger triggers when either of two trigger.
@@ -194,6 +200,12 @@ type KeyvalTriggerOverrider interface {
 	externglib.Objector
 }
 
+// WrapKeyvalTriggerOverrider wraps the KeyvalTriggerOverrider
+// interface implementation to access the instance methods.
+func WrapKeyvalTriggerOverrider(obj KeyvalTriggerOverrider) *KeyvalTrigger {
+	return wrapKeyvalTrigger(externglib.BaseObject(obj))
+}
+
 // KeyvalTrigger: GtkShortcutTrigger that triggers when a specific keyval and
 // modifiers are pressed.
 type KeyvalTrigger struct {
@@ -305,6 +317,12 @@ type MnemonicTriggerOverrider interface {
 	externglib.Objector
 }
 
+// WrapMnemonicTriggerOverrider wraps the MnemonicTriggerOverrider
+// interface implementation to access the instance methods.
+func WrapMnemonicTriggerOverrider(obj MnemonicTriggerOverrider) *MnemonicTrigger {
+	return wrapMnemonicTrigger(externglib.BaseObject(obj))
+}
+
 // MnemonicTrigger: GtkShortcutTrigger that triggers when a specific mnemonic is
 // pressed.
 //
@@ -396,6 +414,12 @@ type NeverTriggerOverrider interface {
 	externglib.Objector
 }
 
+// WrapNeverTriggerOverrider wraps the NeverTriggerOverrider
+// interface implementation to access the instance methods.
+func WrapNeverTriggerOverrider(obj NeverTriggerOverrider) *NeverTrigger {
+	return wrapNeverTrigger(externglib.BaseObject(obj))
+}
+
 // NeverTrigger: GtkShortcutTrigger that never triggers.
 type NeverTrigger struct {
 	_ [0]func() // equal guard
@@ -452,6 +476,12 @@ type ShortcutTriggerOverrider interface {
 	externglib.Objector
 }
 
+// WrapShortcutTriggerOverrider wraps the ShortcutTriggerOverrider
+// interface implementation to access the instance methods.
+func WrapShortcutTriggerOverrider(obj ShortcutTriggerOverrider) *ShortcutTrigger {
+	return wrapShortcutTrigger(externglib.BaseObject(obj))
+}
+
 // ShortcutTrigger: GtkShortcutTrigger tracks how a GtkShortcut should be
 // activated.
 //
@@ -506,7 +536,8 @@ func (trigger1 *ShortcutTrigger) baseShortcutTrigger() *ShortcutTrigger {
 	return trigger1
 }
 
-// BaseShortcutTrigger returns the underlying base object.
+// BaseShortcutTrigger returns the underlying base object from the
+// interface.
 func BaseShortcutTrigger(obj ShortcutTriggerer) *ShortcutTrigger {
 	return obj.baseShortcutTrigger()
 }

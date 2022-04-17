@@ -30,6 +30,12 @@ type ShortcutsGroupOverrider interface {
 	externglib.Objector
 }
 
+// WrapShortcutsGroupOverrider wraps the ShortcutsGroupOverrider
+// interface implementation to access the instance methods.
+func WrapShortcutsGroupOverrider(obj ShortcutsGroupOverrider) *ShortcutsGroup {
+	return wrapShortcutsGroup(externglib.BaseObject(obj))
+}
+
 // ShortcutsGroup represents a group of related keyboard shortcuts or gestures.
 // The group has a title. It may optionally be associated with a view of the
 // application, which can be used to show only relevant shortcuts depending on

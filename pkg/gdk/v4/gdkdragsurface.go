@@ -28,6 +28,12 @@ type DragSurfaceOverrider interface {
 	externglib.Objector
 }
 
+// WrapDragSurfaceOverrider wraps the DragSurfaceOverrider
+// interface implementation to access the instance methods.
+func WrapDragSurfaceOverrider(obj DragSurfaceOverrider) *DragSurface {
+	return wrapDragSurface(externglib.BaseObject(obj))
+}
+
 // DragSurface is an interface for surfaces used during DND.
 type DragSurface struct {
 	_ [0]func() // equal guard

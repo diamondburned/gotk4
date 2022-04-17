@@ -136,6 +136,12 @@ type ScrolledWindowOverrider interface {
 	ScrollChild(scroll ScrollType, horizontal bool) bool
 }
 
+// WrapScrolledWindowOverrider wraps the ScrolledWindowOverrider
+// interface implementation to access the instance methods.
+func WrapScrolledWindowOverrider(obj ScrolledWindowOverrider) *ScrolledWindow {
+	return wrapScrolledWindow(externglib.BaseObject(obj))
+}
+
 // ScrolledWindow is a container that accepts a single child widget, makes that
 // child scrollable using either internally added scrollbars or externally
 // associated adjustments, and optionally draws a frame around the child.

@@ -31,6 +31,12 @@ type PopoverMenuOverrider interface {
 	externglib.Objector
 }
 
+// WrapPopoverMenuOverrider wraps the PopoverMenuOverrider
+// interface implementation to access the instance methods.
+func WrapPopoverMenuOverrider(obj PopoverMenuOverrider) *PopoverMenu {
+	return wrapPopoverMenu(externglib.BaseObject(obj))
+}
+
 // PopoverMenu is a subclass of Popover that treats its children like menus and
 // allows switching between them. It is meant to be used primarily together with
 // ModelButton, but any widget can be used, such as SpinButton or Scale. In this

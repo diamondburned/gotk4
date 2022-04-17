@@ -39,6 +39,12 @@ type DBusObjectSkeletonOverrider interface {
 	AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 }
 
+// WrapDBusObjectSkeletonOverrider wraps the DBusObjectSkeletonOverrider
+// interface implementation to access the instance methods.
+func WrapDBusObjectSkeletonOverrider(obj DBusObjectSkeletonOverrider) *DBusObjectSkeleton {
+	return wrapDBusObjectSkeleton(externglib.BaseObject(obj))
+}
+
 // DBusObjectSkeleton instance is essentially a group of D-Bus interfaces. The
 // set of exported interfaces on the object may be dynamic and change at
 // runtime.

@@ -29,6 +29,12 @@ type X11AppLaunchContextOverrider interface {
 	externglib.Objector
 }
 
+// WrapX11AppLaunchContextOverrider wraps the X11AppLaunchContextOverrider
+// interface implementation to access the instance methods.
+func WrapX11AppLaunchContextOverrider(obj X11AppLaunchContextOverrider) *X11AppLaunchContext {
+	return wrapX11AppLaunchContext(externglib.BaseObject(obj))
+}
+
 type X11AppLaunchContext struct {
 	_ [0]func() // equal guard
 	gdk.AppLaunchContext

@@ -33,6 +33,12 @@ type EventControllerMotionOverrider interface {
 	externglib.Objector
 }
 
+// WrapEventControllerMotionOverrider wraps the EventControllerMotionOverrider
+// interface implementation to access the instance methods.
+func WrapEventControllerMotionOverrider(obj EventControllerMotionOverrider) *EventControllerMotion {
+	return wrapEventControllerMotion(externglib.BaseObject(obj))
+}
+
 // EventControllerMotion is an event controller meant for situations where you
 // need to track the position of the pointer.
 //

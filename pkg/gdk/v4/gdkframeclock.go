@@ -121,6 +121,12 @@ type FrameClockOverrider interface {
 	externglib.Objector
 }
 
+// WrapFrameClockOverrider wraps the FrameClockOverrider
+// interface implementation to access the instance methods.
+func WrapFrameClockOverrider(obj FrameClockOverrider) *FrameClock {
+	return wrapFrameClock(externglib.BaseObject(obj))
+}
+
 // FrameClock: GdkFrameClock tells the application when to update and repaint a
 // surface.
 //
@@ -195,7 +201,8 @@ func (frameClock *FrameClock) baseFrameClock() *FrameClock {
 	return frameClock
 }
 
-// BaseFrameClock returns the underlying base object.
+// BaseFrameClock returns the underlying base object from the
+// interface.
 func BaseFrameClock(obj FrameClocker) *FrameClock {
 	return obj.baseFrameClock()
 }

@@ -61,6 +61,12 @@ type CellEditableOverrider interface {
 	StartEditing(event *gdk.Event)
 }
 
+// WrapCellEditableOverrider wraps the CellEditableOverrider
+// interface implementation to access the instance methods.
+func WrapCellEditableOverrider(obj CellEditableOverrider) *CellEditable {
+	return wrapCellEditable(externglib.BaseObject(obj))
+}
+
 // CellEditable interface must be implemented for widgets to be usable to edit
 // the contents of a TreeView cell. It provides a way to specify how temporary
 // widgets should be configured for editing, get the new value, etc.

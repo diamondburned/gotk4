@@ -29,6 +29,12 @@ type ApplicationWindowOverrider interface {
 	externglib.Objector
 }
 
+// WrapApplicationWindowOverrider wraps the ApplicationWindowOverrider
+// interface implementation to access the instance methods.
+func WrapApplicationWindowOverrider(obj ApplicationWindowOverrider) *ApplicationWindow {
+	return wrapApplicationWindow(externglib.BaseObject(obj))
+}
+
 // ApplicationWindow: GtkApplicationWindow is a GtkWindow subclass that
 // integrates with GtkApplication.
 //

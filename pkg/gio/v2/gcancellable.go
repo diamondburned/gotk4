@@ -35,6 +35,12 @@ type CancellableOverrider interface {
 	Cancelled()
 }
 
+// WrapCancellableOverrider wraps the CancellableOverrider
+// interface implementation to access the instance methods.
+func WrapCancellableOverrider(obj CancellableOverrider) *Cancellable {
+	return wrapCancellable(externglib.BaseObject(obj))
+}
+
 // Cancellable is a thread-safe operation cancellation stack used throughout GIO
 // to allow for cancellation of synchronous and asynchronous operations.
 type Cancellable struct {

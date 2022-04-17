@@ -49,6 +49,12 @@ type MiscOverrider interface {
 	ThreadsLeave()
 }
 
+// WrapMiscOverrider wraps the MiscOverrider
+// interface implementation to access the instance methods.
+func WrapMiscOverrider(obj MiscOverrider) *Misc {
+	return wrapMisc(externglib.BaseObject(obj))
+}
+
 // Misc: set of utility functions for thread locking. This interface and all his
 // related methods are deprecated since 2.12.
 type Misc struct {

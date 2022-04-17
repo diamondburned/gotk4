@@ -154,6 +154,12 @@ type VolumeMonitorOverrider interface {
 	VolumeRemoved(volume VolumeOverrider)
 }
 
+// WrapVolumeMonitorOverrider wraps the VolumeMonitorOverrider
+// interface implementation to access the instance methods.
+func WrapVolumeMonitorOverrider(obj VolumeMonitorOverrider) *VolumeMonitor {
+	return wrapVolumeMonitor(externglib.BaseObject(obj))
+}
+
 // VolumeMonitor is for listing the user interesting devices and volumes on the
 // computer. In other words, what a file selector or file manager would show in
 // a sidebar.

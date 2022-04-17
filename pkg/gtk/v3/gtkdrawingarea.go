@@ -30,6 +30,12 @@ type DrawingAreaOverrider interface {
 	externglib.Objector
 }
 
+// WrapDrawingAreaOverrider wraps the DrawingAreaOverrider
+// interface implementation to access the instance methods.
+func WrapDrawingAreaOverrider(obj DrawingAreaOverrider) *DrawingArea {
+	return wrapDrawingArea(externglib.BaseObject(obj))
+}
+
 // DrawingArea widget is used for creating custom user interface elements. It’s
 // essentially a blank widget; you can draw on it. After creating a drawing
 // area, the application may want to connect to:

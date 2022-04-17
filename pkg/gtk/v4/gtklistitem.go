@@ -28,6 +28,12 @@ type ListItemOverrider interface {
 	externglib.Objector
 }
 
+// WrapListItemOverrider wraps the ListItemOverrider
+// interface implementation to access the instance methods.
+func WrapListItemOverrider(obj ListItemOverrider) *ListItem {
+	return wrapListItem(externglib.BaseObject(obj))
+}
+
 // ListItem: GtkListItem is used by list widgets to represent items in a
 // GListModel.
 //

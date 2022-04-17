@@ -136,6 +136,12 @@ type EditableOverrider interface {
 	SetSelectionBounds(startPos, endPos int)
 }
 
+// WrapEditableOverrider wraps the EditableOverrider
+// interface implementation to access the instance methods.
+func WrapEditableOverrider(obj EditableOverrider) *Editable {
+	return wrapEditable(externglib.BaseObject(obj))
+}
+
 // Editable interface is an interface which should be implemented by text
 // editing widgets, such as Entry and SpinButton. It contains functions for
 // generically manipulating an editable widget, a large number of action signals

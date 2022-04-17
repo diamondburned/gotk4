@@ -33,6 +33,12 @@ type DragSourceOverrider interface {
 	externglib.Objector
 }
 
+// WrapDragSourceOverrider wraps the DragSourceOverrider
+// interface implementation to access the instance methods.
+func WrapDragSourceOverrider(obj DragSourceOverrider) *DragSource {
+	return wrapDragSource(externglib.BaseObject(obj))
+}
+
 // DragSource: GtkDragSource is an event controller to initiate Drag-And-Drop
 // operations.
 //

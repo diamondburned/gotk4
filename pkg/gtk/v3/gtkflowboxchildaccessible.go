@@ -30,6 +30,12 @@ type FlowBoxChildAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapFlowBoxChildAccessibleOverrider wraps the FlowBoxChildAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapFlowBoxChildAccessibleOverrider(obj FlowBoxChildAccessibleOverrider) *FlowBoxChildAccessible {
+	return wrapFlowBoxChildAccessible(externglib.BaseObject(obj))
+}
+
 type FlowBoxChildAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

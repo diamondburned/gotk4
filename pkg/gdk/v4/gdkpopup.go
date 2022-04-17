@@ -29,6 +29,12 @@ type PopupOverrider interface {
 	externglib.Objector
 }
 
+// WrapPopupOverrider wraps the PopupOverrider
+// interface implementation to access the instance methods.
+func WrapPopupOverrider(obj PopupOverrider) *Popup {
+	return wrapPopup(externglib.BaseObject(obj))
+}
+
 // Popup: GdkPopup is a surface that is attached to another surface.
 //
 // The GdkPopup is positioned relative to its parent surface.

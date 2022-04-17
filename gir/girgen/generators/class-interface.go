@@ -9,6 +9,8 @@ import (
 )
 
 var classInterfaceTmpl = gotmpl.NewGoTemplate(`
+	{{ $wrapper := .Tree.WrapName false }}
+
 	{{ if (or .GLibTypeStruct .IsInterface) }}
 	// {{ .StructName }}Overrider contains methods that are overridable.
 	type {{ .StructName }}Overrider interface {
@@ -21,6 +23,12 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ end -}}
 		{{ end -}}
 		{{ end -}}
+	}
+
+	// Wrap{{ .StructName }}Overrider wraps the {{ .StructName }}Overrider
+	// interface implementation to access the instance methods.
+	func Wrap{{ .StructName }}Overrider(obj {{ .StructName }}Overrider) *{{ .StructName }} {
+		return {{ $wrapper }}(externglib.BaseObject(obj))
 	}
 	{{ end }}
 
@@ -123,7 +131,6 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 	{{ end }}
 
-	{{ $wrapper := .Tree.WrapName false }}
 	func {{ $wrapper }}(obj *externglib.Object) *{{ .StructName }} {
 		return {{ .Wrap "obj" }}
 	}
@@ -139,7 +146,8 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		return {{ .Recv }}
 	}
 
-	// Base{{ .StructName }} returns the underlying base object.
+	// Base{{ .StructName }} returns the underlying base object from the
+	// interface.
 	func Base{{ .StructName }}(obj {{ .InterfaceName }}) *{{ .StructName }} {
 		return obj.base{{ .StructName }}()
 	}

@@ -32,6 +32,12 @@ type EventControllerOverrider interface {
 	externglib.Objector
 }
 
+// WrapEventControllerOverrider wraps the EventControllerOverrider
+// interface implementation to access the instance methods.
+func WrapEventControllerOverrider(obj EventControllerOverrider) *EventController {
+	return wrapEventController(externglib.BaseObject(obj))
+}
+
 // EventController is a base, low-level implementation for event controllers.
 // Those react to a series of Events, and possibly trigger actions as a
 // consequence of those.
@@ -77,7 +83,8 @@ func (controller *EventController) baseEventController() *EventController {
 	return controller
 }
 
-// BaseEventController returns the underlying base object.
+// BaseEventController returns the underlying base object from the
+// interface.
 func BaseEventController(obj EventControllerer) *EventController {
 	return obj.baseEventController()
 }

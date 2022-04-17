@@ -30,6 +30,12 @@ type RadioButtonAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapRadioButtonAccessibleOverrider wraps the RadioButtonAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapRadioButtonAccessibleOverrider(obj RadioButtonAccessibleOverrider) *RadioButtonAccessible {
+	return wrapRadioButtonAccessible(externglib.BaseObject(obj))
+}
+
 type RadioButtonAccessible struct {
 	_ [0]func() // equal guard
 	ToggleButtonAccessible

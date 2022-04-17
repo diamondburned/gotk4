@@ -31,6 +31,12 @@ type TextChildAnchorOverrider interface {
 	externglib.Objector
 }
 
+// WrapTextChildAnchorOverrider wraps the TextChildAnchorOverrider
+// interface implementation to access the instance methods.
+func WrapTextChildAnchorOverrider(obj TextChildAnchorOverrider) *TextChildAnchor {
+	return wrapTextChildAnchor(externglib.BaseObject(obj))
+}
+
 // TextChildAnchor is a spot in the buffer where child widgets can be “anchored”
 // (inserted inline, as if they were characters). The anchor can have multiple
 // widgets anchored, to allow for multiple views.

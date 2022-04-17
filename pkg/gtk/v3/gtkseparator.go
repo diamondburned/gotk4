@@ -31,6 +31,12 @@ type SeparatorOverrider interface {
 	externglib.Objector
 }
 
+// WrapSeparatorOverrider wraps the SeparatorOverrider
+// interface implementation to access the instance methods.
+func WrapSeparatorOverrider(obj SeparatorOverrider) *Separator {
+	return wrapSeparator(externglib.BaseObject(obj))
+}
+
 // Separator is a horizontal or vertical separator widget, depending on the
 // value of the Orientable:orientation property, used to group the widgets
 // within a window. It displays a line with a shadow to make it appear sunken

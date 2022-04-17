@@ -98,6 +98,12 @@ type ImageOverrider interface {
 	externglib.Objector
 }
 
+// WrapImageOverrider wraps the ImageOverrider
+// interface implementation to access the instance methods.
+func WrapImageOverrider(obj ImageOverrider) *Image {
+	return wrapImage(externglib.BaseObject(obj))
+}
+
 // Image widget displays an image. Various kinds of object can be displayed as
 // an image; most typically, you would load a Pixbuf ("pixel buffer") from a
 // file, and then display that. There’s a convenience function to do this,

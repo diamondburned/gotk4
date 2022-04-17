@@ -31,6 +31,12 @@ type ShortcutLabelOverrider interface {
 	externglib.Objector
 }
 
+// WrapShortcutLabelOverrider wraps the ShortcutLabelOverrider
+// interface implementation to access the instance methods.
+func WrapShortcutLabelOverrider(obj ShortcutLabelOverrider) *ShortcutLabel {
+	return wrapShortcutLabel(externglib.BaseObject(obj))
+}
+
 // ShortcutLabel is a widget that represents a single keyboard shortcut or
 // gesture in the user interface.
 type ShortcutLabel struct {

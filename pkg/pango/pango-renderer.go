@@ -215,6 +215,12 @@ type RendererOverrider interface {
 	PrepareRun(run *LayoutRun)
 }
 
+// WrapRendererOverrider wraps the RendererOverrider
+// interface implementation to access the instance methods.
+func WrapRendererOverrider(obj RendererOverrider) *Renderer {
+	return wrapRenderer(externglib.BaseObject(obj))
+}
+
 // Renderer: PangoRenderer is a base class for objects that can render text
 // provided as PangoGlyphString or PangoLayout.
 //
@@ -541,7 +547,8 @@ func (renderer *Renderer) baseRenderer() *Renderer {
 	return renderer
 }
 
-// BaseRenderer returns the underlying base object.
+// BaseRenderer returns the underlying base object from the
+// interface.
 func BaseRenderer(obj Rendererer) *Renderer {
 	return obj.baseRenderer()
 }

@@ -36,6 +36,12 @@ type CellRendererToggleOverrider interface {
 	Toggled(path string)
 }
 
+// WrapCellRendererToggleOverrider wraps the CellRendererToggleOverrider
+// interface implementation to access the instance methods.
+func WrapCellRendererToggleOverrider(obj CellRendererToggleOverrider) *CellRendererToggle {
+	return wrapCellRendererToggle(externglib.BaseObject(obj))
+}
+
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
 // a radio or a checkbutton, depending on the CellRendererToggle:radio property.
 // When activated, it emits the CellRendererToggle::toggled signal.

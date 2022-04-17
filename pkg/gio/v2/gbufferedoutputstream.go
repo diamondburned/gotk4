@@ -28,6 +28,12 @@ type BufferedOutputStreamOverrider interface {
 	externglib.Objector
 }
 
+// WrapBufferedOutputStreamOverrider wraps the BufferedOutputStreamOverrider
+// interface implementation to access the instance methods.
+func WrapBufferedOutputStreamOverrider(obj BufferedOutputStreamOverrider) *BufferedOutputStream {
+	return wrapBufferedOutputStream(externglib.BaseObject(obj))
+}
+
 // BufferedOutputStream: buffered output stream implements OutputStream and
 // provides for buffered writes.
 //

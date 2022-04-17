@@ -30,6 +30,12 @@ type ImageAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapImageAccessibleOverrider wraps the ImageAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapImageAccessibleOverrider(obj ImageAccessibleOverrider) *ImageAccessible {
+	return wrapImageAccessible(externglib.BaseObject(obj))
+}
+
 type ImageAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

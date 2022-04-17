@@ -31,6 +31,12 @@ type SeparatorToolItemOverrider interface {
 	externglib.Objector
 }
 
+// WrapSeparatorToolItemOverrider wraps the SeparatorToolItemOverrider
+// interface implementation to access the instance methods.
+func WrapSeparatorToolItemOverrider(obj SeparatorToolItemOverrider) *SeparatorToolItem {
+	return wrapSeparatorToolItem(externglib.BaseObject(obj))
+}
+
 // SeparatorToolItem is a ToolItem that separates groups of other ToolItems.
 // Depending on the theme, a SeparatorToolItem will often look like a vertical
 // line on horizontally docked toolbars.

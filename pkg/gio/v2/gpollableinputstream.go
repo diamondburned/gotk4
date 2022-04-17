@@ -106,6 +106,12 @@ type PollableInputStreamOverrider interface {
 	ReadNonblocking(buffer []byte) (int, error)
 }
 
+// WrapPollableInputStreamOverrider wraps the PollableInputStreamOverrider
+// interface implementation to access the instance methods.
+func WrapPollableInputStreamOverrider(obj PollableInputStreamOverrider) *PollableInputStream {
+	return wrapPollableInputStream(externglib.BaseObject(obj))
+}
+
 // PollableInputStream is implemented by Streams that can be polled for
 // readiness to read. This can be used when interfacing with a non-GIO API that
 // expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.

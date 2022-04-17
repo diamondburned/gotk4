@@ -31,6 +31,12 @@ type PlugAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapPlugAccessibleOverrider wraps the PlugAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapPlugAccessibleOverrider(obj PlugAccessibleOverrider) *PlugAccessible {
+	return wrapPlugAccessible(externglib.BaseObject(obj))
+}
+
 type PlugAccessible struct {
 	_ [0]func() // equal guard
 	WindowAccessible

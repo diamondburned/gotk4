@@ -40,6 +40,12 @@ type HSVOverrider interface {
 	Move(typ DirectionType)
 }
 
+// WrapHSVOverrider wraps the HSVOverrider
+// interface implementation to access the instance methods.
+func WrapHSVOverrider(obj HSVOverrider) *HSV {
+	return wrapHSV(externglib.BaseObject(obj))
+}
+
 // HSV is the “color wheel” part of a complete color selector widget. It allows
 // to select a color by determining its HSV components in an intuitive way.
 // Moving the selection around the outer ring changes the hue, and moving the

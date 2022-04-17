@@ -36,6 +36,12 @@ type GLShaderOverrider interface {
 	externglib.Objector
 }
 
+// WrapGLShaderOverrider wraps the GLShaderOverrider
+// interface implementation to access the instance methods.
+func WrapGLShaderOverrider(obj GLShaderOverrider) *GLShader {
+	return wrapGLShader(externglib.BaseObject(obj))
+}
+
 // GLShader: GskGLShader is a snippet of GLSL that is meant to run in the
 // fragment shader of the rendering pipeline.
 //

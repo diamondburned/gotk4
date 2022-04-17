@@ -29,6 +29,12 @@ type EventControllerOverrider interface {
 	externglib.Objector
 }
 
+// WrapEventControllerOverrider wraps the EventControllerOverrider
+// interface implementation to access the instance methods.
+func WrapEventControllerOverrider(obj EventControllerOverrider) *EventController {
+	return wrapEventController(externglib.BaseObject(obj))
+}
+
 // EventController: GtkEventController is the base class for event controllers.
 //
 // These are ancillary objects associated to widgets, which react to GdkEvents,
@@ -83,7 +89,8 @@ func (controller *EventController) baseEventController() *EventController {
 	return controller
 }
 
-// BaseEventController returns the underlying base object.
+// BaseEventController returns the underlying base object from the
+// interface.
 func BaseEventController(obj EventControllerer) *EventController {
 	return obj.baseEventController()
 }

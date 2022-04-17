@@ -93,6 +93,12 @@ type StyleProviderOverrider interface {
 	Style(path *WidgetPath) *StyleProperties
 }
 
+// WrapStyleProviderOverrider wraps the StyleProviderOverrider
+// interface implementation to access the instance methods.
+func WrapStyleProviderOverrider(obj StyleProviderOverrider) *StyleProvider {
+	return wrapStyleProvider(externglib.BaseObject(obj))
+}
+
 // StyleProvider is an interface used to provide style information to a
 // StyleContext. See gtk_style_context_add_provider() and
 // gtk_style_context_add_provider_for_screen().

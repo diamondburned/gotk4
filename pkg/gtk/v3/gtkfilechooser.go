@@ -178,6 +178,12 @@ type FileChooserOverrider interface {
 	externglib.Objector
 }
 
+// WrapFileChooserOverrider wraps the FileChooserOverrider
+// interface implementation to access the instance methods.
+func WrapFileChooserOverrider(obj FileChooserOverrider) *FileChooser {
+	return wrapFileChooser(externglib.BaseObject(obj))
+}
+
 // FileChooser is an interface that can be implemented by file selection
 // widgets. In GTK+, the main objects that implement this interface are
 // FileChooserWidget, FileChooserDialog, and FileChooserButton. You do not need

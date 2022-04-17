@@ -20,6 +20,12 @@ type HeaderBarAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapHeaderBarAccessibleOverrider wraps the HeaderBarAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapHeaderBarAccessibleOverrider(obj HeaderBarAccessibleOverrider) *HeaderBarAccessible {
+	return wrapHeaderBarAccessible(externglib.BaseObject(obj))
+}
+
 type HeaderBarAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

@@ -104,6 +104,12 @@ type EventControllerScrollOverrider interface {
 	externglib.Objector
 }
 
+// WrapEventControllerScrollOverrider wraps the EventControllerScrollOverrider
+// interface implementation to access the instance methods.
+func WrapEventControllerScrollOverrider(obj EventControllerScrollOverrider) *EventControllerScroll {
+	return wrapEventControllerScroll(externglib.BaseObject(obj))
+}
+
 // EventControllerScroll is an event controller meant to handle scroll events
 // from mice and touchpads. It is capable of handling both discrete and
 // continuous scroll events, abstracting them both on the

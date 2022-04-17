@@ -28,6 +28,12 @@ type DBusObjectManagerServerOverrider interface {
 	externglib.Objector
 }
 
+// WrapDBusObjectManagerServerOverrider wraps the DBusObjectManagerServerOverrider
+// interface implementation to access the instance methods.
+func WrapDBusObjectManagerServerOverrider(obj DBusObjectManagerServerOverrider) *DBusObjectManagerServer {
+	return wrapDBusObjectManagerServer(externglib.BaseObject(obj))
+}
+
 // DBusObjectManagerServer is used to export BusObject instances using the
 // standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)

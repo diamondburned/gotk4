@@ -30,6 +30,12 @@ type EntryAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapEntryAccessibleOverrider wraps the EntryAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapEntryAccessibleOverrider(obj EntryAccessibleOverrider) *EntryAccessible {
+	return wrapEntryAccessible(externglib.BaseObject(obj))
+}
+
 type EntryAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

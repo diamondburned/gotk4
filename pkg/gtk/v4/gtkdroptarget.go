@@ -35,6 +35,12 @@ type DropTargetOverrider interface {
 	externglib.Objector
 }
 
+// WrapDropTargetOverrider wraps the DropTargetOverrider
+// interface implementation to access the instance methods.
+func WrapDropTargetOverrider(obj DropTargetOverrider) *DropTarget {
+	return wrapDropTarget(externglib.BaseObject(obj))
+}
+
 // DropTarget: GtkDropTarget is an event controller to receive Drag-and-Drop
 // operations.
 //

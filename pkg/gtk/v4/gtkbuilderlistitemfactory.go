@@ -30,6 +30,12 @@ type BuilderListItemFactoryOverrider interface {
 	externglib.Objector
 }
 
+// WrapBuilderListItemFactoryOverrider wraps the BuilderListItemFactoryOverrider
+// interface implementation to access the instance methods.
+func WrapBuilderListItemFactoryOverrider(obj BuilderListItemFactoryOverrider) *BuilderListItemFactory {
+	return wrapBuilderListItemFactory(externglib.BaseObject(obj))
+}
+
 // BuilderListItemFactory: GtkBuilderListItemFactory is a GtkListItemFactory
 // that creates widgets by instantiating GtkBuilder UI templates.
 //

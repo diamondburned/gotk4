@@ -29,6 +29,12 @@ type ListStoreOverrider interface {
 	externglib.Objector
 }
 
+// WrapListStoreOverrider wraps the ListStoreOverrider
+// interface implementation to access the instance methods.
+func WrapListStoreOverrider(obj ListStoreOverrider) *ListStore {
+	return wrapListStore(externglib.BaseObject(obj))
+}
+
 // ListStore: list-like data structure that can be used with the GtkTreeView
 //
 // The ListStore object is a list model for use with a TreeView widget. It

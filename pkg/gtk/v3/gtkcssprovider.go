@@ -89,6 +89,12 @@ type CSSProviderOverrider interface {
 	ParsingError(section *CSSSection, err error)
 }
 
+// WrapCSSProviderOverrider wraps the CSSProviderOverrider
+// interface implementation to access the instance methods.
+func WrapCSSProviderOverrider(obj CSSProviderOverrider) *CSSProvider {
+	return wrapCSSProvider(externglib.BaseObject(obj))
+}
+
 // CSSProvider is an object implementing the StyleProvider interface. It is able
 // to parse [CSS-like][css-overview] input in order to style widgets.
 //

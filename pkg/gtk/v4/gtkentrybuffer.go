@@ -103,6 +103,12 @@ type EntryBufferOverrider interface {
 	InsertedText(position uint, chars string, nChars uint)
 }
 
+// WrapEntryBufferOverrider wraps the EntryBufferOverrider
+// interface implementation to access the instance methods.
+func WrapEntryBufferOverrider(obj EntryBufferOverrider) *EntryBuffer {
+	return wrapEntryBuffer(externglib.BaseObject(obj))
+}
+
 // EntryBuffer: GtkEntryBuffer hold the text displayed in a GtkText widget.
 //
 // A single GtkEntryBuffer object can be shared by multiple widgets which will

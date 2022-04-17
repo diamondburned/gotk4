@@ -113,6 +113,12 @@ type MenuAttributeIterOverrider interface {
 	Next() (string, *glib.Variant, bool)
 }
 
+// WrapMenuAttributeIterOverrider wraps the MenuAttributeIterOverrider
+// interface implementation to access the instance methods.
+func WrapMenuAttributeIterOverrider(obj MenuAttributeIterOverrider) *MenuAttributeIter {
+	return wrapMenuAttributeIter(externglib.BaseObject(obj))
+}
+
 // MenuAttributeIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuAttributeIter struct {
@@ -192,7 +198,8 @@ func (iter *MenuAttributeIter) baseMenuAttributeIter() *MenuAttributeIter {
 	return iter
 }
 
-// BaseMenuAttributeIter returns the underlying base object.
+// BaseMenuAttributeIter returns the underlying base object from the
+// interface.
 func BaseMenuAttributeIter(obj MenuAttributeIterer) *MenuAttributeIter {
 	return obj.baseMenuAttributeIter()
 }
@@ -363,6 +370,12 @@ type MenuLinkIterOverrider interface {
 	Next() (string, MenuModeller, bool)
 }
 
+// WrapMenuLinkIterOverrider wraps the MenuLinkIterOverrider
+// interface implementation to access the instance methods.
+func WrapMenuLinkIterOverrider(obj MenuLinkIterOverrider) *MenuLinkIter {
+	return wrapMenuLinkIter(externglib.BaseObject(obj))
+}
+
 // MenuLinkIter is an opaque structure type. You must access it using the
 // functions below.
 type MenuLinkIter struct {
@@ -443,7 +456,8 @@ func (iter *MenuLinkIter) baseMenuLinkIter() *MenuLinkIter {
 	return iter
 }
 
-// BaseMenuLinkIter returns the underlying base object.
+// BaseMenuLinkIter returns the underlying base object from the
+// interface.
 func BaseMenuLinkIter(obj MenuLinkIterer) *MenuLinkIter {
 	return obj.baseMenuLinkIter()
 }
@@ -713,6 +727,12 @@ type MenuModelOverrider interface {
 	//    - menuLinkIter: new LinkIter.
 	//
 	IterateItemLinks(itemIndex int) MenuLinkIterer
+}
+
+// WrapMenuModelOverrider wraps the MenuModelOverrider
+// interface implementation to access the instance methods.
+func WrapMenuModelOverrider(obj MenuModelOverrider) *MenuModel {
+	return wrapMenuModel(externglib.BaseObject(obj))
 }
 
 // MenuModel represents the contents of a menu -- an ordered list of menu items.
@@ -1089,7 +1109,8 @@ func (model *MenuModel) baseMenuModel() *MenuModel {
 	return model
 }
 
-// BaseMenuModel returns the underlying base object.
+// BaseMenuModel returns the underlying base object from the
+// interface.
 func BaseMenuModel(obj MenuModeller) *MenuModel {
 	return obj.baseMenuModel()
 }

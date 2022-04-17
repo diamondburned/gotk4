@@ -30,6 +30,12 @@ type NotebookAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapNotebookAccessibleOverrider wraps the NotebookAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapNotebookAccessibleOverrider(obj NotebookAccessibleOverrider) *NotebookAccessible {
+	return wrapNotebookAccessible(externglib.BaseObject(obj))
+}
+
 type NotebookAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

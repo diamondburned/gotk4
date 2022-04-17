@@ -279,6 +279,12 @@ type ValueOverrider interface {
 	SetValue(newValue float64)
 }
 
+// WrapValueOverrider wraps the ValueOverrider
+// interface implementation to access the instance methods.
+func WrapValueOverrider(obj ValueOverrider) *Value {
+	return wrapValue(externglib.BaseObject(obj))
+}
+
 // Value should be implemented for components which either display a value from
 // a bounded range, or which allow the user to specify a value from a bounded
 // range, or both. For instance, most sliders and range controls, as well as

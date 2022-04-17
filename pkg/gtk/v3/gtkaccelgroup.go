@@ -510,6 +510,12 @@ type AccelGroupOverrider interface {
 	externglib.Objector
 }
 
+// WrapAccelGroupOverrider wraps the AccelGroupOverrider
+// interface implementation to access the instance methods.
+func WrapAccelGroupOverrider(obj AccelGroupOverrider) *AccelGroup {
+	return wrapAccelGroup(externglib.BaseObject(obj))
+}
+
 // AccelGroup represents a group of keyboard accelerators, typically attached to
 // a toplevel Window (with gtk_window_add_accel_group()). Usually you won’t need
 // to create a AccelGroup directly; instead, when using UIManager, GTK+

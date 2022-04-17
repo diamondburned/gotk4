@@ -29,6 +29,12 @@ type ColumnViewColumnOverrider interface {
 	externglib.Objector
 }
 
+// WrapColumnViewColumnOverrider wraps the ColumnViewColumnOverrider
+// interface implementation to access the instance methods.
+func WrapColumnViewColumnOverrider(obj ColumnViewColumnOverrider) *ColumnViewColumn {
+	return wrapColumnViewColumn(externglib.BaseObject(obj))
+}
+
 // ColumnViewColumn: GtkColumnViewColumn represents the columns being added to
 // GtkColumnView.
 //

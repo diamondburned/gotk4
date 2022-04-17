@@ -29,6 +29,12 @@ type CellRendererSpinnerOverrider interface {
 	externglib.Objector
 }
 
+// WrapCellRendererSpinnerOverrider wraps the CellRendererSpinnerOverrider
+// interface implementation to access the instance methods.
+func WrapCellRendererSpinnerOverrider(obj CellRendererSpinnerOverrider) *CellRendererSpinner {
+	return wrapCellRendererSpinner(externglib.BaseObject(obj))
+}
+
 // CellRendererSpinner renders a spinning animation in a cell, very similar to
 // Spinner. It can often be used as an alternative to a CellRendererProgress for
 // displaying indefinite activity, instead of actual progress.

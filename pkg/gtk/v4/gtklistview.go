@@ -29,6 +29,12 @@ type ListViewOverrider interface {
 	externglib.Objector
 }
 
+// WrapListViewOverrider wraps the ListViewOverrider
+// interface implementation to access the instance methods.
+func WrapListViewOverrider(obj ListViewOverrider) *ListView {
+	return wrapListView(externglib.BaseObject(obj))
+}
+
 // ListView: GtkListView presents a large dynamic list of items.
 //
 // GtkListView uses its factory to generate one row widget for each visible item

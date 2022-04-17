@@ -51,6 +51,12 @@ type RegistryOverrider interface {
 	externglib.Objector
 }
 
+// WrapRegistryOverrider wraps the RegistryOverrider
+// interface implementation to access the instance methods.
+func WrapRegistryOverrider(obj RegistryOverrider) *Registry {
+	return wrapRegistry(externglib.BaseObject(obj))
+}
+
 // Registry is normally used to create appropriate ATK "peers" for user
 // interface components. Application developers usually need only interact with
 // the AtkRegistry by associating appropriate ATK implementation classes with

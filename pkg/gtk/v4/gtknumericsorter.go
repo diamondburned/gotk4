@@ -28,6 +28,12 @@ type NumericSorterOverrider interface {
 	externglib.Objector
 }
 
+// WrapNumericSorterOverrider wraps the NumericSorterOverrider
+// interface implementation to access the instance methods.
+func WrapNumericSorterOverrider(obj NumericSorterOverrider) *NumericSorter {
+	return wrapNumericSorter(externglib.BaseObject(obj))
+}
+
 // NumericSorter: GtkNumericSorter is a GtkSorter that compares numbers.
 //
 // To obtain the numbers to compare, this sorter evaluates a gtk.Expression.

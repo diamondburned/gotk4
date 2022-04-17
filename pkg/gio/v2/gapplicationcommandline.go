@@ -55,6 +55,12 @@ type ApplicationCommandLineOverrider interface {
 	PrinterrLiteral(message string)
 }
 
+// WrapApplicationCommandLineOverrider wraps the ApplicationCommandLineOverrider
+// interface implementation to access the instance methods.
+func WrapApplicationCommandLineOverrider(obj ApplicationCommandLineOverrider) *ApplicationCommandLine {
+	return wrapApplicationCommandLine(externglib.BaseObject(obj))
+}
+
 // ApplicationCommandLine represents a command-line invocation of an
 // application. It is created by #GApplication and emitted in the
 // #GApplication::command-line signal and virtual function.

@@ -31,6 +31,12 @@ type ListStoreOverrider interface {
 	externglib.Objector
 }
 
+// WrapListStoreOverrider wraps the ListStoreOverrider
+// interface implementation to access the instance methods.
+func WrapListStoreOverrider(obj ListStoreOverrider) *ListStore {
+	return wrapListStore(externglib.BaseObject(obj))
+}
+
 // ListStore is a simple implementation of Model that stores all items in
 // memory.
 //

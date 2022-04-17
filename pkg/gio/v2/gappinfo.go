@@ -316,6 +316,12 @@ type AppInfoOverrider interface {
 	SupportsURIs() bool
 }
 
+// WrapAppInfoOverrider wraps the AppInfoOverrider
+// interface implementation to access the instance methods.
+func WrapAppInfoOverrider(obj AppInfoOverrider) *AppInfo {
+	return wrapAppInfo(externglib.BaseObject(obj))
+}
+
 // AppInfo and LaunchContext are used for describing and launching applications
 // installed on the system.
 //
@@ -2286,6 +2292,12 @@ type AppLaunchContextOverrider interface {
 	//    - platformData
 	//
 	Launched(info AppInfoOverrider, platformData *glib.Variant)
+}
+
+// WrapAppLaunchContextOverrider wraps the AppLaunchContextOverrider
+// interface implementation to access the instance methods.
+func WrapAppLaunchContextOverrider(obj AppLaunchContextOverrider) *AppLaunchContext {
+	return wrapAppLaunchContext(externglib.BaseObject(obj))
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This

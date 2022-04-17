@@ -31,6 +31,12 @@ type ImageMenuItemOverrider interface {
 	externglib.Objector
 }
 
+// WrapImageMenuItemOverrider wraps the ImageMenuItemOverrider
+// interface implementation to access the instance methods.
+func WrapImageMenuItemOverrider(obj ImageMenuItemOverrider) *ImageMenuItem {
+	return wrapImageMenuItem(externglib.BaseObject(obj))
+}
+
 // ImageMenuItem is a menu item which has an icon next to the text label.
 //
 // This is functionally equivalent to:

@@ -589,6 +589,12 @@ type FontOverrider interface {
 	externglib.Objector
 }
 
+// WrapFontOverrider wraps the FontOverrider
+// interface implementation to access the instance methods.
+func WrapFontOverrider(obj FontOverrider) *Font {
+	return wrapFont(externglib.BaseObject(obj))
+}
+
 // Font: PangoCairoFont is an interface exported by fonts for use with Cairo.
 //
 // The actual type of the font will depend on the particular font technology
@@ -627,7 +633,8 @@ func (v *Font) baseFont() *Font {
 	return v
 }
 
-// BaseFont returns the underlying base object.
+// BaseFont returns the underlying base object from the
+// interface.
 func BaseFont(obj Fonter) *Font {
 	return obj.baseFont()
 }
@@ -635,6 +642,12 @@ func BaseFont(obj Fonter) *Font {
 // FontMapOverrider contains methods that are overridable.
 type FontMapOverrider interface {
 	externglib.Objector
+}
+
+// WrapFontMapOverrider wraps the FontMapOverrider
+// interface implementation to access the instance methods.
+func WrapFontMapOverrider(obj FontMapOverrider) *FontMap {
+	return wrapFontMap(externglib.BaseObject(obj))
 }
 
 // FontMap: PangoCairoFontMap is an interface exported by font maps for use with

@@ -199,6 +199,12 @@ type ThemingEngineOverrider interface {
 	RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
 }
 
+// WrapThemingEngineOverrider wraps the ThemingEngineOverrider
+// interface implementation to access the instance methods.
+func WrapThemingEngineOverrider(obj ThemingEngineOverrider) *ThemingEngine {
+	return wrapThemingEngine(externglib.BaseObject(obj))
+}
+
 // ThemingEngine was the object used for rendering themed content in GTK+
 // widgets. It used to allow overriding GTK+'s default implementation of
 // rendering functions by allowing engines to be loaded as modules.

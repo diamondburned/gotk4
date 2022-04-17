@@ -29,6 +29,12 @@ type InetAddressMaskOverrider interface {
 	externglib.Objector
 }
 
+// WrapInetAddressMaskOverrider wraps the InetAddressMaskOverrider
+// interface implementation to access the instance methods.
+func WrapInetAddressMaskOverrider(obj InetAddressMaskOverrider) *InetAddressMask {
+	return wrapInetAddressMask(externglib.BaseObject(obj))
+}
+
 // InetAddressMask represents a range of IPv4 or IPv6 addresses described by a
 // base address and a length indicating how many bits of the base address are
 // relevant for matching purposes. These are often given in string form. Eg,

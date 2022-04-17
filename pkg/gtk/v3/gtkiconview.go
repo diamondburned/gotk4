@@ -149,6 +149,12 @@ type IconViewOverrider interface {
 	UnselectAll()
 }
 
+// WrapIconViewOverrider wraps the IconViewOverrider
+// interface implementation to access the instance methods.
+func WrapIconViewOverrider(obj IconViewOverrider) *IconView {
+	return wrapIconView(externglib.BaseObject(obj))
+}
+
 // IconView provides an alternative view on a TreeModel. It displays the model
 // as a grid of icons with labels. Like TreeView, it allows to select one or
 // multiple items (depending on the selection mode, see

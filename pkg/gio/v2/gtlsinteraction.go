@@ -133,6 +133,12 @@ type TLSInteractionOverrider interface {
 	RequestCertificateFinish(result AsyncResultOverrider) (TLSInteractionResult, error)
 }
 
+// WrapTLSInteractionOverrider wraps the TLSInteractionOverrider
+// interface implementation to access the instance methods.
+func WrapTLSInteractionOverrider(obj TLSInteractionOverrider) *TLSInteraction {
+	return wrapTLSInteraction(externglib.BaseObject(obj))
+}
+
 // TLSInteraction provides a mechanism for the TLS connection and database code
 // to interact with the user. It can be used to ask the user for passwords.
 //

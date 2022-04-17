@@ -35,6 +35,12 @@ type SurfaceOverrider interface {
 	externglib.Objector
 }
 
+// WrapSurfaceOverrider wraps the SurfaceOverrider
+// interface implementation to access the instance methods.
+func WrapSurfaceOverrider(obj SurfaceOverrider) *Surface {
+	return wrapSurface(externglib.BaseObject(obj))
+}
+
 // Surface: GdkSurface is a rectangular region on the screen.
 //
 // It’s a low-level object, used to implement high-level objects such as
@@ -86,7 +92,8 @@ func (surface *Surface) baseSurface() *Surface {
 	return surface
 }
 
-// BaseSurface returns the underlying base object.
+// BaseSurface returns the underlying base object from the
+// interface.
 func BaseSurface(obj Surfacer) *Surface {
 	return obj.baseSurface()
 }

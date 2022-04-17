@@ -28,6 +28,12 @@ type BoxLayoutOverrider interface {
 	externglib.Objector
 }
 
+// WrapBoxLayoutOverrider wraps the BoxLayoutOverrider
+// interface implementation to access the instance methods.
+func WrapBoxLayoutOverrider(obj BoxLayoutOverrider) *BoxLayout {
+	return wrapBoxLayout(externglib.BaseObject(obj))
+}
+
 // BoxLayout: GtkBoxLayout is a layout manager that arranges children in a
 // single row or column.
 //

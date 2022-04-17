@@ -67,6 +67,12 @@ type IconOverrider interface {
 	Serialize() *glib.Variant
 }
 
+// WrapIconOverrider wraps the IconOverrider
+// interface implementation to access the instance methods.
+func WrapIconOverrider(obj IconOverrider) *Icon {
+	return wrapIcon(externglib.BaseObject(obj))
+}
+
 // Icon is a very minimal interface for icons. It provides functions for
 // checking the equality of two icons, hashing of icons and serializing an icon
 // to and from strings.

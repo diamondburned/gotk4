@@ -31,6 +31,12 @@ type RecentChooserWidgetOverrider interface {
 	externglib.Objector
 }
 
+// WrapRecentChooserWidgetOverrider wraps the RecentChooserWidgetOverrider
+// interface implementation to access the instance methods.
+func WrapRecentChooserWidgetOverrider(obj RecentChooserWidgetOverrider) *RecentChooserWidget {
+	return wrapRecentChooserWidget(externglib.BaseObject(obj))
+}
+
 // RecentChooserWidget is a widget suitable for selecting recently used files.
 // It is the main building block of a RecentChooserDialog. Most applications
 // will only need to use the latter; you can use RecentChooserWidget as part of

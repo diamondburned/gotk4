@@ -29,6 +29,12 @@ type NoSelectionOverrider interface {
 	externglib.Objector
 }
 
+// WrapNoSelectionOverrider wraps the NoSelectionOverrider
+// interface implementation to access the instance methods.
+func WrapNoSelectionOverrider(obj NoSelectionOverrider) *NoSelection {
+	return wrapNoSelection(externglib.BaseObject(obj))
+}
+
 // NoSelection: GtkNoSelection is a GtkSelectionModel that does not allow
 // selecting anything.
 //

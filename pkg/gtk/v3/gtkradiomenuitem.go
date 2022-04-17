@@ -36,6 +36,12 @@ type RadioMenuItemOverrider interface {
 	GroupChanged()
 }
 
+// WrapRadioMenuItemOverrider wraps the RadioMenuItemOverrider
+// interface implementation to access the instance methods.
+func WrapRadioMenuItemOverrider(obj RadioMenuItemOverrider) *RadioMenuItem {
+	return wrapRadioMenuItem(externglib.BaseObject(obj))
+}
+
 // RadioMenuItem: radio menu item is a check menu item that belongs to a group.
 // At each instant exactly one of the radio menu items from a group is selected.
 //

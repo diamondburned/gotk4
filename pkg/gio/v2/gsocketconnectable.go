@@ -63,6 +63,12 @@ type SocketConnectableOverrider interface {
 	String() string
 }
 
+// WrapSocketConnectableOverrider wraps the SocketConnectableOverrider
+// interface implementation to access the instance methods.
+func WrapSocketConnectableOverrider(obj SocketConnectableOverrider) *SocketConnectable {
+	return wrapSocketConnectable(externglib.BaseObject(obj))
+}
+
 // SocketConnectable objects that describe one or more potential socket
 // endpoints implement Connectable. Callers can then use
 // g_socket_connectable_enumerate() to get a AddressEnumerator to try out each

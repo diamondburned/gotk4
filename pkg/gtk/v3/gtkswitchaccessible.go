@@ -30,6 +30,12 @@ type SwitchAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapSwitchAccessibleOverrider wraps the SwitchAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapSwitchAccessibleOverrider(obj SwitchAccessibleOverrider) *SwitchAccessible {
+	return wrapSwitchAccessible(externglib.BaseObject(obj))
+}
+
 type SwitchAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible

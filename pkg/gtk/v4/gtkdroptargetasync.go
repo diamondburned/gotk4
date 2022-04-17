@@ -35,6 +35,12 @@ type DropTargetAsyncOverrider interface {
 	externglib.Objector
 }
 
+// WrapDropTargetAsyncOverrider wraps the DropTargetAsyncOverrider
+// interface implementation to access the instance methods.
+func WrapDropTargetAsyncOverrider(obj DropTargetAsyncOverrider) *DropTargetAsync {
+	return wrapDropTargetAsync(externglib.BaseObject(obj))
+}
+
 // DropTargetAsync: GtkDropTargetAsync is an event controller to receive
 // Drag-and-Drop operations, asynchronously.
 //

@@ -80,6 +80,12 @@ type FileInputStreamOverrider interface {
 	Tell() int64
 }
 
+// WrapFileInputStreamOverrider wraps the FileInputStreamOverrider
+// interface implementation to access the instance methods.
+func WrapFileInputStreamOverrider(obj FileInputStreamOverrider) *FileInputStream {
+	return wrapFileInputStream(externglib.BaseObject(obj))
+}
+
 // FileInputStream provides input streams that take their content from a file.
 //
 // GFileInputStream implements #GSeekable, which allows the input stream to jump

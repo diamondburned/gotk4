@@ -29,6 +29,12 @@ type SingleSelectionOverrider interface {
 	externglib.Objector
 }
 
+// WrapSingleSelectionOverrider wraps the SingleSelectionOverrider
+// interface implementation to access the instance methods.
+func WrapSingleSelectionOverrider(obj SingleSelectionOverrider) *SingleSelection {
+	return wrapSingleSelection(externglib.BaseObject(obj))
+}
+
 // SingleSelection: GtkSingleSelection is a GtkSelectionModel that allows
 // selecting a single item.
 //

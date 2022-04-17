@@ -29,6 +29,12 @@ type CellRendererSpinOverrider interface {
 	externglib.Objector
 }
 
+// WrapCellRendererSpinOverrider wraps the CellRendererSpinOverrider
+// interface implementation to access the instance methods.
+func WrapCellRendererSpinOverrider(obj CellRendererSpinOverrider) *CellRendererSpin {
+	return wrapCellRendererSpin(externglib.BaseObject(obj))
+}
+
 // CellRendererSpin renders text in a cell like CellRendererText from which it
 // is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererSpin offers a SpinButton widget. Of course, that means that

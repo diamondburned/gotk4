@@ -36,6 +36,12 @@ type FontSelectionOverrider interface {
 	externglib.Objector
 }
 
+// WrapFontSelectionOverrider wraps the FontSelectionOverrider
+// interface implementation to access the instance methods.
+func WrapFontSelectionOverrider(obj FontSelectionOverrider) *FontSelection {
+	return wrapFontSelection(externglib.BaseObject(obj))
+}
+
 type FontSelection struct {
 	_ [0]func() // equal guard
 	Box
@@ -537,6 +543,12 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 // FontSelectionDialogOverrider contains methods that are overridable.
 type FontSelectionDialogOverrider interface {
 	externglib.Objector
+}
+
+// WrapFontSelectionDialogOverrider wraps the FontSelectionDialogOverrider
+// interface implementation to access the instance methods.
+func WrapFontSelectionDialogOverrider(obj FontSelectionDialogOverrider) *FontSelectionDialog {
+	return wrapFontSelectionDialog(externglib.BaseObject(obj))
 }
 
 type FontSelectionDialog struct {

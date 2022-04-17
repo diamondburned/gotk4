@@ -32,6 +32,12 @@ type ProgressBarOverrider interface {
 	externglib.Objector
 }
 
+// WrapProgressBarOverrider wraps the ProgressBarOverrider
+// interface implementation to access the instance methods.
+func WrapProgressBarOverrider(obj ProgressBarOverrider) *ProgressBar {
+	return wrapProgressBar(externglib.BaseObject(obj))
+}
+
 // ProgressBar is typically used to display the progress of a long running
 // operation. It provides a visual clue that processing is underway. The
 // GtkProgressBar can be used in two different modes: percentage mode and

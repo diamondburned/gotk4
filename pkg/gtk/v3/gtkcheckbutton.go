@@ -37,6 +37,12 @@ type CheckButtonOverrider interface {
 	DrawIndicator(cr *cairo.Context)
 }
 
+// WrapCheckButtonOverrider wraps the CheckButtonOverrider
+// interface implementation to access the instance methods.
+func WrapCheckButtonOverrider(obj CheckButtonOverrider) *CheckButton {
+	return wrapCheckButton(externglib.BaseObject(obj))
+}
+
 // CheckButton places a discrete ToggleButton next to a widget, (usually a
 // Label). See the section on ToggleButton widgets for more information about
 // toggle/check buttons.

@@ -32,6 +32,12 @@ type AppChooserOverrider interface {
 	externglib.Objector
 }
 
+// WrapAppChooserOverrider wraps the AppChooserOverrider
+// interface implementation to access the instance methods.
+func WrapAppChooserOverrider(obj AppChooserOverrider) *AppChooser {
+	return wrapAppChooser(externglib.BaseObject(obj))
+}
+
 // AppChooser is an interface that can be implemented by widgets which allow the
 // user to choose an application (typically for the purpose of opening a file).
 // The main objects that implement this interface are AppChooserWidget,

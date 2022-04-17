@@ -30,6 +30,12 @@ type NativeSurfaceOverrider interface {
 	externglib.Objector
 }
 
+// WrapNativeSurfaceOverrider wraps the NativeSurfaceOverrider
+// interface implementation to access the instance methods.
+func WrapNativeSurfaceOverrider(obj NativeSurfaceOverrider) *NativeSurface {
+	return wrapNativeSurface(externglib.BaseObject(obj))
+}
+
 // NativeSurface: GtkNative is the interface implemented by all widgets that
 // have their own GdkSurface.
 //

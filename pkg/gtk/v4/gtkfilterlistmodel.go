@@ -29,6 +29,12 @@ type FilterListModelOverrider interface {
 	externglib.Objector
 }
 
+// WrapFilterListModelOverrider wraps the FilterListModelOverrider
+// interface implementation to access the instance methods.
+func WrapFilterListModelOverrider(obj FilterListModelOverrider) *FilterListModel {
+	return wrapFilterListModel(externglib.BaseObject(obj))
+}
+
 // FilterListModel: GtkFilterListModel is a list model that filters the elements
 // of the underlying model according to a GtkFilter.
 //

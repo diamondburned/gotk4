@@ -30,6 +30,12 @@ type TearoffMenuItemOverrider interface {
 	externglib.Objector
 }
 
+// WrapTearoffMenuItemOverrider wraps the TearoffMenuItemOverrider
+// interface implementation to access the instance methods.
+func WrapTearoffMenuItemOverrider(obj TearoffMenuItemOverrider) *TearoffMenuItem {
+	return wrapTearoffMenuItem(externglib.BaseObject(obj))
+}
+
 // TearoffMenuItem is a special MenuItem which is used to tear off and reattach
 // its menu.
 //

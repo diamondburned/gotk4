@@ -28,6 +28,12 @@ type ShortcutsSectionOverrider interface {
 	externglib.Objector
 }
 
+// WrapShortcutsSectionOverrider wraps the ShortcutsSectionOverrider
+// interface implementation to access the instance methods.
+func WrapShortcutsSectionOverrider(obj ShortcutsSectionOverrider) *ShortcutsSection {
+	return wrapShortcutsSection(externglib.BaseObject(obj))
+}
+
 // ShortcutsSection: GtkShortcutsSection collects all the keyboard shortcuts and
 // gestures for a major application mode.
 //

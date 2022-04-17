@@ -84,6 +84,12 @@ type ButtonBoxOverrider interface {
 	externglib.Objector
 }
 
+// WrapButtonBoxOverrider wraps the ButtonBoxOverrider
+// interface implementation to access the instance methods.
+func WrapButtonBoxOverrider(obj ButtonBoxOverrider) *ButtonBox {
+	return wrapButtonBox(externglib.BaseObject(obj))
+}
+
 type ButtonBox struct {
 	_ [0]func() // equal guard
 	Box

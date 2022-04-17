@@ -30,6 +30,12 @@ type CheckMenuItemAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapCheckMenuItemAccessibleOverrider wraps the CheckMenuItemAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapCheckMenuItemAccessibleOverrider(obj CheckMenuItemAccessibleOverrider) *CheckMenuItemAccessible {
+	return wrapCheckMenuItemAccessible(externglib.BaseObject(obj))
+}
+
 type CheckMenuItemAccessible struct {
 	_ [0]func() // equal guard
 	MenuItemAccessible

@@ -28,6 +28,12 @@ type FilterInputStreamOverrider interface {
 	externglib.Objector
 }
 
+// WrapFilterInputStreamOverrider wraps the FilterInputStreamOverrider
+// interface implementation to access the instance methods.
+func WrapFilterInputStreamOverrider(obj FilterInputStreamOverrider) *FilterInputStream {
+	return wrapFilterInputStream(externglib.BaseObject(obj))
+}
+
 // FilterInputStream: base class for input stream implementations that perform
 // some kind of filtering operation on a base stream. Typical examples of
 // filtering operations are character set conversion, compression and byte order
@@ -76,7 +82,8 @@ func (stream *FilterInputStream) baseFilterInputStream() *FilterInputStream {
 	return stream
 }
 
-// BaseFilterInputStream returns the underlying base object.
+// BaseFilterInputStream returns the underlying base object from the
+// interface.
 func BaseFilterInputStream(obj FilterInputStreamer) *FilterInputStream {
 	return obj.baseFilterInputStream()
 }

@@ -85,6 +85,12 @@ type StreamableContentOverrider interface {
 	URI(mimeType string) string
 }
 
+// WrapStreamableContentOverrider wraps the StreamableContentOverrider
+// interface implementation to access the instance methods.
+func WrapStreamableContentOverrider(obj StreamableContentOverrider) *StreamableContent {
+	return wrapStreamableContent(externglib.BaseObject(obj))
+}
+
 // StreamableContent: interface whereby an object allows its backing content to
 // be streamed to clients. Typical implementors would be images or icons, HTML
 // content, or multimedia display/rendering widgets.

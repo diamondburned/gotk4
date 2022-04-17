@@ -30,6 +30,12 @@ type MenuButtonAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapMenuButtonAccessibleOverrider wraps the MenuButtonAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapMenuButtonAccessibleOverrider(obj MenuButtonAccessibleOverrider) *MenuButtonAccessible {
+	return wrapMenuButtonAccessible(externglib.BaseObject(obj))
+}
+
 type MenuButtonAccessible struct {
 	_ [0]func() // equal guard
 	ToggleButtonAccessible

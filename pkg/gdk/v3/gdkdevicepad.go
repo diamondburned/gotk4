@@ -63,6 +63,12 @@ type DevicePadOverrider interface {
 	externglib.Objector
 }
 
+// WrapDevicePadOverrider wraps the DevicePadOverrider
+// interface implementation to access the instance methods.
+func WrapDevicePadOverrider(obj DevicePadOverrider) *DevicePad {
+	return wrapDevicePad(externglib.BaseObject(obj))
+}
+
 // DevicePad is an interface implemented by devices of type
 // GDK_SOURCE_TABLET_PAD, it allows querying the features provided by the pad
 // device.

@@ -71,6 +71,12 @@ type DBusObjectOverrider interface {
 	InterfaceRemoved(interface_ DBusInterfaceOverrider)
 }
 
+// WrapDBusObjectOverrider wraps the DBusObjectOverrider
+// interface implementation to access the instance methods.
+func WrapDBusObjectOverrider(obj DBusObjectOverrider) *DBusObject {
+	return wrapDBusObject(externglib.BaseObject(obj))
+}
+
 // DBusObject type is the base type for D-Bus objects on both the service side
 // (see BusObjectSkeleton) and the client side (see BusObjectProxy). It is
 // essentially just a container of interfaces.

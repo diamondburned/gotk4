@@ -409,6 +409,12 @@ type PrintOperationOverrider interface {
 	UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
 }
 
+// WrapPrintOperationOverrider wraps the PrintOperationOverrider
+// interface implementation to access the instance methods.
+func WrapPrintOperationOverrider(obj PrintOperationOverrider) *PrintOperation {
+	return wrapPrintOperation(externglib.BaseObject(obj))
+}
+
 // PrintOperation: GtkPrintOperation is the high-level, portable printing API.
 //
 // It looks a bit different than other GTK dialogs such as the GtkFileChooser,

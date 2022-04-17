@@ -44,6 +44,12 @@ type ToolItemOverrider interface {
 	ToolbarReconfigured()
 }
 
+// WrapToolItemOverrider wraps the ToolItemOverrider
+// interface implementation to access the instance methods.
+func WrapToolItemOverrider(obj ToolItemOverrider) *ToolItem {
+	return wrapToolItem(externglib.BaseObject(obj))
+}
+
 // ToolItem are widgets that can appear on a toolbar. To create a toolbar item
 // that contain something else than a button, use gtk_tool_item_new(). Use
 // gtk_container_add() to add a child widget to the tool item.

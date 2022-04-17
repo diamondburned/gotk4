@@ -31,6 +31,12 @@ type VScaleOverrider interface {
 	externglib.Objector
 }
 
+// WrapVScaleOverrider wraps the VScaleOverrider
+// interface implementation to access the instance methods.
+func WrapVScaleOverrider(obj VScaleOverrider) *VScale {
+	return wrapVScale(externglib.BaseObject(obj))
+}
+
 // VScale widget is used to allow the user to select a value using a vertical
 // slider. To create one, use gtk_hscale_new_with_range().
 //

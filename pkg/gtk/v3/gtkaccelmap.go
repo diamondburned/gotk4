@@ -34,6 +34,12 @@ type AccelMapOverrider interface {
 	externglib.Objector
 }
 
+// WrapAccelMapOverrider wraps the AccelMapOverrider
+// interface implementation to access the instance methods.
+func WrapAccelMapOverrider(obj AccelMapOverrider) *AccelMap {
+	return wrapAccelMap(externglib.BaseObject(obj))
+}
+
 // AccelMap: accelerator maps are used to define runtime configurable
 // accelerators. Functions for manipulating them are are usually used by higher
 // level convenience mechanisms like UIManager and are thus considered

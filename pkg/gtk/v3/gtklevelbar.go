@@ -49,6 +49,12 @@ type LevelBarOverrider interface {
 	OffsetChanged(name string)
 }
 
+// WrapLevelBarOverrider wraps the LevelBarOverrider
+// interface implementation to access the instance methods.
+func WrapLevelBarOverrider(obj LevelBarOverrider) *LevelBar {
+	return wrapLevelBar(externglib.BaseObject(obj))
+}
+
 // LevelBar is a bar widget that can be used as a level indicator. Typical use
 // cases are displaying the strength of a password, or showing the charge level
 // of a battery.

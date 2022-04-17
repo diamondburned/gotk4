@@ -38,6 +38,12 @@ type FrameOverrider interface {
 	ComputeChildAllocation(allocation *Allocation)
 }
 
+// WrapFrameOverrider wraps the FrameOverrider
+// interface implementation to access the instance methods.
+func WrapFrameOverrider(obj FrameOverrider) *Frame {
+	return wrapFrame(externglib.BaseObject(obj))
+}
+
 // Frame: frame widget is a bin that surrounds its child with a decorative frame
 // and an optional label. If present, the label is drawn in a gap in the top
 // side of the frame. The position of the label can be controlled with

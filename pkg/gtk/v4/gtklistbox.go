@@ -1222,6 +1222,12 @@ type ListBoxRowOverrider interface {
 	Activate()
 }
 
+// WrapListBoxRowOverrider wraps the ListBoxRowOverrider
+// interface implementation to access the instance methods.
+func WrapListBoxRowOverrider(obj ListBoxRowOverrider) *ListBoxRow {
+	return wrapListBoxRow(externglib.BaseObject(obj))
+}
+
 // ListBoxRow: GtkListBoxRow is the kind of widget that can be added to a
 // GtkListBox.
 type ListBoxRow struct {

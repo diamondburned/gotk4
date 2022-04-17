@@ -31,6 +31,12 @@ type SocketAccessibleOverrider interface {
 	externglib.Objector
 }
 
+// WrapSocketAccessibleOverrider wraps the SocketAccessibleOverrider
+// interface implementation to access the instance methods.
+func WrapSocketAccessibleOverrider(obj SocketAccessibleOverrider) *SocketAccessible {
+	return wrapSocketAccessible(externglib.BaseObject(obj))
+}
+
 type SocketAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible

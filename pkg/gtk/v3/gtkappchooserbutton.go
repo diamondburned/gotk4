@@ -38,6 +38,12 @@ type AppChooserButtonOverrider interface {
 	CustomItemActivated(itemName string)
 }
 
+// WrapAppChooserButtonOverrider wraps the AppChooserButtonOverrider
+// interface implementation to access the instance methods.
+func WrapAppChooserButtonOverrider(obj AppChooserButtonOverrider) *AppChooserButton {
+	return wrapAppChooserButton(externglib.BaseObject(obj))
+}
+
 // AppChooserButton is a widget that lets the user select an application. It
 // implements the AppChooser interface.
 //

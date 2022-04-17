@@ -85,6 +85,12 @@ type MessageDialogOverrider interface {
 	externglib.Objector
 }
 
+// WrapMessageDialogOverrider wraps the MessageDialogOverrider
+// interface implementation to access the instance methods.
+func WrapMessageDialogOverrider(obj MessageDialogOverrider) *MessageDialog {
+	return wrapMessageDialog(externglib.BaseObject(obj))
+}
+
 // MessageDialog: GtkMessageDialog presents a dialog with some message text.
 //
 // !An example GtkMessageDialog (messagedialog.png)

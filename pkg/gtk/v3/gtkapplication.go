@@ -762,7 +762,7 @@ func (application *Application) WindowByID(id uint) *Window {
 //
 //    - list of Window.
 //
-func (application *Application) Windows() []Window {
+func (application *Application) Windows() []*Window {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GList          // in
 
@@ -771,13 +771,13 @@ func (application *Application) Windows() []Window {
 	_cret = C.gtk_application_get_windows(_arg0)
 	runtime.KeepAlive(application)
 
-	var _list []Window // out
+	var _list []*Window // out
 
-	_list = make([]Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkWindow)(v)
-		var dst Window // out
-		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		var dst *Window // out
+		dst = wrapWindow(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

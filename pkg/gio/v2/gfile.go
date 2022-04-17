@@ -235,7 +235,7 @@ type Filer interface {
 	// DeleteFinish finishes deleting a file started with g_file_delete_async().
 	DeleteFinish(result AsyncResulter) error
 	// Dup duplicates a #GFile handle.
-	Dup() Filer
+	Dup() *File
 	// EjectMountable starts an asynchronous eject on a mountable.
 	EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectMountableFinish finishes an asynchronous eject operation started by
@@ -257,20 +257,20 @@ type Filer interface {
 	// Equal checks if the two given #GFiles refer to the same file.
 	Equal(file2 Filer) bool
 	// FindEnclosingMount gets a #GMount for the #GFile.
-	FindEnclosingMount(ctx context.Context) (Mounter, error)
+	FindEnclosingMount(ctx context.Context) (*Mount, error)
 	// FindEnclosingMountAsync: asynchronously gets the mount for the file.
 	FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an asynchronous find mount request.
-	FindEnclosingMountFinish(res AsyncResulter) (Mounter, error)
+	FindEnclosingMountFinish(res AsyncResulter) (*Mount, error)
 	// Basename gets the base name (the last component of the path) for a given
 	// #GFile.
 	Basename() string
 	// Child gets a child of file with basename equal to name.
-	Child(name string) Filer
+	Child(name string) *File
 	// ChildForDisplayName gets the child of file for a given display_name (i.e.
-	ChildForDisplayName(displayName string) (Filer, error)
+	ChildForDisplayName(displayName string) (*File, error)
 	// Parent gets the parent directory for the file.
-	Parent() Filer
+	Parent() *File
 	// ParseName gets the parse name of the file.
 	ParseName() string
 	// Path gets the local pathname for #GFile, if one exists.
@@ -339,7 +339,7 @@ type Filer interface {
 	// MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE.
 	MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountMountableFinish finishes a mount operation.
-	MountMountableFinish(result AsyncResulter) (Filer, error)
+	MountMountableFinish(result AsyncResulter) (*File, error)
 	// Move tries to move the file or directory source to the location specified
 	// by destination.
 	Move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error
@@ -359,13 +359,13 @@ type Filer interface {
 	PollMountableFinish(result AsyncResulter) error
 	// QueryDefaultHandler returns the Info that is registered as the default
 	// application to handle the file specified by file.
-	QueryDefaultHandler(ctx context.Context) (AppInfor, error)
+	QueryDefaultHandler(ctx context.Context) (*AppInfo, error)
 	// QueryDefaultHandlerAsync: async version of
 	// g_file_query_default_handler().
 	QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 	// operation.
-	QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, error)
+	QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, error)
 	// QueryExists: utility function to check if a particular file exists.
 	QueryExists(ctx context.Context) bool
 	// QueryFileType: utility function to inspect the Type of a file.
@@ -431,7 +431,7 @@ type Filer interface {
 	ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// ResolveRelativePath resolves a relative path for file to an absolute
 	// path.
-	ResolveRelativePath(relativePath string) Filer
+	ResolveRelativePath(relativePath string) *File
 	// SetAttribute sets an attribute in the file with attribute name attribute
 	// to value_p.
 	SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP cgo.Handle, flags FileQueryInfoFlags) error
@@ -462,13 +462,13 @@ type Filer interface {
 	// target values, not stopping on the first error.
 	SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error
 	// SetDisplayName renames file to the specified display name.
-	SetDisplayName(ctx context.Context, displayName string) (Filer, error)
+	SetDisplayName(ctx context.Context, displayName string) (*File, error)
 	// SetDisplayNameAsync: asynchronously sets the display name for a given
 	// #GFile.
 	SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
-	SetDisplayNameFinish(res AsyncResulter) (Filer, error)
+	SetDisplayNameFinish(res AsyncResulter) (*File, error)
 	// StartMountable starts a file of type FILE_TYPE_MOUNTABLE.
 	StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback)
 	// StartMountableFinish finishes a start operation.
@@ -1272,7 +1272,7 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 //
 //    - ret: new #GFile that is a duplicate of the given #GFile.
 //
-func (file *File) Dup() Filer {
+func (file *File) Dup() *File {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
@@ -1281,25 +1281,9 @@ func (file *File) Dup() Filer {
 	_cret = C.g_file_dup(_arg0)
 	runtime.KeepAlive(file)
 
-	var _ret Filer // out
+	var _ret *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_ret = rv
-	}
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -1660,7 +1644,7 @@ func (file1 *File) Equal(file2 Filer) bool {
 //    - mount where the file is located or NULL on error. Free the returned
 //      object with g_object_unref().
 //
-func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
+func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GMount       // in
@@ -1677,26 +1661,10 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
-	var _mount Mounter // out
-	var _goerr error   // out
+	var _mount *Mount // out
+	var _goerr error  // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Mounter is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
-			return ok
-		})
-		rv, ok := casted.(Mounter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
-		}
-		_mount = rv
-	}
+	_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1756,7 +1724,7 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, c
 //    - mount for given file or NULL on error. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
+func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GMount       // in
@@ -1769,26 +1737,10 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
-	var _mount Mounter // out
-	var _goerr error   // out
+	var _mount *Mount // out
+	var _goerr error  // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Mounter is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Mounter)
-			return ok
-		})
-		rv, ok := casted.(Mounter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
-		}
-		_mount = rv
-	}
+	_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1853,7 +1805,7 @@ func (file *File) Basename() string {
 //    - ret to a child specified by name. Free the returned object with
 //      g_object_unref().
 //
-func (file *File) Child(name string) Filer {
+func (file *File) Child(name string) *File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -1866,25 +1818,9 @@ func (file *File) Child(name string) Filer {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(name)
 
-	var _ret Filer // out
+	var _ret *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_ret = rv
-	}
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -1906,7 +1842,7 @@ func (file *File) Child(name string) Filer {
 //    - ret to the specified child, or NULL if the display name couldn't be
 //      converted. Free the returned object with g_object_unref().
 //
-func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
+func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 	var _arg0 *C.GFile  // out
 	var _arg1 *C.char   // out
 	var _cret *C.GFile  // in
@@ -1920,26 +1856,10 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(displayName)
 
-	var _ret Filer   // out
+	var _ret *File   // out
 	var _goerr error // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_ret = rv
-	}
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1957,7 +1877,7 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 //    - ret (optional) structure to the parent of the given #GFile or NULL if
 //      there is no parent. Free the returned object with g_object_unref().
 //
-func (file *File) Parent() Filer {
+func (file *File) Parent() *File {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
 
@@ -1966,23 +1886,10 @@ func (file *File) Parent() Filer {
 	_cret = C.g_file_get_parent(_arg0)
 	runtime.KeepAlive(file)
 
-	var _ret Filer // out
+	var _ret *File // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Filer)
-				return ok
-			})
-			rv, ok := casted.(Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			_ret = rv
-		}
+		_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _ret
@@ -3259,7 +3166,7 @@ func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mou
 //
 //    - ret or NULL on error. Free the returned object with g_object_unref().
 //
-func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
+func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFile        // in
@@ -3272,26 +3179,10 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
-	var _ret Filer   // out
+	var _ret *File   // out
 	var _goerr error // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_ret = rv
-	}
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -3620,7 +3511,7 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 //    - appInfo if the handle was found, NULL if there were errors. When you are
 //      done with it, release it with g_object_unref().
 //
-func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
+func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
 	var _cret *C.GAppInfo     // in
@@ -3637,26 +3528,10 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
-	var _appInfo AppInfor // out
+	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_appInfo = rv
-	}
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -3710,7 +3585,7 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, 
 //    - appInfo if the handle was found, NULL if there were errors. When you are
 //      done with it, release it with g_object_unref().
 //
-func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, error) {
+func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GAppInfo     // in
@@ -3723,26 +3598,10 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
-	var _appInfo AppInfor // out
+	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_appInfo = rv
-	}
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -5003,7 +4862,7 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 //    - ret to the resolved path. NULL if relative_path is NULL or if file is
 //      invalid. Free the returned object with g_object_unref().
 //
-func (file *File) ResolveRelativePath(relativePath string) Filer {
+func (file *File) ResolveRelativePath(relativePath string) *File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -5016,25 +4875,9 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(relativePath)
 
-	var _ret Filer // out
+	var _ret *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_ret = rv
-	}
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -5551,7 +5394,7 @@ func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, fla
 //    - ret specifying what file was renamed to, or NULL if there was an error.
 //      Free the returned object with g_object_unref().
 //
-func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer, error) {
+func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
 	var _arg1 *C.char         // out
@@ -5572,26 +5415,10 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(displayName)
 
-	var _ret Filer   // out
+	var _ret *File   // out
 	var _goerr error // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_ret = rv
-	}
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -5655,7 +5482,7 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 //
 //    - ret or NULL on error. Free the returned object with g_object_unref().
 //
-func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
+func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GFile        // in
@@ -5668,26 +5495,10 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
-	var _ret Filer   // out
+	var _ret *File   // out
 	var _goerr error // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_ret = rv
-	}
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -6158,7 +5969,7 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 //
 //    - file: new #GFile. Free the returned object with g_object_unref().
 //
-func NewFileForCommandlineArg(arg string) Filer {
+func NewFileForCommandlineArg(arg string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -6168,25 +5979,9 @@ func NewFileForCommandlineArg(arg string) Filer {
 	_cret = C.g_file_new_for_commandline_arg(_arg1)
 	runtime.KeepAlive(arg)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -6212,7 +6007,7 @@ func NewFileForCommandlineArg(arg string) Filer {
 //
 //    - file: new #GFile.
 //
-func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
+func NewFileForCommandlineArgAndCwd(arg, cwd string) *File {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _cret *C.GFile // in
@@ -6226,25 +6021,9 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
 	runtime.KeepAlive(arg)
 	runtime.KeepAlive(cwd)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -6263,7 +6042,7 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) Filer {
 //    - file: new #GFile for the given path. Free the returned object with
 //      g_object_unref().
 //
-func NewFileForPath(path string) Filer {
+func NewFileForPath(path string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -6273,25 +6052,9 @@ func NewFileForPath(path string) Filer {
 	_cret = C.g_file_new_for_path(_arg1)
 	runtime.KeepAlive(path)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -6309,7 +6072,7 @@ func NewFileForPath(path string) Filer {
 //    - file: new #GFile for the given uri. Free the returned object with
 //      g_object_unref().
 //
-func NewFileForURI(uri string) Filer {
+func NewFileForURI(uri string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -6319,25 +6082,9 @@ func NewFileForURI(uri string) Filer {
 	_cret = C.g_file_new_for_uri(_arg1)
 	runtime.KeepAlive(uri)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -6363,7 +6110,7 @@ func NewFileForURI(uri string) Filer {
 //    - iostream: on return, a IOStream for the created file.
 //    - file: new #GFile. Free the returned object with g_object_unref().
 //
-func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
+func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 	var _arg1 *C.char          // out
 	var _arg2 *C.GFileIOStream // in
 	var _cret *C.GFile         // in
@@ -6378,27 +6125,11 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 	runtime.KeepAlive(tmpl)
 
 	var _iostream *FileIOStream // out
-	var _file Filer             // out
+	var _file *File             // out
 	var _goerr error            // out
 
 	_iostream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -6419,7 +6150,7 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 //
 //    - file: new #GFile.
 //
-func FileParseName(parseName string) Filer {
+func FileParseName(parseName string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
 
@@ -6429,25 +6160,9 @@ func FileParseName(parseName string) Filer {
 	_cret = C.g_file_parse_name(_arg1)
 	runtime.KeepAlive(parseName)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }

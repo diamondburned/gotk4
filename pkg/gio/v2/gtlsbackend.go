@@ -423,30 +423,14 @@ func (backend *TLSBackend) SupportsTLS() bool {
 //
 //    - tlsBackend which will be a dummy object if no TLS backend is available.
 //
-func TLSBackendGetDefault() TLSBackender {
+func TLSBackendGetDefault() *TLSBackend {
 	var _cret *C.GTlsBackend // in
 
 	_cret = C.g_tls_backend_get_default()
 
-	var _tlsBackend TLSBackender // out
+	var _tlsBackend *TLSBackend // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.TLSBackender is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSBackender)
-			return ok
-		})
-		rv, ok := casted.(TLSBackender)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSBackender")
-		}
-		_tlsBackend = rv
-	}
+	_tlsBackend = wrapTLSBackend(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tlsBackend
 }

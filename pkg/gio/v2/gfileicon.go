@@ -94,7 +94,7 @@ func NewFileIcon(file Filer) *FileIcon {
 //
 //    - file: #GFile.
 //
-func (icon *FileIcon) File() Filer {
+func (icon *FileIcon) File() *File {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
 
@@ -103,25 +103,9 @@ func (icon *FileIcon) File() Filer {
 	_cret = C.g_file_icon_get_file(_arg0)
 	runtime.KeepAlive(icon)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _file
 }

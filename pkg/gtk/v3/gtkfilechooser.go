@@ -280,7 +280,7 @@ type FileChooserer interface {
 	// CurrentFolder gets the current folder of chooser as a local filename.
 	CurrentFolder() string
 	// CurrentFolderFile gets the current folder of chooser as #GFile.
-	CurrentFolderFile() gio.Filer
+	CurrentFolderFile() *gio.File
 	// CurrentFolderURI gets the current folder of chooser as an URI.
 	CurrentFolderURI() string
 	// CurrentName gets the current name in the file selector, as entered by the
@@ -294,7 +294,7 @@ type FileChooserer interface {
 	ExtraWidget() Widgetter
 	// File gets the #GFile for the currently selected file in the file
 	// selector.
-	File() gio.Filer
+	File() *gio.File
 	// Filename gets the filename for the currently selected file in the file
 	// selector.
 	Filename() string
@@ -303,7 +303,7 @@ type FileChooserer interface {
 	Filenames() []string
 	// Files lists all the selected files and subfolders in the current folder
 	// of chooser as #GFile.
-	Files() []gio.Filer
+	Files() []*gio.File
 	// Filter gets the current filter; see gtk_file_chooser_set_filter().
 	Filter() *FileFilter
 	// LocalOnly gets whether only local files can be selected in the file
@@ -311,7 +311,7 @@ type FileChooserer interface {
 	LocalOnly() bool
 	// PreviewFile gets the #GFile that should be previewed in a custom preview
 	// Internal function, see gtk_file_chooser_get_preview_uri().
-	PreviewFile() gio.Filer
+	PreviewFile() *gio.File
 	// PreviewFilename gets the filename that should be previewed in a custom
 	// preview widget.
 	PreviewFilename() string
@@ -341,7 +341,7 @@ type FileChooserer interface {
 	UsePreviewLabel() bool
 	// ListFilters lists the current set of user-selectable filters; see
 	// gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
-	ListFilters() []FileFilter
+	ListFilters() []*FileFilter
 	// ListShortcutFolderURIs queries the list of shortcut folders in the file
 	// chooser, as set by gtk_file_chooser_add_shortcut_folder_uri().
 	ListShortcutFolderURIs() []string
@@ -956,7 +956,7 @@ func (chooser *FileChooser) CurrentFolder() string {
 //
 //    - file for the current folder.
 //
-func (chooser *FileChooser) CurrentFolderFile() gio.Filer {
+func (chooser *FileChooser) CurrentFolderFile() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -965,24 +965,13 @@ func (chooser *FileChooser) CurrentFolderFile() gio.Filer {
 	_cret = C.gtk_file_chooser_get_current_folder_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
-			return ok
-		})
-		rv, ok := casted.(gio.Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
 	}
 
 	return _file
@@ -1135,7 +1124,7 @@ func (chooser *FileChooser) ExtraWidget() Widgetter {
 //    - file: selected #GFile. You own the returned file; use g_object_unref() to
 //      release it.
 //
-func (chooser *FileChooser) File() gio.Filer {
+func (chooser *FileChooser) File() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -1144,24 +1133,13 @@ func (chooser *FileChooser) File() gio.Filer {
 	_cret = C.gtk_file_chooser_get_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
-			return ok
-		})
-		rv, ok := casted.(gio.Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
 	}
 
 	return _file
@@ -1242,7 +1220,7 @@ func (chooser *FileChooser) Filenames() []string {
 //      the current folder. Free the returned list with g_slist_free(), and the
 //      files with g_object_unref().
 //
-func (chooser *FileChooser) Files() []gio.Filer {
+func (chooser *FileChooser) Files() []*gio.File {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -1251,28 +1229,17 @@ func (chooser *FileChooser) Files() []gio.Filer {
 	_cret = C.gtk_file_chooser_get_files(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []gio.Filer // out
+	var _sList []*gio.File // out
 
-	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*gio.File, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
-		var dst gio.Filer // out
+		var dst *gio.File // out
 		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(src))
+			dst = &gio.File{
+				Object: obj,
 			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			dst = rv
 		}
 		_sList = append(_sList, dst)
 	})
@@ -1337,7 +1304,7 @@ func (chooser *FileChooser) LocalOnly() bool {
 //    - file (optional) for the file to preview, or NULL if no file is selected.
 //      Free with g_object_unref().
 //
-func (chooser *FileChooser) PreviewFile() gio.Filer {
+func (chooser *FileChooser) PreviewFile() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -1346,22 +1313,14 @@ func (chooser *FileChooser) PreviewFile() gio.Filer {
 	_cret = C.gtk_file_chooser_get_preview_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_file = &gio.File{
+				Object: obj,
 			}
-			_file = rv
 		}
 	}
 
@@ -1635,7 +1594,7 @@ func (chooser *FileChooser) UsePreviewLabel() bool {
 //      contents of the list are owned by GTK+, but you must free the list itself
 //      with g_slist_free() when you are done with it.
 //
-func (chooser *FileChooser) ListFilters() []FileFilter {
+func (chooser *FileChooser) ListFilters() []*FileFilter {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GSList         // in
 
@@ -1644,13 +1603,13 @@ func (chooser *FileChooser) ListFilters() []FileFilter {
 	_cret = C.gtk_file_chooser_list_filters(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []FileFilter // out
+	var _sList []*FileFilter // out
 
-	_sList = make([]FileFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*FileFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkFileFilter)(v)
-		var dst FileFilter // out
-		dst = *wrapFileFilter(externglib.Take(unsafe.Pointer(src)))
+		var dst *FileFilter // out
+		dst = wrapFileFilter(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 

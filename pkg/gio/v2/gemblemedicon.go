@@ -132,7 +132,7 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 //
 //    - list of #GEmblems that is owned by emblemed.
 //
-func (emblemed *EmblemedIcon) Emblems() []Emblem {
+func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GList         // in
 
@@ -141,13 +141,13 @@ func (emblemed *EmblemedIcon) Emblems() []Emblem {
 	_cret = C.g_emblemed_icon_get_emblems(_arg0)
 	runtime.KeepAlive(emblemed)
 
-	var _list []Emblem // out
+	var _list []*Emblem // out
 
-	_list = make([]Emblem, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GEmblem)(v)
-		var dst Emblem // out
-		dst = *wrapEmblem(externglib.Take(unsafe.Pointer(src)))
+		var dst *Emblem // out
+		dst = wrapEmblem(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -160,7 +160,7 @@ func (emblemed *EmblemedIcon) Emblems() []Emblem {
 //
 //    - icon that is owned by emblemed.
 //
-func (emblemed *EmblemedIcon) GetIcon() Iconner {
+func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
@@ -169,25 +169,9 @@ func (emblemed *EmblemedIcon) GetIcon() Iconner {
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 	runtime.KeepAlive(emblemed)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _icon
 }

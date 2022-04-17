@@ -899,7 +899,7 @@ func (builder *Builder) Objects() []*externglib.Object {
 //
 //    - builderScope: current scope.
 //
-func (builder *Builder) Scope() BuilderScoper {
+func (builder *Builder) Scope() *BuilderScope {
 	var _arg0 *C.GtkBuilder      // out
 	var _cret *C.GtkBuilderScope // in
 
@@ -908,25 +908,9 @@ func (builder *Builder) Scope() BuilderScoper {
 	_cret = C.gtk_builder_get_scope(_arg0)
 	runtime.KeepAlive(builder)
 
-	var _builderScope BuilderScoper // out
+	var _builderScope *BuilderScope // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.BuilderScoper is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(BuilderScoper)
-			return ok
-		})
-		rv, ok := casted.(BuilderScoper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.BuilderScoper")
-		}
-		_builderScope = rv
-	}
+	_builderScope = wrapBuilderScope(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _builderScope
 }

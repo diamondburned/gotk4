@@ -93,7 +93,7 @@ func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 //
 //    - tlsServerConnection: new ServerConnection, or NULL on error.
 //
-func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (TLSServerConnectioner, error) {
+func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
 	var _arg1 *C.GIOStream       // out
 	var _arg2 *C.GTlsCertificate // out
 	var _cret *C.GIOStream       // in
@@ -108,26 +108,10 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(certificate)
 
-	var _tlsServerConnection TLSServerConnectioner // out
-	var _goerr error                               // out
+	var _tlsServerConnection *TLSServerConnection // out
+	var _goerr error                              // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.TLSServerConnectioner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSServerConnectioner)
-			return ok
-		})
-		rv, ok := casted.(TLSServerConnectioner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSServerConnectioner")
-		}
-		_tlsServerConnection = rv
-	}
+	_tlsServerConnection = wrapTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

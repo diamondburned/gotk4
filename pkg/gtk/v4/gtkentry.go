@@ -716,7 +716,7 @@ func (entry *Entry) IconAtPos(x, y int) int {
 //    - icon (optional): GIcon, or NULL if no icon is set or if the icon is not a
 //      GIcon.
 //
-func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -728,22 +728,14 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(iconPos)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
-				return ok
-			})
-			rv, ok := casted.(gio.Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
 			}
-			_icon = rv
 		}
 	}
 
@@ -798,7 +790,7 @@ func (entry *Entry) IconName(iconPos EntryIconPosition) string {
 //    - paintable (optional): GdkPaintable, or NULL if no icon is set for this
 //      position or the icon set is not a GdkPaintable.
 //
-func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintabler {
+func (entry *Entry) IconPaintable(iconPos EntryIconPosition) *gdk.Paintable {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GdkPaintable        // in
@@ -810,22 +802,14 @@ func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintabler {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(iconPos)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable *gdk.Paintable // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gdk.Paintabler)
-				return ok
-			})
-			rv, ok := casted.(gdk.Paintabler)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_paintable = &gdk.Paintable{
+				Object: obj,
 			}
-			_paintable = rv
 		}
 	}
 

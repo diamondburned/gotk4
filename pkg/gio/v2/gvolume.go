@@ -147,21 +147,21 @@ type Volumer interface {
 	EnumerateIdentifiers() []string
 	// ActivationRoot gets the activation root for a #GVolume if it is known
 	// ahead of mount time.
-	ActivationRoot() Filer
+	ActivationRoot() *File
 	// Drive gets the drive for the volume.
-	Drive() Driver
+	Drive() *Drive
 	// Icon gets the icon for volume.
-	Icon() Iconner
+	Icon() *Icon
 	// Identifier gets the identifier of the given kind for volume.
 	Identifier(kind string) string
 	// GetMount gets the mount for the volume.
-	GetMount() Mounter
+	GetMount() *Mount
 	// Name gets the name of volume.
 	Name() string
 	// SortKey gets the sort key for volume, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for volume.
-	SymbolicIcon() Iconner
+	SymbolicIcon() *Icon
 	// UUID gets the UUID for the volume.
 	UUID() string
 	// Mount mounts a volume.
@@ -480,7 +480,7 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 //    - file (optional): activation root of volume or NULL. Use g_object_unref()
 //      to free.
 //
-func (volume *Volume) ActivationRoot() Filer {
+func (volume *Volume) ActivationRoot() *File {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GFile   // in
 
@@ -489,23 +489,10 @@ func (volume *Volume) ActivationRoot() Filer {
 	_cret = C.g_volume_get_activation_root(_arg0)
 	runtime.KeepAlive(volume)
 
-	var _file Filer // out
+	var _file *File // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Filer)
-				return ok
-			})
-			rv, ok := casted.(Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			_file = rv
-		}
+		_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _file
@@ -519,7 +506,7 @@ func (volume *Volume) ActivationRoot() Filer {
 //      returned object should be unreffed with g_object_unref() when no longer
 //      needed.
 //
-func (volume *Volume) Drive() Driver {
+func (volume *Volume) Drive() *Drive {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GDrive  // in
 
@@ -528,23 +515,10 @@ func (volume *Volume) Drive() Driver {
 	_cret = C.g_volume_get_drive(_arg0)
 	runtime.KeepAlive(volume)
 
-	var _drive Driver // out
+	var _drive *Drive // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Driver)
-				return ok
-			})
-			rv, ok := casted.(Driver)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
-			}
-			_drive = rv
-		}
+		_drive = wrapDrive(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _drive
@@ -557,7 +531,7 @@ func (volume *Volume) Drive() Driver {
 //    - icon: #GIcon. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (volume *Volume) Icon() Iconner {
+func (volume *Volume) Icon() *Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -566,25 +540,9 @@ func (volume *Volume) Icon() Iconner {
 	_cret = C.g_volume_get_icon(_arg0)
 	runtime.KeepAlive(volume)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -632,7 +590,7 @@ func (volume *Volume) Identifier(kind string) string {
 //    - mount (optional) or NULL if volume isn't mounted. The returned object
 //      should be unreffed with g_object_unref() when no longer needed.
 //
-func (volume *Volume) GetMount() Mounter {
+func (volume *Volume) GetMount() *Mount {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
 
@@ -641,23 +599,10 @@ func (volume *Volume) GetMount() Mounter {
 	_cret = C.g_volume_get_mount(_arg0)
 	runtime.KeepAlive(volume)
 
-	var _mount Mounter // out
+	var _mount *Mount // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Mounter)
-				return ok
-			})
-			rv, ok := casted.(Mounter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Mounter")
-			}
-			_mount = rv
-		}
+		_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _mount
@@ -719,7 +664,7 @@ func (volume *Volume) SortKey() string {
 //    - icon: #GIcon. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (volume *Volume) SymbolicIcon() Iconner {
+func (volume *Volume) SymbolicIcon() *Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -728,25 +673,9 @@ func (volume *Volume) SymbolicIcon() Iconner {
 	_cret = C.g_volume_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(volume)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }

@@ -2564,7 +2564,7 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 //
 //    - treeModel: model.
 //
-func (reference *TreeRowReference) Model() TreeModeller {
+func (reference *TreeRowReference) Model() *TreeModel {
 	var _arg0 *C.GtkTreeRowReference // out
 	var _cret *C.GtkTreeModel        // in
 
@@ -2573,25 +2573,9 @@ func (reference *TreeRowReference) Model() TreeModeller {
 	_cret = C.gtk_tree_row_reference_get_model(_arg0)
 	runtime.KeepAlive(reference)
 
-	var _treeModel TreeModeller // out
+	var _treeModel *TreeModel // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.TreeModeller is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
-			return ok
-		})
-		rv, ok := casted.(TreeModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-		}
-		_treeModel = rv
-	}
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }

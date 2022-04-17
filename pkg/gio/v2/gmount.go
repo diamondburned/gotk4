@@ -99,23 +99,23 @@ type Mounter interface {
 	// EjectWithOperationFinish finishes ejecting a mount.
 	EjectWithOperationFinish(result AsyncResulter) error
 	// DefaultLocation gets the default location of mount.
-	DefaultLocation() Filer
+	DefaultLocation() *File
 	// Drive gets the drive for the mount.
-	Drive() Driver
+	Drive() *Drive
 	// Icon gets the icon for mount.
-	Icon() Iconner
+	Icon() *Icon
 	// Name gets the name of mount.
 	Name() string
 	// Root gets the root directory on mount.
-	Root() Filer
+	Root() *File
 	// SortKey gets the sort key for mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for mount.
-	SymbolicIcon() Iconner
+	SymbolicIcon() *Icon
 	// UUID gets the UUID for the mount.
 	UUID() string
 	// Volume gets the volume for the mount.
-	Volume() Volumer
+	Volume() *Volume
 	// GuessContentType tries to guess the type of content stored on mount.
 	GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback)
 	// GuessContentTypeFinish finishes guessing content types of mount.
@@ -428,7 +428,7 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 //    - file: #GFile. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) DefaultLocation() Filer {
+func (mount *Mount) DefaultLocation() *File {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
@@ -437,25 +437,9 @@ func (mount *Mount) DefaultLocation() Filer {
 	_cret = C.g_mount_get_default_location(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -471,7 +455,7 @@ func (mount *Mount) DefaultLocation() Filer {
 //      drive. The returned object should be unreffed with g_object_unref() when
 //      no longer needed.
 //
-func (mount *Mount) Drive() Driver {
+func (mount *Mount) Drive() *Drive {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
 
@@ -480,23 +464,10 @@ func (mount *Mount) Drive() Driver {
 	_cret = C.g_mount_get_drive(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _drive Driver // out
+	var _drive *Drive // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Driver)
-				return ok
-			})
-			rv, ok := casted.(Driver)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Driver")
-			}
-			_drive = rv
-		}
+		_drive = wrapDrive(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _drive
@@ -509,7 +480,7 @@ func (mount *Mount) Drive() Driver {
 //    - icon: #GIcon. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) Icon() Iconner {
+func (mount *Mount) Icon() *Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
@@ -518,25 +489,9 @@ func (mount *Mount) Icon() Iconner {
 	_cret = C.g_mount_get_icon(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -572,7 +527,7 @@ func (mount *Mount) Name() string {
 //    - file: #GFile. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) Root() Filer {
+func (mount *Mount) Root() *File {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
 
@@ -581,25 +536,9 @@ func (mount *Mount) Root() Filer {
 	_cret = C.g_mount_get_root(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -636,7 +575,7 @@ func (mount *Mount) SortKey() string {
 //    - icon: #GIcon. The returned object should be unreffed with
 //      g_object_unref() when no longer needed.
 //
-func (mount *Mount) SymbolicIcon() Iconner {
+func (mount *Mount) SymbolicIcon() *Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
@@ -645,25 +584,9 @@ func (mount *Mount) SymbolicIcon() Iconner {
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -704,7 +627,7 @@ func (mount *Mount) UUID() string {
 //      returned object should be unreffed with g_object_unref() when no longer
 //      needed.
 //
-func (mount *Mount) Volume() Volumer {
+func (mount *Mount) Volume() *Volume {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
 
@@ -713,23 +636,10 @@ func (mount *Mount) Volume() Volumer {
 	_cret = C.g_mount_get_volume(_arg0)
 	runtime.KeepAlive(mount)
 
-	var _volume Volumer // out
+	var _volume *Volume // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Volumer)
-				return ok
-			})
-			rv, ok := casted.(Volumer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
-			}
-			_volume = rv
-		}
+		_volume = wrapVolume(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _volume

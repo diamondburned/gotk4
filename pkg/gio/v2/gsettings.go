@@ -1007,7 +1007,7 @@ func (settings *Settings) BindWritable(key string, object *externglib.Object, pr
 //
 //    - action: new #GAction.
 //
-func (settings *Settings) CreateAction(key string) Actioner {
+func (settings *Settings) CreateAction(key string) *Action {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GAction   // in
@@ -1020,25 +1020,9 @@ func (settings *Settings) CreateAction(key string) Actioner {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _action Actioner // out
+	var _action *Action // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Actioner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Actioner)
-			return ok
-		})
-		rv, ok := casted.(Actioner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
-		}
-		_action = rv
-	}
+	_action = wrapAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _action
 }

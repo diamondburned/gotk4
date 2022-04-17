@@ -180,7 +180,7 @@ func (section *CSSSection) EndPosition() uint {
 //    - file that section was parsed from or NULL if section was parsed from
 //      other data.
 //
-func (section *CSSSection) File() gio.Filer {
+func (section *CSSSection) File() *gio.File {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
 
@@ -189,24 +189,13 @@ func (section *CSSSection) File() gio.Filer {
 	_cret = C.gtk_css_section_get_file(_arg0)
 	runtime.KeepAlive(section)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
-			return ok
-		})
-		rv, ok := casted.(gio.Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
 	}
 
 	return _file

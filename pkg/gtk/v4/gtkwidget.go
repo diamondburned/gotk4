@@ -3255,7 +3255,7 @@ func (widget *Widget) Name() string {
 //
 //    - native (optional): GtkNative widget of widget, or NULL.
 //
-func (widget *Widget) Native() NativeSurfacer {
+func (widget *Widget) Native() *NativeSurface {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkNative // in
 
@@ -3264,23 +3264,10 @@ func (widget *Widget) Native() NativeSurfacer {
 	_cret = C.gtk_widget_get_native(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _native NativeSurfacer // out
+	var _native *NativeSurface // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(NativeSurfacer)
-				return ok
-			})
-			rv, ok := casted.(NativeSurfacer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.NativeSurfacer")
-			}
-			_native = rv
-		}
+		_native = wrapNativeSurface(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _native
@@ -3643,7 +3630,7 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 //
 //    - root (optional) widget of widget, or NULL.
 //
-func (widget *Widget) Root() Rooter {
+func (widget *Widget) Root() *Root {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkRoot   // in
 
@@ -3652,23 +3639,10 @@ func (widget *Widget) Root() Rooter {
 	_cret = C.gtk_widget_get_root(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _root Rooter // out
+	var _root *Root // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Rooter)
-				return ok
-			})
-			rv, ok := casted.(Rooter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Rooter")
-			}
-			_root = rv
-		}
+		_root = wrapRoot(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _root
@@ -4805,7 +4779,7 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 //
 //    - listModel: a GListModel tracking widget's children.
 //
-func (widget *Widget) ObserveChildren() gio.ListModeller {
+func (widget *Widget) ObserveChildren() *gio.ListModel {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
 
@@ -4814,24 +4788,13 @@ func (widget *Widget) ObserveChildren() gio.ListModeller {
 	_cret = C.gtk_widget_observe_children(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel
@@ -4851,7 +4814,7 @@ func (widget *Widget) ObserveChildren() gio.ListModeller {
 //
 //    - listModel: a GListModel tracking widget's controllers.
 //
-func (widget *Widget) ObserveControllers() gio.ListModeller {
+func (widget *Widget) ObserveControllers() *gio.ListModel {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
 
@@ -4860,24 +4823,13 @@ func (widget *Widget) ObserveControllers() gio.ListModeller {
 	_cret = C.gtk_widget_observe_controllers(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel

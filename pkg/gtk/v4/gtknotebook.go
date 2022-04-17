@@ -970,7 +970,7 @@ func (notebook *Notebook) Page(child Widgetter) *NotebookPage {
 //
 //    - listModel: a GListModel for the notebook's children.
 //
-func (notebook *Notebook) Pages() gio.ListModeller {
+func (notebook *Notebook) Pages() *gio.ListModel {
 	var _arg0 *C.GtkNotebook // out
 	var _cret *C.GListModel  // in
 
@@ -979,24 +979,13 @@ func (notebook *Notebook) Pages() gio.ListModeller {
 	_cret = C.gtk_notebook_get_pages(_arg0)
 	runtime.KeepAlive(notebook)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel

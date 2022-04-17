@@ -1199,7 +1199,7 @@ func (device *Device) Warp(screen *Screen, x, y int) {
 //      owner_events flag to gdk_keyboard_grab() or gdk_pointer_grab() was TRUE.
 //    - ok: TRUE if this application currently has the keyboard grabbed.
 //
-func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow *Window, ownerEvents bool, ok bool) {
+func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Windower, ownerEvents bool, ok bool) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkDevice  // out
 	var _arg3 *C.GdkWindow  // in
@@ -1213,11 +1213,27 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow *Win
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(device)
 
-	var _grabWindow *Window // out
-	var _ownerEvents bool   // out
-	var _ok bool            // out
+	var _grabWindow Windower // out
+	var _ownerEvents bool    // out
+	var _ok bool             // out
 
-	_grabWindow = wrapWindow(externglib.Take(unsafe.Pointer(_arg3)))
+	{
+		objptr := unsafe.Pointer(_arg3)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := externglib.Take(objptr)
+		casted := object.WalkCast(func(obj externglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
+		rv, ok := casted.(Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_grabWindow = rv
+	}
 	if _arg4 != 0 {
 		_ownerEvents = true
 	}

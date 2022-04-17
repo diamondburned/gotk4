@@ -368,7 +368,7 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //
 //    - list of gtk.Constraint instances that were added to the layout.
 //
-func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]Constraint, error) {
+func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]*Constraint, error) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 **C.char               // out
 	var _arg2 C.gsize
@@ -409,14 +409,14 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 	runtime.KeepAlive(vspacing)
 	runtime.KeepAlive(views)
 
-	var _list []Constraint // out
-	var _goerr error       // out
+	var _list []*Constraint // out
+	var _goerr error        // out
 
-	_list = make([]Constraint, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*Constraint, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkConstraint)(v)
-		var dst Constraint // out
-		dst = *wrapConstraint(externglib.Take(unsafe.Pointer(src)))
+		var dst *Constraint // out
+		dst = wrapConstraint(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -464,7 +464,7 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 //
 //    - listModel: a GListModel tracking the layout's constraints.
 //
-func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
+func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
@@ -473,24 +473,13 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel
@@ -510,7 +499,7 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 //
 //    - listModel: a GListModel tracking the layout's guides.
 //
-func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
+func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
@@ -519,24 +508,13 @@ func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
 	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel

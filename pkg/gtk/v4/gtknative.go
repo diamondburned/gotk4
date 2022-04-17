@@ -241,7 +241,7 @@ func (self *NativeSurface) Unrealize() {
 //
 //    - native: GtkNative that is associated with surface.
 //
-func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
+func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GtkNative  // in
 
@@ -250,25 +250,9 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	_cret = C.gtk_native_get_for_surface(_arg1)
 	runtime.KeepAlive(surface)
 
-	var _native NativeSurfacer // out
+	var _native *NativeSurface // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.NativeSurfacer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(NativeSurfacer)
-			return ok
-		})
-		rv, ok := casted.(NativeSurfacer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.NativeSurfacer")
-		}
-		_native = rv
-	}
+	_native = wrapNativeSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _native
 }

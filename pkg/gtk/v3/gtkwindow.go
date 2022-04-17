@@ -1260,7 +1260,7 @@ func (window *Window) Icon() *gdkpixbuf.Pixbuf {
 //
 //    - list: copy of window’s icon list.
 //
-func (window *Window) IconList() []gdkpixbuf.Pixbuf {
+func (window *Window) IconList() []*gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GList     // in
 
@@ -1269,15 +1269,15 @@ func (window *Window) IconList() []gdkpixbuf.Pixbuf {
 	_cret = C.gtk_window_get_icon_list(_arg0)
 	runtime.KeepAlive(window)
 
-	var _list []gdkpixbuf.Pixbuf // out
+	var _list []*gdkpixbuf.Pixbuf // out
 
-	_list = make([]gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkPixbuf)(v)
-		var dst gdkpixbuf.Pixbuf // out
+		var dst *gdkpixbuf.Pixbuf // out
 		{
 			obj := externglib.Take(unsafe.Pointer(src))
-			dst = gdkpixbuf.Pixbuf{
+			dst = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
 					Icon: gio.Icon{
@@ -3009,7 +3009,7 @@ func (window *Window) SetIconFromFile(filename string) error {
 //
 //    - list of Pixbuf.
 //
-func (window *Window) SetIconList(list []gdkpixbuf.Pixbuf) {
+func (window *Window) SetIconList(list []*gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GList     // out
 
@@ -3017,7 +3017,7 @@ func (window *Window) SetIconList(list []gdkpixbuf.Pixbuf) {
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GdkPixbuf // out
-		dst = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
@@ -3618,20 +3618,20 @@ func (window *Window) Unstick() {
 //
 //    - list: copy of default icon list.
 //
-func WindowGetDefaultIconList() []gdkpixbuf.Pixbuf {
+func WindowGetDefaultIconList() []*gdkpixbuf.Pixbuf {
 	var _cret *C.GList // in
 
 	_cret = C.gtk_window_get_default_icon_list()
 
-	var _list []gdkpixbuf.Pixbuf // out
+	var _list []*gdkpixbuf.Pixbuf // out
 
-	_list = make([]gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkPixbuf)(v)
-		var dst gdkpixbuf.Pixbuf // out
+		var dst *gdkpixbuf.Pixbuf // out
 		{
 			obj := externglib.Take(unsafe.Pointer(src))
-			dst = gdkpixbuf.Pixbuf{
+			dst = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
 					Icon: gio.Icon{
@@ -3790,13 +3790,13 @@ func WindowSetDefaultIconFromFile(filename string) error {
 //
 //    - list of Pixbuf.
 //
-func WindowSetDefaultIconList(list []gdkpixbuf.Pixbuf) {
+func WindowSetDefaultIconList(list []*gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GList // out
 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GdkPixbuf // out
-		dst = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 

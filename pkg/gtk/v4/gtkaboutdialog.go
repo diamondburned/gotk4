@@ -528,7 +528,7 @@ func (about *AboutDialog) LicenseType() License {
 //      has been set via gtk.AboutDialog.SetLogoIconName(). The paintable is
 //      owned by the about dialog.
 //
-func (about *AboutDialog) Logo() gdk.Paintabler {
+func (about *AboutDialog) Logo() *gdk.Paintable {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.GdkPaintable   // in
 
@@ -537,22 +537,14 @@ func (about *AboutDialog) Logo() gdk.Paintabler {
 	_cret = C.gtk_about_dialog_get_logo(_arg0)
 	runtime.KeepAlive(about)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable *gdk.Paintable // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gdk.Paintabler)
-				return ok
-			})
-			rv, ok := casted.(gdk.Paintabler)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_paintable = &gdk.Paintable{
+				Object: obj,
 			}
-			_paintable = rv
 		}
 	}
 

@@ -464,7 +464,7 @@ func (seat *Seat) Pointer() Devicer {
 //
 //    - list: A list of tools. Free with g_list_free().
 //
-func (seat *Seat) Tools() []DeviceTool {
+func (seat *Seat) Tools() []*DeviceTool {
 	var _arg0 *C.GdkSeat // out
 	var _cret *C.GList   // in
 
@@ -473,13 +473,13 @@ func (seat *Seat) Tools() []DeviceTool {
 	_cret = C.gdk_seat_get_tools(_arg0)
 	runtime.KeepAlive(seat)
 
-	var _list []DeviceTool // out
+	var _list []*DeviceTool // out
 
-	_list = make([]DeviceTool, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*DeviceTool, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkDeviceTool)(v)
-		var dst DeviceTool // out
-		dst = *wrapDeviceTool(externglib.Take(unsafe.Pointer(src)))
+		var dst *DeviceTool // out
+		dst = wrapDeviceTool(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

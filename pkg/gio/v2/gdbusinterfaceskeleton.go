@@ -339,7 +339,7 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 //      list should be freed with g_list_free() after each element has been freed
 //      with g_object_unref().
 //
-func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
+func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GList                  // in
 
@@ -348,13 +348,13 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []DBusConnection {
 	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
 	runtime.KeepAlive(interface_)
 
-	var _list []DBusConnection // out
+	var _list []*DBusConnection // out
 
-	_list = make([]DBusConnection, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*DBusConnection, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDBusConnection)(v)
-		var dst DBusConnection // out
-		dst = *wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst *DBusConnection // out
+		dst = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

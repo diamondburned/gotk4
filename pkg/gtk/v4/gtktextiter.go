@@ -2067,7 +2067,7 @@ func (iter *TextIter) LineOffset() int {
 //
 //    - sList: list of GtkTextMark.
 //
-func (iter *TextIter) Marks() []TextMark {
+func (iter *TextIter) Marks() []*TextMark {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
 
@@ -2076,13 +2076,13 @@ func (iter *TextIter) Marks() []TextMark {
 	_cret = C.gtk_text_iter_get_marks(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _sList []TextMark // out
+	var _sList []*TextMark // out
 
-	_sList = make([]TextMark, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*TextMark, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTextMark)(v)
-		var dst TextMark // out
-		dst = *wrapTextMark(externglib.Take(unsafe.Pointer(src)))
+		var dst *TextMark // out
+		dst = wrapTextMark(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -2123,7 +2123,7 @@ func (iter *TextIter) Offset() int {
 //
 //    - paintable at iter.
 //
-func (iter *TextIter) Paintable() gdk.Paintabler {
+func (iter *TextIter) Paintable() *gdk.Paintable {
 	var _arg0 *C.GtkTextIter  // out
 	var _cret *C.GdkPaintable // in
 
@@ -2132,24 +2132,13 @@ func (iter *TextIter) Paintable() gdk.Paintabler {
 	_cret = C.gtk_text_iter_get_paintable(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable *gdk.Paintable // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Paintabler is nil")
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_paintable = &gdk.Paintable{
+			Object: obj,
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.Paintabler)
-			return ok
-		})
-		rv, ok := casted.(gdk.Paintabler)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
-		}
-		_paintable = rv
 	}
 
 	return _paintable
@@ -2204,7 +2193,7 @@ func (start *TextIter) Slice(end *TextIter) string {
 //
 //    - sList: list of GtkTextTag.
 //
-func (iter *TextIter) Tags() []TextTag {
+func (iter *TextIter) Tags() []*TextTag {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
 
@@ -2213,13 +2202,13 @@ func (iter *TextIter) Tags() []TextTag {
 	_cret = C.gtk_text_iter_get_tags(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _sList []TextTag // out
+	var _sList []*TextTag // out
 
-	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTextTag)(v)
-		var dst TextTag // out
-		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+		var dst *TextTag // out
+		dst = wrapTextTag(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -2277,7 +2266,7 @@ func (start *TextIter) Text(end *TextIter) string {
 //
 //    - sList: tags toggled at this point.
 //
-func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
+func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gboolean     // out
 	var _cret *C.GSList      // in
@@ -2291,13 +2280,13 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(toggledOn)
 
-	var _sList []TextTag // out
+	var _sList []*TextTag // out
 
-	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTextTag)(v)
-		var dst TextTag // out
-		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+		var dst *TextTag // out
+		dst = wrapTextTag(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 

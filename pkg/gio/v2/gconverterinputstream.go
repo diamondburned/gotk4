@@ -114,7 +114,7 @@ func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *C
 //
 //    - converter of the converter input stream.
 //
-func (converterStream *ConverterInputStream) Converter() Converterer {
+func (converterStream *ConverterInputStream) Converter() *Converter {
 	var _arg0 *C.GConverterInputStream // out
 	var _cret *C.GConverter            // in
 
@@ -123,25 +123,9 @@ func (converterStream *ConverterInputStream) Converter() Converterer {
 	_cret = C.g_converter_input_stream_get_converter(_arg0)
 	runtime.KeepAlive(converterStream)
 
-	var _converter Converterer // out
+	var _converter *Converter // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Converterer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Converterer)
-			return ok
-		})
-		rv, ok := casted.(Converterer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Converterer")
-		}
-		_converter = rv
-	}
+	_converter = wrapConverter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _converter
 }

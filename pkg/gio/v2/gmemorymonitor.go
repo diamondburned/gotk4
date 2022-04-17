@@ -177,30 +177,14 @@ func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitor
 //
 //    - memoryMonitor: new reference to the default Monitor.
 //
-func MemoryMonitorDupDefault() MemoryMonitorrer {
+func MemoryMonitorDupDefault() *MemoryMonitor {
 	var _cret *C.GMemoryMonitor // in
 
 	_cret = C.g_memory_monitor_dup_default()
 
-	var _memoryMonitor MemoryMonitorrer // out
+	var _memoryMonitor *MemoryMonitor // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.MemoryMonitorrer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(MemoryMonitorrer)
-			return ok
-		})
-		rv, ok := casted.(MemoryMonitorrer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MemoryMonitorrer")
-		}
-		_memoryMonitor = rv
-	}
+	_memoryMonitor = wrapMemoryMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryMonitor
 }

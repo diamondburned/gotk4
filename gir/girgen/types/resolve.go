@@ -351,14 +351,14 @@ func (typ *Resolved) IsClass() bool {
 // IsAbstract returns true if the resolved type is an interface or an abstract
 // class.
 func (typ *Resolved) IsAbstract() bool {
-	if typ.IsInterface() {
-		return true
-	}
+	return typ.IsInterface() || typ.IsAbstractClass()
+}
 
+// IsAbstractClass returns true if the resolved type is an abstract class.
+func (typ *Resolved) IsAbstractClass() bool {
 	if typ.IsClass() {
 		return typ.UnderlyingExtern().Type.(*gir.Class).Abstract
 	}
-
 	return false
 }
 

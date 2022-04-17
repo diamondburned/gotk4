@@ -100,7 +100,7 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 //
 //    - listModel (optional): model flattened by self.
 //
-func (self *FlattenListModel) Model() gio.ListModeller {
+func (self *FlattenListModel) Model() *gio.ListModel {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _cret *C.GListModel          // in
 
@@ -109,22 +109,14 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 	_cret = C.gtk_flatten_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModeller)
-				return ok
-			})
-			rv, ok := casted.(gio.ListModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_listModel = &gio.ListModel{
+				Object: obj,
 			}
-			_listModel = rv
 		}
 	}
 
@@ -141,7 +133,7 @@ func (self *FlattenListModel) Model() gio.ListModeller {
 //
 //    - listModel: model containing the item at position.
 //
-func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
+func (self *FlattenListModel) ModelForItem(position uint) *gio.ListModel {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 C.guint                // out
 	var _cret *C.GListModel          // in
@@ -153,24 +145,13 @@ func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeller {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel

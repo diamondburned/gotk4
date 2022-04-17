@@ -222,7 +222,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 //
 //    - file: new #GFile.
 //
-func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
+func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
@@ -235,25 +235,9 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 	runtime.KeepAlive(cmdline)
 	runtime.KeepAlive(arg)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }

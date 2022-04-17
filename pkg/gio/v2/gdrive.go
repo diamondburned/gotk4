@@ -125,7 +125,7 @@ type Driver interface {
 	// EnumerateIdentifiers gets the kinds of identifiers that drive has.
 	EnumerateIdentifiers() []string
 	// Icon gets the icon for drive.
-	Icon() Iconner
+	Icon() *Icon
 	// Identifier gets the identifier of the given kind for drive.
 	Identifier(kind string) string
 	// Name gets the name of drive.
@@ -135,9 +135,9 @@ type Driver interface {
 	// StartStopType gets a hint about how a drive can be started/stopped.
 	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
-	SymbolicIcon() Iconner
+	SymbolicIcon() *Icon
 	// Volumes: get a list of mountable volumes for drive.
-	Volumes() []Volumer
+	Volumes() []*Volume
 	// HasMedia checks if the drive has media.
 	HasMedia() bool
 	// HasVolumes: check if drive has any mountable volumes.
@@ -581,7 +581,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 //
 //    - icon for the drive. Free the returned object with g_object_unref().
 //
-func (drive *Drive) Icon() Iconner {
+func (drive *Drive) Icon() *Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -590,25 +590,9 @@ func (drive *Drive) Icon() Iconner {
 	_cret = C.g_drive_get_icon(_arg0)
 	runtime.KeepAlive(drive)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -726,7 +710,7 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 //    - icon: symbolic #GIcon for the drive. Free the returned object with
 //      g_object_unref().
 //
-func (drive *Drive) SymbolicIcon() Iconner {
+func (drive *Drive) SymbolicIcon() *Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -735,25 +719,9 @@ func (drive *Drive) SymbolicIcon() Iconner {
 	_cret = C.g_drive_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(drive)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -767,7 +735,7 @@ func (drive *Drive) SymbolicIcon() Iconner {
 //
 //    - list containing any #GVolume objects on the given drive.
 //
-func (drive *Drive) Volumes() []Volumer {
+func (drive *Drive) Volumes() []*Volume {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GList  // in
 
@@ -776,29 +744,13 @@ func (drive *Drive) Volumes() []Volumer {
 	_cret = C.g_drive_get_volumes(_arg0)
 	runtime.KeepAlive(drive)
 
-	var _list []Volumer // out
+	var _list []*Volume // out
 
-	_list = make([]Volumer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GVolume)(v)
-		var dst Volumer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Volumer is nil")
-			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Volumer)
-				return ok
-			})
-			rv, ok := casted.(Volumer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Volumer")
-			}
-			dst = rv
-		}
+		var dst *Volume // out
+		dst = wrapVolume(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

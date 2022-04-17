@@ -38,7 +38,7 @@ func init() {
 // leaf node and will never have children. If it does not have children but may
 // get children later, it should return an empty model that is filled once
 // children arrive.
-type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel gio.ListModeller)
+type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel *gio.ListModel)
 
 //export _gotk4_gtk4_TreeListModelCreateModelFunc
 func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GListModel) {
@@ -224,7 +224,7 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 //
 //    - listModel: root model.
 //
-func (self *TreeListModel) Model() gio.ListModeller {
+func (self *TreeListModel) Model() *gio.ListModel {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret *C.GListModel       // in
 
@@ -233,24 +233,13 @@ func (self *TreeListModel) Model() gio.ListModeller {
 	_cret = C.gtk_tree_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel
@@ -441,7 +430,7 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 //
 //    - listModel (optional): model containing the children.
 //
-func (self *TreeListRow) Children() gio.ListModeller {
+func (self *TreeListRow) Children() *gio.ListModel {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GListModel     // in
 
@@ -450,22 +439,14 @@ func (self *TreeListRow) Children() gio.ListModeller {
 	_cret = C.gtk_tree_list_row_get_children(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ListModeller)
-				return ok
-			})
-			rv, ok := casted.(gio.ListModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_listModel = &gio.ListModel{
+				Object: obj,
 			}
-			_listModel = rv
 		}
 	}
 

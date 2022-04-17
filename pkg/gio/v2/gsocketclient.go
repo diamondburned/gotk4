@@ -991,7 +991,7 @@ func (client *SocketClient) Protocol() SocketProtocol {
 //
 //    - proxyResolver being used by client.
 //
-func (client *SocketClient) ProxyResolver() ProxyResolverer {
+func (client *SocketClient) ProxyResolver() *ProxyResolver {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
 
@@ -1000,25 +1000,9 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 	runtime.KeepAlive(client)
 
-	var _proxyResolver ProxyResolverer // out
+	var _proxyResolver *ProxyResolver // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ProxyResolverer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(ProxyResolverer)
-			return ok
-		})
-		rv, ok := casted.(ProxyResolverer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ProxyResolverer")
-		}
-		_proxyResolver = rv
-	}
+	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
 }

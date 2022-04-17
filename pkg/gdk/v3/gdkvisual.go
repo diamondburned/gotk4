@@ -95,18 +95,18 @@ func (v VisualType) String() string {
 //
 //    - list: a list of visuals; the list must be freed, but not its contents.
 //
-func ListVisuals() []Visual {
+func ListVisuals() []*Visual {
 	var _cret *C.GList // in
 
 	_cret = C.gdk_list_visuals()
 
-	var _list []Visual // out
+	var _list []*Visual // out
 
-	_list = make([]Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkVisual)(v)
-		var dst Visual // out
-		dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
+		var dst *Visual // out
+		dst = wrapVisual(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

@@ -216,7 +216,7 @@ type RecentChooserer interface {
 	// URIs gets the URI of the recently used resources.
 	URIs() []string
 	// ListFilters gets the RecentFilter objects held by chooser.
-	ListFilters() []RecentFilter
+	ListFilters() []*RecentFilter
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
 	RemoveFilter(filter *RecentFilter)
@@ -703,7 +703,7 @@ func (chooser *RecentChooser) URIs() []string {
 //    - sList: singly linked list of RecentFilter objects. You should just free
 //      the returned list using g_slist_free().
 //
-func (chooser *RecentChooser) ListFilters() []RecentFilter {
+func (chooser *RecentChooser) ListFilters() []*RecentFilter {
 	var _arg0 *C.GtkRecentChooser // out
 	var _cret *C.GSList           // in
 
@@ -712,13 +712,13 @@ func (chooser *RecentChooser) ListFilters() []RecentFilter {
 	_cret = C.gtk_recent_chooser_list_filters(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _sList []RecentFilter // out
+	var _sList []*RecentFilter // out
 
-	_sList = make([]RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkRecentFilter)(v)
-		var dst RecentFilter // out
-		dst = *wrapRecentFilter(externglib.Take(unsafe.Pointer(src)))
+		var dst *RecentFilter // out
+		dst = wrapRecentFilter(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 

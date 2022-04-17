@@ -459,7 +459,7 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 //    - effectiveAddress (optional): location to store the address that was bound
 //      to, or NULL.
 //
-func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (*SocketAddress, error) {
+func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (SocketAddresser, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocketAddress  // out
 	var _arg2 C.GSocketType      // out
@@ -483,11 +483,24 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	runtime.KeepAlive(protocol)
 	runtime.KeepAlive(sourceObject)
 
-	var _effectiveAddress *SocketAddress // out
-	var _goerr error                     // out
+	var _effectiveAddress SocketAddresser // out
+	var _goerr error                      // out
 
 	if _arg5 != nil {
-		_effectiveAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))
+		{
+			objptr := unsafe.Pointer(_arg5)
+
+			object := externglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(SocketAddresser)
+				return ok
+			})
+			rv, ok := casted.(SocketAddresser)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddresser")
+			}
+			_effectiveAddress = rv
+		}
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))

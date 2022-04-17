@@ -89,7 +89,7 @@ type FileEnumeratorOverrider interface {
 	//    - list of Infos. You must free the list with g_list_free() and unref
 	//      the infos with g_object_unref() when you're done with them.
 	//
-	NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
+	NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
 }
 
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
@@ -154,7 +154,7 @@ func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
+		NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
 	}); ok {
 		pclass.next_files_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
 	}
@@ -248,7 +248,7 @@ func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.
 func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		NextFilesFinish(result AsyncResulter) ([]FileInfo, error)
+		NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
 	})
 
 	var _result AsyncResulter // out
@@ -276,8 +276,8 @@ func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GFileInfo // out
-		dst = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -427,7 +427,7 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 //
 //    - file for the Info passed it.
 //
-func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
+func (enumerator *FileEnumerator) Child(info *FileInfo) *File {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
 	var _cret *C.GFile           // in
@@ -439,25 +439,9 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(info)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -468,7 +452,7 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 //
 //    - file which is being enumerated.
 //
-func (enumerator *FileEnumerator) Container() Filer {
+func (enumerator *FileEnumerator) Container() *File {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret *C.GFile           // in
 
@@ -477,25 +461,9 @@ func (enumerator *FileEnumerator) Container() Filer {
 	_cret = C.g_file_enumerator_get_container(_arg0)
 	runtime.KeepAlive(enumerator)
 
-	var _file Filer // out
+	var _file *File // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
+	_file = wrapFile(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -744,7 +712,7 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, 
 //    - list of Infos. You must free the list with g_list_free() and unref the
 //      infos with g_object_unref() when you're done with them.
 //
-func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileInfo, error) {
+func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]*FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GList           // in
@@ -757,14 +725,14 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]FileI
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(result)
 
-	var _list []FileInfo // out
-	var _goerr error     // out
+	var _list []*FileInfo // out
+	var _goerr error      // out
 
-	_list = make([]FileInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*FileInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GFileInfo)(v)
-		var dst FileInfo // out
-		dst = *wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst *FileInfo // out
+		dst = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {

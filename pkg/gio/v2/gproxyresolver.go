@@ -271,30 +271,14 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 //    - proxyResolver: default Resolver, which will be a dummy object if no proxy
 //      resolver is available.
 //
-func ProxyResolverGetDefault() ProxyResolverer {
+func ProxyResolverGetDefault() *ProxyResolver {
 	var _cret *C.GProxyResolver // in
 
 	_cret = C.g_proxy_resolver_get_default()
 
-	var _proxyResolver ProxyResolverer // out
+	var _proxyResolver *ProxyResolver // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ProxyResolverer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(ProxyResolverer)
-			return ok
-		})
-		rv, ok := casted.(ProxyResolverer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ProxyResolverer")
-		}
-		_proxyResolver = rv
-	}
+	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
 }

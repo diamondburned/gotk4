@@ -127,7 +127,7 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 //    - icon The returned object belongs to the emblem and should not be modified
 //      or freed.
 //
-func (emblem *Emblem) GetIcon() Iconner {
+func (emblem *Emblem) GetIcon() *Icon {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
@@ -136,25 +136,9 @@ func (emblem *Emblem) GetIcon() Iconner {
 	_cret = C.g_emblem_get_icon(_arg0)
 	runtime.KeepAlive(emblem)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _icon
 }

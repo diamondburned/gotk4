@@ -45,7 +45,7 @@ type DTLSClientConnectioner interface {
 	externglib.Objector
 
 	// ServerIdentity gets conn's expected server identity.
-	ServerIdentity() SocketConnectabler
+	ServerIdentity() *SocketConnectable
 	// ValidationFlags gets conn's validation flags.
 	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets conn's expected server identity, which is used
@@ -84,7 +84,7 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 //    - socketConnectable describing the expected server identity, or NULL if the
 //      expected identity is not known.
 //
-func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
+func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
 
@@ -93,25 +93,9 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 	runtime.KeepAlive(conn)
 
-	var _socketConnectable SocketConnectabler // out
+	var _socketConnectable *SocketConnectable // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.SocketConnectabler is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(SocketConnectabler)
-			return ok
-		})
-		rv, ok := casted.(SocketConnectabler)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
-		}
-		_socketConnectable = rv
-	}
+	_socketConnectable = wrapSocketConnectable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _socketConnectable
 }
@@ -192,7 +176,7 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 //
 //    - dtlsClientConnection: new ClientConnection, or NULL on error.
 //
-func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (DTLSClientConnectioner, error) {
+func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
 	var _arg1 *C.GDatagramBased     // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GDatagramBased     // in
@@ -207,26 +191,10 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(serverIdentity)
 
-	var _dtlsClientConnection DTLSClientConnectioner // out
-	var _goerr error                                 // out
+	var _dtlsClientConnection *DTLSClientConnection // out
+	var _goerr error                                // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.DTLSClientConnectioner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DTLSClientConnectioner)
-			return ok
-		})
-		rv, ok := casted.(DTLSClientConnectioner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DTLSClientConnectioner")
-		}
-		_dtlsClientConnection = rv
-	}
+	_dtlsClientConnection = wrapDTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

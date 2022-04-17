@@ -190,7 +190,7 @@ func NewIconPaintableForFile(file gio.Filer, size, scale int) *IconPaintable {
 //
 //    - file (optional) for the icon, or NULL. Free with g_object_unref().
 //
-func (self *IconPaintable) File() gio.Filer {
+func (self *IconPaintable) File() *gio.File {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret *C.GFile            // in
 
@@ -199,22 +199,14 @@ func (self *IconPaintable) File() gio.Filer {
 	_cret = C.gtk_icon_paintable_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_file = &gio.File{
+				Object: obj,
 			}
-			_file = rv
 		}
 	}
 

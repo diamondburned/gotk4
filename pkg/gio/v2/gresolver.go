@@ -171,7 +171,7 @@ type ResolverOverrider interface {
 	//      each of the addresses and free the list when you are done with it.
 	//      (You can use g_resolver_free_addresses() to do this.).
 	//
-	LookupByName(ctx context.Context, hostname string) ([]InetAddress, error)
+	LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error)
 	// LookupByNameFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_async().
 	//
@@ -188,7 +188,7 @@ type ResolverOverrider interface {
 	//    - list Address, or NULL on error. See g_resolver_lookup_by_name() for
 	//      more details.
 	//
-	LookupByNameFinish(result AsyncResulter) ([]InetAddress, error)
+	LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error)
 	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 	// that you can modify the lookup behavior with flags. For example this can
 	// be used to limit results with RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
@@ -205,7 +205,7 @@ type ResolverOverrider interface {
 	//      each of the addresses and free the list when you are done with it.
 	//      (You can use g_resolver_free_addresses() to do this.).
 	//
-	LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error)
+	LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error)
 	// LookupByNameWithFlagsFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_with_flags_async().
 	//
@@ -222,7 +222,7 @@ type ResolverOverrider interface {
 	//    - list Address, or NULL on error. See g_resolver_lookup_by_name() for
 	//      more details.
 	//
-	LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error)
+	LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error)
 	// LookupRecords: synchronously performs a DNS record lookup for the given
 	// rrname and returns a list of records as #GVariant tuples. See RecordType
 	// for information on what the records contain for each record_type.
@@ -338,25 +338,25 @@ func classInitResolverer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		LookupByName(ctx context.Context, hostname string) ([]InetAddress, error)
+		LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error)
 	}); ok {
 		pclass.lookup_by_name = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_name)
 	}
 
 	if _, ok := goval.(interface {
-		LookupByNameFinish(result AsyncResulter) ([]InetAddress, error)
+		LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error)
 	}); ok {
 		pclass.lookup_by_name_finish = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_name_finish)
 	}
 
 	if _, ok := goval.(interface {
-		LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error)
+		LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error)
 	}); ok {
 		pclass.lookup_by_name_with_flags = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_name_with_flags)
 	}
 
 	if _, ok := goval.(interface {
-		LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error)
+		LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error)
 	}); ok {
 		pclass.lookup_by_name_with_flags_finish = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish)
 	}
@@ -450,7 +450,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.GResolver, arg1 
 func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		LookupByName(ctx context.Context, hostname string) ([]InetAddress, error)
+		LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error)
 	})
 
 	var _cancellable context.Context // out
@@ -466,8 +466,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -481,7 +481,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, 
 func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		LookupByNameFinish(result AsyncResulter) ([]InetAddress, error)
+		LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error)
 	})
 
 	var _result AsyncResulter // out
@@ -509,8 +509,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -524,7 +524,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.
 func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1 *C.gchar, arg2 C.GResolverNameLookupFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error)
+		LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error)
 	})
 
 	var _cancellable context.Context   // out
@@ -542,8 +542,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -557,7 +557,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1
 func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error)
+		LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error)
 	})
 
 	var _result AsyncResulter // out
@@ -585,8 +585,8 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.GResolve
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
 		var dst *C.GInetAddress // out
-		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -922,7 +922,7 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 //      of the addresses and free the list when you are done with it. (You can
 //      use g_resolver_free_addresses() to do this.).
 //
-func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg2 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -943,14 +943,14 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(hostname)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list []*InetAddress // out
+	var _goerr error         // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst *InetAddress // out
+		dst = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -1014,7 +1014,7 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 //    - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
 //      details.
 //
-func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -1027,14 +1027,14 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list []*InetAddress // out
+	var _goerr error         // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst *InetAddress // out
+		dst = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -1060,7 +1060,7 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]InetAddres
 //      of the addresses and free the list when you are done with it. (You can
 //      use g_resolver_free_addresses() to do this.).
 //
-func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver               // out
 	var _arg3 *C.GCancellable            // out
 	var _arg1 *C.gchar                   // out
@@ -1084,14 +1084,14 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 	runtime.KeepAlive(hostname)
 	runtime.KeepAlive(flags)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list []*InetAddress // out
+	var _goerr error         // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst *InetAddress // out
+		dst = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {
@@ -1159,7 +1159,7 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 //    - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
 //      details.
 //
-func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]InetAddress, error) {
+func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GList        // in
@@ -1172,14 +1172,14 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]I
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
-	var _list []InetAddress // out
-	var _goerr error        // out
+	var _list []*InetAddress // out
+	var _goerr error         // out
 
-	_list = make([]InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GInetAddress)(v)
-		var dst InetAddress // out
-		dst = *wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst *InetAddress // out
+		dst = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 	if _cerr != nil {

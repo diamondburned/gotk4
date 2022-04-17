@@ -181,7 +181,7 @@ func (self *DirectoryList) Error() error {
 //
 //    - file (optional) whose children are enumerated.
 //
-func (self *DirectoryList) File() gio.Filer {
+func (self *DirectoryList) File() *gio.File {
 	var _arg0 *C.GtkDirectoryList // out
 	var _cret *C.GFile            // in
 
@@ -190,22 +190,14 @@ func (self *DirectoryList) File() gio.Filer {
 	_cret = C.gtk_directory_list_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_file = &gio.File{
+				Object: obj,
 			}
-			_file = rv
 		}
 	}
 

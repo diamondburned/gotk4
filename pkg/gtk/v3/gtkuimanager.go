@@ -1154,7 +1154,7 @@ func (manager *UIManager) Action(path string) *Action {
 //    - list of action groups. The list is owned by GTK+ and should not be
 //      modified.
 //
-func (manager *UIManager) ActionGroups() []ActionGroup {
+func (manager *UIManager) ActionGroups() []*ActionGroup {
 	var _arg0 *C.GtkUIManager // out
 	var _cret *C.GList        // in
 
@@ -1163,13 +1163,13 @@ func (manager *UIManager) ActionGroups() []ActionGroup {
 	_cret = C.gtk_ui_manager_get_action_groups(_arg0)
 	runtime.KeepAlive(manager)
 
-	var _list []ActionGroup // out
+	var _list []*ActionGroup // out
 
-	_list = make([]ActionGroup, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*ActionGroup, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkActionGroup)(v)
-		var dst ActionGroup // out
-		dst = *wrapActionGroup(externglib.Take(unsafe.Pointer(src)))
+		var dst *ActionGroup // out
+		dst = wrapActionGroup(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

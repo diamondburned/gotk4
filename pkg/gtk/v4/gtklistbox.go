@@ -733,7 +733,7 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 //    - list: A GList containing the GtkWidget for each selected child. Free with
 //      g_list_free() when done.
 //
-func (box *ListBox) SelectedRows() []ListBoxRow {
+func (box *ListBox) SelectedRows() []*ListBoxRow {
 	var _arg0 *C.GtkListBox // out
 	var _cret *C.GList      // in
 
@@ -742,13 +742,13 @@ func (box *ListBox) SelectedRows() []ListBoxRow {
 	_cret = C.gtk_list_box_get_selected_rows(_arg0)
 	runtime.KeepAlive(box)
 
-	var _list []ListBoxRow // out
+	var _list []*ListBoxRow // out
 
-	_list = make([]ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkListBoxRow)(v)
-		var dst ListBoxRow // out
-		dst = *wrapListBoxRow(externglib.Take(unsafe.Pointer(src)))
+		var dst *ListBoxRow // out
+		dst = wrapListBoxRow(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

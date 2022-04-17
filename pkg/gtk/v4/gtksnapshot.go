@@ -1224,7 +1224,7 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 //
 //    - paintable: new Paintable.
 //
-func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
+func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.graphene_size_t // out
 	var _cret *C.GdkPaintable    // in
@@ -1238,24 +1238,13 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 	runtime.KeepAlive(snapshot)
 	runtime.KeepAlive(size)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable *gdk.Paintable // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Paintabler is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_paintable = &gdk.Paintable{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.Paintabler)
-			return ok
-		})
-		rv, ok := casted.(gdk.Paintabler)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
-		}
-		_paintable = rv
 	}
 
 	return _paintable

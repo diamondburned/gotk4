@@ -84,7 +84,7 @@ type TLSClientConnectioner interface {
 	// another, for use in TLS session resumption.
 	CopySessionState(source TLSClientConnectioner)
 	// ServerIdentity gets conn's expected server identity.
-	ServerIdentity() SocketConnectabler
+	ServerIdentity() *SocketConnectable
 	// UseSSL3: SSL 3.0 is no longer supported.
 	UseSSL3() bool
 	// ValidationFlags gets conn's validation flags.
@@ -200,7 +200,7 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 //    - socketConnectable (optional) describing the expected server identity, or
 //      NULL if the expected identity is not known.
 //
-func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
+func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
 
@@ -209,23 +209,10 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
 	runtime.KeepAlive(conn)
 
-	var _socketConnectable SocketConnectabler // out
+	var _socketConnectable *SocketConnectable // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SocketConnectabler)
-				return ok
-			})
-			rv, ok := casted.(SocketConnectabler)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
-			}
-			_socketConnectable = rv
-		}
+		_socketConnectable = wrapSocketConnectable(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _socketConnectable
@@ -368,7 +355,7 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 //
 //    - tlsClientConnection: new ClientConnection, or NULL on error.
 //
-func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (TLSClientConnectioner, error) {
+func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (*TLSClientConnection, error) {
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GIOStream          // in
@@ -383,26 +370,10 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(serverIdentity)
 
-	var _tlsClientConnection TLSClientConnectioner // out
-	var _goerr error                               // out
+	var _tlsClientConnection *TLSClientConnection // out
+	var _goerr error                              // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.TLSClientConnectioner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSClientConnectioner)
-			return ok
-		})
-		rv, ok := casted.(TLSClientConnectioner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSClientConnectioner")
-		}
-		_tlsClientConnection = rv
-	}
+	_tlsClientConnection = wrapTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

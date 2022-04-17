@@ -79,7 +79,7 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 //
 //    - icon (optional) or NULL.
 //
-func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
+func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.GIcon            // in
 
@@ -88,22 +88,14 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
 	runtime.KeepAlive(self)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
-				return ok
-			})
-			rv, ok := casted.(gio.Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
 			}
-			_icon = rv
 		}
 	}
 
@@ -369,7 +361,7 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 //
 //    - icon: new #GIcon.
 //
-func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
+func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
 
@@ -378,24 +370,13 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	_cret = C.gtk_numerable_icon_new(_arg1)
 	runtime.KeepAlive(baseIcon)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Iconner)
-			return ok
-		})
-		rv, ok := casted.(gio.Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
 	}
 
 	return _icon
@@ -416,7 +397,7 @@ func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 //
 //    - icon: new #GIcon.
 //
-func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) gio.Iconner {
+func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) *gio.Icon {
 	var _arg1 *C.GIcon           // out
 	var _arg2 *C.GtkStyleContext // out
 	var _cret *C.GIcon           // in
@@ -428,24 +409,13 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	runtime.KeepAlive(baseIcon)
 	runtime.KeepAlive(context)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Iconner)
-			return ok
-		})
-		rv, ok := casted.(gio.Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
 	}
 
 	return _icon

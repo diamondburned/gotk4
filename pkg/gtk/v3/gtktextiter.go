@@ -2062,7 +2062,7 @@ func (iter *TextIter) LineOffset() int {
 //
 //    - sList: list of TextMark.
 //
-func (iter *TextIter) Marks() []TextMark {
+func (iter *TextIter) Marks() []*TextMark {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
 
@@ -2071,13 +2071,13 @@ func (iter *TextIter) Marks() []TextMark {
 	_cret = C.gtk_text_iter_get_marks(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _sList []TextMark // out
+	var _sList []*TextMark // out
 
-	_sList = make([]TextMark, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*TextMark, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTextMark)(v)
-		var dst TextMark // out
-		dst = *wrapTextMark(externglib.Take(unsafe.Pointer(src)))
+		var dst *TextMark // out
+		dst = wrapTextMark(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -2186,7 +2186,7 @@ func (start *TextIter) Slice(end *TextIter) string {
 //
 //    - sList: list of TextTag.
 //
-func (iter *TextIter) Tags() []TextTag {
+func (iter *TextIter) Tags() []*TextTag {
 	var _arg0 *C.GtkTextIter // out
 	var _cret *C.GSList      // in
 
@@ -2195,13 +2195,13 @@ func (iter *TextIter) Tags() []TextTag {
 	_cret = C.gtk_text_iter_get_tags(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _sList []TextTag // out
+	var _sList []*TextTag // out
 
-	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTextTag)(v)
-		var dst TextTag // out
-		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+		var dst *TextTag // out
+		dst = wrapTextTag(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -2255,7 +2255,7 @@ func (start *TextIter) Text(end *TextIter) string {
 //
 //    - sList tags toggled at this point.
 //
-func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
+func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gboolean     // out
 	var _cret *C.GSList      // in
@@ -2269,13 +2269,13 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []TextTag {
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(toggledOn)
 
-	var _sList []TextTag // out
+	var _sList []*TextTag // out
 
-	_sList = make([]TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTextTag)(v)
-		var dst TextTag // out
-		dst = *wrapTextTag(externglib.Take(unsafe.Pointer(src)))
+		var dst *TextTag // out
+		dst = wrapTextTag(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 

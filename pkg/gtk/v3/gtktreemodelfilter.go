@@ -137,7 +137,7 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTre
 //
 //    - treeModel: new TreeModel.
 //
-func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
+func (childModel *TreeModel) NewFilter(root *TreePath) *TreeModel {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreePath  // out
 	var _cret *C.GtkTreeModel // in
@@ -151,25 +151,9 @@ func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
 	runtime.KeepAlive(childModel)
 	runtime.KeepAlive(root)
 
-	var _treeModel TreeModeller // out
+	var _treeModel *TreeModel // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.TreeModeller is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
-			return ok
-		})
-		rv, ok := casted.(TreeModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-		}
-		_treeModel = rv
-	}
+	_treeModel = wrapTreeModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }
@@ -552,7 +536,7 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 //
 //    - treeModel: pointer to a TreeModel.
 //
-func (filter *TreeModelFilter) Model() TreeModeller {
+func (filter *TreeModelFilter) Model() *TreeModel {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _cret *C.GtkTreeModel       // in
 
@@ -561,25 +545,9 @@ func (filter *TreeModelFilter) Model() TreeModeller {
 	_cret = C.gtk_tree_model_filter_get_model(_arg0)
 	runtime.KeepAlive(filter)
 
-	var _treeModel TreeModeller // out
+	var _treeModel *TreeModel // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.TreeModeller is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
-			return ok
-		})
-		rv, ok := casted.(TreeModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-		}
-		_treeModel = rv
-	}
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }

@@ -546,7 +546,7 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 //
 //    - treeModel (optional) or NULL if none is currently being used.
 //
-func (completion *EntryCompletion) Model() TreeModeller {
+func (completion *EntryCompletion) Model() *TreeModel {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkTreeModel       // in
 
@@ -555,23 +555,10 @@ func (completion *EntryCompletion) Model() TreeModeller {
 	_cret = C.gtk_entry_completion_get_model(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _treeModel TreeModeller // out
+	var _treeModel *TreeModel // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_treeModel = rv
-		}
+		_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _treeModel

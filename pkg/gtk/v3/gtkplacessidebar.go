@@ -695,7 +695,7 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 //    - file (optional) with the selected location, or NULL if nothing is
 //      visually selected.
 //
-func (sidebar *PlacesSidebar) Location() gio.Filer {
+func (sidebar *PlacesSidebar) Location() *gio.File {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret *C.GFile            // in
 
@@ -704,22 +704,14 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 	_cret = C.gtk_places_sidebar_get_location(_arg0)
 	runtime.KeepAlive(sidebar)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_file = &gio.File{
+				Object: obj,
 			}
-			_file = rv
 		}
 	}
 
@@ -741,7 +733,7 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 //      index exist. Note that the indices start at 0, even though the file
 //      chooser starts them with the keyboard shortcut "Alt-1".
 //
-func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
+func (sidebar *PlacesSidebar) NthBookmark(n int) *gio.File {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gint              // out
 	var _cret *C.GFile            // in
@@ -753,22 +745,14 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(n)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_file = &gio.File{
+				Object: obj,
 			}
-			_file = rv
 		}
 	}
 
@@ -986,7 +970,7 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 //
 //         g_slist_free_full (list, (GDestroyNotify) g_object_unref);.
 //
-func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
+func (sidebar *PlacesSidebar) ListShortcuts() []*gio.File {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret *C.GSList           // in
 
@@ -995,28 +979,17 @@ func (sidebar *PlacesSidebar) ListShortcuts() []gio.Filer {
 	_cret = C.gtk_places_sidebar_list_shortcuts(_arg0)
 	runtime.KeepAlive(sidebar)
 
-	var _sList []gio.Filer // out
+	var _sList []*gio.File // out
 
-	_sList = make([]gio.Filer, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*gio.File, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GFile)(v)
-		var dst gio.Filer // out
+		var dst *gio.File // out
 		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(src))
+			dst = &gio.File{
+				Object: obj,
 			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			dst = rv
 		}
 		_sList = append(_sList, dst)
 	})

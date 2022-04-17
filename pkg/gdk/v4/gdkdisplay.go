@@ -427,7 +427,7 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 //
 //    - listModel of GdkMonitor.
 //
-func (self *Display) Monitors() gio.ListModeller {
+func (self *Display) Monitors() *gio.ListModel {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GListModel // in
 
@@ -436,24 +436,13 @@ func (self *Display) Monitors() gio.ListModeller {
 	_cret = C.gdk_display_get_monitors(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel

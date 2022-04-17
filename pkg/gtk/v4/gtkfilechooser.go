@@ -195,24 +195,24 @@ type FileChooserer interface {
 	// CreateFolders gets whether file chooser will offer to create new folders.
 	CreateFolders() bool
 	// CurrentFolder gets the current folder of chooser as #GFile.
-	CurrentFolder() gio.Filer
+	CurrentFolder() *gio.File
 	// CurrentName gets the current name in the file selector, as entered by the
 	// user.
 	CurrentName() string
 	// File gets the GFile for the currently selected file in the file selector.
-	File() gio.Filer
+	File() *gio.File
 	// Files lists all the selected files and subfolders in the current folder
 	// of chooser as #GFile.
-	Files() gio.ListModeller
+	Files() *gio.ListModel
 	// Filter gets the current filter.
 	Filter() *FileFilter
 	// Filters gets the current set of user-selectable filters, as a list model.
-	Filters() gio.ListModeller
+	Filters() *gio.ListModel
 	// SelectMultiple gets whether multiple files can be selected in the file
 	// chooser.
 	SelectMultiple() bool
 	// ShortcutFolders queries the list of shortcut folders in the file chooser.
-	ShortcutFolders() gio.ListModeller
+	ShortcutFolders() *gio.ListModel
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
@@ -454,7 +454,7 @@ func (chooser *FileChooser) CreateFolders() bool {
 //
 //    - file: GFile for the current folder.
 //
-func (chooser *FileChooser) CurrentFolder() gio.Filer {
+func (chooser *FileChooser) CurrentFolder() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -463,24 +463,13 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
-			return ok
-		})
-		rv, ok := casted.(gio.Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
 	}
 
 	return _file
@@ -528,7 +517,7 @@ func (chooser *FileChooser) CurrentName() string {
 //    - file: selected GFile. You own the returned file; use g_object_unref() to
 //      release it.
 //
-func (chooser *FileChooser) File() gio.Filer {
+func (chooser *FileChooser) File() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -537,24 +526,13 @@ func (chooser *FileChooser) File() gio.Filer {
 	_cret = C.gtk_file_chooser_get_file(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.Filer)
-			return ok
-		})
-		rv, ok := casted.(gio.Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
 	}
 
 	return _file
@@ -569,7 +547,7 @@ func (chooser *FileChooser) File() gio.Filer {
 //      subfolder in the current folder. Free the returned list with
 //      g_object_unref().
 //
-func (chooser *FileChooser) Files() gio.ListModeller {
+func (chooser *FileChooser) Files() *gio.ListModel {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -578,24 +556,13 @@ func (chooser *FileChooser) Files() gio.ListModeller {
 	_cret = C.gtk_file_chooser_get_files(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel
@@ -638,7 +605,7 @@ func (chooser *FileChooser) Filter() *FileFilter {
 //    - listModel: GListModel containing the current set of user-selectable
 //      filters.
 //
-func (chooser *FileChooser) Filters() gio.ListModeller {
+func (chooser *FileChooser) Filters() *gio.ListModel {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -647,24 +614,13 @@ func (chooser *FileChooser) Filters() gio.ListModeller {
 	_cret = C.gtk_file_chooser_get_filters(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel
@@ -704,7 +660,7 @@ func (chooser *FileChooser) SelectMultiple() bool {
 //
 //    - listModel: list model of GFiles.
 //
-func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
+func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -713,24 +669,13 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 	_cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
 	runtime.KeepAlive(chooser)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel

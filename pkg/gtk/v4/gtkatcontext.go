@@ -150,7 +150,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 //
 //    - accessible: GtkAccessible.
 //
-func (self *ATContext) Accessible() Accessibler {
+func (self *ATContext) Accessible() *Accessible {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
@@ -159,25 +159,9 @@ func (self *ATContext) Accessible() Accessibler {
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 	runtime.KeepAlive(self)
 
-	var _accessible Accessibler // out
+	var _accessible *Accessible // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Accessibler is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Accessibler)
-			return ok
-		})
-		rv, ok := casted.(Accessibler)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Accessibler")
-		}
-		_accessible = rv
-	}
+	_accessible = wrapAccessible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accessible
 }

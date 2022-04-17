@@ -45,7 +45,7 @@ type DBusObjectOverrider interface {
 	//    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
 	//      that must be freed with g_object_unref().
 	//
-	Interface(interfaceName string) DBusInterfacer
+	Interface(interfaceName string) *DBusInterface
 	// Interfaces gets the D-Bus interfaces associated with object.
 	//
 	// The function returns the following values:
@@ -54,7 +54,7 @@ type DBusObjectOverrider interface {
 	//      g_list_free() after each element has been freed with
 	//      g_object_unref().
 	//
-	Interfaces() []DBusInterfacer
+	Interfaces() []*DBusInterface
 	// ObjectPath gets the object path for object.
 	//
 	// The function returns the following values:
@@ -91,9 +91,9 @@ type DBusObjector interface {
 
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
-	Interface(interfaceName string) DBusInterfacer
+	Interface(interfaceName string) *DBusInterface
 	// Interfaces gets the D-Bus interfaces associated with object.
-	Interfaces() []DBusInterfacer
+	Interfaces() []*DBusInterface
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
 
@@ -324,7 +324,7 @@ func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) 
 //    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
 //      that must be freed with g_object_unref().
 //
-func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
+func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
@@ -337,23 +337,10 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interfaceName)
 
-	var _dBusInterface DBusInterfacer // out
+	var _dBusInterface *DBusInterface // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(DBusInterfacer)
-				return ok
-			})
-			rv, ok := casted.(DBusInterfacer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
-			}
-			_dBusInterface = rv
-		}
+		_dBusInterface = wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _dBusInterface
@@ -366,7 +353,7 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 //    - list of BusInterface instances. The returned list must be freed by
 //      g_list_free() after each element has been freed with g_object_unref().
 //
-func (object *DBusObject) Interfaces() []DBusInterfacer {
+func (object *DBusObject) Interfaces() []*DBusInterface {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.GList       // in
 
@@ -375,29 +362,13 @@ func (object *DBusObject) Interfaces() []DBusInterfacer {
 	_cret = C.g_dbus_object_get_interfaces(_arg0)
 	runtime.KeepAlive(object)
 
-	var _list []DBusInterfacer // out
+	var _list []*DBusInterface // out
 
-	_list = make([]DBusInterfacer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*DBusInterface, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GDBusInterface)(v)
-		var dst DBusInterfacer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.DBusInterfacer is nil")
-			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(DBusInterfacer)
-				return ok
-			})
-			rv, ok := casted.(DBusInterfacer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DBusInterfacer")
-			}
-			dst = rv
-		}
+		var dst *DBusInterface // out
+		dst = wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

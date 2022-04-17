@@ -359,7 +359,7 @@ func (self *Picture) CanShrink() bool {
 //
 //    - file (optional): GFile displayed by self.
 //
-func (self *Picture) File() gio.Filer {
+func (self *Picture) File() *gio.File {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.GFile      // in
 
@@ -368,22 +368,14 @@ func (self *Picture) File() gio.Filer {
 	_cret = C.gtk_picture_get_file(_arg0)
 	runtime.KeepAlive(self)
 
-	var _file gio.Filer // out
+	var _file *gio.File // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Filer)
-				return ok
-			})
-			rv, ok := casted.(gio.Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_file = &gio.File{
+				Object: obj,
 			}
-			_file = rv
 		}
 	}
 
@@ -422,7 +414,7 @@ func (self *Picture) KeepAspectRatio() bool {
 //    - paintable (optional): displayed paintable, or NULL if the picture is
 //      empty.
 //
-func (self *Picture) Paintable() gdk.Paintabler {
+func (self *Picture) Paintable() *gdk.Paintable {
 	var _arg0 *C.GtkPicture   // out
 	var _cret *C.GdkPaintable // in
 
@@ -431,22 +423,14 @@ func (self *Picture) Paintable() gdk.Paintabler {
 	_cret = C.gtk_picture_get_paintable(_arg0)
 	runtime.KeepAlive(self)
 
-	var _paintable gdk.Paintabler // out
+	var _paintable *gdk.Paintable // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gdk.Paintabler)
-				return ok
-			})
-			rv, ok := casted.(gdk.Paintabler)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Paintabler")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_paintable = &gdk.Paintable{
+				Object: obj,
 			}
-			_paintable = rv
 		}
 	}
 

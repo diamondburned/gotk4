@@ -1315,7 +1315,7 @@ type FontFamilyOverrider interface {
 	//      PangoFontFace objects, or NULL. This array should be freed with
 	//      g_free() when it is no longer needed.
 	//
-	ListFaces() []*FontFace
+	ListFaces() []FontFacer
 }
 
 // FontFamily: PangoFontFamily is used to represent a family of related font
@@ -1370,7 +1370,7 @@ func classInitFontFamilier(gclassPtr, data C.gpointer) {
 		pclass.is_variable = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_is_variable)
 	}
 
-	if _, ok := goval.(interface{ ListFaces() []*FontFace }); ok {
+	if _, ok := goval.(interface{ ListFaces() []FontFacer }); ok {
 		pclass.list_faces = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_list_faces)
 	}
 }
@@ -1439,7 +1439,7 @@ func _gotk4_pango1_FontFamilyClass_is_variable(arg0 *C.PangoFontFamily) (cret C.
 //export _gotk4_pango1_FontFamilyClass_list_faces
 func _gotk4_pango1_FontFamilyClass_list_faces(arg0 *C.PangoFontFamily, arg1 ***C.PangoFontFace, arg2 *C.int) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ListFaces() []*FontFace })
+	iface := goval.(interface{ ListFaces() []FontFacer })
 
 	faces := iface.ListFaces()
 
@@ -1621,7 +1621,7 @@ func (family *FontFamily) IsVariable() bool {
 //      objects, or NULL. This array should be freed with g_free() when it is no
 //      longer needed.
 //
-func (family *FontFamily) ListFaces() []*FontFace {
+func (family *FontFamily) ListFaces() []FontFacer {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 **C.PangoFontFace  // in
 	var _arg2 C.int              // in
@@ -1631,15 +1631,31 @@ func (family *FontFamily) ListFaces() []*FontFace {
 	C.pango_font_family_list_faces(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(family)
 
-	var _faces []*FontFace // out
+	var _faces []FontFacer // out
 
 	if _arg1 != nil {
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			src := unsafe.Slice((**C.PangoFontFace)(_arg1), _arg2)
-			_faces = make([]*FontFace, _arg2)
+			_faces = make([]FontFacer, _arg2)
 			for i := 0; i < int(_arg2); i++ {
-				_faces[i] = wrapFontFace(externglib.Take(unsafe.Pointer(src[i])))
+				{
+					objptr := unsafe.Pointer(src[i])
+					if objptr == nil {
+						panic("object of type pango.FontFacer is nil")
+					}
+
+					object := externglib.Take(objptr)
+					casted := object.WalkCast(func(obj externglib.Objector) bool {
+						_, ok := obj.(FontFacer)
+						return ok
+					})
+					rv, ok := casted.(FontFacer)
+					if !ok {
+						panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
+					}
+					_faces[i] = rv
+				}
 			}
 		}
 	}

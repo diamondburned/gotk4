@@ -6033,7 +6033,7 @@ func (widget *Widget) Accessible() *atk.ObjectClass {
 //
 //    - actionGroup (optional) or NULL.
 //
-func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
+func (widget *Widget) ActionGroup(prefix string) *gio.ActionGroup {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GActionGroup // in
@@ -6046,22 +6046,14 @@ func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(prefix)
 
-	var _actionGroup gio.ActionGrouper // out
+	var _actionGroup *gio.ActionGroup // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.ActionGrouper)
-				return ok
-			})
-			rv, ok := casted.(gio.ActionGrouper)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ActionGrouper")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_actionGroup = &gio.ActionGroup{
+				Object: obj,
 			}
-			_actionGroup = rv
 		}
 	}
 

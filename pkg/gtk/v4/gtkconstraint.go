@@ -304,7 +304,7 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 //
 //    - constraintTarget (optional): source of the constraint.
 //
-func (constraint *Constraint) Source() ConstraintTargetter {
+func (constraint *Constraint) Source() *ConstraintTarget {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
@@ -313,23 +313,10 @@ func (constraint *Constraint) Source() ConstraintTargetter {
 	_cret = C.gtk_constraint_get_source(_arg0)
 	runtime.KeepAlive(constraint)
 
-	var _constraintTarget ConstraintTargetter // out
+	var _constraintTarget *ConstraintTarget // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(ConstraintTargetter)
-				return ok
-			})
-			rv, ok := casted.(ConstraintTargetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.ConstraintTargetter")
-			}
-			_constraintTarget = rv
-		}
+		_constraintTarget = wrapConstraintTarget(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _constraintTarget
@@ -390,7 +377,7 @@ func (constraint *Constraint) Strength() int {
 //
 //    - constraintTarget (optional): ConstraintTarget.
 //
-func (constraint *Constraint) Target() ConstraintTargetter {
+func (constraint *Constraint) Target() *ConstraintTarget {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
@@ -399,23 +386,10 @@ func (constraint *Constraint) Target() ConstraintTargetter {
 	_cret = C.gtk_constraint_get_target(_arg0)
 	runtime.KeepAlive(constraint)
 
-	var _constraintTarget ConstraintTargetter // out
+	var _constraintTarget *ConstraintTarget // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(ConstraintTargetter)
-				return ok
-			})
-			rv, ok := casted.(ConstraintTargetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.ConstraintTargetter")
-			}
-			_constraintTarget = rv
-		}
+		_constraintTarget = wrapConstraintTarget(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _constraintTarget

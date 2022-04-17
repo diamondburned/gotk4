@@ -358,7 +358,7 @@ type MenuLinkIterOverrider interface {
 	//    - value (optional): linked Model.
 	//    - ok: TRUE on success, or FALSE if there is no additional link.
 	//
-	Next() (string, *MenuModel, bool)
+	Next() (string, MenuModeller, bool)
 }
 
 // MenuLinkIter is an opaque structure type. You must access it using the
@@ -395,7 +395,7 @@ func classInitMenuLinkIterer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GMenuLinkIterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		Next() (string, *MenuModel, bool)
+		Next() (string, MenuModeller, bool)
 	}); ok {
 		pclass.get_next = (*[0]byte)(C._gotk4_gio2_MenuLinkIterClass_get_next)
 	}
@@ -405,7 +405,7 @@ func classInitMenuLinkIterer(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_MenuLinkIterClass_get_next(arg0 *C.GMenuLinkIter, arg1 **C.gchar, arg2 **C.GMenuModel) (cret C.gboolean) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Next() (string, *MenuModel, bool)
+		Next() (string, MenuModeller, bool)
 	})
 
 	outLink, value, ok := iface.Next()
@@ -490,7 +490,7 @@ func (iter *MenuLinkIter) Name() string {
 //    - value (optional): linked Model.
 //    - ok: TRUE on success, or FALSE if there is no additional link.
 //
-func (iter *MenuLinkIter) GetNext() (string, *MenuModel, bool) {
+func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 	var _arg0 *C.GMenuLinkIter // out
 	var _arg1 *C.gchar         // in
 	var _arg2 *C.GMenuModel    // in
@@ -501,15 +501,28 @@ func (iter *MenuLinkIter) GetNext() (string, *MenuModel, bool) {
 	_cret = C.g_menu_link_iter_get_next(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
-	var _outLink string   // out
-	var _value *MenuModel // out
-	var _ok bool          // out
+	var _outLink string     // out
+	var _value MenuModeller // out
+	var _ok bool            // out
 
 	if _arg1 != nil {
 		_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	}
 	if _arg2 != nil {
-		_value = wrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
+		{
+			objptr := unsafe.Pointer(_arg2)
+
+			object := externglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(MenuModeller)
+				return ok
+			})
+			rv, ok := casted.(MenuModeller)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.MenuModeller")
+			}
+			_value = rv
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -650,7 +663,7 @@ type MenuModelOverrider interface {
 	//
 	//    - links links from the item.
 	//
-	ItemLinks(itemIndex int) map[string]MenuModel
+	ItemLinks(itemIndex int) map[string]MenuModeller
 	// NItems: query the number of items in model.
 	//
 	// The function returns the following values:
@@ -872,7 +885,7 @@ func classInitMenuModeller(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		ItemLinks(itemIndex int) map[string]MenuModel
+		ItemLinks(itemIndex int) map[string]MenuModeller
 	}); ok {
 		pclass.get_item_links = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_links)
 	}
@@ -975,7 +988,7 @@ func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, a
 func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
 	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		ItemLinks(itemIndex int) map[string]MenuModel
+		ItemLinks(itemIndex int) map[string]MenuModeller
 	})
 
 	var _itemIndex int // out

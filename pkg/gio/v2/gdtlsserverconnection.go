@@ -86,7 +86,7 @@ func BaseDTLSServerConnection(obj DTLSServerConnectioner) *DTLSServerConnection 
 //
 //    - dtlsServerConnection: new ServerConnection, or NULL on error.
 //
-func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertificater) (DTLSServerConnectioner, error) {
+func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertificater) (*DTLSServerConnection, error) {
 	var _arg1 *C.GDatagramBased  // out
 	var _arg2 *C.GTlsCertificate // out
 	var _cret *C.GDatagramBased  // in
@@ -101,26 +101,10 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(certificate)
 
-	var _dtlsServerConnection DTLSServerConnectioner // out
-	var _goerr error                                 // out
+	var _dtlsServerConnection *DTLSServerConnection // out
+	var _goerr error                                // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.DTLSServerConnectioner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(DTLSServerConnectioner)
-			return ok
-		})
-		rv, ok := casted.(DTLSServerConnectioner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DTLSServerConnectioner")
-		}
-		_dtlsServerConnection = rv
-	}
+	_dtlsServerConnection = wrapDTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

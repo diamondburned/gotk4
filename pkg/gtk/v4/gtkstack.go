@@ -497,7 +497,7 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 //
 //    - selectionModel: GtkSelectionModel for the stack's children.
 //
-func (stack *Stack) Pages() SelectionModeller {
+func (stack *Stack) Pages() *SelectionModel {
 	var _arg0 *C.GtkStack          // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -506,25 +506,9 @@ func (stack *Stack) Pages() SelectionModeller {
 	_cret = C.gtk_stack_get_pages(_arg0)
 	runtime.KeepAlive(stack)
 
-	var _selectionModel SelectionModeller // out
+	var _selectionModel *SelectionModel // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.SelectionModeller is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(SelectionModeller)
-			return ok
-		})
-		rv, ok := casted.(SelectionModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
-		}
-		_selectionModel = rv
-	}
+	_selectionModel = wrapSelectionModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _selectionModel
 }

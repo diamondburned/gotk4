@@ -163,7 +163,7 @@ func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) externglib.Sig
 //
 //    - radioMenuItem: new RadioMenuItem.
 //
-func NewRadioMenuItem(group []RadioMenuItem) *RadioMenuItem {
+func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
 	var _cret *C.GtkWidget // in
 
@@ -171,7 +171,7 @@ func NewRadioMenuItem(group []RadioMenuItem) *RadioMenuItem {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -228,7 +228,7 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 //
 //    - radioMenuItem: new RadioMenuItem.
 //
-func NewRadioMenuItemWithLabel(group []RadioMenuItem, label string) *RadioMenuItem {
+func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -237,7 +237,7 @@ func NewRadioMenuItemWithLabel(group []RadioMenuItem, label string) *RadioMenuIt
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -307,7 +307,7 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 //
 //    - radioMenuItem: new RadioMenuItem.
 //
-func NewRadioMenuItemWithMnemonic(group []RadioMenuItem, label string) *RadioMenuItem {
+func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -316,7 +316,7 @@ func NewRadioMenuItemWithMnemonic(group []RadioMenuItem, label string) *RadioMen
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
@@ -383,7 +383,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 //
 //    - sList: group of radio_menu_item.
 //
-func (radioMenuItem *RadioMenuItem) Group() []RadioMenuItem {
+func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _cret *C.GSList           // in
 
@@ -392,13 +392,13 @@ func (radioMenuItem *RadioMenuItem) Group() []RadioMenuItem {
 	_cret = C.gtk_radio_menu_item_get_group(_arg0)
 	runtime.KeepAlive(radioMenuItem)
 
-	var _sList []RadioMenuItem // out
+	var _sList []*RadioMenuItem // out
 
-	_sList = make([]RadioMenuItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*RadioMenuItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkRadioMenuItem)(v)
-		var dst RadioMenuItem // out
-		dst = *wrapRadioMenuItem(externglib.Take(unsafe.Pointer(src)))
+		var dst *RadioMenuItem // out
+		dst = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -451,7 +451,7 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 //
 //    - group (optional): new group, or NULL.
 //
-func (radioMenuItem *RadioMenuItem) SetGroup(group []RadioMenuItem) {
+func (radioMenuItem *RadioMenuItem) SetGroup(group []*RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GSList           // out
 
@@ -460,7 +460,7 @@ func (radioMenuItem *RadioMenuItem) SetGroup(group []RadioMenuItem) {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)

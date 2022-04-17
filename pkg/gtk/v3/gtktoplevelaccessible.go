@@ -64,7 +64,7 @@ func marshalToplevelAccessible(p uintptr) (interface{}, error) {
 //
 //    - list: list of children.
 //
-func (accessible *ToplevelAccessible) Children() []Window {
+func (accessible *ToplevelAccessible) Children() []*Window {
 	var _arg0 *C.GtkToplevelAccessible // out
 	var _cret *C.GList                 // in
 
@@ -73,13 +73,13 @@ func (accessible *ToplevelAccessible) Children() []Window {
 	_cret = C.gtk_toplevel_accessible_get_children(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _list []Window // out
+	var _list []*Window // out
 
-	_list = make([]Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkWindow)(v)
-		var dst Window // out
-		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		var dst *Window // out
+		dst = wrapWindow(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

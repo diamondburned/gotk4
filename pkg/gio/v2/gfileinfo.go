@@ -1259,7 +1259,7 @@ func (info *FileInfo) FileType() FileType {
 //
 //    - icon (optional) for the given info.
 //
-func (info *FileInfo) Icon() Iconner {
+func (info *FileInfo) Icon() *Icon {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
 
@@ -1268,23 +1268,10 @@ func (info *FileInfo) Icon() Iconner {
 	_cret = C.g_file_info_get_icon(_arg0)
 	runtime.KeepAlive(info)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Iconner)
-				return ok
-			})
-			rv, ok := casted.(Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-			}
-			_icon = rv
-		}
+		_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _icon
@@ -1498,7 +1485,7 @@ func (info *FileInfo) SortOrder() int32 {
 //
 //    - icon (optional) for the given info.
 //
-func (info *FileInfo) SymbolicIcon() Iconner {
+func (info *FileInfo) SymbolicIcon() *Icon {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
 
@@ -1507,23 +1494,10 @@ func (info *FileInfo) SymbolicIcon() Iconner {
 	_cret = C.g_file_info_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(info)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Iconner)
-				return ok
-			})
-			rv, ok := casted.(Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-			}
-			_icon = rv
-		}
+		_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _icon

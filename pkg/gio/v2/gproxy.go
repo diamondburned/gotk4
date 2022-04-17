@@ -276,7 +276,7 @@ func (proxy *Proxy) SupportsHostname() bool {
 //
 //    - proxy (optional): return a #GProxy or NULL if protocol is not supported.
 //
-func ProxyGetDefaultForProtocol(protocol string) Proxier {
+func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GProxy // in
 
@@ -286,23 +286,10 @@ func ProxyGetDefaultForProtocol(protocol string) Proxier {
 	_cret = C.g_proxy_get_default_for_protocol(_arg1)
 	runtime.KeepAlive(protocol)
 
-	var _proxy Proxier // out
+	var _proxy *Proxy // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Proxier)
-				return ok
-			})
-			rv, ok := casted.(Proxier)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Proxier")
-			}
-			_proxy = rv
-		}
+		_proxy = wrapProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _proxy

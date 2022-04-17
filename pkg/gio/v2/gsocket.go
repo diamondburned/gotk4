@@ -1436,7 +1436,7 @@ func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 //    - gssize: number of bytes read, or 0 if the connection was closed by the
 //      peer, or -1 on error.
 //
-func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (*SocketAddress, int, error) {
+func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAddresser, int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // in
@@ -1460,12 +1460,25 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (*SocketAd
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
 
-	var _address *SocketAddress // out
-	var _gssize int             // out
-	var _goerr error            // out
+	var _address SocketAddresser // out
+	var _gssize int              // out
+	var _goerr error             // out
 
 	if _arg1 != nil {
-		_address = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+		{
+			objptr := unsafe.Pointer(_arg1)
+
+			object := externglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(SocketAddresser)
+				return ok
+			})
+			rv, ok := casted.(SocketAddresser)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddresser")
+			}
+			_address = rv
+		}
 	}
 	_gssize = int(_cret)
 	if _cerr != nil {

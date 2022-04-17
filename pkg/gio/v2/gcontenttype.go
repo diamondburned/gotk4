@@ -188,7 +188,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 //    - icon corresponding to the content type. Free the returned object with
 //      g_object_unref().
 //
-func ContentTypeGetIcon(typ string) Iconner {
+func ContentTypeGetIcon(typ string) *Icon {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -198,25 +198,9 @@ func ContentTypeGetIcon(typ string) Iconner {
 	_cret = C.g_content_type_get_icon(_arg1)
 	runtime.KeepAlive(typ)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -297,7 +281,7 @@ func ContentTypeGetMIMEType(typ string) string {
 //    - icon: symbolic #GIcon corresponding to the content type. Free the
 //      returned object with g_object_unref().
 //
-func ContentTypeGetSymbolicIcon(typ string) Iconner {
+func ContentTypeGetSymbolicIcon(typ string) *Icon {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -307,25 +291,9 @@ func ContentTypeGetSymbolicIcon(typ string) Iconner {
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 	runtime.KeepAlive(typ)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }

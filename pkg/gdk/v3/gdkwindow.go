@@ -2502,7 +2502,7 @@ func (window *Window) Display() *Display {
 //      Drag and Drop.
 //    - dragProtocol: supported DND protocol.
 //
-func (window *Window) DragProtocol() (*Window, DragProtocol) {
+func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkWindow      // in
 	var _cret C.GdkDragProtocol // in
@@ -2512,11 +2512,24 @@ func (window *Window) DragProtocol() (*Window, DragProtocol) {
 	_cret = C.gdk_window_get_drag_protocol(_arg0, &_arg1)
 	runtime.KeepAlive(window)
 
-	var _target *Window            // out
+	var _target Windower           // out
 	var _dragProtocol DragProtocol // out
 
 	if _arg1 != nil {
-		_target = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+		{
+			objptr := unsafe.Pointer(_arg1)
+
+			object := externglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
+			rv, ok := casted.(Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			_target = rv
+		}
 	}
 	_dragProtocol = DragProtocol(_cret)
 
@@ -4803,7 +4816,7 @@ func (window *Window) SetGroup(leader Windower) {
 //
 //    - pixbufs: A list of pixbufs, of different sizes.
 //
-func (window *Window) SetIconList(pixbufs []gdkpixbuf.Pixbuf) {
+func (window *Window) SetIconList(pixbufs []*gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GList     // out
 
@@ -4811,7 +4824,7 @@ func (window *Window) SetIconList(pixbufs []gdkpixbuf.Pixbuf) {
 	for i := len(pixbufs) - 1; i >= 0; i-- {
 		src := pixbufs[i]
 		var dst *C.GdkPixbuf // out
-		dst = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+		dst = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)

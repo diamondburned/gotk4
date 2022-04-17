@@ -135,7 +135,7 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 //    - sList: newly allocated List of Display objects. Free with g_slist_free()
 //      when you are done with it.
 //
-func (manager *DisplayManager) ListDisplays() []Display {
+func (manager *DisplayManager) ListDisplays() []*Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GSList            // in
 
@@ -144,13 +144,13 @@ func (manager *DisplayManager) ListDisplays() []Display {
 	_cret = C.gdk_display_manager_list_displays(_arg0)
 	runtime.KeepAlive(manager)
 
-	var _sList []Display // out
+	var _sList []*Display // out
 
-	_sList = make([]Display, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*Display, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GdkDisplay)(v)
-		var dst Display // out
-		dst = *wrapDisplay(externglib.Take(unsafe.Pointer(src)))
+		var dst *Display // out
+		dst = wrapDisplay(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 

@@ -551,7 +551,7 @@ func (actionGroup *ActionGroup) Visible() bool {
 //
 //    - list: allocated list of the action objects in the action group.
 //
-func (actionGroup *ActionGroup) ListActions() []Action {
+func (actionGroup *ActionGroup) ListActions() []*Action {
 	var _arg0 *C.GtkActionGroup // out
 	var _cret *C.GList          // in
 
@@ -560,13 +560,13 @@ func (actionGroup *ActionGroup) ListActions() []Action {
 	_cret = C.gtk_action_group_list_actions(_arg0)
 	runtime.KeepAlive(actionGroup)
 
-	var _list []Action // out
+	var _list []*Action // out
 
-	_list = make([]Action, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*Action, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkAction)(v)
-		var dst Action // out
-		dst = *wrapAction(externglib.Take(unsafe.Pointer(src)))
+		var dst *Action // out
+		dst = wrapAction(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

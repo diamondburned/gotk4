@@ -2009,7 +2009,7 @@ func (area *CellArea) CurrentPathString() string {
 //
 //    - cellEditable: currently active CellEditable widget.
 //
-func (area *CellArea) EditWidget() CellEditabler {
+func (area *CellArea) EditWidget() *CellEditable {
 	var _arg0 *C.GtkCellArea     // out
 	var _cret *C.GtkCellEditable // in
 
@@ -2018,25 +2018,9 @@ func (area *CellArea) EditWidget() CellEditabler {
 	_cret = C.gtk_cell_area_get_edit_widget(_arg0)
 	runtime.KeepAlive(area)
 
-	var _cellEditable CellEditabler // out
+	var _cellEditable *CellEditable // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.CellEditabler is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(CellEditabler)
-			return ok
-		})
-		rv, ok := casted.(CellEditabler)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellEditabler")
-		}
-		_cellEditable = rv
-	}
+	_cellEditable = wrapCellEditable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellEditable
 }

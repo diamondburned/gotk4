@@ -133,7 +133,7 @@ type AppInfor interface {
 	// Delete tries to delete a Info.
 	Delete() bool
 	// Dup creates a duplicate of a Info.
-	Dup() AppInfor
+	Dup() *AppInfo
 	// Equal checks if two Infos are equal.
 	Equal(appinfo2 AppInfor) bool
 	// Commandline gets the commandline with which the application will be
@@ -147,7 +147,7 @@ type AppInfor interface {
 	// Executable gets the executable's name for the installed application.
 	Executable() string
 	// Icon gets the icon for the application.
-	Icon() Iconner
+	Icon() *Icon
 	// ID gets the ID of an application.
 	ID() string
 	// Name gets the installed name of the application.
@@ -312,7 +312,7 @@ func (appinfo *AppInfo) Delete() bool {
 //
 //    - appInfo: duplicate of appinfo.
 //
-func (appinfo *AppInfo) Dup() AppInfor {
+func (appinfo *AppInfo) Dup() *AppInfo {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
 
@@ -321,25 +321,9 @@ func (appinfo *AppInfo) Dup() AppInfor {
 	_cret = C.g_app_info_dup(_arg0)
 	runtime.KeepAlive(appinfo)
 
-	var _appInfo AppInfor // out
+	var _appInfo *AppInfo // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_appInfo = rv
-	}
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appInfo
 }
@@ -482,7 +466,7 @@ func (appinfo *AppInfo) Executable() string {
 //    - icon (optional): default #GIcon for appinfo or NULL if there is no
 //      default icon.
 //
-func (appinfo *AppInfo) Icon() Iconner {
+func (appinfo *AppInfo) Icon() *Icon {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
 
@@ -491,23 +475,10 @@ func (appinfo *AppInfo) Icon() Iconner {
 	_cret = C.g_app_info_get_icon(_arg0)
 	runtime.KeepAlive(appinfo)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Iconner)
-				return ok
-			})
-			rv, ok := casted.(Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-			}
-			_icon = rv
-		}
+		_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _icon
@@ -1010,7 +981,7 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 //
 //    - appInfo: new Info for given command.
 //
-func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (AppInfor, error) {
+func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (*AppInfo, error) {
 	var _arg1 *C.char               // out
 	var _arg2 *C.char               // out
 	var _arg3 C.GAppInfoCreateFlags // out
@@ -1030,26 +1001,10 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 	runtime.KeepAlive(applicationName)
 	runtime.KeepAlive(flags)
 
-	var _appInfo AppInfor // out
+	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_appInfo = rv
-	}
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1069,34 +1024,18 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 //
 //    - list: newly allocated #GList of references to Infos.
 //
-func AppInfoGetAll() []AppInfor {
+func AppInfoGetAll() []*AppInfo {
 	var _cret *C.GList // in
 
 	_cret = C.g_app_info_get_all()
 
-	var _list []AppInfor // out
+	var _list []*AppInfo // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*AppInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
-				return ok
-			})
-			rv, ok := casted.(AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-			}
-			dst = rv
-		}
+		var dst *AppInfo // out
+		dst = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -1115,7 +1054,7 @@ func AppInfoGetAll() []AppInfor {
 //
 //    - list of Infos for given content_type or NULL on error.
 //
-func AppInfoGetAllForType(contentType string) []AppInfor {
+func AppInfoGetAllForType(contentType string) []*AppInfo {
 	var _arg1 *C.char  // out
 	var _cret *C.GList // in
 
@@ -1125,29 +1064,13 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_all_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list []*AppInfo // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*AppInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
-				return ok
-			})
-			rv, ok := casted.(AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-			}
-			dst = rv
-		}
+		var dst *AppInfo // out
+		dst = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -1165,7 +1088,7 @@ func AppInfoGetAllForType(contentType string) []AppInfor {
 //
 //    - appInfo (optional) for given content_type or NULL on error.
 //
-func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor {
+func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo {
 	var _arg1 *C.char     // out
 	var _arg2 C.gboolean  // out
 	var _cret *C.GAppInfo // in
@@ -1180,23 +1103,10 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 	runtime.KeepAlive(contentType)
 	runtime.KeepAlive(mustSupportUris)
 
-	var _appInfo AppInfor // out
+	var _appInfo *AppInfo // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
-				return ok
-			})
-			rv, ok := casted.(AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-			}
-			_appInfo = rv
-		}
+		_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _appInfo
@@ -1214,7 +1124,7 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfor
 //
 //    - appInfo (optional) for given uri_scheme or NULL on error.
 //
-func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
+func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	var _arg1 *C.char     // out
 	var _cret *C.GAppInfo // in
 
@@ -1224,23 +1134,10 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
 	runtime.KeepAlive(uriScheme)
 
-	var _appInfo AppInfor // out
+	var _appInfo *AppInfo // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
-				return ok
-			})
-			rv, ok := casted.(AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-			}
-			_appInfo = rv
-		}
+		_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _appInfo
@@ -1258,7 +1155,7 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfor {
 //
 //    - list of Infos for given content_type or NULL on error.
 //
-func AppInfoGetFallbackForType(contentType string) []AppInfor {
+func AppInfoGetFallbackForType(contentType string) []*AppInfo {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -1268,29 +1165,13 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_fallback_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list []*AppInfo // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*AppInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
-				return ok
-			})
-			rv, ok := casted.(AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-			}
-			dst = rv
-		}
+		var dst *AppInfo // out
+		dst = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -1311,7 +1192,7 @@ func AppInfoGetFallbackForType(contentType string) []AppInfor {
 //
 //    - list of Infos for given content_type or NULL on error.
 //
-func AppInfoGetRecommendedForType(contentType string) []AppInfor {
+func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -1321,29 +1202,13 @@ func AppInfoGetRecommendedForType(contentType string) []AppInfor {
 	_cret = C.g_app_info_get_recommended_for_type(_arg1)
 	runtime.KeepAlive(contentType)
 
-	var _list []AppInfor // out
+	var _list []*AppInfo // out
 
-	_list = make([]AppInfor, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*AppInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GAppInfo)(v)
-		var dst AppInfor // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.AppInfor is nil")
-			}
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(AppInfor)
-				return ok
-			})
-			rv, ok := casted.(AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-			}
-			dst = rv
-		}
+		var dst *AppInfo // out
+		dst = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

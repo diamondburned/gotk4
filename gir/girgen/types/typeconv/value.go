@@ -234,6 +234,12 @@ func (value *ConversionValue) ParameterIsOutput() bool {
 	return types.GuessParameterOutput(&param) == "out"
 }
 
+// ParameterIsReturn returns true if the direction is out or if the parameter is
+// a return value.
+func (value *ConversionValue) ParameterIsReturn() bool {
+	return value.ParameterIsOutput() || value.ParameterIndex == ReturnValueIndex
+}
+
 // outputAllocs returns true if the parameter is a value we need to allocate
 // ourselves.
 func (value *ConversionValue) outputAllocs() bool {

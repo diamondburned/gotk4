@@ -54,7 +54,7 @@ type ActionMapOverrider interface {
 	//
 	//    - action (optional) or NULL.
 	//
-	LookupAction(actionName string) Actioner
+	LookupAction(actionName string) *Action
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
@@ -94,7 +94,7 @@ type ActionMapper interface {
 	// instances and adding them to a Map.
 	AddActionEntries(entries []ActionEntry, userData cgo.Handle)
 	// LookupAction looks up the action with the name action_name in action_map.
-	LookupAction(actionName string) Actioner
+	LookupAction(actionName string) *Action
 	// RemoveAction removes the named action from the action map.
 	RemoveAction(actionName string)
 }
@@ -276,7 +276,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 //
 //    - action (optional) or NULL.
 //
-func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
+func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
@@ -289,23 +289,10 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)
 
-	var _action Actioner // out
+	var _action *Action // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Actioner)
-				return ok
-			})
-			rv, ok := casted.(Actioner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Actioner")
-			}
-			_action = rv
-		}
+		_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _action

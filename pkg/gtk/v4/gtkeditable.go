@@ -180,7 +180,7 @@ type Editabler interface {
 	Chars(startPos, endPos int) string
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
-	Delegate() Editabler
+	Delegate() *Editable
 	// Editable retrieves whether editable is editable.
 	Editable() bool
 	// EnableUndo gets if undo/redo actions are enabled for editable.
@@ -444,7 +444,7 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 //
 //    - ret (optional): delegate GtkEditable.
 //
-func (editable *Editable) Delegate() Editabler {
+func (editable *Editable) Delegate() *Editable {
 	var _arg0 *C.GtkEditable // out
 	var _cret *C.GtkEditable // in
 
@@ -453,23 +453,10 @@ func (editable *Editable) Delegate() Editabler {
 	_cret = C.gtk_editable_get_delegate(_arg0)
 	runtime.KeepAlive(editable)
 
-	var _ret Editabler // out
+	var _ret *Editable // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Editabler)
-				return ok
-			})
-			rv, ok := casted.(Editabler)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Editabler")
-			}
-			_ret = rv
-		}
+		_ret = wrapEditable(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _ret

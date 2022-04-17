@@ -1279,7 +1279,7 @@ func (entry *Entry) IconAtPos(x, y int) int {
 //
 //    - icon (optional) or NULL if no icon is set or if the icon is not a #GIcon.
 //
-func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -1291,22 +1291,14 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconner {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(iconPos)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
-				return ok
-			})
-			rv, ok := casted.(gio.Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
+			obj := externglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
 			}
-			_icon = rv
 		}
 	}
 

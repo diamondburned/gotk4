@@ -920,7 +920,7 @@ func (iconView *IconView) Columns() int {
 //    - cell (optional): return location the current focus cell, or NULL.
 //    - ok: TRUE if the cursor is set.
 //
-func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
+func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 *C.GtkTreePath     // in
 	var _arg2 *C.GtkCellRenderer // in
@@ -931,9 +931,9 @@ func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
 	_cret = C.gtk_icon_view_get_cursor(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconView)
 
-	var _path *TreePath     // out
-	var _cell *CellRenderer // out
-	var _ok bool            // out
+	var _path *TreePath      // out
+	var _cell CellRendererer // out
+	var _ok bool             // out
 
 	if _arg1 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
@@ -945,7 +945,20 @@ func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
 		)
 	}
 	if _arg2 != nil {
-		_cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(_arg2)))
+		{
+			objptr := unsafe.Pointer(_arg2)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
+			rv, ok := casted.(CellRendererer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+			}
+			_cell = rv
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -1060,7 +1073,7 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 //      cell at (x, y), or NULL.
 //    - ok: TRUE if an item exists at the specified position.
 //
-func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, *CellRenderer, bool) {
+func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -1077,9 +1090,9 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, *CellRenderer, bool) {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _path *TreePath     // out
-	var _cell *CellRenderer // out
-	var _ok bool            // out
+	var _path *TreePath      // out
+	var _cell CellRendererer // out
+	var _ok bool             // out
 
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
@@ -1091,7 +1104,20 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, *CellRenderer, bool) {
 		)
 	}
 	if _arg4 != nil {
-		_cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(_arg4)))
+		{
+			objptr := unsafe.Pointer(_arg4)
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
+			rv, ok := casted.(CellRendererer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+			}
+			_cell = rv
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -1278,7 +1304,7 @@ func (iconView *IconView) MarkupColumn() int {
 //
 //    - treeModel (optional) or NULL if none is currently being used.
 //
-func (iconView *IconView) Model() TreeModeller {
+func (iconView *IconView) Model() *TreeModel {
 	var _arg0 *C.GtkIconView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -1287,23 +1313,10 @@ func (iconView *IconView) Model() TreeModeller {
 	_cret = C.gtk_icon_view_get_model(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _treeModel TreeModeller // out
+	var _treeModel *TreeModel // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_treeModel = rv
-		}
+		_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _treeModel

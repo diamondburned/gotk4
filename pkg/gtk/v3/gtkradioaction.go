@@ -224,7 +224,7 @@ func (action *RadioAction) CurrentValue() int {
 //
 //    - sList: list representing the radio group for this object.
 //
-func (action *RadioAction) Group() []RadioAction {
+func (action *RadioAction) Group() []*RadioAction {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret *C.GSList         // in
 
@@ -233,13 +233,13 @@ func (action *RadioAction) Group() []RadioAction {
 	_cret = C.gtk_radio_action_get_group(_arg0)
 	runtime.KeepAlive(action)
 
-	var _sList []RadioAction // out
+	var _sList []*RadioAction // out
 
-	_sList = make([]RadioAction, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkRadioAction)(v)
-		var dst RadioAction // out
-		dst = *wrapRadioAction(externglib.Take(unsafe.Pointer(src)))
+		var dst *RadioAction // out
+		dst = wrapRadioAction(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -315,7 +315,7 @@ func (action *RadioAction) SetCurrentValue(currentValue int) {
 //
 //    - group (optional): list representing a radio group, or NULL.
 //
-func (action *RadioAction) SetGroup(group []RadioAction) {
+func (action *RadioAction) SetGroup(group []*RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GSList         // out
 
@@ -324,7 +324,7 @@ func (action *RadioAction) SetGroup(group []RadioAction) {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.GtkRadioAction // out
-			dst = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject((&src)).Native()))
+			dst = (*C.GtkRadioAction)(unsafe.Pointer(externglib.InternObject(src).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)

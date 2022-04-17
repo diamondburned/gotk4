@@ -978,7 +978,7 @@ func (container *Container) Children() []Widgetter {
 //      widgets in the focus chain.
 //    - ok: TRUE if the focus chain of the container has been set explicitly.
 //
-func (container *Container) FocusChain() ([]Widget, bool) {
+func (container *Container) FocusChain() ([]Widgetter, bool) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GList        // in
 	var _cret C.gboolean      // in
@@ -988,14 +988,30 @@ func (container *Container) FocusChain() ([]Widget, bool) {
 	_cret = C.gtk_container_get_focus_chain(_arg0, &_arg1)
 	runtime.KeepAlive(container)
 
-	var _focusableWidgets []Widget // out
-	var _ok bool                   // out
+	var _focusableWidgets []Widgetter // out
+	var _ok bool                      // out
 
-	_focusableWidgets = make([]Widget, 0, gextras.ListSize(unsafe.Pointer(_arg1)))
+	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_arg1)))
 	gextras.MoveList(unsafe.Pointer(_arg1), true, func(v unsafe.Pointer) {
 		src := (*C.GtkWidget)(v)
-		var dst Widget // out
-		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		var dst Widgetter // out
+		{
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.Widgetter is nil")
+			}
+
+			object := externglib.Take(objptr)
+			casted := object.WalkCast(func(obj externglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			dst = rv
+		}
 		_focusableWidgets = append(_focusableWidgets, dst)
 	})
 	if _cret != 0 {

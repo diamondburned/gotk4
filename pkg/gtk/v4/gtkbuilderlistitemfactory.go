@@ -208,7 +208,7 @@ func (self *BuilderListItemFactory) Resource() string {
 //
 //    - builderScope (optional): scope used when constructing listitems.
 //
-func (self *BuilderListItemFactory) Scope() BuilderScoper {
+func (self *BuilderListItemFactory) Scope() *BuilderScope {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in
 
@@ -217,23 +217,10 @@ func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
 	runtime.KeepAlive(self)
 
-	var _builderScope BuilderScoper // out
+	var _builderScope *BuilderScope // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(BuilderScoper)
-				return ok
-			})
-			rv, ok := casted.(BuilderScoper)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.BuilderScoper")
-			}
-			_builderScope = rv
-		}
+		_builderScope = wrapBuilderScope(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _builderScope

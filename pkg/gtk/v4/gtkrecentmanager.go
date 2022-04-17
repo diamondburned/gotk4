@@ -675,7 +675,7 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 //    - appInfo (optional): newly created GAppInfo, or NULL. In case of error,
 //      error will be set either with a GTK_RECENT_MANAGER_ERROR or a G_IO_ERROR.
 //
-func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
+func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out
 	var _cret *C.GAppInfo      // in
@@ -691,23 +691,15 @@ func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(appName)
 
-	var _appInfo gio.AppInfor // out
+	var _appInfo *gio.AppInfo // out
 	var _goerr error          // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.AppInfor)
-				return ok
-			})
-			rv, ok := casted.(gio.AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_appInfo = &gio.AppInfo{
+				Object: obj,
 			}
-			_appInfo = rv
 		}
 	}
 	if _cerr != nil {
@@ -942,7 +934,7 @@ func (info *RecentInfo) DisplayName() string {
 //    - icon (optional) containing the icon, or NULL. Use g_object_unref() when
 //      finished using the icon.
 //
-func (info *RecentInfo) GIcon() gio.Iconner {
+func (info *RecentInfo) GIcon() *gio.Icon {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GIcon         // in
 
@@ -951,22 +943,14 @@ func (info *RecentInfo) GIcon() gio.Iconner {
 	_cret = C.gtk_recent_info_get_gicon(_arg0)
 	runtime.KeepAlive(info)
 
-	var _icon gio.Iconner // out
+	var _icon *gio.Icon // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.Iconner)
-				return ok
-			})
-			rv, ok := casted.(gio.Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
 			}
-			_icon = rv
 		}
 	}
 

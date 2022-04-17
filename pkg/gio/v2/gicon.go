@@ -316,7 +316,7 @@ func (icon *Icon) String() string {
 //
 //    - icon (optional) or NULL when deserialization fails.
 //
-func IconDeserialize(value *glib.Variant) Iconner {
+func IconDeserialize(value *glib.Variant) *Icon {
 	var _arg1 *C.GVariant // out
 	var _cret *C.GIcon    // in
 
@@ -325,23 +325,10 @@ func IconDeserialize(value *glib.Variant) Iconner {
 	_cret = C.g_icon_deserialize(_arg1)
 	runtime.KeepAlive(value)
 
-	var _icon Iconner // out
+	var _icon *Icon // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Iconner)
-				return ok
-			})
-			rv, ok := casted.(Iconner)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-			}
-			_icon = rv
-		}
+		_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _icon
@@ -389,7 +376,7 @@ func IconHash(icon cgo.Handle) uint {
 //
 //    - icon: object implementing the #GIcon interface or NULL if error is set.
 //
-func NewIconForString(str string) (Iconner, error) {
+func NewIconForString(str string) (*Icon, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GIcon  // in
 	var _cerr *C.GError // in
@@ -400,26 +387,10 @@ func NewIconForString(str string) (Iconner, error) {
 	_cret = C.g_icon_new_for_string(_arg1, &_cerr)
 	runtime.KeepAlive(str)
 
-	var _icon Iconner // out
-	var _goerr error  // out
+	var _icon *Icon  // out
+	var _goerr error // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.Iconner is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Iconner)
-			return ok
-		})
-		rv, ok := casted.(Iconner)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Iconner")
-		}
-		_icon = rv
-	}
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

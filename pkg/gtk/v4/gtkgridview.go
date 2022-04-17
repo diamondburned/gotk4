@@ -282,7 +282,7 @@ func (self *GridView) MinColumns() uint {
 //
 //    - selectionModel (optional): model in use.
 //
-func (self *GridView) Model() SelectionModeller {
+func (self *GridView) Model() *SelectionModel {
 	var _arg0 *C.GtkGridView       // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -291,23 +291,10 @@ func (self *GridView) Model() SelectionModeller {
 	_cret = C.gtk_grid_view_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _selectionModel SelectionModeller // out
+	var _selectionModel *SelectionModel // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SelectionModeller)
-				return ok
-			})
-			rv, ok := casted.(SelectionModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.SelectionModeller")
-			}
-			_selectionModel = rv
-		}
+		_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _selectionModel

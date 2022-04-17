@@ -111,7 +111,7 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 //
 // The function returns the following values:
 //
-func (container *ContainerCellAccessible) Children() []CellAccessible {
+func (container *ContainerCellAccessible) Children() []*CellAccessible {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _cret *C.GList                      // in
 
@@ -120,13 +120,13 @@ func (container *ContainerCellAccessible) Children() []CellAccessible {
 	_cret = C.gtk_container_cell_accessible_get_children(_arg0)
 	runtime.KeepAlive(container)
 
-	var _list []CellAccessible // out
+	var _list []*CellAccessible // out
 
-	_list = make([]CellAccessible, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*CellAccessible, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkCellAccessible)(v)
-		var dst CellAccessible // out
-		dst = *wrapCellAccessible(externglib.Take(unsafe.Pointer(src)))
+		var dst *CellAccessible // out
+		dst = wrapCellAccessible(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

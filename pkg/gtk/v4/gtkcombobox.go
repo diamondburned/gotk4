@@ -692,7 +692,7 @@ func (comboBox *ComboBox) IDColumn() int {
 //
 //    - treeModel (optional): GtkTreeModel which was passed during construction.
 //
-func (comboBox *ComboBox) Model() TreeModeller {
+func (comboBox *ComboBox) Model() *TreeModel {
 	var _arg0 *C.GtkComboBox  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -701,23 +701,10 @@ func (comboBox *ComboBox) Model() TreeModeller {
 	_cret = C.gtk_combo_box_get_model(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _treeModel TreeModeller // out
+	var _treeModel *TreeModel // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_treeModel = rv
-		}
+		_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _treeModel

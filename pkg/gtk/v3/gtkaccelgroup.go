@@ -134,7 +134,7 @@ func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk
 //
 //    - sList: list of all accel groups which are attached to object.
 //
-func AccelGroupsFromObject(object *externglib.Object) []AccelGroup {
+func AccelGroupsFromObject(object *externglib.Object) []*AccelGroup {
 	var _arg1 *C.GObject // out
 	var _cret *C.GSList  // in
 
@@ -143,13 +143,13 @@ func AccelGroupsFromObject(object *externglib.Object) []AccelGroup {
 	_cret = C.gtk_accel_groups_from_object(_arg1)
 	runtime.KeepAlive(object)
 
-	var _sList []AccelGroup // out
+	var _sList []*AccelGroup // out
 
-	_sList = make([]AccelGroup, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	_sList = make([]*AccelGroup, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
 		src := (*C.GtkAccelGroup)(v)
-		var dst AccelGroup // out
-		dst = *wrapAccelGroup(externglib.Take(unsafe.Pointer(src)))
+		var dst *AccelGroup // out
+		dst = wrapAccelGroup(externglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 

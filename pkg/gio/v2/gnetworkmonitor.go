@@ -334,30 +334,14 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 //    - networkMonitor which will be a dummy object if no network monitor is
 //      available.
 //
-func NetworkMonitorGetDefault() NetworkMonitorrer {
+func NetworkMonitorGetDefault() *NetworkMonitor {
 	var _cret *C.GNetworkMonitor // in
 
 	_cret = C.g_network_monitor_get_default()
 
-	var _networkMonitor NetworkMonitorrer // out
+	var _networkMonitor *NetworkMonitor // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.NetworkMonitorrer is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(NetworkMonitorrer)
-			return ok
-		})
-		rv, ok := casted.(NetworkMonitorrer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.NetworkMonitorrer")
-		}
-		_networkMonitor = rv
-	}
+	_networkMonitor = wrapNetworkMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _networkMonitor
 }

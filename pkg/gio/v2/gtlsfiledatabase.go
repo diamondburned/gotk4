@@ -89,7 +89,7 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 //
 //    - tlsFileDatabase: new FileDatabase, or NULL on error.
 //
-func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
+func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GTlsDatabase // in
 	var _cerr *C.GError       // in
@@ -100,26 +100,10 @@ func NewTLSFileDatabase(anchors string) (TLSFileDatabaser, error) {
 	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
 	runtime.KeepAlive(anchors)
 
-	var _tlsFileDatabase TLSFileDatabaser // out
+	var _tlsFileDatabase *TLSFileDatabase // out
 	var _goerr error                      // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.TLSFileDatabaser is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSFileDatabaser)
-			return ok
-		})
-		rv, ok := casted.(TLSFileDatabaser)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSFileDatabaser")
-		}
-		_tlsFileDatabase = rv
-	}
+	_tlsFileDatabase = wrapTLSFileDatabase(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

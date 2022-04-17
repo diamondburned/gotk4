@@ -58,7 +58,7 @@ type AppChooserer interface {
 	externglib.Objector
 
 	// AppInfo returns the currently selected application.
-	AppInfo() gio.AppInfor
+	AppInfo() *gio.AppInfo
 	// ContentType returns the content type for which the GtkAppChooser shows
 	// applications.
 	ContentType() string
@@ -99,7 +99,7 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //    - appInfo (optional): GAppInfo for the currently selected application, or
 //      NULL if none is selected. Free with g_object_unref().
 //
-func (self *AppChooser) AppInfo() gio.AppInfor {
+func (self *AppChooser) AppInfo() *gio.AppInfo {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.GAppInfo      // in
 
@@ -108,22 +108,14 @@ func (self *AppChooser) AppInfo() gio.AppInfor {
 	_cret = C.gtk_app_chooser_get_app_info(_arg0)
 	runtime.KeepAlive(self)
 
-	var _appInfo gio.AppInfor // out
+	var _appInfo *gio.AppInfo // out
 
 	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(gio.AppInfor)
-				return ok
-			})
-			rv, ok := casted.(gio.AppInfor)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_appInfo = &gio.AppInfo{
+				Object: obj,
 			}
-			_appInfo = rv
 		}
 	}
 

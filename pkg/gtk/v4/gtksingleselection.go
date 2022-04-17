@@ -154,7 +154,7 @@ func (self *SingleSelection) CanUnselect() bool {
 //
 //    - listModel: model being wrapped.
 //
-func (self *SingleSelection) Model() gio.ListModeller {
+func (self *SingleSelection) Model() *gio.ListModel {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret *C.GListModel         // in
 
@@ -163,24 +163,13 @@ func (self *SingleSelection) Model() gio.ListModeller {
 	_cret = C.gtk_single_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
 
-	var _listModel gio.ListModeller // out
+	var _listModel *gio.ListModel // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.ListModeller is nil")
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
 		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gio.ListModeller)
-			return ok
-		})
-		rv, ok := casted.(gio.ListModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.ListModeller")
-		}
-		_listModel = rv
 	}
 
 	return _listModel

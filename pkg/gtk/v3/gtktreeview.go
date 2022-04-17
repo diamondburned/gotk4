@@ -2024,7 +2024,7 @@ func (treeView *TreeView) Column(n int) *TreeViewColumn {
 //
 //    - list of TreeViewColumn s.
 //
-func (treeView *TreeView) Columns() []TreeViewColumn {
+func (treeView *TreeView) Columns() []*TreeViewColumn {
 	var _arg0 *C.GtkTreeView // out
 	var _cret *C.GList       // in
 
@@ -2033,13 +2033,13 @@ func (treeView *TreeView) Columns() []TreeViewColumn {
 	_cret = C.gtk_tree_view_get_columns(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _list []TreeViewColumn // out
+	var _list []*TreeViewColumn // out
 
-	_list = make([]TreeViewColumn, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	_list = make([]*TreeViewColumn, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.GtkTreeViewColumn)(v)
-		var dst TreeViewColumn // out
-		dst = *wrapTreeViewColumn(externglib.Take(unsafe.Pointer(src)))
+		var dst *TreeViewColumn // out
+		dst = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -2451,7 +2451,7 @@ func (treeView *TreeView) LevelIndentation() int {
 //
 //    - treeModel (optional) or NULL if none is currently being used.
 //
-func (treeView *TreeView) Model() TreeModeller {
+func (treeView *TreeView) Model() *TreeModel {
 	var _arg0 *C.GtkTreeView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -2460,23 +2460,10 @@ func (treeView *TreeView) Model() TreeModeller {
 	_cret = C.gtk_tree_view_get_model(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _treeModel TreeModeller // out
+	var _treeModel *TreeModel // out
 
 	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(TreeModeller)
-				return ok
-			})
-			rv, ok := casted.(TreeModeller)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-			}
-			_treeModel = rv
-		}
+		_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _treeModel

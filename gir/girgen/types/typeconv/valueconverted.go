@@ -406,6 +406,23 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 		vType.Resolved.Ptr--
 	}
 
+	// Only use the PublicType (an interface) when the parameter is not a
+	// returning/output parameter.
+	//
+	// This change makes sense (even though it doesn't seem to with Go),
+	// because GLib interfaces don't actually describe what a class has to
+	// implement publicly; it only describes private methods that are made to
+	// explicitly implement an interface.
+	//
+	// The above design is different from Go, where interfaces describe what a
+	// class (struct) has to implement publicly, and so its polymorphism is far
+	// simpler: there is no need to worry about "virtual" methods, and all
+	// methods are the same (with the exception of exporting).
+	//
+	// Because we try to map GLib class methods to Go struct methods, we can't
+	// really expect GLib interfaces to translate the same, so we have to
+	// return the concrete type instead. The user can still get the underlying
+	// type by calling Cast(), but it won't be a simple Go assertion.
 	switch {
 	case !value.KeepType && resolved.IsAbstract() && !value.ParameterIsOutput():
 		vType.GoType = vType.Resolved.PublicType(vType.NeedsNamespace)

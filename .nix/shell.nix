@@ -20,11 +20,11 @@ in pkgs.mkShell {
 	# Runtime dependencies.
 	buildInputs = with pkgs; [
 		# Runtime dependencies.
-		gobjectIntrospection
-		glib
-		graphene
+		gobject-introspection
 		gdk-pixbuf
-		gnome3.gtk
+		graphene
+		glib
+		gtk3
 		gtk4
 		vulkan-headers
 	];

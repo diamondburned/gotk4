@@ -51,3 +51,37 @@ func TestOutputStream(t *testing.T) {
 
 	assertReader(t, &out, b)
 }
+
+const (
+	benchBytes = 512 << 10 // 512KB
+	sinkBytes  = 512
+)
+
+func sinker() func(io.Reader) {
+	sinkhole := make([]byte, sinkBytes)
+	return func(r io.Reader) { r.Read(sinkhole) }
+}
+
+func BenchmarkInputStream(b *testing.B) {
+	big := newJunk(benchBytes)
+	sink := sinker()
+	b.SetBytes(benchBytes)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		s := NewInputStream(bytes.NewReader(big))
+		r := Reader(context.Background(), s)
+		sink(r)
+	}
+}
+
+func BenchmarkReader(b *testing.B) {
+	big := newJunk(benchBytes)
+	sink := sinker()
+	b.SetBytes(benchBytes)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		sink(bytes.NewReader(big))
+	}
+}

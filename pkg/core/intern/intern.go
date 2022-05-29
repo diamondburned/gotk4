@@ -7,7 +7,14 @@ package intern
 import "C"
 
 import (
+	"bytes"
+	"fmt"
+	"log"
+	"os"
 	"runtime"
+	"runtime/debug"
+	"runtime/pprof"
+	"strings"
 	"sync"
 	"unsafe"
 
@@ -31,10 +38,45 @@ func (b *Box) Object() unsafe.Pointer { return b.obj }
 var never bool
 var sink interface{}
 
+var (
+	traceObjectFile *os.File
+	objectProfile   *pprof.Profile
+)
+
+func init() {
+	debugFlags := strings.Split(os.Getenv("GOTK4_DEBUG"), ",")
+
+	for _, flag := range debugFlags {
+		switch flag {
+		case "trace-objects":
+			f, err := os.CreateTemp(os.TempDir(), fmt.Sprintf("gotk4-%d-*", os.Getpid()))
+			if err != nil {
+				log.Panicln("cannot create temp traceObjects file:", err)
+			}
+			traceObjectFile = f
+
+		case "profile-objects":
+			objectProfile = pprof.NewProfile("gotk4-object-box")
+
+		default:
+			log.Panicf("unknown GOTK4_DEBUG flag %q", flag)
+		}
+	}
+}
+
 // newBox creates a zero-value instance of Box.
 func newBox(obj unsafe.Pointer) *Box {
 	box := &Box{obj: obj}
-	profileRecordObject(box.obj, 3)
+
+	if objectProfile != nil {
+		objectProfile.Add(box.obj, 3)
+	}
+
+	if traceObjectFile != nil {
+		var buf bytes.Buffer
+		fmt.Fprintf(&buf, "%p: %s\n", obj, debug.Stack())
+		traceObjectFile.Write(buf.Bytes())
+	}
 
 	// Force box on the heap. Objects on the stack can move, but not objects on
 	// the heap. At least not for now; the assume-no-moving-gc import will
@@ -171,7 +213,9 @@ func finalizeBox(box *Box) {
 			(*[0]byte)(C.goToggleNotify), nil,
 		)
 
-		profileRemoveObject(box.obj)
+		if objectProfile != nil {
+			objectProfile.Remove(box.obj)
+		}
 	}
 }
 

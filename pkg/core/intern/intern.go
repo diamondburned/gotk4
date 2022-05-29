@@ -44,9 +44,12 @@ var (
 )
 
 func init() {
-	debugFlags := strings.Split(os.Getenv("GOTK4_DEBUG"), ",")
+	debug := os.Getenv("GOTK4_DEBUG")
+	if debug == "" {
+		return
+	}
 
-	for _, flag := range debugFlags {
+	for _, flag := range strings.Split(debug, ",") {
 		switch flag {
 		case "trace-objects":
 			f, err := os.CreateTemp(os.TempDir(), fmt.Sprintf("gotk4-%d-*", os.Getpid()))
@@ -54,10 +57,8 @@ func init() {
 				log.Panicln("cannot create temp traceObjects file:", err)
 			}
 			traceObjectFile = f
-
 		case "profile-objects":
 			objectProfile = pprof.NewProfile("gotk4-object-box")
-
 		default:
 			log.Panicf("unknown GOTK4_DEBUG flag %q", flag)
 		}

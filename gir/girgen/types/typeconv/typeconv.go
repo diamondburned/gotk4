@@ -338,6 +338,10 @@ func (conv *Converter) convertTypeExisting(
 	return &result
 }
 
+func (conv *Converter) isRuntimeLinking() bool {
+	return conv.fgen.LinkMode() == types.RuntimeLinkMode
+}
+
 // param returns the unconverted value.
 func (conv *Converter) param(at int) *ValueConverted {
 	for i := range conv.Results {

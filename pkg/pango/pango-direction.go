@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -15,10 +15,10 @@ import (
 import "C"
 
 // glib.Type values for pango-direction.go.
-var GTypeDirection = externglib.Type(C.pango_direction_get_type())
+var GTypeDirection = coreglib.Type(C.pango_direction_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDirection, F: marshalDirection},
 	})
 }
@@ -63,7 +63,7 @@ const (
 )
 
 func marshalDirection(p uintptr) (interface{}, error) {
-	return Direction(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Direction(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Direction.

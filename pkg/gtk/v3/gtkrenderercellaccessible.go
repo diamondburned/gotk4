@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkrenderercellaccessible.go.
-var GTypeRendererCellAccessible = externglib.Type(C.gtk_renderer_cell_accessible_get_type())
+var GTypeRendererCellAccessible = coreglib.Type(C.gtk_renderer_cell_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRendererCellAccessible, F: marshalRendererCellAccessible},
 	})
 }
@@ -36,7 +35,7 @@ type RendererCellAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*RendererCellAccessible)(nil)
+	_ coreglib.Objector = (*RendererCellAccessible)(nil)
 )
 
 func classInitRendererCellAccessibler(gclassPtr, data C.gpointer) {
@@ -47,7 +46,7 @@ func classInitRendererCellAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible {
+func wrapRendererCellAccessible(obj *coreglib.Object) *RendererCellAccessible {
 	return &RendererCellAccessible{
 		CellAccessible: CellAccessible{
 			Accessible: Accessible{
@@ -75,7 +74,7 @@ func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible 
 }
 
 func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
-	return wrapRendererCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRendererCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // The function takes the following parameters:
@@ -83,17 +82,21 @@ func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible {
-	var _arg1 *C.GtkCellRenderer // out
-	var _cret *C.AtkObject       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	*(*CellRendererer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_renderer_cell_accessible_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "RendererCellAccessible").InvokeMethod("new_RendererCellAccessible", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(renderer)
 
 	var _rendererCellAccessible *RendererCellAccessible // out
 
-	_rendererCellAccessible = wrapRendererCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_rendererCellAccessible = wrapRendererCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rendererCellAccessible
 }

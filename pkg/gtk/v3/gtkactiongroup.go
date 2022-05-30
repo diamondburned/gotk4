@@ -8,28 +8,25 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern GtkAction* _gotk4_gtk3_ActionGroupClass_get_action(GtkActionGroup*, gchar*);
-// extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 // extern void _gotk4_gtk3_ActionGroup_ConnectConnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectPostActivate(gpointer, GtkAction*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectPreActivate(gpointer, GtkAction*, guintptr);
-// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtkactiongroup.go.
-var GTypeActionGroup = externglib.Type(C.gtk_action_group_get_type())
+var GTypeActionGroup = coreglib.Type(C.gtk_action_group_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeActionGroup, F: marshalActionGroup},
 	})
 }
@@ -102,13 +99,13 @@ type ActionGroupOverrider interface {
 //    </object>.
 type ActionGroup struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*ActionGroup)(nil)
+	_ coreglib.Objector = (*ActionGroup)(nil)
 )
 
 func classInitActionGrouper(gclassPtr, data C.gpointer) {
@@ -131,7 +128,7 @@ func classInitActionGrouper(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ActionGroupClass_get_action
 func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.GtkActionGroup, arg1 *C.gchar) (cret *C.GtkAction) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Action(actionName string) *Action
 	})
@@ -142,12 +139,12 @@ func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.GtkActionGroup, arg1 *C.gch
 
 	action := iface.Action(_actionName)
 
-	cret = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	return cret
 }
 
-func wrapActionGroup(obj *externglib.Object) *ActionGroup {
+func wrapActionGroup(obj *coreglib.Object) *ActionGroup {
 	return &ActionGroup{
 		Object: obj,
 		Buildable: Buildable{
@@ -157,14 +154,14 @@ func wrapActionGroup(obj *externglib.Object) *ActionGroup {
 }
 
 func marshalActionGroup(p uintptr) (interface{}, error) {
-	return wrapActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapActionGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ActionGroup_ConnectConnectProxy
 func _gotk4_gtk3_ActionGroup_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
 	var f func(action *Action, proxy Widgetter)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -176,15 +173,15 @@ func _gotk4_gtk3_ActionGroup_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.GtkAct
 	var _action *Action  // out
 	var _proxy Widgetter // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
 	{
 		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -207,15 +204,15 @@ func _gotk4_gtk3_ActionGroup_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.GtkAct
 //
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
-func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action *Action, proxy Widgetter)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(actionGroup, "connect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectConnectProxy), f)
+func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action *Action, proxy Widgetter)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(actionGroup, "connect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectConnectProxy), f)
 }
 
 //export _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy
 func _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
 	var f func(action *Action, proxy Widgetter)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -227,15 +224,15 @@ func _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.Gtk
 	var _action *Action  // out
 	var _proxy Widgetter // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
 	{
 		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -254,15 +251,15 @@ func _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.Gtk
 //
 // UIManager proxies the signal and provides global notification just before any
 // action is connected to a proxy, which is probably more convenient to use.
-func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action *Action, proxy Widgetter)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(actionGroup, "disconnect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectDisconnectProxy), f)
+func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action *Action, proxy Widgetter)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(actionGroup, "disconnect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectDisconnectProxy), f)
 }
 
 //export _gotk4_gtk3_ActionGroup_ConnectPostActivate
 func _gotk4_gtk3_ActionGroup_ConnectPostActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
 	var f func(action *Action)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -273,7 +270,7 @@ func _gotk4_gtk3_ActionGroup_ConnectPostActivate(arg0 C.gpointer, arg1 *C.GtkAct
 
 	var _action *Action // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
 
 	f(_action)
 }
@@ -283,15 +280,15 @@ func _gotk4_gtk3_ActionGroup_ConnectPostActivate(arg0 C.gpointer, arg1 *C.GtkAct
 //
 // This is intended for UIManager to proxy the signal and provide global
 // notification just after any action is activated.
-func (actionGroup *ActionGroup) ConnectPostActivate(f func(action *Action)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(actionGroup, "post-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPostActivate), f)
+func (actionGroup *ActionGroup) ConnectPostActivate(f func(action *Action)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(actionGroup, "post-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPostActivate), f)
 }
 
 //export _gotk4_gtk3_ActionGroup_ConnectPreActivate
 func _gotk4_gtk3_ActionGroup_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
 	var f func(action *Action)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -302,7 +299,7 @@ func _gotk4_gtk3_ActionGroup_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkActi
 
 	var _action *Action // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
 
 	f(_action)
 }
@@ -312,8 +309,8 @@ func _gotk4_gtk3_ActionGroup_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkActi
 //
 // This is intended for UIManager to proxy the signal and provide global
 // notification just before any action is activated.
-func (actionGroup *ActionGroup) ConnectPreActivate(f func(action *Action)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(actionGroup, "pre-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPreActivate), f)
+func (actionGroup *ActionGroup) ConnectPreActivate(f func(action *Action)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(actionGroup, "pre-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPreActivate), f)
 }
 
 // NewActionGroup creates a new ActionGroup object. The name of the action group
@@ -330,18 +327,22 @@ func (actionGroup *ActionGroup) ConnectPreActivate(f func(action *Action)) exter
 //    - actionGroup: new ActionGroup.
 //
 func NewActionGroup(name string) *ActionGroup {
-	var _arg1 *C.gchar          // out
-	var _cret *C.GtkActionGroup // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_group_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("new_ActionGroup", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(name)
 
 	var _actionGroup *ActionGroup // out
 
-	_actionGroup = wrapActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_actionGroup = wrapActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _actionGroup
 }
@@ -360,13 +361,16 @@ func NewActionGroup(name string) *ActionGroup {
 //    - action: action.
 //
 func (actionGroup *ActionGroup) AddAction(action *Action) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAction      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_group_add_action(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("add_action", args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(action)
 }
@@ -389,18 +393,22 @@ func (actionGroup *ActionGroup) AddAction(action *Action) {
 //      stock accelerator.
 //
 func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator string) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAction      // out
-	var _arg2 *C.gchar          // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if accelerator != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
+		_arg2 = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+	*(**Action)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("add_action_with_accel", args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(accelerator)
@@ -416,17 +424,21 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator s
 //      if there is none.
 //
 func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret *C.GtkAccelGroup  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**ActionGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_group_get_accel_group(_arg0)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("get_accel_group", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionGroup)
 
 	var _accelGroup *AccelGroup // out
 
-	_accelGroup = wrapAccelGroup(externglib.Take(unsafe.Pointer(_cret)))
+	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelGroup
 }
@@ -444,21 +456,25 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 //    - action: action, or NULL if no action by that name exists.
 //
 func (actionGroup *ActionGroup) Action(actionName string) *Action {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.gchar          // out
-	var _cret *C.GtkAction      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("get_action", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
 	var _action *Action // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _action
 }
@@ -472,12 +488,16 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 //    - utf8: name of the action group.
 //
 func (actionGroup *ActionGroup) Name() string {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret *C.gchar          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**ActionGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_group_get_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("get_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionGroup)
 
 	var _utf8 string // out
@@ -498,12 +518,16 @@ func (actionGroup *ActionGroup) Name() string {
 //    - ok: TRUE if the group is sensitive.
 //
 func (actionGroup *ActionGroup) Sensitive() bool {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**ActionGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_group_get_sensitive(_arg0)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("get_sensitive", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionGroup)
 
 	var _ok bool // out
@@ -526,12 +550,16 @@ func (actionGroup *ActionGroup) Sensitive() bool {
 //    - ok: TRUE if the group is visible.
 //
 func (actionGroup *ActionGroup) Visible() bool {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**ActionGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_group_get_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("get_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionGroup)
 
 	var _ok bool // out
@@ -552,21 +580,25 @@ func (actionGroup *ActionGroup) Visible() bool {
 //    - list: allocated list of the action objects in the action group.
 //
 func (actionGroup *ActionGroup) ListActions() []*Action {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret *C.GList          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**ActionGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_group_list_actions(_arg0)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("list_actions", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionGroup)
 
 	var _list []*Action // out
 
 	_list = make([]*Action, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkAction)(v)
+		src := (*C.void)(v)
 		var dst *Action // out
-		dst = wrapAction(externglib.Take(unsafe.Pointer(src)))
+		dst = wrapAction(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -582,13 +614,16 @@ func (actionGroup *ActionGroup) ListActions() []*Action {
 //    - action: action.
 //
 func (actionGroup *ActionGroup) RemoveAction(action *Action) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAction      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_group_remove_action(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("remove_action", args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(action)
 }
@@ -603,15 +638,18 @@ func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 //    - accelGroup (optional) to set or NULL.
 //
 func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAccelGroup  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	if accelGroup != nil {
-		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	}
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_group_set_accel_group(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("set_accel_group", args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(accelGroup)
 }
@@ -625,45 +663,20 @@ func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 //    - sensitive: new sensitivity.
 //
 func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	if sensitive {
 		_arg1 = C.TRUE
 	}
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_group_set_sensitive(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("set_sensitive", args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(sensitive)
-}
-
-// SetTranslateFunc sets a function to be used for translating the label and
-// tooltip of ActionEntrys added by gtk_action_group_add_actions().
-//
-// If you’re using gettext(), it is enough to set the translation domain with
-// gtk_action_group_set_translation_domain().
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - fn: TranslateFunc.
-//
-func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
-	var _arg0 *C.GtkActionGroup  // out
-	var _arg1 C.GtkTranslateFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.gtk_action_group_set_translate_func(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(fn)
 }
 
 // SetTranslationDomain sets the translation domain and uses g_dgettext() for
@@ -681,16 +694,19 @@ func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 //      NULL to use the domain set with textdomain().
 //
 func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.gchar          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	if domain != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(domain)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("set_translation_domain", args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(domain)
 }
@@ -704,15 +720,18 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 //    - visible: new visiblity.
 //
 func (actionGroup *ActionGroup) SetVisible(visible bool) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_group_set_visible(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("set_visible", args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(visible)
 }
@@ -732,15 +751,19 @@ func (actionGroup *ActionGroup) SetVisible(visible bool) {
 //    - utf8: translation of string.
 //
 func (actionGroup *ActionGroup) TranslateString(str string) string {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.gchar          // out
-	var _cret *C.gchar          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ActionGroup").InvokeMethod("translate_string", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(str)
 

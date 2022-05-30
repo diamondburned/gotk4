@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtksearchbar.go.
-var GTypeSearchBar = externglib.Type(C.gtk_search_bar_get_type())
+var GTypeSearchBar = coreglib.Type(C.gtk_search_bar_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSearchBar, F: marshalSearchBar},
 	})
 }
@@ -76,10 +77,10 @@ var (
 	_ Widgetter = (*SearchBar)(nil)
 )
 
-func wrapSearchBar(obj *externglib.Object) *SearchBar {
+func wrapSearchBar(obj *coreglib.Object) *SearchBar {
 	return &SearchBar{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -97,7 +98,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 }
 
 func marshalSearchBar(p uintptr) (interface{}, error) {
-	return wrapSearchBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSearchBar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSearchBar creates a GtkSearchBar.
@@ -110,13 +111,14 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 //    - searchBar: new GtkSearchBar.
 //
 func NewSearchBar() *SearchBar {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_search_bar_new()
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("new_SearchBar", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _searchBar *SearchBar // out
 
-	_searchBar = wrapSearchBar(externglib.Take(unsafe.Pointer(_cret)))
+	_searchBar = wrapSearchBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchBar
 }
@@ -133,13 +135,16 @@ func NewSearchBar() *SearchBar {
 //    - entry: GtkEditable.
 //
 func (bar *SearchBar) ConnectEntry(entry Editabler) {
-	var _arg0 *C.GtkSearchBar // out
-	var _arg1 *C.GtkEditable  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
-	_arg1 = (*C.GtkEditable)(unsafe.Pointer(externglib.InternObject(entry).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_search_bar_connect_entry(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("connect_entry", args[:], nil)
+
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(entry)
 }
@@ -151,12 +156,16 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 //    - widget (optional): child widget of bar.
 //
 func (bar *SearchBar) Child() Widgetter {
-	var _arg0 *C.GtkSearchBar // out
-	var _cret *C.GtkWidget    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**SearchBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_search_bar_get_child(_arg0)
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_child", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(bar)
 
 	var _widget Widgetter // out
@@ -165,8 +174,8 @@ func (bar *SearchBar) Child() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -188,12 +197,16 @@ func (bar *SearchBar) Child() Widgetter {
 //    - widget: key capture widget.
 //
 func (bar *SearchBar) KeyCaptureWidget() Widgetter {
-	var _arg0 *C.GtkSearchBar // out
-	var _cret *C.GtkWidget    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**SearchBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_key_capture_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(bar)
 
 	var _widget Widgetter // out
@@ -204,8 +217,8 @@ func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -226,12 +239,16 @@ func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 //    - ok: whether search mode is toggled on.
 //
 func (bar *SearchBar) SearchMode() bool {
-	var _arg0 *C.GtkSearchBar // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**SearchBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_search_bar_get_search_mode(_arg0)
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_search_mode", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(bar)
 
 	var _ok bool // out
@@ -250,12 +267,16 @@ func (bar *SearchBar) SearchMode() bool {
 //    - ok: whether the close button is shown.
 //
 func (bar *SearchBar) ShowCloseButton() bool {
-	var _arg0 *C.GtkSearchBar // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**SearchBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_show_close_button", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(bar)
 
 	var _ok bool // out
@@ -274,15 +295,18 @@ func (bar *SearchBar) ShowCloseButton() bool {
 //    - child (optional) widget.
 //
 func (bar *SearchBar) SetChild(child Widgetter) {
-	var _arg0 *C.GtkSearchBar // out
-	var _arg1 *C.GtkWidget    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
+	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_search_bar_set_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_child", args[:], nil)
+
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
 }
@@ -304,15 +328,18 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 //    - widget (optional): GtkWidget.
 //
 func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
-	var _arg0 *C.GtkSearchBar // out
-	var _arg1 *C.GtkWidget    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_search_bar_set_key_capture_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_key_capture_widget", args[:], nil)
+
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(widget)
 }
@@ -324,15 +351,18 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 //    - searchMode: new state of the search mode.
 //
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
-	var _arg0 *C.GtkSearchBar // out
-	var _arg1 C.gboolean      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if searchMode {
 		_arg1 = C.TRUE
 	}
+	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_search_mode", args[:], nil)
+
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(searchMode)
 }
@@ -348,15 +378,18 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 //    - visible: whether the close button will be shown or not.
 //
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
-	var _arg0 *C.GtkSearchBar // out
-	var _arg1 C.gboolean      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(externglib.InternObject(bar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
+	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_show_close_button", args[:], nil)
+
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(visible)
 }

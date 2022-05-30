@@ -8,15 +8,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk3_ToolItemClass_create_menu_proxy(GtkToolItem*);
 // extern gboolean _gotk4_gtk3_ToolItem_ConnectCreateMenuProxy(gpointer, guintptr);
 // extern void _gotk4_gtk3_ToolItemClass_toolbar_reconfigured(GtkToolItem*);
@@ -24,10 +22,10 @@ import (
 import "C"
 
 // glib.Type values for gtktoolitem.go.
-var GTypeToolItem = externglib.Type(C.gtk_tool_item_get_type())
+var GTypeToolItem = coreglib.Type(C.gtk_tool_item_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeToolItem, F: marshalToolItem},
 	})
 }
@@ -56,13 +54,13 @@ type ToolItem struct {
 	_ [0]func() // equal guard
 	Bin
 
-	*externglib.Object
+	*coreglib.Object
 	Activatable
 }
 
 var (
-	_ Binner              = (*ToolItem)(nil)
-	_ externglib.Objector = (*ToolItem)(nil)
+	_ Binner            = (*ToolItem)(nil)
+	_ coreglib.Objector = (*ToolItem)(nil)
 )
 
 func classInitToolItemmer(gclassPtr, data C.gpointer) {
@@ -87,7 +85,7 @@ func classInitToolItemmer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToolItemClass_create_menu_proxy
 func _gotk4_gtk3_ToolItemClass_create_menu_proxy(arg0 *C.GtkToolItem) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateMenuProxy() bool })
 
 	ok := iface.CreateMenuProxy()
@@ -101,18 +99,18 @@ func _gotk4_gtk3_ToolItemClass_create_menu_proxy(arg0 *C.GtkToolItem) (cret C.gb
 
 //export _gotk4_gtk3_ToolItemClass_toolbar_reconfigured
 func _gotk4_gtk3_ToolItemClass_toolbar_reconfigured(arg0 *C.GtkToolItem) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToolbarReconfigured() })
 
 	iface.ToolbarReconfigured()
 }
 
-func wrapToolItem(obj *externglib.Object) *ToolItem {
+func wrapToolItem(obj *coreglib.Object) *ToolItem {
 	return &ToolItem{
 		Bin: Bin{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -133,14 +131,14 @@ func wrapToolItem(obj *externglib.Object) *ToolItem {
 }
 
 func marshalToolItem(p uintptr) (interface{}, error) {
-	return wrapToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapToolItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ToolItem_ConnectCreateMenuProxy
 func _gotk4_gtk3_ToolItem_ConnectCreateMenuProxy(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
 	var f func() (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -176,15 +174,15 @@ func _gotk4_gtk3_ToolItem_ConnectCreateMenuProxy(arg0 C.gpointer, arg1 C.guintpt
 // how it will respond to this signal it must call gtk_tool_item_rebuild_menu()
 // to invalidate the cache and ensure that the toolbar rebuilds its overflow
 // menu.
-func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(toolItem, "create-menu-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ToolItem_ConnectCreateMenuProxy), f)
+func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(toolItem, "create-menu-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ToolItem_ConnectCreateMenuProxy), f)
 }
 
 //export _gotk4_gtk3_ToolItem_ConnectToolbarReconfigured
 func _gotk4_gtk3_ToolItem_ConnectToolbarReconfigured(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -208,8 +206,8 @@ func _gotk4_gtk3_ToolItem_ConnectToolbarReconfigured(arg0 C.gpointer, arg1 C.gui
 //
 // - gtk_tool_shell_get_relief_style() to find out what the toolbar should look
 // like and change themselves accordingly.
-func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(toolItem, "toolbar-reconfigured", false, unsafe.Pointer(C._gotk4_gtk3_ToolItem_ConnectToolbarReconfigured), f)
+func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(toolItem, "toolbar-reconfigured", false, unsafe.Pointer(C._gotk4_gtk3_ToolItem_ConnectToolbarReconfigured), f)
 }
 
 // NewToolItem creates a new ToolItem.
@@ -219,39 +217,16 @@ func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) externglib.Signal
 //    - toolItem: new ToolItem.
 //
 func NewToolItem() *ToolItem {
-	var _cret *C.GtkToolItem // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_tool_item_new()
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("new_ToolItem", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
-}
-
-// EllipsizeMode returns the ellipsize mode used for tool_item. Custom
-// subclasses of ToolItem should call this function to find out how text should
-// be ellipsized.
-//
-// The function returns the following values:
-//
-//    - ellipsizeMode indicating how text in tool_item should be ellipsized.
-//
-func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
-	var _arg0 *C.GtkToolItem       // out
-	var _cret C.PangoEllipsizeMode // in
-
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-
-	_cret = C.gtk_tool_item_get_ellipsize_mode(_arg0)
-	runtime.KeepAlive(toolItem)
-
-	var _ellipsizeMode pango.EllipsizeMode // out
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
 }
 
 // Expand returns whether tool_item is allocated extra space. See
@@ -262,12 +237,16 @@ func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 //    - ok: TRUE if tool_item is allocated extra space.
 //
 func (toolItem *ToolItem) Expand() bool {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_expand(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_expand", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
@@ -287,12 +266,16 @@ func (toolItem *ToolItem) Expand() bool {
 //    - ok: TRUE if the item is the same size as other homogeneous items.
 //
 func (toolItem *ToolItem) Homogeneous() bool {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_homogeneous(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_homogeneous", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
@@ -302,30 +285,6 @@ func (toolItem *ToolItem) Homogeneous() bool {
 	}
 
 	return _ok
-}
-
-// IconSize returns the icon size used for tool_item. Custom subclasses of
-// ToolItem should call this function to find out what size icons they should
-// use.
-//
-// The function returns the following values:
-//
-//    - gint indicating the icon size used for tool_item.
-//
-func (toolItem *ToolItem) IconSize() int {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.GtkIconSize  // in
-
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-
-	_cret = C.gtk_tool_item_get_icon_size(_arg0)
-	runtime.KeepAlive(toolItem)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // IsImportant returns whether tool_item is considered important. See
@@ -336,12 +295,16 @@ func (toolItem *ToolItem) IconSize() int {
 //    - ok: TRUE if tool_item is considered important.
 //
 func (toolItem *ToolItem) IsImportant() bool {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_is_important(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_is_important", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
@@ -351,30 +314,6 @@ func (toolItem *ToolItem) IsImportant() bool {
 	}
 
 	return _ok
-}
-
-// Orientation returns the orientation used for tool_item. Custom subclasses of
-// ToolItem should call this function to find out what size icons they should
-// use.
-//
-// The function returns the following values:
-//
-//    - orientation indicating the orientation used for tool_item.
-//
-func (toolItem *ToolItem) Orientation() Orientation {
-	var _arg0 *C.GtkToolItem   // out
-	var _cret C.GtkOrientation // in
-
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-
-	_cret = C.gtk_tool_item_get_orientation(_arg0)
-	runtime.KeepAlive(toolItem)
-
-	var _orientation Orientation // out
-
-	_orientation = Orientation(_cret)
-
-	return _orientation
 }
 
 // ProxyMenuItem: if menu_item_id matches the string passed to
@@ -395,15 +334,19 @@ func (toolItem *ToolItem) Orientation() Orientation {
 //      menu_item_ids match.
 //
 func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 *C.gchar       // out
-	var _cret *C.GtkWidget   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_tool_item_get_proxy_menu_item(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_proxy_menu_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(menuItemId)
 
@@ -413,8 +356,8 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -429,31 +372,6 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 	return _widget
 }
 
-// ReliefStyle returns the relief style of tool_item. See
-// gtk_button_set_relief(). Custom subclasses of ToolItem should call this
-// function in the handler of the ToolItem::toolbar_reconfigured signal to find
-// out the relief style of buttons.
-//
-// The function returns the following values:
-//
-//    - reliefStyle indicating the relief style used for tool_item.
-//
-func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
-	var _arg0 *C.GtkToolItem   // out
-	var _cret C.GtkReliefStyle // in
-
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-
-	_cret = C.gtk_tool_item_get_relief_style(_arg0)
-	runtime.KeepAlive(toolItem)
-
-	var _reliefStyle ReliefStyle // out
-
-	_reliefStyle = ReliefStyle(_cret)
-
-	return _reliefStyle
-}
-
 // TextAlignment returns the text alignment used for tool_item. Custom
 // subclasses of ToolItem should call this function to find out how text should
 // be aligned.
@@ -463,12 +381,16 @@ func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 //    - gfloat indicating the horizontal text alignment used for tool_item.
 //
 func (toolItem *ToolItem) TextAlignment() float32 {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.gfloat       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.gfloat // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_text_alignment(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_text_alignment", args[:], nil)
+	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _gfloat float32 // out
@@ -476,30 +398,6 @@ func (toolItem *ToolItem) TextAlignment() float32 {
 	_gfloat = float32(_cret)
 
 	return _gfloat
-}
-
-// TextOrientation returns the text orientation used for tool_item. Custom
-// subclasses of ToolItem should call this function to find out how text should
-// be orientated.
-//
-// The function returns the following values:
-//
-//    - orientation indicating the text orientation used for tool_item.
-//
-func (toolItem *ToolItem) TextOrientation() Orientation {
-	var _arg0 *C.GtkToolItem   // out
-	var _cret C.GtkOrientation // in
-
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-
-	_cret = C.gtk_tool_item_get_text_orientation(_arg0)
-	runtime.KeepAlive(toolItem)
-
-	var _orientation Orientation // out
-
-	_orientation = Orientation(_cret)
-
-	return _orientation
 }
 
 // TextSizeGroup returns the size group used for labels in tool_item. Custom
@@ -511,56 +409,23 @@ func (toolItem *ToolItem) TextOrientation() Orientation {
 //    - sizeGroup: SizeGroup.
 //
 func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
-	var _arg0 *C.GtkToolItem  // out
-	var _cret *C.GtkSizeGroup // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_text_size_group(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_text_size_group", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _sizeGroup *SizeGroup // out
 
-	_sizeGroup = wrapSizeGroup(externglib.Take(unsafe.Pointer(_cret)))
+	_sizeGroup = wrapSizeGroup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _sizeGroup
-}
-
-// ToolbarStyle returns the toolbar style used for tool_item. Custom subclasses
-// of ToolItem should call this function in the handler of the
-// GtkToolItem::toolbar_reconfigured signal to find out in what style the
-// toolbar is displayed and change themselves accordingly
-//
-// Possibilities are:
-//
-// - GTK_TOOLBAR_BOTH, meaning the tool item should show both an icon and a
-// label, stacked vertically
-//
-// - GTK_TOOLBAR_ICONS, meaning the toolbar shows only icons
-//
-// - GTK_TOOLBAR_TEXT, meaning the tool item should only show text
-//
-// - GTK_TOOLBAR_BOTH_HORIZ, meaning the tool item should show both an icon and
-// a label, arranged horizontally.
-//
-// The function returns the following values:
-//
-//    - toolbarStyle indicating the toolbar style used for tool_item.
-//
-func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
-	var _arg0 *C.GtkToolItem    // out
-	var _cret C.GtkToolbarStyle // in
-
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-
-	_cret = C.gtk_tool_item_get_toolbar_style(_arg0)
-	runtime.KeepAlive(toolItem)
-
-	var _toolbarStyle ToolbarStyle // out
-
-	_toolbarStyle = ToolbarStyle(_cret)
-
-	return _toolbarStyle
 }
 
 // UseDragWindow returns whether tool_item has a drag window. See
@@ -571,12 +436,16 @@ func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 //    - ok: TRUE if tool_item uses a drag window.
 //
 func (toolItem *ToolItem) UseDragWindow() bool {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_use_drag_window(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_use_drag_window", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
@@ -597,12 +466,16 @@ func (toolItem *ToolItem) UseDragWindow() bool {
 //      horizontally.
 //
 func (toolItem *ToolItem) VisibleHorizontal() bool {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_visible_horizontal(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_visible_horizontal", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
@@ -622,12 +495,16 @@ func (toolItem *ToolItem) VisibleHorizontal() bool {
 //    - ok: whether tool_item is visible when the toolbar is docked vertically.
 //
 func (toolItem *ToolItem) VisibleVertical() bool {
-	var _arg0 *C.GtkToolItem // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_get_visible_vertical(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("get_visible_vertical", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _ok bool // out
@@ -646,11 +523,14 @@ func (toolItem *ToolItem) VisibleVertical() bool {
 // The function must be called when the tool item changes what it will do in
 // response to the ToolItem::create-menu-proxy signal.
 func (toolItem *ToolItem) RebuildMenu() {
-	var _arg0 *C.GtkToolItem // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_tool_item_rebuild_menu(_arg0)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("rebuild_menu", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 }
 
@@ -663,12 +543,16 @@ func (toolItem *ToolItem) RebuildMenu() {
 //    - widget that is going to appear in the overflow menu for tool_item.
 //
 func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
-	var _arg0 *C.GtkToolItem // out
-	var _cret *C.GtkWidget   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_retrieve_proxy_menu_item(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItem").InvokeMethod("retrieve_proxy_menu_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toolItem)
 
 	var _widget Widgetter // out
@@ -679,8 +563,8 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -704,15 +588,18 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 //    - expand: whether tool_item is allocated extra space.
 //
 func (toolItem *ToolItem) SetExpand(expand bool) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	if expand {
 		_arg1 = C.TRUE
 	}
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_expand(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_expand", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(expand)
 }
@@ -727,15 +614,18 @@ func (toolItem *ToolItem) SetExpand(expand bool) {
 //      items.
 //
 func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_homogeneous(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_homogeneous", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(homogeneous)
 }
@@ -751,15 +641,18 @@ func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 //    - isImportant: whether the tool item should be considered important.
 //
 func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	if isImportant {
 		_arg1 = C.TRUE
 	}
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_is_important(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_is_important", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(isImportant)
 }
@@ -776,18 +669,22 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 //    - menuItem (optional) to use in the overflow menu, or NULL.
 //
 func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 *C.gchar       // out
-	var _arg2 *C.GtkWidget   // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(menuItemId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if menuItem != nil {
-		_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(menuItem).Native()))
+		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	}
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_proxy_menu_item", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(menuItemId)
 	runtime.KeepAlive(menuItem)
@@ -801,14 +698,17 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 //    - markup text to be used as tooltip for tool_item.
 //
 func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 *C.gchar       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_tooltip_markup(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_tooltip_markup", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(markup)
 }
@@ -821,14 +721,17 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 //    - text to be used as tooltip for tool_item.
 //
 func (toolItem *ToolItem) SetTooltipText(text string) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 *C.gchar       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_tooltip_text(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_tooltip_text", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(text)
 }
@@ -843,15 +746,18 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 //    - useDragWindow: whether tool_item has a drag window.
 //
 func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	if useDragWindow {
 		_arg1 = C.TRUE
 	}
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_use_drag_window(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_use_drag_window", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(useDragWindow)
 }
@@ -864,15 +770,18 @@ func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 //    - visibleHorizontal: whether tool_item is visible when in horizontal mode.
 //
 func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	if visibleHorizontal {
 		_arg1 = C.TRUE
 	}
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_visible_horizontal(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_visible_horizontal", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(visibleHorizontal)
 }
@@ -888,15 +797,18 @@ func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 //      vertical mode.
 //
 func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
-	var _arg0 *C.GtkToolItem // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	if visibleVertical {
 		_arg1 = C.TRUE
 	}
+	*(**ToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_set_visible_vertical(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("set_visible_vertical", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(visibleVertical)
 }
@@ -905,10 +817,13 @@ func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
 // tool_item. Toolbar and other ToolShell implementations use this function to
 // notify children, when some aspect of their configuration changes.
 func (toolItem *ToolItem) ToolbarReconfigured() {
-	var _arg0 *C.GtkToolItem // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(toolItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+	*(**ToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_tool_item_toolbar_reconfigured(_arg0)
+	girepository.MustFind("Gtk", "ToolItem").InvokeMethod("toolbar_reconfigured", args[:], nil)
+
 	runtime.KeepAlive(toolItem)
 }

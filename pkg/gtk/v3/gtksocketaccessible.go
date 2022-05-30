@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtksocketaccessible.go.
-var GTypeSocketAccessible = externglib.Type(C.gtk_socket_accessible_get_type())
+var GTypeSocketAccessible = coreglib.Type(C.gtk_socket_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSocketAccessible, F: marshalSocketAccessible},
 	})
 }
@@ -36,7 +35,7 @@ type SocketAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*SocketAccessible)(nil)
+	_ coreglib.Objector = (*SocketAccessible)(nil)
 )
 
 func classInitSocketAccessibler(gclassPtr, data C.gpointer) {
@@ -47,7 +46,7 @@ func classInitSocketAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
+func wrapSocketAccessible(obj *coreglib.Object) *SocketAccessible {
 	return &SocketAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -65,20 +64,23 @@ func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 }
 
 func marshalSocketAccessible(p uintptr) (interface{}, error) {
-	return wrapSocketAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSocketAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // The function takes the following parameters:
 //
 func (socket *SocketAccessible) Embed(path string) {
-	var _arg0 *C.GtkSocketAccessible // out
-	var _arg1 *C.gchar               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**SocketAccessible)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_socket_accessible_embed(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SocketAccessible").InvokeMethod("embed", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(path)
 }

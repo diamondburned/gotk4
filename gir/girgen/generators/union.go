@@ -48,7 +48,7 @@ var unionTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .Marshaler }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
-		b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+		b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 		return &{{.GoName}}{&{{.ImplName}}{(*C.{{.CType}})(b)}}, nil
 	}
 	{{ end }}

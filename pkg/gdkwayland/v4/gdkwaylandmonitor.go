@@ -5,20 +5,21 @@ package gdkwayland
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/wayland/gdkwayland.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkwaylandmonitor.go.
-var GTypeWaylandMonitor = externglib.Type(C.gdk_wayland_monitor_get_type())
+var GTypeWaylandMonitor = coreglib.Type(C.gdk_wayland_monitor_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWaylandMonitor, F: marshalWaylandMonitor},
 	})
 }
@@ -37,7 +38,7 @@ type WaylandMonitor struct {
 }
 
 var (
-	_ externglib.Objector = (*WaylandMonitor)(nil)
+	_ coreglib.Objector = (*WaylandMonitor)(nil)
 )
 
 func classInitWaylandMonitorrer(gclassPtr, data C.gpointer) {
@@ -48,7 +49,7 @@ func classInitWaylandMonitorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
+func wrapWaylandMonitor(obj *coreglib.Object) *WaylandMonitor {
 	return &WaylandMonitor{
 		Monitor: gdk.Monitor{
 			Object: obj,
@@ -57,5 +58,5 @@ func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
 }
 
 func marshalWaylandMonitor(p uintptr) (interface{}, error) {
-	return wrapWaylandMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandMonitor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

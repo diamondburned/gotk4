@@ -9,20 +9,21 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gio2_InitableIface_init(GInitable*, GCancellable*, GError**);
 import "C"
 
 // glib.Type values for ginitable.go.
-var GTypeInitable = externglib.Type(C.g_initable_get_type())
+var GTypeInitable = coreglib.Type(C.g_initable_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeInitable, F: marshalInitable},
 	})
 }
@@ -102,16 +103,16 @@ type InitableOverrider interface {
 // underlying type by calling Cast().
 type Initable struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Initable)(nil)
+	_ coreglib.Objector = (*Initable)(nil)
 )
 
 // Initabler describes Initable's interface methods.
 type Initabler interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// Init initializes the object implementing the interface.
 	Init(ctx context.Context) error
@@ -126,7 +127,7 @@ func ifaceInitInitabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_InitableIface_init
 func _gotk4_gio2_InitableIface_init(arg0 *C.GInitable, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(InitableOverrider)
 
 	var _cancellable context.Context // out
@@ -138,20 +139,20 @@ func _gotk4_gio2_InitableIface_init(arg0 *C.GInitable, arg1 *C.GCancellable, _ce
 	_goerr := iface.Init(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
 }
 
-func wrapInitable(obj *externglib.Object) *Initable {
+func wrapInitable(obj *coreglib.Object) *Initable {
 	return &Initable{
 		Object: obj,
 	}
 }
 
 func marshalInitable(p uintptr) (interface{}, error) {
-	return wrapInitable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapInitable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Init initializes the object implementing the interface.
@@ -197,18 +198,19 @@ func marshalInitable(p uintptr) (interface{}, error) {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (initable *Initable) Init(ctx context.Context) error {
-	var _arg0 *C.GInitable    // out
-	var _arg1 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GInitable)(unsafe.Pointer(externglib.InternObject(initable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**Initable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_initable_init(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(ctx)
 

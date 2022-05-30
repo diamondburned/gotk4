@@ -5,21 +5,22 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_ShortcutsWindow_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk4_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkshortcutswindow.go.
-var GTypeShortcutsWindow = externglib.Type(C.gtk_shortcuts_window_get_type())
+var GTypeShortcutsWindow = coreglib.Type(C.gtk_shortcuts_window_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutsWindow, F: marshalShortcutsWindow},
 	})
 }
@@ -74,15 +75,15 @@ type ShortcutsWindow struct {
 }
 
 var (
-	_ Widgetter           = (*ShortcutsWindow)(nil)
-	_ externglib.Objector = (*ShortcutsWindow)(nil)
+	_ Widgetter         = (*ShortcutsWindow)(nil)
+	_ coreglib.Objector = (*ShortcutsWindow)(nil)
 )
 
-func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
+func wrapShortcutsWindow(obj *coreglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
 		Window: Window{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -100,7 +101,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 			Root: Root{
 				NativeSurface: NativeSurface{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -124,14 +125,14 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 }
 
 func marshalShortcutsWindow(p uintptr) (interface{}, error) {
-	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutsWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_ShortcutsWindow_ConnectClose
 func _gotk4_gtk4_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -148,15 +149,15 @@ func _gotk4_gtk4_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) 
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is the Escape key.
-func (v *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "close", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectClose), f)
+func (v *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "close", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectClose), f)
 }
 
 //export _gotk4_gtk4_ShortcutsWindow_ConnectSearch
 func _gotk4_gtk4_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -173,6 +174,6 @@ func _gotk4_gtk4_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr)
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default binding for this signal is Control-F.
-func (v *ShortcutsWindow) ConnectSearch(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "search", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectSearch), f)
+func (v *ShortcutsWindow) ConnectSearch(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "search", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectSearch), f)
 }

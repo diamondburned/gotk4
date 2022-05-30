@@ -8,29 +8,28 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_ExpressionNotify(gpointer);
-// extern void callbackDelete(gpointer);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkexpression.go.
 var (
-	GTypeCClosureExpression = externglib.Type(C.gtk_cclosure_expression_get_type())
-	GTypeClosureExpression  = externglib.Type(C.gtk_closure_expression_get_type())
-	GTypeConstantExpression = externglib.Type(C.gtk_constant_expression_get_type())
-	GTypeExpression         = externglib.Type(C.gtk_expression_get_type())
-	GTypeObjectExpression   = externglib.Type(C.gtk_object_expression_get_type())
-	GTypePropertyExpression = externglib.Type(C.gtk_property_expression_get_type())
-	GTypeExpressionWatch    = externglib.Type(C.gtk_expression_watch_get_type())
+	GTypeCClosureExpression = coreglib.Type(C.gtk_cclosure_expression_get_type())
+	GTypeClosureExpression  = coreglib.Type(C.gtk_closure_expression_get_type())
+	GTypeConstantExpression = coreglib.Type(C.gtk_constant_expression_get_type())
+	GTypeExpression         = coreglib.Type(C.gtk_expression_get_type())
+	GTypeObjectExpression   = coreglib.Type(C.gtk_object_expression_get_type())
+	GTypePropertyExpression = coreglib.Type(C.gtk_property_expression_get_type())
+	GTypeExpressionWatch    = coreglib.Type(C.gtk_expression_watch_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCClosureExpression, F: marshalCClosureExpression},
 		{T: GTypeClosureExpression, F: marshalClosureExpression},
 		{T: GTypeConstantExpression, F: marshalConstantExpression},
@@ -70,13 +69,17 @@ func _gotk4_gtk4_ExpressionNotify(arg1 C.gpointer) {
 //
 //    - expression (optional): GtkExpression.
 //
-func ValueDupExpression(value *externglib.Value) Expressioner {
-	var _arg1 *C.GValue        // out
-	var _cret *C.GtkExpression // in
+func ValueDupExpression(value *coreglib.Value) Expressioner {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**coreglib.Value)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_value_dup_expression(_arg1)
+	_gret := girepository.MustFind("Gtk", "value_dup_expression").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(value)
 
 	var _expression Expressioner // out
@@ -85,8 +88,8 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Expressioner)
 				return ok
 			})
@@ -111,13 +114,17 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 //
 //    - expression (optional): GtkExpression.
 //
-func ValueGetExpression(value *externglib.Value) Expressioner {
-	var _arg1 *C.GValue        // out
-	var _cret *C.GtkExpression // in
+func ValueGetExpression(value *coreglib.Value) Expressioner {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**coreglib.Value)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_value_get_expression(_arg1)
+	_gret := girepository.MustFind("Gtk", "value_get_expression").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(value)
 
 	var _expression Expressioner // out
@@ -126,8 +133,8 @@ func ValueGetExpression(value *externglib.Value) Expressioner {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Expressioner)
 				return ok
 			})
@@ -151,14 +158,18 @@ func ValueGetExpression(value *externglib.Value) Expressioner {
 //    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
 //    - expression: GtkExpression.
 //
-func ValueSetExpression(value *externglib.Value, expression Expressioner) {
-	var _arg1 *C.GValue        // out
-	var _arg2 *C.GtkExpression // out
+func ValueSetExpression(value *coreglib.Value, expression Expressioner) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
-	_arg2 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+	*(**coreglib.Value)(unsafe.Pointer(&args[0])) = _arg0
+	*(*Expressioner)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_value_set_expression(_arg1, _arg2)
+	girepository.MustFind("Gtk", "value_set_expression").Invoke(args[:], nil)
+
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(expression)
 }
@@ -172,17 +183,21 @@ func ValueSetExpression(value *externglib.Value, expression Expressioner) {
 //    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
 //    - expression (optional): GtkExpression.
 //
-func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
-	var _arg1 *C.GValue        // out
-	var _arg2 *C.GtkExpression // out
+func ValueTakeExpression(value *coreglib.Value, expression Expressioner) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
 	if expression != nil {
-		_arg2 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
+	*(**coreglib.Value)(unsafe.Pointer(&args[0])) = _arg0
+	*(*Expressioner)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_value_take_expression(_arg1, _arg2)
+	girepository.MustFind("Gtk", "value_take_expression").Invoke(args[:], nil)
+
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(expression)
 }
@@ -197,7 +212,7 @@ var (
 	_ Expressioner = (*CClosureExpression)(nil)
 )
 
-func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
+func wrapCClosureExpression(obj *coreglib.Object) *CClosureExpression {
 	return &CClosureExpression{
 		Expression: Expression{
 			Object: obj,
@@ -206,7 +221,7 @@ func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
 }
 
 func marshalCClosureExpression(p uintptr) (interface{}, error) {
-	return wrapCClosureExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCClosureExpression(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ClosureExpression: expression using a custom GClosure to compute the value
@@ -220,7 +235,7 @@ var (
 	_ Expressioner = (*ClosureExpression)(nil)
 )
 
-func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
+func wrapClosureExpression(obj *coreglib.Object) *ClosureExpression {
 	return &ClosureExpression{
 		Expression: Expression{
 			Object: obj,
@@ -229,7 +244,7 @@ func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
 }
 
 func marshalClosureExpression(p uintptr) (interface{}, error) {
-	return wrapClosureExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapClosureExpression(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConstantExpression: constant value in a GtkExpression.
@@ -242,7 +257,7 @@ var (
 	_ Expressioner = (*ConstantExpression)(nil)
 )
 
-func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
+func wrapConstantExpression(obj *coreglib.Object) *ConstantExpression {
 	return &ConstantExpression{
 		Expression: Expression{
 			Object: obj,
@@ -251,7 +266,7 @@ func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
 }
 
 func marshalConstantExpression(p uintptr) (interface{}, error) {
-	return wrapConstantExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapConstantExpression(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewConstantExpressionForValue creates an expression that always evaluates to
@@ -265,18 +280,22 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 //
 //    - constantExpression: new GtkExpression.
 //
-func NewConstantExpressionForValue(value *externglib.Value) *ConstantExpression {
-	var _arg1 *C.GValue        // out
-	var _cret *C.GtkExpression // in
+func NewConstantExpressionForValue(value *coreglib.Value) *ConstantExpression {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**coreglib.Value)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_constant_expression_new_for_value(_arg1)
+	_gret := girepository.MustFind("Gtk", "ConstantExpression").InvokeMethod("new_ConstantExpression_for_value", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(value)
 
 	var _constantExpression *ConstantExpression // out
 
-	_constantExpression = wrapConstantExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constantExpression = wrapConstantExpression(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constantExpression
 }
@@ -287,18 +306,22 @@ func NewConstantExpressionForValue(value *externglib.Value) *ConstantExpression 
 //
 //    - value: value.
 //
-func (expression *ConstantExpression) Value() *externglib.Value {
-	var _arg0 *C.GtkExpression // out
-	var _cret *C.GValue        // in
+func (expression *ConstantExpression) Value() *coreglib.Value {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+	*(**ConstantExpression)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_constant_expression_get_value(_arg0)
+	_gret := girepository.MustFind("Gtk", "ConstantExpression").InvokeMethod("get_value", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(expression)
 
-	var _value *externglib.Value // out
+	var _value *coreglib.Value // out
 
-	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
 
 	return _value
 }
@@ -426,11 +449,11 @@ func (expression *ConstantExpression) Value() *externglib.Value {
 //    </closure>.
 type Expression struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Expression)(nil)
+	_ coreglib.Objector = (*Expression)(nil)
 )
 
 // Expressioner describes types inherited from class Expression.
@@ -438,20 +461,20 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Expressioner interface {
-	externglib.Objector
+	coreglib.Objector
 	baseExpression() *Expression
 }
 
 var _ Expressioner = (*Expression)(nil)
 
-func wrapExpression(obj *externglib.Object) *Expression {
+func wrapExpression(obj *coreglib.Object) *Expression {
 	return &Expression{
 		Object: obj,
 	}
 }
 
 func marshalExpression(p uintptr) (interface{}, error) {
-	return wrapExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapExpression(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (self *Expression) baseExpression() *Expression {
@@ -461,129 +484,6 @@ func (self *Expression) baseExpression() *Expression {
 // BaseExpression returns the underlying base object.
 func BaseExpression(obj Expressioner) *Expression {
 	return obj.baseExpression()
-}
-
-// Bind target's property named property to self.
-//
-// The value that self evaluates to is set via g_object_set() on target. This is
-// repeated whenever self changes to ensure that the object's property stays
-// synchronized with self.
-//
-// If self's evaluation fails, target's property is not updated. You can ensure
-// that this doesn't happen by using a fallback expression.
-//
-// Note that this function takes ownership of self. If you want to keep it
-// around, you should gtk.Expression.Ref() it beforehand.
-//
-// The function takes the following parameters:
-//
-//    - target object to bind to.
-//    - property: name of the property on target to bind to.
-//    - this_ (optional): argument for the evaluation of self.
-//
-// The function returns the following values:
-//
-//    - expressionWatch: GtkExpressionWatch.
-//
-func (self *Expression) Bind(target *externglib.Object, property string, this_ *externglib.Object) *ExpressionWatch {
-	var _arg0 *C.GtkExpression      // out
-	var _arg1 C.gpointer            // out
-	var _arg2 *C.char               // out
-	var _arg3 C.gpointer            // out
-	var _cret *C.GtkExpressionWatch // in
-
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(self).Native()))
-	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.gpointer(unsafe.Pointer(this_.Native()))
-
-	_cret = C.gtk_expression_bind(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(target)
-	runtime.KeepAlive(property)
-	runtime.KeepAlive(this_)
-
-	var _expressionWatch *ExpressionWatch // out
-
-	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_expression_watch_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
-		},
-	)
-
-	return _expressionWatch
-}
-
-// Evaluate evaluates the given expression and on success stores the result in
-// value.
-//
-// The GType of value will be the type given by gtk.Expression.GetValueType().
-//
-// It is possible that expressions cannot be evaluated - for example when the
-// expression references objects that have been destroyed or set to NULL. In
-// that case value will remain empty and FALSE will be returned.
-//
-// The function takes the following parameters:
-//
-//    - this_ (optional): argument for the evaluation.
-//    - value: empty GValue.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the expression could be evaluated.
-//
-func (self *Expression) Evaluate(this_ *externglib.Object, value *externglib.Value) bool {
-	var _arg0 *C.GtkExpression // out
-	var _arg1 C.gpointer       // out
-	var _arg2 *C.GValue        // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.gpointer(unsafe.Pointer(this_.Native()))
-	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
-
-	_cret = C.gtk_expression_evaluate(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(this_)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ValueType gets the GType that this expression evaluates to.
-//
-// This type is constant and will not change over the lifetime of this
-// expression.
-//
-// The function returns the following values:
-//
-//    - gType: type returned from gtk.Expression.Evaluate().
-//
-func (self *Expression) ValueType() externglib.Type {
-	var _arg0 *C.GtkExpression // out
-	var _cret C.GType          // in
-
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_expression_get_value_type(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gType externglib.Type // out
-
-	_gType = externglib.Type(_cret)
-
-	return _gType
 }
 
 // IsStatic checks if the expression is static.
@@ -599,12 +499,16 @@ func (self *Expression) ValueType() externglib.Type {
 //    - ok: TRUE if the expression is static.
 //
 func (self *Expression) IsStatic() bool {
-	var _arg0 *C.GtkExpression // out
-	var _cret C.gboolean       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Expression)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_expression_is_static(_arg0)
+	_gret := girepository.MustFind("Gtk", "Expression").InvokeMethod("is_static", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -614,59 +518,6 @@ func (self *Expression) IsStatic() bool {
 	}
 
 	return _ok
-}
-
-// Watch installs a watch for the given expression that calls the notify
-// function whenever the evaluation of self may have changed.
-//
-// GTK cannot guarantee that the evaluation did indeed change when the notify
-// gets invoked, but it guarantees the opposite: When it did in fact change, the
-// notify will be invoked.
-//
-// The function takes the following parameters:
-//
-//    - this_ (optional): this argument to watch.
-//    - notify: callback to invoke when the expression changes.
-//
-// The function returns the following values:
-//
-//    - expressionWatch: newly installed watch. Note that the only reference held
-//      to the watch will be released when the watch is unwatched which can
-//      happen automatically, and not just via gtk.ExpressionWatch.Unwatch(). You
-//      should call gtk.ExpressionWatch.Ref() if you want to keep the watch
-//      around.
-//
-func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch {
-	var _arg0 *C.GtkExpression      // out
-	var _arg1 C.gpointer            // out
-	var _arg2 C.GtkExpressionNotify // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-	var _cret *C.GtkExpressionWatch // in
-
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.gpointer(unsafe.Pointer(this_.Native()))
-	_arg2 = (*[0]byte)(C._gotk4_gtk4_ExpressionNotify)
-	_arg3 = C.gpointer(gbox.Assign(notify))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	_cret = C.gtk_expression_watch(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(this_)
-	runtime.KeepAlive(notify)
-
-	var _expressionWatch *ExpressionWatch // out
-
-	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_expression_watch_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
-		},
-	)
-
-	return _expressionWatch
 }
 
 // ObjectExpression: GObject value in a GtkExpression.
@@ -679,7 +530,7 @@ var (
 	_ Expressioner = (*ObjectExpression)(nil)
 )
 
-func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
+func wrapObjectExpression(obj *coreglib.Object) *ObjectExpression {
 	return &ObjectExpression{
 		Expression: Expression{
 			Object: obj,
@@ -688,7 +539,7 @@ func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
 }
 
 func marshalObjectExpression(p uintptr) (interface{}, error) {
-	return wrapObjectExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapObjectExpression(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewObjectExpression creates an expression evaluating to the given object with
@@ -708,18 +559,22 @@ func marshalObjectExpression(p uintptr) (interface{}, error) {
 //
 //    - objectExpression: new GtkExpression.
 //
-func NewObjectExpression(object *externglib.Object) *ObjectExpression {
-	var _arg1 *C.GObject       // out
-	var _cret *C.GtkExpression // in
+func NewObjectExpression(object *coreglib.Object) *ObjectExpression {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(object.Native()))
+	*(**coreglib.Object)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_object_expression_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "ObjectExpression").InvokeMethod("new_ObjectExpression", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(object)
 
 	var _objectExpression *ObjectExpression // out
 
-	_objectExpression = wrapObjectExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_objectExpression = wrapObjectExpression(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _objectExpression
 }
@@ -730,19 +585,23 @@ func NewObjectExpression(object *externglib.Object) *ObjectExpression {
 //
 //    - object (optional): object, or NULL.
 //
-func (expression *ObjectExpression) Object() *externglib.Object {
-	var _arg0 *C.GtkExpression // out
-	var _cret *C.GObject       // in
+func (expression *ObjectExpression) Object() *coreglib.Object {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+	*(**ObjectExpression)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_object_expression_get_object(_arg0)
+	_gret := girepository.MustFind("Gtk", "ObjectExpression").InvokeMethod("get_object", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(expression)
 
-	var _object *externglib.Object // out
+	var _object *coreglib.Object // out
 
 	if _cret != nil {
-		_object = externglib.Take(unsafe.Pointer(_cret))
+		_object = coreglib.Take(unsafe.Pointer(_cret))
 	}
 
 	return _object
@@ -758,7 +617,7 @@ var (
 	_ Expressioner = (*PropertyExpression)(nil)
 )
 
-func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
+func wrapPropertyExpression(obj *coreglib.Object) *PropertyExpression {
 	return &PropertyExpression{
 		Expression: Expression{
 			Object: obj,
@@ -767,53 +626,7 @@ func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
 }
 
 func marshalPropertyExpression(p uintptr) (interface{}, error) {
-	return wrapPropertyExpression(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewPropertyExpression creates an expression that looks up a property via the
-// given expression or the this argument when expression is NULL.
-//
-// If the resulting object conforms to this_type, its property named
-// property_name will be queried. Otherwise, this expression's evaluation will
-// fail.
-//
-// The given this_type must have a property with property_name.
-//
-// The function takes the following parameters:
-//
-//    - thisType: type to expect for the this type.
-//    - expression (optional): expression to evaluate to get the object to query
-//      or NULL to query the this object.
-//    - propertyName: name of the property.
-//
-// The function returns the following values:
-//
-//    - propertyExpression: new GtkExpression.
-//
-func NewPropertyExpression(thisType externglib.Type, expression Expressioner, propertyName string) *PropertyExpression {
-	var _arg1 C.GType          // out
-	var _arg2 *C.GtkExpression // out
-	var _arg3 *C.char          // out
-	var _cret *C.GtkExpression // in
-
-	_arg1 = C.GType(thisType)
-	if expression != nil {
-		_arg2 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
-	}
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	_cret = C.gtk_property_expression_new(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(thisType)
-	runtime.KeepAlive(expression)
-	runtime.KeepAlive(propertyName)
-
-	var _propertyExpression *PropertyExpression // out
-
-	_propertyExpression = wrapPropertyExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _propertyExpression
+	return wrapPropertyExpression(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GetExpression gets the expression specifying the object of a property
@@ -824,12 +637,16 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 //    - ret: object expression.
 //
 func (expression *PropertyExpression) GetExpression() Expressioner {
-	var _arg0 *C.GtkExpression // out
-	var _cret *C.GtkExpression // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+	*(**PropertyExpression)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_property_expression_get_expression(_arg0)
+	_gret := girepository.MustFind("Gtk", "PropertyExpression").InvokeMethod("get_expression", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(expression)
 
 	var _ret Expressioner // out
@@ -840,8 +657,8 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 			panic("object of type gtk.Expressioner is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Expressioner)
 			return ok
 		})
@@ -871,7 +688,7 @@ type expressionWatch struct {
 }
 
 func marshalExpressionWatch(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &ExpressionWatch{&expressionWatch{(*C.GtkExpressionWatch)(b)}}, nil
 }
 
@@ -889,15 +706,18 @@ func marshalExpressionWatch(p uintptr) (interface{}, error) {
 //
 //    - ok: TRUE if the expression could be evaluated and value was set.
 //
-func (watch *ExpressionWatch) Evaluate(value *externglib.Value) bool {
-	var _arg0 *C.GtkExpressionWatch // out
-	var _arg1 *C.GValue             // out
-	var _cret C.gboolean            // in
+func (watch *ExpressionWatch) Evaluate(value *coreglib.Value) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(watch)))
+	_arg1 = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**ExpressionWatch)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_expression_watch_evaluate(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(watch)
 	runtime.KeepAlive(value)
 
@@ -914,10 +734,11 @@ func (watch *ExpressionWatch) Evaluate(value *externglib.Value) bool {
 //
 // See gtk.Expression.Watch() for how the watch was established.
 func (watch *ExpressionWatch) Unwatch() {
-	var _arg0 *C.GtkExpressionWatch // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(watch)))
+	*(**ExpressionWatch)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_expression_watch_unwatch(_arg0)
 	runtime.KeepAlive(watch)
 }

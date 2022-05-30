@@ -3,25 +3,25 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_CellRendererTextClass_edited(GtkCellRendererText*, char*, char*);
 // extern void _gotk4_gtk4_CellRendererText_ConnectEdited(gpointer, gchar*, gchar*, guintptr);
 import "C"
 
 // glib.Type values for gtkcellrenderertext.go.
-var GTypeCellRendererText = externglib.Type(C.gtk_cell_renderer_text_get_type())
+var GTypeCellRendererText = coreglib.Type(C.gtk_cell_renderer_text_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellRendererText, F: marshalCellRendererText},
 	})
 }
@@ -71,7 +71,7 @@ func classInitCellRendererTexter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_CellRendererTextClass_edited
 func _gotk4_gtk4_CellRendererTextClass_edited(arg0 *C.GtkCellRendererText, arg1 *C.char, arg2 *C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Edited(path, newText string) })
 
 	var _path string    // out
@@ -83,10 +83,10 @@ func _gotk4_gtk4_CellRendererTextClass_edited(arg0 *C.GtkCellRendererText, arg1 
 	iface.Edited(_path, _newText)
 }
 
-func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
+func wrapCellRendererText(obj *coreglib.Object) *CellRendererText {
 	return &CellRendererText{
 		CellRenderer: CellRenderer{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 		},
@@ -94,14 +94,14 @@ func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
 }
 
 func marshalCellRendererText(p uintptr) (interface{}, error) {
-	return wrapCellRendererText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellRendererText(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_CellRendererText_ConnectEdited
 func _gotk4_gtk4_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(path, newText string)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -123,8 +123,8 @@ func _gotk4_gtk4_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.gchar, 
 //
 // It is the responsibility of the application to update the model and store
 // new_text at the position indicated by path.
-func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(renderer, "edited", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererText_ConnectEdited), f)
+func (cellRendererText *CellRendererText) ConnectEdited(f func(path, newText string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(cellRendererText, "edited", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererText_ConnectEdited), f)
 }
 
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn
@@ -139,38 +139,14 @@ func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) ex
 //    - cellRendererText: new cell renderer.
 //
 func NewCellRendererText() *CellRendererText {
-	var _cret *C.GtkCellRenderer // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_cell_renderer_text_new()
+	_gret := girepository.MustFind("Gtk", "CellRendererText").InvokeMethod("new_CellRendererText", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererText *CellRendererText // out
 
-	_cellRendererText = wrapCellRendererText(externglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererText = wrapCellRendererText(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererText
-}
-
-// SetFixedHeightFromFont sets the height of a renderer to explicitly be
-// determined by the “font” and “y_pad” property set on it. Further changes in
-// these properties do not affect the height, so they must be accompanied by a
-// subsequent call to this function. Using this function is inflexible, and
-// should really only be used if calculating the size of a cell is too slow (ie,
-// a massive number of cells displayed). If number_of_rows is -1, then the fixed
-// height is unset, and the height is determined by the properties again.
-//
-// The function takes the following parameters:
-//
-//    - numberOfRows: number of rows of text each cell renderer is allocated, or
-//      -1.
-//
-func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
-	var _arg0 *C.GtkCellRendererText // out
-	var _arg1 C.int                  // out
-
-	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
-	_arg1 = C.int(numberOfRows)
-
-	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
-	runtime.KeepAlive(renderer)
-	runtime.KeepAlive(numberOfRows)
 }

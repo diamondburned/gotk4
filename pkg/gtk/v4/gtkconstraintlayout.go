@@ -6,25 +6,24 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkconstraintlayout.go.
 var (
-	GTypeConstraintLayout      = externglib.Type(C.gtk_constraint_layout_get_type())
-	GTypeConstraintLayoutChild = externglib.Type(C.gtk_constraint_layout_child_get_type())
+	GTypeConstraintLayout      = coreglib.Type(C.gtk_constraint_layout_get_type())
+	GTypeConstraintLayoutChild = coreglib.Type(C.gtk_constraint_layout_child_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeConstraintLayout, F: marshalConstraintLayout},
 		{T: GTypeConstraintLayoutChild, F: marshalConstraintLayoutChild},
 	})
@@ -196,13 +195,13 @@ type ConstraintLayout struct {
 	_ [0]func() // equal guard
 	LayoutManager
 
-	*externglib.Object
+	*coreglib.Object
 	Buildable
 }
 
 var (
-	_ LayoutManagerer     = (*ConstraintLayout)(nil)
-	_ externglib.Objector = (*ConstraintLayout)(nil)
+	_ LayoutManagerer   = (*ConstraintLayout)(nil)
+	_ coreglib.Objector = (*ConstraintLayout)(nil)
 )
 
 func classInitConstraintLayouter(gclassPtr, data C.gpointer) {
@@ -213,7 +212,7 @@ func classInitConstraintLayouter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
+func wrapConstraintLayout(obj *coreglib.Object) *ConstraintLayout {
 	return &ConstraintLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -226,7 +225,7 @@ func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 }
 
 func marshalConstraintLayout(p uintptr) (interface{}, error) {
-	return wrapConstraintLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapConstraintLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewConstraintLayout creates a new GtkConstraintLayout layout manager.
@@ -236,13 +235,14 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 //    - constraintLayout: newly created GtkConstraintLayout.
 //
 func NewConstraintLayout() *ConstraintLayout {
-	var _cret *C.GtkLayoutManager // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_constraint_layout_new()
+	_gret := girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("new_ConstraintLayout", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _constraintLayout *ConstraintLayout // out
 
-	_constraintLayout = wrapConstraintLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constraintLayout = wrapConstraintLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintLayout
 }
@@ -265,165 +265,19 @@ func NewConstraintLayout() *ConstraintLayout {
 //    - constraint: gtk.Constraint.
 //
 func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _arg1 *C.GtkConstraint       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(externglib.InternObject(constraint).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(constraint).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(constraint).Native()))
+	*(**ConstraintLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("add_constraint", args[:], nil)
+
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(constraint)
-}
-
-// AddConstraintsFromDescription creates a list of constraints from a VFL
-// description.
-//
-// The Visual Format Language, VFL, is based on Apple's AutoLayout VFL
-// (https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html).
-//
-// The views dictionary is used to match gtk.ConstraintTarget instances to the
-// symbolic view name inside the VFL.
-//
-// The VFL grammar is:
-//
-//           <visualFormatString> = (<orientation>)?
-//                                  (<superview><connection>)?
-//                                  <view>(<connection><view>)*
-//                                  (<connection><superview>)?
-//                  <orientation> = 'H' | 'V'
-//                    <superview> = '|'
-//                   <connection> = '' | '-' <predicateList> '-' | '-'
-//                <predicateList> = <simplePredicate> | <predicateListWithParens>
-//              <simplePredicate> = <metricName> | <positiveNumber>
-//      <predicateListWithParens> = '(' <predicate> (',' <predicate>)* ')'
-//                    <predicate> = (<relation>)? <objectOfPredicate> (<operatorList>)? ('@' <priority>)?
-//                     <relation> = '==' | '<=' | '>='
-//            <objectOfPredicate> = <constant> | <viewName> | ('.' <attributeName>)?
-//                     <priority> = <positiveNumber> | 'required' | 'strong' | 'medium' | 'weak'
-//                     <constant> = <number>
-//                 <operatorList> = (<multiplyOperator>)? (<addOperator>)?
-//             <multiplyOperator> = [ '*' | '/' ] <positiveNumber>
-//                  <addOperator> = [ '+' | '-' ] <positiveNumber>
-//                     <viewName> = A-Za-z_ ([A-Za-z0-9_]*) // A C identifier
-//                   <metricName> = A-Za-z_ ([A-Za-z0-9_]*) // A C identifier
-//                <attributeName> = 'top' | 'bottom' | 'left' | 'right' | 'width' | 'height' |
-//                                  'start' | 'end' | 'centerX' | 'centerY' | 'baseline'
-//               <positiveNumber> // A positive real number parseable by g_ascii_strtod()
-//                       <number> // A real number parseable by g_ascii_strtod()
-//
-//
-// **Note**: The VFL grammar used by GTK is slightly different than the one
-// defined by Apple, as it can use symbolic values for the constraint's strength
-// instead of numeric values; additionally, GTK allows adding simple arithmetic
-// operations inside predicates.
-//
-// Examples of VFL descriptions are:
-//
-//      // Default spacing
-//      [button]-[textField]
-//
-//      // Width constraint
-//      [button(>=50)]
-//
-//      // Connection to super view
-//      |-50-[purpleBox]-50-|
-//
-//      // Vertical layout
-//      V:[topField]-10-[bottomField]
-//
-//      // Flush views
-//      [maroonView][blueView]
-//
-//      // Priority
-//      [button(100strong)]
-//
-//      // Equal widths
-//      [button1(==button2)]
-//
-//      // Multiple predicates
-//      [flexibleButton(>=70,<=100)]
-//
-//      // A complete line of layout
-//      |-[find]-[findNext]-[findField(>=20)]-|
-//
-//      // Operators
-//      [button1(button2 / 3 + 50)]
-//
-//      // Named attributes
-//      [button1(==button2.height)].
-//
-// The function takes the following parameters:
-//
-//    - lines: array of Visual Format Language lines defining a set of
-//      constraints.
-//    - hspacing: default horizontal spacing value, or -1 for the fallback value.
-//    - vspacing: default vertical spacing value, or -1 for the fallback value.
-//    - views: dictionary of [ name, target ] pairs; the name keys map to the
-//      view names in the VFL lines, while the target values map to children of
-//      the widget using a GtkConstraintLayout, or guides.
-//
-// The function returns the following values:
-//
-//    - list of gtk.Constraint instances that were added to the layout.
-//
-func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]*Constraint, error) {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _arg1 **C.char               // out
-	var _arg2 C.gsize
-	var _arg3 C.int         // out
-	var _arg4 C.int         // out
-	var _arg5 *C.GHashTable // out
-	var _cret *C.GList      // in
-	var _cerr *C.GError     // in
-
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
-	_arg2 = (C.gsize)(len(lines))
-	_arg1 = (**C.char)(C.calloc(C.size_t(len(lines)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((**C.char)(_arg1), len(lines))
-		for i := range lines {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(lines[i])))
-			defer C.free(unsafe.Pointer(out[i]))
-		}
-	}
-	_arg3 = C.int(hspacing)
-	_arg4 = C.int(vspacing)
-	_arg5 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
-	for ksrc, vsrc := range views {
-		var kdst *C.gchar               // out
-		var vdst *C.GtkConstraintTarget // out
-		kdst = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
-		defer C.free(unsafe.Pointer(kdst))
-		vdst = (*C.GtkConstraintTarget)(unsafe.Pointer(externglib.InternObject(vsrc).Native()))
-		C.g_hash_table_insert(_arg5, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
-	}
-	defer C.g_hash_table_unref(_arg5)
-
-	_cret = C.gtk_constraint_layout_add_constraints_from_descriptionv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-	runtime.KeepAlive(layout)
-	runtime.KeepAlive(lines)
-	runtime.KeepAlive(hspacing)
-	runtime.KeepAlive(vspacing)
-	runtime.KeepAlive(views)
-
-	var _list []*Constraint // out
-	var _goerr error        // out
-
-	_list = make([]*Constraint, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkConstraint)(v)
-		var dst *Constraint // out
-		dst = wrapConstraint(externglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _list, _goerr
 }
 
 // AddGuide adds a guide to layout.
@@ -438,14 +292,17 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 //    - guide: gtk.ConstraintGuide object.
 //
 func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _arg1 *C.GtkConstraintGuide  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(guide).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(guide).Native()))
+	*(**ConstraintLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("add_guide", args[:], nil)
+
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(guide)
 }
@@ -465,18 +322,22 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 //    - listModel: a GListModel tracking the layout's constraints.
 //
 func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _cret *C.GListModel          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**ConstraintLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
+	_gret := girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("observe_constraints", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(layout)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -500,18 +361,22 @@ func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 //    - listModel: a GListModel tracking the layout's guides.
 //
 func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _cret *C.GListModel          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**ConstraintLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
+	_gret := girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("observe_guides", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(layout)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -522,11 +387,14 @@ func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
 
 // RemoveAllConstraints removes all constraints from the layout manager.
 func (layout *ConstraintLayout) RemoveAllConstraints() {
-	var _arg0 *C.GtkConstraintLayout // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**ConstraintLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_constraint_layout_remove_all_constraints(_arg0)
+	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("remove_all_constraints", args[:], nil)
+
 	runtime.KeepAlive(layout)
 }
 
@@ -538,13 +406,16 @@ func (layout *ConstraintLayout) RemoveAllConstraints() {
 //    - constraint: gtk.Constraint.
 //
 func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _arg1 *C.GtkConstraint       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(externglib.InternObject(constraint).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
+	*(**ConstraintLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_constraint_layout_remove_constraint(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("remove_constraint", args[:], nil)
+
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(constraint)
 }
@@ -557,13 +428,16 @@ func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 //    - guide: gtk.ConstraintGuide object.
 //
 func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
-	var _arg0 *C.GtkConstraintLayout // out
-	var _arg1 *C.GtkConstraintGuide  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(externglib.InternObject(guide).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(**ConstraintLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("remove_guide", args[:], nil)
+
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(guide)
 }
@@ -591,7 +465,7 @@ func classInitConstraintLayoutChilder(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
+func wrapConstraintLayoutChild(obj *coreglib.Object) *ConstraintLayoutChild {
 	return &ConstraintLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,
@@ -600,5 +474,5 @@ func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 }
 
 func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
-	return wrapConstraintLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapConstraintLayoutChild(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

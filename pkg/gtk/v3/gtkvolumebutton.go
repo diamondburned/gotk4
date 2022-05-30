@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkvolumebutton.go.
-var GTypeVolumeButton = externglib.Type(C.gtk_volume_button_get_type())
+var GTypeVolumeButton = coreglib.Type(C.gtk_volume_button_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVolumeButton, F: marshalVolumeButton},
 	})
 }
@@ -37,8 +36,8 @@ type VolumeButton struct {
 }
 
 var (
-	_ externglib.Objector = (*VolumeButton)(nil)
-	_ Binner              = (*VolumeButton)(nil)
+	_ coreglib.Objector = (*VolumeButton)(nil)
+	_ Binner            = (*VolumeButton)(nil)
 )
 
 func classInitVolumeButtonner(gclassPtr, data C.gpointer) {
@@ -49,14 +48,14 @@ func classInitVolumeButtonner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
+func wrapVolumeButton(obj *coreglib.Object) *VolumeButton {
 	return &VolumeButton{
 		ScaleButton: ScaleButton{
 			Button: Button{
 				Bin: Bin{
 					Container: Container{
 						Widget: Widget{
-							InitiallyUnowned: externglib.InitiallyUnowned{
+							InitiallyUnowned: coreglib.InitiallyUnowned{
 								Object: obj,
 							},
 							Object: obj,
@@ -72,7 +71,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 				Object: obj,
 				Actionable: Actionable{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -97,7 +96,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 }
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
-	return wrapVolumeButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVolumeButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVolumeButton creates a VolumeButton, with a range between 0.0 and 1.0,
@@ -109,13 +108,14 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 //    - volumeButton: new VolumeButton.
 //
 func NewVolumeButton() *VolumeButton {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_volume_button_new()
+	_gret := girepository.MustFind("Gtk", "VolumeButton").InvokeMethod("new_VolumeButton", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _volumeButton *VolumeButton // out
 
-	_volumeButton = wrapVolumeButton(externglib.Take(unsafe.Pointer(_cret)))
+	_volumeButton = wrapVolumeButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _volumeButton
 }

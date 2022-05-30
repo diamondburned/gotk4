@@ -7,22 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkinvisible.go.
-var GTypeInvisible = externglib.Type(C.gtk_invisible_get_type())
+var GTypeInvisible = coreglib.Type(C.gtk_invisible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeInvisible, F: marshalInvisible},
 	})
 }
@@ -53,10 +52,10 @@ func classInitInvisibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapInvisible(obj *externglib.Object) *Invisible {
+func wrapInvisible(obj *coreglib.Object) *Invisible {
 	return &Invisible{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -71,7 +70,7 @@ func wrapInvisible(obj *externglib.Object) *Invisible {
 }
 
 func marshalInvisible(p uintptr) (interface{}, error) {
-	return wrapInvisible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapInvisible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewInvisible creates a new Invisible.
@@ -81,13 +80,14 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 //    - invisible: new Invisible.
 //
 func NewInvisible() *Invisible {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_invisible_new()
+	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _invisible *Invisible // out
 
-	_invisible = wrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
+	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -103,17 +103,21 @@ func NewInvisible() *Invisible {
 //    - invisible: newly created Invisible object.
 //
 func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
-	var _arg1 *C.GdkScreen // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	*(**gdk.Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_invisible_new_for_screen(_arg1)
+	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible_for_screen", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(screen)
 
 	var _invisible *Invisible // out
 
-	_invisible = wrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
+	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -125,18 +129,22 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 //    - screen: associated Screen.
 //
 func (invisible *Invisible) Screen() *gdk.Screen {
-	var _arg0 *C.GtkInvisible // out
-	var _cret *C.GdkScreen    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(externglib.InternObject(invisible).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
+	*(**Invisible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_invisible_get_screen(_arg0)
+	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("get_screen", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(invisible)
 
 	var _screen *gdk.Screen // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_screen = &gdk.Screen{
 			Object: obj,
 		}
@@ -152,13 +160,16 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 //    - screen: Screen.
 //
 func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
-	var _arg0 *C.GtkInvisible // out
-	var _arg1 *C.GdkScreen    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(externglib.InternObject(invisible).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	*(**Invisible)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_invisible_set_screen(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Invisible").InvokeMethod("set_screen", args[:], nil)
+
 	runtime.KeepAlive(invisible)
 	runtime.KeepAlive(screen)
 }

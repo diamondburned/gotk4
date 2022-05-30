@@ -7,20 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gsk/gsk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gsktypes.go.
-var GTypeTransform = externglib.Type(C.gsk_transform_get_type())
+var GTypeTransform = coreglib.Type(C.gsk_transform_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTransform, F: marshalTransform},
 	})
 }
@@ -46,15 +47,15 @@ type transform struct {
 }
 
 func marshalTransform(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Transform{&transform{(*C.GskTransform)(b)}}, nil
 }
 
 // NewTransform constructs a struct Transform.
 func NewTransform() *Transform {
-	var _cret *C.GskTransform // in
+	var _cret *C.void // in
 
-	_cret = C.gsk_transform_new()
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _transform *Transform // out
 
@@ -80,18 +81,21 @@ func NewTransform() *Transform {
 //    - ok: TRUE if the two transforms perform the same operation.
 //
 func (first *Transform) Equal(second *Transform) bool {
-	var _arg0 *C.GskTransform // out
-	var _arg1 *C.GskTransform // out
-	var _cret C.gboolean      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
 	if first != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(first)))
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
 	}
 	if second != nil {
-		_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(second)))
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 	}
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gsk_transform_equal(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
 
@@ -102,30 +106,6 @@ func (first *Transform) Equal(second *Transform) bool {
 	}
 
 	return _ok
-}
-
-// Category returns the category this transform belongs to.
-//
-// The function returns the following values:
-//
-//    - transformCategory: category of the transform.
-//
-func (self *Transform) Category() TransformCategory {
-	var _arg0 *C.GskTransform        // out
-	var _cret C.GskTransformCategory // in
-
-	if self != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-	}
-
-	_cret = C.gsk_transform_get_category(_arg0)
-	runtime.KeepAlive(self)
-
-	var _transformCategory TransformCategory // out
-
-	_transformCategory = TransformCategory(_cret)
-
-	return _transformCategory
 }
 
 // Invert inverts the given transform.
@@ -141,14 +121,17 @@ func (self *Transform) Category() TransformCategory {
 //      be inverted.
 //
 func (self *Transform) Invert() *Transform {
-	var _arg0 *C.GskTransform // out
-	var _cret *C.GskTransform // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if self != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
+	*(**Transform)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gsk_transform_invert(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _transform *Transform // out
@@ -177,16 +160,19 @@ func (self *Transform) Invert() *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
-	var _arg0 *C.GskTransform      // out
-	var _arg1 *C.graphene_matrix_t // out
-	var _cret *C.GskTransform      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gsk_transform_matrix(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(matrix)
 
@@ -203,334 +189,6 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	return _transform
 }
 
-// Perspective applies a perspective projection transform.
-//
-// This transform scales points in X and Y based on their Z value, scaling
-// points with positive Z values away from the origin, and those with negative Z
-// values towards the origin. Points on the z=0 plane are unchanged.
-//
-// The function takes the following parameters:
-//
-//    - depth: distance of the z=0 plane. Lower values give a more flattened
-//      pyramid and therefore a more pronounced perspective effect.
-//
-// The function returns the following values:
-//
-//    - transform: new transform.
-//
-func (next *Transform) Perspective(depth float32) *Transform {
-	var _arg0 *C.GskTransform // out
-	var _arg1 C.float         // out
-	var _cret *C.GskTransform // in
-
-	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
-	}
-	_arg1 = C.float(depth)
-
-	_cret = C.gsk_transform_perspective(_arg0, _arg1)
-	runtime.KeepAlive(next)
-	runtime.KeepAlive(depth)
-
-	var _transform *Transform // out
-
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
-
-	return _transform
-}
-
-// Rotate rotates next angle degrees in 2D - or in 3D-speak, around the z axis.
-//
-// The function takes the following parameters:
-//
-//    - angle: rotation angle, in degrees (clockwise).
-//
-// The function returns the following values:
-//
-//    - transform: new transform.
-//
-func (next *Transform) Rotate(angle float32) *Transform {
-	var _arg0 *C.GskTransform // out
-	var _arg1 C.float         // out
-	var _cret *C.GskTransform // in
-
-	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
-	}
-	_arg1 = C.float(angle)
-
-	_cret = C.gsk_transform_rotate(_arg0, _arg1)
-	runtime.KeepAlive(next)
-	runtime.KeepAlive(angle)
-
-	var _transform *Transform // out
-
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
-
-	return _transform
-}
-
-// Rotate3D rotates next angle degrees around axis.
-//
-// For a rotation in 2D space, use gsk.Transform.Rotate().
-//
-// The function takes the following parameters:
-//
-//    - angle: rotation angle, in degrees (clockwise).
-//    - axis: rotation axis.
-//
-// The function returns the following values:
-//
-//    - transform: new transform.
-//
-func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
-	var _arg0 *C.GskTransform    // out
-	var _arg1 C.float            // out
-	var _arg2 *C.graphene_vec3_t // out
-	var _cret *C.GskTransform    // in
-
-	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
-	}
-	_arg1 = C.float(angle)
-	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
-
-	_cret = C.gsk_transform_rotate_3d(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(next)
-	runtime.KeepAlive(angle)
-	runtime.KeepAlive(axis)
-
-	var _transform *Transform // out
-
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
-
-	return _transform
-}
-
-// Scale scales next in 2-dimensional space by the given factors.
-//
-// Use gsk.Transform.Scale3D() to scale in all 3 dimensions.
-//
-// The function takes the following parameters:
-//
-//    - factorX: scaling factor on the X axis.
-//    - factorY: scaling factor on the Y axis.
-//
-// The function returns the following values:
-//
-//    - transform: new transform.
-//
-func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
-	var _arg0 *C.GskTransform // out
-	var _arg1 C.float         // out
-	var _arg2 C.float         // out
-	var _cret *C.GskTransform // in
-
-	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
-	}
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-
-	_cret = C.gsk_transform_scale(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(next)
-	runtime.KeepAlive(factorX)
-	runtime.KeepAlive(factorY)
-
-	var _transform *Transform // out
-
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
-
-	return _transform
-}
-
-// Scale3D scales next by the given factors.
-//
-// The function takes the following parameters:
-//
-//    - factorX: scaling factor on the X axis.
-//    - factorY: scaling factor on the Y axis.
-//    - factorZ: scaling factor on the Z axis.
-//
-// The function returns the following values:
-//
-//    - transform: new transform.
-//
-func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
-	var _arg0 *C.GskTransform // out
-	var _arg1 C.float         // out
-	var _arg2 C.float         // out
-	var _arg3 C.float         // out
-	var _cret *C.GskTransform // in
-
-	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
-	}
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-	_arg3 = C.float(factorZ)
-
-	_cret = C.gsk_transform_scale_3d(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(next)
-	runtime.KeepAlive(factorX)
-	runtime.KeepAlive(factorY)
-	runtime.KeepAlive(factorZ)
-
-	var _transform *Transform // out
-
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
-
-	return _transform
-}
-
-// To2D converts a GskTransform to a 2D transformation matrix.
-//
-// self must be a 2D transformation. If you are not sure, use
-// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D to check.
-//
-// The returned values have the following layout:
-//
-//      | xx yx |   |  a  b  0 |
-//      | xy yy | = |  c  d  0 |
-//      | dx dy |   | tx ty  1 |
-//
-//
-// This function can be used to convert between a GskTransform and a matrix type
-// from other 2D drawing libraries, in particular Cairo.
-//
-// The function returns the following values:
-//
-//    - outXx: return location for the xx member.
-//    - outYx: return location for the yx member.
-//    - outXy: return location for the xy member.
-//    - outYy: return location for the yy member.
-//    - outDx: return location for the x0 member.
-//    - outDy: return location for the y0 member.
-//
-func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
-	var _arg0 *C.GskTransform // out
-	var _arg1 C.float         // in
-	var _arg2 C.float         // in
-	var _arg3 C.float         // in
-	var _arg4 C.float         // in
-	var _arg5 C.float         // in
-	var _arg6 C.float         // in
-
-	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-
-	C.gsk_transform_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
-	runtime.KeepAlive(self)
-
-	var _outXx float32 // out
-	var _outYx float32 // out
-	var _outXy float32 // out
-	var _outYy float32 // out
-	var _outDx float32 // out
-	var _outDy float32 // out
-
-	_outXx = float32(_arg1)
-	_outYx = float32(_arg2)
-	_outXy = float32(_arg3)
-	_outYy = float32(_arg4)
-	_outDx = float32(_arg5)
-	_outDy = float32(_arg6)
-
-	return _outXx, _outYx, _outXy, _outYy, _outDx, _outDy
-}
-
-// ToAffine converts a GskTransform to 2D affine transformation factors.
-//
-// self must be a 2D transformation. If you are not sure, use
-// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE to check.
-//
-// The function returns the following values:
-//
-//    - outScaleX: return location for the scale factor in the x direction.
-//    - outScaleY: return location for the scale factor in the y direction.
-//    - outDx: return location for the translation in the x direction.
-//    - outDy: return location for the translation in the y direction.
-//
-func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
-	var _arg0 *C.GskTransform // out
-	var _arg1 C.float         // in
-	var _arg2 C.float         // in
-	var _arg3 C.float         // in
-	var _arg4 C.float         // in
-
-	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-
-	C.gsk_transform_to_affine(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(self)
-
-	var _outScaleX float32 // out
-	var _outScaleY float32 // out
-	var _outDx float32     // out
-	var _outDy float32     // out
-
-	_outScaleX = float32(_arg1)
-	_outScaleY = float32(_arg2)
-	_outDx = float32(_arg3)
-	_outDy = float32(_arg4)
-
-	return _outScaleX, _outScaleY, _outDx, _outDy
-}
-
-// ToMatrix computes the actual value of self and stores it in out_matrix.
-//
-// The previous value of out_matrix will be ignored.
-//
-// The function returns the following values:
-//
-//    - outMatrix: matrix to set.
-//
-func (self *Transform) ToMatrix() *graphene.Matrix {
-	var _arg0 *C.GskTransform     // out
-	var _arg1 C.graphene_matrix_t // in
-
-	if self != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-	}
-
-	C.gsk_transform_to_matrix(_arg0, &_arg1)
-	runtime.KeepAlive(self)
-
-	var _outMatrix *graphene.Matrix // out
-
-	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _outMatrix
-}
-
 // String converts a matrix into a string that is suitable for printing.
 //
 // The resulting string can be parsed with gsk.Transform().Parse.
@@ -542,14 +200,17 @@ func (self *Transform) ToMatrix() *graphene.Matrix {
 //    - utf8: new string for self.
 //
 func (self *Transform) String() string {
-	var _arg0 *C.GskTransform // out
-	var _cret *C.char         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if self != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
+	*(**Transform)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gsk_transform_to_string(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -558,35 +219,6 @@ func (self *Transform) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// ToTranslate converts a GskTransform to a translation operation.
-//
-// self must be a 2D transformation. If you are not sure, use
-// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE to check.
-//
-// The function returns the following values:
-//
-//    - outDx: return location for the translation in the x direction.
-//    - outDy: return location for the translation in the y direction.
-//
-func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
-	var _arg0 *C.GskTransform // out
-	var _arg1 C.float         // in
-	var _arg2 C.float         // in
-
-	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-
-	C.gsk_transform_to_translate(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(self)
-
-	var _outDx float32 // out
-	var _outDy float32 // out
-
-	_outDx = float32(_arg1)
-	_outDy = float32(_arg2)
-
-	return _outDx, _outDy
 }
 
 // Transform applies all the operations from other to next.
@@ -600,18 +232,21 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 //    - transform: new transform.
 //
 func (next *Transform) Transform(other *Transform) *Transform {
-	var _arg0 *C.GskTransform // out
-	var _arg1 *C.GskTransform // out
-	var _cret *C.GskTransform // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	if other != nil {
-		_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(other)))
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 	}
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gsk_transform_transform(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(other)
 
@@ -628,66 +263,6 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	return _transform
 }
 
-// TransformBounds transforms a graphene_rect_t using the given transform self.
-//
-// The result is the bounding box containing the coplanar quad.
-//
-// The function takes the following parameters:
-//
-//    - rect: graphene_rect_t.
-//
-// The function returns the following values:
-//
-//    - outRect: return location for the bounds of the transformed rectangle.
-//
-func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
-	var _arg0 *C.GskTransform    // out
-	var _arg1 *C.graphene_rect_t // out
-	var _arg2 C.graphene_rect_t  // in
-
-	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
-
-	C.gsk_transform_transform_bounds(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(rect)
-
-	var _outRect *graphene.Rect // out
-
-	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _outRect
-}
-
-// TransformPoint transforms a graphene_point_t using the given transform self.
-//
-// The function takes the following parameters:
-//
-//    - point: graphene_point_t.
-//
-// The function returns the following values:
-//
-//    - outPoint: return location for the transformed point.
-//
-func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
-	var _arg0 *C.GskTransform     // out
-	var _arg1 *C.graphene_point_t // out
-	var _arg2 C.graphene_point_t  // in
-
-	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
-	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
-
-	C.gsk_transform_transform_point(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(point)
-
-	var _outPoint *graphene.Point // out
-
-	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _outPoint
-}
-
 // Translate translates next in 2-dimensional space by point.
 //
 // The function takes the following parameters:
@@ -699,16 +274,19 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 //    - transform: new transform.
 //
 func (next *Transform) Translate(point *graphene.Point) *Transform {
-	var _arg0 *C.GskTransform     // out
-	var _arg1 *C.graphene_point_t // out
-	var _cret *C.GskTransform     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gsk_transform_translate(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(point)
 
@@ -736,16 +314,19 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
-	var _arg0 *C.GskTransform       // out
-	var _arg1 *C.graphene_point3d_t // out
-	var _cret *C.GskTransform       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gsk_transform_translate_3d(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(point)
 

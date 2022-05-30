@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for glib-2.go.
-var GTypeIOCondition = externglib.Type(C.g_io_condition_get_type())
+var GTypeIOCondition = coreglib.Type(C.g_io_condition_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIOCondition, F: marshalIOCondition},
 	})
 }
@@ -45,7 +45,7 @@ const (
 )
 
 func marshalIOCondition(p uintptr) (interface{}, error) {
-	return IOCondition(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return IOCondition(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for IOCondition.

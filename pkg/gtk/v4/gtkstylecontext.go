@@ -9,25 +9,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_StyleContextClass_changed(GtkStyleContext*);
 import "C"
 
 // glib.Type values for gtkstylecontext.go.
 var (
-	GTypeStyleContextPrintFlags = externglib.Type(C.gtk_style_context_print_flags_get_type())
-	GTypeStyleContext           = externglib.Type(C.gtk_style_context_get_type())
+	GTypeStyleContextPrintFlags = coreglib.Type(C.gtk_style_context_print_flags_get_type())
+	GTypeStyleContext           = coreglib.Type(C.gtk_style_context_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStyleContextPrintFlags, F: marshalStyleContextPrintFlags},
 		{T: GTypeStyleContext, F: marshalStyleContext},
 	})
@@ -54,7 +54,7 @@ const (
 )
 
 func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
-	return StyleContextPrintFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return StyleContextPrintFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for StyleContextPrintFlags.
@@ -139,11 +139,11 @@ type StyleContextOverrider interface {
 // GTK_STYLE_PROVIDER_PRIORITY_USER priority.
 type StyleContext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*StyleContext)(nil)
+	_ coreglib.Objector = (*StyleContext)(nil)
 )
 
 func classInitStyleContexter(gclassPtr, data C.gpointer) {
@@ -164,20 +164,20 @@ func classInitStyleContexter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_StyleContextClass_changed
 func _gotk4_gtk4_StyleContextClass_changed(arg0 *C.GtkStyleContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
 }
 
-func wrapStyleContext(obj *externglib.Object) *StyleContext {
+func wrapStyleContext(obj *coreglib.Object) *StyleContext {
 	return &StyleContext{
 		Object: obj,
 	}
 }
 
 func marshalStyleContext(p uintptr) (interface{}, error) {
-	return wrapStyleContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStyleContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddClass adds a style class to context, so later uses of the style context
@@ -198,14 +198,17 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 //    - className class name to use in styling.
 //
 func (context *StyleContext) AddClass(className string) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(className)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_style_context_add_class(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("add_class", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
 }
@@ -230,62 +233,22 @@ func (context *StyleContext) AddClass(className string) {
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
-	var _arg0 *C.GtkStyleContext  // out
-	var _arg1 *C.GtkStyleProvider // out
-	var _arg2 C.guint             // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.guint // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	_arg2 = C.guint(priority)
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*StyleProviderer)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("add_provider", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(priority)
-}
-
-// Border gets the border for a given state as a GtkBorder.
-//
-// The function returns the following values:
-//
-//    - border: return value for the border settings.
-//
-func (context *StyleContext) Border() *Border {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_style_context_get_border(_arg0, &_arg1)
-	runtime.KeepAlive(context)
-
-	var _border *Border // out
-
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _border
-}
-
-// Color gets the foreground color for a given state.
-//
-// The function returns the following values:
-//
-//    - color: return value for the foreground color.
-//
-func (context *StyleContext) Color() *gdk.RGBA {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GdkRGBA          // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_style_context_get_color(_arg0, &_arg1)
-	runtime.KeepAlive(context)
-
-	var _color *gdk.RGBA // out
-
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _color
 }
 
 // Display returns the GdkDisplay to which context is attached.
@@ -295,116 +258,28 @@ func (context *StyleContext) Color() *gdk.RGBA {
 //    - display: GdkDisplay.
 //
 func (context *StyleContext) Display() *gdk.Display {
-	var _arg0 *C.GtkStyleContext // out
-	var _cret *C.GdkDisplay      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_style_context_get_display(_arg0)
+	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _display *gdk.Display // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_display = &gdk.Display{
 			Object: obj,
 		}
 	}
 
 	return _display
-}
-
-// Margin gets the margin for a given state as a GtkBorder.
-//
-// The function returns the following values:
-//
-//    - margin: return value for the margin settings.
-//
-func (context *StyleContext) Margin() *Border {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_style_context_get_margin(_arg0, &_arg1)
-	runtime.KeepAlive(context)
-
-	var _margin *Border // out
-
-	_margin = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _margin
-}
-
-// Padding gets the padding for a given state as a GtkBorder.
-//
-// The function returns the following values:
-//
-//    - padding: return value for the padding settings.
-//
-func (context *StyleContext) Padding() *Border {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkBorder        // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_style_context_get_padding(_arg0, &_arg1)
-	runtime.KeepAlive(context)
-
-	var _padding *Border // out
-
-	_padding = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _padding
-}
-
-// Scale returns the scale used for assets.
-//
-// The function returns the following values:
-//
-//    - gint: scale.
-//
-func (context *StyleContext) Scale() int {
-	var _arg0 *C.GtkStyleContext // out
-	var _cret C.int              // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gtk_style_context_get_scale(_arg0)
-	runtime.KeepAlive(context)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// State returns the state used for style matching.
-//
-// This method should only be used to retrieve the GtkStateFlags to pass to
-// GtkStyleContext methods, like gtk.StyleContext.GetPadding(). If you need to
-// retrieve the current state of a GtkWidget, use gtk.Widget.GetStateFlags().
-//
-// The function returns the following values:
-//
-//    - stateFlags: state flags.
-//
-func (context *StyleContext) State() StateFlags {
-	var _arg0 *C.GtkStyleContext // out
-	var _cret C.GtkStateFlags    // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gtk_style_context_get_state(_arg0)
-	runtime.KeepAlive(context)
-
-	var _stateFlags StateFlags // out
-
-	_stateFlags = StateFlags(_cret)
-
-	return _stateFlags
 }
 
 // HasClass returns TRUE if context currently has defined the given class name.
@@ -418,15 +293,19 @@ func (context *StyleContext) State() StateFlags {
 //    - ok: TRUE if context has class_name defined.
 //
 func (context *StyleContext) HasClass(className string) bool {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.char            // out
-	var _cret C.gboolean         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(className)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("has_class", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
 
@@ -439,42 +318,6 @@ func (context *StyleContext) HasClass(className string) bool {
 	return _ok
 }
 
-// LookupColor looks up and resolves a color name in the context color map.
-//
-// The function takes the following parameters:
-//
-//    - colorName: color name to lookup.
-//
-// The function returns the following values:
-//
-//    - color: return location for the looked up color.
-//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
-//
-func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.char            // out
-	var _arg2 C.GdkRGBA          // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(colorName)
-
-	var _color *gdk.RGBA // out
-	var _ok bool         // out
-
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _color, _ok
-}
-
 // RemoveClass removes class_name from context.
 //
 // The function takes the following parameters:
@@ -482,14 +325,17 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 //    - className class name to remove.
 //
 func (context *StyleContext) RemoveClass(className string) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(className)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_style_context_remove_class(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("remove_class", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
 }
@@ -501,13 +347,16 @@ func (context *StyleContext) RemoveClass(className string) {
 //    - provider: GtkStyleProvider.
 //
 func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
-	var _arg0 *C.GtkStyleContext  // out
-	var _arg1 *C.GtkStyleProvider // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_style_context_remove_provider(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("remove_provider", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(provider)
 }
@@ -516,11 +365,14 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 //
 // See gtk.StyleContext.Save().
 func (context *StyleContext) Restore() {
-	var _arg0 *C.GtkStyleContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_style_context_restore(_arg0)
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("restore", args[:], nil)
+
 	runtime.KeepAlive(context)
 }
 
@@ -533,11 +385,14 @@ func (context *StyleContext) Restore() {
 // The matching call to gtk.StyleContext.Restore() must be done before GTK
 // returns to the main loop.
 func (context *StyleContext) Save() {
-	var _arg0 *C.GtkStyleContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_style_context_save(_arg0)
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("save", args[:], nil)
+
 	runtime.KeepAlive(context)
 }
 
@@ -554,89 +409,18 @@ func (context *StyleContext) Save() {
 //    - display: GdkDisplay.
 //
 func (context *StyleContext) SetDisplay(display *gdk.Display) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 *C.GdkDisplay      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_style_context_set_display(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("set_display", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(display)
-}
-
-// SetScale sets the scale to use when getting image assets for the style.
-//
-// The function takes the following parameters:
-//
-//    - scale: scale.
-//
-func (context *StyleContext) SetScale(scale int) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.int              // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(scale)
-
-	C.gtk_style_context_set_scale(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(scale)
-}
-
-// SetState sets the state to be used for style matching.
-//
-// The function takes the following parameters:
-//
-//    - flags: state to represent.
-//
-func (context *StyleContext) SetState(flags StateFlags) {
-	var _arg0 *C.GtkStyleContext // out
-	var _arg1 C.GtkStateFlags    // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.GtkStateFlags(flags)
-
-	C.gtk_style_context_set_state(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(flags)
-}
-
-// String converts the style context into a string representation.
-//
-// The string representation always includes information about the name, state,
-// id, visibility and style classes of the CSS node that is backing context.
-// Depending on the flags, more information may be included.
-//
-// This function is intended for testing and debugging of the CSS implementation
-// in GTK. There are no guarantees about the format of the returned string, it
-// may change.
-//
-// The function takes the following parameters:
-//
-//    - flags flags that determine what to print.
-//
-// The function returns the following values:
-//
-//    - utf8: newly allocated string representing context.
-//
-func (context *StyleContext) String(flags StyleContextPrintFlags) string {
-	var _arg0 *C.GtkStyleContext          // out
-	var _arg1 C.GtkStyleContextPrintFlags // out
-	var _cret *C.char                     // in
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.GtkStyleContextPrintFlags(flags)
-
-	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(flags)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
 }
 
 // StyleContextAddProviderForDisplay adds a global style provider to display,
@@ -659,15 +443,20 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
-	var _arg1 *C.GdkDisplay       // out
-	var _arg2 *C.GtkStyleProvider // out
-	var _arg3 C.guint             // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.guint // out
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
-	_arg3 = C.guint(priority)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	_arg2 = C.guint(priority)
+	*(**gdk.Display)(unsafe.Pointer(&args[0])) = _arg0
+	*(*StyleProviderer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_style_context_add_provider_for_display(_arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "add_provider_for_display").Invoke(args[:], nil)
+
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(priority)
@@ -682,13 +471,17 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 //    - provider: GtkStyleProvider.
 //
 func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StyleProviderer) {
-	var _arg1 *C.GdkDisplay       // out
-	var _arg2 *C.GtkStyleProvider // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(**gdk.Display)(unsafe.Pointer(&args[0])) = _arg0
+	*(*StyleProviderer)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_style_context_remove_provider_for_display(_arg1, _arg2)
+	girepository.MustFind("Gtk", "remove_provider_for_display").Invoke(args[:], nil)
+
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(provider)
 }

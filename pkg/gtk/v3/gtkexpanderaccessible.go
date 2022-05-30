@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkexpanderaccessible.go.
-var GTypeExpanderAccessible = externglib.Type(C.gtk_expander_accessible_get_type())
+var GTypeExpanderAccessible = coreglib.Type(C.gtk_expander_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeExpanderAccessible, F: marshalExpanderAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type ExpanderAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ExpanderAccessible)(nil)
+	_ coreglib.Objector = (*ExpanderAccessible)(nil)
 )
 
 func classInitExpanderAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitExpanderAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
+func wrapExpanderAccessible(obj *coreglib.Object) *ExpanderAccessible {
 	return &ExpanderAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -69,5 +68,5 @@ func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 }
 
 func marshalExpanderAccessible(p uintptr) (interface{}, error) {
-	return wrapExpanderAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapExpanderAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

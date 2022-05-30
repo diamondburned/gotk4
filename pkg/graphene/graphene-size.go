@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for graphene-size.go.
-var GTypeSize = externglib.Type(C.graphene_size_get_type())
+var GTypeSize = coreglib.Type(C.graphene_size_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSize, F: marshalSize},
 	})
 }
@@ -37,7 +37,7 @@ type size struct {
 }
 
 func marshalSize(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Size{&size{(*C.graphene_size_t)(b)}}, nil
 }
 

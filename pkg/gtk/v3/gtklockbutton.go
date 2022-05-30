@@ -7,22 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtklockbutton.go.
-var GTypeLockButton = externglib.Type(C.gtk_lock_button_get_type())
+var GTypeLockButton = coreglib.Type(C.gtk_lock_button_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeLockButton, F: marshalLockButton},
 	})
 }
@@ -67,8 +66,8 @@ type LockButton struct {
 }
 
 var (
-	_ Binner              = (*LockButton)(nil)
-	_ externglib.Objector = (*LockButton)(nil)
+	_ Binner            = (*LockButton)(nil)
+	_ coreglib.Objector = (*LockButton)(nil)
 )
 
 func classInitLockButtonner(gclassPtr, data C.gpointer) {
@@ -79,13 +78,13 @@ func classInitLockButtonner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapLockButton(obj *externglib.Object) *LockButton {
+func wrapLockButton(obj *coreglib.Object) *LockButton {
 	return &LockButton{
 		Button: Button{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -101,7 +100,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -121,7 +120,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 }
 
 func marshalLockButton(p uintptr) (interface{}, error) {
-	return wrapLockButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapLockButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLockButton creates a new lock button which reflects the permission.
@@ -135,19 +134,23 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 //    - lockButton: new LockButton.
 //
 func NewLockButton(permission gio.Permissioner) *LockButton {
-	var _arg1 *C.GPermission // out
-	var _cret *C.GtkWidget   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if permission != nil {
-		_arg1 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
+	*(*gio.Permissioner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_lock_button_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("new_LockButton", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(permission)
 
 	var _lockButton *LockButton // out
 
-	_lockButton = wrapLockButton(externglib.Take(unsafe.Pointer(_cret)))
+	_lockButton = wrapLockButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _lockButton
 }
@@ -159,12 +162,16 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 //    - permission of button.
 //
 func (button *LockButton) Permission() gio.Permissioner {
-	var _arg0 *C.GtkLockButton // out
-	var _cret *C.GPermission   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**LockButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_lock_button_get_permission(_arg0)
+	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("get_permission", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _permission gio.Permissioner // out
@@ -175,8 +182,8 @@ func (button *LockButton) Permission() gio.Permissioner {
 			panic("object of type gio.Permissioner is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.Permissioner)
 			return ok
 		})
@@ -197,15 +204,18 @@ func (button *LockButton) Permission() gio.Permissioner {
 //    - permission (optional) object, or NULL.
 //
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
-	var _arg0 *C.GtkLockButton // out
-	var _arg1 *C.GPermission   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if permission != nil {
-		_arg1 = (*C.GPermission)(unsafe.Pointer(externglib.InternObject(permission).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
+	*(**LockButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_lock_button_set_permission(_arg0, _arg1)
+	girepository.MustFind("Gtk", "LockButton").InvokeMethod("set_permission", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(permission)
 }

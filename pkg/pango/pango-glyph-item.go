@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -17,12 +17,12 @@ import "C"
 
 // glib.Type values for pango-glyph-item.go.
 var (
-	GTypeGlyphItem     = externglib.Type(C.pango_glyph_item_get_type())
-	GTypeGlyphItemIter = externglib.Type(C.pango_glyph_item_iter_get_type())
+	GTypeGlyphItem     = coreglib.Type(C.pango_glyph_item_get_type())
+	GTypeGlyphItemIter = coreglib.Type(C.pango_glyph_item_iter_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGlyphItem, F: marshalGlyphItem},
 		{T: GTypeGlyphItemIter, F: marshalGlyphItemIter},
 	})
@@ -46,7 +46,7 @@ type glyphItem struct {
 }
 
 func marshalGlyphItem(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &GlyphItem{&glyphItem{(*C.PangoGlyphItem)(b)}}, nil
 }
 
@@ -260,7 +260,7 @@ type glyphItemIter struct {
 }
 
 func marshalGlyphItemIter(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &GlyphItemIter{&glyphItemIter{(*C.PangoGlyphItemIter)(b)}}, nil
 }
 

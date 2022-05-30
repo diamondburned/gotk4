@@ -9,7 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -19,12 +19,12 @@ import "C"
 
 // glib.Type values for pango-glyph.go.
 var (
-	GTypeShapeFlags  = externglib.Type(C.pango_shape_flags_get_type())
-	GTypeGlyphString = externglib.Type(C.pango_glyph_string_get_type())
+	GTypeShapeFlags  = coreglib.Type(C.pango_shape_flags_get_type())
+	GTypeGlyphString = coreglib.Type(C.pango_glyph_string_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShapeFlags, F: marshalShapeFlags},
 		{T: GTypeGlyphString, F: marshalGlyphString},
 	})
@@ -54,7 +54,7 @@ const (
 )
 
 func marshalShapeFlags(p uintptr) (interface{}, error) {
-	return ShapeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ShapeFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ShapeFlags.
@@ -378,7 +378,7 @@ type glyphString struct {
 }
 
 func marshalGlyphString(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &GlyphString{&glyphString{(*C.PangoGlyphString)(b)}}, nil
 }
 
@@ -461,7 +461,7 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect
 	var _arg3 C.PangoRectangle    // in
 
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
 	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(glyphs)
@@ -507,7 +507,7 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg1 = C.int(start)
 	_arg2 = C.int(end)
-	_arg3 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
+	_arg3 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
 	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 	runtime.KeepAlive(glyphs)

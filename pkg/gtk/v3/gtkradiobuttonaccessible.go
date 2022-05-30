@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkradiobuttonaccessible.go.
-var GTypeRadioButtonAccessible = externglib.Type(C.gtk_radio_button_accessible_get_type())
+var GTypeRadioButtonAccessible = coreglib.Type(C.gtk_radio_button_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRadioButtonAccessible, F: marshalRadioButtonAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type RadioButtonAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*RadioButtonAccessible)(nil)
+	_ coreglib.Objector = (*RadioButtonAccessible)(nil)
 )
 
 func classInitRadioButtonAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitRadioButtonAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
+func wrapRadioButtonAccessible(obj *coreglib.Object) *RadioButtonAccessible {
 	return &RadioButtonAccessible{
 		ToggleButtonAccessible: ToggleButtonAccessible{
 			ButtonAccessible: ButtonAccessible{
@@ -75,5 +74,5 @@ func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 }
 
 func marshalRadioButtonAccessible(p uintptr) (interface{}, error) {
-	return wrapRadioButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRadioButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

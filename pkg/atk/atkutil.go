@@ -9,23 +9,24 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for atkutil.go.
 var (
-	GTypeCoordType    = externglib.Type(C.atk_coord_type_get_type())
-	GTypeKeyEventType = externglib.Type(C.atk_key_event_type_get_type())
-	GTypeUtil         = externglib.Type(C.atk_util_get_type())
+	GTypeCoordType    = coreglib.Type(C.atk_coord_type_get_type())
+	GTypeKeyEventType = coreglib.Type(C.atk_key_event_type_get_type())
+	GTypeUtil         = coreglib.Type(C.atk_util_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCoordType, F: marshalCoordType},
 		{T: GTypeKeyEventType, F: marshalKeyEventType},
 		{T: GTypeUtil, F: marshalUtil},
@@ -49,7 +50,7 @@ const (
 )
 
 func marshalCoordType(p uintptr) (interface{}, error) {
-	return CoordType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return CoordType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CoordType.
@@ -79,7 +80,7 @@ const (
 )
 
 func marshalKeyEventType(p uintptr) (interface{}, error) {
-	return KeyEventType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return KeyEventType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for KeyEventType.
@@ -137,11 +138,14 @@ func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret 
 //    - object: Object.
 //
 func FocusTrackerNotify(object *ObjectClass) {
-	var _arg1 *C.AtkObject // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	*(**ObjectClass)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.atk_focus_tracker_notify(_arg1)
+	girepository.MustFind("Atk", "focus_tracker_notify").Invoke(args[:], nil)
+
 	runtime.KeepAlive(object)
 }
 
@@ -152,13 +156,14 @@ func FocusTrackerNotify(object *ObjectClass) {
 //    - object: currently focused object for the current application.
 //
 func GetFocusObject() *ObjectClass {
-	var _cret *C.AtkObject // in
+	var _cret *C.void // in
 
-	_cret = C.atk_get_focus_object()
+	_gret := girepository.MustFind("Atk", "get_focus_object").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -170,13 +175,14 @@ func GetFocusObject() *ObjectClass {
 //    - object: root accessible container for the current application.
 //
 func GetRoot() *ObjectClass {
-	var _cret *C.AtkObject // in
+	var _cret *C.void // in
 
-	_cret = C.atk_get_root()
+	_gret := girepository.MustFind("Atk", "get_root").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -190,9 +196,10 @@ func GetRoot() *ObjectClass {
 //      application.
 //
 func GetToolkitName() string {
-	var _cret *C.gchar // in
+	var _cret *C.void // in
 
-	_cret = C.atk_get_toolkit_name()
+	_gret := girepository.MustFind("Atk", "get_toolkit_name").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -210,9 +217,10 @@ func GetToolkitName() string {
 //      application.
 //
 func GetToolkitVersion() string {
-	var _cret *C.gchar // in
+	var _cret *C.void // in
 
-	_cret = C.atk_get_toolkit_version()
+	_gret := girepository.MustFind("Atk", "get_toolkit_version").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -228,9 +236,10 @@ func GetToolkitVersion() string {
 //    - utf8: version string for ATK.
 //
 func GetVersion() string {
-	var _cret *C.gchar // in
+	var _cret *C.void // in
 
-	_cret = C.atk_get_version()
+	_gret := girepository.MustFind("Atk", "get_version").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -251,11 +260,14 @@ func GetVersion() string {
 //    - trackerId: id of the focus tracker to remove.
 //
 func RemoveFocusTracker(trackerId uint) {
-	var _arg1 C.guint // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint // out
 
-	_arg1 = C.guint(trackerId)
+	_arg0 = C.guint(trackerId)
+	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.atk_remove_focus_tracker(_arg1)
+	girepository.MustFind("Atk", "remove_focus_tracker").Invoke(args[:], nil)
+
 	runtime.KeepAlive(trackerId)
 }
 
@@ -276,11 +288,14 @@ func RemoveFocusTracker(trackerId uint) {
 //    - listenerId: id of the event listener to remove.
 //
 func RemoveGlobalEventListener(listenerId uint) {
-	var _arg1 C.guint // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint // out
 
-	_arg1 = C.guint(listenerId)
+	_arg0 = C.guint(listenerId)
+	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.atk_remove_global_event_listener(_arg1)
+	girepository.MustFind("Atk", "remove_global_event_listener").Invoke(args[:], nil)
+
 	runtime.KeepAlive(listenerId)
 }
 
@@ -294,11 +309,14 @@ func RemoveGlobalEventListener(listenerId uint) {
 //    - listenerId: id of the event listener to remove.
 //
 func RemoveKeyEventListener(listenerId uint) {
-	var _arg1 C.guint // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint // out
 
-	_arg1 = C.guint(listenerId)
+	_arg0 = C.guint(listenerId)
+	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.atk_remove_key_event_listener(_arg1)
+	girepository.MustFind("Atk", "remove_key_event_listener").Invoke(args[:], nil)
+
 	runtime.KeepAlive(listenerId)
 }
 
@@ -312,11 +330,11 @@ type UtilOverrider interface {
 // version.
 type Util struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Util)(nil)
+	_ coreglib.Objector = (*Util)(nil)
 )
 
 func classInitUtiller(gclassPtr, data C.gpointer) {
@@ -327,14 +345,14 @@ func classInitUtiller(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapUtil(obj *externglib.Object) *Util {
+func wrapUtil(obj *coreglib.Object) *Util {
 	return &Util{
 		Object: obj,
 	}
 }
 
 func marshalUtil(p uintptr) (interface{}, error) {
-	return wrapUtil(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapUtil(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // KeyEventStruct encapsulates information about a key event.

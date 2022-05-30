@@ -8,14 +8,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_ScaleButtonClass_value_changed(GtkScaleButton*, gdouble);
 // extern void _gotk4_gtk3_ScaleButton_ConnectPopdown(gpointer, guintptr);
 // extern void _gotk4_gtk3_ScaleButton_ConnectPopup(gpointer, guintptr);
@@ -23,10 +22,10 @@ import (
 import "C"
 
 // glib.Type values for gtkscalebutton.go.
-var GTypeScaleButton = externglib.Type(C.gtk_scale_button_get_type())
+var GTypeScaleButton = coreglib.Type(C.gtk_scale_button_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeScaleButton, F: marshalScaleButton},
 	})
 }
@@ -53,13 +52,13 @@ type ScaleButton struct {
 	_ [0]func() // equal guard
 	Button
 
-	*externglib.Object
+	*coreglib.Object
 	Orientable
 }
 
 var (
-	_ externglib.Objector = (*ScaleButton)(nil)
-	_ Binner              = (*ScaleButton)(nil)
+	_ coreglib.Objector = (*ScaleButton)(nil)
+	_ Binner            = (*ScaleButton)(nil)
 )
 
 func classInitScaleButtonner(gclassPtr, data C.gpointer) {
@@ -80,7 +79,7 @@ func classInitScaleButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ScaleButtonClass_value_changed
 func _gotk4_gtk3_ScaleButtonClass_value_changed(arg0 *C.GtkScaleButton, arg1 C.gdouble) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ValueChanged(value float64) })
 
 	var _value float64 // out
@@ -90,13 +89,13 @@ func _gotk4_gtk3_ScaleButtonClass_value_changed(arg0 *C.GtkScaleButton, arg1 C.g
 	iface.ValueChanged(_value)
 }
 
-func wrapScaleButton(obj *externglib.Object) *ScaleButton {
+func wrapScaleButton(obj *coreglib.Object) *ScaleButton {
 	return &ScaleButton{
 		Button: Button{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -112,7 +111,7 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -136,14 +135,14 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 }
 
 func marshalScaleButton(p uintptr) (interface{}, error) {
-	return wrapScaleButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapScaleButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ScaleButton_ConnectPopdown
 func _gotk4_gtk3_ScaleButton_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -159,15 +158,15 @@ func _gotk4_gtk3_ScaleButton_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) {
 // emitted to popdown the scale widget.
 //
 // The default binding for this signal is Escape.
-func (button *ScaleButton) ConnectPopdown(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(button, "popdown", false, unsafe.Pointer(C._gotk4_gtk3_ScaleButton_ConnectPopdown), f)
+func (button *ScaleButton) ConnectPopdown(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(button, "popdown", false, unsafe.Pointer(C._gotk4_gtk3_ScaleButton_ConnectPopdown), f)
 }
 
 //export _gotk4_gtk3_ScaleButton_ConnectPopup
 func _gotk4_gtk3_ScaleButton_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -183,15 +182,15 @@ func _gotk4_gtk3_ScaleButton_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
 // emitted to popup the scale widget.
 //
 // The default bindings for this signal are Space, Enter and Return.
-func (button *ScaleButton) ConnectPopup(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(button, "popup", false, unsafe.Pointer(C._gotk4_gtk3_ScaleButton_ConnectPopup), f)
+func (button *ScaleButton) ConnectPopup(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(button, "popup", false, unsafe.Pointer(C._gotk4_gtk3_ScaleButton_ConnectPopup), f)
 }
 
 //export _gotk4_gtk3_ScaleButton_ConnectValueChanged
 func _gotk4_gtk3_ScaleButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
 	var f func(value float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -208,65 +207,8 @@ func _gotk4_gtk3_ScaleButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble
 }
 
 // ConnectValueChanged signal is emitted when the value field has changed.
-func (button *ScaleButton) ConnectValueChanged(f func(value float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(button, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_ScaleButton_ConnectValueChanged), f)
-}
-
-// NewScaleButton creates a ScaleButton, with a range between min and max, with
-// a stepping of step.
-//
-// The function takes the following parameters:
-//
-//    - size: stock icon size (IconSize).
-//    - min: minimum value of the scale (usually 0).
-//    - max: maximum value of the scale (usually 100).
-//    - step: stepping of value when a scroll-wheel event, or up/down arrow event
-//      occurs (usually 2).
-//    - icons (optional): NULL-terminated array of icon names, or NULL if you
-//      want to set the list later with gtk_scale_button_set_icons().
-//
-// The function returns the following values:
-//
-//    - scaleButton: new ScaleButton.
-//
-func NewScaleButton(size int, min, max, step float64, icons []string) *ScaleButton {
-	var _arg1 C.GtkIconSize // out
-	var _arg2 C.gdouble     // out
-	var _arg3 C.gdouble     // out
-	var _arg4 C.gdouble     // out
-	var _arg5 **C.gchar     // out
-	var _cret *C.GtkWidget  // in
-
-	_arg1 = C.GtkIconSize(size)
-	_arg2 = C.gdouble(min)
-	_arg3 = C.gdouble(max)
-	_arg4 = C.gdouble(step)
-	{
-		_arg5 = (**C.gchar)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg5))
-		{
-			out := unsafe.Slice(_arg5, len(icons)+1)
-			var zero *C.gchar
-			out[len(icons)] = zero
-			for i := range icons {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-
-	_cret = C.gtk_scale_button_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(size)
-	runtime.KeepAlive(min)
-	runtime.KeepAlive(max)
-	runtime.KeepAlive(step)
-	runtime.KeepAlive(icons)
-
-	var _scaleButton *ScaleButton // out
-
-	_scaleButton = wrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _scaleButton
+func (button *ScaleButton) ConnectValueChanged(f func(value float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(button, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_ScaleButton_ConnectValueChanged), f)
 }
 
 // Adjustment gets the Adjustment associated with the ScaleButton’s scale. See
@@ -277,17 +219,21 @@ func NewScaleButton(size int, min, max, step float64, icons []string) *ScaleButt
 //    - adjustment associated with the scale.
 //
 func (button *ScaleButton) Adjustment() *Adjustment {
-	var _arg0 *C.GtkScaleButton // out
-	var _cret *C.GtkAdjustment  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ScaleButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_scale_button_get_adjustment(_arg0)
+	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_adjustment", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -299,17 +245,21 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 //    - ret minus button of the ScaleButton as a Button.
 //
 func (button *ScaleButton) MinusButton() *Button {
-	var _arg0 *C.GtkScaleButton // out
-	var _cret *C.GtkWidget      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ScaleButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_scale_button_get_minus_button(_arg0)
+	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_minus_button", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _ret *Button // out
 
-	_ret = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -321,17 +271,21 @@ func (button *ScaleButton) MinusButton() *Button {
 //    - ret plus button of the ScaleButton as a Button.
 //
 func (button *ScaleButton) PlusButton() *Button {
-	var _arg0 *C.GtkScaleButton // out
-	var _cret *C.GtkWidget      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ScaleButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_scale_button_get_plus_button(_arg0)
+	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_plus_button", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _ret *Button // out
 
-	_ret = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -343,12 +297,16 @@ func (button *ScaleButton) PlusButton() *Button {
 //    - widget: popup of the ScaleButton.
 //
 func (button *ScaleButton) Popup() Widgetter {
-	var _arg0 *C.GtkScaleButton // out
-	var _cret *C.GtkWidget      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ScaleButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_scale_button_get_popup(_arg0)
+	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_popup", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out
@@ -359,8 +317,8 @@ func (button *ScaleButton) Popup() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -381,12 +339,16 @@ func (button *ScaleButton) Popup() Widgetter {
 //    - gdouble: current value of the scale button.
 //
 func (button *ScaleButton) Value() float64 {
-	var _arg0 *C.GtkScaleButton // out
-	var _cret C.gdouble         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ScaleButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_scale_button_get_value(_arg0)
+	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_value", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _gdouble float64 // out
@@ -404,13 +366,16 @@ func (button *ScaleButton) Value() float64 {
 //    - adjustment: Adjustment.
 //
 func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
-	var _arg0 *C.GtkScaleButton // out
-	var _arg1 *C.GtkAdjustment  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**ScaleButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_scale_button_set_adjustment(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("set_adjustment", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(adjustment)
 }
@@ -423,25 +388,28 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 //    - icons: NULL-terminated array of icon names.
 //
 func (button *ScaleButton) SetIcons(icons []string) {
-	var _arg0 *C.GtkScaleButton // out
-	var _arg1 **C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 **C.void // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	{
-		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.void)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(icons)+1)
-			var zero *C.gchar
+			var zero *C.void
 			out[len(icons)] = zero
 			for i := range icons {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(icons[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**ScaleButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_scale_button_set_icons(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("set_icons", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(icons)
 }
@@ -456,13 +424,16 @@ func (button *ScaleButton) SetIcons(icons []string) {
 //    - value: new value of the scale button.
 //
 func (button *ScaleButton) SetValue(value float64) {
-	var _arg0 *C.GtkScaleButton // out
-	var _arg1 C.gdouble         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	_arg1 = C.gdouble(value)
+	*(**ScaleButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_scale_button_set_value(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("set_value", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(value)
 }

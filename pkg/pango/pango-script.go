@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -18,12 +18,12 @@ import "C"
 
 // glib.Type values for pango-script.go.
 var (
-	GTypeScript     = externglib.Type(C.pango_script_get_type())
-	GTypeScriptIter = externglib.Type(C.pango_script_iter_get_type())
+	GTypeScript     = coreglib.Type(C.pango_script_get_type())
+	GTypeScriptIter = coreglib.Type(C.pango_script_iter_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeScript, F: marshalScript},
 		{T: GTypeScriptIter, F: marshalScriptIter},
 	})
@@ -282,7 +282,7 @@ const (
 )
 
 func marshalScript(p uintptr) (interface{}, error) {
-	return Script(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Script(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Script.
@@ -638,7 +638,7 @@ type scriptIter struct {
 }
 
 func marshalScriptIter(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &ScriptIter{&scriptIter{(*C.PangoScriptIter)(b)}}, nil
 }
 

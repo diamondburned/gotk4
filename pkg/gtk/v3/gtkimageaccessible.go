@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkimageaccessible.go.
-var GTypeImageAccessible = externglib.Type(C.gtk_image_accessible_get_type())
+var GTypeImageAccessible = coreglib.Type(C.gtk_image_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeImageAccessible, F: marshalImageAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type ImageAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ImageAccessible)(nil)
+	_ coreglib.Objector = (*ImageAccessible)(nil)
 )
 
 func classInitImageAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitImageAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
+func wrapImageAccessible(obj *coreglib.Object) *ImageAccessible {
 	return &ImageAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -67,5 +66,5 @@ func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
 }
 
 func marshalImageAccessible(p uintptr) (interface{}, error) {
-	return wrapImageAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapImageAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -8,12 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // NewDBusMessage creates a new empty BusMessage.
@@ -23,60 +25,16 @@ import "C"
 //    - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessage() *DBusMessage {
-	var _cret *C.GDBusMessage // in
+	var _cret *C.void // in
 
-	_cret = C.g_dbus_message_new()
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_DBusMessage", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _dBusMessage *DBusMessage // out
 
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
-}
-
-// NewDBusMessageFromBlob creates a new BusMessage from the data stored at blob.
-// The byte order that the message was in can be retrieved using
-// g_dbus_message_get_byte_order().
-//
-// If the blob cannot be parsed, contains invalid fields, or contains invalid
-// headers, G_IO_ERROR_INVALID_ARGUMENT will be returned.
-//
-// The function takes the following parameters:
-//
-//    - blob representing a binary D-Bus message.
-//    - capabilities describing what protocol features are supported.
-//
-// The function returns the following values:
-//
-//    - dBusMessage: new BusMessage or NULL if error is set. Free with
-//      g_object_unref().
-//
-func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBusMessage, error) {
-	var _arg1 *C.guchar // out
-	var _arg2 C.gsize
-	var _arg3 C.GDBusCapabilityFlags // out
-	var _cret *C.GDBusMessage        // in
-	var _cerr *C.GError              // in
-
-	_arg2 = (C.gsize)(len(blob))
-	if len(blob) > 0 {
-		_arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
-	}
-	_arg3 = C.GDBusCapabilityFlags(capabilities)
-
-	_cret = C.g_dbus_message_new_from_blob(_arg1, _arg2, _arg3, &_cerr)
-	runtime.KeepAlive(blob)
-	runtime.KeepAlive(capabilities)
-
-	var _dBusMessage *DBusMessage // out
-	var _goerr error              // out
-
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _dBusMessage, _goerr
 }
 
 // NewDBusMessageMethodCall creates a new BusMessage for a method call.
@@ -93,26 +51,33 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBu
 //    - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessage {
-	var _arg1 *C.gchar        // out
-	var _arg2 *C.gchar        // out
-	var _arg3 *C.gchar        // out
-	var _arg4 *C.gchar        // out
-	var _cret *C.GDBusMessage // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _cret *C.void // in
 
 	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
+		_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg0))
 	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if interface_ != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interface_)))
-		defer C.free(unsafe.Pointer(_arg3))
+		_arg2 = (*C.void)(unsafe.Pointer(C.CString(interface_)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(method)))
-	defer C.free(unsafe.Pointer(_arg4))
+	_arg3 = (*C.void)(unsafe.Pointer(C.CString(method)))
+	defer C.free(unsafe.Pointer(_arg3))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.g_dbus_message_new_method_call(_arg1, _arg2, _arg3, _arg4)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_DBusMessage_method_call", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(interface_)
@@ -120,7 +85,7 @@ func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessag
 
 	var _dBusMessage *DBusMessage // out
 
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -138,26 +103,32 @@ func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessag
 //    - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
-	var _arg1 *C.gchar        // out
-	var _arg2 *C.gchar        // out
-	var _arg3 *C.gchar        // out
-	var _cret *C.GDBusMessage // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(interface_)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interface_)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(signal)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(signal)))
-	defer C.free(unsafe.Pointer(_arg3))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.g_dbus_message_new_signal(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_DBusMessage_signal", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(signal)
 
 	var _dBusMessage *DBusMessage // out
 
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -174,19 +145,23 @@ func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 //      g_object_unref().
 //
 func (message *DBusMessage) Copy() (*DBusMessage, error) {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.GDBusMessage // in
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_copy(_arg0, &_cerr)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("copy", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _dBusMessage *DBusMessage // out
 	var _goerr error              // out
 
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -202,12 +177,16 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 //      message is not a string.
 //
 func (message *DBusMessage) Arg0() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_arg0(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_arg0", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -227,12 +206,16 @@ func (message *DBusMessage) Arg0() string {
 //      by message.
 //
 func (message *DBusMessage) Body() *glib.Variant {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.GVariant     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_body(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_body", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _variant *glib.Variant // out
@@ -251,28 +234,6 @@ func (message *DBusMessage) Body() *glib.Variant {
 	return _variant
 }
 
-// ByteOrder gets the byte order of message.
-//
-// The function returns the following values:
-//
-//    - dBusMessageByteOrder: byte order.
-//
-func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
-	var _arg0 *C.GDBusMessage         // out
-	var _cret C.GDBusMessageByteOrder // in
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-
-	_cret = C.g_dbus_message_get_byte_order(_arg0)
-	runtime.KeepAlive(message)
-
-	var _dBusMessageByteOrder DBusMessageByteOrder // out
-
-	_dBusMessageByteOrder = DBusMessageByteOrder(_cret)
-
-	return _dBusMessageByteOrder
-}
-
 // Destination: convenience getter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
 //
@@ -281,12 +242,16 @@ func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Destination() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_destination(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_destination", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -306,12 +271,16 @@ func (message *DBusMessage) Destination() string {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) ErrorName() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_error_name(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_error_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -323,72 +292,6 @@ func (message *DBusMessage) ErrorName() string {
 	return _utf8
 }
 
-// Flags gets the flags for message.
-//
-// The function returns the following values:
-//
-//    - dBusMessageFlags flags that are set (typically values from the
-//      BusMessageFlags enumeration bitwise ORed together).
-//
-func (message *DBusMessage) Flags() DBusMessageFlags {
-	var _arg0 *C.GDBusMessage     // out
-	var _cret C.GDBusMessageFlags // in
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-
-	_cret = C.g_dbus_message_get_flags(_arg0)
-	runtime.KeepAlive(message)
-
-	var _dBusMessageFlags DBusMessageFlags // out
-
-	_dBusMessageFlags = DBusMessageFlags(_cret)
-
-	return _dBusMessageFlags
-}
-
-// Header gets a header field on message.
-//
-// The caller is responsible for checking the type of the returned #GVariant
-// matches what is expected.
-//
-// The function takes the following parameters:
-//
-//    - headerField: 8-bit unsigned integer (typically a value from the
-//      BusMessageHeaderField enumeration).
-//
-// The function returns the following values:
-//
-//    - variant (optional) with the value if the header was found, NULL
-//      otherwise. Do not free, it is owned by message.
-//
-func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
-	var _arg0 *C.GDBusMessage           // out
-	var _arg1 C.GDBusMessageHeaderField // out
-	var _cret *C.GVariant               // in
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg1 = C.GDBusMessageHeaderField(headerField)
-
-	_cret = C.g_dbus_message_get_header(_arg0, _arg1)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(headerField)
-
-	var _variant *glib.Variant // out
-
-	if _cret != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
-		)
-	}
-
-	return _variant
-}
-
 // HeaderFields gets an array of all header fields on message that are set.
 //
 // The function returns the following values:
@@ -398,12 +301,16 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 //      g_free().
 //
 func (message *DBusMessage) HeaderFields() []byte {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.guchar       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret *C.guchar // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_header_fields(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_header_fields", args[:], nil)
+	_cret = *(**C.guchar)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _guint8s []byte // out
@@ -433,12 +340,16 @@ func (message *DBusMessage) HeaderFields() []byte {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Interface() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_interface(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_interface", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -459,12 +370,16 @@ func (message *DBusMessage) Interface() string {
 //    - ok: TRUE if message is locked, FALSE otherwise.
 //
 func (message *DBusMessage) Locked() bool {
-	var _arg0 *C.GDBusMessage // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_locked(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_locked", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _ok bool // out
@@ -484,12 +399,16 @@ func (message *DBusMessage) Locked() bool {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Member() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_member(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_member", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -501,29 +420,6 @@ func (message *DBusMessage) Member() string {
 	return _utf8
 }
 
-// MessageType gets the type of message.
-//
-// The function returns the following values:
-//
-//    - dBusMessageType: 8-bit unsigned integer (typically a value from the
-//      BusMessageType enumeration).
-//
-func (message *DBusMessage) MessageType() DBusMessageType {
-	var _arg0 *C.GDBusMessage    // out
-	var _cret C.GDBusMessageType // in
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-
-	_cret = C.g_dbus_message_get_message_type(_arg0)
-	runtime.KeepAlive(message)
-
-	var _dBusMessageType DBusMessageType // out
-
-	_dBusMessageType = DBusMessageType(_cret)
-
-	return _dBusMessageType
-}
-
 // Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
 // field.
 //
@@ -532,12 +428,16 @@ func (message *DBusMessage) MessageType() DBusMessageType {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Path() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_path(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_path", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -557,12 +457,16 @@ func (message *DBusMessage) Path() string {
 //    - guint32: value.
 //
 func (message *DBusMessage) ReplySerial() uint32 {
-	var _arg0 *C.GDBusMessage // out
-	var _cret C.guint32       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_reply_serial(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_reply_serial", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _guint32 uint32 // out
@@ -580,12 +484,16 @@ func (message *DBusMessage) ReplySerial() uint32 {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Sender() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_sender(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_sender", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -604,12 +512,16 @@ func (message *DBusMessage) Sender() string {
 //    - guint32: #guint32.
 //
 func (message *DBusMessage) Serial() uint32 {
-	var _arg0 *C.GDBusMessage // out
-	var _cret C.guint32       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_serial(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_serial", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _guint32 uint32 // out
@@ -627,12 +539,16 @@ func (message *DBusMessage) Serial() uint32 {
 //    - utf8: value.
 //
 func (message *DBusMessage) Signature() string {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_get_signature(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_signature", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 
 	var _utf8 string // out
@@ -644,11 +560,14 @@ func (message *DBusMessage) Signature() string {
 
 // Lock: if message is locked, does nothing. Otherwise locks the message.
 func (message *DBusMessage) Lock() {
-	var _arg0 *C.GDBusMessage // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_message_lock(_arg0)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("lock", args[:], nil)
+
 	runtime.KeepAlive(message)
 }
 
@@ -665,25 +584,30 @@ func (message *DBusMessage) Lock() {
 //    - dBusMessage Free with g_object_unref().
 //
 func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMessage string) *DBusMessage {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
-	var _arg2 *C.gchar        // out
-	var _cret *C.GDBusMessage // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(methodCallMessage).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(methodCallMessage).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(errorName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(errorMessage)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.g_dbus_message_new_method_error_literal(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_method_error_literal", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(methodCallMessage)
 	runtime.KeepAlive(errorName)
 	runtime.KeepAlive(errorMessage)
 
 	var _dBusMessage *DBusMessage // out
 
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -696,17 +620,21 @@ func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMess
 //    - dBusMessage Free with g_object_unref().
 //
 func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
-	var _arg0 *C.GDBusMessage // out
-	var _cret *C.GDBusMessage // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(methodCallMessage).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(methodCallMessage).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_new_method_reply(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_method_reply", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(methodCallMessage)
 
 	var _dBusMessage *DBusMessage // out
 
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -752,14 +680,18 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //    - utf8: string that should be freed with g_free().
 //
 func (message *DBusMessage) Print(indent uint) string {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 C.guint         // out
-	var _cret *C.gchar        // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	_arg1 = C.guint(indent)
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_message_print(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("print", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(indent)
 
@@ -782,33 +714,18 @@ func (message *DBusMessage) Print(indent uint) string {
 //    - body: either NULL or a #GVariant that is a tuple.
 //
 func (message *DBusMessage) SetBody(body *glib.Variant) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.GVariant     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(body)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(body)))
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_body(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_body", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(body)
-}
-
-// SetByteOrder sets the byte order of message.
-//
-// The function takes the following parameters:
-//
-//    - byteOrder: byte order.
-//
-func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
-	var _arg0 *C.GDBusMessage         // out
-	var _arg1 C.GDBusMessageByteOrder // out
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg1 = C.GDBusMessageByteOrder(byteOrder)
-
-	C.g_dbus_message_set_byte_order(_arg0, _arg1)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(byteOrder)
 }
 
 // SetDestination: convenience setter for the
@@ -819,16 +736,19 @@ func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetDestination(value string) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	if value != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_destination(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_destination", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
 }
@@ -841,64 +761,20 @@ func (message *DBusMessage) SetDestination(value string) {
 //    - value to set.
 //
 func (message *DBusMessage) SetErrorName(value string) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
 	if message != nil {
-		_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_error_name(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_error_name", args[:], nil)
+
 	runtime.KeepAlive(message)
-	runtime.KeepAlive(value)
-}
-
-// SetFlags sets the flags to set on message.
-//
-// The function takes the following parameters:
-//
-//    - flags flags for message that are set (typically values from the
-//      BusMessageFlags enumeration bitwise ORed together).
-//
-func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
-	var _arg0 *C.GDBusMessage     // out
-	var _arg1 C.GDBusMessageFlags // out
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg1 = C.GDBusMessageFlags(flags)
-
-	C.g_dbus_message_set_flags(_arg0, _arg1)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(flags)
-}
-
-// SetHeader sets a header field on message.
-//
-// If value is floating, message assumes ownership of value.
-//
-// The function takes the following parameters:
-//
-//    - headerField: 8-bit unsigned integer (typically a value from the
-//      BusMessageHeaderField enumeration).
-//    - value (optional) to set the header field or NULL to clear the header
-//      field.
-//
-func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
-	var _arg0 *C.GDBusMessage           // out
-	var _arg1 C.GDBusMessageHeaderField // out
-	var _arg2 *C.GVariant               // out
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg1 = C.GDBusMessageHeaderField(headerField)
-	if value != nil {
-		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-	}
-
-	C.g_dbus_message_set_header(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(headerField)
 	runtime.KeepAlive(value)
 }
 
@@ -910,16 +786,19 @@ func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value 
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetInterface(value string) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	if value != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_interface(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_interface", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
 }
@@ -932,37 +811,21 @@ func (message *DBusMessage) SetInterface(value string) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetMember(value string) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	if value != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_member(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_member", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
-}
-
-// SetMessageType sets message to be of type.
-//
-// The function takes the following parameters:
-//
-//    - typ: 8-bit unsigned integer (typically a value from the BusMessageType
-//      enumeration).
-//
-func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
-	var _arg0 *C.GDBusMessage    // out
-	var _arg1 C.GDBusMessageType // out
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg1 = C.GDBusMessageType(typ)
-
-	C.g_dbus_message_set_message_type(_arg0, _arg1)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(typ)
 }
 
 // SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
@@ -973,16 +836,19 @@ func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetPath(value string) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	if value != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_path(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_path", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
 }
@@ -995,13 +861,16 @@ func (message *DBusMessage) SetPath(value string) {
 //    - value to set.
 //
 func (message *DBusMessage) SetReplySerial(value uint32) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 C.guint32       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	_arg1 = C.guint32(value)
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_reply_serial(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_reply_serial", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
 }
@@ -1014,16 +883,19 @@ func (message *DBusMessage) SetReplySerial(value uint32) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetSender(value string) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	if value != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_sender(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_sender", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
 }
@@ -1035,13 +907,16 @@ func (message *DBusMessage) SetSender(value string) {
 //    - serial: #guint32.
 //
 func (message *DBusMessage) SetSerial(serial uint32) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 C.guint32       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	_arg1 = C.guint32(serial)
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_serial(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_serial", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(serial)
 }
@@ -1054,57 +929,21 @@ func (message *DBusMessage) SetSerial(serial uint32) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetSignature(value string) {
-	var _arg0 *C.GDBusMessage // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	if value != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_message_set_signature(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_signature", args[:], nil)
+
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
-}
-
-// ToBlob serializes message to a blob. The byte order returned by
-// g_dbus_message_get_byte_order() will be used.
-//
-// The function takes the following parameters:
-//
-//    - capabilities describing what protocol features are supported.
-//
-// The function returns the following values:
-//
-//    - guint8s: pointer to a valid binary D-Bus message of out_size bytes
-//      generated by message or NULL if error is set. Free with g_free().
-//
-func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, error) {
-	var _arg0 *C.GDBusMessage        // out
-	var _arg2 C.GDBusCapabilityFlags // out
-	var _cret *C.guchar              // in
-	var _arg1 C.gsize                // in
-	var _cerr *C.GError              // in
-
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg2 = C.GDBusCapabilityFlags(capabilities)
-
-	_cret = C.g_dbus_message_to_blob(_arg0, &_arg1, _arg2, &_cerr)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(capabilities)
-
-	var _guint8s []byte // out
-	var _goerr error    // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	_guint8s = make([]byte, _arg1)
-	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _guint8s, _goerr
 }
 
 // ToGError: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does nothing
@@ -1115,12 +954,15 @@ func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, er
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of message as well as the
 // first string item in message's body.
 func (message *DBusMessage) ToGError() error {
-	var _arg0 *C.GDBusMessage // out
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_message_to_gerror(_arg0, &_cerr)
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("to_gerror", args[:], nil)
+
 	runtime.KeepAlive(message)
 
 	var _goerr error // out
@@ -1146,21 +988,26 @@ func (message *DBusMessage) ToGError() error {
 //      size).
 //
 func DBusMessageBytesNeeded(blob []byte) (int, error) {
-	var _arg1 *C.guchar // out
-	var _arg2 C.gsize
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gsize
+	var _cret C.gssize // in
+	var _cerr *C.void  // in
 
-	_arg2 = (C.gsize)(len(blob))
+	_arg1 = (C.gsize)(len(blob))
 	if len(blob) > 0 {
-		_arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
+		_arg0 = (*C.void)(unsafe.Pointer(&blob[0]))
 	}
+	*(*[]byte)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_message_bytes_needed(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "bytes_needed").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(blob)
 
 	var _gssize int  // out
 	var _goerr error // out
+	_out1 = *(*int)(unsafe.Pointer(&outs[1]))
 
 	_gssize = int(_cret)
 	if _cerr != nil {

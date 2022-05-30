@@ -9,15 +9,14 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_SearchEntryClass_next_match(GtkSearchEntry*);
 // extern void _gotk4_gtk3_SearchEntryClass_previous_match(GtkSearchEntry*);
 // extern void _gotk4_gtk3_SearchEntryClass_search_changed(GtkSearchEntry*);
@@ -29,10 +28,10 @@ import (
 import "C"
 
 // glib.Type values for gtksearchentry.go.
-var GTypeSearchEntry = externglib.Type(C.gtk_search_entry_get_type())
+var GTypeSearchEntry = coreglib.Type(C.gtk_search_entry_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSearchEntry, F: marshalSearchEntry},
 	})
 }
@@ -74,8 +73,8 @@ type SearchEntry struct {
 }
 
 var (
-	_ Widgetter           = (*SearchEntry)(nil)
-	_ externglib.Objector = (*SearchEntry)(nil)
+	_ Widgetter         = (*SearchEntry)(nil)
+	_ coreglib.Objector = (*SearchEntry)(nil)
 )
 
 func classInitSearchEntrier(gclassPtr, data C.gpointer) {
@@ -108,7 +107,7 @@ func classInitSearchEntrier(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_SearchEntryClass_next_match
 func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NextMatch() })
 
 	iface.NextMatch()
@@ -116,7 +115,7 @@ func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
 
 //export _gotk4_gtk3_SearchEntryClass_previous_match
 func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreviousMatch() })
 
 	iface.PreviousMatch()
@@ -124,7 +123,7 @@ func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
 
 //export _gotk4_gtk3_SearchEntryClass_search_changed
 func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SearchChanged() })
 
 	iface.SearchChanged()
@@ -132,17 +131,17 @@ func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
 
 //export _gotk4_gtk3_SearchEntryClass_stop_search
 func _gotk4_gtk3_SearchEntryClass_stop_search(arg0 *C.GtkSearchEntry) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StopSearch() })
 
 	iface.StopSearch()
 }
 
-func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
+func wrapSearchEntry(obj *coreglib.Object) *SearchEntry {
 	return &SearchEntry{
 		Entry: Entry{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -156,7 +155,7 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 			Object: obj,
 			CellEditable: CellEditable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -176,14 +175,14 @@ func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 }
 
 func marshalSearchEntry(p uintptr) (interface{}, error) {
-	return wrapSearchEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSearchEntry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_SearchEntry_ConnectNextMatch
 func _gotk4_gtk3_SearchEntry_ConnectNextMatch(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -202,15 +201,15 @@ func _gotk4_gtk3_SearchEntry_ConnectNextMatch(arg0 C.gpointer, arg1 C.guintptr) 
 // Applications should connect to it, to implement moving between matches.
 //
 // The default bindings for this signal is Ctrl-g.
-func (entry *SearchEntry) ConnectNextMatch(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(entry, "next-match", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectNextMatch), f)
+func (entry *SearchEntry) ConnectNextMatch(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "next-match", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectNextMatch), f)
 }
 
 //export _gotk4_gtk3_SearchEntry_ConnectPreviousMatch
 func _gotk4_gtk3_SearchEntry_ConnectPreviousMatch(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -229,15 +228,15 @@ func _gotk4_gtk3_SearchEntry_ConnectPreviousMatch(arg0 C.gpointer, arg1 C.guintp
 // Applications should connect to it, to implement moving between matches.
 //
 // The default bindings for this signal is Ctrl-Shift-g.
-func (entry *SearchEntry) ConnectPreviousMatch(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(entry, "previous-match", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectPreviousMatch), f)
+func (entry *SearchEntry) ConnectPreviousMatch(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "previous-match", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectPreviousMatch), f)
 }
 
 //export _gotk4_gtk3_SearchEntry_ConnectSearchChanged
 func _gotk4_gtk3_SearchEntry_ConnectSearchChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -251,15 +250,15 @@ func _gotk4_gtk3_SearchEntry_ConnectSearchChanged(arg0 C.gpointer, arg1 C.guintp
 
 // ConnectSearchChanged signal is emitted with a short delay of 150 milliseconds
 // after the last change to the entry text.
-func (entry *SearchEntry) ConnectSearchChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(entry, "search-changed", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectSearchChanged), f)
+func (entry *SearchEntry) ConnectSearchChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "search-changed", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectSearchChanged), f)
 }
 
 //export _gotk4_gtk3_SearchEntry_ConnectStopSearch
 func _gotk4_gtk3_SearchEntry_ConnectStopSearch(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -278,8 +277,8 @@ func _gotk4_gtk3_SearchEntry_ConnectStopSearch(arg0 C.gpointer, arg1 C.guintptr)
 // this case.
 //
 // The default bindings for this signal is Escape.
-func (entry *SearchEntry) ConnectStopSearch(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(entry, "stop-search", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectStopSearch), f)
+func (entry *SearchEntry) ConnectStopSearch(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "stop-search", false, unsafe.Pointer(C._gotk4_gtk3_SearchEntry_ConnectStopSearch), f)
 }
 
 // NewSearchEntry creates a SearchEntry, with a find icon when the search field
@@ -290,13 +289,14 @@ func (entry *SearchEntry) ConnectStopSearch(f func()) externglib.SignalHandle {
 //    - searchEntry: new SearchEntry.
 //
 func NewSearchEntry() *SearchEntry {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_search_entry_new()
+	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("new_SearchEntry", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _searchEntry *SearchEntry // out
 
-	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
+	_searchEntry = wrapSearchEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }
@@ -321,14 +321,18 @@ func NewSearchEntry() *SearchEntry {
 //      or continuing, GDK_EVENT_PROPAGATE otherwise.
 //
 func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
-	var _arg0 *C.GtkSearchEntry // out
-	var _arg1 *C.GdkEvent       // out
-	var _cret C.gboolean        // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
-	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	*(**SearchEntry)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_search_entry_handle_event(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("handle_event", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(event)
 

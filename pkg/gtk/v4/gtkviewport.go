@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkviewport.go.
-var GTypeViewport = externglib.Type(C.gtk_viewport_get_type())
+var GTypeViewport = coreglib.Type(C.gtk_viewport_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeViewport, F: marshalViewport},
 	})
 }
@@ -44,19 +45,19 @@ type Viewport struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Scrollable
 }
 
 var (
-	_ Widgetter           = (*Viewport)(nil)
-	_ externglib.Objector = (*Viewport)(nil)
+	_ Widgetter         = (*Viewport)(nil)
+	_ coreglib.Objector = (*Viewport)(nil)
 )
 
-func wrapViewport(obj *externglib.Object) *Viewport {
+func wrapViewport(obj *coreglib.Object) *Viewport {
 	return &Viewport{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -78,7 +79,7 @@ func wrapViewport(obj *externglib.Object) *Viewport {
 }
 
 func marshalViewport(p uintptr) (interface{}, error) {
-	return wrapViewport(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapViewport(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewViewport creates a new GtkViewport.
@@ -96,24 +97,29 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //    - viewport: new GtkViewport.
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
-	var _arg1 *C.GtkAdjustment // out
-	var _arg2 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if hadjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(hadjustment).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
 	if vadjustment != nil {
-		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(vadjustment).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_viewport_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("new_Viewport", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
 
 	var _viewport *Viewport // out
 
-	_viewport = wrapViewport(externglib.Take(unsafe.Pointer(_cret)))
+	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -125,12 +131,16 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 //    - widget (optional): child widget of viewport.
 //
 func (viewport *Viewport) Child() Widgetter {
-	var _arg0 *C.GtkViewport // out
-	var _cret *C.GtkWidget   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	*(**Viewport)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_viewport_get_child(_arg0)
+	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_child", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(viewport)
 
 	var _widget Widgetter // out
@@ -139,8 +149,8 @@ func (viewport *Viewport) Child() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -163,12 +173,16 @@ func (viewport *Viewport) Child() Widgetter {
 //    - ok: TRUE if the viewport keeps the focus child scrolled to view.
 //
 func (viewport *Viewport) ScrollToFocus() bool {
-	var _arg0 *C.GtkViewport // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	*(**Viewport)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
+	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_scroll_to_focus", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(viewport)
 
 	var _ok bool // out
@@ -187,15 +201,18 @@ func (viewport *Viewport) ScrollToFocus() bool {
 //    - child (optional) widget.
 //
 func (viewport *Viewport) SetChild(child Widgetter) {
-	var _arg0 *C.GtkViewport // out
-	var _arg1 *C.GtkWidget   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
+	*(**Viewport)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_viewport_set_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_child", args[:], nil)
+
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(child)
 }
@@ -208,15 +225,18 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 //    - scrollToFocus: whether to keep the focus widget scrolled to view.
 //
 func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
-	var _arg0 *C.GtkViewport // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(externglib.InternObject(viewport).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if scrollToFocus {
 		_arg1 = C.TRUE
 	}
+	*(**Viewport)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_viewport_set_scroll_to_focus(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_scroll_to_focus", args[:], nil)
+
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(scrollToFocus)
 }

@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtksizegroup.go.
-var GTypeSizeGroup = externglib.Type(C.gtk_size_group_get_type())
+var GTypeSizeGroup = coreglib.Type(C.gtk_size_group_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSizeGroup, F: marshalSizeGroup},
 	})
 }
@@ -89,16 +90,16 @@ func init() {
 //    </object>.
 type SizeGroup struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*SizeGroup)(nil)
+	_ coreglib.Objector = (*SizeGroup)(nil)
 )
 
-func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
+func wrapSizeGroup(obj *coreglib.Object) *SizeGroup {
 	return &SizeGroup{
 		Object: obj,
 		Buildable: Buildable{
@@ -108,33 +109,7 @@ func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
-	return wrapSizeGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewSizeGroup: create a new GtkSizeGroup.
-//
-// The function takes the following parameters:
-//
-//    - mode for the new size group.
-//
-// The function returns the following values:
-//
-//    - sizeGroup: newly created GtkSizeGroup.
-//
-func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
-	var _arg1 C.GtkSizeGroupMode // out
-	var _cret *C.GtkSizeGroup    // in
-
-	_arg1 = C.GtkSizeGroupMode(mode)
-
-	_cret = C.gtk_size_group_new(_arg1)
-	runtime.KeepAlive(mode)
-
-	var _sizeGroup *SizeGroup // out
-
-	_sizeGroup = wrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _sizeGroup
+	return wrapSizeGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddWidget adds a widget to a GtkSizeGroup.
@@ -153,37 +128,18 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 //    - widget: GtkWidget to add.
 //
 func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
-	var _arg0 *C.GtkSizeGroup // out
-	var _arg1 *C.GtkWidget    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(externglib.InternObject(sizeGroup).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**SizeGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_size_group_add_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("add_widget", args[:], nil)
+
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(widget)
-}
-
-// Mode gets the current mode of the size group.
-//
-// The function returns the following values:
-//
-//    - sizeGroupMode: current mode of the size group.
-//
-func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
-	var _arg0 *C.GtkSizeGroup    // out
-	var _cret C.GtkSizeGroupMode // in
-
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(externglib.InternObject(sizeGroup).Native()))
-
-	_cret = C.gtk_size_group_get_mode(_arg0)
-	runtime.KeepAlive(sizeGroup)
-
-	var _sizeGroupMode SizeGroupMode // out
-
-	_sizeGroupMode = SizeGroupMode(_cret)
-
-	return _sizeGroupMode
 }
 
 // Widgets returns the list of widgets associated with size_group.
@@ -194,19 +150,23 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 //      modified.
 //
 func (sizeGroup *SizeGroup) Widgets() []Widgetter {
-	var _arg0 *C.GtkSizeGroup // out
-	var _cret *C.GSList       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(externglib.InternObject(sizeGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
+	*(**SizeGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_size_group_get_widgets(_arg0)
+	_gret := girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("get_widgets", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(sizeGroup)
 
 	var _sList []Widgetter // out
 
 	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
+		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
 			objptr := unsafe.Pointer(src)
@@ -214,8 +174,8 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 				panic("object of type gtk.Widgetter is nil")
 			}
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -238,36 +198,16 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 //    - widget: GtkWidget to remove.
 //
 func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
-	var _arg0 *C.GtkSizeGroup // out
-	var _arg1 *C.GtkWidget    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(externglib.InternObject(sizeGroup).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**SizeGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_size_group_remove_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("remove_widget", args[:], nil)
+
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(widget)
-}
-
-// SetMode sets the GtkSizeGroupMode of the size group.
-//
-// The mode of the size group determines whether the widgets in the size group
-// should all have the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL)
-// all have the same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should
-// all have the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
-//
-// The function takes the following parameters:
-//
-//    - mode to set for the size group.
-//
-func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
-	var _arg0 *C.GtkSizeGroup    // out
-	var _arg1 C.GtkSizeGroupMode // out
-
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(externglib.InternObject(sizeGroup).Native()))
-	_arg1 = C.GtkSizeGroupMode(mode)
-
-	C.gtk_size_group_set_mode(_arg0, _arg1)
-	runtime.KeepAlive(sizeGroup)
-	runtime.KeepAlive(mode)
 }

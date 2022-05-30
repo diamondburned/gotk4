@@ -6,7 +6,7 @@ import (
 	_ "runtime/cgo"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
@@ -18,10 +18,10 @@ import (
 import "C"
 
 // glib.Type values for gdkpixbuf.go.
-var GTypePixbufSimpleAnimIter = externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type())
+var GTypePixbufSimpleAnimIter = coreglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePixbufSimpleAnimIter, F: marshalPixbufSimpleAnimIter},
 	})
 }
@@ -46,10 +46,10 @@ type PixbufSimpleAnimIter struct {
 }
 
 var (
-	_ externglib.Objector = (*PixbufSimpleAnimIter)(nil)
+	_ coreglib.Objector = (*PixbufSimpleAnimIter)(nil)
 )
 
-func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
+func wrapPixbufSimpleAnimIter(obj *coreglib.Object) *PixbufSimpleAnimIter {
 	return &PixbufSimpleAnimIter{
 		PixbufAnimationIter: PixbufAnimationIter{
 			Object: obj,
@@ -58,5 +58,5 @@ func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 }
 
 func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {
-	return wrapPixbufSimpleAnimIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPixbufSimpleAnimIter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

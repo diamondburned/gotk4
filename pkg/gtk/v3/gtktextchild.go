@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktextchild.go.
-var GTypeTextChildAnchor = externglib.Type(C.gtk_text_child_anchor_get_type())
+var GTypeTextChildAnchor = coreglib.Type(C.gtk_text_child_anchor_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTextChildAnchor, F: marshalTextChildAnchor},
 	})
 }
@@ -35,11 +34,11 @@ type TextChildAnchorOverrider interface {
 // widgets anchored, to allow for multiple views.
 type TextChildAnchor struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*TextChildAnchor)(nil)
+	_ coreglib.Objector = (*TextChildAnchor)(nil)
 )
 
 func classInitTextChildAnchorrer(gclassPtr, data C.gpointer) {
@@ -50,14 +49,14 @@ func classInitTextChildAnchorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
+func wrapTextChildAnchor(obj *coreglib.Object) *TextChildAnchor {
 	return &TextChildAnchor{
 		Object: obj,
 	}
 }
 
 func marshalTextChildAnchor(p uintptr) (interface{}, error) {
-	return wrapTextChildAnchor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTextChildAnchor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextChildAnchor creates a new TextChildAnchor. Usually you would then
@@ -70,13 +69,14 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 //    - textChildAnchor: new TextChildAnchor.
 //
 func NewTextChildAnchor() *TextChildAnchor {
-	var _cret *C.GtkTextChildAnchor // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_text_child_anchor_new()
+	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("new_TextChildAnchor", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = wrapTextChildAnchor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textChildAnchor = wrapTextChildAnchor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textChildAnchor
 }
@@ -92,12 +92,16 @@ func NewTextChildAnchor() *TextChildAnchor {
 //    - ok: TRUE if the child anchor has been deleted from its buffer.
 //
 func (anchor *TextChildAnchor) Deleted() bool {
-	var _arg0 *C.GtkTextChildAnchor // out
-	var _cret C.gboolean            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(externglib.InternObject(anchor).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
+	*(**TextChildAnchor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
+	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_deleted", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(anchor)
 
 	var _ok bool // out
@@ -117,19 +121,23 @@ func (anchor *TextChildAnchor) Deleted() bool {
 //    - list of widgets anchored at anchor.
 //
 func (anchor *TextChildAnchor) Widgets() []Widgetter {
-	var _arg0 *C.GtkTextChildAnchor // out
-	var _cret *C.GList              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(externglib.InternObject(anchor).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
+	*(**TextChildAnchor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_text_child_anchor_get_widgets(_arg0)
+	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_widgets", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(anchor)
 
 	var _list []Widgetter // out
 
 	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
+		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
 			objptr := unsafe.Pointer(src)
@@ -137,8 +145,8 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 				panic("object of type gtk.Widgetter is nil")
 			}
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})

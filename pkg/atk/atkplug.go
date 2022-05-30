@@ -7,20 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
 import "C"
 
 // glib.Type values for atkplug.go.
-var GTypePlug = externglib.Type(C.atk_plug_get_type())
+var GTypePlug = coreglib.Type(C.atk_plug_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePlug, F: marshalPlug},
 	})
 }
@@ -37,12 +38,12 @@ type Plug struct {
 	_ [0]func() // equal guard
 	ObjectClass
 
-	*externglib.Object
+	*coreglib.Object
 	Component
 }
 
 var (
-	_ externglib.Objector = (*Plug)(nil)
+	_ coreglib.Objector = (*Plug)(nil)
 )
 
 func classInitPlugger(gclassPtr, data C.gpointer) {
@@ -63,17 +64,17 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_atk1_PlugClass_get_object_id
 func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ObjectID() string })
 
 	utf8 := iface.ObjectID()
 
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
 
-func wrapPlug(obj *externglib.Object) *Plug {
+func wrapPlug(obj *coreglib.Object) *Plug {
 	return &Plug{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -86,7 +87,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 }
 
 func marshalPlug(p uintptr) (interface{}, error) {
-	return wrapPlug(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPlug(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPlug creates a new Plug instance.
@@ -96,13 +97,14 @@ func marshalPlug(p uintptr) (interface{}, error) {
 //    - plug: newly created Plug.
 //
 func NewPlug() *Plug {
-	var _cret *C.AtkObject // in
+	var _cret *C.void // in
 
-	_cret = C.atk_plug_new()
+	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("new_Plug", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _plug *Plug // out
 
-	_plug = wrapPlug(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_plug = wrapPlug(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _plug
 }
@@ -120,12 +122,16 @@ func NewPlug() *Plug {
 //    - utf8: unique ID for the plug.
 //
 func (plug *Plug) ID() string {
-	var _arg0 *C.AtkPlug // out
-	var _cret *C.gchar   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	*(**Plug)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_plug_get_id(_arg0)
+	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("get_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(plug)
 
 	var _utf8 string // out
@@ -151,13 +157,16 @@ func (plug *Plug) ID() string {
 //    - child to be set as accessible child of plug.
 //
 func (plug *Plug) SetChild(child *ObjectClass) {
-	var _arg0 *C.AtkPlug   // out
-	var _arg1 *C.AtkObject // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**Plug)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.atk_plug_set_child(_arg0, _arg1)
+	girepository.MustFind("Atk", "Plug").InvokeMethod("set_child", args[:], nil)
+
 	runtime.KeepAlive(plug)
 	runtime.KeepAlive(child)
 }

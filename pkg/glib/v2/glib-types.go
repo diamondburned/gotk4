@@ -3,7 +3,7 @@
 package glib
 
 import (
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -13,28 +13,28 @@ import "C"
 
 // The function returns the following values:
 //
-func StrvGetType() externglib.Type {
+func StrvGetType() coreglib.Type {
 	var _cret C.GType // in
 
 	_cret = C.g_strv_get_type()
 
-	var _gType externglib.Type // out
+	var _gType coreglib.Type // out
 
-	_gType = externglib.Type(_cret)
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }
 
 // The function returns the following values:
 //
-func VariantGetGType() externglib.Type {
+func VariantGetGType() coreglib.Type {
 	var _cret C.GType // in
 
 	_cret = C.g_variant_get_gtype()
 
-	var _gType externglib.Type // out
+	var _gType coreglib.Type // out
 
-	_gType = externglib.Type(_cret)
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }

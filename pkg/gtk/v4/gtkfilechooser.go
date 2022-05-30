@@ -8,25 +8,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkfilechooser.go.
 var (
-	GTypeFileChooserAction = externglib.Type(C.gtk_file_chooser_action_get_type())
-	GTypeFileChooserError  = externglib.Type(C.gtk_file_chooser_error_get_type())
-	GTypeFileChooser       = externglib.Type(C.gtk_file_chooser_get_type())
+	GTypeFileChooserAction = coreglib.Type(C.gtk_file_chooser_action_get_type())
+	GTypeFileChooserError  = coreglib.Type(C.gtk_file_chooser_error_get_type())
+	GTypeFileChooser       = coreglib.Type(C.gtk_file_chooser_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFileChooserAction, F: marshalFileChooserAction},
 		{T: GTypeFileChooserError, F: marshalFileChooserError},
 		{T: GTypeFileChooser, F: marshalFileChooser},
@@ -50,7 +50,7 @@ const (
 )
 
 func marshalFileChooserAction(p uintptr) (interface{}, error) {
-	return FileChooserAction(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return FileChooserAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileChooserAction.
@@ -85,7 +85,7 @@ const (
 )
 
 func marshalFileChooserError(p uintptr) (interface{}, error) {
-	return FileChooserError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return FileChooserError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileChooserError.
@@ -102,24 +102,6 @@ func (f FileChooserError) String() string {
 	default:
 		return fmt.Sprintf("FileChooserError(%d)", f)
 	}
-}
-
-// FileChooserErrorQuark registers an error quark for GtkFileChooser errors.
-//
-// The function returns the following values:
-//
-//    - quark: error quark used for GtkFileChooser errors.
-//
-func FileChooserErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_file_chooser_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
 }
 
 // FileChooser: GtkFileChooser is an interface that can be implemented by file
@@ -168,16 +150,16 @@ func FileChooserErrorQuark() glib.Quark {
 // underlying type by calling Cast().
 type FileChooser struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*FileChooser)(nil)
+	_ coreglib.Objector = (*FileChooser)(nil)
 )
 
 // FileChooserer describes FileChooser's interface methods.
 type FileChooserer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// AddChoice adds a 'choice' to the file chooser.
 	AddChoice(id, label string, options, optionLabels []string)
@@ -187,8 +169,6 @@ type FileChooserer interface {
 	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
 	// in a file chooser.
 	AddShortcutFolder(folder gio.Filer) error
-	// Action gets the type of operation that the file chooser is performing.
-	Action() FileChooserAction
 	// Choice gets the currently selected option in the 'choice' with the given
 	// ID.
 	Choice(id string) string
@@ -222,8 +202,6 @@ type FileChooserer interface {
 	// RemoveShortcutFolder removes a folder from the shortcut folders in a file
 	// chooser.
 	RemoveShortcutFolder(folder gio.Filer) error
-	// SetAction sets the type of operation that the chooser is performing.
-	SetAction(action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	SetChoice(id, option string)
@@ -246,14 +224,14 @@ type FileChooserer interface {
 
 var _ FileChooserer = (*FileChooser)(nil)
 
-func wrapFileChooser(obj *externglib.Object) *FileChooser {
+func wrapFileChooser(obj *coreglib.Object) *FileChooser {
 	return &FileChooser{
 		Object: obj,
 	}
 }
 
 func marshalFileChooser(p uintptr) (interface{}, error) {
-	return wrapFileChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFileChooser(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddChoice adds a 'choice' to the file chooser.
@@ -273,45 +251,49 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 //      same length as options.
 //
 func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []string) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.char           // out
-	var _arg2 *C.char           // out
-	var _arg3 **C.char          // out
-	var _arg4 **C.char          // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 *C.void  // out
+	var _arg3 **C.void // out
+	var _arg4 **C.void // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
 	{
-		_arg3 = (**C.char)(C.calloc(C.size_t((len(options) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg3 = (**C.void)(C.calloc(C.size_t((len(options) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			out := unsafe.Slice(_arg3, len(options)+1)
-			var zero *C.char
+			var zero *C.void
 			out[len(options)] = zero
 			for i := range options {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(options[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(options[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 	{
-		_arg4 = (**C.char)(C.calloc(C.size_t((len(optionLabels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg4 = (**C.void)(C.calloc(C.size_t((len(optionLabels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg4))
 		{
 			out := unsafe.Slice(_arg4, len(optionLabels)+1)
-			var zero *C.char
+			var zero *C.void
 			out[len(optionLabels)] = zero
 			for i := range optionLabels {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionLabels[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(optionLabels[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+	*(*[]string)(unsafe.Pointer(&args[4])) = _arg4
 
-	C.gtk_file_chooser_add_choice(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(label)
@@ -333,13 +315,14 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 //    - filter: GtkFileFilter.
 //
 func (chooser *FileChooser) AddFilter(filter *FileFilter) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GtkFileFilter  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_add_filter(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -352,14 +335,15 @@ func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 //    - folder: GFile for the folder to add.
 //
 func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(folder).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(folder).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(folder)
 
@@ -370,28 +354,6 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 	}
 
 	return _goerr
-}
-
-// Action gets the type of operation that the file chooser is performing.
-//
-// The function returns the following values:
-//
-//    - fileChooserAction: action that the file selector is performing.
-//
-func (chooser *FileChooser) Action() FileChooserAction {
-	var _arg0 *C.GtkFileChooser      // out
-	var _cret C.GtkFileChooserAction // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-
-	_cret = C.gtk_file_chooser_get_action(_arg0)
-	runtime.KeepAlive(chooser)
-
-	var _fileChooserAction FileChooserAction // out
-
-	_fileChooserAction = FileChooserAction(_cret)
-
-	return _fileChooserAction
 }
 
 // Choice gets the currently selected option in the 'choice' with the given ID.
@@ -405,15 +367,18 @@ func (chooser *FileChooser) Action() FileChooserAction {
 //    - utf8: ID of the currently selected option.
 //
 func (chooser *FileChooser) Choice(id string) string {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.char           // out
-	var _cret *C.char           // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 
@@ -431,12 +396,15 @@ func (chooser *FileChooser) Choice(id string) string {
 //    - ok: TRUE if the Create Folder button should be displayed.
 //
 func (chooser *FileChooser) CreateFolders() bool {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_create_folders(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -455,18 +423,21 @@ func (chooser *FileChooser) CreateFolders() bool {
 //    - file: GFile for the current folder.
 //
 func (chooser *FileChooser) CurrentFolder() *gio.File {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GFile          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _file *gio.File // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -489,12 +460,15 @@ func (chooser *FileChooser) CurrentFolder() *gio.File {
 //      encoding, which is not necessarily the system’s encoding for filenames.
 //
 func (chooser *FileChooser) CurrentName() string {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_current_name(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
@@ -518,18 +492,21 @@ func (chooser *FileChooser) CurrentName() string {
 //      release it.
 //
 func (chooser *FileChooser) File() *gio.File {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GFile          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_file(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _file *gio.File // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -548,18 +525,21 @@ func (chooser *FileChooser) File() *gio.File {
 //      g_object_unref().
 //
 func (chooser *FileChooser) Files() *gio.ListModel {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GListModel     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_files(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -575,18 +555,21 @@ func (chooser *FileChooser) Files() *gio.ListModel {
 //    - fileFilter (optional): current filter, or NULL.
 //
 func (chooser *FileChooser) Filter() *FileFilter {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GtkFileFilter  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_filter(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _fileFilter *FileFilter // out
 
 	if _cret != nil {
-		_fileFilter = wrapFileFilter(externglib.Take(unsafe.Pointer(_cret)))
+		_fileFilter = wrapFileFilter(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _fileFilter
@@ -606,18 +589,21 @@ func (chooser *FileChooser) Filter() *FileFilter {
 //      filters.
 //
 func (chooser *FileChooser) Filters() *gio.ListModel {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GListModel     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_filters(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -634,12 +620,15 @@ func (chooser *FileChooser) Filters() *gio.ListModel {
 //    - ok: TRUE if multiple files can be selected.
 //
 func (chooser *FileChooser) SelectMultiple() bool {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_select_multiple(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
@@ -661,18 +650,21 @@ func (chooser *FileChooser) SelectMultiple() bool {
 //    - listModel: list model of GFiles.
 //
 func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret *C.GListModel     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(chooser)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -689,14 +681,15 @@ func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
 //    - id: ID of the choice to remove.
 //
 func (chooser *FileChooser) RemoveChoice(id string) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_remove_choice(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 }
@@ -709,13 +702,14 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 //    - filter: GtkFileFilter.
 //
 func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GtkFileFilter  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_remove_filter(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -728,14 +722,15 @@ func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 //    - folder: GFile for the folder to remove.
 //
 func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(folder).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(folder).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(folder)
 
@@ -746,30 +741,6 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 	}
 
 	return _goerr
-}
-
-// SetAction sets the type of operation that the chooser is performing.
-//
-// The user interface is adapted to suit the selected action.
-//
-// For example, an option to create a new folder might be shown if the action is
-// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
-// GTK_FILE_CHOOSER_ACTION_OPEN.
-//
-// The function takes the following parameters:
-//
-//    - action that the file selector is performing.
-//
-func (chooser *FileChooser) SetAction(action FileChooserAction) {
-	var _arg0 *C.GtkFileChooser      // out
-	var _arg1 C.GtkFileChooserAction // out
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = C.GtkFileChooserAction(action)
-
-	C.gtk_file_chooser_set_action(_arg0, _arg1)
-	runtime.KeepAlive(chooser)
-	runtime.KeepAlive(action)
 }
 
 // SetChoice selects an option in a 'choice' that has been added with
@@ -783,17 +754,19 @@ func (chooser *FileChooser) SetAction(action FileChooserAction) {
 //    - option: ID of the option to select.
 //
 func (chooser *FileChooser) SetChoice(id, option string) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.char           // out
-	var _arg2 *C.char           // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(option)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(option)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_file_chooser_set_choice(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(option)
@@ -809,15 +782,16 @@ func (chooser *FileChooser) SetChoice(id, option string) {
 //    - createFolders: TRUE if the Create Folder button should be displayed.
 //
 func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if createFolders {
 		_arg1 = C.TRUE
 	}
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_set_create_folders(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(createFolders)
 }
@@ -829,14 +803,15 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 //    - file: GFile for the new folder.
 //
 func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_set_current_folder(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(file)
 
@@ -868,14 +843,15 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 //    - name to use, as a UTF-8 string.
 //
 func (chooser *FileChooser) SetCurrentName(name string) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_set_current_name(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(name)
 }
@@ -926,14 +902,15 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 //    - file: GFile to set as current.
 //
 func (chooser *FileChooser) SetFile(file gio.Filer) error {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GFile          // out
-	var _cerr *C.GError         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(file)
 
@@ -961,13 +938,14 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 //    - filter: GtkFileFilter.
 //
 func (chooser *FileChooser) SetFilter(filter *FileFilter) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 *C.GtkFileFilter  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_set_filter(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -983,15 +961,16 @@ func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 //    - selectMultiple: TRUE if multiple files can be selected.
 //
 func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(externglib.InternObject(chooser).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if selectMultiple {
 		_arg1 = C.TRUE
 	}
+	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_chooser_set_select_multiple(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(selectMultiple)
 }

@@ -3,25 +3,23 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkscrollbar.go.
-var GTypeScrollbar = externglib.Type(C.gtk_scrollbar_get_type())
+var GTypeScrollbar = coreglib.Type(C.gtk_scrollbar_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeScrollbar, F: marshalScrollbar},
 	})
 }
@@ -85,11 +83,11 @@ func classInitScrollbarrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapScrollbar(obj *externglib.Object) *Scrollbar {
+func wrapScrollbar(obj *coreglib.Object) *Scrollbar {
 	return &Scrollbar{
 		Range: Range{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -109,37 +107,5 @@ func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 }
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
-	return wrapScrollbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewScrollbar creates a new scrollbar with the given orientation.
-//
-// The function takes the following parameters:
-//
-//    - orientation scrollbar’s orientation.
-//    - adjustment (optional) to use, or NULL to create a new adjustment.
-//
-// The function returns the following values:
-//
-//    - scrollbar: new Scrollbar.
-//
-func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	if adjustment != nil {
-		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
-	}
-
-	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(adjustment)
-
-	var _scrollbar *Scrollbar // out
-
-	_scrollbar = wrapScrollbar(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _scrollbar
+	return wrapScrollbar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

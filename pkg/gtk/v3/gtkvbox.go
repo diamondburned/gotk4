@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkvbox.go.
-var GTypeVBox = externglib.Type(C.gtk_vbox_get_type())
+var GTypeVBox = coreglib.Type(C.gtk_vbox_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVBox, F: marshalVBox},
 	})
 }
@@ -59,8 +58,8 @@ type VBox struct {
 }
 
 var (
-	_ Containerer         = (*VBox)(nil)
-	_ externglib.Objector = (*VBox)(nil)
+	_ Containerer       = (*VBox)(nil)
+	_ coreglib.Objector = (*VBox)(nil)
 )
 
 func classInitVBoxer(gclassPtr, data C.gpointer) {
@@ -71,12 +70,12 @@ func classInitVBoxer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapVBox(obj *externglib.Object) *VBox {
+func wrapVBox(obj *coreglib.Object) *VBox {
 	return &VBox{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -97,7 +96,7 @@ func wrapVBox(obj *externglib.Object) *VBox {
 }
 
 func marshalVBox(p uintptr) (interface{}, error) {
-	return wrapVBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVBox creates a new VBox.
@@ -117,22 +116,27 @@ func marshalVBox(p uintptr) (interface{}, error) {
 //    - vBox: new VBox.
 //
 func NewVBox(homogeneous bool, spacing int) *VBox {
-	var _arg1 C.gboolean   // out
-	var _arg2 C.gint       // out
-	var _cret *C.GtkWidget // in
+	var args [2]girepository.Argument
+	var _arg0 C.gboolean // out
+	var _arg1 C.gint     // out
+	var _cret *C.void    // in
 
 	if homogeneous {
-		_arg1 = C.TRUE
+		_arg0 = C.TRUE
 	}
-	_arg2 = C.gint(spacing)
+	_arg1 = C.gint(spacing)
+	*(*bool)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_vbox_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "VBox").InvokeMethod("new_VBox", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(homogeneous)
 	runtime.KeepAlive(spacing)
 
 	var _vBox *VBox // out
 
-	_vBox = wrapVBox(externglib.Take(unsafe.Pointer(_cret)))
+	_vBox = wrapVBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vBox
 }

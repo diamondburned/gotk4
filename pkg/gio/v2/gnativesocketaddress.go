@@ -3,23 +3,22 @@
 package gio
 
 import (
-	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gnativesocketaddress.go.
-var GTypeNativeSocketAddress = externglib.Type(C.g_native_socket_address_get_type())
+var GTypeNativeSocketAddress = coreglib.Type(C.g_native_socket_address_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNativeSocketAddress, F: marshalNativeSocketAddress},
 	})
 }
@@ -46,7 +45,7 @@ func classInitNativeSocketAddresser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNativeSocketAddress(obj *externglib.Object) *NativeSocketAddress {
+func wrapNativeSocketAddress(obj *coreglib.Object) *NativeSocketAddress {
 	return &NativeSocketAddress{
 		SocketAddress: SocketAddress{
 			Object: obj,
@@ -58,35 +57,5 @@ func wrapNativeSocketAddress(obj *externglib.Object) *NativeSocketAddress {
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
-	return wrapNativeSocketAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewNativeSocketAddress creates a new SocketAddress for native and len.
-//
-// The function takes the following parameters:
-//
-//    - native (optional) address object.
-//    - len: length of native, in bytes.
-//
-// The function returns the following values:
-//
-//    - nativeSocketAddress: new SocketAddress.
-//
-func NewNativeSocketAddress(native cgo.Handle, len uint) *NativeSocketAddress {
-	var _arg1 C.gpointer        // out
-	var _arg2 C.gsize           // out
-	var _cret *C.GSocketAddress // in
-
-	_arg1 = (C.gpointer)(unsafe.Pointer(native))
-	_arg2 = C.gsize(len)
-
-	_cret = C.g_native_socket_address_new(_arg1, _arg2)
-	runtime.KeepAlive(native)
-	runtime.KeepAlive(len)
-
-	var _nativeSocketAddress *NativeSocketAddress // out
-
-	_nativeSocketAddress = wrapNativeSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _nativeSocketAddress
+	return wrapNativeSocketAddress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

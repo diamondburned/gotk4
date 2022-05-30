@@ -7,11 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // BusNameAppearedCallback: invoked when the name being watched is known to have
@@ -33,7 +35,7 @@ func _gotk4_gio2_BusNameAppearedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 	var _name string                // out
 	var _nameOwner string           // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_nameOwner = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 
@@ -61,7 +63,7 @@ func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 	var _connection *DBusConnection // out
 	var _name string                // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	fn(_connection, _name)
@@ -81,10 +83,13 @@ func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 //    - watcherId: identifier obtained from g_bus_watch_name().
 //
 func BusUnwatchName(watcherId uint) {
-	var _arg1 C.guint // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint // out
 
-	_arg1 = C.guint(watcherId)
+	_arg0 = C.guint(watcherId)
+	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_bus_unwatch_name(_arg1)
+	girepository.MustFind("Gio", "bus_unwatch_name").Invoke(args[:], nil)
+
 	runtime.KeepAlive(watcherId)
 }

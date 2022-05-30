@@ -6,27 +6,28 @@ import (
 	"fmt"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gsk/gsk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gskenums.go.
 var (
-	GTypeBlendMode          = externglib.Type(C.gsk_blend_mode_get_type())
-	GTypeCorner             = externglib.Type(C.gsk_corner_get_type())
-	GTypeGLUniformType      = externglib.Type(C.gsk_gl_uniform_type_get_type())
-	GTypeRenderNodeType     = externglib.Type(C.gsk_render_node_type_get_type())
-	GTypeScalingFilter      = externglib.Type(C.gsk_scaling_filter_get_type())
-	GTypeSerializationError = externglib.Type(C.gsk_serialization_error_get_type())
-	GTypeTransformCategory  = externglib.Type(C.gsk_transform_category_get_type())
+	GTypeBlendMode          = coreglib.Type(C.gsk_blend_mode_get_type())
+	GTypeCorner             = coreglib.Type(C.gsk_corner_get_type())
+	GTypeGLUniformType      = coreglib.Type(C.gsk_gl_uniform_type_get_type())
+	GTypeRenderNodeType     = coreglib.Type(C.gsk_render_node_type_get_type())
+	GTypeScalingFilter      = coreglib.Type(C.gsk_scaling_filter_get_type())
+	GTypeSerializationError = coreglib.Type(C.gsk_serialization_error_get_type())
+	GTypeTransformCategory  = coreglib.Type(C.gsk_transform_category_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBlendMode, F: marshalBlendMode},
 		{T: GTypeCorner, F: marshalCorner},
 		{T: GTypeGLUniformType, F: marshalGLUniformType},
@@ -95,7 +96,7 @@ const (
 )
 
 func marshalBlendMode(p uintptr) (interface{}, error) {
-	return BlendMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return BlendMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BlendMode.
@@ -153,7 +154,7 @@ const (
 )
 
 func marshalCorner(p uintptr) (interface{}, error) {
-	return Corner(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Corner(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Corner.
@@ -199,7 +200,7 @@ const (
 )
 
 func marshalGLUniformType(p uintptr) (interface{}, error) {
-	return GLUniformType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return GLUniformType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GLUniformType.
@@ -288,7 +289,7 @@ const (
 )
 
 func marshalRenderNodeType(p uintptr) (interface{}, error) {
-	return RenderNodeType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return RenderNodeType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RenderNodeType.
@@ -368,7 +369,7 @@ const (
 )
 
 func marshalScalingFilter(p uintptr) (interface{}, error) {
-	return ScalingFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ScalingFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScalingFilter.
@@ -399,7 +400,7 @@ const (
 )
 
 func marshalSerializationError(p uintptr) (interface{}, error) {
-	return SerializationError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SerializationError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SerializationError.
@@ -452,7 +453,7 @@ const (
 )
 
 func marshalTransformCategory(p uintptr) (interface{}, error) {
-	return TransformCategory(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TransformCategory(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TransformCategory.

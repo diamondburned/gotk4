@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkrecentchooserdialog.go.
-var GTypeRecentChooserDialog = externglib.Type(C.gtk_recent_chooser_dialog_get_type())
+var GTypeRecentChooserDialog = coreglib.Type(C.gtk_recent_chooser_dialog_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRecentChooserDialog, F: marshalRecentChooserDialog},
 	})
 }
@@ -73,13 +72,13 @@ type RecentChooserDialog struct {
 	_ [0]func() // equal guard
 	Dialog
 
-	*externglib.Object
+	*coreglib.Object
 	RecentChooser
 }
 
 var (
-	_ externglib.Objector = (*RecentChooserDialog)(nil)
-	_ Binner              = (*RecentChooserDialog)(nil)
+	_ coreglib.Objector = (*RecentChooserDialog)(nil)
+	_ Binner            = (*RecentChooserDialog)(nil)
 )
 
 func classInitRecentChooserDialogger(gclassPtr, data C.gpointer) {
@@ -90,14 +89,14 @@ func classInitRecentChooserDialogger(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
+func wrapRecentChooserDialog(obj *coreglib.Object) *RecentChooserDialog {
 	return &RecentChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
 				Bin: Bin{
 					Container: Container{
 						Widget: Widget{
-							InitiallyUnowned: externglib.InitiallyUnowned{
+							InitiallyUnowned: coreglib.InitiallyUnowned{
 								Object: obj,
 							},
 							Object: obj,
@@ -120,5 +119,5 @@ func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 }
 
 func marshalRecentChooserDialog(p uintptr) (interface{}, error) {
-	return wrapRecentChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRecentChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

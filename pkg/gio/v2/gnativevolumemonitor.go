@@ -5,19 +5,20 @@ package gio
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gnativevolumemonitor.go.
-var GTypeNativeVolumeMonitor = externglib.Type(C.g_native_volume_monitor_get_type())
+var GTypeNativeVolumeMonitor = coreglib.Type(C.g_native_volume_monitor_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNativeVolumeMonitor, F: marshalNativeVolumeMonitor},
 	})
 }
@@ -34,7 +35,7 @@ type NativeVolumeMonitor struct {
 }
 
 var (
-	_ externglib.Objector = (*NativeVolumeMonitor)(nil)
+	_ coreglib.Objector = (*NativeVolumeMonitor)(nil)
 )
 
 // NativeVolumeMonitorrer describes types inherited from class NativeVolumeMonitor.
@@ -42,7 +43,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type NativeVolumeMonitorrer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseNativeVolumeMonitor() *NativeVolumeMonitor
 }
 
@@ -56,7 +57,7 @@ func classInitNativeVolumeMonitorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
+func wrapNativeVolumeMonitor(obj *coreglib.Object) *NativeVolumeMonitor {
 	return &NativeVolumeMonitor{
 		VolumeMonitor: VolumeMonitor{
 			Object: obj,
@@ -65,7 +66,7 @@ func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 }
 
 func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
-	return wrapNativeVolumeMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNativeVolumeMonitor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *NativeVolumeMonitor) baseNativeVolumeMonitor() *NativeVolumeMonitor {

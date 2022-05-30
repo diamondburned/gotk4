@@ -7,13 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
+// #include <glib.h>
 import "C"
 
 // PixbufGetFromSurface transfers image data from a #cairo_surface_t and
@@ -38,20 +40,28 @@ import "C"
 //      NULL on error.
 //
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
-	var _arg1 *C.cairo_surface_t // out
-	var _arg2 C.gint             // out
-	var _arg3 C.gint             // out
-	var _arg4 C.gint             // out
-	var _arg5 C.gint             // out
-	var _cret *C.GdkPixbuf       // in
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
+	var _arg3 C.gint  // out
+	var _arg4 C.gint  // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	_arg2 = C.gint(srcX)
-	_arg3 = C.gint(srcY)
-	_arg4 = C.gint(width)
-	_arg5 = C.gint(height)
+	_arg0 = (*C.void)(unsafe.Pointer(surface.Native()))
+	_arg1 = C.gint(srcX)
+	_arg2 = C.gint(srcY)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
+	*(**cairo.Surface)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int)(unsafe.Pointer(&args[4])) = _arg4
 
-	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
+	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_surface").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
@@ -62,7 +72,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 
 	if _cret != nil {
 		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -117,20 +127,28 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 //      NULL on error.
 //
 func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
-	var _arg1 *C.GdkWindow // out
-	var _arg2 C.gint       // out
-	var _arg3 C.gint       // out
-	var _arg4 C.gint       // out
-	var _arg5 C.gint       // out
-	var _cret *C.GdkPixbuf // in
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
+	var _arg3 C.gint  // out
+	var _arg4 C.gint  // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg2 = C.gint(srcX)
-	_arg3 = C.gint(srcY)
-	_arg4 = C.gint(width)
-	_arg5 = C.gint(height)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(srcX)
+	_arg2 = C.gint(srcY)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
+	*(*Windower)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int)(unsafe.Pointer(&args[4])) = _arg4
 
-	_cret = C.gdk_pixbuf_get_from_window(_arg1, _arg2, _arg3, _arg4, _arg5)
+	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_window").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
@@ -141,7 +159,7 @@ func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int) *gdkpix
 
 	if _cret != nil {
 		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{

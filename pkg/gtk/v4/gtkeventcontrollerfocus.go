@@ -6,21 +6,22 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_EventControllerFocus_ConnectEnter(gpointer, guintptr);
 // extern void _gotk4_gtk4_EventControllerFocus_ConnectLeave(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkeventcontrollerfocus.go.
-var GTypeEventControllerFocus = externglib.Type(C.gtk_event_controller_focus_get_type())
+var GTypeEventControllerFocus = coreglib.Type(C.gtk_event_controller_focus_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEventControllerFocus, F: marshalEventControllerFocus},
 	})
 }
@@ -54,7 +55,7 @@ func classInitEventControllerFocusser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
+func wrapEventControllerFocus(obj *coreglib.Object) *EventControllerFocus {
 	return &EventControllerFocus{
 		EventController: EventController{
 			Object: obj,
@@ -63,14 +64,14 @@ func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
 }
 
 func marshalEventControllerFocus(p uintptr) (interface{}, error) {
-	return wrapEventControllerFocus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEventControllerFocus(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_EventControllerFocus_ConnectEnter
 func _gotk4_gtk4_EventControllerFocus_ConnectEnter(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -90,15 +91,15 @@ func _gotk4_gtk4_EventControllerFocus_ConnectEnter(arg0 C.gpointer, arg1 C.guint
 // from a descendent of the widget to the widget itself). If you are interested
 // in these cases, you can monitor the gtk.EventControllerFocus:is-focus
 // property for changes.
-func (self *EventControllerFocus) ConnectEnter(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "enter", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectEnter), f)
+func (self *EventControllerFocus) ConnectEnter(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "enter", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectEnter), f)
 }
 
 //export _gotk4_gtk4_EventControllerFocus_ConnectLeave
 func _gotk4_gtk4_EventControllerFocus_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -117,8 +118,8 @@ func _gotk4_gtk4_EventControllerFocus_ConnectLeave(arg0 C.gpointer, arg1 C.guint
 // moves away from the widget, in certain cases (such as when the focus moves
 // from the widget to a descendent). If you are interested in these cases, you
 // can monitor the gtk.EventControllerFocus:is-focus property for changes.
-func (self *EventControllerFocus) ConnectLeave(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectLeave), f)
+func (self *EventControllerFocus) ConnectLeave(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectLeave), f)
 }
 
 // NewEventControllerFocus creates a new event controller that will handle focus
@@ -129,13 +130,14 @@ func (self *EventControllerFocus) ConnectLeave(f func()) externglib.SignalHandle
 //    - eventControllerFocus: new GtkEventControllerFocus.
 //
 func NewEventControllerFocus() *EventControllerFocus {
-	var _cret *C.GtkEventController // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_event_controller_focus_new()
+	_gret := girepository.MustFind("Gtk", "EventControllerFocus").InvokeMethod("new_EventControllerFocus", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _eventControllerFocus *EventControllerFocus // out
 
-	_eventControllerFocus = wrapEventControllerFocus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerFocus = wrapEventControllerFocus(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerFocus
 }
@@ -147,12 +149,16 @@ func NewEventControllerFocus() *EventControllerFocus {
 //    - ok: TRUE if focus is within self or one of its children.
 //
 func (self *EventControllerFocus) ContainsFocus() bool {
-	var _arg0 *C.GtkEventControllerFocus // out
-	var _cret C.gboolean                 // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**EventControllerFocus)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
+	_gret := girepository.MustFind("Gtk", "EventControllerFocus").InvokeMethod("contains_focus", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -171,12 +177,16 @@ func (self *EventControllerFocus) ContainsFocus() bool {
 //    - ok: TRUE if focus is within self, but not one of its children.
 //
 func (self *EventControllerFocus) IsFocus() bool {
-	var _arg0 *C.GtkEventControllerFocus // out
-	var _cret C.gboolean                 // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**EventControllerFocus)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
+	_gret := girepository.MustFind("Gtk", "EventControllerFocus").InvokeMethod("is_focus", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out

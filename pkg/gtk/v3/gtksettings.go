@@ -7,22 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtksettings.go.
-var GTypeSettings = externglib.Type(C.gtk_settings_get_type())
+var GTypeSettings = coreglib.Type(C.gtk_settings_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSettings, F: marshalSettings},
 	})
 }
@@ -63,13 +62,13 @@ type SettingsOverrider interface {
 // GtkSettings instance for the default screen.
 type Settings struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	StyleProvider
 }
 
 var (
-	_ externglib.Objector = (*Settings)(nil)
+	_ coreglib.Objector = (*Settings)(nil)
 )
 
 func classInitSettingser(gclassPtr, data C.gpointer) {
@@ -80,7 +79,7 @@ func classInitSettingser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSettings(obj *externglib.Object) *Settings {
+func wrapSettings(obj *coreglib.Object) *Settings {
 	return &Settings{
 		Object: obj,
 		StyleProvider: StyleProvider{
@@ -90,7 +89,7 @@ func wrapSettings(obj *externglib.Object) *Settings {
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
-	return wrapSettings(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSettings(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ResetProperty undoes the effect of calling g_object_set() to install an
@@ -102,14 +101,17 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //    - name of the setting to reset.
 //
 func (settings *Settings) ResetProperty(name string) {
-	var _arg0 *C.GtkSettings // out
-	var _arg1 *C.gchar       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_settings_reset_property(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("reset_property", args[:], nil)
+
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
 }
@@ -123,19 +125,24 @@ func (settings *Settings) ResetProperty(name string) {
 //    - origin
 //
 func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin string) {
-	var _arg0 *C.GtkSettings // out
-	var _arg1 *C.gchar       // out
-	var _arg2 C.gdouble      // out
-	var _arg3 *C.gchar       // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _arg2 C.gdouble // out
+	var _arg3 *C.void   // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(vDouble)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(origin)))
+	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
+	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_settings_set_double_property(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_double_property", args[:], nil)
+
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(vDouble)
@@ -151,19 +158,24 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 //    - origin
 //
 func (settings *Settings) SetLongProperty(name string, vLong int32, origin string) {
-	var _arg0 *C.GtkSettings // out
-	var _arg1 *C.gchar       // out
-	var _arg2 C.glong        // out
-	var _arg3 *C.gchar       // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.glong // out
+	var _arg3 *C.void // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.glong(vLong)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(origin)))
+	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
+	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_long_property", args[:], nil)
+
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(vLong)
@@ -178,16 +190,20 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 //    - svalue
 //
 func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
-	var _arg0 *C.GtkSettings      // out
-	var _arg1 *C.gchar            // out
-	var _arg2 *C.GtkSettingsValue // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkSettingsValue)(gextras.StructNative(unsafe.Pointer(svalue)))
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(svalue)))
+	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_settings_set_property_value(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_property_value", args[:], nil)
+
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(svalue)
@@ -202,20 +218,25 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 //    - origin
 //
 func (settings *Settings) SetStringProperty(name, vString, origin string) {
-	var _arg0 *C.GtkSettings // out
-	var _arg1 *C.gchar       // out
-	var _arg2 *C.gchar       // out
-	var _arg3 *C.gchar       // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
 
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(vString)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(vString)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(origin)))
+	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
+	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_string_property", args[:], nil)
+
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(vString)
@@ -231,14 +252,15 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 //      NULL.
 //
 func SettingsGetDefault() *Settings {
-	var _cret *C.GtkSettings // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_settings_get_default()
+	_gret := girepository.MustFind("Gtk", "get_default").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _settings *Settings // out
 
 	if _cret != nil {
-		_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
+		_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _settings
@@ -256,17 +278,21 @@ func SettingsGetDefault() *Settings {
 //    - settings Settings object.
 //
 func SettingsGetForScreen(screen *gdk.Screen) *Settings {
-	var _arg1 *C.GdkScreen   // out
-	var _cret *C.GtkSettings // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	*(**gdk.Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_settings_get_for_screen(_arg1)
+	_gret := girepository.MustFind("Gtk", "get_for_screen").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(screen)
 
 	var _settings *Settings // out
 
-	_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
+	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _settings
 }

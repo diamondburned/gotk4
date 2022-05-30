@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdtlsclientconnection.go.
-var GTypeDTLSClientConnection = externglib.Type(C.g_dtls_client_connection_get_type())
+var GTypeDTLSClientConnection = coreglib.Type(C.g_dtls_client_connection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDTLSClientConnection, F: marshalDTLSClientConnection},
 	})
 }
@@ -42,20 +43,15 @@ var ()
 
 // DTLSClientConnectioner describes DTLSClientConnection's interface methods.
 type DTLSClientConnectioner interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// ServerIdentity gets conn's expected server identity.
 	ServerIdentity() *SocketConnectable
-	// ValidationFlags gets conn's validation flags.
-	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
 	// also to let conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectabler)
-	// SetValidationFlags sets conn's validation flags, to override the default
-	// set of checks performed when validating a server certificate.
-	SetValidationFlags(flags TLSCertificateFlags)
 }
 
 var _ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
@@ -63,7 +59,7 @@ var _ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
 func ifaceInitDTLSClientConnectioner(gifacePtr, data C.gpointer) {
 }
 
-func wrapDTLSClientConnection(obj *externglib.Object) *DTLSClientConnection {
+func wrapDTLSClientConnection(obj *coreglib.Object) *DTLSClientConnection {
 	return &DTLSClientConnection{
 		DTLSConnection: DTLSConnection{
 			DatagramBased: DatagramBased{
@@ -74,7 +70,7 @@ func wrapDTLSClientConnection(obj *externglib.Object) *DTLSClientConnection {
 }
 
 func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
-	return wrapDTLSClientConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDTLSClientConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ServerIdentity gets conn's expected server identity.
@@ -85,41 +81,22 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 //      expected identity is not known.
 //
 func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
-	var _arg0 *C.GDtlsClientConnection // out
-	var _cret *C.GSocketConnectable    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**DTLSClientConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dtls_client_connection_get_server_identity(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _socketConnectable *SocketConnectable // out
 
-	_socketConnectable = wrapSocketConnectable(externglib.Take(unsafe.Pointer(_cret)))
+	_socketConnectable = wrapSocketConnectable(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _socketConnectable
-}
-
-// ValidationFlags gets conn's validation flags.
-//
-// The function returns the following values:
-//
-//    - tlsCertificateFlags: validation flags.
-//
-func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
-	var _arg0 *C.GDtlsClientConnection // out
-	var _cret C.GTlsCertificateFlags   // in
-
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-
-	_cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
-	runtime.KeepAlive(conn)
-
-	var _tlsCertificateFlags TLSCertificateFlags // out
-
-	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-
-	return _tlsCertificateFlags
 }
 
 // SetServerIdentity sets conn's expected server identity, which is used both to
@@ -132,35 +109,16 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 //    - identity describing the expected server identity.
 //
 func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
-	var _arg0 *C.GDtlsClientConnection // out
-	var _arg1 *C.GSocketConnectable    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(identity).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
+	*(**DTLSClientConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(identity)
-}
-
-// SetValidationFlags sets conn's validation flags, to override the default set
-// of checks performed when validating a server certificate. By default,
-// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
-//
-// The function takes the following parameters:
-//
-//    - flags to use.
-//
-func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
-	var _arg0 *C.GDtlsClientConnection // out
-	var _arg1 C.GTlsCertificateFlags   // out
-
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	_arg1 = C.GTlsCertificateFlags(flags)
-
-	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
-	runtime.KeepAlive(conn)
-	runtime.KeepAlive(flags)
 }
 
 // NewDTLSClientConnection creates a new ClientConnection wrapping base_socket
@@ -177,24 +135,29 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 //    - dtlsClientConnection: new ClientConnection, or NULL on error.
 //
 func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
-	var _arg1 *C.GDatagramBased     // out
-	var _arg2 *C.GSocketConnectable // out
-	var _cret *C.GDatagramBased     // in
-	var _cerr *C.GError             // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(baseSocket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseSocket).Native()))
 	if serverIdentity != nil {
-		_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(serverIdentity).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serverIdentity).Native()))
 	}
+	*(*DatagramBasedder)(unsafe.Pointer(&args[0])) = _arg0
+	*(*SocketConnectabler)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dtls_client_connection_new(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(serverIdentity)
 
 	var _dtlsClientConnection *DTLSClientConnection // out
 	var _goerr error                                // out
 
-	_dtlsClientConnection = wrapDTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dtlsClientConnection = wrapDTLSClientConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

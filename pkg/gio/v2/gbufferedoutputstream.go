@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gbufferedoutputstream.go.
-var GTypeBufferedOutputStream = externglib.Type(C.g_buffered_output_stream_get_type())
+var GTypeBufferedOutputStream = coreglib.Type(C.g_buffered_output_stream_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBufferedOutputStream, F: marshalBufferedOutputStream},
 	})
 }
@@ -60,7 +61,7 @@ func classInitBufferedOutputStreamer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
+func wrapBufferedOutputStream(obj *coreglib.Object) *BufferedOutputStream {
 	return &BufferedOutputStream{
 		FilterOutputStream: FilterOutputStream{
 			OutputStream: OutputStream{
@@ -74,7 +75,7 @@ func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 }
 
 func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
-	return wrapBufferedOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBufferedOutputStream(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBufferedOutputStream creates a new buffered output stream for a base
@@ -89,17 +90,21 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 //    - bufferedOutputStream for the given base_stream.
 //
 func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
-	var _arg1 *C.GOutputStream // out
-	var _cret *C.GOutputStream // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(baseStream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
+	*(*OutputStreamer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_buffered_output_stream_new(_arg1)
+	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("new_BufferedOutputStream", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseStream)
 
 	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = wrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedOutputStream = wrapBufferedOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }
@@ -117,20 +122,25 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 //    - bufferedOutputStream with an internal buffer set to size.
 //
 func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *BufferedOutputStream {
-	var _arg1 *C.GOutputStream // out
-	var _arg2 C.gsize          // out
-	var _cret *C.GOutputStream // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gsize // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(baseStream).Native()))
-	_arg2 = C.gsize(size)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
+	_arg1 = C.gsize(size)
+	*(*OutputStreamer)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("new_BufferedOutputStream_sized", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(size)
 
 	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = wrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedOutputStream = wrapBufferedOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }
@@ -142,12 +152,16 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 //    - ok: TRUE if the stream's buffer automatically grows, FALSE otherwise.
 //
 func (stream *BufferedOutputStream) AutoGrow() bool {
-	var _arg0 *C.GBufferedOutputStream // out
-	var _cret C.gboolean               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**BufferedOutputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
+	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("get_auto_grow", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -166,12 +180,16 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 //    - gsize: current size of the buffer.
 //
 func (stream *BufferedOutputStream) BufferSize() uint {
-	var _arg0 *C.GBufferedOutputStream // out
-	var _cret C.gsize                  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gsize // in
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**BufferedOutputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
+	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("get_buffer_size", args[:], nil)
+	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _gsize uint // out
@@ -191,15 +209,18 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 //    - autoGrow: #gboolean.
 //
 func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
-	var _arg0 *C.GBufferedOutputStream // out
-	var _arg1 C.gboolean               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	if autoGrow {
 		_arg1 = C.TRUE
 	}
+	*(**BufferedOutputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_buffered_output_stream_set_auto_grow(_arg0, _arg1)
+	girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("set_auto_grow", args[:], nil)
+
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(autoGrow)
 }
@@ -211,13 +232,16 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 //    - size: #gsize.
 //
 func (stream *BufferedOutputStream) SetBufferSize(size uint) {
-	var _arg0 *C.GBufferedOutputStream // out
-	var _arg1 C.gsize                  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gsize // out
 
-	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	_arg1 = C.gsize(size)
+	*(**BufferedOutputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
+	girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("set_buffer_size", args[:], nil)
+
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(size)
 }

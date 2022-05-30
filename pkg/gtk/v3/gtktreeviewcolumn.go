@@ -9,29 +9,25 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// #include <glib.h>
 // extern void _gotk4_gtk3_TreeViewColumnClass_clicked(GtkTreeViewColumn*);
 // extern void _gotk4_gtk3_TreeViewColumn_ConnectClicked(gpointer, guintptr);
-// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtktreeviewcolumn.go.
 var (
-	GTypeTreeViewColumnSizing = externglib.Type(C.gtk_tree_view_column_sizing_get_type())
-	GTypeTreeViewColumn       = externglib.Type(C.gtk_tree_view_column_get_type())
+	GTypeTreeViewColumnSizing = coreglib.Type(C.gtk_tree_view_column_sizing_get_type())
+	GTypeTreeViewColumn       = coreglib.Type(C.gtk_tree_view_column_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTreeViewColumnSizing, F: marshalTreeViewColumnSizing},
 		{T: GTypeTreeViewColumn, F: marshalTreeViewColumn},
 	})
@@ -54,7 +50,7 @@ const (
 )
 
 func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
-	return TreeViewColumnSizing(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TreeViewColumnSizing(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TreeViewColumnSizing.
@@ -95,15 +91,15 @@ func _gotk4_gtk3_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRend
 	var _treeModel TreeModeller     // out
 	var _iter *TreeIter             // out
 
-	_treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1)))
+	_treeColumn = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(arg1)))
 	{
 		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(CellRendererer)
 			return ok
 		})
@@ -119,8 +115,8 @@ func _gotk4_gtk3_TreeCellDataFunc(arg1 *C.GtkTreeViewColumn, arg2 *C.GtkCellRend
 			panic("object of type gtk.TreeModeller is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(TreeModeller)
 			return ok
 		})
@@ -152,15 +148,15 @@ type TreeViewColumnOverrider interface {
 // they work together.
 type TreeViewColumn struct {
 	_ [0]func() // equal guard
-	externglib.InitiallyUnowned
+	coreglib.InitiallyUnowned
 
-	*externglib.Object
+	*coreglib.Object
 	Buildable
 	CellLayout
 }
 
 var (
-	_ externglib.Objector = (*TreeViewColumn)(nil)
+	_ coreglib.Objector = (*TreeViewColumn)(nil)
 )
 
 func classInitTreeViewColumner(gclassPtr, data C.gpointer) {
@@ -181,15 +177,15 @@ func classInitTreeViewColumner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TreeViewColumnClass_clicked
 func _gotk4_gtk3_TreeViewColumnClass_clicked(arg0 *C.GtkTreeViewColumn) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Clicked() })
 
 	iface.Clicked()
 }
 
-func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
+func wrapTreeViewColumn(obj *coreglib.Object) *TreeViewColumn {
 	return &TreeViewColumn{
-		InitiallyUnowned: externglib.InitiallyUnowned{
+		InitiallyUnowned: coreglib.InitiallyUnowned{
 			Object: obj,
 		},
 		Object: obj,
@@ -203,14 +199,14 @@ func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
-	return wrapTreeViewColumn(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTreeViewColumn(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_TreeViewColumn_ConnectClicked
 func _gotk4_gtk3_TreeViewColumn_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -222,8 +218,8 @@ func _gotk4_gtk3_TreeViewColumn_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr)
 	f()
 }
 
-func (treeColumn *TreeViewColumn) ConnectClicked(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(treeColumn, "clicked", false, unsafe.Pointer(C._gotk4_gtk3_TreeViewColumn_ConnectClicked), f)
+func (treeColumn *TreeViewColumn) ConnectClicked(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(treeColumn, "clicked", false, unsafe.Pointer(C._gotk4_gtk3_TreeViewColumn_ConnectClicked), f)
 }
 
 // NewTreeViewColumn creates a new TreeViewColumn.
@@ -233,13 +229,14 @@ func (treeColumn *TreeViewColumn) ConnectClicked(f func()) externglib.SignalHand
 //    - treeViewColumn: newly created TreeViewColumn.
 //
 func NewTreeViewColumn() *TreeViewColumn {
-	var _cret *C.GtkTreeViewColumn // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_tree_view_column_new()
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("new_TreeViewColumn", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _treeViewColumn *TreeViewColumn // out
 
-	_treeViewColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
+	_treeViewColumn = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeViewColumn
 }
@@ -256,17 +253,21 @@ func NewTreeViewColumn() *TreeViewColumn {
 //    - treeViewColumn: newly created TreeViewColumn.
 //
 func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
-	var _arg1 *C.GtkCellArea       // out
-	var _cret *C.GtkTreeViewColumn // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(externglib.InternObject(area).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(*CellAreaer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_new_with_area(_arg1)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("new_TreeViewColumn_with_area", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(area)
 
 	var _treeViewColumn *TreeViewColumn // out
 
-	_treeViewColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
+	_treeViewColumn = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeViewColumn
 }
@@ -284,113 +285,27 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 //    - column position on the model to get the attribute from.
 //
 func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attribute string, column int) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkCellRenderer   // out
-	var _arg2 *C.gchar             // out
-	var _arg3 C.gint               // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.gint  // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cellRenderer).Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellRenderer).Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
+	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_tree_view_column_add_attribute(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("add_attribute", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cellRenderer)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(column)
-}
-
-// CellGetPosition obtains the horizontal position and size of a cell in a
-// column. If the cell is not found in the column, start_pos and width are not
-// changed and FALSE is returned.
-//
-// The function takes the following parameters:
-//
-//    - cellRenderer: CellRenderer.
-//
-// The function returns the following values:
-//
-//    - xOffset (optional): return location for the horizontal position of cell
-//      within tree_column, may be NULL.
-//    - width (optional): return location for the width of cell, may be NULL.
-//    - ok: TRUE if cell belongs to tree_column.
-//
-func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (xOffset int, width int, ok bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkCellRenderer   // out
-	var _arg2 C.gint               // in
-	var _arg3 C.gint               // in
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cellRenderer).Native()))
-
-	_cret = C.gtk_tree_view_column_cell_get_position(_arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(treeColumn)
-	runtime.KeepAlive(cellRenderer)
-
-	var _xOffset int // out
-	var _width int   // out
-	var _ok bool     // out
-
-	_xOffset = int(_arg2)
-	_width = int(_arg3)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _xOffset, _width, _ok
-}
-
-// CellGetSize obtains the width and height needed to render the column. This is
-// used primarily by the TreeView.
-//
-// The function takes the following parameters:
-//
-//    - cellArea (optional): area a cell in the column will be allocated, or
-//      NULL.
-//
-// The function returns the following values:
-//
-//    - xOffset (optional): location to return x offset of a cell relative to
-//      cell_area, or NULL.
-//    - yOffset (optional): location to return y offset of a cell relative to
-//      cell_area, or NULL.
-//    - width (optional): location to return width needed to render a cell, or
-//      NULL.
-//    - height (optional): location to return height needed to render a cell, or
-//      NULL.
-//
-func (treeColumn *TreeViewColumn) CellGetSize(cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GdkRectangle      // out
-	var _arg2 C.gint               // in
-	var _arg3 C.gint               // in
-	var _arg4 C.gint               // in
-	var _arg5 C.gint               // in
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	if cellArea != nil {
-		_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	}
-
-	C.gtk_tree_view_column_cell_get_size(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(treeColumn)
-	runtime.KeepAlive(cellArea)
-
-	var _xOffset int // out
-	var _yOffset int // out
-	var _width int   // out
-	var _height int  // out
-
-	_xOffset = int(_arg2)
-	_yOffset = int(_arg3)
-	_width = int(_arg4)
-	_height = int(_arg5)
-
-	return _xOffset, _yOffset, _width, _height
 }
 
 // CellIsVisible returns TRUE if any of the cells packed into the tree_column
@@ -403,12 +318,16 @@ func (treeColumn *TreeViewColumn) CellGetSize(cellArea *gdk.Rectangle) (xOffset 
 //      visible.
 //
 func (treeColumn *TreeViewColumn) CellIsVisible() bool {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_cell_is_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("cell_is_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -433,23 +352,29 @@ func (treeColumn *TreeViewColumn) CellIsVisible() bool {
 //    - isExpanded: TRUE, if the row has visible children.
 //
 func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkTreeModel      // out
-	var _arg2 *C.GtkTreeIter       // out
-	var _arg3 C.gboolean           // out
-	var _arg4 C.gboolean           // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg3 C.gboolean // out
+	var _arg4 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(externglib.InternObject(treeModel).Native()))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if isExpander {
 		_arg3 = C.TRUE
 	}
 	if isExpanded {
 		_arg4 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
+	*(*TreeModeller)(unsafe.Pointer(&args[2])) = _arg2
+	*(**TreeIter)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	C.gtk_tree_view_column_cell_set_cell_data(_arg0, _arg1, _arg2, _arg3, _arg4)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("cell_set_cell_data", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -459,11 +384,14 @@ func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *
 
 // Clear unsets all the mappings on all renderers on the tree_column.
 func (treeColumn *TreeViewColumn) Clear() {
-	var _arg0 *C.GtkTreeViewColumn // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_tree_view_column_clear(_arg0)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("clear", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 }
 
@@ -475,13 +403,16 @@ func (treeColumn *TreeViewColumn) Clear() {
 //    - cellRenderer to clear the attribute mapping on.
 //
 func (treeColumn *TreeViewColumn) ClearAttributes(cellRenderer CellRendererer) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkCellRenderer   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cellRenderer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellRenderer).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_clear_attributes(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("clear_attributes", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cellRenderer)
 }
@@ -489,11 +420,14 @@ func (treeColumn *TreeViewColumn) ClearAttributes(cellRenderer CellRendererer) {
 // Clicked emits the “clicked” signal on the column. This function will only
 // work if tree_column is clickable.
 func (treeColumn *TreeViewColumn) Clicked() {
-	var _arg0 *C.GtkTreeViewColumn // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_tree_view_column_clicked(_arg0)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("clicked", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 }
 
@@ -505,13 +439,16 @@ func (treeColumn *TreeViewColumn) Clicked() {
 //    - cell: CellRenderer.
 //
 func (treeColumn *TreeViewColumn) FocusCell(cell CellRendererer) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkCellRenderer   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cell).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_focus_cell(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("focus_cell", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cell)
 }
@@ -524,12 +461,16 @@ func (treeColumn *TreeViewColumn) FocusCell(cell CellRendererer) {
 //    - gfloat: current alignent of tree_column.
 //
 func (treeColumn *TreeViewColumn) Alignment() float32 {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gfloat             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.gfloat // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_alignment(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_alignment", args[:], nil)
+	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gfloat float32 // out
@@ -546,12 +487,16 @@ func (treeColumn *TreeViewColumn) Alignment() float32 {
 //    - widget: button for the column header.
 //
 func (treeColumn *TreeViewColumn) Button() Widgetter {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret *C.GtkWidget         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_button(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_button", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _widget Widgetter // out
@@ -562,8 +507,8 @@ func (treeColumn *TreeViewColumn) Button() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -584,12 +529,16 @@ func (treeColumn *TreeViewColumn) Button() Widgetter {
 //    - ok: TRUE if user can click the column header.
 //
 func (treeColumn *TreeViewColumn) Clickable() bool {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_clickable(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_clickable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -608,12 +557,16 @@ func (treeColumn *TreeViewColumn) Clickable() bool {
 //    - ok: TRUE if the column expands to fill available space.
 //
 func (treeColumn *TreeViewColumn) Expand() bool {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_expand(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_expand", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -634,12 +587,16 @@ func (treeColumn *TreeViewColumn) Expand() bool {
 //    - gint: fixed width of the column.
 //
 func (treeColumn *TreeViewColumn) FixedWidth() int {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_fixed_width(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_fixed_width", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -657,12 +614,16 @@ func (treeColumn *TreeViewColumn) FixedWidth() int {
 //    - gint: maximum width of the tree_column.
 //
 func (treeColumn *TreeViewColumn) MaxWidth() int {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_max_width(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_max_width", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -680,12 +641,16 @@ func (treeColumn *TreeViewColumn) MaxWidth() int {
 //    - gint: minimum width of the tree_column.
 //
 func (treeColumn *TreeViewColumn) MinWidth() int {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_min_width(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_min_width", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -702,12 +667,16 @@ func (treeColumn *TreeViewColumn) MinWidth() int {
 //    - ok: TRUE if the tree_column can be reordered by the user.
 //
 func (treeColumn *TreeViewColumn) Reorderable() bool {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_reorderable(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_reorderable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -726,12 +695,16 @@ func (treeColumn *TreeViewColumn) Reorderable() bool {
 //    - ok: TRUE, if the tree_column can be resized.
 //
 func (treeColumn *TreeViewColumn) Resizable() bool {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_resizable(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_resizable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -741,28 +714,6 @@ func (treeColumn *TreeViewColumn) Resizable() bool {
 	}
 
 	return _ok
-}
-
-// Sizing returns the current type of tree_column.
-//
-// The function returns the following values:
-//
-//    - treeViewColumnSizing: type of tree_column.
-//
-func (treeColumn *TreeViewColumn) Sizing() TreeViewColumnSizing {
-	var _arg0 *C.GtkTreeViewColumn      // out
-	var _cret C.GtkTreeViewColumnSizing // in
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-
-	_cret = C.gtk_tree_view_column_get_sizing(_arg0)
-	runtime.KeepAlive(treeColumn)
-
-	var _treeViewColumnSizing TreeViewColumnSizing // out
-
-	_treeViewColumnSizing = TreeViewColumnSizing(_cret)
-
-	return _treeViewColumnSizing
 }
 
 // SortColumnID gets the logical sort_column_id that the model sorts on when
@@ -775,12 +726,16 @@ func (treeColumn *TreeViewColumn) Sizing() TreeViewColumnSizing {
 //      be used for sorting.
 //
 func (treeColumn *TreeViewColumn) SortColumnID() int {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_sort_column_id(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_sort_column_id", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -798,12 +753,16 @@ func (treeColumn *TreeViewColumn) SortColumnID() int {
 //    - ok: whether the sort indicator arrow is displayed.
 //
 func (treeColumn *TreeViewColumn) SortIndicator() bool {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_sort_indicator(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_sort_indicator", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -815,28 +774,6 @@ func (treeColumn *TreeViewColumn) SortIndicator() bool {
 	return _ok
 }
 
-// SortOrder gets the value set by gtk_tree_view_column_set_sort_order().
-//
-// The function returns the following values:
-//
-//    - sortType: sort order the sort indicator is indicating.
-//
-func (treeColumn *TreeViewColumn) SortOrder() SortType {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.GtkSortType        // in
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-
-	_cret = C.gtk_tree_view_column_get_sort_order(_arg0)
-	runtime.KeepAlive(treeColumn)
-
-	var _sortType SortType // out
-
-	_sortType = SortType(_cret)
-
-	return _sortType
-}
-
 // Spacing returns the spacing of tree_column.
 //
 // The function returns the following values:
@@ -844,12 +781,16 @@ func (treeColumn *TreeViewColumn) SortOrder() SortType {
 //    - gint: spacing of tree_column.
 //
 func (treeColumn *TreeViewColumn) Spacing() int {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_spacing(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_spacing", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -866,12 +807,16 @@ func (treeColumn *TreeViewColumn) Spacing() int {
 //    - utf8: title of the column. This string should not be modified or freed.
 //
 func (treeColumn *TreeViewColumn) Title() string {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret *C.gchar             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_title(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_title", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _utf8 string // out
@@ -890,12 +835,16 @@ func (treeColumn *TreeViewColumn) Title() string {
 //      NULL otherwise.
 //
 func (treeColumn *TreeViewColumn) TreeView() Widgetter {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret *C.GtkWidget         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_tree_view(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_tree_view", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _widget Widgetter // out
@@ -904,8 +853,8 @@ func (treeColumn *TreeViewColumn) TreeView() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -928,12 +877,16 @@ func (treeColumn *TreeViewColumn) TreeView() Widgetter {
 //      will show the column.
 //
 func (treeColumn *TreeViewColumn) Visible() bool {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -953,12 +906,16 @@ func (treeColumn *TreeViewColumn) Visible() bool {
 //    - widget (optional) in the column header, or NULL.
 //
 func (treeColumn *TreeViewColumn) Widget() Widgetter {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret *C.GtkWidget         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _widget Widgetter // out
@@ -967,8 +924,8 @@ func (treeColumn *TreeViewColumn) Widget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -990,12 +947,16 @@ func (treeColumn *TreeViewColumn) Widget() Widgetter {
 //    - gint: current width of tree_column.
 //
 func (treeColumn *TreeViewColumn) Width() int {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_width(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_width", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -1012,12 +973,16 @@ func (treeColumn *TreeViewColumn) Width() int {
 //    - gint: current X offset of tree_column.
 //
 func (treeColumn *TreeViewColumn) XOffset() int {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _cret C.gint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_view_column_get_x_offset(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("get_x_offset", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(treeColumn)
 
 	var _gint int // out
@@ -1037,17 +1002,21 @@ func (treeColumn *TreeViewColumn) XOffset() int {
 //    - expand: TRUE if cell is to be given extra space allocated to tree_column.
 //
 func (treeColumn *TreeViewColumn) PackEnd(cell CellRendererer, expand bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkCellRenderer   // out
-	var _arg2 C.gboolean           // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cell).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
+	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tree_view_column_pack_end(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("pack_end", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(expand)
@@ -1063,17 +1032,21 @@ func (treeColumn *TreeViewColumn) PackEnd(cell CellRendererer, expand bool) {
 //    - expand: TRUE if cell is to be given extra space allocated to tree_column.
 //
 func (treeColumn *TreeViewColumn) PackStart(cell CellRendererer, expand bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkCellRenderer   // out
-	var _arg2 C.gboolean           // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cell).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
+	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tree_view_column_pack_start(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("pack_start", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(expand)
@@ -1082,11 +1055,14 @@ func (treeColumn *TreeViewColumn) PackStart(cell CellRendererer, expand bool) {
 // QueueResize flags the column, and the cell renderers added to this column, to
 // have their sizes renegotiated.
 func (treeColumn *TreeViewColumn) QueueResize() {
-	var _arg0 *C.GtkTreeViewColumn // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_tree_view_column_queue_resize(_arg0)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("queue_resize", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 }
 
@@ -1099,46 +1075,18 @@ func (treeColumn *TreeViewColumn) QueueResize() {
 //    - xalign: alignment, which is between [0.0 and 1.0] inclusive.
 //
 func (treeColumn *TreeViewColumn) SetAlignment(xalign float32) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gfloat             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.gfloat // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	_arg1 = C.gfloat(xalign)
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_alignment(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_alignment", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(xalign)
-}
-
-// SetCellDataFunc sets the TreeCellDataFunc to use for the column. This
-// function is used instead of the standard attributes mapping for setting the
-// column value, and should set the value of tree_column's cell renderer as
-// appropriate. func may be NULL to remove an older one.
-//
-// The function takes the following parameters:
-//
-//    - cellRenderer: CellRenderer.
-//    - fn (optional) to use.
-//
-func (treeColumn *TreeViewColumn) SetCellDataFunc(cellRenderer CellRendererer, fn TreeCellDataFunc) {
-	var _arg0 *C.GtkTreeViewColumn  // out
-	var _arg1 *C.GtkCellRenderer    // out
-	var _arg2 C.GtkTreeCellDataFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(externglib.InternObject(cellRenderer).Native()))
-	if fn != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gtk3_TreeCellDataFunc)
-		_arg3 = C.gpointer(gbox.Assign(fn))
-		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.gtk_tree_view_column_set_cell_data_func(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(treeColumn)
-	runtime.KeepAlive(cellRenderer)
-	runtime.KeepAlive(fn)
 }
 
 // SetClickable sets the header to be active if clickable is TRUE. When the
@@ -1149,15 +1097,18 @@ func (treeColumn *TreeViewColumn) SetCellDataFunc(cellRenderer CellRendererer, f
 //    - clickable: TRUE if the header is active.
 //
 func (treeColumn *TreeViewColumn) SetClickable(clickable bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	if clickable {
 		_arg1 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_clickable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_clickable", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(clickable)
 }
@@ -1175,15 +1126,18 @@ func (treeColumn *TreeViewColumn) SetClickable(clickable bool) {
 //    - expand: TRUE if the column should expand to fill available space.
 //
 func (treeColumn *TreeViewColumn) SetExpand(expand bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	if expand {
 		_arg1 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_expand(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_expand", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(expand)
 }
@@ -1205,13 +1159,16 @@ func (treeColumn *TreeViewColumn) SetExpand(expand bool) {
 //    - fixedWidth: new fixed width, in pixels, or -1.
 //
 func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gint               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	_arg1 = C.gint(fixedWidth)
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_fixed_width(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_fixed_width", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(fixedWidth)
 }
@@ -1226,13 +1183,16 @@ func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int) {
 //    - maxWidth: maximum width of the column in pixels, or -1.
 //
 func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gint               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	_arg1 = C.gint(maxWidth)
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_max_width(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_max_width", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(maxWidth)
 }
@@ -1245,13 +1205,16 @@ func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int) {
 //    - minWidth: minimum width of the column in pixels, or -1.
 //
 func (treeColumn *TreeViewColumn) SetMinWidth(minWidth int) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gint               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	_arg1 = C.gint(minWidth)
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_min_width(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_min_width", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(minWidth)
 }
@@ -1264,15 +1227,18 @@ func (treeColumn *TreeViewColumn) SetMinWidth(minWidth int) {
 //    - reorderable: TRUE, if the column can be reordered.
 //
 func (treeColumn *TreeViewColumn) SetReorderable(reorderable bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	if reorderable {
 		_arg1 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_reorderable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_reorderable", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(reorderable)
 }
@@ -1287,35 +1253,20 @@ func (treeColumn *TreeViewColumn) SetReorderable(reorderable bool) {
 //    - resizable: TRUE, if the column can be resized.
 //
 func (treeColumn *TreeViewColumn) SetResizable(resizable bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	if resizable {
 		_arg1 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_resizable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_resizable", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(resizable)
-}
-
-// SetSizing sets the growth behavior of tree_column to type.
-//
-// The function takes the following parameters:
-//
-//    - typ: TreeViewColumnSizing.
-//
-func (treeColumn *TreeViewColumn) SetSizing(typ TreeViewColumnSizing) {
-	var _arg0 *C.GtkTreeViewColumn      // out
-	var _arg1 C.GtkTreeViewColumnSizing // out
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = C.GtkTreeViewColumnSizing(typ)
-
-	C.gtk_tree_view_column_set_sizing(_arg0, _arg1)
-	runtime.KeepAlive(treeColumn)
-	runtime.KeepAlive(typ)
 }
 
 // SetSortColumnID sets the logical sort_column_id that this column sorts on
@@ -1327,13 +1278,16 @@ func (treeColumn *TreeViewColumn) SetSizing(typ TreeViewColumnSizing) {
 //    - sortColumnId: sort_column_id of the model to sort on.
 //
 func (treeColumn *TreeViewColumn) SetSortColumnID(sortColumnId int) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gint               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	_arg1 = C.gint(sortColumnId)
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_sort_column_id(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_sort_column_id", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(sortColumnId)
 }
@@ -1347,45 +1301,20 @@ func (treeColumn *TreeViewColumn) SetSortColumnID(sortColumnId int) {
 //    - setting: TRUE to display an indicator that the column is sorted.
 //
 func (treeColumn *TreeViewColumn) SetSortIndicator(setting bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_sort_indicator(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_sort_indicator", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(setting)
-}
-
-// SetSortOrder changes the appearance of the sort indicator.
-//
-// This does not actually sort the model. Use
-// gtk_tree_view_column_set_sort_column_id() if you want automatic sorting
-// support. This function is primarily for custom sorting behavior, and should
-// be used in conjunction with gtk_tree_sortable_set_sort_column_id() to do
-// that. For custom models, the mechanism will vary.
-//
-// The sort indicator changes direction to indicate normal sort or reverse sort.
-// Note that you must have the sort indicator enabled to see anything when
-// calling this function; see gtk_tree_view_column_set_sort_indicator().
-//
-// The function takes the following parameters:
-//
-//    - order: sort order that the sort indicator should indicate.
-//
-func (treeColumn *TreeViewColumn) SetSortOrder(order SortType) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.GtkSortType        // out
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = C.GtkSortType(order)
-
-	C.gtk_tree_view_column_set_sort_order(_arg0, _arg1)
-	runtime.KeepAlive(treeColumn)
-	runtime.KeepAlive(order)
 }
 
 // SetSpacing sets the spacing field of tree_column, which is the number of
@@ -1396,13 +1325,16 @@ func (treeColumn *TreeViewColumn) SetSortOrder(order SortType) {
 //    - spacing: distance between cell renderers in pixels.
 //
 func (treeColumn *TreeViewColumn) SetSpacing(spacing int) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gint               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	_arg1 = C.gint(spacing)
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_spacing(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_spacing", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(spacing)
 }
@@ -1415,14 +1347,17 @@ func (treeColumn *TreeViewColumn) SetSpacing(spacing int) {
 //    - title of the tree_column.
 //
 func (treeColumn *TreeViewColumn) SetTitle(title string) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.gchar             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_title(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_title", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(title)
 }
@@ -1434,15 +1369,18 @@ func (treeColumn *TreeViewColumn) SetTitle(title string) {
 //    - visible: TRUE if the tree_column is visible.
 //
 func (treeColumn *TreeViewColumn) SetVisible(visible bool) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_visible(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_visible", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(visible)
 }
@@ -1455,15 +1393,18 @@ func (treeColumn *TreeViewColumn) SetVisible(visible bool) {
 //    - widget (optional): child Widget, or NULL.
 //
 func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
-	var _arg0 *C.GtkTreeViewColumn // out
-	var _arg1 *C.GtkWidget         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(externglib.InternObject(treeColumn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**TreeViewColumn)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_view_column_set_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeViewColumn").InvokeMethod("set_widget", args[:], nil)
+
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(widget)
 }

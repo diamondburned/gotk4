@@ -8,24 +8,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkcursor.go.
 var (
-	GTypeCursorType = externglib.Type(C.gdk_cursor_type_get_type())
-	GTypeCursor     = externglib.Type(C.gdk_cursor_get_type())
+	GTypeCursorType = coreglib.Type(C.gdk_cursor_type_get_type())
+	GTypeCursor     = coreglib.Type(C.gdk_cursor_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCursorType, F: marshalCursorType},
 		{T: GTypeCursor, F: marshalCursor},
 	})
@@ -204,7 +205,7 @@ const (
 )
 
 func marshalCursorType(p uintptr) (interface{}, error) {
-	return CursorType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return CursorType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CursorType.
@@ -378,11 +379,11 @@ func (c CursorType) String() string {
 // Cursor represents a cursor. Its contents are private.
 type Cursor struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Cursor)(nil)
+	_ coreglib.Objector = (*Cursor)(nil)
 )
 
 // Cursorrer describes types inherited from class Cursor.
@@ -390,20 +391,20 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Cursorrer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseCursor() *Cursor
 }
 
 var _ Cursorrer = (*Cursor)(nil)
 
-func wrapCursor(obj *externglib.Object) *Cursor {
+func wrapCursor(obj *coreglib.Object) *Cursor {
 	return &Cursor{
 		Object: obj,
 	}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
-	return wrapCursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCursor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (cursor *Cursor) baseCursor() *Cursor {
@@ -413,69 +414,6 @@ func (cursor *Cursor) baseCursor() *Cursor {
 // BaseCursor returns the underlying base object.
 func BaseCursor(obj Cursorrer) *Cursor {
 	return obj.baseCursor()
-}
-
-// NewCursor creates a new cursor from the set of builtin cursors for the
-// default display. See gdk_cursor_new_for_display().
-//
-// To make the cursor invisible, use GDK_BLANK_CURSOR.
-//
-// Deprecated: Use gdk_cursor_new_for_display() instead.
-//
-// The function takes the following parameters:
-//
-//    - cursorType: cursor to create.
-//
-// The function returns the following values:
-//
-//    - cursor: new Cursor.
-//
-func NewCursor(cursorType CursorType) *Cursor {
-	var _arg1 C.GdkCursorType // out
-	var _cret *C.GdkCursor    // in
-
-	_arg1 = C.GdkCursorType(cursorType)
-
-	_cret = C.gdk_cursor_new(_arg1)
-	runtime.KeepAlive(cursorType)
-
-	var _cursor *Cursor // out
-
-	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _cursor
-}
-
-// NewCursorForDisplay creates a new cursor from the set of builtin cursors.
-//
-// The function takes the following parameters:
-//
-//    - display for which the cursor will be created.
-//    - cursorType: cursor to create.
-//
-// The function returns the following values:
-//
-//    - cursor (optional): new Cursor, or NULL on failure.
-//
-func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
-	var _arg1 *C.GdkDisplay   // out
-	var _arg2 C.GdkCursorType // out
-	var _cret *C.GdkCursor    // in
-
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg2 = C.GdkCursorType(cursorType)
-
-	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
-	runtime.KeepAlive(display)
-	runtime.KeepAlive(cursorType)
-
-	var _cursor *Cursor // out
-
-	if _cret != nil {
-		_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	}
-
-	return _cursor
 }
 
 // NewCursorFromName creates a new cursor by looking up name in the current
@@ -565,22 +503,27 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 //      given name.
 //
 func NewCursorFromName(display *Display, name string) *Cursor {
-	var _arg1 *C.GdkDisplay // out
-	var _arg2 *C.gchar      // out
-	var _cret *C.GdkCursor  // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**Display)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(name)
 
 	var _cursor *Cursor // out
 
 	if _cret != nil {
-		_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _cursor
@@ -614,18 +557,25 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //    - cursor: new Cursor.
 //
 func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *Cursor {
-	var _arg1 *C.GdkDisplay // out
-	var _arg2 *C.GdkPixbuf  // out
-	var _arg3 C.gint        // out
-	var _arg4 C.gint        // out
-	var _cret *C.GdkCursor  // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
+	var _arg3 C.gint  // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
-	_arg3 = C.gint(x)
-	_arg4 = C.gint(y)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+	*(**Display)(unsafe.Pointer(&args[0])) = _arg0
+	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.gdk_cursor_new_from_pixbuf(_arg1, _arg2, _arg3, _arg4)
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_pixbuf", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(x)
@@ -633,7 +583,7 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -662,18 +612,25 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 //    - cursor: new Cursor.
 //
 func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64) *Cursor {
-	var _arg1 *C.GdkDisplay      // out
-	var _arg2 *C.cairo_surface_t // out
-	var _arg3 C.gdouble          // out
-	var _arg4 C.gdouble          // out
-	var _cret *C.GdkCursor       // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _arg2 C.gdouble // out
+	var _arg3 C.gdouble // out
+	var _cret *C.void   // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	_arg3 = C.gdouble(x)
-	_arg4 = C.gdouble(y)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(surface.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	*(**Display)(unsafe.Pointer(&args[0])) = _arg0
+	*(**cairo.Surface)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.gdk_cursor_new_from_surface(_arg1, _arg2, _arg3, _arg4)
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_surface", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(x)
@@ -681,31 +638,9 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
-}
-
-// CursorType returns the cursor type for this cursor.
-//
-// The function returns the following values:
-//
-//    - cursorType: CursorType.
-//
-func (cursor *Cursor) CursorType() CursorType {
-	var _arg0 *C.GdkCursor    // out
-	var _cret C.GdkCursorType // in
-
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
-
-	_cret = C.gdk_cursor_get_cursor_type(_arg0)
-	runtime.KeepAlive(cursor)
-
-	var _cursorType CursorType // out
-
-	_cursorType = CursorType(_cret)
-
-	return _cursorType
 }
 
 // Display returns the display on which the Cursor is defined.
@@ -715,17 +650,21 @@ func (cursor *Cursor) CursorType() CursorType {
 //    - display associated to cursor.
 //
 func (cursor *Cursor) Display() *Display {
-	var _arg0 *C.GdkCursor  // out
-	var _cret *C.GdkDisplay // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_cursor_get_display(_arg0)
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cursor)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -741,19 +680,23 @@ func (cursor *Cursor) Display() *Display {
 //    - pixbuf (optional) representing cursor, or NULL.
 //
 func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
-	var _arg0 *C.GdkCursor // out
-	var _cret *C.GdkPixbuf // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_cursor_get_image(_arg0)
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_image", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cursor)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	if _cret != nil {
 		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -766,44 +709,4 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	}
 
 	return _pixbuf
-}
-
-// Surface returns a cairo image surface with the image used to display the
-// cursor.
-//
-// Note that depending on the capabilities of the windowing system and on the
-// cursor, GDK may not be able to obtain the image data. In this case, NULL is
-// returned.
-//
-// The function returns the following values:
-//
-//    - xHot (optional): location to store the hotspot x position, or NULL.
-//    - yHot (optional): location to store the hotspot y position, or NULL.
-//    - surface (optional): #cairo_surface_t representing cursor, or NULL.
-//
-func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
-	var _arg0 *C.GdkCursor       // out
-	var _arg1 C.gdouble          // in
-	var _arg2 C.gdouble          // in
-	var _cret *C.cairo_surface_t // in
-
-	_arg0 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
-
-	_cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(cursor)
-
-	var _xHot float64           // out
-	var _yHot float64           // out
-	var _surface *cairo.Surface // out
-
-	_xHot = float64(_arg1)
-	_yHot = float64(_arg2)
-	if _cret != nil {
-		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-		})
-	}
-
-	return _xHot, _yHot, _surface
 }

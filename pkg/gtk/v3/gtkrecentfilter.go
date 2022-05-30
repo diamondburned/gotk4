@@ -10,26 +10,23 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_RecentFilterFunc(GtkRecentFilterInfo*, gpointer);
-// extern void callbackDelete(gpointer);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkrecentfilter.go.
 var (
-	GTypeRecentFilterFlags = externglib.Type(C.gtk_recent_filter_flags_get_type())
-	GTypeRecentFilter      = externglib.Type(C.gtk_recent_filter_get_type())
+	GTypeRecentFilterFlags = coreglib.Type(C.gtk_recent_filter_flags_get_type())
+	GTypeRecentFilter      = coreglib.Type(C.gtk_recent_filter_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRecentFilterFlags, F: marshalRecentFilterFlags},
 		{T: GTypeRecentFilter, F: marshalRecentFilter},
 	})
@@ -58,7 +55,7 @@ const (
 )
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
-	return RecentFilterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return RecentFilterFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for RecentFilterFlags.
@@ -178,19 +175,19 @@ func _gotk4_gtk3_RecentFilterFunc(arg1 *C.GtkRecentFilterInfo, arg2 C.gpointer) 
 //    </object>.
 type RecentFilter struct {
 	_ [0]func() // equal guard
-	externglib.InitiallyUnowned
+	coreglib.InitiallyUnowned
 
-	*externglib.Object
+	*coreglib.Object
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*RecentFilter)(nil)
+	_ coreglib.Objector = (*RecentFilter)(nil)
 )
 
-func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
+func wrapRecentFilter(obj *coreglib.Object) *RecentFilter {
 	return &RecentFilter{
-		InitiallyUnowned: externglib.InitiallyUnowned{
+		InitiallyUnowned: coreglib.InitiallyUnowned{
 			Object: obj,
 		},
 		Object: obj,
@@ -201,7 +198,7 @@ func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 }
 
 func marshalRecentFilter(p uintptr) (interface{}, error) {
-	return wrapRecentFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRecentFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRecentFilter creates a new RecentFilter with no rules added to it. Such
@@ -219,13 +216,14 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 //    - recentFilter: new RecentFilter.
 //
 func NewRecentFilter() *RecentFilter {
-	var _cret *C.GtkRecentFilter // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_recent_filter_new()
+	_gret := girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("new_RecentFilter", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _recentFilter *RecentFilter // out
 
-	_recentFilter = wrapRecentFilter(externglib.Take(unsafe.Pointer(_cret)))
+	_recentFilter = wrapRecentFilter(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
 }
@@ -238,13 +236,16 @@ func NewRecentFilter() *RecentFilter {
 //    - days: number of days.
 //
 func (filter *RecentFilter) AddAge(days int) {
-	var _arg0 *C.GtkRecentFilter // out
-	var _arg1 C.gint             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = C.gint(days)
+	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_recent_filter_add_age(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_age", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(days)
 }
@@ -257,48 +258,19 @@ func (filter *RecentFilter) AddAge(days int) {
 //    - application name.
 //
 func (filter *RecentFilter) AddApplication(application string) {
-	var _arg0 *C.GtkRecentFilter // out
-	var _arg1 *C.gchar           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(application)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(application)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_recent_filter_add_application(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_application", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(application)
-}
-
-// AddCustom adds a rule to a filter that allows resources based on a custom
-// callback function. The bitfield needed which is passed in provides
-// information about what sorts of information that the filter function needs;
-// this allows GTK+ to avoid retrieving expensive information when it isn’t
-// needed by the filter.
-//
-// The function takes the following parameters:
-//
-//    - needed: bitfield of flags indicating the information that the custom
-//      filter function needs.
-//    - fn: callback function; if the function returns TRUE, then the file will
-//      be displayed.
-//
-func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterFunc) {
-	var _arg0 *C.GtkRecentFilter     // out
-	var _arg1 C.GtkRecentFilterFlags // out
-	var _arg2 C.GtkRecentFilterFunc  // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = C.GtkRecentFilterFlags(needed)
-	_arg2 = (*[0]byte)(C._gotk4_gtk3_RecentFilterFunc)
-	_arg3 = C.gpointer(gbox.Assign(fn))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.gtk_recent_filter_add_custom(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(filter)
-	runtime.KeepAlive(needed)
-	runtime.KeepAlive(fn)
 }
 
 // AddGroup adds a rule that allows resources based on the name of the group to
@@ -309,14 +281,17 @@ func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterF
 //    - group name.
 //
 func (filter *RecentFilter) AddGroup(group string) {
-	var _arg0 *C.GtkRecentFilter // out
-	var _arg1 *C.gchar           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(group)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(group)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_recent_filter_add_group(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_group", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(group)
 }
@@ -329,14 +304,17 @@ func (filter *RecentFilter) AddGroup(group string) {
 //    - mimeType: MIME type.
 //
 func (filter *RecentFilter) AddMIMEType(mimeType string) {
-	var _arg0 *C.GtkRecentFilter // out
-	var _arg1 *C.gchar           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_recent_filter_add_mime_type(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_mime_type", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(mimeType)
 }
@@ -349,14 +327,17 @@ func (filter *RecentFilter) AddMIMEType(mimeType string) {
 //    - pattern: file pattern.
 //
 func (filter *RecentFilter) AddPattern(pattern string) {
-	var _arg0 *C.GtkRecentFilter // out
-	var _arg1 *C.gchar           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_recent_filter_add_pattern(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_pattern", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(pattern)
 }
@@ -364,11 +345,14 @@ func (filter *RecentFilter) AddPattern(pattern string) {
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
 // GdkPixbuf.
 func (filter *RecentFilter) AddPixbufFormats() {
-	var _arg0 *C.GtkRecentFilter // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**RecentFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_pixbuf_formats", args[:], nil)
+
 	runtime.KeepAlive(filter)
 }
 
@@ -389,14 +373,18 @@ func (filter *RecentFilter) AddPixbufFormats() {
 //    - ok: TRUE if the file should be displayed.
 //
 func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
-	var _arg0 *C.GtkRecentFilter     // out
-	var _arg1 *C.GtkRecentFilterInfo // out
-	var _cret C.gboolean             // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.GtkRecentFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(filterInfo)))
+	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_recent_filter_filter(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("filter", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterInfo)
 
@@ -418,12 +406,16 @@ func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 //      owned by the filter object and should not be freed.
 //
 func (filter *RecentFilter) Name() string {
-	var _arg0 *C.GtkRecentFilter // out
-	var _cret *C.gchar           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**RecentFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_recent_filter_get_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("get_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(filter)
 
 	var _utf8 string // out
@@ -435,33 +427,6 @@ func (filter *RecentFilter) Name() string {
 	return _utf8
 }
 
-// Needed gets the fields that need to be filled in for the RecentFilterInfo
-// passed to gtk_recent_filter_filter()
-//
-// This function will not typically be used by applications; it is intended
-// principally for use in the implementation of RecentChooser.
-//
-// The function returns the following values:
-//
-//    - recentFilterFlags: bitfield of flags indicating needed fields when
-//      calling gtk_recent_filter_filter().
-//
-func (filter *RecentFilter) Needed() RecentFilterFlags {
-	var _arg0 *C.GtkRecentFilter     // out
-	var _cret C.GtkRecentFilterFlags // in
-
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-
-	_cret = C.gtk_recent_filter_get_needed(_arg0)
-	runtime.KeepAlive(filter)
-
-	var _recentFilterFlags RecentFilterFlags // out
-
-	_recentFilterFlags = RecentFilterFlags(_cret)
-
-	return _recentFilterFlags
-}
-
 // SetName sets the human-readable name of the filter; this is the string that
 // will be displayed in the recently used resources selector user interface if
 // there is a selectable list of filters.
@@ -471,14 +436,17 @@ func (filter *RecentFilter) Needed() RecentFilterFlags {
 //    - name: then human readable name of filter.
 //
 func (filter *RecentFilter) SetName(name string) {
-	var _arg0 *C.GtkRecentFilter // out
-	var _arg1 *C.gchar           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_recent_filter_set_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("set_name", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(name)
 }
@@ -494,78 +462,4 @@ type RecentFilterInfo struct {
 // recentFilterInfo is the struct that's finalized.
 type recentFilterInfo struct {
 	native *C.GtkRecentFilterInfo
-}
-
-// Contains to indicate which fields are set.
-func (r *RecentFilterInfo) Contains() RecentFilterFlags {
-	var v RecentFilterFlags // out
-	v = RecentFilterFlags(r.native.contains)
-	return v
-}
-
-// URI of the file being tested.
-func (r *RecentFilterInfo) URI() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.uri)))
-	return v
-}
-
-// DisplayName: string that will be used to display the file in the recent
-// chooser.
-func (r *RecentFilterInfo) DisplayName() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.display_name)))
-	return v
-}
-
-// MIMEType: MIME type of the file.
-func (r *RecentFilterInfo) MIMEType() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.mime_type)))
-	return v
-}
-
-// Applications: list of applications that have registered the file.
-func (r *RecentFilterInfo) Applications() []string {
-	var v []string // out
-	{
-		var i int
-		var z *C.gchar
-		for p := r.native.applications; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(r.native.applications, i)
-		v = make([]string, i)
-		for i := range src {
-			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-		}
-	}
-	return v
-}
-
-// Groups groups to which the file belongs to.
-func (r *RecentFilterInfo) Groups() []string {
-	var v []string // out
-	{
-		var i int
-		var z *C.gchar
-		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(r.native.groups, i)
-		v = make([]string, i)
-		for i := range src {
-			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-		}
-	}
-	return v
-}
-
-// Age: number of days elapsed since the file has been registered.
-func (r *RecentFilterInfo) Age() int {
-	var v int // out
-	v = int(r.native.age)
-	return v
 }

@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkpopovermenu.go.
-var GTypePopoverMenu = externglib.Type(C.gtk_popover_menu_get_type())
+var GTypePopoverMenu = coreglib.Type(C.gtk_popover_menu_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePopoverMenu, F: marshalPopoverMenu},
 	})
 }
@@ -115,13 +114,13 @@ func classInitPopoverMenuer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
+func wrapPopoverMenu(obj *coreglib.Object) *PopoverMenu {
 	return &PopoverMenu{
 		Popover: Popover{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -139,7 +138,7 @@ func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 }
 
 func marshalPopoverMenu(p uintptr) (interface{}, error) {
-	return wrapPopoverMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPopoverMenu(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPopoverMenu creates a new popover menu.
@@ -149,13 +148,14 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 //    - popoverMenu: new PopoverMenu.
 //
 func NewPopoverMenu() *PopoverMenu {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_popover_menu_new()
+	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("new_PopoverMenu", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _popoverMenu *PopoverMenu // out
 
-	_popoverMenu = wrapPopoverMenu(externglib.Take(unsafe.Pointer(_cret)))
+	_popoverMenu = wrapPopoverMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -173,14 +173,17 @@ func NewPopoverMenu() *PopoverMenu {
 //    - name of the menu to switch to.
 //
 func (popover *PopoverMenu) OpenSubmenu(name string) {
-	var _arg0 *C.GtkPopoverMenu // out
-	var _arg1 *C.gchar          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(externglib.InternObject(popover).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**PopoverMenu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
+	girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("open_submenu", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(name)
 }

@@ -8,56 +8,30 @@ import (
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gtk4
-// #cgo CFLAGS: -Wno-deprecated-declarations
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtk.go.
 var (
-	GTypeEditableProperties = externglib.Type(C.gtk_editable_properties_get_type())
-	GTypeDebugFlags         = externglib.Type(C.gtk_debug_flags_get_type())
+	GTypeEditableProperties = coreglib.Type(C.gtk_editable_properties_get_type())
+	GTypeDebugFlags         = coreglib.Type(C.gtk_debug_flags_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEditableProperties, F: marshalEditableProperties},
 		{T: GTypeDebugFlags, F: marshalDebugFlags},
 	})
 }
 
-// The function returns the following values:
-//
-func BuilderErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_builder_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// The function returns the following values:
-//
-func ConstraintVflParserErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_constraint_vfl_parser_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
+func init() {
+	girepository.Require("Gtk", "4.0")
 }
 
 type EditableProperties C.gint
@@ -75,7 +49,7 @@ const (
 )
 
 func marshalEditableProperties(p uintptr) (interface{}, error) {
-	return EditableProperties(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return EditableProperties(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EditableProperties.
@@ -104,34 +78,6 @@ func (e EditableProperties) String() string {
 	}
 }
 
-// The function returns the following values:
-//
-func IconThemeErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_icon_theme_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// The function returns the following values:
-//
-func RecentManagerErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_recent_manager_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
 type DebugFlags C.guint
 
 const (
@@ -157,7 +103,7 @@ const (
 )
 
 func marshalDebugFlags(p uintptr) (interface{}, error) {
-	return DebugFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DebugFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DebugFlags.
@@ -225,18 +171,4 @@ func (d DebugFlags) String() string {
 // Has returns true if d contains other.
 func (d DebugFlags) Has(other DebugFlags) bool {
 	return (d & other) == other
-}
-
-// The function returns the following values:
-//
-func CSSParserErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_css_parser_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
 }

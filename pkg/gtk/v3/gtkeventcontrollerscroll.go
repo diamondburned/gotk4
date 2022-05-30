@@ -4,18 +4,16 @@ package gtk
 
 import (
 	"fmt"
-	"runtime"
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_EventControllerScroll_ConnectDecelerate(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_EventControllerScroll_ConnectScroll(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_EventControllerScroll_ConnectScrollBegin(gpointer, guintptr);
@@ -24,12 +22,12 @@ import "C"
 
 // glib.Type values for gtkeventcontrollerscroll.go.
 var (
-	GTypeEventControllerScrollFlags = externglib.Type(C.gtk_event_controller_scroll_flags_get_type())
-	GTypeEventControllerScroll      = externglib.Type(C.gtk_event_controller_scroll_get_type())
+	GTypeEventControllerScrollFlags = coreglib.Type(C.gtk_event_controller_scroll_flags_get_type())
+	GTypeEventControllerScroll      = coreglib.Type(C.gtk_event_controller_scroll_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEventControllerScrollFlags, F: marshalEventControllerScrollFlags},
 		{T: GTypeEventControllerScroll, F: marshalEventControllerScroll},
 	})
@@ -55,7 +53,7 @@ const (
 )
 
 func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
-	return EventControllerScrollFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return EventControllerScrollFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for EventControllerScrollFlags.
@@ -154,7 +152,7 @@ func classInitEventControllerScroller(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
+func wrapEventControllerScroll(obj *coreglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{
 		EventController: EventController{
 			Object: obj,
@@ -163,14 +161,14 @@ func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 }
 
 func marshalEventControllerScroll(p uintptr) (interface{}, error) {
-	return wrapEventControllerScroll(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEventControllerScroll(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_EventControllerScroll_ConnectDecelerate
 func _gotk4_gtk3_EventControllerScroll_ConnectDecelerate(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(velX, velY float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -192,15 +190,15 @@ func _gotk4_gtk3_EventControllerScroll_ConnectDecelerate(arg0 C.gpointer, arg1 C
 // K_EVENT_CONTROLLER_SCROLL_KINETIC flag is set. vel_x and vel_y express the
 // initial velocity that was imprinted by the scroll events. vel_x and vel_y are
 // expressed in pixels/ms.
-func (controller *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "decelerate", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectDecelerate), f)
+func (v *EventControllerScroll) ConnectDecelerate(f func(velX, velY float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "decelerate", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectDecelerate), f)
 }
 
 //export _gotk4_gtk3_EventControllerScroll_ConnectScroll
 func _gotk4_gtk3_EventControllerScroll_ConnectScroll(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(dx, dy float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -220,15 +218,15 @@ func _gotk4_gtk3_EventControllerScroll_ConnectScroll(arg0 C.gpointer, arg1 C.gdo
 
 // ConnectScroll signals that the widget should scroll by the amount specified
 // by dx and dy.
-func (controller *EventControllerScroll) ConnectScroll(f func(dx, dy float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "scroll", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectScroll), f)
+func (v *EventControllerScroll) ConnectScroll(f func(dx, dy float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "scroll", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectScroll), f)
 }
 
 //export _gotk4_gtk3_EventControllerScroll_ConnectScrollBegin
 func _gotk4_gtk3_EventControllerScroll_ConnectScrollBegin(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -242,15 +240,15 @@ func _gotk4_gtk3_EventControllerScroll_ConnectScrollBegin(arg0 C.gpointer, arg1 
 
 // ConnectScrollBegin signals that a new scrolling operation has begun. It will
 // only be emitted on devices capable of it.
-func (controller *EventControllerScroll) ConnectScrollBegin(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "scroll-begin", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectScrollBegin), f)
+func (v *EventControllerScroll) ConnectScrollBegin(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "scroll-begin", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectScrollBegin), f)
 }
 
 //export _gotk4_gtk3_EventControllerScroll_ConnectScrollEnd
 func _gotk4_gtk3_EventControllerScroll_ConnectScrollEnd(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -264,77 +262,6 @@ func _gotk4_gtk3_EventControllerScroll_ConnectScrollEnd(arg0 C.gpointer, arg1 C.
 
 // ConnectScrollEnd signals that a new scrolling operation has finished. It will
 // only be emitted on devices capable of it.
-func (controller *EventControllerScroll) ConnectScrollEnd(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "scroll-end", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectScrollEnd), f)
-}
-
-// NewEventControllerScroll creates a new event controller that will handle
-// scroll events for the given widget.
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//    - flags: behavior flags.
-//
-// The function returns the following values:
-//
-//    - eventControllerScroll: new EventControllerScroll.
-//
-func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags) *EventControllerScroll {
-	var _arg1 *C.GtkWidget                    // out
-	var _arg2 C.GtkEventControllerScrollFlags // out
-	var _cret *C.GtkEventController           // in
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg2 = C.GtkEventControllerScrollFlags(flags)
-
-	_cret = C.gtk_event_controller_scroll_new(_arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(flags)
-
-	var _eventControllerScroll *EventControllerScroll // out
-
-	_eventControllerScroll = wrapEventControllerScroll(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _eventControllerScroll
-}
-
-// Flags gets the flags conditioning the scroll controller behavior.
-//
-// The function returns the following values:
-//
-//    - eventControllerScrollFlags: controller flags.
-//
-func (controller *EventControllerScroll) Flags() EventControllerScrollFlags {
-	var _arg0 *C.GtkEventControllerScroll     // out
-	var _cret C.GtkEventControllerScrollFlags // in
-
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-
-	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
-	runtime.KeepAlive(controller)
-
-	var _eventControllerScrollFlags EventControllerScrollFlags // out
-
-	_eventControllerScrollFlags = EventControllerScrollFlags(_cret)
-
-	return _eventControllerScrollFlags
-}
-
-// SetFlags sets the flags conditioning scroll controller behavior.
-//
-// The function takes the following parameters:
-//
-//    - flags: behavior flags.
-//
-func (controller *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
-	var _arg0 *C.GtkEventControllerScroll     // out
-	var _arg1 C.GtkEventControllerScrollFlags // out
-
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-	_arg1 = C.GtkEventControllerScrollFlags(flags)
-
-	C.gtk_event_controller_scroll_set_flags(_arg0, _arg1)
-	runtime.KeepAlive(controller)
-	runtime.KeepAlive(flags)
+func (v *EventControllerScroll) ConnectScrollEnd(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "scroll-end", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerScroll_ConnectScrollEnd), f)
 }

@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtcpconnection.go.
-var GTypeTCPConnection = externglib.Type(C.g_tcp_connection_get_type())
+var GTypeTCPConnection = coreglib.Type(C.g_tcp_connection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTCPConnection, F: marshalTCPConnection},
 	})
 }
@@ -46,7 +47,7 @@ func classInitTCPConnectioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
+func wrapTCPConnection(obj *coreglib.Object) *TCPConnection {
 	return &TCPConnection{
 		SocketConnection: SocketConnection{
 			IOStream: IOStream{
@@ -57,7 +58,7 @@ func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
 }
 
 func marshalTCPConnection(p uintptr) (interface{}, error) {
-	return wrapTCPConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTCPConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GracefulDisconnect checks if graceful disconnects are used. See
@@ -68,12 +69,16 @@ func marshalTCPConnection(p uintptr) (interface{}, error) {
 //    - ok: TRUE if graceful disconnect is used on close, FALSE otherwise.
 //
 func (connection *TCPConnection) GracefulDisconnect() bool {
-	var _arg0 *C.GTcpConnection // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**TCPConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
+	_gret := girepository.MustFind("Gio", "TcpConnection").InvokeMethod("get_graceful_disconnect", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out
@@ -101,15 +106,18 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 //    - gracefulDisconnect: whether to do graceful disconnects or not.
 //
 func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
-	var _arg0 *C.GTcpConnection // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if gracefulDisconnect {
 		_arg1 = C.TRUE
 	}
+	*(**TCPConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tcp_connection_set_graceful_disconnect(_arg0, _arg1)
+	girepository.MustFind("Gio", "TcpConnection").InvokeMethod("set_graceful_disconnect", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(gracefulDisconnect)
 }

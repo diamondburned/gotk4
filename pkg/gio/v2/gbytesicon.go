@@ -7,12 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // NewBytesIcon creates a new icon for a bytes.
@@ -29,17 +31,21 @@ import "C"
 //    - bytesIcon for the given bytes.
 //
 func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
-	var _arg1 *C.GBytes // out
-	var _cret *C.GIcon  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**glib.Bytes)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_bytes_icon_new(_arg1)
+	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("new_BytesIcon", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(bytes)
 
 	var _bytesIcon *BytesIcon // out
 
-	_bytesIcon = wrapBytesIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bytesIcon = wrapBytesIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bytesIcon
 }
@@ -51,12 +57,16 @@ func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 //    - bytes: #GBytes.
 //
 func (icon *BytesIcon) Bytes() *glib.Bytes {
-	var _arg0 *C.GBytesIcon // out
-	var _cret *C.GBytes     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GBytesIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**BytesIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_bytes_icon_get_bytes(_arg0)
+	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("get_bytes", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(icon)
 
 	var _bytes *glib.Bytes // out

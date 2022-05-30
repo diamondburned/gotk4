@@ -7,15 +7,15 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// #include <glib.h>
 import "C"
 
 // DBusAddressEscapeValue: escape string so it can appear in a D-Bus address as
@@ -35,13 +35,17 @@ import "C"
 //    - utf8: copy of string with all non-optionally-escaped bytes escaped.
 //
 func DBusAddressEscapeValue(str string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_address_escape_value(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_address_escape_value").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out
@@ -50,93 +54,6 @@ func DBusAddressEscapeValue(str string) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// DBusAddressGetForBusSync: synchronously looks up the D-Bus address for the
-// well-known message bus instance specified by bus_type. This may involve using
-// various platform specific mechanisms.
-//
-// The returned address will be in the D-Bus address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - busType: Type.
-//
-// The function returns the following values:
-//
-//    - utf8: valid D-Bus address string for bus_type or NULL if error is set.
-//
-func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, error) {
-	var _arg2 *C.GCancellable // out
-	var _arg1 C.GBusType      // out
-	var _cret *C.gchar        // in
-	var _cerr *C.GError       // in
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GBusType(busType)
-
-	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, &_cerr)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(busType)
-
-	var _utf8 string // out
-	var _goerr error // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _utf8, _goerr
-}
-
-// DBusAddressGetStream: asynchronously connects to an endpoint specified by
-// address and sets up the connection so it is in a state to run the client-side
-// of the D-Bus authentication conversation. address must be in the D-Bus
-// address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-//
-// When the operation is finished, callback will be invoked. You can then call
-// g_dbus_address_get_stream_finish() to get the result of the operation.
-//
-// This is an asynchronous failable function. See
-// g_dbus_address_get_stream_sync() for the synchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - address: valid D-Bus address.
-//    - callback (optional) to call when the request is satisfied.
-//
-func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 *C.gchar              // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(address)
-	runtime.KeepAlive(callback)
 }
 
 // DBusAddressGetStreamFinish finishes an operation started with
@@ -157,23 +74,29 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 //    - ioStream or NULL if error is set.
 //
 func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
-	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.gchar        // in
-	var _cret *C.GIOStream    // in
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_address_get_stream_finish(_arg1, &_arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "dbus_address_get_stream_finish").Invoke(args[:], outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(res)
 
 	var _outGuid string      // out
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
+	_out0 = *(*string)(unsafe.Pointer(&outs[0]))
 
-	if _arg2 != nil {
-		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+	if _out0 != nil {
+		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
+		defer C.free(unsafe.Pointer(_out0))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -181,8 +104,8 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 			panic("object of type gio.IOStreamer is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(IOStreamer)
 			return ok
 		})
@@ -223,31 +146,38 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 //    - ioStream or NULL if error is set.
 //
 func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOStreamer, error) {
-	var _arg3 *C.GCancellable // out
-	var _arg1 *C.gchar        // out
-	var _arg2 *C.gchar        // in
-	var _cret *C.GIOStream    // in
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var outs [1]girepository.Argument
+	var _arg1 *C.void // out
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*context.Context)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_address_get_stream_sync(_arg1, &_arg2, _arg3, &_cerr)
+	_gret := girepository.MustFind("Gio", "dbus_address_get_stream_sync").Invoke(args[:], outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
 
 	var _outGuid string      // out
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
+	_out1 = *(*string)(unsafe.Pointer(&outs[1]))
 
-	if _arg2 != nil {
-		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+	if _out0 != nil {
+		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
+		defer C.free(unsafe.Pointer(_out0))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -255,8 +185,8 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 			panic("object of type gio.IOStreamer is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(IOStreamer)
 			return ok
 		})
@@ -288,13 +218,17 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 //    - ok: TRUE if string is a valid D-Bus address, FALSE otherwise.
 //
 func DBusIsAddress(str string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_is_address(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_is_address").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _ok bool // out
@@ -316,13 +250,16 @@ func DBusIsAddress(str string) bool {
 //    - str: string.
 //
 func DBusIsSupportedAddress(str string) error {
-	var _arg1 *C.gchar  // out
-	var _cerr *C.GError // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_is_supported_address(_arg1, &_cerr)
+	girepository.MustFind("Gio", "dbus_is_supported_address").Invoke(args[:], nil)
+
 	runtime.KeepAlive(str)
 
 	var _goerr error // out

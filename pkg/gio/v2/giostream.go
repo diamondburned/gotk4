@@ -10,24 +10,24 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GInputStream* _gotk4_gio2_IOStreamClass_get_input_stream(GIOStream*);
 // extern GOutputStream* _gotk4_gio2_IOStreamClass_get_output_stream(GIOStream*);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_finish(GIOStream*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_fn(GIOStream*, GCancellable*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // glib.Type values for giostream.go.
-var GTypeIOStream = externglib.Type(C.g_io_stream_get_type())
+var GTypeIOStream = coreglib.Type(C.g_io_stream_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIOStream, F: marshalIOStream},
 	})
 }
@@ -108,11 +108,11 @@ type IOStreamOverrider interface {
 // guaranteed not to crash).
 type IOStream struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*IOStream)(nil)
+	_ coreglib.Objector = (*IOStream)(nil)
 )
 
 // IOStreamer describes types inherited from class IOStream.
@@ -120,7 +120,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type IOStreamer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseIOStream() *IOStream
 }
 
@@ -160,7 +160,7 @@ func classInitIOStreamer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_IOStreamClass_close_finish
 func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	})
@@ -173,8 +173,8 @@ func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncRes
 			panic("object of type gio.AsyncResulter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(AsyncResulter)
 			return ok
 		})
@@ -188,7 +188,7 @@ func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncRes
 	_goerr := iface.CloseFinish(_result)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -196,7 +196,7 @@ func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncRes
 
 //export _gotk4_gio2_IOStreamClass_close_fn
 func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.GIOStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFn(ctx context.Context) error
 	})
@@ -210,7 +210,7 @@ func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.GIOStream, arg1 *C.GCancellable,
 	_goerr := iface.CloseFn(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -218,36 +218,36 @@ func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.GIOStream, arg1 *C.GCancellable,
 
 //export _gotk4_gio2_IOStreamClass_get_input_stream
 func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.GIOStream) (cret *C.GInputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InputStream() InputStreamer })
 
 	inputStream := iface.InputStream()
 
-	cret = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(inputStream).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(inputStream).Native()))
 
 	return cret
 }
 
 //export _gotk4_gio2_IOStreamClass_get_output_stream
 func _gotk4_gio2_IOStreamClass_get_output_stream(arg0 *C.GIOStream) (cret *C.GOutputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ OutputStream() OutputStreamer })
 
 	outputStream := iface.OutputStream()
 
-	cret = (*C.GOutputStream)(unsafe.Pointer(externglib.InternObject(outputStream).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(outputStream).Native()))
 
 	return cret
 }
 
-func wrapIOStream(obj *externglib.Object) *IOStream {
+func wrapIOStream(obj *coreglib.Object) *IOStream {
 	return &IOStream{
 		Object: obj,
 	}
 }
 
 func marshalIOStream(p uintptr) (interface{}, error) {
-	return wrapIOStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapIOStream(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (stream *IOStream) baseIOStream() *IOStream {
@@ -261,11 +261,14 @@ func BaseIOStream(obj IOStreamer) *IOStream {
 
 // ClearPending clears the pending flag on stream.
 func (stream *IOStream) ClearPending() {
-	var _arg0 *C.GIOStream // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**IOStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_io_stream_clear_pending(_arg0)
+	girepository.MustFind("Gio", "IOStream").InvokeMethod("clear_pending", args[:], nil)
+
 	runtime.KeepAlive(stream)
 }
 
@@ -307,18 +310,21 @@ func (stream *IOStream) ClearPending() {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (stream *IOStream) Close(ctx context.Context) error {
-	var _arg0 *C.GIOStream    // out
-	var _arg1 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**IOStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_io_stream_close(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "IOStream").InvokeMethod("close", args[:], nil)
+
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -331,48 +337,6 @@ func (stream *IOStream) Close(ctx context.Context) error {
 	return _goerr
 }
 
-// CloseAsync requests an asynchronous close of the stream, releasing resources
-// related to it. When the operation is finished callback will be called. You
-// can then call g_io_stream_close_finish() to get the result of the operation.
-//
-// For behaviour details see g_io_stream_close().
-//
-// The asynchronous methods have a default fallback that uses threads to
-// implement asynchronicity, so they are optional for inheriting classes.
-// However, if you override one you must override all.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional cancellable object.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
-//
-func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
-	var _arg0 *C.GIOStream          // out
-	var _arg2 *C.GCancellable       // out
-	var _arg1 C.int                 // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.int(ioPriority)
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_io_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // CloseFinish closes a stream.
 //
 // The function takes the following parameters:
@@ -380,14 +344,17 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback
 //    - result: Result.
 //
 func (stream *IOStream) CloseFinish(result AsyncResulter) error {
-	var _arg0 *C.GIOStream    // out
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**IOStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_io_stream_close_finish(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "IOStream").InvokeMethod("close_finish", args[:], nil)
+
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
@@ -407,12 +374,16 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 //    - inputStream owned by the OStream. Do not free.
 //
 func (stream *IOStream) InputStream() InputStreamer {
-	var _arg0 *C.GIOStream    // out
-	var _cret *C.GInputStream // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**IOStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_io_stream_get_input_stream(_arg0)
+	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("get_input_stream", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _inputStream InputStreamer // out
@@ -423,8 +394,8 @@ func (stream *IOStream) InputStream() InputStreamer {
 			panic("object of type gio.InputStreamer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(InputStreamer)
 			return ok
 		})
@@ -446,12 +417,16 @@ func (stream *IOStream) InputStream() InputStreamer {
 //    - outputStream owned by the OStream. Do not free.
 //
 func (stream *IOStream) OutputStream() OutputStreamer {
-	var _arg0 *C.GIOStream     // out
-	var _cret *C.GOutputStream // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**IOStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_io_stream_get_output_stream(_arg0)
+	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("get_output_stream", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _outputStream OutputStreamer // out
@@ -462,8 +437,8 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 			panic("object of type gio.OutputStreamer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(OutputStreamer)
 			return ok
 		})
@@ -484,12 +459,16 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 //    - ok: TRUE if stream has pending actions.
 //
 func (stream *IOStream) HasPending() bool {
-	var _arg0 *C.GIOStream // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**IOStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_io_stream_has_pending(_arg0)
+	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("has_pending", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -508,12 +487,16 @@ func (stream *IOStream) HasPending() bool {
 //    - ok: TRUE if the stream is closed.
 //
 func (stream *IOStream) IsClosed() bool {
-	var _arg0 *C.GIOStream // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**IOStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_io_stream_is_closed(_arg0)
+	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("is_closed", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -528,12 +511,15 @@ func (stream *IOStream) IsClosed() bool {
 // SetPending sets stream to have actions pending. If the pending flag is
 // already set or stream is closed, it will return FALSE and set error.
 func (stream *IOStream) SetPending() error {
-	var _arg0 *C.GIOStream // out
-	var _cerr *C.GError    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**IOStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_io_stream_set_pending(_arg0, &_cerr)
+	girepository.MustFind("Gio", "IOStream").InvokeMethod("set_pending", args[:], nil)
+
 	runtime.KeepAlive(stream)
 
 	var _goerr error // out
@@ -545,53 +531,6 @@ func (stream *IOStream) SetPending() error {
 	return _goerr
 }
 
-// SpliceAsync: asynchronously splice the output stream of stream1 to the input
-// stream of stream2, and splice the output stream of stream2 to the input
-// stream of stream1.
-//
-// When the operation is finished callback will be called. You can then call
-// g_io_stream_splice_finish() to get the result of the operation.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stream2: OStream.
-//    - flags: set of OStreamSpliceFlags.
-//    - ioPriority: io priority of the request.
-//    - callback (optional): ReadyCallback.
-//
-func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
-	var _arg0 *C.GIOStream           // out
-	var _arg4 *C.GCancellable        // out
-	var _arg1 *C.GIOStream           // out
-	var _arg2 C.GIOStreamSpliceFlags // out
-	var _arg3 C.int                  // out
-	var _arg5 C.GAsyncReadyCallback  // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream1).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream2).Native()))
-	_arg2 = C.GIOStreamSpliceFlags(flags)
-	_arg3 = C.int(ioPriority)
-	if callback != nil {
-		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg6 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(stream1)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream2)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // IOStreamSpliceFinish finishes an asynchronous io stream splice operation.
 //
 // The function takes the following parameters:
@@ -599,12 +538,15 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 //    - result: Result.
 //
 func IOStreamSpliceFinish(result AsyncResulter) error {
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_io_stream_splice_finish(_arg1, &_cerr)
+	girepository.MustFind("Gio", "splice_finish").Invoke(args[:], nil)
+
 	runtime.KeepAlive(result)
 
 	var _goerr error // out

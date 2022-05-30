@@ -6,23 +6,22 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_ActivatableIface_sync_action_properties(GtkActivatable*, GtkAction*);
 // extern void _gotk4_gtk3_ActivatableIface_update(GtkActivatable*, GtkAction*, gchar*);
 import "C"
 
 // glib.Type values for gtkactivatable.go.
-var GTypeActivatable = externglib.Type(C.gtk_activatable_get_type())
+var GTypeActivatable = coreglib.Type(C.gtk_activatable_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeActivatable, F: marshalActivatable},
 	})
 }
@@ -285,16 +284,16 @@ type ActivatableOverrider interface {
 // underlying type by calling Cast().
 type Activatable struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Activatable)(nil)
+	_ coreglib.Objector = (*Activatable)(nil)
 )
 
 // Activatabler describes Activatable's interface methods.
 type Activatabler interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// DoSetRelatedAction: this is a utility function for Activatable
 	// implementors.
@@ -331,13 +330,13 @@ func ifaceInitActivatabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ActivatableIface_sync_action_properties
 func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.GtkActivatable, arg1 *C.GtkAction) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActivatableOverrider)
 
 	var _action *Action // out
 
 	if arg1 != nil {
-		_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+		_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
 	}
 
 	iface.SyncActionProperties(_action)
@@ -345,26 +344,26 @@ func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.GtkActivatable,
 
 //export _gotk4_gtk3_ActivatableIface_update
 func _gotk4_gtk3_ActivatableIface_update(arg0 *C.GtkActivatable, arg1 *C.GtkAction, arg2 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActivatableOverrider)
 
 	var _action *Action      // out
 	var _propertyName string // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(arg1)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
 	_propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	iface.Update(_action, _propertyName)
 }
 
-func wrapActivatable(obj *externglib.Object) *Activatable {
+func wrapActivatable(obj *coreglib.Object) *Activatable {
 	return &Activatable{
 		Object: obj,
 	}
 }
 
 func marshalActivatable(p uintptr) (interface{}, error) {
-	return wrapActivatable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapActivatable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DoSetRelatedAction: this is a utility function for Activatable implementors.
@@ -388,13 +387,14 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 //    - action to set.
 //
 func (activatable *Activatable) DoSetRelatedAction(action *Action) {
-	var _arg0 *C.GtkActivatable // out
-	var _arg1 *C.GtkAction      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(externglib.InternObject(activatable).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_activatable_do_set_related_action(_arg0, _arg1)
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
 }
@@ -408,17 +408,20 @@ func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 //    - action: related Action if one is set.
 //
 func (activatable *Activatable) RelatedAction() *Action {
-	var _arg0 *C.GtkActivatable // out
-	var _cret *C.GtkAction      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(externglib.InternObject(activatable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	*(**Activatable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_activatable_get_related_action(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(activatable)
 
 	var _action *Action // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _action
 }
@@ -434,12 +437,15 @@ func (activatable *Activatable) RelatedAction() *Action {
 //    - ok: whether activatable uses its actions appearance.
 //
 func (activatable *Activatable) UseActionAppearance() bool {
-	var _arg0 *C.GtkActivatable // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(externglib.InternObject(activatable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	*(**Activatable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_activatable_get_use_action_appearance(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(activatable)
 
 	var _ok bool // out
@@ -463,13 +469,14 @@ func (activatable *Activatable) UseActionAppearance() bool {
 //    - action to set.
 //
 func (activatable *Activatable) SetRelatedAction(action *Action) {
-	var _arg0 *C.GtkActivatable // out
-	var _arg1 *C.GtkAction      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(externglib.InternObject(activatable).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_activatable_set_related_action(_arg0, _arg1)
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
 }
@@ -489,15 +496,16 @@ func (activatable *Activatable) SetRelatedAction(action *Action) {
 //    - useAppearance: whether to use the actions appearance.
 //
 func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
-	var _arg0 *C.GtkActivatable // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(externglib.InternObject(activatable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	if useAppearance {
 		_arg1 = C.TRUE
 	}
+	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_activatable_set_use_action_appearance(_arg0, _arg1)
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(useAppearance)
 }
@@ -514,15 +522,16 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 //    - action (optional): related Action or NULL.
 //
 func (activatable *Activatable) SyncActionProperties(action *Action) {
-	var _arg0 *C.GtkActivatable // out
-	var _arg1 *C.GtkAction      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(externglib.InternObject(activatable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	if action != nil {
-		_arg1 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	}
+	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_activatable_sync_action_properties(_arg0, _arg1)
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
 }

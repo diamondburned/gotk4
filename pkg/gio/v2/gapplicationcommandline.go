@@ -8,23 +8,24 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GInputStream* _gotk4_gio2_ApplicationCommandLineClass_get_stdin(GApplicationCommandLine*);
 // extern void _gotk4_gio2_ApplicationCommandLineClass_print_literal(GApplicationCommandLine*, gchar*);
 // extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(GApplicationCommandLine*, gchar*);
 import "C"
 
 // glib.Type values for gapplicationcommandline.go.
-var GTypeApplicationCommandLine = externglib.Type(C.g_application_command_line_get_type())
+var GTypeApplicationCommandLine = coreglib.Type(C.g_application_command_line_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeApplicationCommandLine, F: marshalApplicationCommandLine},
 	})
 }
@@ -127,11 +128,11 @@ type ApplicationCommandLineOverrider interface {
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c).
 type ApplicationCommandLine struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*ApplicationCommandLine)(nil)
+	_ coreglib.Objector = (*ApplicationCommandLine)(nil)
 )
 
 func classInitApplicationCommandLiner(gclassPtr, data C.gpointer) {
@@ -160,14 +161,14 @@ func classInitApplicationCommandLiner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_ApplicationCommandLineClass_get_stdin
 func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationCommandLine) (cret *C.GInputStream) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Stdin() InputStreamer })
 
 	inputStream := iface.Stdin()
 
 	if inputStream != nil {
-		cret = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(inputStream).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(inputStream).Native()))
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(inputStream).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(inputStream).Native()))
 	}
 
 	return cret
@@ -175,7 +176,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationComma
 
 //export _gotk4_gio2_ApplicationCommandLineClass_print_literal
 func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrintLiteral(message string) })
 
 	var _message string // out
@@ -187,7 +188,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.GApplicationC
 
 //export _gotk4_gio2_ApplicationCommandLineClass_printerr_literal
 func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrinterrLiteral(message string) })
 
 	var _message string // out
@@ -197,14 +198,14 @@ func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.GApplicati
 	iface.PrinterrLiteral(_message)
 }
 
-func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine {
+func wrapApplicationCommandLine(obj *coreglib.Object) *ApplicationCommandLine {
 	return &ApplicationCommandLine{
 		Object: obj,
 	}
 }
 
 func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
-	return wrapApplicationCommandLine(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapApplicationCommandLine(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CreateFileForArg creates a #GFile corresponding to a filename that was given
@@ -223,63 +224,27 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 //    - file: new #GFile.
 //
 func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _arg1 *C.gchar                   // out
-	var _cret *C.GFile                   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(arg)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("create_file_for_arg", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 	runtime.KeepAlive(arg)
 
 	var _file *File // out
 
-	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
-}
-
-// Arguments gets the list of arguments that was passed on the command line.
-//
-// The strings in the array may contain non-UTF-8 data on UNIX (such as
-// filenames or arguments given in the system locale) but are always in UTF-8 on
-// Windows.
-//
-// If you wish to use the return value with Context, you must use
-// g_option_context_parse_strv().
-//
-// The return value is NULL-terminated and should be freed using g_strfreev().
-//
-// The function returns the following values:
-//
-//    - filenames: the string array containing the arguments (the argv).
-//
-func (cmdline *ApplicationCommandLine) Arguments() []string {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret **C.gchar                  // in
-	var _arg1 C.int                      // in
-
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
-
-	_cret = C.g_application_command_line_get_arguments(_arg0, &_arg1)
-	runtime.KeepAlive(cmdline)
-
-	var _filenames []string // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
-		_filenames = make([]string, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _filenames
 }
 
 // Cwd gets the working directory of the command line invocation. The string may
@@ -296,12 +261,16 @@ func (cmdline *ApplicationCommandLine) Arguments() []string {
 //    - filename (optional): current directory, or NULL.
 //
 func (cmdline *ApplicationCommandLine) Cwd() string {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret *C.gchar                   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_command_line_get_cwd(_arg0)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_cwd", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 
 	var _filename string // out
@@ -334,19 +303,23 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 //    - filenames: the environment strings, or NULL if they were not sent.
 //
 func (cmdline *ApplicationCommandLine) Environ() []string {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret **C.gchar                  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret **C.gchar // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_command_line_get_environ(_arg0)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_environ", args[:], nil)
+	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 
 	var _filenames []string // out
 
 	{
 		var i int
-		var z *C.gchar
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -361,29 +334,6 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 	return _filenames
 }
 
-// ExitStatus gets the exit status of cmdline. See
-// g_application_command_line_set_exit_status() for more information.
-//
-// The function returns the following values:
-//
-//    - gint: exit status.
-//
-func (cmdline *ApplicationCommandLine) ExitStatus() int {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret C.int                      // in
-
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
-
-	_cret = C.g_application_command_line_get_exit_status(_arg0)
-	runtime.KeepAlive(cmdline)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 // IsRemote determines if cmdline represents a remote invocation.
 //
 // The function returns the following values:
@@ -391,12 +341,16 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int {
 //    - ok: TRUE if the invocation was remote.
 //
 func (cmdline *ApplicationCommandLine) IsRemote() bool {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret C.gboolean                 // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_command_line_get_is_remote(_arg0)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_is_remote", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 
 	var _ok bool // out
@@ -424,12 +378,16 @@ func (cmdline *ApplicationCommandLine) IsRemote() bool {
 //    - variantDict with the options.
 //
 func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret *C.GVariantDict            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_command_line_get_options_dict(_arg0)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_options_dict", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 
 	var _variantDict *glib.VariantDict // out
@@ -460,12 +418,16 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 //    - variant (optional): platform data, or NULL.
 //
 func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret *C.GVariant                // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_command_line_get_platform_data(_arg0)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_platform_data", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 
 	var _variant *glib.Variant // out
@@ -498,12 +460,16 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 //    - inputStream (optional) for stdin.
 //
 func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _cret *C.GInputStream            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_command_line_get_stdin(_arg0)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_stdin", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 
 	var _inputStream InputStreamer // out
@@ -512,8 +478,8 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(InputStreamer)
 				return ok
 			})
@@ -549,15 +515,19 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 //    - utf8 (optional): value of the variable, or NULL if unset or unsent.
 //
 func (cmdline *ApplicationCommandLine) env(name string) string {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _arg1 *C.gchar                   // out
-	var _cret *C.gchar                   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_application_command_line_getenv(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("getenv", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cmdline)
 	runtime.KeepAlive(name)
 
@@ -568,40 +538,4 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 	}
 
 	return _utf8
-}
-
-// SetExitStatus sets the exit status that will be used when the invoking
-// process exits.
-//
-// The return value of the #GApplication::command-line signal is passed to this
-// function when the handler returns. This is the usual way of setting the exit
-// status.
-//
-// In the event that you want the remote invocation to continue running and want
-// to decide on the exit status in the future, you can use this call. For the
-// case of a remote invocation, the remote process will typically exit when the
-// last reference is dropped on cmdline. The exit status of the remote process
-// will be equal to the last value that was set with this function.
-//
-// In the case that the commandline invocation is local, the situation is
-// slightly more complicated. If the commandline invocation results in the
-// mainloop running (ie: because the use-count of the application increased to a
-// non-zero value) then the application is considered to have been 'successful'
-// in a certain sense, and the exit status is always zero. If the application
-// use count is zero, though, the exit status of the local CommandLine is used.
-//
-// The function takes the following parameters:
-//
-//    - exitStatus: exit status.
-//
-func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
-	var _arg0 *C.GApplicationCommandLine // out
-	var _arg1 C.int                      // out
-
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(externglib.InternObject(cmdline).Native()))
-	_arg1 = C.int(exitStatus)
-
-	C.g_application_command_line_set_exit_status(_arg0, _arg1)
-	runtime.KeepAlive(cmdline)
-	runtime.KeepAlive(exitStatus)
 }

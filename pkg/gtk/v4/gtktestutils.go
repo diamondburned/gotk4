@@ -6,46 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
-
-// TestListAllTypes: return the type ids that have been registered after calling
-// gtk_test_register_all_types().
-//
-// The function returns the following values:
-//
-//    - gTypes: 0-terminated array of type ids.
-//
-func TestListAllTypes() []externglib.Type {
-	var _cret *C.GType // in
-	var _arg1 C.guint  // in
-
-	_cret = C.gtk_test_list_all_types(&_arg1)
-
-	var _gTypes []externglib.Type // out
-
-	{
-		src := unsafe.Slice((*C.GType)(_cret), _arg1)
-		_gTypes = make([]externglib.Type, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_gTypes[i] = externglib.Type(src[i])
-		}
-	}
-
-	return _gTypes
-}
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
 //
 // This allowes to refer to any of those object types via g_type_from_name()
 // after calling this function.
 func TestRegisterAllTypes() {
-	C.gtk_test_register_all_types()
+	girepository.MustFind("Gtk", "test_register_all_types").Invoke(nil, nil)
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for widget to be
@@ -62,10 +37,13 @@ func TestRegisterAllTypes() {
 //    - widget to wait for.
 //
 func TestWidgetWaitForDraw(widget Widgetter) {
-	var _arg1 *C.GtkWidget // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_test_widget_wait_for_draw(_arg1)
+	girepository.MustFind("Gtk", "test_widget_wait_for_draw").Invoke(args[:], nil)
+
 	runtime.KeepAlive(widget)
 }

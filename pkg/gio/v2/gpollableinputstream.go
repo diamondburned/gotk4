@@ -8,26 +8,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GSource* _gotk4_gio2_PollableInputStreamInterface_create_source(GPollableInputStream*, GCancellable*);
 // extern gboolean _gotk4_gio2_PollableInputStreamInterface_can_poll(GPollableInputStream*);
 // extern gboolean _gotk4_gio2_PollableInputStreamInterface_is_readable(GPollableInputStream*);
-// extern gssize _gotk4_gio2_PollableInputStreamInterface_read_nonblocking(GPollableInputStream*, void*, gsize, GError**);
 import "C"
 
 // glib.Type values for gpollableinputstream.go.
-var GTypePollableInputStream = externglib.Type(C.g_pollable_input_stream_get_type())
+var GTypePollableInputStream = coreglib.Type(C.g_pollable_input_stream_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePollableInputStream, F: marshalPollableInputStream},
 	})
 }
@@ -81,28 +80,6 @@ type PollableInputStreamOverrider interface {
 	//      attempt to read will return the error.
 	//
 	IsReadable() bool
-	// ReadNonblocking attempts to read up to count bytes from stream into
-	// buffer, as with g_input_stream_read(). If stream is not currently
-	// readable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
-	// can use g_pollable_input_stream_create_source() to create a #GSource that
-	// will be triggered when stream is readable.
-	//
-	// Note that since this method never blocks, you cannot actually use
-	// cancellable to cancel it. However, it will return an error if cancellable
-	// has already been cancelled when you call, which may happen if you call
-	// this method after a source triggers due to having been cancelled.
-	//
-	// The function takes the following parameters:
-	//
-	//    - buffer (optional) to read data into (which should be at least count
-	//      bytes long).
-	//
-	// The function returns the following values:
-	//
-	//    - gssize: number of bytes read, or -1 on error (including
-	//      G_IO_ERROR_WOULD_BLOCK).
-	//
-	ReadNonblocking(buffer []byte) (int, error)
 }
 
 // PollableInputStream is implemented by Streams that can be polled for
@@ -122,7 +99,7 @@ var (
 
 // PollableInputStreamer describes PollableInputStream's interface methods.
 type PollableInputStreamer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// CanPoll checks if stream is actually pollable.
 	CanPoll() bool
@@ -131,9 +108,6 @@ type PollableInputStreamer interface {
 	CreateSource(ctx context.Context) *glib.Source
 	// IsReadable checks if stream can be read.
 	IsReadable() bool
-	// ReadNonblocking attempts to read up to count bytes from stream into
-	// buffer, as with g_input_stream_read().
-	ReadNonblocking(ctx context.Context, buffer []byte) (int, error)
 }
 
 var _ PollableInputStreamer = (*PollableInputStream)(nil)
@@ -143,12 +117,11 @@ func ifaceInitPollableInputStreamer(gifacePtr, data C.gpointer) {
 	iface.can_poll = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_can_poll)
 	iface.create_source = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_create_source)
 	iface.is_readable = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_is_readable)
-	iface.read_nonblocking = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_read_nonblocking)
 }
 
 //export _gotk4_gio2_PollableInputStreamInterface_can_poll
 func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.GPollableInputStream) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
 	ok := iface.CanPoll()
@@ -162,7 +135,7 @@ func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.GPollableInputStr
 
 //export _gotk4_gio2_PollableInputStreamInterface_create_source
 func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.GPollableInputStream, arg1 *C.GCancellable) (cret *C.GSource) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
 	var _cancellable context.Context // out
@@ -173,14 +146,14 @@ func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.GPollableInp
 
 	source := iface.CreateSource(_cancellable)
 
-	cret = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
 	return cret
 }
 
 //export _gotk4_gio2_PollableInputStreamInterface_is_readable
 func _gotk4_gio2_PollableInputStreamInterface_is_readable(arg0 *C.GPollableInputStream) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
 	ok := iface.IsReadable()
@@ -192,29 +165,7 @@ func _gotk4_gio2_PollableInputStreamInterface_is_readable(arg0 *C.GPollableInput
 	return cret
 }
 
-//export _gotk4_gio2_PollableInputStreamInterface_read_nonblocking
-func _gotk4_gio2_PollableInputStreamInterface_read_nonblocking(arg0 *C.GPollableInputStream, arg1 *C.void, arg2 C.gsize, _cerr **C.GError) (cret C.gssize) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PollableInputStreamOverrider)
-
-	var _buffer []byte // out
-
-	if arg1 != nil {
-		_buffer = make([]byte, arg2)
-		copy(_buffer, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
-	}
-
-	gssize, _goerr := iface.ReadNonblocking(_buffer)
-
-	cret = C.gssize(gssize)
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-func wrapPollableInputStream(obj *externglib.Object) *PollableInputStream {
+func wrapPollableInputStream(obj *coreglib.Object) *PollableInputStream {
 	return &PollableInputStream{
 		InputStream: InputStream{
 			Object: obj,
@@ -223,7 +174,7 @@ func wrapPollableInputStream(obj *externglib.Object) *PollableInputStream {
 }
 
 func marshalPollableInputStream(p uintptr) (interface{}, error) {
-	return wrapPollableInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPollableInputStream(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CanPoll checks if stream is actually pollable. Some classes may implement
@@ -239,12 +190,15 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 //    - ok: TRUE if stream is pollable, FALSE if not.
 //
 func (stream *PollableInputStream) CanPoll() bool {
-	var _arg0 *C.GPollableInputStream // out
-	var _cret C.gboolean              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**PollableInputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_pollable_input_stream_can_poll(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -274,18 +228,21 @@ func (stream *PollableInputStream) CanPoll() bool {
 //    - source: new #GSource.
 //
 func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Source {
-	var _arg0 *C.GPollableInputStream // out
-	var _arg1 *C.GCancellable         // out
-	var _cret *C.GSource              // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**PollableInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
@@ -317,12 +274,15 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 //      returning TRUE, and the next attempt to read will return the error.
 //
 func (stream *PollableInputStream) IsReadable() bool {
-	var _arg0 *C.GPollableInputStream // out
-	var _cret C.gboolean              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**PollableInputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_pollable_input_stream_is_readable(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -332,60 +292,4 @@ func (stream *PollableInputStream) IsReadable() bool {
 	}
 
 	return _ok
-}
-
-// ReadNonblocking attempts to read up to count bytes from stream into buffer,
-// as with g_input_stream_read(). If stream is not currently readable, this will
-// immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
-// g_pollable_input_stream_create_source() to create a #GSource that will be
-// triggered when stream is readable.
-//
-// Note that since this method never blocks, you cannot actually use cancellable
-// to cancel it. However, it will return an error if cancellable has already
-// been cancelled when you call, which may happen if you call this method after
-// a source triggers due to having been cancelled.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - buffer to read data into (which should be at least count bytes long).
-//
-// The function returns the following values:
-//
-//    - gssize: number of bytes read, or -1 on error (including
-//      G_IO_ERROR_WOULD_BLOCK).
-//
-func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
-	var _arg0 *C.GPollableInputStream // out
-	var _arg3 *C.GCancellable         // out
-	var _arg1 *C.void                 // out
-	var _arg2 C.gsize
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
-
-	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg2 = (C.gsize)(len(buffer))
-	if len(buffer) > 0 {
-		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
-	}
-
-	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(buffer)
-
-	var _gssize int  // out
-	var _goerr error // out
-
-	_gssize = int(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _gssize, _goerr
 }

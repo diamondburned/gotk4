@@ -6,24 +6,23 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // glib.Type values for gtkeventcontrollermotion.go.
-var GTypeEventControllerMotion = externglib.Type(C.gtk_event_controller_motion_get_type())
+var GTypeEventControllerMotion = coreglib.Type(C.gtk_event_controller_motion_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEventControllerMotion, F: marshalEventControllerMotion},
 	})
 }
@@ -53,7 +52,7 @@ func classInitEventControllerMotioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
+func wrapEventControllerMotion(obj *coreglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{
 		EventController: EventController{
 			Object: obj,
@@ -62,14 +61,14 @@ func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 }
 
 func marshalEventControllerMotion(p uintptr) (interface{}, error) {
-	return wrapEventControllerMotion(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEventControllerMotion(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_EventControllerMotion_ConnectEnter
 func _gotk4_gtk3_EventControllerMotion_ConnectEnter(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(x, y float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -88,15 +87,15 @@ func _gotk4_gtk3_EventControllerMotion_ConnectEnter(arg0 C.gpointer, arg1 C.gdou
 }
 
 // ConnectEnter signals that the pointer has entered the widget.
-func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "enter", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectEnter), f)
+func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "enter", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectEnter), f)
 }
 
 //export _gotk4_gtk3_EventControllerMotion_ConnectLeave
 func _gotk4_gtk3_EventControllerMotion_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -109,15 +108,15 @@ func _gotk4_gtk3_EventControllerMotion_ConnectLeave(arg0 C.gpointer, arg1 C.guin
 }
 
 // ConnectLeave signals that pointer has left the widget.
-func (v *EventControllerMotion) ConnectLeave(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "leave", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectLeave), f)
+func (v *EventControllerMotion) ConnectLeave(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "leave", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectLeave), f)
 }
 
 //export _gotk4_gtk3_EventControllerMotion_ConnectMotion
 func _gotk4_gtk3_EventControllerMotion_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(x, y float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -136,8 +135,8 @@ func _gotk4_gtk3_EventControllerMotion_ConnectMotion(arg0 C.gpointer, arg1 C.gdo
 }
 
 // ConnectMotion is emitted when the pointer moves inside the widget.
-func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "motion", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectMotion), f)
+func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "motion", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectMotion), f)
 }
 
 // NewEventControllerMotion creates a new event controller that will handle
@@ -152,17 +151,21 @@ func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) externglib.S
 //    - eventControllerMotion: new EventControllerMotion.
 //
 func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
-	var _arg1 *C.GtkWidget          // out
-	var _cret *C.GtkEventController // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_event_controller_motion_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("new_EventControllerMotion", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _eventControllerMotion *EventControllerMotion // out
 
-	_eventControllerMotion = wrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerMotion = wrapEventControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
 }

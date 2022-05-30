@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkhbbox.go.
-var GTypeHButtonBox = externglib.Type(C.gtk_hbutton_box_get_type())
+var GTypeHButtonBox = coreglib.Type(C.gtk_hbutton_box_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeHButtonBox, F: marshalHButtonBox},
 	})
 }
@@ -35,8 +34,8 @@ type HButtonBox struct {
 }
 
 var (
-	_ Containerer         = (*HButtonBox)(nil)
-	_ externglib.Objector = (*HButtonBox)(nil)
+	_ Containerer       = (*HButtonBox)(nil)
+	_ coreglib.Objector = (*HButtonBox)(nil)
 )
 
 func classInitHButtonBoxer(gclassPtr, data C.gpointer) {
@@ -47,13 +46,13 @@ func classInitHButtonBoxer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
+func wrapHButtonBox(obj *coreglib.Object) *HButtonBox {
 	return &HButtonBox{
 		ButtonBox: ButtonBox{
 			Box: Box{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -75,7 +74,7 @@ func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 }
 
 func marshalHButtonBox(p uintptr) (interface{}, error) {
-	return wrapHButtonBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapHButtonBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHButtonBox creates a new horizontal button box.
@@ -87,13 +86,14 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 //    - hButtonBox: new button box Widget.
 //
 func NewHButtonBox() *HButtonBox {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_hbutton_box_new()
+	_gret := girepository.MustFind("Gtk", "HButtonBox").InvokeMethod("new_HButtonBox", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _hButtonBox *HButtonBox // out
 
-	_hButtonBox = wrapHButtonBox(externglib.Take(unsafe.Pointer(_cret)))
+	_hButtonBox = wrapHButtonBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hButtonBox
 }

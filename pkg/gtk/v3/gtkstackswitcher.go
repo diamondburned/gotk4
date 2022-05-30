@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkstackswitcher.go.
-var GTypeStackSwitcher = externglib.Type(C.gtk_stack_switcher_get_type())
+var GTypeStackSwitcher = coreglib.Type(C.gtk_stack_switcher_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStackSwitcher, F: marshalStackSwitcher},
 	})
 }
@@ -56,8 +55,8 @@ type StackSwitcher struct {
 }
 
 var (
-	_ Containerer         = (*StackSwitcher)(nil)
-	_ externglib.Objector = (*StackSwitcher)(nil)
+	_ Containerer       = (*StackSwitcher)(nil)
+	_ coreglib.Objector = (*StackSwitcher)(nil)
 )
 
 func classInitStackSwitcherer(gclassPtr, data C.gpointer) {
@@ -68,12 +67,12 @@ func classInitStackSwitcherer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
+func wrapStackSwitcher(obj *coreglib.Object) *StackSwitcher {
 	return &StackSwitcher{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -94,7 +93,7 @@ func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 }
 
 func marshalStackSwitcher(p uintptr) (interface{}, error) {
-	return wrapStackSwitcher(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStackSwitcher(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStackSwitcher: create a new StackSwitcher.
@@ -104,13 +103,14 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 //    - stackSwitcher: new StackSwitcher.
 //
 func NewStackSwitcher() *StackSwitcher {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_stack_switcher_new()
+	_gret := girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("new_StackSwitcher", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _stackSwitcher *StackSwitcher // out
 
-	_stackSwitcher = wrapStackSwitcher(externglib.Take(unsafe.Pointer(_cret)))
+	_stackSwitcher = wrapStackSwitcher(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSwitcher
 }
@@ -122,18 +122,22 @@ func NewStackSwitcher() *StackSwitcher {
 //    - stack (optional): stack, or NULL if none has been set explicitly.
 //
 func (switcher *StackSwitcher) Stack() *Stack {
-	var _arg0 *C.GtkStackSwitcher // out
-	var _cret *C.GtkStack         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(externglib.InternObject(switcher).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(switcher).Native()))
+	*(**StackSwitcher)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_stack_switcher_get_stack(_arg0)
+	_gret := girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("get_stack", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(switcher)
 
 	var _stack *Stack // out
 
 	if _cret != nil {
-		_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
+		_stack = wrapStack(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _stack
@@ -146,15 +150,18 @@ func (switcher *StackSwitcher) Stack() *Stack {
 //    - stack (optional): Stack.
 //
 func (switcher *StackSwitcher) SetStack(stack *Stack) {
-	var _arg0 *C.GtkStackSwitcher // out
-	var _arg1 *C.GtkStack         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(externglib.InternObject(switcher).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(switcher).Native()))
 	if stack != nil {
-		_arg1 = (*C.GtkStack)(unsafe.Pointer(externglib.InternObject(stack).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	}
+	*(**StackSwitcher)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("set_stack", args[:], nil)
+
 	runtime.KeepAlive(switcher)
 	runtime.KeepAlive(stack)
 }

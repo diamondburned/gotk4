@@ -5,19 +5,20 @@ package atk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for atknoopobjectfactory.go.
-var GTypeNoOpObjectFactory = externglib.Type(C.atk_no_op_object_factory_get_type())
+var GTypeNoOpObjectFactory = coreglib.Type(C.atk_no_op_object_factory_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNoOpObjectFactory, F: marshalNoOpObjectFactory},
 	})
 }
@@ -35,7 +36,7 @@ type NoOpObjectFactory struct {
 }
 
 var (
-	_ externglib.Objector = (*NoOpObjectFactory)(nil)
+	_ coreglib.Objector = (*NoOpObjectFactory)(nil)
 )
 
 func classInitNoOpObjectFactorier(gclassPtr, data C.gpointer) {
@@ -46,7 +47,7 @@ func classInitNoOpObjectFactorier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
+func wrapNoOpObjectFactory(obj *coreglib.Object) *NoOpObjectFactory {
 	return &NoOpObjectFactory{
 		ObjectFactory: ObjectFactory{
 			Object: obj,
@@ -55,7 +56,7 @@ func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 }
 
 func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
-	return wrapNoOpObjectFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNoOpObjectFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNoOpObjectFactory creates an instance of an ObjectFactory which generates
@@ -66,13 +67,14 @@ func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
 //    - noOpObjectFactory: instance of an ObjectFactory.
 //
 func NewNoOpObjectFactory() *NoOpObjectFactory {
-	var _cret *C.AtkObjectFactory // in
+	var _cret *C.void // in
 
-	_cret = C.atk_no_op_object_factory_new()
+	_gret := girepository.MustFind("Atk", "NoOpObjectFactory").InvokeMethod("new_NoOpObjectFactory", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _noOpObjectFactory *NoOpObjectFactory // out
 
-	_noOpObjectFactory = wrapNoOpObjectFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_noOpObjectFactory = wrapNoOpObjectFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObjectFactory
 }

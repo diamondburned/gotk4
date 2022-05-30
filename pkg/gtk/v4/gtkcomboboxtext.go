@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcomboboxtext.go.
-var GTypeComboBoxText = externglib.Type(C.gtk_combo_box_text_get_type())
+var GTypeComboBoxText = coreglib.Type(C.gtk_combo_box_text_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeComboBoxText, F: marshalComboBoxText},
 	})
 }
@@ -82,15 +83,15 @@ type ComboBoxText struct {
 }
 
 var (
-	_ Widgetter           = (*ComboBoxText)(nil)
-	_ externglib.Objector = (*ComboBoxText)(nil)
+	_ Widgetter         = (*ComboBoxText)(nil)
+	_ coreglib.Objector = (*ComboBoxText)(nil)
 )
 
-func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
+func wrapComboBoxText(obj *coreglib.Object) *ComboBoxText {
 	return &ComboBoxText{
 		ComboBox: ComboBox{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -107,7 +108,7 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 			Object: obj,
 			CellEditable: CellEditable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -130,7 +131,7 @@ func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 }
 
 func marshalComboBoxText(p uintptr) (interface{}, error) {
-	return wrapComboBoxText(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapComboBoxText(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewComboBoxText creates a new GtkComboBoxText.
@@ -140,13 +141,14 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 //    - comboBoxText: new GtkComboBoxText.
 //
 func NewComboBoxText() *ComboBoxText {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_combo_box_text_new()
+	_gret := girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("new_ComboBoxText", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _comboBoxText *ComboBoxText // out
 
-	_comboBoxText = wrapComboBoxText(externglib.Take(unsafe.Pointer(_cret)))
+	_comboBoxText = wrapComboBoxText(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBoxText
 }
@@ -158,13 +160,14 @@ func NewComboBoxText() *ComboBoxText {
 //    - comboBoxText: new GtkComboBoxText.
 //
 func NewComboBoxTextWithEntry() *ComboBoxText {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_combo_box_text_new_with_entry()
+	_gret := girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("new_ComboBoxText_with_entry", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _comboBoxText *ComboBoxText // out
 
-	_comboBoxText = wrapComboBoxText(externglib.Take(unsafe.Pointer(_cret)))
+	_comboBoxText = wrapComboBoxText(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBoxText
 }
@@ -181,19 +184,23 @@ func NewComboBoxTextWithEntry() *ComboBoxText {
 //    - text: string.
 //
 func (comboBox *ComboBoxText) Append(id, text string) {
-	var _arg0 *C.GtkComboBoxText // out
-	var _arg1 *C.char            // out
-	var _arg2 *C.char            // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	if id != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**ComboBoxText)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_combo_box_text_append(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("append", args[:], nil)
+
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(text)
@@ -209,14 +216,17 @@ func (comboBox *ComboBoxText) Append(id, text string) {
 //    - text: string.
 //
 func (comboBox *ComboBoxText) AppendText(text string) {
-	var _arg0 *C.GtkComboBoxText // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ComboBoxText)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_combo_box_text_append_text(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("append_text", args[:], nil)
+
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(text)
 }
@@ -233,12 +243,16 @@ func (comboBox *ComboBoxText) AppendText(text string) {
 //      text. Must be freed with g_free().
 //
 func (comboBox *ComboBoxText) ActiveText() string {
-	var _arg0 *C.GtkComboBoxText // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	*(**ComboBoxText)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
+	_gret := girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("get_active_text", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(comboBox)
 
 	var _utf8 string // out
@@ -249,69 +263,6 @@ func (comboBox *ComboBoxText) ActiveText() string {
 	}
 
 	return _utf8
-}
-
-// Insert inserts text at position in the list of strings stored in combo_box.
-//
-// If id is non-NULL then it is used as the ID of the row. See
-// gtk.ComboBox:id-column.
-//
-// If position is negative then text is appended.
-//
-// The function takes the following parameters:
-//
-//    - position: index to insert text.
-//    - id (optional): string ID for this value, or NULL.
-//    - text: string to display.
-//
-func (comboBox *ComboBoxText) Insert(position int, id, text string) {
-	var _arg0 *C.GtkComboBoxText // out
-	var _arg1 C.int              // out
-	var _arg2 *C.char            // out
-	var _arg3 *C.char            // out
-
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
-	_arg1 = C.int(position)
-	if id != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	C.gtk_combo_box_text_insert(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(comboBox)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(id)
-	runtime.KeepAlive(text)
-}
-
-// InsertText inserts text at position in the list of strings stored in
-// combo_box.
-//
-// If position is negative then text is appended.
-//
-// This is the same as calling gtk.ComboBoxText.Insert() with a NULL ID string.
-//
-// The function takes the following parameters:
-//
-//    - position: index to insert text.
-//    - text: string.
-//
-func (comboBox *ComboBoxText) InsertText(position int, text string) {
-	var _arg0 *C.GtkComboBoxText // out
-	var _arg1 C.int              // out
-	var _arg2 *C.char            // out
-
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
-	_arg1 = C.int(position)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.gtk_combo_box_text_insert_text(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(comboBox)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(text)
 }
 
 // Prepend prepends text to the list of strings stored in combo_box.
@@ -326,19 +277,23 @@ func (comboBox *ComboBoxText) InsertText(position int, text string) {
 //    - text: string.
 //
 func (comboBox *ComboBoxText) Prepend(id, text string) {
-	var _arg0 *C.GtkComboBoxText // out
-	var _arg1 *C.char            // out
-	var _arg2 *C.char            // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	if id != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**ComboBoxText)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_combo_box_text_prepend(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("prepend", args[:], nil)
+
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(text)
@@ -354,42 +309,30 @@ func (comboBox *ComboBoxText) Prepend(id, text string) {
 //    - text: string.
 //
 func (comboBox *ComboBoxText) PrependText(text string) {
-	var _arg0 *C.GtkComboBoxText // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ComboBoxText)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_combo_box_text_prepend_text(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("prepend_text", args[:], nil)
+
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(text)
 }
 
-// Remove removes the string at position from combo_box.
-//
-// The function takes the following parameters:
-//
-//    - position: index of the item to remove.
-//
-func (comboBox *ComboBoxText) Remove(position int) {
-	var _arg0 *C.GtkComboBoxText // out
-	var _arg1 C.int              // out
-
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
-	_arg1 = C.int(position)
-
-	C.gtk_combo_box_text_remove(_arg0, _arg1)
-	runtime.KeepAlive(comboBox)
-	runtime.KeepAlive(position)
-}
-
 // RemoveAll removes all the text entries from the combo box.
 func (comboBox *ComboBoxText) RemoveAll() {
-	var _arg0 *C.GtkComboBoxText // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(externglib.InternObject(comboBox).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	*(**ComboBoxText)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_combo_box_text_remove_all(_arg0)
+	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("remove_all", args[:], nil)
+
 	runtime.KeepAlive(comboBox)
 }

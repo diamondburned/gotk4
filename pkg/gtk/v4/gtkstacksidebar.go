@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkstacksidebar.go.
-var GTypeStackSidebar = externglib.Type(C.gtk_stack_sidebar_get_type())
+var GTypeStackSidebar = coreglib.Type(C.gtk_stack_sidebar_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStackSidebar, F: marshalStackSidebar},
 	})
 }
@@ -47,10 +48,10 @@ var (
 	_ Widgetter = (*StackSidebar)(nil)
 )
 
-func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
+func wrapStackSidebar(obj *coreglib.Object) *StackSidebar {
 	return &StackSidebar{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -68,7 +69,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 }
 
 func marshalStackSidebar(p uintptr) (interface{}, error) {
-	return wrapStackSidebar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStackSidebar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStackSidebar creates a new GtkStackSidebar.
@@ -78,13 +79,14 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 //    - stackSidebar: new GtkStackSidebar.
 //
 func NewStackSidebar() *StackSidebar {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_stack_sidebar_new()
+	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("new_StackSidebar", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _stackSidebar *StackSidebar // out
 
-	_stackSidebar = wrapStackSidebar(externglib.Take(unsafe.Pointer(_cret)))
+	_stackSidebar = wrapStackSidebar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSidebar
 }
@@ -97,18 +99,22 @@ func NewStackSidebar() *StackSidebar {
 //      explicitly.
 //
 func (self *StackSidebar) Stack() *Stack {
-	var _arg0 *C.GtkStackSidebar // out
-	var _cret *C.GtkStack        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**StackSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_stack_sidebar_get_stack(_arg0)
+	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("get_stack", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _stack *Stack // out
 
 	if _cret != nil {
-		_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
+		_stack = wrapStack(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _stack
@@ -124,13 +130,16 @@ func (self *StackSidebar) Stack() *Stack {
 //    - stack: GtkStack.
 //
 func (self *StackSidebar) SetStack(stack *Stack) {
-	var _arg0 *C.GtkStackSidebar // out
-	var _arg1 *C.GtkStack        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer(externglib.InternObject(stack).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	*(**StackSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("set_stack", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(stack)
 }

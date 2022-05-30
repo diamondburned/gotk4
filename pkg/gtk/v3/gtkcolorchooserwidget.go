@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcolorchooserwidget.go.
-var GTypeColorChooserWidget = externglib.Type(C.gtk_color_chooser_widget_get_type())
+var GTypeColorChooserWidget = coreglib.Type(C.gtk_color_chooser_widget_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeColorChooserWidget, F: marshalColorChooserWidget},
 	})
 }
@@ -53,13 +52,13 @@ type ColorChooserWidget struct {
 	_ [0]func() // equal guard
 	Box
 
-	*externglib.Object
+	*coreglib.Object
 	ColorChooser
 }
 
 var (
-	_ externglib.Objector = (*ColorChooserWidget)(nil)
-	_ Containerer         = (*ColorChooserWidget)(nil)
+	_ coreglib.Objector = (*ColorChooserWidget)(nil)
+	_ Containerer       = (*ColorChooserWidget)(nil)
 )
 
 func classInitColorChooserWidgetter(gclassPtr, data C.gpointer) {
@@ -70,12 +69,12 @@ func classInitColorChooserWidgetter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
+func wrapColorChooserWidget(obj *coreglib.Object) *ColorChooserWidget {
 	return &ColorChooserWidget{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -100,7 +99,7 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 }
 
 func marshalColorChooserWidget(p uintptr) (interface{}, error) {
-	return wrapColorChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapColorChooserWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorChooserWidget creates a new ColorChooserWidget.
@@ -110,13 +109,14 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 //    - colorChooserWidget: new ColorChooserWidget.
 //
 func NewColorChooserWidget() *ColorChooserWidget {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_color_chooser_widget_new()
+	_gret := girepository.MustFind("Gtk", "ColorChooserWidget").InvokeMethod("new_ColorChooserWidget", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _colorChooserWidget *ColorChooserWidget // out
 
-	_colorChooserWidget = wrapColorChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_colorChooserWidget = wrapColorChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserWidget
 }

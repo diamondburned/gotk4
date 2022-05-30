@@ -5,20 +5,21 @@ package gdkx11
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11device-core.go.
-var GTypeX11DeviceCore = externglib.Type(C.gdk_x11_device_core_get_type())
+var GTypeX11DeviceCore = coreglib.Type(C.gdk_x11_device_core_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11DeviceCore, F: marshalX11DeviceCore},
 	})
 }
@@ -44,7 +45,7 @@ func classInitX11DeviceCorer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11DeviceCore(obj *externglib.Object) *X11DeviceCore {
+func wrapX11DeviceCore(obj *coreglib.Object) *X11DeviceCore {
 	return &X11DeviceCore{
 		Device: gdk.Device{
 			Object: obj,
@@ -53,5 +54,5 @@ func wrapX11DeviceCore(obj *externglib.Object) *X11DeviceCore {
 }
 
 func marshalX11DeviceCore(p uintptr) (interface{}, error) {
-	return wrapX11DeviceCore(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11DeviceCore(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

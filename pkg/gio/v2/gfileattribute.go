@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gfileattribute.go.
-var GTypeFileAttributeInfoList = externglib.Type(C.g_file_attribute_info_list_get_type())
+var GTypeFileAttributeInfoList = coreglib.Type(C.g_file_attribute_info_list_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFileAttributeInfoList, F: marshalFileAttributeInfoList},
 	})
 }
@@ -36,27 +37,6 @@ type fileAttributeInfo struct {
 	native *C.GFileAttributeInfo
 }
 
-// Name: name of the attribute.
-func (f *FileAttributeInfo) Name() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.name)))
-	return v
-}
-
-// Type type of the attribute.
-func (f *FileAttributeInfo) Type() FileAttributeType {
-	var v FileAttributeType // out
-	v = FileAttributeType(f.native._type)
-	return v
-}
-
-// Flags: set of AttributeInfoFlags.
-func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
-	var v FileAttributeInfoFlags // out
-	v = FileAttributeInfoFlags(f.native.flags)
-	return v
-}
-
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
 //
@@ -71,15 +51,15 @@ type fileAttributeInfoList struct {
 }
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &FileAttributeInfoList{&fileAttributeInfoList{(*C.GFileAttributeInfoList)(b)}}, nil
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
 func NewFileAttributeInfoList() *FileAttributeInfoList {
-	var _cret *C.GFileAttributeInfoList // in
+	var _cret *C.void // in
 
-	_cret = C.g_file_attribute_info_list_new()
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
@@ -94,47 +74,6 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 	return _fileAttributeInfoList
 }
 
-// Infos: array of AttributeInfos.
-func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
-	var v *FileAttributeInfo // out
-	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(f.native.infos)))
-	return v
-}
-
-// NInfos: number of values in the array.
-func (f *FileAttributeInfoList) NInfos() int {
-	var v int // out
-	v = int(f.native.n_infos)
-	return v
-}
-
-// Add adds a new attribute with name to the list, setting its type and flags.
-//
-// The function takes the following parameters:
-//
-//    - name of the attribute to add.
-//    - typ for the attribute.
-//    - flags for the attribute.
-//
-func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
-	var _arg0 *C.GFileAttributeInfoList // out
-	var _arg1 *C.char                   // out
-	var _arg2 C.GFileAttributeType      // out
-	var _arg3 C.GFileAttributeInfoFlags // out
-
-	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GFileAttributeType(typ)
-	_arg3 = C.GFileAttributeInfoFlags(flags)
-
-	C.g_file_attribute_info_list_add(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(list)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(flags)
-}
-
 // Dup makes a duplicate of a file attribute info list.
 //
 // The function returns the following values:
@@ -142,12 +81,15 @@ func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags
 //    - fileAttributeInfoList: copy of the given list.
 //
 func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
-	var _arg0 *C.GFileAttributeInfoList // out
-	var _cret *C.GFileAttributeInfoList // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**FileAttributeInfoList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_attribute_info_list_dup(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
@@ -174,15 +116,18 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 //    - fileAttributeInfo for the name, or NULL if an attribute isn't found.
 //
 func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
-	var _arg0 *C.GFileAttributeInfoList // out
-	var _arg1 *C.char                   // out
-	var _cret *C.GFileAttributeInfo     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileAttributeInfoList)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_attribute_info_list_lookup(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(name)
 

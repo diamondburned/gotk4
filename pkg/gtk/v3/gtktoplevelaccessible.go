@@ -8,21 +8,20 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktoplevelaccessible.go.
-var GTypeToplevelAccessible = externglib.Type(C.gtk_toplevel_accessible_get_type())
+var GTypeToplevelAccessible = coreglib.Type(C.gtk_toplevel_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeToplevelAccessible, F: marshalToplevelAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type ToplevelAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ToplevelAccessible)(nil)
+	_ coreglib.Objector = (*ToplevelAccessible)(nil)
 )
 
 func classInitToplevelAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitToplevelAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapToplevelAccessible(obj *externglib.Object) *ToplevelAccessible {
+func wrapToplevelAccessible(obj *coreglib.Object) *ToplevelAccessible {
 	return &ToplevelAccessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
@@ -57,7 +56,7 @@ func wrapToplevelAccessible(obj *externglib.Object) *ToplevelAccessible {
 }
 
 func marshalToplevelAccessible(p uintptr) (interface{}, error) {
-	return wrapToplevelAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapToplevelAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // The function returns the following values:
@@ -65,21 +64,25 @@ func marshalToplevelAccessible(p uintptr) (interface{}, error) {
 //    - list: list of children.
 //
 func (accessible *ToplevelAccessible) Children() []*Window {
-	var _arg0 *C.GtkToplevelAccessible // out
-	var _cret *C.GList                 // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToplevelAccessible)(unsafe.Pointer(externglib.InternObject(accessible).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**ToplevelAccessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_toplevel_accessible_get_children(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToplevelAccessible").InvokeMethod("get_children", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(accessible)
 
 	var _list []*Window // out
 
 	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWindow)(v)
+		src := (*C.void)(v)
 		var dst *Window // out
-		dst = wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		dst = wrapWindow(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

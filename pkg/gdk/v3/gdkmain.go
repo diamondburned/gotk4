@@ -7,12 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
+// #include <glib.h>
 import "C"
 
 // AddOptionEntriesLibgtkOnly appends gdk option entries to the passed in option
@@ -25,17 +26,20 @@ import "C"
 //    - group: option group.
 //
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
-	var _arg1 *C.GOptionGroup // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
+	*(**glib.OptionGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_add_option_entries_libgtk_only(_arg1)
+	girepository.MustFind("Gdk", "add_option_entries_libgtk_only").Invoke(args[:], nil)
+
 	runtime.KeepAlive(group)
 }
 
 // Beep emits a short beep on the default display.
 func Beep() {
-	C.gdk_beep()
+	girepository.MustFind("Gdk", "beep").Invoke(nil, nil)
 }
 
 // DisableMultidevice disables multidevice support in GDK. This call must happen
@@ -47,7 +51,7 @@ func Beep() {
 // such Xlib code deals with input devices in any way and doesn’t observe the
 // presence of XInput 2.
 func DisableMultidevice() {
-	C.gdk_disable_multidevice()
+	girepository.MustFind("Gdk", "disable_multidevice").Invoke(nil, nil)
 }
 
 // ErrorTrapPop removes an error trap pushed with gdk_error_trap_push(). May
@@ -66,7 +70,8 @@ func DisableMultidevice() {
 func ErrorTrapPop() int {
 	var _cret C.gint // in
 
-	_cret = C.gdk_error_trap_pop()
+	_gret := girepository.MustFind("Gdk", "error_trap_pop").Invoke(nil, nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int // out
 
@@ -80,7 +85,7 @@ func ErrorTrapPop() int {
 // arrives later asynchronously that was triggered while the trap was pushed,
 // that error will be ignored.
 func ErrorTrapPopIgnored() {
-	C.gdk_error_trap_pop_ignored()
+	girepository.MustFind("Gdk", "error_trap_pop_ignored").Invoke(nil, nil)
 }
 
 // ErrorTrapPush: this function allows X errors to be trapped instead of the
@@ -109,13 +114,13 @@ func ErrorTrapPopIgnored() {
 //       // ... Handle the error here ...
 //     }.
 func ErrorTrapPush() {
-	C.gdk_error_trap_push()
+	girepository.MustFind("Gdk", "error_trap_push").Invoke(nil, nil)
 }
 
 // Flush flushes the output buffers of all display connections and waits until
 // all requests have been processed. This is rarely needed by applications.
 func Flush() {
-	C.gdk_flush()
+	girepository.MustFind("Gdk", "flush").Invoke(nil, nil)
 }
 
 // GetDisplay gets the name of the display, which usually comes from the DISPLAY
@@ -128,9 +133,10 @@ func Flush() {
 //    - utf8: name of the display.
 //
 func GetDisplay() string {
-	var _cret *C.gchar // in
+	var _cret *C.void // in
 
-	_cret = C.gdk_get_display()
+	_gret := girepository.MustFind("Gdk", "get_display").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -149,9 +155,10 @@ func GetDisplay() string {
 //      this string is owned by GTK+ and must not be modified or freed.
 //
 func GetDisplayArgName() string {
-	var _cret *C.gchar // in
+	var _cret *C.void // in
 
-	_cret = C.gdk_get_display_arg_name()
+	_gret := girepository.MustFind("Gdk", "get_display_arg_name").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -172,64 +179,16 @@ func GetDisplayArgName() string {
 //    - utf8: program class.
 //
 func GetProgramClass() string {
-	var _cret *C.gchar // in
+	var _cret *C.void // in
 
-	_cret = C.gdk_get_program_class()
+	_gret := girepository.MustFind("Gdk", "get_program_class").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// KeyboardGrab grabs the keyboard so that all events are passed to this
-// application until the keyboard is ungrabbed with gdk_keyboard_ungrab(). This
-// overrides any previous keyboard grab by this client.
-//
-// If you set up anything at the time you take the grab that needs to be cleaned
-// up when the grab ends, you should handle the EventGrabBroken events that are
-// emitted when the grab ends unvoluntarily.
-//
-// Deprecated: Use gdk_device_grab() instead.
-//
-// The function takes the following parameters:
-//
-//    - window which will own the grab (the grab window).
-//    - ownerEvents: if FALSE then all keyboard events are reported with respect
-//      to window. If TRUE then keyboard events for this application are reported
-//      as normal, but keyboard events outside this application are reported with
-//      respect to window. Both key press and key release events are always
-//      reported, independant of the event mask set by the application.
-//    - time_: timestamp from a Event, or GDK_CURRENT_TIME if no timestamp is
-//      available.
-//
-// The function returns the following values:
-//
-//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
-//
-func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
-	var _arg1 *C.GdkWindow    // out
-	var _arg2 C.gboolean      // out
-	var _arg3 C.guint32       // out
-	var _cret C.GdkGrabStatus // in
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	if ownerEvents {
-		_arg2 = C.TRUE
-	}
-	_arg3 = C.guint32(time_)
-
-	_cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(ownerEvents)
-	runtime.KeepAlive(time_)
-
-	var _grabStatus GrabStatus // out
-
-	_grabStatus = GrabStatus(_cret)
-
-	return _grabStatus
 }
 
 // KeyboardUngrab ungrabs the keyboard on the default display, if it is grabbed
@@ -243,11 +202,14 @@ func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 //      available.
 //
 func KeyboardUngrab(time_ uint32) {
-	var _arg1 C.guint32 // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint32 // out
 
-	_arg1 = C.guint32(time_)
+	_arg0 = C.guint32(time_)
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_keyboard_ungrab(_arg1)
+	girepository.MustFind("Gdk", "keyboard_ungrab").Invoke(args[:], nil)
+
 	runtime.KeepAlive(time_)
 }
 
@@ -259,7 +221,7 @@ func KeyboardUngrab(time_ uint32) {
 // unless gtk_window_set_auto_startup_notification() is called to disable that
 // feature.
 func NotifyStartupComplete() {
-	C.gdk_notify_startup_complete()
+	girepository.MustFind("Gdk", "notify_startup_complete").Invoke(nil, nil)
 }
 
 // NotifyStartupCompleteWithID indicates to the GUI environment that the
@@ -275,100 +237,16 @@ func NotifyStartupComplete() {
 //      process should be completed.
 //
 func NotifyStartupCompleteWithID(startupId string) {
-	var _arg1 *C.gchar // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_notify_startup_complete_with_id(_arg1)
+	girepository.MustFind("Gdk", "notify_startup_complete_with_id").Invoke(args[:], nil)
+
 	runtime.KeepAlive(startupId)
-}
-
-// PointerGrab grabs the pointer (usually a mouse) so that all events are passed
-// to this application until the pointer is ungrabbed with gdk_pointer_ungrab(),
-// or the grab window becomes unviewable. This overrides any previous pointer
-// grab by this client.
-//
-// Pointer grabs are used for operations which need complete control over mouse
-// events, even if the mouse leaves the application. For example in GTK+ it is
-// used for Drag and Drop, for dragging the handle in the HPaned and VPaned
-// widgets.
-//
-// Note that if the event mask of an X window has selected both button press and
-// button release events, then a button press event will cause an automatic
-// pointer grab until the button is released. X does this automatically since
-// most applications expect to receive button press and release events in pairs.
-// It is equivalent to a pointer grab on the window with owner_events set to
-// TRUE.
-//
-// If you set up anything at the time you take the grab that needs to be cleaned
-// up when the grab ends, you should handle the EventGrabBroken events that are
-// emitted when the grab ends unvoluntarily.
-//
-// Deprecated: Use gdk_device_grab() instead.
-//
-// The function takes the following parameters:
-//
-//    - window which will own the grab (the grab window).
-//    - ownerEvents: if FALSE then all pointer events are reported with respect
-//      to window and are only reported if selected by event_mask. If TRUE then
-//      pointer events for this application are reported as normal, but pointer
-//      events outside this application are reported with respect to window and
-//      only if selected by event_mask. In either mode, unreported events are
-//      discarded.
-//    - eventMask specifies the event mask, which is used in accordance with
-//      owner_events. Note that only pointer events (i.e. button and motion
-//      events) may be selected.
-//    - confineTo (optional): if non-NULL, the pointer will be confined to this
-//      window during the grab. If the pointer is outside confine_to, it will
-//      automatically be moved to the closest edge of confine_to and enter and
-//      leave events will be generated as necessary.
-//    - cursor (optional) to display while the grab is active. If this is NULL
-//      then the normal cursors are used for window and its descendants, and the
-//      cursor for window is used for all other windows.
-//    - time_: timestamp of the event which led to this pointer grab. This
-//      usually comes from a EventButton struct, though GDK_CURRENT_TIME can be
-//      used if the time isn’t known.
-//
-// The function returns the following values:
-//
-//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
-//
-func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confineTo Windower, cursor Cursorrer, time_ uint32) GrabStatus {
-	var _arg1 *C.GdkWindow    // out
-	var _arg2 C.gboolean      // out
-	var _arg3 C.GdkEventMask  // out
-	var _arg4 *C.GdkWindow    // out
-	var _arg5 *C.GdkCursor    // out
-	var _arg6 C.guint32       // out
-	var _cret C.GdkGrabStatus // in
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	if ownerEvents {
-		_arg2 = C.TRUE
-	}
-	_arg3 = C.GdkEventMask(eventMask)
-	if confineTo != nil {
-		_arg4 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(confineTo).Native()))
-	}
-	if cursor != nil {
-		_arg5 = (*C.GdkCursor)(unsafe.Pointer(externglib.InternObject(cursor).Native()))
-	}
-	_arg6 = C.guint32(time_)
-
-	_cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(ownerEvents)
-	runtime.KeepAlive(eventMask)
-	runtime.KeepAlive(confineTo)
-	runtime.KeepAlive(cursor)
-	runtime.KeepAlive(time_)
-
-	var _grabStatus GrabStatus // out
-
-	_grabStatus = GrabStatus(_cret)
-
-	return _grabStatus
 }
 
 // PointerIsGrabbed returns TRUE if the pointer on the default display is
@@ -386,7 +264,8 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 func PointerIsGrabbed() bool {
 	var _cret C.gboolean // in
 
-	_cret = C.gdk_pointer_is_grabbed()
+	_gret := girepository.MustFind("Gdk", "pointer_is_grabbed").Invoke(nil, nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
@@ -408,11 +287,14 @@ func PointerIsGrabbed() bool {
 //      available.
 //
 func PointerUngrab(time_ uint32) {
-	var _arg1 C.guint32 // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint32 // out
 
-	_arg1 = C.guint32(time_)
+	_arg0 = C.guint32(time_)
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_pointer_ungrab(_arg1)
+	girepository.MustFind("Gdk", "pointer_ungrab").Invoke(args[:], nil)
+
 	runtime.KeepAlive(time_)
 }
 
@@ -421,7 +303,7 @@ func PointerUngrab(time_ uint32) {
 //
 // Deprecated: This symbol was never meant to be used outside of GTK+.
 func PreParseLibgtkOnly() {
-	C.gdk_pre_parse_libgtk_only()
+	girepository.MustFind("Gdk", "pre_parse_libgtk_only").Invoke(nil, nil)
 }
 
 // SetAllowedBackends sets a list of backends that GDK should try to use.
@@ -453,12 +335,15 @@ func PreParseLibgtkOnly() {
 //    - backends: comma-separated list of backends.
 //
 func SetAllowedBackends(backends string) {
-	var _arg1 *C.gchar // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(backends)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(backends)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_set_allowed_backends(_arg1)
+	girepository.MustFind("Gdk", "set_allowed_backends").Invoke(args[:], nil)
+
 	runtime.KeepAlive(backends)
 }
 
@@ -472,11 +357,14 @@ func SetAllowedBackends(backends string) {
 //    - msec: double click time in milliseconds (thousandths of a second).
 //
 func SetDoubleClickTime(msec uint) {
-	var _arg1 C.guint // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint // out
 
-	_arg1 = C.guint(msec)
+	_arg0 = C.guint(msec)
+	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_set_double_click_time(_arg1)
+	girepository.MustFind("Gdk", "set_double_click_time").Invoke(args[:], nil)
+
 	runtime.KeepAlive(msec)
 }
 
@@ -492,12 +380,15 @@ func SetDoubleClickTime(msec uint) {
 //    - programClass: string.
 //
 func SetProgramClass(programClass string) {
-	var _arg1 *C.gchar // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(programClass)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(programClass)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_set_program_class(_arg1)
+	girepository.MustFind("Gdk", "set_program_class").Invoke(args[:], nil)
+
 	runtime.KeepAlive(programClass)
 }
 
@@ -514,7 +405,8 @@ func SetProgramClass(programClass string) {
 func ScreenHeight() int {
 	var _cret C.gint // in
 
-	_cret = C.gdk_screen_height()
+	_gret := girepository.MustFind("Gdk", "height").Invoke(nil, nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int // out
 
@@ -536,7 +428,8 @@ func ScreenHeight() int {
 func ScreenHeightMm() int {
 	var _cret C.gint // in
 
-	_cret = C.gdk_screen_height_mm()
+	_gret := girepository.MustFind("Gdk", "height_mm").Invoke(nil, nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int // out
 
@@ -558,7 +451,8 @@ func ScreenHeightMm() int {
 func ScreenWidth() int {
 	var _cret C.gint // in
 
-	_cret = C.gdk_screen_width()
+	_gret := girepository.MustFind("Gdk", "width").Invoke(nil, nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int // out
 
@@ -580,7 +474,8 @@ func ScreenWidth() int {
 func ScreenWidthMm() int {
 	var _cret C.gint // in
 
-	_cret = C.gdk_screen_width_mm()
+	_gret := girepository.MustFind("Gdk", "width_mm").Invoke(nil, nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int // out
 

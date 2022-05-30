@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkcontentformats.go.
-var GTypeContentFormatsBuilder = externglib.Type(C.gdk_content_formats_builder_get_type())
+var GTypeContentFormatsBuilder = coreglib.Type(C.gdk_content_formats_builder_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeContentFormatsBuilder, F: marshalContentFormatsBuilder},
 	})
 }
@@ -39,13 +40,17 @@ func init() {
 //      string wasn't a valid mime type.
 //
 func InternMIMEType(str string) string {
-	var _arg1 *C.char // out
-	var _cret *C.char // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_intern_mime_type(_arg1)
+	_gret := girepository.MustFind("Gdk", "intern_mime_type").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out
@@ -69,15 +74,15 @@ type contentFormatsBuilder struct {
 }
 
 func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &ContentFormatsBuilder{&contentFormatsBuilder{(*C.GdkContentFormatsBuilder)(b)}}, nil
 }
 
 // NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
 func NewContentFormatsBuilder() *ContentFormatsBuilder {
-	var _cret *C.GdkContentFormatsBuilder // in
+	var _cret *C.void // in
 
-	_cret = C.gdk_content_formats_builder_new()
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
@@ -100,33 +105,16 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 //    - formats to add.
 //
 func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
-	var _arg0 *C.GdkContentFormatsBuilder // out
-	var _arg1 *C.GdkContentFormats        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
+	*(**ContentFormatsBuilder)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_content_formats_builder_add_formats(_arg0, _arg1)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(formats)
-}
-
-// AddGType appends type to builder if it has not already been added.
-//
-// The function takes the following parameters:
-//
-//    - typ: GType.
-//
-func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
-	var _arg0 *C.GdkContentFormatsBuilder // out
-	var _arg1 C.GType                     // out
-
-	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-	_arg1 = C.GType(typ)
-
-	C.gdk_content_formats_builder_add_gtype(_arg0, _arg1)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(typ)
 }
 
 // AddMIMEType appends mime_type to builder if it has not already been added.
@@ -136,14 +124,15 @@ func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 //    - mimeType: mime type.
 //
 func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
-	var _arg0 *C.GdkContentFormatsBuilder // out
-	var _arg1 *C.char                     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ContentFormatsBuilder)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(mimeType)
 }
@@ -162,12 +151,15 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 //      added to builder.
 //
 func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
-	var _arg0 *C.GdkContentFormatsBuilder // out
-	var _cret *C.GdkContentFormats        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkContentFormatsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	*(**ContentFormatsBuilder)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_content_formats_builder_to_formats(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(builder)
 
 	var _contentFormats *ContentFormats // out

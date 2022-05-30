@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkstatusbaraccessible.go.
-var GTypeStatusbarAccessible = externglib.Type(C.gtk_statusbar_accessible_get_type())
+var GTypeStatusbarAccessible = coreglib.Type(C.gtk_statusbar_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStatusbarAccessible, F: marshalStatusbarAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type StatusbarAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*StatusbarAccessible)(nil)
+	_ coreglib.Objector = (*StatusbarAccessible)(nil)
 )
 
 func classInitStatusbarAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitStatusbarAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
+func wrapStatusbarAccessible(obj *coreglib.Object) *StatusbarAccessible {
 	return &StatusbarAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -64,5 +63,5 @@ func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 }
 
 func marshalStatusbarAccessible(p uintptr) (interface{}, error) {
-	return wrapStatusbarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStatusbarAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

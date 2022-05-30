@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -18,12 +18,12 @@ import "C"
 
 // glib.Type values for pango-gravity.go.
 var (
-	GTypeGravity     = externglib.Type(C.pango_gravity_get_type())
-	GTypeGravityHint = externglib.Type(C.pango_gravity_hint_get_type())
+	GTypeGravity     = coreglib.Type(C.pango_gravity_get_type())
+	GTypeGravityHint = coreglib.Type(C.pango_gravity_hint_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGravity, F: marshalGravity},
 		{T: GTypeGravityHint, F: marshalGravityHint},
 	})
@@ -58,7 +58,7 @@ const (
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
-	return Gravity(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Gravity(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Gravity.
@@ -257,7 +257,7 @@ const (
 )
 
 func marshalGravityHint(p uintptr) (interface{}, error) {
-	return GravityHint(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return GravityHint(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GravityHint.

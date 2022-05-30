@@ -10,27 +10,24 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_FileFilterFunc(GtkFileFilterInfo*, gpointer);
-// extern void callbackDelete(gpointer);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkfilefilter.go.
 var (
-	GTypeFileFilterFlags = externglib.Type(C.gtk_file_filter_flags_get_type())
-	GTypeFileFilter      = externglib.Type(C.gtk_file_filter_get_type())
+	GTypeFileFilterFlags = coreglib.Type(C.gtk_file_filter_flags_get_type())
+	GTypeFileFilter      = coreglib.Type(C.gtk_file_filter_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFileFilterFlags, F: marshalFileFilterFlags},
 		{T: GTypeFileFilter, F: marshalFileFilter},
 	})
@@ -53,7 +50,7 @@ const (
 )
 
 func marshalFileFilterFlags(p uintptr) (interface{}, error) {
-	return FileFilterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return FileFilterFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileFilterFlags.
@@ -160,19 +157,19 @@ func _gotk4_gtk3_FileFilterFunc(arg1 *C.GtkFileFilterInfo, arg2 C.gpointer) (cre
 //    </object>.
 type FileFilter struct {
 	_ [0]func() // equal guard
-	externglib.InitiallyUnowned
+	coreglib.InitiallyUnowned
 
-	*externglib.Object
+	*coreglib.Object
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*FileFilter)(nil)
+	_ coreglib.Objector = (*FileFilter)(nil)
 )
 
-func wrapFileFilter(obj *externglib.Object) *FileFilter {
+func wrapFileFilter(obj *coreglib.Object) *FileFilter {
 	return &FileFilter{
-		InitiallyUnowned: externglib.InitiallyUnowned{
+		InitiallyUnowned: coreglib.InitiallyUnowned{
 			Object: obj,
 		},
 		Object: obj,
@@ -183,7 +180,7 @@ func wrapFileFilter(obj *externglib.Object) *FileFilter {
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
-	return wrapFileFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFileFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileFilter creates a new FileFilter with no rules added to it. Such a
@@ -199,13 +196,14 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 //    - fileFilter: new FileFilter.
 //
 func NewFileFilter() *FileFilter {
-	var _cret *C.GtkFileFilter // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_file_filter_new()
+	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("new_FileFilter", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fileFilter *FileFilter // out
 
-	_fileFilter = wrapFileFilter(externglib.Take(unsafe.Pointer(_cret)))
+	_fileFilter = wrapFileFilter(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -222,50 +220,23 @@ func NewFileFilter() *FileFilter {
 //    - fileFilter: new FileFilter object.
 //
 func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
-	var _arg1 *C.GVariant      // out
-	var _cret *C.GtkFileFilter // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
+	*(**glib.Variant)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
+	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("new_FileFilter_from_gvariant", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(variant)
 
 	var _fileFilter *FileFilter // out
 
-	_fileFilter = wrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileFilter = wrapFileFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
-}
-
-// AddCustom adds rule to a filter that allows files based on a custom callback
-// function. The bitfield needed which is passed in provides information about
-// what sorts of information that the filter function needs; this allows GTK+ to
-// avoid retrieving expensive information when it isn’t needed by the filter.
-//
-// The function takes the following parameters:
-//
-//    - needed: bitfield of flags indicating the information that the custom
-//      filter function needs.
-//    - fn: callback function; if the function returns TRUE, then the file will
-//      be displayed.
-//
-func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
-	var _arg0 *C.GtkFileFilter     // out
-	var _arg1 C.GtkFileFilterFlags // out
-	var _arg2 C.GtkFileFilterFunc  // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = C.GtkFileFilterFlags(needed)
-	_arg2 = (*[0]byte)(C._gotk4_gtk3_FileFilterFunc)
-	_arg3 = C.gpointer(gbox.Assign(fn))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.gtk_file_filter_add_custom(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(filter)
-	runtime.KeepAlive(needed)
-	runtime.KeepAlive(fn)
 }
 
 // AddMIMEType adds a rule allowing a given mime type to filter.
@@ -275,14 +246,17 @@ func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
 //    - mimeType: name of a MIME type.
 //
 func (filter *FileFilter) AddMIMEType(mimeType string) {
-	var _arg0 *C.GtkFileFilter // out
-	var _arg1 *C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
+	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_mime_type", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(mimeType)
 }
@@ -294,14 +268,17 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 //    - pattern: shell style glob.
 //
 func (filter *FileFilter) AddPattern(pattern string) {
-	var _arg0 *C.GtkFileFilter // out
-	var _arg1 *C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_filter_add_pattern(_arg0, _arg1)
+	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_pattern", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(pattern)
 }
@@ -309,11 +286,14 @@ func (filter *FileFilter) AddPattern(pattern string) {
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
 // GdkPixbuf.
 func (filter *FileFilter) AddPixbufFormats() {
-	var _arg0 *C.GtkFileFilter // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**FileFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_file_filter_add_pixbuf_formats(_arg0)
+	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_pixbuf_formats", args[:], nil)
+
 	runtime.KeepAlive(filter)
 }
 
@@ -333,14 +313,18 @@ func (filter *FileFilter) AddPixbufFormats() {
 //    - ok: TRUE if the file should be displayed.
 //
 func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
-	var _arg0 *C.GtkFileFilter     // out
-	var _arg1 *C.GtkFileFilterInfo // out
-	var _cret C.gboolean           // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	_arg1 = (*C.GtkFileFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(filterInfo)))
+	*(**FileFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("filter", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterInfo)
 
@@ -362,12 +346,16 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 //      is owned by GTK+ and must not be modified or freed.
 //
 func (filter *FileFilter) Name() string {
-	var _arg0 *C.GtkFileFilter // out
-	var _cret *C.gchar         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**FileFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_filter_get_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("get_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(filter)
 
 	var _utf8 string // out
@@ -379,33 +367,6 @@ func (filter *FileFilter) Name() string {
 	return _utf8
 }
 
-// Needed gets the fields that need to be filled in for the FileFilterInfo
-// passed to gtk_file_filter_filter()
-//
-// This function will not typically be used by applications; it is intended
-// principally for use in the implementation of FileChooser.
-//
-// The function returns the following values:
-//
-//    - fileFilterFlags: bitfield of flags indicating needed fields when calling
-//      gtk_file_filter_filter().
-//
-func (filter *FileFilter) Needed() FileFilterFlags {
-	var _arg0 *C.GtkFileFilter     // out
-	var _cret C.GtkFileFilterFlags // in
-
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-
-	_cret = C.gtk_file_filter_get_needed(_arg0)
-	runtime.KeepAlive(filter)
-
-	var _fileFilterFlags FileFilterFlags // out
-
-	_fileFilterFlags = FileFilterFlags(_cret)
-
-	return _fileFilterFlags
-}
-
 // SetName sets the human-readable name of the filter; this is the string that
 // will be displayed in the file selector user interface if there is a
 // selectable list of filters.
@@ -415,16 +376,19 @@ func (filter *FileFilter) Needed() FileFilterFlags {
 //    - name (optional) for the filter, or NULL to remove any existing name.
 //
 func (filter *FileFilter) SetName(name string) {
-	var _arg0 *C.GtkFileFilter // out
-	var _arg1 *C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**FileFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_file_filter_set_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("set_name", args[:], nil)
+
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(name)
 }
@@ -436,12 +400,16 @@ func (filter *FileFilter) SetName(name string) {
 //    - variant: new, floating, #GVariant.
 //
 func (filter *FileFilter) ToGVariant() *glib.Variant {
-	var _arg0 *C.GtkFileFilter // out
-	var _cret *C.GVariant      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**FileFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_file_filter_to_gvariant(_arg0)
+	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("to_gvariant", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(filter)
 
 	var _variant *glib.Variant // out
@@ -469,40 +437,4 @@ type FileFilterInfo struct {
 // fileFilterInfo is the struct that's finalized.
 type fileFilterInfo struct {
 	native *C.GtkFileFilterInfo
-}
-
-// Contains flags indicating which of the following fields need are filled.
-func (f *FileFilterInfo) Contains() FileFilterFlags {
-	var v FileFilterFlags // out
-	v = FileFilterFlags(f.native.contains)
-	return v
-}
-
-// Filename: filename of the file being tested.
-func (f *FileFilterInfo) Filename() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.filename)))
-	return v
-}
-
-// URI for the file being tested.
-func (f *FileFilterInfo) URI() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.uri)))
-	return v
-}
-
-// DisplayName: string that will be used to display the file in the file
-// chooser.
-func (f *FileFilterInfo) DisplayName() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.display_name)))
-	return v
-}
-
-// MIMEType: mime type of the file.
-func (f *FileFilterInfo) MIMEType() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.mime_type)))
-	return v
 }

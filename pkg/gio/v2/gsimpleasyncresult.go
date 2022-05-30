@@ -5,63 +5,26 @@ package gio
 import (
 	"context"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gsimpleasyncresult.go.
-var GTypeSimpleAsyncResult = externglib.Type(C.g_simple_async_result_get_type())
+var GTypeSimpleAsyncResult = coreglib.Type(C.g_simple_async_result_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSimpleAsyncResult, F: marshalSimpleAsyncResult},
 	})
-}
-
-// SimpleAsyncReportGErrorInIdle reports an error in an idle function. Similar
-// to g_simple_async_report_error_in_idle(), but takes a #GError rather than
-// building a new one.
-//
-// Deprecated: Use g_task_report_error().
-//
-// The function takes the following parameters:
-//
-//    - object (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//    - err to report.
-//
-func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncReadyCallback, err error) {
-	var _arg1 *C.GObject            // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-	var _arg4 *C.GError // out
-
-	if object != nil {
-		_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-	if err != nil {
-		_arg4 = (*C.GError)(gerror.New(err))
-	}
-
-	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(object)
-	runtime.KeepAlive(callback)
-	runtime.KeepAlive(err)
 }
 
 // SimpleAsyncResultOverrider contains methods that are overridable.
@@ -227,13 +190,13 @@ type SimpleAsyncResultOverrider interface {
 //    }.
 type SimpleAsyncResult struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	AsyncResult
 }
 
 var (
-	_ externglib.Objector = (*SimpleAsyncResult)(nil)
+	_ coreglib.Objector = (*SimpleAsyncResult)(nil)
 )
 
 func classInitSimpleAsyncResulter(gclassPtr, data C.gpointer) {
@@ -244,7 +207,7 @@ func classInitSimpleAsyncResulter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
+func wrapSimpleAsyncResult(obj *coreglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{
 		Object: obj,
 		AsyncResult: AsyncResult{
@@ -254,102 +217,7 @@ func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 }
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
-	return wrapSimpleAsyncResult(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewSimpleAsyncResult creates a AsyncResult.
-//
-// The common convention is to create the AsyncResult in the function that
-// starts the asynchronous operation and use that same function as the
-// source_tag.
-//
-// If your operation supports cancellation with #GCancellable (which it probably
-// should) then you should provide the user's cancellable to
-// g_simple_async_result_set_check_cancellable() immediately after this function
-// returns.
-//
-// Deprecated: Use g_task_new() instead.
-//
-// The function takes the following parameters:
-//
-//    - sourceObject (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//    - sourceTag (optional) asynchronous function.
-//
-// The function returns the following values:
-//
-//    - simpleAsyncResult: AsyncResult.
-//
-func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCallback, sourceTag cgo.Handle) *SimpleAsyncResult {
-	var _arg1 *C.GObject            // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-	var _arg4 C.gpointer            // out
-	var _cret *C.GSimpleAsyncResult // in
-
-	if sourceObject != nil {
-		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
-
-	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(sourceObject)
-	runtime.KeepAlive(callback)
-	runtime.KeepAlive(sourceTag)
-
-	var _simpleAsyncResult *SimpleAsyncResult // out
-
-	_simpleAsyncResult = wrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _simpleAsyncResult
-}
-
-// NewSimpleAsyncResultFromError creates a AsyncResult from an error condition.
-//
-// Deprecated: Use g_task_new() and g_task_return_error() instead.
-//
-// The function takes the following parameters:
-//
-//    - sourceObject (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//    - err: #GError.
-//
-// The function returns the following values:
-//
-//    - simpleAsyncResult: AsyncResult.
-//
-func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback AsyncReadyCallback, err error) *SimpleAsyncResult {
-	var _arg1 *C.GObject            // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-	var _arg4 *C.GError             // out
-	var _cret *C.GSimpleAsyncResult // in
-
-	if sourceObject != nil {
-		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-	if err != nil {
-		_arg4 = (*C.GError)(gerror.New(err))
-	}
-
-	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(sourceObject)
-	runtime.KeepAlive(callback)
-	runtime.KeepAlive(err)
-
-	var _simpleAsyncResult *SimpleAsyncResult // out
-
-	_simpleAsyncResult = wrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _simpleAsyncResult
+	return wrapSimpleAsyncResult(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Complete completes an asynchronous I/O job immediately. Must be called in the
@@ -362,11 +230,14 @@ func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback Asy
 //
 // Deprecated: Use #GTask instead.
 func (simple *SimpleAsyncResult) Complete() {
-	var _arg0 *C.GSimpleAsyncResult // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_simple_async_result_complete(_arg0)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("complete", args[:], nil)
+
 	runtime.KeepAlive(simple)
 }
 
@@ -380,11 +251,14 @@ func (simple *SimpleAsyncResult) Complete() {
 //
 // Deprecated: Use #GTask instead.
 func (simple *SimpleAsyncResult) CompleteInIdle() {
-	var _arg0 *C.GSimpleAsyncResult // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_simple_async_result_complete_in_idle(_arg0)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("complete_in_idle", args[:], nil)
+
 	runtime.KeepAlive(simple)
 }
 
@@ -399,12 +273,16 @@ func (simple *SimpleAsyncResult) CompleteInIdle() {
 //      result was FALSE.
 //
 func (simple *SimpleAsyncResult) OpResGboolean() bool {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _cret C.gboolean            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
+	_gret := girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("get_op_res_gboolean", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(simple)
 
 	var _ok bool // out
@@ -425,12 +303,16 @@ func (simple *SimpleAsyncResult) OpResGboolean() bool {
 //    - gssize returned from the asynchronous function.
 //
 func (simple *SimpleAsyncResult) OpResGssize() int {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _cret C.gssize              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.gssize // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
+	_gret := girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("get_op_res_gssize", args[:], nil)
+	_cret = *(*C.gssize)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(simple)
 
 	var _gssize int // out
@@ -449,12 +331,15 @@ func (simple *SimpleAsyncResult) OpResGssize() int {
 //
 // Deprecated: Use #GTask instead.
 func (simple *SimpleAsyncResult) PropagateError() error {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _cerr *C.GError             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_simple_async_result_propagate_error(_arg0, &_cerr)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("propagate_error", args[:], nil)
+
 	runtime.KeepAlive(simple)
 
 	var _goerr error // out
@@ -489,17 +374,20 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 //    - ctx (optional) to check, or NULL to unset.
 //
 func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _arg1 *C.GCancellable       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_check_cancellable", args[:], nil)
+
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(ctx)
 }
@@ -513,15 +401,18 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 //    - err: #GError.
 //
 func (simple *SimpleAsyncResult) SetFromError(err error) {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _arg1 *C.GError             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	if err != nil {
-		_arg1 = (*C.GError)(gerror.New(err))
+		_arg1 = (*C.void)(gerror.New(err))
 	}
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_simple_async_result_set_from_error(_arg0, _arg1)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_from_error", args[:], nil)
+
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(err)
 }
@@ -540,15 +431,18 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 //    - handleCancellation: #gboolean.
 //
 func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _arg1 C.gboolean            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	if handleCancellation {
 		_arg1 = C.TRUE
 	}
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_simple_async_result_set_handle_cancellation(_arg0, _arg1)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_handle_cancellation", args[:], nil)
+
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(handleCancellation)
 }
@@ -563,15 +457,18 @@ func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) 
 //    - opRes: #gboolean.
 //
 func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _arg1 C.gboolean            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	if opRes {
 		_arg1 = C.TRUE
 	}
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_simple_async_result_set_op_res_gboolean(_arg0, _arg1)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_op_res_gboolean", args[:], nil)
+
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(opRes)
 }
@@ -586,62 +483,16 @@ func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 //    - opRes: #gssize.
 //
 func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _arg1 C.gssize              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.gssize // out
 
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(externglib.InternObject(simple).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	_arg1 = C.gssize(opRes)
+	*(**SimpleAsyncResult)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)
+	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_op_res_gssize", args[:], nil)
+
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(opRes)
-}
-
-// SimpleAsyncResultIsValid ensures that the data passed to the _finish function
-// of an async operation is consistent. Three checks are performed.
-//
-// First, result is checked to ensure that it is really a AsyncResult. Second,
-// source is checked to ensure that it matches the source object of result.
-// Third, source_tag is checked to ensure that it is equal to the source_tag
-// argument given to g_simple_async_result_new() (which, by convention, is a
-// pointer to the _async function corresponding to the _finish function from
-// which this function is called). (Alternatively, if either source_tag or
-// result's source tag is NULL, then the source tag check is skipped.)
-//
-// Deprecated: Use #GTask and g_task_is_valid() instead.
-//
-// The function takes the following parameters:
-//
-//    - result passed to the _finish function.
-//    - source (optional) passed to the _finish function.
-//    - sourceTag (optional) asynchronous function.
-//
-// The function returns the following values:
-//
-//    - ok if all checks passed or LSE if any failed.
-//
-func SimpleAsyncResultIsValid(result AsyncResulter, source *externglib.Object, sourceTag cgo.Handle) bool {
-	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.GObject      // out
-	var _arg3 C.gpointer      // out
-	var _cret C.gboolean      // in
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
-	if source != nil {
-		_arg2 = (*C.GObject)(unsafe.Pointer(source.Native()))
-	}
-	_arg3 = (C.gpointer)(unsafe.Pointer(sourceTag))
-
-	_cret = C.g_simple_async_result_is_valid(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(result)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(sourceTag)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }

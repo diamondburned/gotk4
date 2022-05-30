@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkboxlayout.go.
-var GTypeBoxLayout = externglib.Type(C.gtk_box_layout_get_type())
+var GTypeBoxLayout = coreglib.Type(C.gtk_box_layout_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBoxLayout, F: marshalBoxLayout},
 	})
 }
@@ -44,13 +45,13 @@ type BoxLayout struct {
 	_ [0]func() // equal guard
 	LayoutManager
 
-	*externglib.Object
+	*coreglib.Object
 	Orientable
 }
 
 var (
-	_ LayoutManagerer     = (*BoxLayout)(nil)
-	_ externglib.Objector = (*BoxLayout)(nil)
+	_ LayoutManagerer   = (*BoxLayout)(nil)
+	_ coreglib.Objector = (*BoxLayout)(nil)
 )
 
 func classInitBoxLayouter(gclassPtr, data C.gpointer) {
@@ -61,7 +62,7 @@ func classInitBoxLayouter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
+func wrapBoxLayout(obj *coreglib.Object) *BoxLayout {
 	return &BoxLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -74,56 +75,7 @@ func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 }
 
 func marshalBoxLayout(p uintptr) (interface{}, error) {
-	return wrapBoxLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewBoxLayout creates a new GtkBoxLayout.
-//
-// The function takes the following parameters:
-//
-//    - orientation for the new layout.
-//
-// The function returns the following values:
-//
-//    - boxLayout: new box layout.
-//
-func NewBoxLayout(orientation Orientation) *BoxLayout {
-	var _arg1 C.GtkOrientation    // out
-	var _cret *C.GtkLayoutManager // in
-
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_box_layout_new(_arg1)
-	runtime.KeepAlive(orientation)
-
-	var _boxLayout *BoxLayout // out
-
-	_boxLayout = wrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _boxLayout
-}
-
-// BaselinePosition gets the value set by
-// gtk_box_layout_set_baseline_position().
-//
-// The function returns the following values:
-//
-//    - baselinePosition: baseline position.
-//
-func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBoxLayout       // out
-	var _cret C.GtkBaselinePosition // in
-
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
-
-	_cret = C.gtk_box_layout_get_baseline_position(_arg0)
-	runtime.KeepAlive(boxLayout)
-
-	var _baselinePosition BaselinePosition // out
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
+	return wrapBoxLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Homogeneous returns whether the layout is set to be homogeneous.
@@ -133,12 +85,16 @@ func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 //    - ok: TRUE if the layout is homogeneous.
 //
 func (boxLayout *BoxLayout) Homogeneous() bool {
-	var _arg0 *C.GtkBoxLayout // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(boxLayout).Native()))
+	*(**BoxLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
+	_gret := girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("get_homogeneous", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(boxLayout)
 
 	var _ok bool // out
@@ -157,12 +113,16 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 //    - guint: spacing of the layout.
 //
 func (boxLayout *BoxLayout) Spacing() uint {
-	var _arg0 *C.GtkBoxLayout // out
-	var _cret C.guint         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(boxLayout).Native()))
+	*(**BoxLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_box_layout_get_spacing(_arg0)
+	_gret := girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("get_spacing", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(boxLayout)
 
 	var _guint uint // out
@@ -170,29 +130,6 @@ func (boxLayout *BoxLayout) Spacing() uint {
 	_guint = uint(_cret)
 
 	return _guint
-}
-
-// SetBaselinePosition sets the baseline position of a box layout.
-//
-// The baseline position affects only horizontal boxes with at least one
-// baseline aligned child. If there is more vertical space available than
-// requested, and the baseline is not allocated by the parent then the given
-// position is used to allocate the baseline within the extra space available.
-//
-// The function takes the following parameters:
-//
-//    - position: GtkBaselinePosition.
-//
-func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
-	var _arg0 *C.GtkBoxLayout       // out
-	var _arg1 C.GtkBaselinePosition // out
-
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
-	_arg1 = C.GtkBaselinePosition(position)
-
-	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
-	runtime.KeepAlive(boxLayout)
-	runtime.KeepAlive(position)
 }
 
 // SetHomogeneous sets whether the box layout will allocate the same size to all
@@ -203,15 +140,18 @@ func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 //    - homogeneous: TRUE to set the box layout as homogeneous.
 //
 func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
-	var _arg0 *C.GtkBoxLayout // out
-	var _arg1 C.gboolean      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(boxLayout).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
+	*(**BoxLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_box_layout_set_homogeneous(_arg0, _arg1)
+	girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("set_homogeneous", args[:], nil)
+
 	runtime.KeepAlive(boxLayout)
 	runtime.KeepAlive(homogeneous)
 }
@@ -223,13 +163,16 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 //    - spacing to apply between children.
 //
 func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
-	var _arg0 *C.GtkBoxLayout // out
-	var _arg1 C.guint         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(externglib.InternObject(boxLayout).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(boxLayout).Native()))
 	_arg1 = C.guint(spacing)
+	*(**BoxLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_box_layout_set_spacing(_arg0, _arg1)
+	girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("set_spacing", args[:], nil)
+
 	runtime.KeepAlive(boxLayout)
 	runtime.KeepAlive(spacing)
 }

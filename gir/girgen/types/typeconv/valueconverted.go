@@ -213,16 +213,13 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		value.Inner = append(value.Inner, it)
 	}
 
-	var cgoType string
-
-	if cType != "" {
-		cgoType = types.CGoTypeFromC(cType)
-	} else {
+	if cType == "" {
 		// Fix missing CGo type, which sometimes happens when we're in a
 		// subtype.
-		cgoType = value.Resolved.CGoType()
+		cType = value.Resolved.CType
 	}
 
+	cgoType := types.CGoTypeFromC(cType)
 	if cgoType == "" {
 		value.Logln(logger.Debug, "empty CGoType")
 		return false
@@ -237,6 +234,22 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	if value.ParameterIsOutput() {
 		// Output parameter, so neutralize the pointer type.
 		cgoType = strings.Replace(cgoType, "*", "", 1)
+	}
+
+	if value.conv.isRuntimeLinking() {
+		// Runtime-linking means we do not have access to any of the actual C
+		// types, since we intentionally don't want to import them.
+		// Instead, we must mask those types into primitive GLib types.
+		if ptr := types.CountPtr(cgoType); ptr > 0 {
+			// Using gpointer doesn't quite work right here, so we just use
+			// C.void.
+			cgoType = types.MovePtr(cgoType, "C.void")
+		} else if types.GIRIsPrimitive(cType) {
+			// cgoType OK as it is.
+		} else {
+			value.Logln(logger.Debug, "cType", cType, "is not primitive")
+			return false
+		}
 	}
 
 	switch value.Resolved.GType {
@@ -477,7 +490,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	if value.Resolved.IsExternGLib("Object") {
 		// Shortcut for GObject.
 		value.p.LineTmpl(m, `
-			<.Value.Out.Set> = externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
+			<.Value.Out.Set> = coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
 		`)
 		return true
 	}
@@ -495,8 +508,8 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 				panic("object of type <.GoType> is nil")
 			}
 			<end>
-			object := externglib.<.Func>(objptr)
-			casted := <.Value.OutPtr 0>object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.<.Func>(objptr)
+			casted := <.Value.OutPtr 0>object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(<.Value.Out.Type>)
 				return ok
 			})
@@ -513,7 +526,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	if !value.NeedsNamespace {
 		value.p.LineTmpl(m, `
 			<.Value.Out.Set> = <.Value.OutPtr 1><.Value.Resolved.WrapName false ->
-				(externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))
+				(coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))
 		`)
 		return true
 	}
@@ -527,7 +540,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		m["Wrap"] = wrap
 
 		value.p.LineTmpl(m, `{
-			obj := externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
+			obj := coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
 			<.Value.Out.Set> = <.Wrap>
 		}`)
 

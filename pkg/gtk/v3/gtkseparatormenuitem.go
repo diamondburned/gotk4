@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkseparatormenuitem.go.
-var GTypeSeparatorMenuItem = externglib.Type(C.gtk_separator_menu_item_get_type())
+var GTypeSeparatorMenuItem = coreglib.Type(C.gtk_separator_menu_item_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSeparatorMenuItem, F: marshalSeparatorMenuItem},
 	})
 }
@@ -43,8 +42,8 @@ type SeparatorMenuItem struct {
 }
 
 var (
-	_ Binner              = (*SeparatorMenuItem)(nil)
-	_ externglib.Objector = (*SeparatorMenuItem)(nil)
+	_ Binner            = (*SeparatorMenuItem)(nil)
+	_ coreglib.Objector = (*SeparatorMenuItem)(nil)
 )
 
 func classInitSeparatorMenuItemmer(gclassPtr, data C.gpointer) {
@@ -55,13 +54,13 @@ func classInitSeparatorMenuItemmer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
+func wrapSeparatorMenuItem(obj *coreglib.Object) *SeparatorMenuItem {
 	return &SeparatorMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -77,7 +76,7 @@ func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -97,7 +96,7 @@ func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 }
 
 func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
-	return wrapSeparatorMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSeparatorMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSeparatorMenuItem creates a new SeparatorMenuItem.
@@ -107,13 +106,14 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 //    - separatorMenuItem: new SeparatorMenuItem.
 //
 func NewSeparatorMenuItem() *SeparatorMenuItem {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_separator_menu_item_new()
+	_gret := girepository.MustFind("Gtk", "SeparatorMenuItem").InvokeMethod("new_SeparatorMenuItem", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _separatorMenuItem *SeparatorMenuItem // out
 
-	_separatorMenuItem = wrapSeparatorMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_separatorMenuItem = wrapSeparatorMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorMenuItem
 }

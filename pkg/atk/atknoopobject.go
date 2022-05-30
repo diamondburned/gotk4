@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for atknoopobject.go.
-var GTypeNoOpObject = externglib.Type(C.atk_no_op_object_get_type())
+var GTypeNoOpObject = coreglib.Type(C.atk_no_op_object_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNoOpObject, F: marshalNoOpObject},
 	})
 }
@@ -34,7 +35,7 @@ type NoOpObject struct {
 	_ [0]func() // equal guard
 	ObjectClass
 
-	*externglib.Object
+	*coreglib.Object
 	Action
 	Component
 	Document
@@ -50,7 +51,7 @@ type NoOpObject struct {
 }
 
 var (
-	_ externglib.Objector = (*NoOpObject)(nil)
+	_ coreglib.Objector = (*NoOpObject)(nil)
 )
 
 func classInitNoOpObjector(gclassPtr, data C.gpointer) {
@@ -61,7 +62,7 @@ func classInitNoOpObjector(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
+func wrapNoOpObject(obj *coreglib.Object) *NoOpObject {
 	return &NoOpObject{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -111,7 +112,7 @@ func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 }
 
 func marshalNoOpObject(p uintptr) (interface{}, error) {
-	return wrapNoOpObject(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNoOpObject(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNoOpObject provides a default (non-functioning stub) Object. Application
@@ -125,18 +126,22 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 //
 //    - noOpObject: default (non-functioning stub) Object.
 //
-func NewNoOpObject(obj *externglib.Object) *NoOpObject {
-	var _arg1 *C.GObject   // out
-	var _cret *C.AtkObject // in
+func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(obj.Native()))
+	*(**coreglib.Object)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_no_op_object_new(_arg1)
+	_gret := girepository.MustFind("Atk", "NoOpObject").InvokeMethod("new_NoOpObject", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(obj)
 
 	var _noOpObject *NoOpObject // out
 
-	_noOpObject = wrapNoOpObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_noOpObject = wrapNoOpObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObject
 }

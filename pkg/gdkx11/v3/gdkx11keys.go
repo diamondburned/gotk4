@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11keys.go.
-var GTypeX11Keymap = externglib.Type(C.gdk_x11_keymap_get_type())
+var GTypeX11Keymap = coreglib.Type(C.gdk_x11_keymap_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11Keymap, F: marshalX11Keymap},
 	})
 }
@@ -34,7 +35,7 @@ type X11Keymap struct {
 }
 
 var (
-	_ externglib.Objector = (*X11Keymap)(nil)
+	_ coreglib.Objector = (*X11Keymap)(nil)
 )
 
 func classInitX11Keymapper(gclassPtr, data C.gpointer) {
@@ -45,7 +46,7 @@ func classInitX11Keymapper(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
+func wrapX11Keymap(obj *coreglib.Object) *X11Keymap {
 	return &X11Keymap{
 		Keymap: gdk.Keymap{
 			Object: obj,
@@ -54,7 +55,7 @@ func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
 }
 
 func marshalX11Keymap(p uintptr) (interface{}, error) {
-	return wrapX11Keymap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11Keymap(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GroupForState extracts the group from the state field sent in an X Key event.
@@ -70,14 +71,18 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 //    - gint: index of the active keyboard group for the event.
 //
 func (keymap *X11Keymap) GroupForState(state uint) int {
-	var _arg0 *C.GdkKeymap // out
-	var _arg1 C.guint      // out
-	var _cret C.gint       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(externglib.InternObject(keymap).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
 	_arg1 = C.guint(state)
+	*(**X11Keymap)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
+	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("get_group_for_state", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(state)
 
@@ -103,14 +108,18 @@ func (keymap *X11Keymap) GroupForState(state uint) int {
 //    - ok: TRUE if the hardware keycode is a modifier key.
 //
 func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
-	var _arg0 *C.GdkKeymap // out
-	var _arg1 C.guint      // out
-	var _cret C.gboolean   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.guint    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(externglib.InternObject(keymap).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
 	_arg1 = C.guint(keycode)
+	*(**X11Keymap)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)
+	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("key_is_modifier", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(keycode)
 

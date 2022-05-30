@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for graphene-vec4.go.
-var GTypeVec4 = externglib.Type(C.graphene_vec4_get_type())
+var GTypeVec4 = coreglib.Type(C.graphene_vec4_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVec4, F: marshalVec4},
 	})
 }
@@ -41,7 +41,7 @@ type vec4 struct {
 }
 
 func marshalVec4(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Vec4{&vec4{(*C.graphene_vec4_t)(b)}}, nil
 }
 

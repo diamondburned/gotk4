@@ -5,10 +5,13 @@ package gio
 import (
 	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
@@ -27,11 +30,14 @@ import "C"
 //    - dirname: pathname for a directory containing modules to scan.
 //
 func IOModulesScanAllInDirectory(dirname string) {
-	var _arg1 *C.char // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(dirname)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(dirname)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_io_modules_scan_all_in_directory(_arg1)
+	girepository.MustFind("Gio", "io_modules_scan_all_in_directory").Invoke(args[:], nil)
+
 	runtime.KeepAlive(dirname)
 }

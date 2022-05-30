@@ -7,21 +7,22 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_atk1_MiscClass_threads_enter(AtkMisc*);
 // extern void _gotk4_atk1_MiscClass_threads_leave(AtkMisc*);
 import "C"
 
 // glib.Type values for atkmisc.go.
-var GTypeMisc = externglib.Type(C.atk_misc_get_type())
+var GTypeMisc = coreglib.Type(C.atk_misc_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMisc, F: marshalMisc},
 	})
 }
@@ -52,11 +53,11 @@ type MiscOverrider interface {
 // related methods are deprecated since 2.12.
 type Misc struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Misc)(nil)
+	_ coreglib.Objector = (*Misc)(nil)
 )
 
 func classInitMiscer(gclassPtr, data C.gpointer) {
@@ -81,7 +82,7 @@ func classInitMiscer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_atk1_MiscClass_threads_enter
 func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsEnter() })
 
 	iface.ThreadsEnter()
@@ -89,20 +90,20 @@ func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
 
 //export _gotk4_atk1_MiscClass_threads_leave
 func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsLeave() })
 
 	iface.ThreadsLeave()
 }
 
-func wrapMisc(obj *externglib.Object) *Misc {
+func wrapMisc(obj *coreglib.Object) *Misc {
 	return &Misc{
 		Object: obj,
 	}
 }
 
 func marshalMisc(p uintptr) (interface{}, error) {
-	return wrapMisc(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMisc(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This
@@ -111,11 +112,14 @@ func marshalMisc(p uintptr) (interface{}, error) {
 //
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsEnter() {
-	var _arg0 *C.AtkMisc // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.AtkMisc)(unsafe.Pointer(externglib.InternObject(misc).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	*(**Misc)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.atk_misc_threads_enter(_arg0)
+	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_enter", args[:], nil)
+
 	runtime.KeepAlive(misc)
 }
 
@@ -130,11 +134,14 @@ func (misc *Misc) ThreadsEnter() {
 //
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsLeave() {
-	var _arg0 *C.AtkMisc // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.AtkMisc)(unsafe.Pointer(externglib.InternObject(misc).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	*(**Misc)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.atk_misc_threads_leave(_arg0)
+	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_leave", args[:], nil)
+
 	runtime.KeepAlive(misc)
 }
 
@@ -148,13 +155,14 @@ func (misc *Misc) ThreadsLeave() {
 //    - misc: singleton instance of AtkMisc for this application.
 //
 func MiscGetInstance() *Misc {
-	var _cret *C.AtkMisc // in
+	var _cret *C.void // in
 
-	_cret = C.atk_misc_get_instance()
+	_gret := girepository.MustFind("Atk", "get_instance").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _misc *Misc // out
 
-	_misc = wrapMisc(externglib.Take(unsafe.Pointer(_cret)))
+	_misc = wrapMisc(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _misc
 }

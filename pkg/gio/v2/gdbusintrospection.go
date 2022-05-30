@@ -8,27 +8,28 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdbusintrospection.go.
 var (
-	GTypeDBusAnnotationInfo = externglib.Type(C.g_dbus_annotation_info_get_type())
-	GTypeDBusArgInfo        = externglib.Type(C.g_dbus_arg_info_get_type())
-	GTypeDBusInterfaceInfo  = externglib.Type(C.g_dbus_interface_info_get_type())
-	GTypeDBusMethodInfo     = externglib.Type(C.g_dbus_method_info_get_type())
-	GTypeDBusNodeInfo       = externglib.Type(C.g_dbus_node_info_get_type())
-	GTypeDBusPropertyInfo   = externglib.Type(C.g_dbus_property_info_get_type())
-	GTypeDBusSignalInfo     = externglib.Type(C.g_dbus_signal_info_get_type())
+	GTypeDBusAnnotationInfo = coreglib.Type(C.g_dbus_annotation_info_get_type())
+	GTypeDBusArgInfo        = coreglib.Type(C.g_dbus_arg_info_get_type())
+	GTypeDBusInterfaceInfo  = coreglib.Type(C.g_dbus_interface_info_get_type())
+	GTypeDBusMethodInfo     = coreglib.Type(C.g_dbus_method_info_get_type())
+	GTypeDBusNodeInfo       = coreglib.Type(C.g_dbus_node_info_get_type())
+	GTypeDBusPropertyInfo   = coreglib.Type(C.g_dbus_property_info_get_type())
+	GTypeDBusSignalInfo     = coreglib.Type(C.g_dbus_signal_info_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDBusAnnotationInfo, F: marshalDBusAnnotationInfo},
 		{T: GTypeDBusArgInfo, F: marshalDBusArgInfo},
 		{T: GTypeDBusInterfaceInfo, F: marshalDBusInterfaceInfo},
@@ -52,7 +53,7 @@ type dBusAnnotationInfo struct {
 }
 
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DBusAnnotationInfo{&dBusAnnotationInfo{(*C.GDBusAnnotationInfo)(b)}}, nil
 }
 
@@ -83,7 +84,7 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.GDBusAnnotationInfo
+		var z *C.void
 		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -119,28 +120,33 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 //      annotations.
 //
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
-	var _arg1 **C.GDBusAnnotationInfo // out
-	var _arg2 *C.gchar                // out
-	var _cret *C.gchar                // in
+	var args [2]girepository.Argument
+	var _arg0 **C.void // out
+	var _arg1 *C.void  // out
+	var _cret *C.void  // in
 
 	if annotations != nil {
 		{
-			_arg1 = (**C.GDBusAnnotationInfo)(C.calloc(C.size_t((len(annotations) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-			defer C.free(unsafe.Pointer(_arg1))
+			_arg0 = (**C.void)(C.calloc(C.size_t((len(annotations) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+			defer C.free(unsafe.Pointer(_arg0))
 			{
-				out := unsafe.Slice(_arg1, len(annotations)+1)
-				var zero *C.GDBusAnnotationInfo
+				out := unsafe.Slice(_arg0, len(annotations)+1)
+				var zero *C.void
 				out[len(annotations)] = zero
 				for i := range annotations {
-					out[i] = (*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(annotations[i])))
+					out[i] = (*C.void)(gextras.StructNative(unsafe.Pointer(annotations[i])))
 				}
 			}
 		}
 	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(*[]*DBusAnnotationInfo)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_annotation_info_lookup(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "lookup").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(annotations)
 	runtime.KeepAlive(name)
 
@@ -166,7 +172,7 @@ type dBusArgInfo struct {
 }
 
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DBusArgInfo{&dBusArgInfo{(*C.GDBusArgInfo)(b)}}, nil
 }
 
@@ -197,7 +203,7 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.GDBusAnnotationInfo
+		var z *C.void
 		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -231,7 +237,7 @@ type dBusInterfaceInfo struct {
 }
 
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DBusInterfaceInfo{&dBusInterfaceInfo{(*C.GDBusInterfaceInfo)(b)}}, nil
 }
 
@@ -255,7 +261,7 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 	var v []*DBusMethodInfo // out
 	{
 		var i int
-		var z *C.GDBusMethodInfo
+		var z *C.void
 		for p := d.native.methods; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -282,7 +288,7 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 	var v []*DBusSignalInfo // out
 	{
 		var i int
-		var z *C.GDBusSignalInfo
+		var z *C.void
 		for p := d.native.signals; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -309,7 +315,7 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 	var v []*DBusPropertyInfo // out
 	{
 		var i int
-		var z *C.GDBusPropertyInfo
+		var z *C.void
 		for p := d.native.properties; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -336,7 +342,7 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.GDBusAnnotationInfo
+		var z *C.void
 		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -367,11 +373,12 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 // Note that info cannot be modified until g_dbus_interface_info_cache_release()
 // is called.
 func (info *DBusInterfaceInfo) CacheBuild() {
-	var _arg0 *C.GDBusInterfaceInfo // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_interface_info_cache_build(_arg0)
 	runtime.KeepAlive(info)
 }
 
@@ -379,11 +386,12 @@ func (info *DBusInterfaceInfo) CacheBuild() {
 // g_dbus_interface_info_cache_build() (if any) and frees the resources used by
 // the cache if the usage count drops to zero.
 func (info *DBusInterfaceInfo) CacheRelease() {
-	var _arg0 *C.GDBusInterfaceInfo // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_interface_info_cache_release(_arg0)
 	runtime.KeepAlive(info)
 }
 
@@ -402,15 +410,18 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 //      by info.
 //
 func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
-	var _arg0 *C.GDBusInterfaceInfo // out
-	var _arg1 *C.gchar              // out
-	var _cret *C.GDBusMethodInfo    // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
@@ -445,15 +456,18 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 //      owned by info.
 //
 func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
-	var _arg0 *C.GDBusInterfaceInfo // out
-	var _arg1 *C.gchar              // out
-	var _cret *C.GDBusPropertyInfo  // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
@@ -488,15 +502,18 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 //      by info.
 //
 func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
-	var _arg0 *C.GDBusInterfaceInfo // out
-	var _arg1 *C.gchar              // out
-	var _cret *C.GDBusSignalInfo    // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
@@ -529,7 +546,7 @@ type dBusMethodInfo struct {
 }
 
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DBusMethodInfo{&dBusMethodInfo{(*C.GDBusMethodInfo)(b)}}, nil
 }
 
@@ -553,7 +570,7 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 	var v []*DBusArgInfo // out
 	{
 		var i int
-		var z *C.GDBusArgInfo
+		var z *C.void
 		for p := d.native.in_args; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -580,7 +597,7 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 	var v []*DBusArgInfo // out
 	{
 		var i int
-		var z *C.GDBusArgInfo
+		var z *C.void
 		for p := d.native.out_args; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -607,7 +624,7 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.GDBusAnnotationInfo
+		var z *C.void
 		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -641,20 +658,23 @@ type dBusNodeInfo struct {
 }
 
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DBusNodeInfo{&dBusNodeInfo{(*C.GDBusNodeInfo)(b)}}, nil
 }
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
 func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
-	var _arg1 *C.gchar         // out
-	var _cret *C.GDBusNodeInfo // in
-	var _cerr *C.GError        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(xmlData)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(xmlData)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(xmlData)
 
 	var _dBusNodeInfo *DBusNodeInfo // out
@@ -695,7 +715,7 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 	var v []*DBusInterfaceInfo // out
 	{
 		var i int
-		var z *C.GDBusInterfaceInfo
+		var z *C.void
 		for p := d.native.interfaces; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -722,7 +742,7 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 	var v []*DBusNodeInfo // out
 	{
 		var i int
-		var z *C.GDBusNodeInfo
+		var z *C.void
 		for p := d.native.nodes; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -749,7 +769,7 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.GDBusAnnotationInfo
+		var z *C.void
 		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -784,15 +804,18 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 //      owned by info.
 //
 func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
-	var _arg0 *C.GDBusNodeInfo      // out
-	var _arg1 *C.gchar              // out
-	var _cret *C.GDBusInterfaceInfo // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusNodeInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
@@ -825,63 +848,8 @@ type dBusPropertyInfo struct {
 }
 
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DBusPropertyInfo{&dBusPropertyInfo{(*C.GDBusPropertyInfo)(b)}}, nil
-}
-
-// RefCount: reference count or -1 if statically allocated.
-func (d *DBusPropertyInfo) RefCount() int {
-	var v int // out
-	v = int(d.native.ref_count)
-	return v
-}
-
-// Name: name of the D-Bus property, e.g. "SupportedFilesystems".
-func (d *DBusPropertyInfo) Name() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.name)))
-	return v
-}
-
-// Signature d-Bus signature of the property (a single complete type).
-func (d *DBusPropertyInfo) Signature() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.signature)))
-	return v
-}
-
-// Flags access control flags for the property.
-func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
-	var v DBusPropertyInfoFlags // out
-	v = DBusPropertyInfoFlags(d.native.flags)
-	return v
-}
-
-// Annotations: pointer to a NULL-terminated array of pointers to
-// BusAnnotationInfo structures or NULL if there are no annotations.
-func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
-	var v []*DBusAnnotationInfo // out
-	{
-		var i int
-		var z *C.GDBusAnnotationInfo
-		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(d.native.annotations, i)
-		v = make([]*DBusAnnotationInfo, i)
-		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_annotation_info_ref(src[i])
-			runtime.SetFinalizer(
-				gextras.StructIntern(unsafe.Pointer(v[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(intern.C))
-				},
-			)
-		}
-	}
-	return v
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
@@ -897,7 +865,7 @@ type dBusSignalInfo struct {
 }
 
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DBusSignalInfo{&dBusSignalInfo{(*C.GDBusSignalInfo)(b)}}, nil
 }
 
@@ -921,7 +889,7 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 	var v []*DBusArgInfo // out
 	{
 		var i int
-		var z *C.GDBusArgInfo
+		var z *C.void
 		for p := d.native.args; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -948,7 +916,7 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.GDBusAnnotationInfo
+		var z *C.void
 		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}

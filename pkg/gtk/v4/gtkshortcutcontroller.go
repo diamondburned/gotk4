@@ -6,21 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkshortcutcontroller.go.
-var GTypeShortcutController = externglib.Type(C.gtk_shortcut_controller_get_type())
+var GTypeShortcutController = coreglib.Type(C.gtk_shortcut_controller_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutController, F: marshalShortcutController},
 	})
 }
@@ -74,14 +74,14 @@ type ShortcutController struct {
 	_ [0]func() // equal guard
 	EventController
 
-	*externglib.Object
+	*coreglib.Object
 	gio.ListModel
 	Buildable
 }
 
 var (
-	_ EventControllerer   = (*ShortcutController)(nil)
-	_ externglib.Objector = (*ShortcutController)(nil)
+	_ EventControllerer = (*ShortcutController)(nil)
+	_ coreglib.Objector = (*ShortcutController)(nil)
 )
 
 func classInitShortcutControllerer(gclassPtr, data C.gpointer) {
@@ -92,7 +92,7 @@ func classInitShortcutControllerer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapShortcutController(obj *externglib.Object) *ShortcutController {
+func wrapShortcutController(obj *coreglib.Object) *ShortcutController {
 	return &ShortcutController{
 		EventController: EventController{
 			Object: obj,
@@ -108,7 +108,7 @@ func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 }
 
 func marshalShortcutController(p uintptr) (interface{}, error) {
-	return wrapShortcutController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutController(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShortcutController creates a new shortcut controller.
@@ -118,13 +118,14 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 //    - shortcutController: newly created shortcut controller.
 //
 func NewShortcutController() *ShortcutController {
-	var _cret *C.GtkEventController // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_shortcut_controller_new()
+	_gret := girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("new_ShortcutController", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _shortcutController *ShortcutController // out
 
-	_shortcutController = wrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_shortcutController = wrapShortcutController(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
 }
@@ -145,17 +146,21 @@ func NewShortcutController() *ShortcutController {
 //    - shortcutController: newly created shortcut controller.
 //
 func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
-	var _arg1 *C.GListModel         // out
-	var _cret *C.GtkEventController // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*gio.ListModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_shortcut_controller_new_for_model(_arg1)
+	_gret := girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("new_ShortcutController_for_model", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(model)
 
 	var _shortcutController *ShortcutController // out
 
-	_shortcutController = wrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_shortcutController = wrapShortcutController(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
 }
@@ -170,62 +175,19 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 //    - shortcut: GtkShortcut.
 //
 func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
-	var _arg0 *C.GtkShortcutController // out
-	var _arg1 *C.GtkShortcut           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(externglib.InternObject(shortcut).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(shortcut).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(shortcut).Native()))
+	*(**ShortcutController)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("add_shortcut", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(shortcut)
-}
-
-// MnemonicsModifiers gets the mnemonics modifiers for when this controller
-// activates its shortcuts.
-//
-// The function returns the following values:
-//
-//    - modifierType controller's mnemonics modifiers.
-//
-func (self *ShortcutController) MnemonicsModifiers() gdk.ModifierType {
-	var _arg0 *C.GtkShortcutController // out
-	var _cret C.GdkModifierType        // in
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
-	runtime.KeepAlive(self)
-
-	var _modifierType gdk.ModifierType // out
-
-	_modifierType = gdk.ModifierType(_cret)
-
-	return _modifierType
-}
-
-// Scope gets the scope for when this controller activates its shortcuts. See
-// gtk_shortcut_controller_set_scope() for details.
-//
-// The function returns the following values:
-//
-//    - shortcutScope controller's scope.
-//
-func (self *ShortcutController) Scope() ShortcutScope {
-	var _arg0 *C.GtkShortcutController // out
-	var _cret C.GtkShortcutScope       // in
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_shortcut_controller_get_scope(_arg0)
-	runtime.KeepAlive(self)
-
-	var _shortcutScope ShortcutScope // out
-
-	_shortcutScope = ShortcutScope(_cret)
-
-	return _shortcutScope
 }
 
 // RemoveShortcut removes shortcut from the list of shortcuts handled by self.
@@ -238,69 +200,16 @@ func (self *ShortcutController) Scope() ShortcutScope {
 //    - shortcut: GtkShortcut.
 //
 func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
-	var _arg0 *C.GtkShortcutController // out
-	var _arg1 *C.GtkShortcut           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(externglib.InternObject(shortcut).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
+	*(**ShortcutController)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("remove_shortcut", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(shortcut)
-}
-
-// SetMnemonicsModifiers sets the controller to have the given
-// mnemonics_modifiers.
-//
-// The mnemonics modifiers determines which modifiers need to be pressed to
-// allow activation of shortcuts with mnemonics triggers.
-//
-// GTK normally uses the Alt modifier for mnemonics, except in PopoverMenus,
-// where mnemonics can be triggered without any modifiers. It should be very
-// rarely necessary to change this, and doing so is likely to interfere with
-// other shortcuts.
-//
-// This value is only relevant for local shortcut controllers. Global and
-// managed shortcut controllers will have their shortcuts activated from other
-// places which have their own modifiers for activating mnemonics.
-//
-// The function takes the following parameters:
-//
-//    - modifiers: new mnemonics_modifiers to use.
-//
-func (self *ShortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType) {
-	var _arg0 *C.GtkShortcutController // out
-	var _arg1 C.GdkModifierType        // out
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GdkModifierType(modifiers)
-
-	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(modifiers)
-}
-
-// SetScope sets the controller to have the given scope.
-//
-// The scope allows shortcuts to be activated outside of the normal event
-// propagation. In particular, it allows installing global keyboard shortcuts
-// that can be activated even when a widget does not have focus.
-//
-// With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
-// widget has focus.
-//
-// The function takes the following parameters:
-//
-//    - scope: new scope to use.
-//
-func (self *ShortcutController) SetScope(scope ShortcutScope) {
-	var _arg0 *C.GtkShortcutController // out
-	var _arg1 C.GtkShortcutScope       // out
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GtkShortcutScope(scope)
-
-	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(scope)
 }

@@ -5,20 +5,21 @@ package gdkx11
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/x11/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11dnd.go.
-var GTypeX11Drag = externglib.Type(C.gdk_x11_drag_get_type())
+var GTypeX11Drag = coreglib.Type(C.gdk_x11_drag_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11Drag, F: marshalX11Drag},
 	})
 }
@@ -44,7 +45,7 @@ func classInitX11Dragger(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11Drag(obj *externglib.Object) *X11Drag {
+func wrapX11Drag(obj *coreglib.Object) *X11Drag {
 	return &X11Drag{
 		Drag: gdk.Drag{
 			Object: obj,
@@ -53,5 +54,5 @@ func wrapX11Drag(obj *externglib.Object) *X11Drag {
 }
 
 func marshalX11Drag(p uintptr) (interface{}, error) {
-	return wrapX11Drag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11Drag(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

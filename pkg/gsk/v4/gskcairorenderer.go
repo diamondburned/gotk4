@@ -5,19 +5,20 @@ package gsk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gsk/gsk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gskcairorenderer.go.
-var GTypeCairoRenderer = externglib.Type(C.gsk_cairo_renderer_get_type())
+var GTypeCairoRenderer = coreglib.Type(C.gsk_cairo_renderer_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCairoRenderer, F: marshalCairoRenderer},
 	})
 }
@@ -46,7 +47,7 @@ func classInitCairoRendererer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
+func wrapCairoRenderer(obj *coreglib.Object) *CairoRenderer {
 	return &CairoRenderer{
 		Renderer: Renderer{
 			Object: obj,
@@ -55,7 +56,7 @@ func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 }
 
 func marshalCairoRenderer(p uintptr) (interface{}, error) {
-	return wrapCairoRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCairoRenderer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCairoRenderer creates a new Cairo renderer.
@@ -71,13 +72,14 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 //    - cairoRenderer: new Cairo renderer.
 //
 func NewCairoRenderer() *CairoRenderer {
-	var _cret *C.GskRenderer // in
+	var _cret *C.void // in
 
-	_cret = C.gsk_cairo_renderer_new()
+	_gret := girepository.MustFind("Gsk", "CairoRenderer").InvokeMethod("new_CairoRenderer", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cairoRenderer *CairoRenderer // out
 
-	_cairoRenderer = wrapCairoRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cairoRenderer = wrapCairoRenderer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cairoRenderer
 }

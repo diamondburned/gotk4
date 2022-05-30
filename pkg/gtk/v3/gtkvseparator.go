@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkvseparator.go.
-var GTypeVSeparator = externglib.Type(C.gtk_vseparator_get_type())
+var GTypeVSeparator = coreglib.Type(C.gtk_vseparator_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVSeparator, F: marshalVSeparator},
 	})
 }
@@ -40,8 +39,8 @@ type VSeparator struct {
 }
 
 var (
-	_ Widgetter           = (*VSeparator)(nil)
-	_ externglib.Objector = (*VSeparator)(nil)
+	_ Widgetter         = (*VSeparator)(nil)
+	_ coreglib.Objector = (*VSeparator)(nil)
 )
 
 func classInitVSeparatorrer(gclassPtr, data C.gpointer) {
@@ -52,11 +51,11 @@ func classInitVSeparatorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapVSeparator(obj *externglib.Object) *VSeparator {
+func wrapVSeparator(obj *coreglib.Object) *VSeparator {
 	return &VSeparator{
 		Separator: Separator{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -76,7 +75,7 @@ func wrapVSeparator(obj *externglib.Object) *VSeparator {
 }
 
 func marshalVSeparator(p uintptr) (interface{}, error) {
-	return wrapVSeparator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVSeparator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVSeparator creates a new VSeparator.
@@ -88,13 +87,14 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 //    - vSeparator: new VSeparator.
 //
 func NewVSeparator() *VSeparator {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_vseparator_new()
+	_gret := girepository.MustFind("Gtk", "VSeparator").InvokeMethod("new_VSeparator", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _vSeparator *VSeparator // out
 
-	_vSeparator = wrapVSeparator(externglib.Take(unsafe.Pointer(_cret)))
+	_vSeparator = wrapVSeparator(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vSeparator
 }

@@ -25,6 +25,8 @@ type FileGenerator interface {
 	Repositories() gir.Repositories
 	// Namespace returns the generator's current namespace.
 	Namespace() *gir.NamespaceFindResult
+	// LinkMode gets the current link mode of the file generator.
+	LinkMode() LinkMode
 }
 
 type wrappedGenerator struct {

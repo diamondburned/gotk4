@@ -8,13 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(gpointer, gchar*, guintptr);
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, GIOStream*, GCredentials*, guintptr);
 // extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, GDBusConnection*, guintptr);
@@ -26,27 +27,27 @@ import "C"
 
 // glib.Type values for gio-2.go.
 var (
-	GTypeAppInfoMonitor       = externglib.Type(C.g_app_info_monitor_get_type())
-	GTypeBytesIcon            = externglib.Type(C.g_bytes_icon_get_type())
-	GTypeDBusActionGroup      = externglib.Type(C.g_dbus_action_group_get_type())
-	GTypeDBusAuthObserver     = externglib.Type(C.g_dbus_auth_observer_get_type())
-	GTypeDBusConnection       = externglib.Type(C.g_dbus_connection_get_type())
-	GTypeDBusMenuModel        = externglib.Type(C.g_dbus_menu_model_get_type())
-	GTypeDBusMessage          = externglib.Type(C.g_dbus_message_get_type())
-	GTypeDBusMethodInvocation = externglib.Type(C.g_dbus_method_invocation_get_type())
-	GTypeDBusServer           = externglib.Type(C.g_dbus_server_get_type())
-	GTypeMenu                 = externglib.Type(C.g_menu_get_type())
-	GTypeMenuItem             = externglib.Type(C.g_menu_item_get_type())
-	GTypeNotification         = externglib.Type(C.g_notification_get_type())
-	GTypePropertyAction       = externglib.Type(C.g_property_action_get_type())
-	GTypeSimpleAction         = externglib.Type(C.g_simple_action_get_type())
-	GTypeSimpleIOStream       = externglib.Type(C.g_simple_io_stream_get_type())
-	GTypeSimplePermission     = externglib.Type(C.g_simple_permission_get_type())
-	GTypeTestDBus             = externglib.Type(C.g_test_dbus_get_type())
+	GTypeAppInfoMonitor       = coreglib.Type(C.g_app_info_monitor_get_type())
+	GTypeBytesIcon            = coreglib.Type(C.g_bytes_icon_get_type())
+	GTypeDBusActionGroup      = coreglib.Type(C.g_dbus_action_group_get_type())
+	GTypeDBusAuthObserver     = coreglib.Type(C.g_dbus_auth_observer_get_type())
+	GTypeDBusConnection       = coreglib.Type(C.g_dbus_connection_get_type())
+	GTypeDBusMenuModel        = coreglib.Type(C.g_dbus_menu_model_get_type())
+	GTypeDBusMessage          = coreglib.Type(C.g_dbus_message_get_type())
+	GTypeDBusMethodInvocation = coreglib.Type(C.g_dbus_method_invocation_get_type())
+	GTypeDBusServer           = coreglib.Type(C.g_dbus_server_get_type())
+	GTypeMenu                 = coreglib.Type(C.g_menu_get_type())
+	GTypeMenuItem             = coreglib.Type(C.g_menu_item_get_type())
+	GTypeNotification         = coreglib.Type(C.g_notification_get_type())
+	GTypePropertyAction       = coreglib.Type(C.g_property_action_get_type())
+	GTypeSimpleAction         = coreglib.Type(C.g_simple_action_get_type())
+	GTypeSimpleIOStream       = coreglib.Type(C.g_simple_io_stream_get_type())
+	GTypeSimplePermission     = coreglib.Type(C.g_simple_permission_get_type())
+	GTypeTestDBus             = coreglib.Type(C.g_test_dbus_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAppInfoMonitor, F: marshalAppInfoMonitor},
 		{T: GTypeBytesIcon, F: marshalBytesIcon},
 		{T: GTypeDBusActionGroup, F: marshalDBusActionGroup},
@@ -67,96 +68,6 @@ func init() {
 	})
 }
 
-// ResolverErrorQuark gets the #GResolver Error Quark.
-//
-// The function returns the following values:
-//
-//    - quark: #GQuark.
-//
-func ResolverErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.g_resolver_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// ResourceErrorQuark gets the #GResource Error Quark.
-//
-// The function returns the following values:
-//
-//    - quark: #GQuark.
-//
-func ResourceErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.g_resource_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// TLSChannelBindingErrorQuark gets the TLS channel binding error quark.
-//
-// The function returns the following values:
-//
-//    - quark: #GQuark.
-//
-func TLSChannelBindingErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.g_tls_channel_binding_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// TLSErrorQuark gets the TLS error quark.
-//
-// The function returns the following values:
-//
-//    - quark: #GQuark.
-//
-func TLSErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.g_tls_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// IOErrorQuark gets the GIO Error Quark.
-//
-// The function returns the following values:
-//
-//    - quark: #GQuark.
-//
-func IOErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.g_io_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
 // AppInfoMonitor is a very simple object used for monitoring the app info
 // database for changes (ie: newly installed or removed applications).
 //
@@ -174,28 +85,28 @@ func IOErrorQuark() glib.Quark {
 // rescanning the list on every change is pointless and expensive.
 type AppInfoMonitor struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*AppInfoMonitor)(nil)
+	_ coreglib.Objector = (*AppInfoMonitor)(nil)
 )
 
-func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
+func wrapAppInfoMonitor(obj *coreglib.Object) *AppInfoMonitor {
 	return &AppInfoMonitor{
 		Object: obj,
 	}
 }
 
 func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
-	return wrapAppInfoMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAppInfoMonitor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_AppInfoMonitor_ConnectChanged
 func _gotk4_gio2_AppInfoMonitor_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -209,24 +120,24 @@ func _gotk4_gio2_AppInfoMonitor_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr)
 
 // ConnectChanged: signal emitted when the app info database for changes (ie:
 // newly installed or removed applications).
-func (v *AppInfoMonitor) ConnectChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gio2_AppInfoMonitor_ConnectChanged), f)
+func (v *AppInfoMonitor) ConnectChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gio2_AppInfoMonitor_ConnectChanged), f)
 }
 
 // BytesIcon specifies an image held in memory in a common format (usually png)
 // to be used as icon.
 type BytesIcon struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	LoadableIcon
 }
 
 var (
-	_ externglib.Objector = (*BytesIcon)(nil)
+	_ coreglib.Objector = (*BytesIcon)(nil)
 )
 
-func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
+func wrapBytesIcon(obj *coreglib.Object) *BytesIcon {
 	return &BytesIcon{
 		Object: obj,
 		LoadableIcon: LoadableIcon{
@@ -238,7 +149,7 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 }
 
 func marshalBytesIcon(p uintptr) (interface{}, error) {
-	return wrapBytesIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBytesIcon(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DBusActionGroup is an implementation of the Group interface that can be used
@@ -246,16 +157,16 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 // g_dbus_connection_export_action_group().
 type DBusActionGroup struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	RemoteActionGroup
 }
 
 var (
-	_ externglib.Objector = (*DBusActionGroup)(nil)
+	_ coreglib.Objector = (*DBusActionGroup)(nil)
 )
 
-func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
+func wrapDBusActionGroup(obj *coreglib.Object) *DBusActionGroup {
 	return &DBusActionGroup{
 		Object: obj,
 		RemoteActionGroup: RemoteActionGroup{
@@ -267,7 +178,7 @@ func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 }
 
 func marshalDBusActionGroup(p uintptr) (interface{}, error) {
-	return wrapDBusActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusActionGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DBusAuthObserver type provides a mechanism for participating in how a
@@ -306,28 +217,28 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 //    }.
 type DBusAuthObserver struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DBusAuthObserver)(nil)
+	_ coreglib.Objector = (*DBusAuthObserver)(nil)
 )
 
-func wrapDBusAuthObserver(obj *externglib.Object) *DBusAuthObserver {
+func wrapDBusAuthObserver(obj *coreglib.Object) *DBusAuthObserver {
 	return &DBusAuthObserver{
 		Object: obj,
 	}
 }
 
 func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
-	return wrapDBusAuthObserver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusAuthObserver(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism
 func _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(mechanism string) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -350,15 +261,15 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(arg0 C.gpointer, arg1 *C
 }
 
 // ConnectAllowMechanism is emitted to check if mechanism is allowed to be used.
-func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(observer, "allow-mechanism", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism), f)
+func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(observer, "allow-mechanism", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism), f)
 }
 
 //export _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer
 func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpointer, arg1 *C.GIOStream, arg2 *C.GCredentials, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(stream IOStreamer, credentials *Credentials) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -376,8 +287,8 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpoin
 			panic("object of type gio.IOStreamer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(IOStreamer)
 			return ok
 		})
@@ -388,7 +299,7 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpoin
 		_stream = rv
 	}
 	if arg2 != nil {
-		_credentials = wrapCredentials(externglib.Take(unsafe.Pointer(arg2)))
+		_credentials = wrapCredentials(coreglib.Take(unsafe.Pointer(arg2)))
 	}
 
 	ok := f(_stream, _credentials)
@@ -402,8 +313,8 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpoin
 
 // ConnectAuthorizeAuthenticatedPeer is emitted to check if a peer that is
 // successfully authenticated is authorized.
-func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials *Credentials) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(observer, "authorize-authenticated-peer", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer), f)
+func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(stream IOStreamer, credentials *Credentials) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(observer, "authorize-authenticated-peer", false, unsafe.Pointer(C._gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer), f)
 }
 
 // DBusConnection type is used for D-Bus connections to remote peers such as a
@@ -459,17 +370,17 @@ func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(strea
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c).
 type DBusConnection struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	AsyncInitable
 	Initable
 }
 
 var (
-	_ externglib.Objector = (*DBusConnection)(nil)
+	_ coreglib.Objector = (*DBusConnection)(nil)
 )
 
-func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
+func wrapDBusConnection(obj *coreglib.Object) *DBusConnection {
 	return &DBusConnection{
 		Object: obj,
 		AsyncInitable: AsyncInitable{
@@ -482,14 +393,14 @@ func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 }
 
 func marshalDBusConnection(p uintptr) (interface{}, error) {
-	return wrapDBusConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_DBusConnection_ConnectClosed
 func _gotk4_gio2_DBusConnection_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, arg2 *C.GError, arg3 C.guintptr) {
 	var f func(remotePeerVanished bool, err error)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -527,8 +438,8 @@ func _gotk4_gio2_DBusConnection_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, 
 //
 // Upon receiving this signal, you should give up your reference to connection.
 // You are guaranteed that this signal is emitted only once.
-func (connection *DBusConnection) ConnectClosed(f func(remotePeerVanished bool, err error)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(connection, "closed", false, unsafe.Pointer(C._gotk4_gio2_DBusConnection_ConnectClosed), f)
+func (connection *DBusConnection) ConnectClosed(f func(remotePeerVanished bool, err error)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(connection, "closed", false, unsafe.Pointer(C._gotk4_gio2_DBusConnection_ConnectClosed), f)
 }
 
 // DBusMenuModel is an implementation of Model that can be used as a proxy for a
@@ -543,7 +454,7 @@ var (
 	_ MenuModeller = (*DBusMenuModel)(nil)
 )
 
-func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
+func wrapDBusMenuModel(obj *coreglib.Object) *DBusMenuModel {
 	return &DBusMenuModel{
 		MenuModel: MenuModel{
 			Object: obj,
@@ -552,28 +463,28 @@ func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 }
 
 func marshalDBusMenuModel(p uintptr) (interface{}, error) {
-	return wrapDBusMenuModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusMenuModel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DBusMessage: type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
 type DBusMessage struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DBusMessage)(nil)
+	_ coreglib.Objector = (*DBusMessage)(nil)
 )
 
-func wrapDBusMessage(obj *externglib.Object) *DBusMessage {
+func wrapDBusMessage(obj *coreglib.Object) *DBusMessage {
 	return &DBusMessage{
 		Object: obj,
 	}
 }
 
 func marshalDBusMessage(p uintptr) (interface{}, error) {
-	return wrapDBusMessage(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusMessage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DBusMethodInvocation instances of the BusMethodInvocation class are used when
@@ -585,21 +496,21 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 // was passed to g_dbus_connection_register_object().
 type DBusMethodInvocation struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DBusMethodInvocation)(nil)
+	_ coreglib.Objector = (*DBusMethodInvocation)(nil)
 )
 
-func wrapDBusMethodInvocation(obj *externglib.Object) *DBusMethodInvocation {
+func wrapDBusMethodInvocation(obj *coreglib.Object) *DBusMethodInvocation {
 	return &DBusMethodInvocation{
 		Object: obj,
 	}
 }
 
 func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
-	return wrapDBusMethodInvocation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusMethodInvocation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DBusServer is a helper for listening to and accepting D-Bus connections. This
@@ -623,16 +534,16 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 // server.
 type DBusServer struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Initable
 }
 
 var (
-	_ externglib.Objector = (*DBusServer)(nil)
+	_ coreglib.Objector = (*DBusServer)(nil)
 )
 
-func wrapDBusServer(obj *externglib.Object) *DBusServer {
+func wrapDBusServer(obj *coreglib.Object) *DBusServer {
 	return &DBusServer{
 		Object: obj,
 		Initable: Initable{
@@ -642,14 +553,14 @@ func wrapDBusServer(obj *externglib.Object) *DBusServer {
 }
 
 func marshalDBusServer(p uintptr) (interface{}, error) {
-	return wrapDBusServer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusServer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_DBusServer_ConnectNewConnection
 func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusConnection, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(connection *DBusConnection) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -660,7 +571,7 @@ func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusC
 
 	var _connection *DBusConnection // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := f(_connection)
 
@@ -690,8 +601,8 @@ func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusC
 // You are guaranteed that signal handlers for this signal runs before incoming
 // messages on connection are processed. This means that it's suitable to call
 // g_dbus_connection_register_object() or similar from the signal handler.
-func (server *DBusServer) ConnectNewConnection(f func(connection *DBusConnection) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(server, "new-connection", false, unsafe.Pointer(C._gotk4_gio2_DBusServer_ConnectNewConnection), f)
+func (server *DBusServer) ConnectNewConnection(f func(connection *DBusConnection) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(server, "new-connection", false, unsafe.Pointer(C._gotk4_gio2_DBusServer_ConnectNewConnection), f)
 }
 
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
@@ -710,7 +621,7 @@ var (
 	_ MenuModeller = (*Menu)(nil)
 )
 
-func wrapMenu(obj *externglib.Object) *Menu {
+func wrapMenu(obj *coreglib.Object) *Menu {
 	return &Menu{
 		MenuModel: MenuModel{
 			Object: obj,
@@ -719,28 +630,28 @@ func wrapMenu(obj *externglib.Object) *Menu {
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
-	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMenu(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // MenuItem is an opaque structure type. You must access it using the functions
 // below.
 type MenuItem struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*MenuItem)(nil)
+	_ coreglib.Objector = (*MenuItem)(nil)
 )
 
-func wrapMenuItem(obj *externglib.Object) *MenuItem {
+func wrapMenuItem(obj *coreglib.Object) *MenuItem {
 	return &MenuItem{
 		Object: obj,
 	}
 }
 
 func marshalMenuItem(p uintptr) (interface{}, error) {
-	return wrapMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Notification is a mechanism for creating a notification to be shown to the
@@ -765,21 +676,21 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 // A notification can be sent with g_application_send_notification().
 type Notification struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Notification)(nil)
+	_ coreglib.Objector = (*Notification)(nil)
 )
 
-func wrapNotification(obj *externglib.Object) *Notification {
+func wrapNotification(obj *coreglib.Object) *Notification {
 	return &Notification{
 		Object: obj,
 	}
 }
 
 func marshalNotification(p uintptr) (interface{}, error) {
-	return wrapNotification(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNotification(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // PropertyAction is a way to get a #GAction with a state value reflecting and
@@ -832,16 +743,16 @@ func marshalNotification(p uintptr) (interface{}, error) {
 // possibly combine its use with g_settings_bind().
 type PropertyAction struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Action
 }
 
 var (
-	_ externglib.Objector = (*PropertyAction)(nil)
+	_ coreglib.Objector = (*PropertyAction)(nil)
 )
 
-func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
+func wrapPropertyAction(obj *coreglib.Object) *PropertyAction {
 	return &PropertyAction{
 		Object: obj,
 		Action: Action{
@@ -851,7 +762,7 @@ func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
 }
 
 func marshalPropertyAction(p uintptr) (interface{}, error) {
-	return wrapPropertyAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPropertyAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // SimpleAction is the obvious simple implementation of the #GAction interface.
@@ -861,16 +772,16 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 // See also Action.
 type SimpleAction struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Action
 }
 
 var (
-	_ externglib.Objector = (*SimpleAction)(nil)
+	_ coreglib.Objector = (*SimpleAction)(nil)
 )
 
-func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
+func wrapSimpleAction(obj *coreglib.Object) *SimpleAction {
 	return &SimpleAction{
 		Object: obj,
 		Action: Action{
@@ -880,14 +791,14 @@ func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
 }
 
 func marshalSimpleAction(p uintptr) (interface{}, error) {
-	return wrapSimpleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSimpleAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_SimpleAction_ConnectActivate
 func _gotk4_gio2_SimpleAction_ConnectActivate(arg0 C.gpointer, arg1 *C.GVariant, arg2 C.guintptr) {
 	var f func(parameter *glib.Variant)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -924,15 +835,15 @@ func _gotk4_gio2_SimpleAction_ConnectActivate(arg0 C.gpointer, arg1 *C.GVariant,
 // state type is equal to the parameter type, the default is to forward them
 // directly to Action::change-state. This should allow almost all users of
 // Action to connect only one handler or the other.
-func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(simple, "activate", false, unsafe.Pointer(C._gotk4_gio2_SimpleAction_ConnectActivate), f)
+func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(simple, "activate", false, unsafe.Pointer(C._gotk4_gio2_SimpleAction_ConnectActivate), f)
 }
 
 //export _gotk4_gio2_SimpleAction_ConnectChangeState
 func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.GVariant, arg2 C.guintptr) {
 	var f func(value *glib.Variant)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -988,8 +899,8 @@ func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.GVaria
 //
 // The handler need not set the state to the requested value. It could set it to
 // any value at all, or take some other action.
-func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(simple, "change-state", false, unsafe.Pointer(C._gotk4_gio2_SimpleAction_ConnectChangeState), f)
+func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(simple, "change-state", false, unsafe.Pointer(C._gotk4_gio2_SimpleAction_ConnectChangeState), f)
 }
 
 // SimpleIOStream creates a OStream from an arbitrary Stream and Stream. This
@@ -1008,7 +919,7 @@ var (
 	_ IOStreamer = (*SimpleIOStream)(nil)
 )
 
-func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
+func wrapSimpleIOStream(obj *coreglib.Object) *SimpleIOStream {
 	return &SimpleIOStream{
 		IOStream: IOStream{
 			Object: obj,
@@ -1017,7 +928,7 @@ func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
 }
 
 func marshalSimpleIOStream(p uintptr) (interface{}, error) {
-	return wrapSimpleIOStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSimpleIOStream(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // SimplePermission is a trivial implementation of #GPermission that represents
@@ -1034,7 +945,7 @@ var (
 	_ Permissioner = (*SimplePermission)(nil)
 )
 
-func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
+func wrapSimplePermission(obj *coreglib.Object) *SimplePermission {
 	return &SimplePermission{
 		Permission: Permission{
 			Object: obj,
@@ -1043,7 +954,7 @@ func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
 }
 
 func marshalSimplePermission(p uintptr) (interface{}, error) {
-	return wrapSimplePermission(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSimplePermission(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // TestDBus: helper class for testing code which uses D-Bus without touching the
@@ -1119,19 +1030,19 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 //        CLEANFILES += gschemas.compiled.
 type TestDBus struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*TestDBus)(nil)
+	_ coreglib.Objector = (*TestDBus)(nil)
 )
 
-func wrapTestDBus(obj *externglib.Object) *TestDBus {
+func wrapTestDBus(obj *coreglib.Object) *TestDBus {
 	return &TestDBus{
 		Object: obj,
 	}
 }
 
 func marshalTestDBus(p uintptr) (interface{}, error) {
-	return wrapTestDBus(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTestDBus(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

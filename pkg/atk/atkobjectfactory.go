@@ -7,20 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
 import "C"
 
 // glib.Type values for atkobjectfactory.go.
-var GTypeObjectFactory = externglib.Type(C.atk_object_factory_get_type())
+var GTypeObjectFactory = coreglib.Type(C.atk_object_factory_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeObjectFactory, F: marshalObjectFactory},
 	})
 }
@@ -40,11 +41,11 @@ type ObjectFactoryOverrider interface {
 // the factory type to be used to create an accessible of a particular GType.
 type ObjectFactory struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*ObjectFactory)(nil)
+	_ coreglib.Objector = (*ObjectFactory)(nil)
 )
 
 func classInitObjectFactorier(gclassPtr, data C.gpointer) {
@@ -65,20 +66,20 @@ func classInitObjectFactorier(gclassPtr, data C.gpointer) {
 
 //export _gotk4_atk1_ObjectFactoryClass_invalidate
 func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Invalidate() })
 
 	iface.Invalidate()
 }
 
-func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
+func wrapObjectFactory(obj *coreglib.Object) *ObjectFactory {
 	return &ObjectFactory{
 		Object: obj,
 	}
 }
 
 func marshalObjectFactory(p uintptr) (interface{}, error) {
-	return wrapObjectFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapObjectFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CreateAccessible provides an Object that implements an accessibility
@@ -92,47 +93,27 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 //
 //    - object that implements an accessibility interface on behalf of obj.
 //
-func (factory *ObjectFactory) CreateAccessible(obj *externglib.Object) *ObjectClass {
-	var _arg0 *C.AtkObjectFactory // out
-	var _arg1 *C.GObject          // out
-	var _cret *C.AtkObject        // in
+func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClass {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(obj.Native()))
+	*(**ObjectFactory)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
+	_gret := girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("create_accessible", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(obj)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
-}
-
-// AccessibleType gets the GType of the accessible which is created by the
-// factory.
-//
-// The function returns the following values:
-//
-//    - gType: type of the accessible which is created by the factory. The value
-//      G_TYPE_INVALID is returned if no type if found.
-//
-func (factory *ObjectFactory) AccessibleType() externglib.Type {
-	var _arg0 *C.AtkObjectFactory // out
-	var _cret C.GType             // in
-
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
-
-	_cret = C.atk_object_factory_get_accessible_type(_arg0)
-	runtime.KeepAlive(factory)
-
-	var _gType externglib.Type // out
-
-	_gType = externglib.Type(_cret)
-
-	return _gType
 }
 
 // Invalidate: inform factory that it is no longer being used to create
@@ -140,10 +121,13 @@ func (factory *ObjectFactory) AccessibleType() externglib.Type {
 // created that they need to be re-instantiated. Note: primarily used for
 // runtime replacement of ObjectFactorys in object registries.
 func (factory *ObjectFactory) Invalidate() {
-	var _arg0 *C.AtkObjectFactory // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	*(**ObjectFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.atk_object_factory_invalidate(_arg0)
+	girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("invalidate", args[:], nil)
+
 	runtime.KeepAlive(factory)
 }

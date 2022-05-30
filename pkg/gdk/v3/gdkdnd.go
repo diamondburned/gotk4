@@ -8,23 +8,24 @@ import (
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkdnd.go.
 var (
-	GTypeDragCancelReason = externglib.Type(C.gdk_drag_cancel_reason_get_type())
-	GTypeDragProtocol     = externglib.Type(C.gdk_drag_protocol_get_type())
-	GTypeDragAction       = externglib.Type(C.gdk_drag_action_get_type())
+	GTypeDragCancelReason = coreglib.Type(C.gdk_drag_cancel_reason_get_type())
+	GTypeDragProtocol     = coreglib.Type(C.gdk_drag_protocol_get_type())
+	GTypeDragAction       = coreglib.Type(C.gdk_drag_action_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDragCancelReason, F: marshalDragCancelReason},
 		{T: GTypeDragProtocol, F: marshalDragProtocol},
 		{T: GTypeDragAction, F: marshalDragAction},
@@ -45,7 +46,7 @@ const (
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
-	return DragCancelReason(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DragCancelReason(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DragCancelReason.
@@ -87,7 +88,7 @@ const (
 )
 
 func marshalDragProtocol(p uintptr) (interface{}, error) {
-	return DragProtocol(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DragProtocol(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DragProtocol.
@@ -137,7 +138,7 @@ const (
 )
 
 func marshalDragAction(p uintptr) (interface{}, error) {
-	return DragAction(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DragAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DragAction.
@@ -194,13 +195,17 @@ func (d DragAction) Has(other DragAction) bool {
 //    - time_: timestamp for this operation.
 //
 func DragAbort(context *DragContext, time_ uint32) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 C.guint32         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg2 = C.guint32(time_)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.guint32(time_)
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_drag_abort(_arg1, _arg2)
+	girepository.MustFind("Gdk", "drag_abort").Invoke(args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(time_)
 }
@@ -218,13 +223,17 @@ func DragAbort(context *DragContext, time_ uint32) {
 //    - time_: timestamp for this operation.
 //
 func DragDrop(context *DragContext, time_ uint32) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 C.guint32         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg2 = C.guint32(time_)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.guint32(time_)
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_drag_drop(_arg1, _arg2)
+	girepository.MustFind("Gdk", "drag_drop").Invoke(args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(time_)
 }
@@ -245,15 +254,19 @@ func DragDrop(context *DragContext, time_ uint32) {
 //    - success: whether the drag was ultimatively successful.
 //
 func DragDropDone(context *DragContext, success bool) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if success {
-		_arg2 = C.TRUE
+		_arg1 = C.TRUE
 	}
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
+	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_drag_drop_done(_arg1, _arg2)
+	girepository.MustFind("Gdk", "drag_drop_done").Invoke(args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(success)
 }
@@ -271,12 +284,16 @@ func DragDropDone(context *DragContext, success bool) {
 //    - ok: TRUE if the drop was successful.
 //
 func DragDropSucceeded(context *DragContext) bool {
-	var _arg1 *C.GdkDragContext // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_drop_succeeded(_arg1)
+	_gret := girepository.MustFind("Gdk", "drag_drop_succeeded").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -286,160 +303,6 @@ func DragDropSucceeded(context *DragContext) bool {
 	}
 
 	return _ok
-}
-
-// DragFindWindowForScreen finds the destination window and DND protocol to use
-// at the given pointer position.
-//
-// This function is called by the drag source to obtain the dest_window and
-// protocol parameters for gdk_drag_motion().
-//
-// The function takes the following parameters:
-//
-//    - context: DragContext.
-//    - dragWindow: window which may be at the pointer position, but should be
-//      ignored, since it is put up by the drag source as an icon.
-//    - screen where the destination window is sought.
-//    - xRoot: x position of the pointer in root coordinates.
-//    - yRoot: y position of the pointer in root coordinates.
-//
-// The function returns the following values:
-//
-//    - destWindow: location to store the destination window in.
-//    - protocol: location to store the DND protocol in.
-//
-func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot, yRoot int) (Windower, DragProtocol) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 *C.GdkWindow      // out
-	var _arg3 *C.GdkScreen      // out
-	var _arg4 C.gint            // out
-	var _arg5 C.gint            // out
-	var _arg6 *C.GdkWindow      // in
-	var _arg7 C.GdkDragProtocol // in
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(dragWindow).Native()))
-	_arg3 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
-	_arg4 = C.gint(xRoot)
-	_arg5 = C.gint(yRoot)
-
-	C.gdk_drag_find_window_for_screen(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(dragWindow)
-	runtime.KeepAlive(screen)
-	runtime.KeepAlive(xRoot)
-	runtime.KeepAlive(yRoot)
-
-	var _destWindow Windower   // out
-	var _protocol DragProtocol // out
-
-	{
-		objptr := unsafe.Pointer(_arg6)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Windower)
-			return ok
-		})
-		rv, ok := casted.(Windower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-		}
-		_destWindow = rv
-	}
-	_protocol = DragProtocol(_arg7)
-
-	return _destWindow, _protocol
-}
-
-// DragMotion updates the drag context when the pointer moves or the set of
-// actions changes.
-//
-// This function is called by the drag source.
-//
-// This function does not need to be called in managed drag and drop operations.
-// See gdk_drag_context_manage_dnd() for more information.
-//
-// The function takes the following parameters:
-//
-//    - context: DragContext.
-//    - destWindow: new destination window, obtained by gdk_drag_find_window().
-//    - protocol: DND protocol in use, obtained by gdk_drag_find_window().
-//    - xRoot: x position of the pointer in root coordinates.
-//    - yRoot: y position of the pointer in root coordinates.
-//    - suggestedAction: suggested action.
-//    - possibleActions: possible actions.
-//    - time_: timestamp for this operation.
-//
-// The function returns the following values:
-//
-func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol, xRoot, yRoot int, suggestedAction, possibleActions DragAction, time_ uint32) bool {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 *C.GdkWindow      // out
-	var _arg3 C.GdkDragProtocol // out
-	var _arg4 C.gint            // out
-	var _arg5 C.gint            // out
-	var _arg6 C.GdkDragAction   // out
-	var _arg7 C.GdkDragAction   // out
-	var _arg8 C.guint32         // out
-	var _cret C.gboolean        // in
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(destWindow).Native()))
-	_arg3 = C.GdkDragProtocol(protocol)
-	_arg4 = C.gint(xRoot)
-	_arg5 = C.gint(yRoot)
-	_arg6 = C.GdkDragAction(suggestedAction)
-	_arg7 = C.GdkDragAction(possibleActions)
-	_arg8 = C.guint32(time_)
-
-	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(destWindow)
-	runtime.KeepAlive(protocol)
-	runtime.KeepAlive(xRoot)
-	runtime.KeepAlive(yRoot)
-	runtime.KeepAlive(suggestedAction)
-	runtime.KeepAlive(possibleActions)
-	runtime.KeepAlive(time_)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DragStatus selects one of the actions offered by the drag source.
-//
-// This function is called by the drag destination in response to
-// gdk_drag_motion() called by the drag source.
-//
-// The function takes the following parameters:
-//
-//    - context: DragContext.
-//    - action: selected action which will be taken when a drop happens, or 0 to
-//      indicate that a drop will not be accepted.
-//    - time_: timestamp for this operation.
-//
-func DragStatus(context *DragContext, action DragAction, time_ uint32) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 C.GdkDragAction   // out
-	var _arg3 C.guint32         // out
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg2 = C.GdkDragAction(action)
-	_arg3 = C.guint32(time_)
-
-	C.gdk_drag_status(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(action)
-	runtime.KeepAlive(time_)
 }
 
 // DropFinish ends the drag operation after a drop.
@@ -453,17 +316,22 @@ func DragStatus(context *DragContext, action DragAction, time_ uint32) {
 //    - time_: timestamp for this operation.
 //
 func DropFinish(context *DragContext, success bool, time_ uint32) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 C.gboolean        // out
-	var _arg3 C.guint32         // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
+	var _arg2 C.guint32  // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if success {
-		_arg2 = C.TRUE
+		_arg1 = C.TRUE
 	}
-	_arg3 = C.guint32(time_)
+	_arg2 = C.guint32(time_)
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
+	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gdk_drop_finish(_arg1, _arg2, _arg3)
+	girepository.MustFind("Gdk", "drop_finish").Invoke(args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(success)
 	runtime.KeepAlive(time_)
@@ -481,43 +349,25 @@ func DropFinish(context *DragContext, success bool, time_ uint32) {
 //    - time_: timestamp for this operation.
 //
 func DropReply(context *DragContext, accepted bool, time_ uint32) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 C.gboolean        // out
-	var _arg3 C.guint32         // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
+	var _arg2 C.guint32  // out
 
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if accepted {
-		_arg2 = C.TRUE
+		_arg1 = C.TRUE
 	}
-	_arg3 = C.guint32(time_)
+	_arg2 = C.guint32(time_)
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
+	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gdk_drop_reply(_arg1, _arg2, _arg3)
+	girepository.MustFind("Gdk", "drop_reply").Invoke(args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(accepted)
 	runtime.KeepAlive(time_)
-}
-
-// Actions determines the bitmask of actions proposed by the source if
-// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
-//
-// The function returns the following values:
-//
-//    - dragAction: DragAction flags.
-//
-func (context *DragContext) Actions() DragAction {
-	var _arg0 *C.GdkDragContext // out
-	var _cret C.GdkDragAction   // in
-
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gdk_drag_context_get_actions(_arg0)
-	runtime.KeepAlive(context)
-
-	var _dragAction DragAction // out
-
-	_dragAction = DragAction(_cret)
-
-	return _dragAction
 }
 
 // DestWindow returns the destination window for the DND operation.
@@ -527,12 +377,16 @@ func (context *DragContext) Actions() DragAction {
 //    - window: Window.
 //
 func (context *DragContext) DestWindow() Windower {
-	var _arg0 *C.GdkDragContext // out
-	var _cret *C.GdkWindow      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_context_get_dest_window(_arg0)
+	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_dest_window", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _window Windower // out
@@ -543,8 +397,8 @@ func (context *DragContext) DestWindow() Windower {
 			panic("object of type gdk.Windower is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Windower)
 			return ok
 		})
@@ -565,12 +419,16 @@ func (context *DragContext) DestWindow() Windower {
 //    - device associated to context.
 //
 func (context *DragContext) Device() Devicer {
-	var _arg0 *C.GdkDragContext // out
-	var _cret *C.GdkDevice      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_context_get_device(_arg0)
+	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_device", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _device Devicer // out
@@ -581,8 +439,8 @@ func (context *DragContext) Device() Devicer {
 			panic("object of type gdk.Devicer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Devicer)
 			return ok
 		})
@@ -607,12 +465,16 @@ func (context *DragContext) Device() Devicer {
 //    - window (optional): drag window, or NULL.
 //
 func (context *DragContext) DragWindow() Windower {
-	var _arg0 *C.GdkDragContext // out
-	var _cret *C.GdkWindow      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_context_get_drag_window(_arg0)
+	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_drag_window", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _window Windower // out
@@ -621,8 +483,8 @@ func (context *DragContext) DragWindow() Windower {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Windower)
 				return ok
 			})
@@ -637,50 +499,6 @@ func (context *DragContext) DragWindow() Windower {
 	return _window
 }
 
-// Protocol returns the drag protocol that is used by this context.
-//
-// The function returns the following values:
-//
-//    - dragProtocol: drag protocol.
-//
-func (context *DragContext) Protocol() DragProtocol {
-	var _arg0 *C.GdkDragContext // out
-	var _cret C.GdkDragProtocol // in
-
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gdk_drag_context_get_protocol(_arg0)
-	runtime.KeepAlive(context)
-
-	var _dragProtocol DragProtocol // out
-
-	_dragProtocol = DragProtocol(_cret)
-
-	return _dragProtocol
-}
-
-// SelectedAction determines the action chosen by the drag destination.
-//
-// The function returns the following values:
-//
-//    - dragAction: DragAction value.
-//
-func (context *DragContext) SelectedAction() DragAction {
-	var _arg0 *C.GdkDragContext // out
-	var _cret C.GdkDragAction   // in
-
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gdk_drag_context_get_selected_action(_arg0)
-	runtime.KeepAlive(context)
-
-	var _dragAction DragAction // out
-
-	_dragAction = DragAction(_cret)
-
-	return _dragAction
-}
-
 // SourceWindow returns the Window where the DND operation started.
 //
 // The function returns the following values:
@@ -688,12 +506,16 @@ func (context *DragContext) SelectedAction() DragAction {
 //    - window: Window.
 //
 func (context *DragContext) SourceWindow() Windower {
-	var _arg0 *C.GdkDragContext // out
-	var _cret *C.GdkWindow      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_context_get_source_window(_arg0)
+	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_source_window", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _window Windower // out
@@ -704,8 +526,8 @@ func (context *DragContext) SourceWindow() Windower {
 			panic("object of type gdk.Windower is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Windower)
 			return ok
 		})
@@ -719,82 +541,6 @@ func (context *DragContext) SourceWindow() Windower {
 	return _window
 }
 
-// SuggestedAction determines the suggested drag action of the context.
-//
-// The function returns the following values:
-//
-//    - dragAction: DragAction value.
-//
-func (context *DragContext) SuggestedAction() DragAction {
-	var _arg0 *C.GdkDragContext // out
-	var _cret C.GdkDragAction   // in
-
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
-	runtime.KeepAlive(context)
-
-	var _dragAction DragAction // out
-
-	_dragAction = DragAction(_cret)
-
-	return _dragAction
-}
-
-// ManageDND requests the drag and drop operation to be managed by context. When
-// a drag and drop operation becomes managed, the DragContext will internally
-// handle all input and source-side EventDND events as required by the windowing
-// system.
-//
-// Once the drag and drop operation is managed, the drag context will emit the
-// following signals:
-//
-// - The DragContext::action-changed signal whenever the final action to be
-// performed by the drag and drop operation changes.
-//
-// - The DragContext::drop-performed signal after the user performs the drag and
-// drop gesture (typically by releasing the mouse button).
-//
-// - The DragContext::dnd-finished signal after the drag and drop operation
-// concludes (after all Selection transfers happen).
-//
-// - The DragContext::cancel signal if the drag and drop operation is finished
-// but doesn't happen over an accepting destination, or is cancelled through
-// other means.
-//
-// The function takes the following parameters:
-//
-//    - ipcWindow: window to use for IPC messaging/events.
-//    - actions supported by the drag source.
-//
-// The function returns the following values:
-//
-//    - ok if the drag and drop operation is managed.
-//
-func (context *DragContext) ManageDND(ipcWindow Windower, actions DragAction) bool {
-	var _arg0 *C.GdkDragContext // out
-	var _arg1 *C.GdkWindow      // out
-	var _arg2 C.GdkDragAction   // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(ipcWindow).Native()))
-	_arg2 = C.GdkDragAction(actions)
-
-	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(ipcWindow)
-	runtime.KeepAlive(actions)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // SetDevice associates a Device to context, so all Drag and Drop events for
 // context are emitted as if they came from this device.
 //
@@ -803,13 +549,16 @@ func (context *DragContext) ManageDND(ipcWindow Windower, actions DragAction) bo
 //    - device: Device.
 //
 func (context *DragContext) SetDevice(device Devicer) {
-	var _arg0 *C.GdkDragContext // out
-	var _arg1 *C.GdkDevice      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**DragContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_drag_context_set_device(_arg0, _arg1)
+	girepository.MustFind("Gdk", "DragContext").InvokeMethod("set_device", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(device)
 }
@@ -824,15 +573,19 @@ func (context *DragContext) SetDevice(device Devicer) {
 //    - hotY: y coordinate of the drag window hotspot.
 //
 func (context *DragContext) SetHotspot(hotX, hotY int) {
-	var _arg0 *C.GdkDragContext // out
-	var _arg1 C.gint            // out
-	var _arg2 C.gint            // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg1 = C.gint(hotX)
 	_arg2 = C.gint(hotY)
+	*(**DragContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gdk_drag_context_set_hotspot(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gdk", "DragContext").InvokeMethod("set_hotspot", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(hotX)
 	runtime.KeepAlive(hotY)

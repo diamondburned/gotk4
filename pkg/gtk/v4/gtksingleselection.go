@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtksingleselection.go.
-var GTypeSingleSelection = externglib.Type(C.gtk_single_selection_get_type())
+var GTypeSingleSelection = coreglib.Type(C.gtk_single_selection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSingleSelection, F: marshalSingleSelection},
 	})
 }
@@ -37,13 +38,13 @@ type SingleSelectionOverrider interface {
 // model will preserve the selection.
 type SingleSelection struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	SelectionModel
 }
 
 var (
-	_ externglib.Objector = (*SingleSelection)(nil)
+	_ coreglib.Objector = (*SingleSelection)(nil)
 )
 
 func classInitSingleSelectioner(gclassPtr, data C.gpointer) {
@@ -54,7 +55,7 @@ func classInitSingleSelectioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSingleSelection(obj *externglib.Object) *SingleSelection {
+func wrapSingleSelection(obj *coreglib.Object) *SingleSelection {
 	return &SingleSelection{
 		Object: obj,
 		SelectionModel: SelectionModel{
@@ -66,7 +67,7 @@ func wrapSingleSelection(obj *externglib.Object) *SingleSelection {
 }
 
 func marshalSingleSelection(p uintptr) (interface{}, error) {
-	return wrapSingleSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSingleSelection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSingleSelection creates a new selection to handle model.
@@ -80,20 +81,24 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 //    - singleSelection: new GtkSingleSelection.
 //
 func NewSingleSelection(model gio.ListModeller) *SingleSelection {
-	var _arg1 *C.GListModel         // out
-	var _cret *C.GtkSingleSelection // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
+	*(*gio.ListModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_single_selection_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("new_SingleSelection", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(model)
 
 	var _singleSelection *SingleSelection // out
 
-	_singleSelection = wrapSingleSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_singleSelection = wrapSingleSelection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _singleSelection
 }
@@ -106,12 +111,16 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 //    - ok: TRUE if autoselect is enabled.
 //
 func (self *SingleSelection) Autoselect() bool {
-	var _arg0 *C.GtkSingleSelection // out
-	var _cret C.gboolean            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**SingleSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_single_selection_get_autoselect(_arg0)
+	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_autoselect", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -131,12 +140,16 @@ func (self *SingleSelection) Autoselect() bool {
 //    - ok: TRUE to support unselecting.
 //
 func (self *SingleSelection) CanUnselect() bool {
-	var _arg0 *C.GtkSingleSelection // out
-	var _cret C.gboolean            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**SingleSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_single_selection_get_can_unselect(_arg0)
+	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_can_unselect", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -155,18 +168,22 @@ func (self *SingleSelection) CanUnselect() bool {
 //    - listModel: model being wrapped.
 //
 func (self *SingleSelection) Model() *gio.ListModel {
-	var _arg0 *C.GtkSingleSelection // out
-	var _cret *C.GListModel         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**SingleSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_single_selection_get_model(_arg0)
+	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_model", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -184,12 +201,16 @@ func (self *SingleSelection) Model() *gio.ListModel {
 //    - guint: position of the selected item.
 //
 func (self *SingleSelection) Selected() uint {
-	var _arg0 *C.GtkSingleSelection // out
-	var _cret C.guint               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**SingleSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_single_selection_get_selected(_arg0)
+	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_selected", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _guint uint // out
@@ -197,30 +218,6 @@ func (self *SingleSelection) Selected() uint {
 	_guint = uint(_cret)
 
 	return _guint
-}
-
-// SelectedItem gets the selected item.
-//
-// If no item is selected, NULL is returned.
-//
-// The function returns the following values:
-//
-//    - object (optional): selected item.
-//
-func (self *SingleSelection) SelectedItem() *externglib.Object {
-	var _arg0 *C.GtkSingleSelection // out
-	var _cret C.gpointer            // in
-
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_single_selection_get_selected_item(_arg0)
-	runtime.KeepAlive(self)
-
-	var _object *externglib.Object // out
-
-	_object = externglib.Take(unsafe.Pointer(_cret))
-
-	return _object
 }
 
 // SetAutoselect enables or disables autoselect.
@@ -234,15 +231,18 @@ func (self *SingleSelection) SelectedItem() *externglib.Object {
 //    - autoselect: TRUE to always select an item.
 //
 func (self *SingleSelection) SetAutoselect(autoselect bool) {
-	var _arg0 *C.GtkSingleSelection // out
-	var _arg1 C.gboolean            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if autoselect {
 		_arg1 = C.TRUE
 	}
+	*(**SingleSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_single_selection_set_autoselect(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_autoselect", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(autoselect)
 }
@@ -259,15 +259,18 @@ func (self *SingleSelection) SetAutoselect(autoselect bool) {
 //    - canUnselect: TRUE to allow unselecting.
 //
 func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
-	var _arg0 *C.GtkSingleSelection // out
-	var _arg1 C.gboolean            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if canUnselect {
 		_arg1 = C.TRUE
 	}
+	*(**SingleSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_single_selection_set_can_unselect(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_can_unselect", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(canUnselect)
 }
@@ -281,15 +284,18 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 //    - model (optional): GListModel to wrap.
 //
 func (self *SingleSelection) SetModel(model gio.ListModeller) {
-	var _arg0 *C.GtkSingleSelection // out
-	var _arg1 *C.GListModel         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
+	*(**SingleSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_single_selection_set_model(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_model", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }
@@ -307,13 +313,16 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 //    - position: item to select or GTK_INVALID_LIST_POSITION.
 //
 func (self *SingleSelection) SetSelected(position uint) {
-	var _arg0 *C.GtkSingleSelection // out
-	var _arg1 C.guint               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
+	*(**SingleSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_single_selection_set_selected(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_selected", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 }

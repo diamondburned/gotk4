@@ -7,23 +7,24 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkfixedlayout.go.
 var (
-	GTypeFixedLayout      = externglib.Type(C.gtk_fixed_layout_get_type())
-	GTypeFixedLayoutChild = externglib.Type(C.gtk_fixed_layout_child_get_type())
+	GTypeFixedLayout      = coreglib.Type(C.gtk_fixed_layout_get_type())
+	GTypeFixedLayoutChild = coreglib.Type(C.gtk_fixed_layout_child_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFixedLayout, F: marshalFixedLayout},
 		{T: GTypeFixedLayoutChild, F: marshalFixedLayoutChild},
 	})
@@ -79,7 +80,7 @@ func classInitFixedLayouter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
+func wrapFixedLayout(obj *coreglib.Object) *FixedLayout {
 	return &FixedLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -88,7 +89,7 @@ func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 }
 
 func marshalFixedLayout(p uintptr) (interface{}, error) {
-	return wrapFixedLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFixedLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFixedLayout creates a new GtkFixedLayout.
@@ -98,13 +99,14 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 //    - fixedLayout: newly created GtkFixedLayout.
 //
 func NewFixedLayout() *FixedLayout {
-	var _cret *C.GtkLayoutManager // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_fixed_layout_new()
+	_gret := girepository.MustFind("Gtk", "FixedLayout").InvokeMethod("new_FixedLayout", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fixedLayout *FixedLayout // out
 
-	_fixedLayout = wrapFixedLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fixedLayout = wrapFixedLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fixedLayout
 }
@@ -131,7 +133,7 @@ func classInitFixedLayoutChilder(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
+func wrapFixedLayoutChild(obj *coreglib.Object) *FixedLayoutChild {
 	return &FixedLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,
@@ -140,7 +142,7 @@ func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 }
 
 func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
-	return wrapFixedLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFixedLayoutChild(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Transform retrieves the transformation of the child.
@@ -150,12 +152,16 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 //    - transform (optional): GskTransform.
 //
 func (child *FixedLayoutChild) Transform() *gsk.Transform {
-	var _arg0 *C.GtkFixedLayoutChild // out
-	var _cret *C.GskTransform        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**FixedLayoutChild)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_fixed_layout_child_get_transform(_arg0)
+	_gret := girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("get_transform", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(child)
 
 	var _transform *gsk.Transform // out
@@ -181,13 +187,16 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 //    - transform: GskTransform.
 //
 func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
-	var _arg0 *C.GtkFixedLayoutChild // out
-	var _arg1 *C.GskTransform        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(externglib.InternObject(child).Native()))
-	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
+	*(**FixedLayoutChild)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)
+	girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("set_transform", args[:], nil)
+
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(transform)
 }

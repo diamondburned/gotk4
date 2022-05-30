@@ -5,39 +5,14 @@ package gdk
 import (
 	_ "runtime/cgo"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gtk4
-// #cgo CFLAGS: -Wno-deprecated-declarations
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
+// #include <glib.h>
 import "C"
 
-// The function returns the following values:
-//
-func GLErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gdk_gl_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// The function returns the following values:
-//
-func VulkanErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gdk_vulkan_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
+func init() {
+	girepository.Require("Gdk", "4.0")
 }

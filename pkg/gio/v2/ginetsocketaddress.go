@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for ginetsocketaddress.go.
-var GTypeInetSocketAddress = externglib.Type(C.g_inet_socket_address_get_type())
+var GTypeInetSocketAddress = coreglib.Type(C.g_inet_socket_address_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeInetSocketAddress, F: marshalInetSocketAddress},
 	})
 }
@@ -46,7 +47,7 @@ func classInitInetSocketAddresser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
+func wrapInetSocketAddress(obj *coreglib.Object) *InetSocketAddress {
 	return &InetSocketAddress{
 		SocketAddress: SocketAddress{
 			Object: obj,
@@ -58,7 +59,7 @@ func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
-	return wrapInetSocketAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapInetSocketAddress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewInetSocketAddress creates a new SocketAddress for address and port.
@@ -73,20 +74,25 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 //    - inetSocketAddress: new SocketAddress.
 //
 func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress {
-	var _arg1 *C.GInetAddress   // out
-	var _arg2 C.guint16         // out
-	var _cret *C.GSocketAddress // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
+	var _cret *C.void   // in
 
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
-	_arg2 = C.guint16(port)
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg1 = C.guint16(port)
+	*(**InetAddress)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("new_InetSocketAddress", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(port)
 
 	var _inetSocketAddress *InetSocketAddress // out
 
-	_inetSocketAddress = wrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inetSocketAddress = wrapInetSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetSocketAddress
 }
@@ -108,22 +114,27 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 //      cannot be parsed.
 //
 func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
-	var _arg1 *C.char           // out
-	var _arg2 C.guint           // out
-	var _cret *C.GSocketAddress // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint(port)
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = C.guint(port)
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("new_InetSocketAddress_from_string", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(port)
 
 	var _inetSocketAddress *InetSocketAddress // out
 
 	if _cret != nil {
-		_inetSocketAddress = wrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_inetSocketAddress = wrapInetSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _inetSocketAddress
@@ -137,17 +148,21 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 //      stored.
 //
 func (address *InetSocketAddress) Address() *InetAddress {
-	var _arg0 *C.GInetSocketAddress // out
-	var _cret *C.GInetAddress       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	*(**InetSocketAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_inet_socket_address_get_address(_arg0)
+	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_address", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(address)
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = wrapInetAddress(externglib.Take(unsafe.Pointer(_cret)))
+	_inetAddress = wrapInetAddress(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
@@ -160,12 +175,16 @@ func (address *InetSocketAddress) Address() *InetAddress {
 //    - guint32: flowinfo field.
 //
 func (address *InetSocketAddress) Flowinfo() uint32 {
-	var _arg0 *C.GInetSocketAddress // out
-	var _cret C.guint32             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	*(**InetSocketAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_inet_socket_address_get_flowinfo(_arg0)
+	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_flowinfo", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(address)
 
 	var _guint32 uint32 // out
@@ -182,12 +201,16 @@ func (address *InetSocketAddress) Flowinfo() uint32 {
 //    - guint16: port for address.
 //
 func (address *InetSocketAddress) Port() uint16 {
-	var _arg0 *C.GInetSocketAddress // out
-	var _cret C.guint16             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint16 // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	*(**InetSocketAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_inet_socket_address_get_port(_arg0)
+	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_port", args[:], nil)
+	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(address)
 
 	var _guint16 uint16 // out
@@ -205,12 +228,16 @@ func (address *InetSocketAddress) Port() uint16 {
 //    - guint32: scope id field.
 //
 func (address *InetSocketAddress) ScopeID() uint32 {
-	var _arg0 *C.GInetSocketAddress // out
-	var _cret C.guint32             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	*(**InetSocketAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_inet_socket_address_get_scope_id(_arg0)
+	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_scope_id", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(address)
 
 	var _guint32 uint32 // out

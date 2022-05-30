@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,117 +16,117 @@ import "C"
 
 // IdleAdd is an alias for pkg/core/glib.IdleAdd.
 func IdleAdd(f interface{}) SourceHandle {
-	return externglib.IdleAdd(f)
+	return coreglib.IdleAdd(f)
 }
 
 // IdleAddPriority is an alias for pkg/core/glib.IdleAddPriority.
 func IdleAddPriority(p Priority, f interface{}) SourceHandle {
-	return externglib.IdleAddPriority(p, f)
+	return coreglib.IdleAddPriority(p, f)
 }
 
 // TimeoutAdd is an alias for pkg/core/glib.TimeoutAdd.
 func TimeoutAdd(ms uint, f interface{}) SourceHandle {
-	return externglib.TimeoutAdd(ms, f)
+	return coreglib.TimeoutAdd(ms, f)
 }
 
 // TimeoutAddPriority is an alias for pkg/core/glib.TimeoutAddPriority.
 func TimeoutAddPriority(ms uint, p Priority, f interface{}) SourceHandle {
-	return externglib.TimeoutAddPriority(ms, p, f)
+	return coreglib.TimeoutAddPriority(ms, p, f)
 }
 
 // TimeoutSecondsAdd is an alias for pkg/core/glib.TimeoutSecondsAdd.
 func TimeoutSecondsAdd(s uint, f interface{}) SourceHandle {
-	return externglib.TimeoutSecondsAdd(s, f)
+	return coreglib.TimeoutSecondsAdd(s, f)
 }
 
 // TimeoutSecondsAddPriority is an alias for pkg/core/glib.TimeoutSecondsAddPriority.
 func TimeoutSecondsAddPriority(s uint, p Priority, f interface{}) SourceHandle {
-	return externglib.TimeoutSecondsAddPriority(s, p, f)
+	return coreglib.TimeoutSecondsAddPriority(s, p, f)
 }
 
 // TypeFromName is an alias for pkg/core/glib.TypeFromName.
 func TypeFromName(typeName string) Type {
-	return externglib.TypeFromName(typeName)
+	return coreglib.TypeFromName(typeName)
 }
 
 // NewValue is an alias for pkg/core/glib.NewValue.
 func NewValue(v interface{}) *Value {
-	return externglib.NewValue(v)
+	return coreglib.NewValue(v)
 }
 
 // SourceRemove is an alias for pkg/core/glib.SourceRemove.
 func SourceRemove(src SourceHandle) bool {
-	return externglib.SourceRemove(src)
+	return coreglib.SourceRemove(src)
 }
 
 // ObjectEq is an alias for pkg/core/glib.ObjectEq.
 func ObjectEq(obj1 Objector, obj2 Objector) bool {
-	return externglib.ObjectEq(obj1, obj2)
+	return coreglib.ObjectEq(obj1, obj2)
 }
 
 // BaseObject is an alias for pkg/core/glib.BaseObject.
 func BaseObject(obj Objector) *Object {
-	return externglib.BaseObject(obj)
+	return coreglib.BaseObject(obj)
 }
 
 // Object is an alias for pkg/core/glib.Object.
-type Object = externglib.Object
+type Object = coreglib.Object
 
 // Objector is an alias for pkg/core/glib.Objector.
-type Objector = externglib.Objector
+type Objector = coreglib.Objector
 
 // Type is an alias for pkg/core/glib.Type.
-type Type = externglib.Type
+type Type = coreglib.Type
 
 // Value is an alias for pkg/core/glib.Value.
-type Value = externglib.Value
+type Value = coreglib.Value
 
 // Priority is an alias for pkg/core/glib.Priority.
-type Priority = externglib.Priority
+type Priority = coreglib.Priority
 
 // SourceHandle is an alias for pkg/core/glib.SourceHandle.
-type SourceHandle = externglib.SourceHandle
+type SourceHandle = coreglib.SourceHandle
 
 // SignalHandle is an alias for pkg/core/glib.SignalHandle.
-type SignalHandle = externglib.SignalHandle
+type SignalHandle = coreglib.SignalHandle
 
 // Constant aliases from pkg/core/glib.
 const (
-	TypeInvalid   = externglib.TypeInvalid
-	TypeNone      = externglib.TypeNone
-	TypeInterface = externglib.TypeInterface
-	TypeChar      = externglib.TypeChar
-	TypeUchar     = externglib.TypeUchar
-	TypeBoolean   = externglib.TypeBoolean
-	TypeInt       = externglib.TypeInt
-	TypeUint      = externglib.TypeUint
-	TypeLong      = externglib.TypeLong
-	TypeUlong     = externglib.TypeUlong
-	TypeInt64     = externglib.TypeInt64
-	TypeUint64    = externglib.TypeUint64
-	TypeEnum      = externglib.TypeEnum
-	TypeFlags     = externglib.TypeFlags
-	TypeFloat     = externglib.TypeFloat
-	TypeDouble    = externglib.TypeDouble
-	TypeString    = externglib.TypeString
-	TypePointer   = externglib.TypePointer
-	TypeBoxed     = externglib.TypeBoxed
-	TypeParam     = externglib.TypeParam
-	TypeObject    = externglib.TypeObject
-	TypeVariant   = externglib.TypeVariant
+	TypeInvalid   = coreglib.TypeInvalid
+	TypeNone      = coreglib.TypeNone
+	TypeInterface = coreglib.TypeInterface
+	TypeChar      = coreglib.TypeChar
+	TypeUchar     = coreglib.TypeUchar
+	TypeBoolean   = coreglib.TypeBoolean
+	TypeInt       = coreglib.TypeInt
+	TypeUint      = coreglib.TypeUint
+	TypeLong      = coreglib.TypeLong
+	TypeUlong     = coreglib.TypeUlong
+	TypeInt64     = coreglib.TypeInt64
+	TypeUint64    = coreglib.TypeUint64
+	TypeEnum      = coreglib.TypeEnum
+	TypeFlags     = coreglib.TypeFlags
+	TypeFloat     = coreglib.TypeFloat
+	TypeDouble    = coreglib.TypeDouble
+	TypeString    = coreglib.TypeString
+	TypePointer   = coreglib.TypePointer
+	TypeBoxed     = coreglib.TypeBoxed
+	TypeParam     = coreglib.TypeParam
+	TypeObject    = coreglib.TypeObject
+	TypeVariant   = coreglib.TypeVariant
 
-	PriorityHigh        = externglib.PriorityHigh
-	PriorityDefault     = externglib.PriorityDefault
-	PriorityHighIdle    = externglib.PriorityHighIdle
-	PriorityDefaultIdle = externglib.PriorityDefaultIdle
-	PriorityLow         = externglib.PriorityLow
+	PriorityHigh        = coreglib.PriorityHigh
+	PriorityDefault     = coreglib.PriorityDefault
+	PriorityHighIdle    = coreglib.PriorityHighIdle
+	PriorityDefaultIdle = coreglib.PriorityDefaultIdle
+	PriorityLow         = coreglib.PriorityLow
 )
 
 // NewVariantValue creates a new GValue from a GVariant. This function
-// only exists as a workaround for externglib's cyclical imports. It
-// be removed in the future once externglib is merged in.
-func NewVariantValue(variant *Variant) *externglib.Value {
-	value := externglib.InitValue(externglib.TypeVariant)
+// only exists as a workaround for coreglib's cyclical imports. It
+// be removed in the future once coreglib is merged in.
+func NewVariantValue(variant *Variant) *coreglib.Value {
+	value := coreglib.InitValue(coreglib.TypeVariant)
 	C.g_value_set_variant(
 		(*C.GValue)(unsafe.Pointer(value.Native())),
 		(*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant))),

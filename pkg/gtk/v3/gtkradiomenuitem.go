@@ -9,23 +9,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_RadioMenuItemClass_group_changed(GtkRadioMenuItem*);
 // extern void _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkradiomenuitem.go.
-var GTypeRadioMenuItem = externglib.Type(C.gtk_radio_menu_item_get_type())
+var GTypeRadioMenuItem = coreglib.Type(C.gtk_radio_menu_item_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRadioMenuItem, F: marshalRadioMenuItem},
 	})
 }
@@ -58,8 +57,8 @@ type RadioMenuItem struct {
 }
 
 var (
-	_ Binner              = (*RadioMenuItem)(nil)
-	_ externglib.Objector = (*RadioMenuItem)(nil)
+	_ Binner            = (*RadioMenuItem)(nil)
+	_ coreglib.Objector = (*RadioMenuItem)(nil)
 )
 
 func classInitRadioMenuItemmer(gclassPtr, data C.gpointer) {
@@ -80,20 +79,20 @@ func classInitRadioMenuItemmer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_RadioMenuItemClass_group_changed
 func _gotk4_gtk3_RadioMenuItemClass_group_changed(arg0 *C.GtkRadioMenuItem) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ GroupChanged() })
 
 	iface.GroupChanged()
 }
 
-func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
+func wrapRadioMenuItem(obj *coreglib.Object) *RadioMenuItem {
 	return &RadioMenuItem{
 		CheckMenuItem: CheckMenuItem{
 			MenuItem: MenuItem{
 				Bin: Bin{
 					Container: Container{
 						Widget: Widget{
-							InitiallyUnowned: externglib.InitiallyUnowned{
+							InitiallyUnowned: coreglib.InitiallyUnowned{
 								Object: obj,
 							},
 							Object: obj,
@@ -109,7 +108,7 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 				Object: obj,
 				Actionable: Actionable{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -130,14 +129,14 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 }
 
 func marshalRadioMenuItem(p uintptr) (interface{}, error) {
-	return wrapRadioMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRadioMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged
 func _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -149,8 +148,8 @@ func _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(radioMenuItem, "group-changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioMenuItem_ConnectGroupChanged), f)
+func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(radioMenuItem, "group-changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioMenuItem_ConnectGroupChanged), f)
 }
 
 // NewRadioMenuItem creates a new RadioMenuItem.
@@ -164,25 +163,29 @@ func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) externglib.Sig
 //    - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
-	var _arg1 *C.GSList    // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
-			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
-			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+			var dst *C.void // out
+			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			_arg0 = C.g_slist_prepend(_arg0, C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg1)
+		defer C.g_slist_free(_arg0)
 	}
+	*(*[]*RadioMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_radio_menu_item_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -199,19 +202,23 @@ func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 //    - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
-	var _arg1 *C.GtkRadioMenuItem // out
-	var _cret *C.GtkWidget        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(group).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
+	*(**RadioMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
+	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_from_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -229,29 +236,34 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 //    - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuItem {
-	var _arg1 *C.GSList    // out
-	var _arg2 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
-			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
-			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+			var dst *C.void // out
+			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			_arg0 = C.g_slist_prepend(_arg0, C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg1)
+		defer C.g_slist_free(_arg0)
 	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(*[]*RadioMenuItem)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_radio_menu_item_new_with_label(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -270,25 +282,30 @@ func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuI
 //    - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
-	var _arg1 *C.GtkRadioMenuItem // out
-	var _arg2 *C.gchar            // out
-	var _cret *C.GtkWidget        // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(group).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
 	if label != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**RadioMenuItem)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_label_from_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -308,29 +325,34 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 //    - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMenuItem {
-	var _arg1 *C.GSList    // out
-	var _arg2 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
-			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
-			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+			var dst *C.void // out
+			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			_arg0 = C.g_slist_prepend(_arg0, C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg1)
+		defer C.g_slist_free(_arg0)
 	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(*[]*RadioMenuItem)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_radio_menu_item_new_with_mnemonic(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_mnemonic", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -353,25 +375,30 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 //    - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
-	var _arg1 *C.GtkRadioMenuItem // out
-	var _arg2 *C.gchar            // out
-	var _cret *C.GtkWidget        // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(group).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
 	if label != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**RadioMenuItem)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_mnemonic_from_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -384,21 +411,25 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 //    - sList: group of radio_menu_item.
 //
 func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
-	var _arg0 *C.GtkRadioMenuItem // out
-	var _cret *C.GSList           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(radioMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioMenuItem).Native()))
+	*(**RadioMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_radio_menu_item_get_group(_arg0)
+	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("get_group", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(radioMenuItem)
 
 	var _sList []*RadioMenuItem // out
 
 	_sList = make([]*RadioMenuItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkRadioMenuItem)(v)
+		src := (*C.void)(v)
 		var dst *RadioMenuItem // out
-		dst = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(src)))
+		dst = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -432,15 +463,18 @@ func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 //      radio_menu_item from its current group.
 //
 func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
-	var _arg0 *C.GtkRadioMenuItem // out
-	var _arg1 *C.GtkRadioMenuItem // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(radioMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioMenuItem).Native()))
 	if groupSource != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(groupSource).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
 	}
+	*(**RadioMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("join_group", args[:], nil)
+
 	runtime.KeepAlive(radioMenuItem)
 	runtime.KeepAlive(groupSource)
 }
@@ -452,21 +486,24 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 //    - group (optional): new group, or NULL.
 //
 func (radioMenuItem *RadioMenuItem) SetGroup(group []*RadioMenuItem) {
-	var _arg0 *C.GtkRadioMenuItem // out
-	var _arg1 *C.GSList           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(radioMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioMenuItem).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
-			var dst *C.GtkRadioMenuItem // out
-			dst = (*C.GtkRadioMenuItem)(unsafe.Pointer(externglib.InternObject(src).Native()))
+			var dst *C.void // out
+			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_arg1)
 	}
+	*(**RadioMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_radio_menu_item_set_group(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("set_group", args[:], nil)
+
 	runtime.KeepAlive(radioMenuItem)
 	runtime.KeepAlive(group)
 }

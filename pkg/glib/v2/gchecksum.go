@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -17,10 +17,10 @@ import (
 import "C"
 
 // glib.Type values for gchecksum.go.
-var GTypeChecksum = externglib.Type(C.g_checksum_get_type())
+var GTypeChecksum = coreglib.Type(C.g_checksum_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeChecksum, F: marshalChecksum},
 	})
 }
@@ -202,7 +202,7 @@ type checksum struct {
 }
 
 func marshalChecksum(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Checksum{&checksum{(*C.GChecksum)(b)}}, nil
 }
 

@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gfileicon.go.
-var GTypeFileIcon = externglib.Type(C.g_file_icon_get_type())
+var GTypeFileIcon = coreglib.Type(C.g_file_icon_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFileIcon, F: marshalFileIcon},
 	})
 }
@@ -30,13 +31,13 @@ type FileIconOverrider interface {
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	LoadableIcon
 }
 
 var (
-	_ externglib.Objector = (*FileIcon)(nil)
+	_ coreglib.Objector = (*FileIcon)(nil)
 )
 
 func classInitFileIconner(gclassPtr, data C.gpointer) {
@@ -47,7 +48,7 @@ func classInitFileIconner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFileIcon(obj *externglib.Object) *FileIcon {
+func wrapFileIcon(obj *coreglib.Object) *FileIcon {
 	return &FileIcon{
 		Object: obj,
 		LoadableIcon: LoadableIcon{
@@ -59,7 +60,7 @@ func wrapFileIcon(obj *externglib.Object) *FileIcon {
 }
 
 func marshalFileIcon(p uintptr) (interface{}, error) {
-	return wrapFileIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFileIcon(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileIcon creates a new icon for a file.
@@ -73,17 +74,21 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 //    - fileIcon for the given file, or NULL on error.
 //
 func NewFileIcon(file Filer) *FileIcon {
-	var _arg1 *C.GFile // out
-	var _cret *C.GIcon // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(file).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	*(*Filer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_icon_new(_arg1)
+	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("new_FileIcon", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(file)
 
 	var _fileIcon *FileIcon // out
 
-	_fileIcon = wrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileIcon = wrapFileIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileIcon
 }
@@ -95,17 +100,21 @@ func NewFileIcon(file Filer) *FileIcon {
 //    - file: #GFile.
 //
 func (icon *FileIcon) File() *File {
-	var _arg0 *C.GFileIcon // out
-	var _cret *C.GFile     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**FileIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_icon_get_file(_arg0)
+	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("get_file", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(icon)
 
 	var _file *File // out
 
-	_file = wrapFile(externglib.Take(unsafe.Pointer(_cret)))
+	_file = wrapFile(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _file
 }

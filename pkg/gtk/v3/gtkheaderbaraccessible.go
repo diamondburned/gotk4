@@ -6,13 +6,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // HeaderBarAccessibleOverrider contains methods that are overridable.
@@ -25,7 +25,7 @@ type HeaderBarAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*HeaderBarAccessible)(nil)
+	_ coreglib.Objector = (*HeaderBarAccessible)(nil)
 )
 
 func classInitHeaderBarAccessibler(gclassPtr, data C.gpointer) {
@@ -36,7 +36,7 @@ func classInitHeaderBarAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapHeaderBarAccessible(obj *externglib.Object) *HeaderBarAccessible {
+func wrapHeaderBarAccessible(obj *coreglib.Object) *HeaderBarAccessible {
 	return &HeaderBarAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

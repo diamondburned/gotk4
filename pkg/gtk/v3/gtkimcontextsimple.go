@@ -6,21 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkimcontextsimple.go.
-var GTypeIMContextSimple = externglib.Type(C.gtk_im_context_simple_get_type())
+var GTypeIMContextSimple = coreglib.Type(C.gtk_im_context_simple_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIMContextSimple, F: marshalIMContextSimple},
 	})
 }
@@ -66,7 +65,7 @@ func classInitIMContextSimpler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
+func wrapIMContextSimple(obj *coreglib.Object) *IMContextSimple {
 	return &IMContextSimple{
 		IMContext: IMContext{
 			Object: obj,
@@ -75,7 +74,7 @@ func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
 }
 
 func marshalIMContextSimple(p uintptr) (interface{}, error) {
-	return wrapIMContextSimple(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapIMContextSimple(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIMContextSimple creates a new IMContextSimple.
@@ -85,13 +84,14 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 //    - imContextSimple: new IMContextSimple.
 //
 func NewIMContextSimple() *IMContextSimple {
-	var _cret *C.GtkIMContext // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_im_context_simple_new()
+	_gret := girepository.MustFind("Gtk", "IMContextSimple").InvokeMethod("new_IMContextSimple", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _imContextSimple *IMContextSimple // out
 
-	_imContextSimple = wrapIMContextSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_imContextSimple = wrapIMContextSimple(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imContextSimple
 }
@@ -103,14 +103,17 @@ func NewIMContextSimple() *IMContextSimple {
 //    - composeFile: path of compose file.
 //
 func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
-	var _arg0 *C.GtkIMContextSimple // out
-	var _arg1 *C.gchar              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(externglib.InternObject(contextSimple).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(composeFile)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(contextSimple).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(composeFile)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**IMContextSimple)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_im_context_simple_add_compose_file(_arg0, _arg1)
+	girepository.MustFind("Gtk", "IMContextSimple").InvokeMethod("add_compose_file", args[:], nil)
+
 	runtime.KeepAlive(contextSimple)
 	runtime.KeepAlive(composeFile)
 }

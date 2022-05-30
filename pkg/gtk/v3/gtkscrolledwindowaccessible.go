@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkscrolledwindowaccessible.go.
-var GTypeScrolledWindowAccessible = externglib.Type(C.gtk_scrolled_window_accessible_get_type())
+var GTypeScrolledWindowAccessible = coreglib.Type(C.gtk_scrolled_window_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeScrolledWindowAccessible, F: marshalScrolledWindowAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type ScrolledWindowAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ScrolledWindowAccessible)(nil)
+	_ coreglib.Objector = (*ScrolledWindowAccessible)(nil)
 )
 
 func classInitScrolledWindowAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitScrolledWindowAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapScrolledWindowAccessible(obj *externglib.Object) *ScrolledWindowAccessible {
+func wrapScrolledWindowAccessible(obj *coreglib.Object) *ScrolledWindowAccessible {
 	return &ScrolledWindowAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -64,5 +63,5 @@ func wrapScrolledWindowAccessible(obj *externglib.Object) *ScrolledWindowAccessi
 }
 
 func marshalScrolledWindowAccessible(p uintptr) (interface{}, error) {
-	return wrapScrolledWindowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapScrolledWindowAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

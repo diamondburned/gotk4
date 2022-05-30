@@ -3,19 +3,17 @@
 package gio
 
 import (
-	"context"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GDrive* _gotk4_gio2_VolumeIface_get_drive(GVolume*);
 // extern GFile* _gotk4_gio2_VolumeIface_get_activation_root(GVolume*);
 // extern GIcon* _gotk4_gio2_VolumeIface_get_icon(GVolume*);
@@ -32,7 +30,6 @@ import (
 // extern gboolean _gotk4_gio2_VolumeIface_mount_finish(GVolume*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_VolumeIface_should_automount(GVolume*);
 // extern gchar* _gotk4_gio2_VolumeIface_get_sort_key(GVolume*);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_VolumeIface_changed(GVolume*);
 // extern void _gotk4_gio2_VolumeIface_removed(GVolume*);
 // extern void _gotk4_gio2_Volume_ConnectChanged(gpointer, guintptr);
@@ -40,10 +37,10 @@ import (
 import "C"
 
 // glib.Type values for gvolume.go.
-var GTypeVolume = externglib.Type(C.g_volume_get_type())
+var GTypeVolume = coreglib.Type(C.g_volume_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVolume, F: marshalVolume},
 	})
 }
@@ -82,6 +79,173 @@ const VOLUME_IDENTIFIER_KIND_UNIX_DEVICE = "unix-device"
 // g_volume_get_identifier().
 const VOLUME_IDENTIFIER_KIND_UUID = "uuid"
 
+// VolumeOverrider contains methods that are overridable.
+type VolumeOverrider interface {
+	// CanEject checks if a volume can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the volume can be ejected. FALSE otherwise.
+	//
+	CanEject() bool
+	// CanMount checks if a volume can be mounted.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the volume can be mounted. FALSE otherwise.
+	//
+	CanMount() bool
+	Changed()
+	// EjectFinish finishes ejecting a volume. If any errors occurred during the
+	// operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// Deprecated: Use g_volume_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	EjectFinish(result AsyncResulter) error
+	// EjectWithOperationFinish finishes ejecting a volume. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	EjectWithOperationFinish(result AsyncResulter) error
+	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
+	// that volume has. Use g_volume_get_identifier() to obtain the identifiers
+	// themselves.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8s: NULL-terminated array of strings containing kinds of
+	//      identifiers. Use g_strfreev() to free.
+	//
+	EnumerateIdentifiers() []string
+	// ActivationRoot gets the activation root for a #GVolume if it is known
+	// ahead of mount time. Returns NULL otherwise. If not NULL and if volume is
+	// mounted, then the result of g_mount_get_root() on the #GMount object
+	// obtained from g_volume_get_mount() will always either be equal or a
+	// prefix of what this function returns. In other words, in code
+	//
+	//    (g_file_has_prefix (volume_activation_root, mount_root) ||
+	//     g_file_equal (volume_activation_root, mount_root))
+	//
+	// will always be TRUE.
+	//
+	// Activation roots are typically used in Monitor implementations to find
+	// the underlying mount to shadow, see g_mount_is_shadowed() for more
+	// details.
+	//
+	// The function returns the following values:
+	//
+	//    - file (optional): activation root of volume or NULL. Use
+	//      g_object_unref() to free.
+	//
+	ActivationRoot() *File
+	// Drive gets the drive for the volume.
+	//
+	// The function returns the following values:
+	//
+	//    - drive (optional) or NULL if volume is not associated with a drive.
+	//      The returned object should be unreffed with g_object_unref() when no
+	//      longer needed.
+	//
+	Drive() *Drive
+	// Icon gets the icon for volume.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
+	Icon() *Icon
+	// Identifier gets the identifier of the given kind for volume. See the
+	// [introduction][volume-identifier] for more information about volume
+	// identifiers.
+	//
+	// The function takes the following parameters:
+	//
+	//    - kind of identifier to return.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): newly allocated string containing the requested
+	//      identifier, or NULL if the #GVolume doesn't have this kind of
+	//      identifier.
+	//
+	Identifier(kind string) string
+	// Mount gets the mount for the volume.
+	//
+	// The function returns the following values:
+	//
+	//    - mount (optional) or NULL if volume isn't mounted. The returned object
+	//      should be unreffed with g_object_unref() when no longer needed.
+	//
+	Mount() *Mount
+	// Name gets the name of volume.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8: name for the given volume. The returned string should be freed
+	//      with g_free() when no longer needed.
+	//
+	Name() string
+	// SortKey gets the sort key for volume, if any.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): sorting key for volume or NULL if no such key is
+	//      available.
+	//
+	SortKey() string
+	// SymbolicIcon gets the symbolic icon for volume.
+	//
+	// The function returns the following values:
+	//
+	//    - icon: #GIcon. The returned object should be unreffed with
+	//      g_object_unref() when no longer needed.
+	//
+	SymbolicIcon() *Icon
+	// UUID gets the UUID for the volume. The reference is typically based on
+	// the file system UUID for the volume in question and should be considered
+	// an opaque string. Returns NULL if there is no UUID available.
+	//
+	// The function returns the following values:
+	//
+	//    - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
+	//      The returned string should be freed with g_free() when no longer
+	//      needed.
+	//
+	UUID() string
+	// MountFinish finishes mounting a volume. If any errors occurred during the
+	// operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// If the mount operation succeeded, g_volume_get_mount() on volume is
+	// guaranteed to return the mount right after calling this function; there's
+	// no need to listen for the 'mount-added' signal on Monitor.
+	//
+	// The function takes the following parameters:
+	//
+	//    - result: Result.
+	//
+	MountFinish(result AsyncResulter) error
+	Removed()
+	// ShouldAutomount returns whether the volume should be automatically
+	// mounted.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the volume should be automatically mounted.
+	//
+	ShouldAutomount() bool
+}
+
 // Volume interface represents user-visible objects that can be mounted. Note,
 // when porting from GnomeVFS, #GVolume is the moral equivalent of VFSDrive.
 //
@@ -119,27 +283,23 @@ const VOLUME_IDENTIFIER_KIND_UUID = "uuid"
 // underlying type by calling Cast().
 type Volume struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Volume)(nil)
+	_ coreglib.Objector = (*Volume)(nil)
 )
 
 // Volumer describes Volume's interface methods.
 type Volumer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
 	// CanMount checks if a volume can be mounted.
 	CanMount() bool
-	// Eject ejects a volume.
-	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a volume.
 	EjectFinish(result AsyncResulter) error
-	// EjectWithOperation ejects a volume.
-	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a volume.
 	EjectWithOperationFinish(result AsyncResulter) error
 	// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
@@ -154,8 +314,8 @@ type Volumer interface {
 	Icon() *Icon
 	// Identifier gets the identifier of the given kind for volume.
 	Identifier(kind string) string
-	// GetMount gets the mount for the volume.
-	GetMount() *Mount
+	// Mount gets the mount for the volume.
+	Mount() *Mount
 	// Name gets the name of volume.
 	Name() string
 	// SortKey gets the sort key for volume, if any.
@@ -164,8 +324,6 @@ type Volumer interface {
 	SymbolicIcon() *Icon
 	// UUID gets the UUID for the volume.
 	UUID() string
-	// Mount mounts a volume.
-	Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountFinish finishes mounting a volume.
 	MountFinish(result AsyncResulter) error
 	// ShouldAutomount returns whether the volume should be automatically
@@ -173,28 +331,362 @@ type Volumer interface {
 	ShouldAutomount() bool
 
 	// Changed is emitted when the volume has been changed.
-	ConnectChanged(func()) externglib.SignalHandle
+	ConnectChanged(func()) coreglib.SignalHandle
 	// Removed: this signal is emitted when the #GVolume have been removed.
-	ConnectRemoved(func()) externglib.SignalHandle
+	ConnectRemoved(func()) coreglib.SignalHandle
 }
 
 var _ Volumer = (*Volume)(nil)
 
-func wrapVolume(obj *externglib.Object) *Volume {
+func ifaceInitVolumer(gifacePtr, data C.gpointer) {
+	iface := (*C.GVolumeIface)(unsafe.Pointer(gifacePtr))
+	iface.can_eject = (*[0]byte)(C._gotk4_gio2_VolumeIface_can_eject)
+	iface.can_mount = (*[0]byte)(C._gotk4_gio2_VolumeIface_can_mount)
+	iface.changed = (*[0]byte)(C._gotk4_gio2_VolumeIface_changed)
+	iface.eject_finish = (*[0]byte)(C._gotk4_gio2_VolumeIface_eject_finish)
+	iface.eject_with_operation_finish = (*[0]byte)(C._gotk4_gio2_VolumeIface_eject_with_operation_finish)
+	iface.enumerate_identifiers = (*[0]byte)(C._gotk4_gio2_VolumeIface_enumerate_identifiers)
+	iface.get_activation_root = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_activation_root)
+	iface.get_drive = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_drive)
+	iface.get_icon = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_icon)
+	iface.get_identifier = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_identifier)
+	iface.get_mount = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_mount)
+	iface.get_name = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_name)
+	iface.get_sort_key = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_sort_key)
+	iface.get_symbolic_icon = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_symbolic_icon)
+	iface.get_uuid = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_uuid)
+	iface.mount_finish = (*[0]byte)(C._gotk4_gio2_VolumeIface_mount_finish)
+	iface.removed = (*[0]byte)(C._gotk4_gio2_VolumeIface_removed)
+	iface.should_automount = (*[0]byte)(C._gotk4_gio2_VolumeIface_should_automount)
+}
+
+//export _gotk4_gio2_VolumeIface_can_eject
+func _gotk4_gio2_VolumeIface_can_eject(arg0 *C.GVolume) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	ok := iface.CanEject()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_can_mount
+func _gotk4_gio2_VolumeIface_can_mount(arg0 *C.GVolume) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	ok := iface.CanMount()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_changed
+func _gotk4_gio2_VolumeIface_changed(arg0 *C.GVolume) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	iface.Changed()
+}
+
+//export _gotk4_gio2_VolumeIface_eject_finish
+func _gotk4_gio2_VolumeIface_eject_finish(arg0 *C.GVolume, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.EjectFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.void)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_eject_with_operation_finish
+func _gotk4_gio2_VolumeIface_eject_with_operation_finish(arg0 *C.GVolume, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.EjectWithOperationFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.void)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_enumerate_identifiers
+func _gotk4_gio2_VolumeIface_enumerate_identifiers(arg0 *C.GVolume) (cret **C.char) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	utf8s := iface.EnumerateIdentifiers()
+
+	{
+		cret = (**C.void)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(utf8s)+1)
+			var zero *C.void
+			out[len(utf8s)] = zero
+			for i := range utf8s {
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(utf8s[i])))
+			}
+		}
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_activation_root
+func _gotk4_gio2_VolumeIface_get_activation_root(arg0 *C.GVolume) (cret *C.GFile) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	file := iface.ActivationRoot()
+
+	if file != nil {
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_drive
+func _gotk4_gio2_VolumeIface_get_drive(arg0 *C.GVolume) (cret *C.GDrive) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	drive := iface.Drive()
+
+	if drive != nil {
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(drive).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_icon
+func _gotk4_gio2_VolumeIface_get_icon(arg0 *C.GVolume) (cret *C.GIcon) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	icon := iface.Icon()
+
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(icon).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_identifier
+func _gotk4_gio2_VolumeIface_get_identifier(arg0 *C.GVolume, arg1 *C.char) (cret *C.char) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	var _kind string // out
+
+	_kind = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	utf8 := iface.Identifier(_kind)
+
+	if utf8 != "" {
+		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_mount
+func _gotk4_gio2_VolumeIface_get_mount(arg0 *C.GVolume) (cret *C.GMount) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	mount := iface.Mount()
+
+	if mount != nil {
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(mount).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_name
+func _gotk4_gio2_VolumeIface_get_name(arg0 *C.GVolume) (cret *C.char) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	utf8 := iface.Name()
+
+	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_sort_key
+func _gotk4_gio2_VolumeIface_get_sort_key(arg0 *C.GVolume) (cret *C.gchar) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	utf8 := iface.SortKey()
+
+	if utf8 != "" {
+		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_symbolic_icon
+func _gotk4_gio2_VolumeIface_get_symbolic_icon(arg0 *C.GVolume) (cret *C.GIcon) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	icon := iface.SymbolicIcon()
+
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(icon).Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_get_uuid
+func _gotk4_gio2_VolumeIface_get_uuid(arg0 *C.GVolume) (cret *C.char) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	utf8 := iface.UUID()
+
+	if utf8 != "" {
+		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_mount_finish
+func _gotk4_gio2_VolumeIface_mount_finish(arg0 *C.GVolume, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	var _result AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_result = rv
+	}
+
+	_goerr := iface.MountFinish(_result)
+
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.void)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_VolumeIface_removed
+func _gotk4_gio2_VolumeIface_removed(arg0 *C.GVolume) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	iface.Removed()
+}
+
+//export _gotk4_gio2_VolumeIface_should_automount
+func _gotk4_gio2_VolumeIface_should_automount(arg0 *C.GVolume) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(VolumeOverrider)
+
+	ok := iface.ShouldAutomount()
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+func wrapVolume(obj *coreglib.Object) *Volume {
 	return &Volume{
 		Object: obj,
 	}
 }
 
 func marshalVolume(p uintptr) (interface{}, error) {
-	return wrapVolume(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVolume(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_Volume_ConnectChanged
 func _gotk4_gio2_Volume_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -207,15 +699,15 @@ func _gotk4_gio2_Volume_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectChanged is emitted when the volume has been changed.
-func (volume *Volume) ConnectChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(volume, "changed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectChanged), f)
+func (volume *Volume) ConnectChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(volume, "changed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectChanged), f)
 }
 
 //export _gotk4_gio2_Volume_ConnectRemoved
 func _gotk4_gio2_Volume_ConnectRemoved(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -230,8 +722,8 @@ func _gotk4_gio2_Volume_ConnectRemoved(arg0 C.gpointer, arg1 C.guintptr) {
 // ConnectRemoved: this signal is emitted when the #GVolume have been removed.
 // If the recipient is holding references to the object they should release them
 // so the object can be finalized.
-func (volume *Volume) ConnectRemoved(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(volume, "removed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectRemoved), f)
+func (volume *Volume) ConnectRemoved(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(volume, "removed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectRemoved), f)
 }
 
 // CanEject checks if a volume can be ejected.
@@ -241,12 +733,15 @@ func (volume *Volume) ConnectRemoved(f func()) externglib.SignalHandle {
 //    - ok: TRUE if the volume can be ejected. FALSE otherwise.
 //
 func (volume *Volume) CanEject() bool {
-	var _arg0 *C.GVolume // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_can_eject(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _ok bool // out
@@ -265,12 +760,15 @@ func (volume *Volume) CanEject() bool {
 //    - ok: TRUE if the volume can be mounted. FALSE otherwise.
 //
 func (volume *Volume) CanMount() bool {
-	var _arg0 *C.GVolume // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_can_mount(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _ok bool // out
@@ -280,44 +778,6 @@ func (volume *Volume) CanMount() bool {
 	}
 
 	return _ok
-}
-
-// Eject ejects a volume. This is an asynchronous operation, and is finished by
-// calling g_volume_eject_finish() with the volume and Result returned in the
-// callback.
-//
-// Deprecated: Use g_volume_eject_with_operation() instead.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - callback (optional) or NULL.
-//
-func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume            // out
-	var _arg2 *C.GCancellable       // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GMountUnmountFlags(flags)
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(volume)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(callback)
 }
 
 // EjectFinish finishes ejecting a volume. If any errors occurred during the
@@ -331,14 +791,15 @@ func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callba
 //    - result: Result.
 //
 func (volume *Volume) EjectFinish(result AsyncResulter) error {
-	var _arg0 *C.GVolume      // out
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**Volume)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(volume)
 	runtime.KeepAlive(result)
 
@@ -351,48 +812,6 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// EjectWithOperation ejects a volume. This is an asynchronous operation, and is
-// finished by calling g_volume_eject_with_operation_finish() with the volume
-// and Result data returned in the callback.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
-//
-func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume            // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GMountUnmountFlags(flags)
-	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
-	}
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(volume)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(mountOperation)
-	runtime.KeepAlive(callback)
-}
-
 // EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
 // during the operation, error will be set to contain the errors and FALSE will
 // be returned.
@@ -402,14 +821,15 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 //    - result: Result.
 //
 func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
-	var _arg0 *C.GVolume      // out
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**Volume)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(volume)
 	runtime.KeepAlive(result)
 
@@ -432,12 +852,15 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 //      Use g_strfreev() to free.
 //
 func (volume *Volume) EnumerateIdentifiers() []string {
-	var _arg0 *C.GVolume // out
-	var _cret **C.char   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret **C.char // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_enumerate_identifiers(_arg0)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _utf8s []string // out
@@ -445,7 +868,7 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
-		var z *C.char
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -481,18 +904,21 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 //      to free.
 //
 func (volume *Volume) ActivationRoot() *File {
-	var _arg0 *C.GVolume // out
-	var _cret *C.GFile   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_activation_root(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _file *File // out
 
 	if _cret != nil {
-		_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _file
@@ -507,18 +933,21 @@ func (volume *Volume) ActivationRoot() *File {
 //      needed.
 //
 func (volume *Volume) Drive() *Drive {
-	var _arg0 *C.GVolume // out
-	var _cret *C.GDrive  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_drive(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _drive *Drive // out
 
 	if _cret != nil {
-		_drive = wrapDrive(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_drive = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _drive
@@ -532,17 +961,20 @@ func (volume *Volume) Drive() *Drive {
 //      g_object_unref() when no longer needed.
 //
 func (volume *Volume) Icon() *Icon {
-	var _arg0 *C.GVolume // out
-	var _cret *C.GIcon   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_icon(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -561,15 +993,18 @@ func (volume *Volume) Icon() *Icon {
 //      identifier, or NULL if the #GVolume doesn't have this kind of identifier.
 //
 func (volume *Volume) Identifier(kind string) string {
-	var _arg0 *C.GVolume // out
-	var _arg1 *C.char    // out
-	var _cret *C.char    // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(kind)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Volume)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_volume_get_identifier(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 	runtime.KeepAlive(kind)
 
@@ -583,26 +1018,29 @@ func (volume *Volume) Identifier(kind string) string {
 	return _utf8
 }
 
-// GetMount gets the mount for the volume.
+// Mount gets the mount for the volume.
 //
 // The function returns the following values:
 //
 //    - mount (optional) or NULL if volume isn't mounted. The returned object
 //      should be unreffed with g_object_unref() when no longer needed.
 //
-func (volume *Volume) GetMount() *Mount {
-	var _arg0 *C.GVolume // out
-	var _cret *C.GMount  // in
+func (volume *Volume) Mount() *Mount {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_mount(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _mount *Mount // out
 
 	if _cret != nil {
-		_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _mount
@@ -616,12 +1054,15 @@ func (volume *Volume) GetMount() *Mount {
 //      g_free() when no longer needed.
 //
 func (volume *Volume) Name() string {
-	var _arg0 *C.GVolume // out
-	var _cret *C.char    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_name(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
@@ -640,12 +1081,15 @@ func (volume *Volume) Name() string {
 //      available.
 //
 func (volume *Volume) SortKey() string {
-	var _arg0 *C.GVolume // out
-	var _cret *C.gchar   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_sort_key(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
@@ -665,17 +1109,20 @@ func (volume *Volume) SortKey() string {
 //      g_object_unref() when no longer needed.
 //
 func (volume *Volume) SymbolicIcon() *Icon {
-	var _arg0 *C.GVolume // out
-	var _cret *C.GIcon   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_symbolic_icon(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -690,12 +1137,15 @@ func (volume *Volume) SymbolicIcon() *Icon {
 //      returned string should be freed with g_free() when no longer needed.
 //
 func (volume *Volume) UUID() string {
-	var _arg0 *C.GVolume // out
-	var _cret *C.char    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_get_uuid(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
@@ -706,48 +1156,6 @@ func (volume *Volume) UUID() string {
 	}
 
 	return _utf8
-}
-
-// Mount mounts a volume. This is an asynchronous operation, and is finished by
-// calling g_volume_mount_finish() with the volume and Result returned in the
-// callback.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the operation.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
-//
-func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume            // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 C.GMountMountFlags    // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GMountMountFlags(flags)
-	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(mountOperation).Native()))
-	}
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(volume)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(mountOperation)
-	runtime.KeepAlive(callback)
 }
 
 // MountFinish finishes mounting a volume. If any errors occurred during the
@@ -763,14 +1171,15 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 //    - result: Result.
 //
 func (volume *Volume) MountFinish(result AsyncResulter) error {
-	var _arg0 *C.GVolume      // out
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**Volume)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(volume)
 	runtime.KeepAlive(result)
 
@@ -790,12 +1199,15 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 //    - ok: TRUE if the volume should be automatically mounted.
 //
 func (volume *Volume) ShouldAutomount() bool {
-	var _arg0 *C.GVolume // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GVolume)(unsafe.Pointer(externglib.InternObject(volume).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	*(**Volume)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_volume_should_automount(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(volume)
 
 	var _ok bool // out

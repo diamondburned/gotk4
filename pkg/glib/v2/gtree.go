@@ -4,11 +4,10 @@ package glib
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -17,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for gtree.go.
-var GTypeTree = externglib.Type(C.g_tree_get_type())
+var GTypeTree = coreglib.Type(C.g_tree_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTree, F: marshalTree},
 	})
 }
@@ -40,7 +39,7 @@ type tree struct {
 }
 
 func marshalTree(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Tree{&tree{(*C.GTree)(b)}}, nil
 }
 
@@ -84,104 +83,6 @@ func (tree *Tree) Height() int {
 	return _gint
 }
 
-// Insert inserts a key/value pair into a #GTree.
-//
-// Inserts a new key and value into a #GTree as g_tree_insert_node() does, only
-// this function does not return the inserted or set node.
-//
-// The function takes the following parameters:
-//
-//    - key (optional) to insert.
-//    - value (optional) corresponding to the key.
-//
-func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
-	var _arg0 *C.GTree   // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer // out
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-	_arg1 = (C.gpointer)(unsafe.Pointer(key))
-	_arg2 = (C.gpointer)(unsafe.Pointer(value))
-
-	C.g_tree_insert(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(tree)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-}
-
-// Lookup gets the value corresponding to the given key. Since a #GTree is
-// automatically balanced as key/value pairs are added, key lookup is O(log n)
-// (where n is the number of key/value pairs in the tree).
-//
-// The function takes the following parameters:
-//
-//    - key (optional) to look up.
-//
-// The function returns the following values:
-//
-//    - gpointer (optional): value corresponding to the key, or NULL if the key
-//      was not found.
-//
-func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
-	var _arg0 *C.GTree        // out
-	var _arg1 C.gconstpointer // out
-	var _cret C.gpointer      // in
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
-
-	_cret = C.g_tree_lookup(_arg0, _arg1)
-	runtime.KeepAlive(tree)
-	runtime.KeepAlive(key)
-
-	var _gpointer cgo.Handle // out
-
-	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
-
-	return _gpointer
-}
-
-// LookupExtended looks up a key in the #GTree, returning the original key and
-// the associated value. This is useful if you need to free the memory allocated
-// for the original key, for example before calling g_tree_remove().
-//
-// The function takes the following parameters:
-//
-//    - lookupKey (optional): key to look up.
-//
-// The function returns the following values:
-//
-//    - origKey (optional) returns the original key.
-//    - value (optional) returns the value associated with the key.
-//    - ok: TRUE if the key was found in the #GTree.
-//
-func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, value cgo.Handle, ok bool) {
-	var _arg0 *C.GTree        // out
-	var _arg1 C.gconstpointer // out
-	var _arg2 C.gpointer      // in
-	var _arg3 C.gpointer      // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
-
-	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(tree)
-	runtime.KeepAlive(lookupKey)
-
-	var _origKey cgo.Handle // out
-	var _value cgo.Handle   // out
-	var _ok bool            // out
-
-	_origKey = (cgo.Handle)(unsafe.Pointer(_arg2))
-	_value = (cgo.Handle)(unsafe.Pointer(_arg3))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _origKey, _value, _ok
-}
-
 // Nnodes gets the number of nodes in a #GTree.
 //
 // The function returns the following values:
@@ -202,102 +103,4 @@ func (tree *Tree) Nnodes() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// Remove removes a key/value pair from a #GTree.
-//
-// If the #GTree was created using g_tree_new_full(), the key and value are
-// freed using the supplied destroy functions, otherwise you have to make sure
-// that any dynamically allocated values are freed yourself. If the key does not
-// exist in the #GTree, the function does nothing.
-//
-// The cost of maintaining a balanced tree while removing a key/value result in
-// a O(n log(n)) operation where most of the other operations are O(log(n)).
-//
-// The function takes the following parameters:
-//
-//    - key (optional) to remove.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the key was found (prior to 2.8, this function returned
-//      nothing).
-//
-func (tree *Tree) Remove(key cgo.Handle) bool {
-	var _arg0 *C.GTree        // out
-	var _arg1 C.gconstpointer // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
-
-	_cret = C.g_tree_remove(_arg0, _arg1)
-	runtime.KeepAlive(tree)
-	runtime.KeepAlive(key)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Replace inserts a new key and value into a #GTree as g_tree_replace_node()
-// does, only this function does not return the inserted or set node.
-//
-// The function takes the following parameters:
-//
-//    - key (optional) to insert.
-//    - value (optional) corresponding to the key.
-//
-func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
-	var _arg0 *C.GTree   // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer // out
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-	_arg1 = (C.gpointer)(unsafe.Pointer(key))
-	_arg2 = (C.gpointer)(unsafe.Pointer(value))
-
-	C.g_tree_replace(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(tree)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-}
-
-// Steal removes a key and its associated value from a #GTree without calling
-// the key and value destroy functions.
-//
-// If the key does not exist in the #GTree, the function does nothing.
-//
-// The function takes the following parameters:
-//
-//    - key (optional) to remove.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the key was found (prior to 2.8, this function returned
-//      nothing).
-//
-func (tree *Tree) Steal(key cgo.Handle) bool {
-	var _arg0 *C.GTree        // out
-	var _arg1 C.gconstpointer // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
-
-	_cret = C.g_tree_steal(_arg0, _arg1)
-	runtime.KeepAlive(tree)
-	runtime.KeepAlive(key)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }

@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for pango-matrix.go.
-var GTypeMatrix = externglib.Type(C.pango_matrix_get_type())
+var GTypeMatrix = coreglib.Type(C.pango_matrix_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMatrix, F: marshalMatrix},
 	})
 }
@@ -44,7 +44,7 @@ type matrix struct {
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Matrix{&matrix{(*C.PangoMatrix)(b)}}, nil
 }
 

@@ -74,8 +74,12 @@ func (f *FileGenerator) IsEmpty() bool {
 // Generate generates the final file content, completed with gofmt.
 func (f *FileGenerator) Generate() ([]byte, error) {
 	if len(f.header.Marshalers) > 0 {
-		// Import externglib for the RegisterMarshal function.
+		// Import coreglib for the RegisterMarshal function.
 		f.header.NeedsExternGLib()
+	}
+
+	if f.LinkMode() == types.RuntimeLinkMode {
+		f.header.ImportCore("girepository")
 	}
 
 	if f.header.CallbackDelete {
@@ -131,16 +135,23 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 		fpen.EmptyLine()
 	}
 
-	if f.isRoot {
-		fpen.Words("// #cgo pkg-config:", f.Pkgconfig())
-		fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
-	}
-
-	fpen.Words("// #include <stdlib.h>")
-	if incls := f.CIncludes(); len(incls) > 0 {
-		for _, incl := range incls {
-			fpen.Linef("// #include <%s>", incl)
+	switch f.LinkMode() {
+	case types.DynamicLinkMode:
+		if f.isRoot {
+			fpen.Words("// #cgo pkg-config:", f.Pkgconfig())
+			fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
 		}
+
+		fpen.Words("// #include <stdlib.h>")
+		if incls := f.CIncludes(); len(incls) > 0 {
+			for _, incl := range incls {
+				fpen.Linef("// #include <%s>", incl)
+			}
+		}
+	case types.RuntimeLinkMode:
+		fpen.Words("// #cgo pkg-config: gobject-2.0")
+		fpen.Words("// #include <stdlib.h>")
+		fpen.Words("// #include <glib.h>")
 	}
 
 	if len(f.header.Callbacks) > 0 {
@@ -167,13 +178,21 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 		fpen.EmptyLine()
 
 		fpen.Words("func init() {")
-		fpen.Words("  externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{")
+		fpen.Words("  coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{")
 		for _, m := range f.header.Marshalers {
 			fpen.Linef(`{T: GType%s, F: marshal%[1]s},`, m.GoTypeName)
 		}
 		fpen.Words("  })")
 		fpen.Words("}")
 		fpen.EmptyLine()
+	}
+
+	if f.isRoot && f.LinkMode() == types.RuntimeLinkMode {
+		namespace := f.Namespace().Namespace
+
+		fpen.Words("func init() {")
+		fpen.Linef("  girepository.Require(%q, %q)", namespace.Name, namespace.Version)
+		fpen.Words("}")
 	}
 
 	fpen.Write(f.pen.Bytes())

@@ -6,20 +6,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_CellRendererCombo_ConnectChanged(gpointer, gchar*, GtkTreeIter*, guintptr);
 import "C"
 
 // glib.Type values for gtkcellrenderercombo.go.
-var GTypeCellRendererCombo = externglib.Type(C.gtk_cell_renderer_combo_get_type())
+var GTypeCellRendererCombo = coreglib.Type(C.gtk_cell_renderer_combo_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellRendererCombo, F: marshalCellRendererCombo},
 	})
 }
@@ -45,11 +46,11 @@ var (
 	_ CellRendererer = (*CellRendererCombo)(nil)
 )
 
-func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
+func wrapCellRendererCombo(obj *coreglib.Object) *CellRendererCombo {
 	return &CellRendererCombo{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 			},
@@ -58,14 +59,14 @@ func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
 }
 
 func marshalCellRendererCombo(p uintptr) (interface{}, error) {
-	return wrapCellRendererCombo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellRendererCombo(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_CellRendererCombo_ConnectChanged
 func _gotk4_gtk4_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.guintptr) {
 	var f func(pathString string, newIter *TreeIter)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -94,8 +95,8 @@ func _gotk4_gtk4_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar
 // tree view will immediately cease the editing operating. This means that you
 // most probably want to refrain from changing the model until the combo cell
 // renderer emits the edited or editing_canceled signal.
-func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *TreeIter)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererCombo_ConnectChanged), f)
+func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *TreeIter)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererCombo_ConnectChanged), f)
 }
 
 // NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is
@@ -110,13 +111,14 @@ func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *Tr
 //    - cellRendererCombo: new cell renderer.
 //
 func NewCellRendererCombo() *CellRendererCombo {
-	var _cret *C.GtkCellRenderer // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_cell_renderer_combo_new()
+	_gret := girepository.MustFind("Gtk", "CellRendererCombo").InvokeMethod("new_CellRendererCombo", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererCombo *CellRendererCombo // out
 
-	_cellRendererCombo = wrapCellRendererCombo(externglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererCombo = wrapCellRendererCombo(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererCombo
 }

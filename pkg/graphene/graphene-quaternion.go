@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for graphene-quaternion.go.
-var GTypeQuaternion = externglib.Type(C.graphene_quaternion_get_type())
+var GTypeQuaternion = coreglib.Type(C.graphene_quaternion_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeQuaternion, F: marshalQuaternion},
 	})
 }
@@ -40,7 +40,7 @@ type quaternion struct {
 }
 
 func marshalQuaternion(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Quaternion{&quaternion{(*C.graphene_quaternion_t)(b)}}, nil
 }
 

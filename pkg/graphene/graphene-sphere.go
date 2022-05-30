@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for graphene-sphere.go.
-var GTypeSphere = externglib.Type(C.graphene_sphere_get_type())
+var GTypeSphere = coreglib.Type(C.graphene_sphere_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSphere, F: marshalSphere},
 	})
 }
@@ -37,7 +37,7 @@ type sphere struct {
 }
 
 func marshalSphere(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Sphere{&sphere{(*C.graphene_sphere_t)(b)}}, nil
 }
 

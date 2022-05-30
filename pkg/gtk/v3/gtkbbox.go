@@ -8,24 +8,23 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbbox.go.
 var (
-	GTypeButtonBoxStyle = externglib.Type(C.gtk_button_box_style_get_type())
-	GTypeButtonBox      = externglib.Type(C.gtk_button_box_get_type())
+	GTypeButtonBoxStyle = coreglib.Type(C.gtk_button_box_style_get_type())
+	GTypeButtonBox      = coreglib.Type(C.gtk_button_box_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeButtonBoxStyle, F: marshalButtonBoxStyle},
 		{T: GTypeButtonBox, F: marshalButtonBox},
 	})
@@ -56,7 +55,7 @@ const (
 )
 
 func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
-	return ButtonBoxStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ButtonBoxStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ButtonBoxStyle.
@@ -89,8 +88,8 @@ type ButtonBox struct {
 }
 
 var (
-	_ Containerer         = (*ButtonBox)(nil)
-	_ externglib.Objector = (*ButtonBox)(nil)
+	_ Containerer       = (*ButtonBox)(nil)
+	_ coreglib.Objector = (*ButtonBox)(nil)
 )
 
 func classInitButtonBoxer(gclassPtr, data C.gpointer) {
@@ -101,12 +100,12 @@ func classInitButtonBoxer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapButtonBox(obj *externglib.Object) *ButtonBox {
+func wrapButtonBox(obj *coreglib.Object) *ButtonBox {
 	return &ButtonBox{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -127,33 +126,7 @@ func wrapButtonBox(obj *externglib.Object) *ButtonBox {
 }
 
 func marshalButtonBox(p uintptr) (interface{}, error) {
-	return wrapButtonBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewButtonBox creates a new ButtonBox.
-//
-// The function takes the following parameters:
-//
-//    - orientation box's orientation.
-//
-// The function returns the following values:
-//
-//    - buttonBox: new ButtonBox.
-//
-func NewButtonBox(orientation Orientation) *ButtonBox {
-	var _arg1 C.GtkOrientation // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_button_box_new(_arg1)
-	runtime.KeepAlive(orientation)
-
-	var _buttonBox *ButtonBox // out
-
-	_buttonBox = wrapButtonBox(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _buttonBox
+	return wrapButtonBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
@@ -168,14 +141,18 @@ func NewButtonBox(orientation Orientation) *ButtonBox {
 //    - ok: TRUE if the child is not subject to homogenous sizing.
 //
 func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
-	var _arg0 *C.GtkButtonBox // out
-	var _arg1 *C.GtkWidget    // out
-	var _cret C.gboolean      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_non_homogeneous", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
 
@@ -200,14 +177,18 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 //    - ok: whether child should appear in a secondary group of children.
 //
 func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
-	var _arg0 *C.GtkButtonBox // out
-	var _arg1 *C.GtkWidget    // out
-	var _cret C.gboolean      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_secondary", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
 
@@ -220,29 +201,6 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 	return _ok
 }
 
-// Layout retrieves the method being used to arrange the buttons in a button
-// box.
-//
-// The function returns the following values:
-//
-//    - buttonBoxStyle: method used to lay out buttons in widget.
-//
-func (widget *ButtonBox) Layout() ButtonBoxStyle {
-	var _arg0 *C.GtkButtonBox     // out
-	var _cret C.GtkButtonBoxStyle // in
-
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_button_box_get_layout(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _buttonBoxStyle ButtonBoxStyle // out
-
-	_buttonBoxStyle = ButtonBoxStyle(_cret)
-
-	return _buttonBoxStyle
-}
-
 // SetChildNonHomogeneous sets whether the child is exempted from homogeous
 // sizing.
 //
@@ -252,17 +210,21 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 //    - nonHomogeneous: new value.
 //
 func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous bool) {
-	var _arg0 *C.GtkButtonBox // out
-	var _arg1 *C.GtkWidget    // out
-	var _arg2 C.gboolean      // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if nonHomogeneous {
 		_arg2 = C.TRUE
 	}
+	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_button_box_set_child_non_homogeneous(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_non_homogeneous", args[:], nil)
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(nonHomogeneous)
@@ -287,36 +249,22 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 //      button box.
 //
 func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
-	var _arg0 *C.GtkButtonBox // out
-	var _arg1 *C.GtkWidget    // out
-	var _arg2 C.gboolean      // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if isSecondary {
 		_arg2 = C.TRUE
 	}
+	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_button_box_set_child_secondary(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_secondary", args[:], nil)
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(isSecondary)
-}
-
-// SetLayout changes the way buttons are arranged in their container.
-//
-// The function takes the following parameters:
-//
-//    - layoutStyle: new layout style.
-//
-func (widget *ButtonBox) SetLayout(layoutStyle ButtonBoxStyle) {
-	var _arg0 *C.GtkButtonBox     // out
-	var _arg1 C.GtkButtonBoxStyle // out
-
-	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = C.GtkButtonBoxStyle(layoutStyle)
-
-	C.gtk_button_box_set_layout(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(layoutStyle)
 }

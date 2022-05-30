@@ -54,13 +54,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	// To get the original type, the caller must assert this to an interface or
 	// another type.
 	type {{ .InterfaceName }} interface {
-		externglib.Objector
+		coreglib.Objector
 		base{{ .StructName }}() *{{ .StructName }}
 	}
 	{{ else }}
 	// {{ .InterfaceName }} describes {{ .StructName }}'s interface methods.
 	type {{ .InterfaceName }} interface {
-		externglib.Objector
+		coreglib.Objector
 
 		{{ if .Methods -}}
 
@@ -73,7 +73,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 		{{ range .Signals }}
 		{{ Synopsis . 1 TrailingNewLine }}
-		{{- .GoName }}(func{{ .GoTail }}) externglib.SignalHandle
+		{{- .GoName }}(func{{ .GoTail }}) coreglib.SignalHandle
 		{{- end }}
 
 		{{- end}}
@@ -127,13 +127,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	{{ $wrapper := .Tree.WrapName false }}
-	func {{ $wrapper }}(obj *externglib.Object) *{{ .StructName }} {
+	func {{ $wrapper }}(obj *coreglib.Object) *{{ .StructName }} {
 		return {{ .Wrap "obj" }}
 	}
 
 	{{ if .HasMarshaler }}
 	func marshal{{ .StructName }}(p uintptr) (interface{}, error) {
-		return {{ $wrapper }}(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+		return {{ $wrapper }}(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 	}
 	{{ end }}
 
@@ -153,8 +153,8 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	func {{ .CGoName }}{{ .CGoTail }} {{ .Block }}
 
 	{{ GoDoc . 0 (OverrideSelfName .GoName) }}
-	func ({{ $.Recv }} *{{ $.StructName }}) {{ .GoName }}(f func{{ .GoTail }}) externglib.SignalHandle {
-		return externglib.ConnectGeneratedClosure({{ $.Recv }}, {{ Quote .Name }}, false, unsafe.Pointer(C.{{ .CGoName }}), f)
+	func ({{ $.Recv }} *{{ $.StructName }}) {{ .GoName }}(f func{{ .GoTail }}) coreglib.SignalHandle {
+		return coreglib.ConnectGeneratedClosure({{ $.Recv }}, {{ Quote .Name }}, false, unsafe.Pointer(C.{{ .CGoName }}), f)
 	}
 	{{ end }}
 `)

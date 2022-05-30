@@ -9,24 +9,23 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_ColorSelectionClass_color_changed(GtkColorSelection*);
 // extern void _gotk4_gtk3_ColorSelection_ConnectColorChanged(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkcolorsel.go.
-var GTypeColorSelection = externglib.Type(C.gtk_color_selection_get_type())
+var GTypeColorSelection = coreglib.Type(C.gtk_color_selection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeColorSelection, F: marshalColorSelection},
 	})
 }
@@ -42,8 +41,8 @@ type ColorSelection struct {
 }
 
 var (
-	_ Containerer         = (*ColorSelection)(nil)
-	_ externglib.Objector = (*ColorSelection)(nil)
+	_ Containerer       = (*ColorSelection)(nil)
+	_ coreglib.Objector = (*ColorSelection)(nil)
 )
 
 func classInitColorSelectioner(gclassPtr, data C.gpointer) {
@@ -64,18 +63,18 @@ func classInitColorSelectioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ColorSelectionClass_color_changed
 func _gotk4_gtk3_ColorSelectionClass_color_changed(arg0 *C.GtkColorSelection) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ColorChanged() })
 
 	iface.ColorChanged()
 }
 
-func wrapColorSelection(obj *externglib.Object) *ColorSelection {
+func wrapColorSelection(obj *coreglib.Object) *ColorSelection {
 	return &ColorSelection{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -96,14 +95,14 @@ func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 }
 
 func marshalColorSelection(p uintptr) (interface{}, error) {
-	return wrapColorSelection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapColorSelection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ColorSelection_ConnectColorChanged
 func _gotk4_gtk3_ColorSelection_ConnectColorChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -117,8 +116,8 @@ func _gotk4_gtk3_ColorSelection_ConnectColorChanged(arg0 C.gpointer, arg1 C.guin
 
 // ConnectColorChanged: this signal is emitted when the color changes in the
 // ColorSelection according to its update policy.
-func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(colorsel, "color-changed", false, unsafe.Pointer(C._gotk4_gtk3_ColorSelection_ConnectColorChanged), f)
+func (colorsel *ColorSelection) ConnectColorChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(colorsel, "color-changed", false, unsafe.Pointer(C._gotk4_gtk3_ColorSelection_ConnectColorChanged), f)
 }
 
 // NewColorSelection creates a new GtkColorSelection.
@@ -128,13 +127,14 @@ func (colorsel *ColorSelection) ConnectColorChanged(f func()) externglib.SignalH
 //    - colorSelection: new ColorSelection.
 //
 func NewColorSelection() *ColorSelection {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_color_selection_new()
+	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("new_ColorSelection", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _colorSelection *ColorSelection // out
 
-	_colorSelection = wrapColorSelection(externglib.Take(unsafe.Pointer(_cret)))
+	_colorSelection = wrapColorSelection(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelection
 }
@@ -146,12 +146,16 @@ func NewColorSelection() *ColorSelection {
 //    - guint16: integer between 0 and 65535.
 //
 func (colorsel *ColorSelection) CurrentAlpha() uint16 {
-	var _arg0 *C.GtkColorSelection // out
-	var _cret C.guint16            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint16 // in
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**ColorSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_selection_get_current_alpha(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_current_alpha", args[:], nil)
+	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(colorsel)
 
 	var _guint16 uint16 // out
@@ -161,54 +165,6 @@ func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 	return _guint16
 }
 
-// CurrentColor sets color to be the current color in the GtkColorSelection
-// widget.
-//
-// Deprecated: Use gtk_color_selection_get_current_rgba() instead.
-//
-// The function returns the following values:
-//
-//    - color to fill in with the current color.
-//
-func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkColor           // in
-
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-
-	C.gtk_color_selection_get_current_color(_arg0, &_arg1)
-	runtime.KeepAlive(colorsel)
-
-	var _color *gdk.Color // out
-
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _color
-}
-
-// CurrentRGBA sets rgba to be the current color in the GtkColorSelection
-// widget.
-//
-// The function returns the following values:
-//
-//    - rgba to fill in with the current color.
-//
-func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkRGBA            // in
-
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-
-	C.gtk_color_selection_get_current_rgba(_arg0, &_arg1)
-	runtime.KeepAlive(colorsel)
-
-	var _rgba *gdk.RGBA // out
-
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _rgba
-}
-
 // HasOpacityControl determines whether the colorsel has an opacity control.
 //
 // The function returns the following values:
@@ -216,12 +172,16 @@ func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
 //    - ok: TRUE if the colorsel has an opacity control, FALSE if it does't.
 //
 func (colorsel *ColorSelection) HasOpacityControl() bool {
-	var _arg0 *C.GtkColorSelection // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**ColorSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_selection_get_has_opacity_control(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_has_opacity_control", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(colorsel)
 
 	var _ok bool // out
@@ -240,12 +200,16 @@ func (colorsel *ColorSelection) HasOpacityControl() bool {
 //    - ok: TRUE if the selector has a palette, FALSE if it hasn't.
 //
 func (colorsel *ColorSelection) HasPalette() bool {
-	var _arg0 *C.GtkColorSelection // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**ColorSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_selection_get_has_palette(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_has_palette", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(colorsel)
 
 	var _ok bool // out
@@ -264,12 +228,16 @@ func (colorsel *ColorSelection) HasPalette() bool {
 //    - guint16: integer between 0 and 65535.
 //
 func (colorsel *ColorSelection) PreviousAlpha() uint16 {
-	var _arg0 *C.GtkColorSelection // out
-	var _cret C.guint16            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint16 // in
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**ColorSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_selection_get_previous_alpha(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_previous_alpha", args[:], nil)
+	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(colorsel)
 
 	var _guint16 uint16 // out
@@ -277,52 +245,6 @@ func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 	_guint16 = uint16(_cret)
 
 	return _guint16
-}
-
-// PreviousColor fills color in with the original color value.
-//
-// Deprecated: Use gtk_color_selection_get_previous_rgba() instead.
-//
-// The function returns the following values:
-//
-//    - color to fill in with the original color value.
-//
-func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkColor           // in
-
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-
-	C.gtk_color_selection_get_previous_color(_arg0, &_arg1)
-	runtime.KeepAlive(colorsel)
-
-	var _color *gdk.Color // out
-
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _color
-}
-
-// PreviousRGBA fills rgba in with the original color value.
-//
-// The function returns the following values:
-//
-//    - rgba to fill in with the original color value.
-//
-func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkRGBA            // in
-
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-
-	C.gtk_color_selection_get_previous_rgba(_arg0, &_arg1)
-	runtime.KeepAlive(colorsel)
-
-	var _rgba *gdk.RGBA // out
-
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _rgba
 }
 
 // IsAdjusting gets the current state of the colorsel.
@@ -333,12 +255,16 @@ func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
 //      the selection has stopped.
 //
 func (colorsel *ColorSelection) IsAdjusting() bool {
-	var _arg0 *C.GtkColorSelection // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**ColorSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_selection_is_adjusting(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("is_adjusting", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(colorsel)
 
 	var _ok bool // out
@@ -360,13 +286,16 @@ func (colorsel *ColorSelection) IsAdjusting() bool {
 //    - alpha: integer between 0 and 65535.
 //
 func (colorsel *ColorSelection) SetCurrentAlpha(alpha uint16) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.guint16            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 	_arg1 = C.guint16(alpha)
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_current_alpha(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_current_alpha", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(alpha)
 }
@@ -383,13 +312,16 @@ func (colorsel *ColorSelection) SetCurrentAlpha(alpha uint16) {
 //    - color to set the current color with.
 //
 func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 *C.GdkColor          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_current_color(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_current_color", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(color)
 }
@@ -404,13 +336,16 @@ func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 //    - rgba to set the current color with.
 //
 func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 *C.GdkRGBA           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_current_rgba(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_current_rgba", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(rgba)
 }
@@ -422,15 +357,18 @@ func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
 //    - hasOpacity: TRUE if colorsel can set the opacity, FALSE otherwise.
 //
 func (colorsel *ColorSelection) SetHasOpacityControl(hasOpacity bool) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 	if hasOpacity {
 		_arg1 = C.TRUE
 	}
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_has_opacity_control(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_has_opacity_control", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(hasOpacity)
 }
@@ -443,15 +381,18 @@ func (colorsel *ColorSelection) SetHasOpacityControl(hasOpacity bool) {
 //    - hasPalette: TRUE if palette is to be visible, FALSE otherwise.
 //
 func (colorsel *ColorSelection) SetHasPalette(hasPalette bool) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 	if hasPalette {
 		_arg1 = C.TRUE
 	}
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_has_palette(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_has_palette", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(hasPalette)
 }
@@ -466,13 +407,16 @@ func (colorsel *ColorSelection) SetHasPalette(hasPalette bool) {
 //    - alpha: integer between 0 and 65535.
 //
 func (colorsel *ColorSelection) SetPreviousAlpha(alpha uint16) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.guint16            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 	_arg1 = C.guint16(alpha)
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_previous_alpha(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_previous_alpha", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(alpha)
 }
@@ -491,13 +435,16 @@ func (colorsel *ColorSelection) SetPreviousAlpha(alpha uint16) {
 //    - color to set the previous color with.
 //
 func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 *C.GdkColor          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_previous_color(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_previous_color", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(color)
 }
@@ -514,98 +461,16 @@ func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 //    - rgba to set the previous color with.
 //
 func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 *C.GdkRGBA           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	*(**ColorSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_selection_set_previous_rgba(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_previous_rgba", args[:], nil)
+
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(rgba)
-}
-
-// ColorSelectionPaletteFromString parses a color palette string; the string is
-// a colon-separated list of color names readable by gdk_color_parse().
-//
-// The function takes the following parameters:
-//
-//    - str: string encoding a color palette.
-//
-// The function returns the following values:
-//
-//    - colors: return location for allocated array of Color.
-//    - ok: TRUE if a palette was successfully parsed.
-//
-func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
-	var _arg1 *C.gchar    // out
-	var _arg2 *C.GdkColor // in
-	var _arg3 C.gint      // in
-	var _cret C.gboolean  // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_color_selection_palette_from_string(_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(str)
-
-	var _colors []gdk.Color // out
-	var _ok bool            // out
-
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		src := unsafe.Slice((*C.GdkColor)(_arg2), _arg3)
-		_colors = make([]gdk.Color, _arg3)
-		for i := 0; i < int(_arg3); i++ {
-			_colors[i] = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-			runtime.SetFinalizer(
-				gextras.StructIntern(unsafe.Pointer(&_colors[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.gdk_color_free((*C.GdkColor)(intern.C))
-				},
-			)
-		}
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _colors, _ok
-}
-
-// ColorSelectionPaletteToString encodes a palette as a string, useful for
-// persistent storage.
-//
-// The function takes the following parameters:
-//
-//    - colors: array of colors.
-//
-// The function returns the following values:
-//
-//    - utf8: allocated string encoding the palette.
-//
-func ColorSelectionPaletteToString(colors []gdk.Color) string {
-	var _arg1 *C.GdkColor // out
-	var _arg2 C.gint
-	var _cret *C.gchar // in
-
-	_arg2 = (C.gint)(len(colors))
-	_arg1 = (*C.GdkColor)(C.calloc(C.size_t(len(colors)), C.size_t(C.sizeof_GdkColor)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.GdkColor)(_arg1), len(colors))
-		for i := range colors {
-			out[i] = *(*C.GdkColor)(gextras.StructNative(unsafe.Pointer((&colors[i]))))
-		}
-	}
-
-	_cret = C.gtk_color_selection_palette_to_string(_arg1, _arg2)
-	runtime.KeepAlive(colors)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
 }

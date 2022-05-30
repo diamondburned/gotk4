@@ -9,31 +9,27 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gtk+-3.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtk.go.
 var (
-	GTypeMovementStep        = externglib.Type(C.gtk_movement_step_get_type())
-	GTypeNotebookTab         = externglib.Type(C.gtk_notebook_tab_get_type())
-	GTypeResizeMode          = externglib.Type(C.gtk_resize_mode_get_type())
-	GTypeScrollStep          = externglib.Type(C.gtk_scroll_step_get_type())
-	GTypeDebugFlag           = externglib.Type(C.gtk_debug_flag_get_type())
-	GTypeEntryIconAccessible = externglib.Type(C.gtk_entry_icon_accessible_get_type())
+	GTypeMovementStep        = coreglib.Type(C.gtk_movement_step_get_type())
+	GTypeNotebookTab         = coreglib.Type(C.gtk_notebook_tab_get_type())
+	GTypeResizeMode          = coreglib.Type(C.gtk_resize_mode_get_type())
+	GTypeScrollStep          = coreglib.Type(C.gtk_scroll_step_get_type())
+	GTypeDebugFlag           = coreglib.Type(C.gtk_debug_flag_get_type())
+	GTypeEntryIconAccessible = coreglib.Type(C.gtk_entry_icon_accessible_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMovementStep, F: marshalMovementStep},
 		{T: GTypeNotebookTab, F: marshalNotebookTab},
 		{T: GTypeResizeMode, F: marshalResizeMode},
@@ -43,46 +39,8 @@ func init() {
 	})
 }
 
-// The function returns the following values:
-//
-func BuilderErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_builder_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// The function returns the following values:
-//
-func CSSProviderErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_css_provider_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// The function returns the following values:
-//
-func IconThemeErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_icon_theme_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
+func init() {
+	girepository.Require("Gtk", "3.0")
 }
 
 type MovementStep C.gint
@@ -111,7 +69,7 @@ const (
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
-	return MovementStep(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return MovementStep(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MovementStep.
@@ -150,7 +108,7 @@ const (
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {
-	return NotebookTab(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return NotebookTab(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NotebookTab.
@@ -165,34 +123,6 @@ func (n NotebookTab) String() string {
 	}
 }
 
-// The function returns the following values:
-//
-func RecentChooserErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_recent_chooser_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
-// The function returns the following values:
-//
-func RecentManagerErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gtk_recent_manager_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
-}
-
 type ResizeMode C.gint
 
 const (
@@ -205,7 +135,7 @@ const (
 )
 
 func marshalResizeMode(p uintptr) (interface{}, error) {
-	return ResizeMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ResizeMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResizeMode.
@@ -240,7 +170,7 @@ const (
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {
-	return ScrollStep(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ScrollStep(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollStep.
@@ -291,7 +221,7 @@ const (
 )
 
 func marshalDebugFlag(p uintptr) (interface{}, error) {
-	return DebugFlag(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DebugFlag(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DebugFlag.
@@ -371,16 +301,16 @@ type EntryIconAccessible struct {
 	_ [0]func() // equal guard
 	atk.ObjectClass
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Action
 	atk.Component
 }
 
 var (
-	_ externglib.Objector = (*EntryIconAccessible)(nil)
+	_ coreglib.Objector = (*EntryIconAccessible)(nil)
 )
 
-func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
+func wrapEntryIconAccessible(obj *coreglib.Object) *EntryIconAccessible {
 	return &EntryIconAccessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
@@ -396,7 +326,7 @@ func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 }
 
 func marshalEntryIconAccessible(p uintptr) (interface{}, error) {
-	return wrapEntryIconAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEntryIconAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Init binds to the gtk_init() function. Argument parsing is not

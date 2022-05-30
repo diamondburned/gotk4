@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -116,7 +116,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 //      failure, or NULL.
 //    - ok: TRUE if str was successfully parsed.
 //
-func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
+func ParseEnum(typ coreglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
 	var _arg2 *C.char    // out
 	var _arg3 C.int      // in

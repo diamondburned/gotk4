@@ -7,19 +7,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkproperty.go.
-var GTypePropMode = externglib.Type(C.gdk_prop_mode_get_type())
+var GTypePropMode = coreglib.Type(C.gdk_prop_mode_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePropMode, F: marshalPropMode},
 	})
 }
@@ -38,7 +39,7 @@ const (
 )
 
 func marshalPropMode(p uintptr) (interface{}, error) {
-	return PropMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PropMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PropMode.
@@ -71,13 +72,17 @@ func (p PropMode) String() string {
 //      system limits like memory or file descriptors are exceeded.).
 //
 func UTF8ToStringTarget(str string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_utf8_to_string_target(_arg1)
+	_gret := girepository.MustFind("Gdk", "utf8_to_string_target").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out

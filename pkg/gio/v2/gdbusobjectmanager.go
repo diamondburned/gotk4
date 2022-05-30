@@ -7,12 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GDBusInterface* _gotk4_gio2_DBusObjectManagerIface_get_interface(GDBusObjectManager*, gchar*, gchar*);
 // extern GDBusObject* _gotk4_gio2_DBusObjectManagerIface_get_object(GDBusObjectManager*, gchar*);
 // extern GList* _gotk4_gio2_DBusObjectManagerIface_get_objects(GDBusObjectManager*);
@@ -28,10 +29,10 @@ import (
 import "C"
 
 // glib.Type values for gdbusobjectmanager.go.
-var GTypeDBusObjectManager = externglib.Type(C.g_dbus_object_manager_get_type())
+var GTypeDBusObjectManager = coreglib.Type(C.g_dbus_object_manager_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDBusObjectManager, F: marshalDBusObjectManager},
 	})
 }
@@ -110,16 +111,16 @@ type DBusObjectManagerOverrider interface {
 // underlying type by calling Cast().
 type DBusObjectManager struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DBusObjectManager)(nil)
+	_ coreglib.Objector = (*DBusObjectManager)(nil)
 )
 
 // DBusObjectManagerer describes DBusObjectManager's interface methods.
 type DBusObjectManagerer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// Interface gets the interface proxy for interface_name at object_path, if
 	// any.
@@ -132,13 +133,13 @@ type DBusObjectManagerer interface {
 	Objects() []*DBusObject
 
 	// Interface-added is emitted when interface is added to object.
-	ConnectInterfaceAdded(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
+	ConnectInterfaceAdded(func(object DBusObjector, iface DBusInterfacer)) coreglib.SignalHandle
 	// Interface-removed is emitted when interface has been removed from object.
-	ConnectInterfaceRemoved(func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle
+	ConnectInterfaceRemoved(func(object DBusObjector, iface DBusInterfacer)) coreglib.SignalHandle
 	// Object-added is emitted when object is added to manager.
-	ConnectObjectAdded(func(object DBusObjector)) externglib.SignalHandle
+	ConnectObjectAdded(func(object DBusObjector)) coreglib.SignalHandle
 	// Object-removed is emitted when object is removed from manager.
-	ConnectObjectRemoved(func(object DBusObjector)) externglib.SignalHandle
+	ConnectObjectRemoved(func(object DBusObjector)) coreglib.SignalHandle
 }
 
 var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
@@ -157,7 +158,7 @@ func ifaceInitDBusObjectManagerer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_interface
 func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.GDBusObjectManager, arg1 *C.gchar, arg2 *C.gchar) (cret *C.GDBusInterface) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _objectPath string    // out
@@ -168,15 +169,15 @@ func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.GDBusObjectManager
 
 	dBusInterface := iface.Interface(_objectPath, _interfaceName)
 
-	cret = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(dBusInterface).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(dBusInterface).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(dBusInterface).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(dBusInterface).Native()))
 
 	return cret
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object
 func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.GDBusObjectManager, arg1 *C.gchar) (cret *C.GDBusObject) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _objectPath string // out
@@ -185,20 +186,20 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.GDBusObjectManager, a
 
 	dBusObject := iface.GetObject(_objectPath)
 
-	cret = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(dBusObject).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(dBusObject).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(dBusObject).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(dBusObject).Native()))
 
 	return cret
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object_path
 func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.GDBusObjectManager) (cret *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	utf8 := iface.ObjectPath()
 
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
 	defer C.free(unsafe.Pointer(cret))
 
 	return cret
@@ -206,16 +207,16 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.GDBusObjectManag
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_objects
 func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.GDBusObjectManager) (cret *C.GList) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	list := iface.Objects()
 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
-		var dst *C.GDBusObject // out
-		dst = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(src).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(src).Native()))
+		var dst *C.void // out
+		dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 
@@ -224,7 +225,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.GDBusObjectManager) 
 
 //export _gotk4_gio2_DBusObjectManagerIface_interface_added
 func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector       // out
@@ -236,8 +237,8 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManag
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -253,8 +254,8 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManag
 			panic("object of type gio.DBusInterfacer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
@@ -270,7 +271,7 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManag
 
 //export _gotk4_gio2_DBusObjectManagerIface_interface_removed
 func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector       // out
@@ -282,8 +283,8 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectMan
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -299,8 +300,8 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectMan
 			panic("object of type gio.DBusInterfacer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
@@ -316,7 +317,7 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectMan
 
 //export _gotk4_gio2_DBusObjectManagerIface_object_added
 func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector // out
@@ -327,8 +328,8 @@ func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager,
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -344,7 +345,7 @@ func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager,
 
 //export _gotk4_gio2_DBusObjectManagerIface_object_removed
 func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector // out
@@ -355,8 +356,8 @@ func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManage
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -370,21 +371,21 @@ func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManage
 	iface.ObjectRemoved(_object)
 }
 
-func wrapDBusObjectManager(obj *externglib.Object) *DBusObjectManager {
+func wrapDBusObjectManager(obj *coreglib.Object) *DBusObjectManager {
 	return &DBusObjectManager{
 		Object: obj,
 	}
 }
 
 func marshalDBusObjectManager(p uintptr) (interface{}, error) {
-	return wrapDBusObjectManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusObjectManager(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded
 func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
 	var f func(object DBusObjector, iface DBusInterfacer)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -402,8 +403,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -419,8 +420,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 			panic("object of type gio.DBusInterfacer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
@@ -438,15 +439,15 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
-func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(manager, "interface-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded), f)
+func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObjector, iface DBusInterfacer)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(manager, "interface-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded), f)
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved
 func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
 	var f func(object DBusObjector, iface DBusInterfacer)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -464,8 +465,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -481,8 +482,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 			panic("object of type gio.DBusInterfacer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusInterfacer)
 			return ok
 		})
@@ -501,15 +502,15 @@ func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1
 //
 // This signal exists purely as a convenience to avoid having to connect signals
 // to all objects managed by manager.
-func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(manager, "interface-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved), f)
+func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObjector, iface DBusInterfacer)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(manager, "interface-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved), f)
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectObjectAdded
 func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
 	var f func(object DBusObjector)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -526,8 +527,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.G
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -542,15 +543,15 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.G
 }
 
 // ConnectObjectAdded is emitted when object is added to manager.
-func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(manager, "object-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectAdded), f)
+func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(manager, "object-added", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectAdded), f)
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved
 func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
 	var f func(object DBusObjector)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -567,8 +568,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C
 			panic("object of type gio.DBusObjector is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusObjector)
 			return ok
 		})
@@ -583,8 +584,8 @@ func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C
 }
 
 // ConnectObjectRemoved is emitted when object is removed from manager.
-func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(manager, "object-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectRemoved), f)
+func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjector)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(manager, "object-removed", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectManager_ConnectObjectRemoved), f)
 }
 
 // Interface gets the interface proxy for interface_name at object_path, if any.
@@ -599,25 +600,29 @@ func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjecto
 //    - dBusInterface instance or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *DBusInterface {
-	var _arg0 *C.GDBusObjectManager // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.gchar              // out
-	var _cret *C.GDBusInterface     // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**DBusObjectManager)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(interfaceName)
 
 	var _dBusInterface *DBusInterface // out
 
-	_dBusInterface = wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusInterface
 }
@@ -633,21 +638,24 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *D
 //    - dBusObject or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
-	var _arg0 *C.GDBusObjectManager // out
-	var _arg1 *C.gchar              // out
-	var _cret *C.GDBusObject        // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusObjectManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObject *DBusObject // out
 
-	_dBusObject = wrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObject
 }
@@ -659,12 +667,15 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 //    - utf8: string owned by manager. Do not free.
 //
 func (manager *DBusObjectManager) ObjectPath() string {
-	var _arg0 *C.GDBusObjectManager // out
-	var _cret *C.gchar              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**DBusObjectManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
@@ -682,21 +693,24 @@ func (manager *DBusObjectManager) ObjectPath() string {
 //      g_list_free() after each element has been freed with g_object_unref().
 //
 func (manager *DBusObjectManager) Objects() []*DBusObject {
-	var _arg0 *C.GDBusObjectManager // out
-	var _cret *C.GList              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**DBusObjectManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_object_manager_get_objects(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(manager)
 
 	var _list []*DBusObject // out
 
 	_list = make([]*DBusObject, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GDBusObject)(v)
+		src := (*C.void)(v)
 		var dst *DBusObject // out
-		dst = wrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

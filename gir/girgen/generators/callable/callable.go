@@ -186,6 +186,17 @@ func (g *Generator) Recv() string {
 }
 
 func (g *Generator) renderBlock() bool {
+	switch g.gen.LinkMode() {
+	case types.DynamicLinkMode:
+		return g.renderDynamicLinkedBlock()
+	case types.RuntimeLinkMode:
+		return g.renderRuntimeLinkedBlock()
+	default:
+		panic("unknown LinkMode")
+	}
+}
+
+func (g *Generator) renderDynamicLinkedBlock() bool {
 	const (
 		secInputDecl = iota
 		secInputConv
@@ -251,17 +262,16 @@ func (g *Generator) renderBlock() bool {
 				in = strcases.SnakeToGo(false, param.Name)
 				out = fmt.Sprintf("_arg%d", i+1)
 				dir = typeconv.ConvertGoToC
+				if contextParamIx == i {
+					// Idiomatic context naming.
+					in = "ctx"
+				}
 			case "out":
 				in = fmt.Sprintf("_arg%d", i+1)
 				out = "_" + strcases.SnakeToGo(false, param.Name)
 				dir = typeconv.ConvertCToGo
 			default:
 				return false
-			}
-
-			if contextParamIx == i {
-				// Idiomatic context naming.
-				in = "ctx"
 			}
 
 			value := typeconv.NewValue(in, out, i, dir, param)
@@ -376,6 +386,264 @@ func (g *Generator) renderBlock() bool {
 
 	if goReturns.Len() > 0 {
 		g.pen.EmptyLine(secFnCall)
+		g.pen.Line(secReturn, "return "+goReturns.Join())
+	}
+
+	g.Block = g.pen.String()
+	g.Tail = "(" + g.GoArgs.Join() + ") " + formatReturnSig(g.GoRets)
+
+	g.pen.Reset()
+	return true
+}
+
+func (g *Generator) renderRuntimeLinkedBlock() bool {
+	const (
+		secInputDecl = iota
+		secInputConv
+		secFnCall
+		secKeepAlive
+		secOutputDecl
+		secOutputConv
+		secReturn
+	)
+
+	var (
+		instanceParam   bool
+		callableValues  []typeconv.ConversionValue
+		argumentIndices map[int]int
+
+		nIn  int
+		nOut int
+	)
+
+	g.hdr.ImportCore("girepository")
+
+	argsName := "nil"
+	outsName := "nil"
+
+	if g.Parameters != nil {
+		contextParamIx := findGCancellableParam(g.gen, g.Parameters.Parameters)
+
+		// Copy the parameters list so we can freely mutate it.
+		parameters := types.ResolveParameters(g.gen, g.Parameters.Parameters)
+
+		// Preprocess the values to normalize an edge case; see comment below.
+		for i, value := range parameters {
+			if value.AnyType.Array == nil || value.AnyType.Array.Length == nil {
+				continue
+			}
+
+			length := &g.Parameters.Parameters[*value.Array.Length]
+
+			// Special case: check if the length is both an output parameter AND
+			// has a type that isn't a pointer. In such a case, the function
+			// expects the user to supply a buffer of constant length, so we
+			// should treat them as input parameters. We can only do this if the
+			// type is directly castable, however. Changing this will also allow
+			// the function to pass the above output-pointer check.
+			if value.ParameterAttrs.Direction == "out" && value.CallerAllocates {
+				if !types.AnyTypeIsPtr(length.AnyType) {
+					length.Direction = "in"
+					parameters[i].Direction = "in"
+				}
+			}
+		}
+
+		callableValues = make([]typeconv.ConversionValue, 0, len(g.Parameters.Parameters)+2)
+		argumentIndices = make(map[int]int, cap(callableValues))
+
+		if g.Parameters.InstanceParameter != nil {
+			instanceParam = true
+
+			callableValues = append(callableValues, typeconv.NewReceiverValue(
+				strcases.SnakeToGo(false, g.Parameters.InstanceParameter.Name),
+				"_arg0",
+				typeconv.ConvertGoToC,
+				g.Parameters.InstanceParameter,
+			))
+
+			argumentIndices[0] = nIn // 0
+			nIn++
+		}
+
+		for i, param := range parameters {
+			var in string
+			var out string
+			var dir typeconv.ConversionDirection
+
+			switch types.GuessParameterOutput(&param) {
+			case "in":
+				in = strcases.SnakeToGo(false, param.Name)
+				out = fmt.Sprintf("_arg%d", nIn)
+				dir = typeconv.ConvertGoToC
+				if contextParamIx == i {
+					// Idiomatic context naming.
+					in = "ctx"
+				}
+
+				argumentIndices[i] = nIn
+				nIn++
+
+			case "out":
+				in = fmt.Sprintf("_out%d", nOut)
+				out = "_" + strcases.SnakeToGo(false, param.Name)
+				dir = typeconv.ConvertCToGo
+
+				argumentIndices[i] = nOut
+				nOut++
+
+			default:
+				return false
+			}
+
+			value := typeconv.NewValue(in, out, i, dir, param)
+			callableValues = append(callableValues, value)
+		}
+
+		if nIn > 0 {
+			g.pen.Linef(secInputDecl, "var args [%d]girepository.Argument", nIn)
+			argsName = "args[:]"
+		}
+		if nOut > 0 {
+			g.pen.Linef(secInputDecl, "var outs [%d]girepository.Argument", nOut)
+			outsName = "outs[:]"
+		}
+	}
+
+	var hasReturn bool
+	if !types.ReturnIsVoid(g.ReturnValue) {
+		returnName := ReturnName(g.CallableAttrs)
+
+		// If the last return is a bool and the function can throw an error,
+		// then the boolean is probably to indicate that things are OK. We can
+		// skip generating this boolean.
+		if !g.Throws || returnName != "ok" {
+			hasReturn = true
+			returnName = "_" + returnName
+
+			value := typeconv.NewReturnValue(
+				"_cret", returnName, typeconv.ConvertCToGo, *g.ReturnValue,
+			)
+			// Constructors are bodged, so the returned type is concretely
+			// accurate.
+			value.KeepType = g.constructor
+
+			callableValues = append(callableValues, value)
+		}
+	}
+
+	if g.Throws {
+		callableValues = append(callableValues, typeconv.NewThrowValue("_cerr", "_goerr"))
+	}
+
+	g.Conv = typeconv.NewConverter(g.gen, g.typ, callableValues)
+	g.Conv.UseLogger(g)
+
+	if g.Conv == nil {
+		g.Logln(logger.Debug, "converter failed", cFunctionHeader(g.CallableAttrs))
+		return false
+	}
+
+	g.Results = g.Conv.ConvertAll()
+	if g.Results == nil {
+		g.Logln(logger.Debug, "no conversion", cFunctionHeader(g.CallableAttrs))
+		return false
+	}
+
+	// Apply imports and such.
+	file.ApplyHeader(g, g.Conv)
+
+	// Do a bit of trickery: if we have a GCancellable in the function, then it
+	// should be the first parameter. The GCancellable will then be resolved to
+	// a context.Context during conversion.
+	resultParams := g.Results
+	if instanceParam {
+		// Don't count the instance parameter.
+		resultParams = resultParams[1:]
+	}
+	MoveContextResult(g.gen, resultParams)
+
+	// For Go variables after the return statement.
+	goReturns := pen.NewJoints(", ", 2)
+
+	for i, converted := range g.Results {
+		switch converted.Direction {
+		case typeconv.ConvertGoToC: // parameter
+			// Skip the instance parameter if any.
+			if i != 0 || !instanceParam {
+				g.GoArgs.Addf("%s %s", converted.InName, converted.In.Type)
+			}
+
+			// Go inputs are declared in the parameters, so no In.Declare.
+			// C outputs have to be declared (input means C function input).
+			g.pen.Line(secInputDecl, converted.Out.Declare)
+			// Conversions follow right after declaring all outputs.
+			g.pen.Line(secInputConv, converted.Conversion)
+
+		case typeconv.ConvertCToGo: // return
+			// decoOut is the name that's used solely for documentation
+			// purposes. It is not used internally at all, and so it doesn't
+			// have the underscore.
+			decoOut := strings.TrimPrefix(converted.OutName, "_")
+			g.GoRets.Addf("%s %s", decoOut, converted.Out.Type)
+
+			goReturns.Add(converted.OutName)
+
+			g.pen.Line(secInputDecl, converted.In.Declare)
+			// Go outputs should be redeclared.
+			g.pen.Line(secOutputDecl, converted.Out.Declare)
+			// Conversions follow right after declaring all outputs.
+			g.pen.Line(secOutputConv, converted.Conversion)
+		}
+	}
+
+	for i, converted := range g.Results {
+		argIx, ok := argumentIndices[i]
+		if !ok {
+			continue
+		}
+
+		switch converted.Direction {
+		case typeconv.ConvertGoToC:
+			g.pen.Linef(secInputConv,
+				"*(*%[2]s)(unsafe.Pointer(&args[%[1]d])) = _arg%[1]d",
+				argIx, converted.In.Type,
+			)
+		case typeconv.ConvertCToGo:
+			g.pen.Linef(secOutputDecl,
+				"_out%[1]d = *(*%[2]s)(unsafe.Pointer(&outs[%[1]d]))",
+				argIx, converted.Out.Type,
+			)
+		}
+	}
+
+	info := fmt.Sprintf("girepository.MustFind(%q, %q)", g.typ.Namespace.Name, g.typ.Name())
+	if hasReturn {
+		info = "_gret := " + info
+	}
+
+	switch g.typ.Type.(type) {
+	case *gir.Function:
+		g.pen.Linef(secFnCall, "%s.Invoke(%s, %s)", info, argsName, outsName)
+	case *gir.Class:
+		g.pen.Linef(secFnCall, "%s.InvokeMethod(%q, %s, %s)", info, g.CallableAttrs.Name, argsName, outsName)
+	}
+
+	if hasReturn {
+		ret := g.Results[len(g.Results)-1]
+		g.pen.Linef(secFnCall, "_cret = *(*%s)(unsafe.Pointer(&_gret))", ret.In.Type)
+	}
+
+	// Generate the right statements to ensure that nothing is freed before or
+	// while we're invoking our function.
+	for _, converted := range g.Results {
+		if converted.Direction == typeconv.ConvertGoToC {
+			g.hdr.Import("runtime")
+			g.pen.Linef(secKeepAlive, "runtime.KeepAlive(%s)", converted.InName)
+		}
+	}
+
+	if goReturns.Len() > 0 {
 		g.pen.Line(secReturn, "return "+goReturns.Join())
 	}
 

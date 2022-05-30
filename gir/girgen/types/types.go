@@ -8,6 +8,32 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 )
 
+// LinkMode describes the mode that determines how the generator generates
+// code to be linked. See the possible constants for more information.
+type LinkMode uint8
+
+const (
+	// RuntimeLinkMode is the new generation mode. It generates Go code that
+	// uses the girepository library to link the library at runtime instead of
+	// compile-time.
+	//
+	// Since all generated calls are actually Go function calls and not C
+	// function calls, compile times are far better than when using
+	// DynamicLinkMode, but runtime performance may be slightly lower and more
+	// memory-intensive.
+	//
+	// Use RuntimeLinkMode for large packages, such as GTK; use DynamicLinkMode
+	// for small and important packages, such as the core glib/v2 package.
+	RuntimeLinkMode LinkMode = iota
+	// DynamicLinkMode is the old generation mode. It generates Cgo code that
+	// contains compile-time link flags to dynamically link libraries to the
+	// output binary.
+	//
+	// This mode forces the use of cmd/cgo on every call during compilation,
+	// making it very slow. Only use this on core packages such as glib.
+	DynamicLinkMode
+)
+
 // GoAnyType generates the Go type signature for the AnyType union. An empty
 // string returned is an invalid type. If pub is true, then the returned string
 // will use public interface types for classes instead of implementation types.
@@ -398,6 +424,12 @@ func GIRPrimitiveGo(typ string) string {
 		return ""
 	}
 	return gp
+}
+
+// GIRIsPrimitive returns true if the Go primitive type of the GIR type is valid
+// and is not a string.
+func GIRIsPrimitive(typ string) bool {
+	return GIRPrimitiveGo(typ) != ""
 }
 
 // FindParameter finds a parameter.

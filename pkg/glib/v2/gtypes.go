@@ -4,10 +4,8 @@ package glib
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
@@ -94,83 +92,6 @@ const PI_4 = 0.785398
 
 // SQRT2: square root of two.
 const SQRT2 = 1.414214
-
-// CompareDataFunc specifies the type of a comparison function used to compare
-// two values. The function should return a negative integer if the first value
-// comes before the second, 0 if they are equal, or a positive integer if the
-// first value comes after the second.
-type CompareDataFunc func(a, b cgo.Handle) (gint int)
-
-//export _gotk4_glib2_CompareDataFunc
-func _gotk4_glib2_CompareDataFunc(arg1 C.gconstpointer, arg2 C.gconstpointer, arg3 C.gpointer) (cret C.gint) {
-	var fn CompareDataFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(CompareDataFunc)
-	}
-
-	var _a cgo.Handle // out
-	var _b cgo.Handle // out
-
-	_a = (cgo.Handle)(unsafe.Pointer(arg1))
-	_b = (cgo.Handle)(unsafe.Pointer(arg2))
-
-	gint := fn(_a, _b)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-// Func specifies the type of functions passed to g_list_foreach() and
-// g_slist_foreach().
-type Func func(data cgo.Handle)
-
-//export _gotk4_glib2_Func
-func _gotk4_glib2_Func(arg1 C.gpointer, arg2 C.gpointer) {
-	var fn Func
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(Func)
-	}
-
-	var _data cgo.Handle // out
-
-	_data = (cgo.Handle)(unsafe.Pointer(arg1))
-
-	fn(_data)
-}
-
-// HFunc specifies the type of the function passed to g_hash_table_foreach(). It
-// is called with each key/value pair, together with the user_data parameter
-// which is passed to g_hash_table_foreach().
-type HFunc func(key, value cgo.Handle)
-
-//export _gotk4_glib2_HFunc
-func _gotk4_glib2_HFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) {
-	var fn HFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(HFunc)
-	}
-
-	var _key cgo.Handle   // out
-	var _value cgo.Handle // out
-
-	_key = (cgo.Handle)(unsafe.Pointer(arg1))
-	_value = (cgo.Handle)(unsafe.Pointer(arg2))
-
-	fn(_key, _value)
-}
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to
 // the struct timeval returned by the gettimeofday() UNIX system call.

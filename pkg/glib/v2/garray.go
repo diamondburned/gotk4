@@ -5,7 +5,6 @@ package glib
 import (
 	"reflect"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -344,21 +343,6 @@ type PtrArray struct {
 // ptrArray is the struct that's finalized.
 type ptrArray struct {
 	native *C.GPtrArray
-}
-
-// Pdata points to the array of pointers, which may be moved when the array
-// grows.
-func (p *PtrArray) Pdata() *cgo.Handle {
-	var v *cgo.Handle // out
-	v = (*cgo.Handle)(unsafe.Pointer(p.native.pdata))
-	return v
-}
-
-// Len: number of pointers in the array.
-func (p *PtrArray) Len() uint {
-	var v uint // out
-	v = uint(p.native.len)
-	return v
 }
 
 // NewBytesWithGo is similar to NewBytes, except the given Go byte slice

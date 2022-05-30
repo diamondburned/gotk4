@@ -11,20 +11,20 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(GApplication*, GDBusConnection*, gchar*, GError**);
 // extern gboolean _gotk4_gio2_ApplicationClass_name_lost(GApplication*);
 // extern gboolean _gotk4_gio2_Application_ConnectNameLost(gpointer, guintptr);
 // extern gint _gotk4_gio2_ApplicationClass_handle_local_options(GApplication*, GVariantDict*);
 // extern gint _gotk4_gio2_Application_ConnectCommandLine(gpointer, GApplicationCommandLine*, guintptr);
 // extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, GVariantDict*, guintptr);
-// extern int _gotk4_gio2_ApplicationClass_command_line(GApplication*, GApplicationCommandLine*);
 // extern void _gotk4_gio2_ApplicationClass_activate(GApplication*);
 // extern void _gotk4_gio2_ApplicationClass_add_platform_data(GApplication*, GVariantBuilder*);
 // extern void _gotk4_gio2_ApplicationClass_after_emit(GApplication*, GVariant*);
@@ -42,10 +42,10 @@ import (
 import "C"
 
 // glib.Type values for gapplication.go.
-var GTypeApplication = externglib.Type(C.g_application_get_type())
+var GTypeApplication = coreglib.Type(C.g_application_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeApplication, F: marshalApplication},
 	})
 }
@@ -68,11 +68,6 @@ type ApplicationOverrider interface {
 	// The function takes the following parameters:
 	//
 	BeforeEmit(platformData *glib.Variant)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	CommandLine(commandLine *ApplicationCommandLine) int
 	// The function takes the following parameters:
 	//
 	//    - connection
@@ -230,14 +225,14 @@ type ApplicationOverrider interface {
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	ActionGroup
 	ActionMap
 }
 
 var (
-	_ externglib.Objector = (*Application)(nil)
+	_ coreglib.Objector = (*Application)(nil)
 )
 
 func classInitApplicationer(gclassPtr, data C.gpointer) {
@@ -271,12 +266,6 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 		BeforeEmit(platformData *glib.Variant)
 	}); ok {
 		pclass.before_emit = (*[0]byte)(C._gotk4_gio2_ApplicationClass_before_emit)
-	}
-
-	if _, ok := goval.(interface {
-		CommandLine(commandLine *ApplicationCommandLine) int
-	}); ok {
-		pclass.command_line = (*[0]byte)(C._gotk4_gio2_ApplicationClass_command_line)
 	}
 
 	if _, ok := goval.(interface {
@@ -326,7 +315,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_ApplicationClass_activate
 func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -334,7 +323,7 @@ func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_add_platform_data
 func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *C.GVariantBuilder) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AddPlatformData(builder *glib.VariantBuilder)
 	})
@@ -355,7 +344,7 @@ func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *
 
 //export _gotk4_gio2_ApplicationClass_after_emit
 func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AfterEmit(platformData *glib.Variant)
 	})
@@ -376,7 +365,7 @@ func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVari
 
 //export _gotk4_gio2_ApplicationClass_before_emit
 func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		BeforeEmit(platformData *glib.Variant)
 	})
@@ -395,27 +384,9 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 	iface.BeforeEmit(_platformData)
 }
 
-//export _gotk4_gio2_ApplicationClass_command_line
-func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GApplicationCommandLine) (cret C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		CommandLine(commandLine *ApplicationCommandLine) int
-	})
-
-	var _commandLine *ApplicationCommandLine // out
-
-	_commandLine = wrapApplicationCommandLine(externglib.Take(unsafe.Pointer(arg1)))
-
-	gint := iface.CommandLine(_commandLine)
-
-	cret = C.int(gint)
-
-	return cret
-}
-
 //export _gotk4_gio2_ApplicationClass_dbus_register
 func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusRegister(connection *DBusConnection, objectPath string) error
 	})
@@ -423,13 +394,13 @@ func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GD
 	var _connection *DBusConnection // out
 	var _objectPath string          // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	_goerr := iface.DBusRegister(_connection, _objectPath)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -437,7 +408,7 @@ func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GD
 
 //export _gotk4_gio2_ApplicationClass_dbus_unregister
 func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusUnregister(connection *DBusConnection, objectPath string)
 	})
@@ -445,7 +416,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.
 	var _connection *DBusConnection // out
 	var _objectPath string          // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	iface.DBusUnregister(_connection, _objectPath)
@@ -453,7 +424,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.
 
 //export _gotk4_gio2_ApplicationClass_handle_local_options
 func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg1 *C.GVariantDict) (cret C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		HandleLocalOptions(options *glib.VariantDict) int
 	})
@@ -478,7 +449,7 @@ func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg
 
 //export _gotk4_gio2_ApplicationClass_name_lost
 func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NameLost() bool })
 
 	ok := iface.NameLost()
@@ -492,7 +463,7 @@ func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboole
 
 //export _gotk4_gio2_ApplicationClass_open
 func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Open(files []Filer, hint string)
 	})
@@ -501,7 +472,7 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 	var _hint string   // out
 
 	{
-		src := unsafe.Slice((**C.GFile)(arg1), arg2)
+		src := unsafe.Slice((**C.void)(arg1), arg2)
 		_files = make([]Filer, arg2)
 		for i := 0; i < int(arg2); i++ {
 			{
@@ -510,8 +481,8 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 					panic("object of type gio.Filer is nil")
 				}
 
-				object := externglib.Take(objptr)
-				casted := object.WalkCast(func(obj externglib.Objector) bool {
+				object := coreglib.Take(objptr)
+				casted := object.WalkCast(func(obj coreglib.Objector) bool {
 					_, ok := obj.(Filer)
 					return ok
 				})
@@ -530,7 +501,7 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 
 //export _gotk4_gio2_ApplicationClass_quit_mainloop
 func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ QuitMainloop() })
 
 	iface.QuitMainloop()
@@ -538,7 +509,7 @@ func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_run_mainloop
 func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RunMainloop() })
 
 	iface.RunMainloop()
@@ -546,7 +517,7 @@ func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_shutdown
 func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Shutdown() })
 
 	iface.Shutdown()
@@ -554,13 +525,13 @@ func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_startup
 func _gotk4_gio2_ApplicationClass_startup(arg0 *C.GApplication) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Startup() })
 
 	iface.Startup()
 }
 
-func wrapApplication(obj *externglib.Object) *Application {
+func wrapApplication(obj *coreglib.Object) *Application {
 	return &Application{
 		Object: obj,
 		ActionGroup: ActionGroup{
@@ -573,14 +544,14 @@ func wrapApplication(obj *externglib.Object) *Application {
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
-	return wrapApplication(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapApplication(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_Application_ConnectActivate
 func _gotk4_gio2_Application_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -594,15 +565,15 @@ func _gotk4_gio2_Application_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectActivate signal is emitted on the primary instance when an activation
 // occurs. See g_application_activate().
-func (application *Application) ConnectActivate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(application, "activate", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectActivate), f)
+func (application *Application) ConnectActivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(application, "activate", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectActivate), f)
 }
 
 //export _gotk4_gio2_Application_ConnectCommandLine
 func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplicationCommandLine, arg2 C.guintptr) (cret C.gint) {
 	var f func(commandLine *ApplicationCommandLine) (gint int)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -613,7 +584,7 @@ func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplic
 
 	var _commandLine *ApplicationCommandLine // out
 
-	_commandLine = wrapApplicationCommandLine(externglib.Take(unsafe.Pointer(arg1)))
+	_commandLine = wrapApplicationCommandLine(coreglib.Take(unsafe.Pointer(arg1)))
 
 	gint := f(_commandLine)
 
@@ -625,15 +596,15 @@ func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplic
 // ConnectCommandLine signal is emitted on the primary instance when a
 // commandline is not handled locally. See g_application_run() and the
 // CommandLine documentation for more information.
-func (application *Application) ConnectCommandLine(f func(commandLine *ApplicationCommandLine) (gint int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(application, "command-line", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectCommandLine), f)
+func (application *Application) ConnectCommandLine(f func(commandLine *ApplicationCommandLine) (gint int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(application, "command-line", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectCommandLine), f)
 }
 
 //export _gotk4_gio2_Application_ConnectHandleLocalOptions
 func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.GVariantDict, arg2 C.guintptr) (cret C.gint) {
 	var f func(options *glib.VariantDict) (gint int)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -697,15 +668,15 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 //
 // You can override local_command_line() if you need more powerful capabilities
 // than what is provided here, but this should not normally be required.
-func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) (gint int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(application, "handle-local-options", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectHandleLocalOptions), f)
+func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) (gint int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(application, "handle-local-options", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectHandleLocalOptions), f)
 }
 
 //export _gotk4_gio2_Application_ConnectNameLost
 func _gotk4_gio2_Application_ConnectNameLost(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
 	var f func() (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -728,15 +699,15 @@ func _gotk4_gio2_Application_ConnectNameLost(arg0 C.gpointer, arg1 C.guintptr) (
 // is using the G_APPLICATION_ALLOW_REPLACEMENT flag.
 //
 // The default handler for this signal calls g_application_quit().
-func (application *Application) ConnectNameLost(f func() (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(application, "name-lost", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectNameLost), f)
+func (application *Application) ConnectNameLost(f func() (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(application, "name-lost", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectNameLost), f)
 }
 
 //export _gotk4_gio2_Application_ConnectOpen
 func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
 	var f func(files []Filer, hint string)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -749,7 +720,7 @@ func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C
 	var _hint string   // out
 
 	{
-		src := unsafe.Slice((**C.GFile)(arg1), arg2)
+		src := unsafe.Slice((**C.void)(arg1), arg2)
 		_files = make([]Filer, arg2)
 		for i := 0; i < int(arg2); i++ {
 			{
@@ -758,8 +729,8 @@ func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C
 					panic("object of type gio.Filer is nil")
 				}
 
-				object := externglib.Take(objptr)
-				casted := object.WalkCast(func(obj externglib.Objector) bool {
+				object := coreglib.Take(objptr)
+				casted := object.WalkCast(func(obj coreglib.Objector) bool {
 					_, ok := obj.(Filer)
 					return ok
 				})
@@ -778,15 +749,15 @@ func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C
 
 // ConnectOpen signal is emitted on the primary instance when there are files to
 // open. See g_application_open() for more information.
-func (application *Application) ConnectOpen(f func(files []Filer, hint string)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(application, "open", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectOpen), f)
+func (application *Application) ConnectOpen(f func(files []Filer, hint string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(application, "open", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectOpen), f)
 }
 
 //export _gotk4_gio2_Application_ConnectShutdown
 func _gotk4_gio2_Application_ConnectShutdown(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -800,15 +771,15 @@ func _gotk4_gio2_Application_ConnectShutdown(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectShutdown signal is emitted only on the registered primary instance
 // immediately after the main loop terminates.
-func (application *Application) ConnectShutdown(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(application, "shutdown", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectShutdown), f)
+func (application *Application) ConnectShutdown(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(application, "shutdown", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectShutdown), f)
 }
 
 //export _gotk4_gio2_Application_ConnectStartup
 func _gotk4_gio2_Application_ConnectStartup(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -822,47 +793,8 @@ func _gotk4_gio2_Application_ConnectStartup(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectStartup signal is emitted on the primary instance immediately after
 // registration. See g_application_register().
-func (application *Application) ConnectStartup(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(application, "startup", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectStartup), f)
-}
-
-// NewApplication creates a new #GApplication instance.
-//
-// If non-NULL, the application id must be valid. See
-// g_application_id_is_valid().
-//
-// If no application ID is given then some features of #GApplication (most
-// notably application uniqueness) will be disabled.
-//
-// The function takes the following parameters:
-//
-//    - applicationId (optional): application id.
-//    - flags: application flags.
-//
-// The function returns the following values:
-//
-//    - application: new #GApplication instance.
-//
-func NewApplication(applicationId string, flags ApplicationFlags) *Application {
-	var _arg1 *C.gchar            // out
-	var _arg2 C.GApplicationFlags // out
-	var _cret *C.GApplication     // in
-
-	if applicationId != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg2 = C.GApplicationFlags(flags)
-
-	_cret = C.g_application_new(_arg1, _arg2)
-	runtime.KeepAlive(applicationId)
-	runtime.KeepAlive(flags)
-
-	var _application *Application // out
-
-	_application = wrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _application
+func (application *Application) ConnectStartup(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(application, "startup", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectStartup), f)
 }
 
 // Activate activates the application.
@@ -872,155 +804,15 @@ func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 //
 // The application must be registered before calling this function.
 func (application *Application) Activate() {
-	var _arg0 *C.GApplication // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_application_activate(_arg0)
+	girepository.MustFind("Gio", "Application").InvokeMethod("activate", args[:], nil)
+
 	runtime.KeepAlive(application)
-}
-
-// AddMainOption: add an option to be handled by application.
-//
-// Calling this function is the equivalent of calling
-// g_application_add_main_option_entries() with a single Entry that has its
-// arg_data member set to NULL.
-//
-// The parsed arguments will be packed into a Dict which is passed to
-// #GApplication::handle-local-options. If G_APPLICATION_HANDLES_COMMAND_LINE is
-// set, then it will also be sent to the primary instance. See
-// g_application_add_main_option_entries() for more details.
-//
-// See Entry for more documentation of the arguments.
-//
-// The function takes the following parameters:
-//
-//    - longName: long name of an option used to specify it in a commandline.
-//    - shortName: short name of an option.
-//    - flags from Flags.
-//    - arg: type of the option, as a Arg.
-//    - description for the option in --help output.
-//    - argDescription (optional): placeholder to use for the extra argument
-//      parsed by the option in --help output.
-//
-func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description, argDescription string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.char         // out
-	var _arg2 C.char          // out
-	var _arg3 C.GOptionFlags  // out
-	var _arg4 C.GOptionArg    // out
-	var _arg5 *C.char         // out
-	var _arg6 *C.char         // out
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(longName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.char(shortName)
-	_arg3 = C.GOptionFlags(flags)
-	_arg4 = C.GOptionArg(arg)
-	_arg5 = (*C.char)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg5))
-	if argDescription != "" {
-		_arg6 = (*C.char)(unsafe.Pointer(C.CString(argDescription)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-
-	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(longName)
-	runtime.KeepAlive(shortName)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(arg)
-	runtime.KeepAlive(description)
-	runtime.KeepAlive(argDescription)
-}
-
-// AddMainOptionEntries adds main option entries to be handled by application.
-//
-// This function is comparable to g_option_context_add_main_entries().
-//
-// After the commandline arguments are parsed, the
-// #GApplication::handle-local-options signal will be emitted. At this point,
-// the application can inspect the values pointed to by arg_data in the given
-// Entrys.
-//
-// Unlike Context, #GApplication supports giving a NULL arg_data for a
-// non-callback Entry. This results in the argument in question being packed
-// into a Dict which is also passed to #GApplication::handle-local-options,
-// where it can be inspected and modified. If G_APPLICATION_HANDLES_COMMAND_LINE
-// is set, then the resulting dictionary is sent to the primary instance, where
-// g_application_command_line_get_options_dict() will return it. This "packing"
-// is done according to the type of the argument -- booleans for normal flags,
-// strings for strings, bytestrings for filenames, etc. The packing only occurs
-// if the flag is given (ie: we do not pack a "false" #GVariant in the case that
-// a flag is missing).
-//
-// In general, it is recommended that all commandline arguments are parsed
-// locally. The options dictionary should then be used to transmit the result of
-// the parsing to the primary instance, where g_variant_dict_lookup() can be
-// used. For local options, it is possible to either use arg_data in the usual
-// way, or to consult (and potentially remove) the option from the options
-// dictionary.
-//
-// This function is new in GLib 2.40. Before then, the only real choice was to
-// send all of the commandline arguments (options and all) to the primary
-// instance for handling. #GApplication ignored them completely on the local
-// side. Calling this function "opts in" to the new behaviour, and in
-// particular, means that unrecognised options will be treated as errors.
-// Unrecognised options have never been ignored when
-// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
-//
-// If #GApplication::handle-local-options needs to see the list of filenames,
-// then the use of G_OPTION_REMAINING is recommended. If arg_data is NULL then
-// G_OPTION_REMAINING can be used as a key into the options dictionary. If you
-// do use G_OPTION_REMAINING then you need to handle these arguments for
-// yourself because once they are consumed, they will no longer be visible to
-// the default handling (which treats them as filenames to be opened).
-//
-// It is important to use the proper GVariant format when retrieving the options
-// with g_variant_dict_lookup():
-//
-// - for G_OPTION_ARG_NONE, use b
-//
-// - for G_OPTION_ARG_STRING, use &s
-//
-// - for G_OPTION_ARG_INT, use i
-//
-// - for G_OPTION_ARG_INT64, use x
-//
-// - for G_OPTION_ARG_DOUBLE, use d
-//
-// - for G_OPTION_ARG_FILENAME, use ^&ay
-//
-// - for G_OPTION_ARG_STRING_ARRAY, use ^a&s
-//
-// - for G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay.
-//
-// The function takes the following parameters:
-//
-//    - entries: a NULL-terminated list of Entrys.
-//
-func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.GOptionEntry // out
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	{
-		_arg1 = (*C.GOptionEntry)(C.calloc(C.size_t((len(entries) + 1)), C.size_t(C.sizeof_GOptionEntry)))
-		defer C.free(unsafe.Pointer(_arg1))
-		{
-			out := unsafe.Slice(_arg1, len(entries)+1)
-			var zero C.GOptionEntry
-			out[len(entries)] = zero
-			for i := range entries {
-				out[i] = *(*C.GOptionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
-			}
-		}
-	}
-
-	C.g_application_add_main_option_entries(_arg0, _arg1)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(entries)
 }
 
 // AddOptionGroup adds a Group to the commandline handling of application.
@@ -1052,42 +844,18 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 //    - group: Group.
 //
 func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.GOptionGroup // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	_arg1 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_add_option_group(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("add_option_group", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(group)
-}
-
-// BindBusyProperty marks application as busy (see g_application_mark_busy())
-// while property on object is TRUE.
-//
-// The binding holds a reference to application while it is active, but not to
-// object. Instead, the binding is destroyed when object is finalized.
-//
-// The function takes the following parameters:
-//
-//    - object: #GObject.
-//    - property: name of a boolean property of object.
-//
-func (application *Application) BindBusyProperty(object *externglib.Object, property string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 C.gpointer      // out
-	var _arg2 *C.gchar        // out
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(object)
-	runtime.KeepAlive(property)
 }
 
 // ApplicationID gets the unique identifier for application.
@@ -1097,12 +865,16 @@ func (application *Application) BindBusyProperty(object *externglib.Object, prop
 //    - utf8 (optional): identifier for application, owned by application.
 //
 func (application *Application) ApplicationID() string {
-	var _arg0 *C.GApplication // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_application_id(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_application_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
@@ -1132,18 +904,22 @@ func (application *Application) ApplicationID() string {
 //    - dBusConnection (optional) or NULL.
 //
 func (application *Application) DBusConnection() *DBusConnection {
-	var _arg0 *C.GApplication    // out
-	var _cret *C.GDBusConnection // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_dbus_connection(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_connection", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _dBusConnection *DBusConnection // out
 
 	if _cret != nil {
-		_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
+		_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _dBusConnection
@@ -1170,12 +946,16 @@ func (application *Application) DBusConnection() *DBusConnection {
 //    - utf8 (optional): object path, or NULL.
 //
 func (application *Application) DBusObjectPath() string {
-	var _arg0 *C.GApplication // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_dbus_object_path(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_object_path", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
@@ -1185,30 +965,6 @@ func (application *Application) DBusObjectPath() string {
 	}
 
 	return _utf8
-}
-
-// Flags gets the flags for application.
-//
-// See Flags.
-//
-// The function returns the following values:
-//
-//    - applicationFlags flags for application.
-//
-func (application *Application) Flags() ApplicationFlags {
-	var _arg0 *C.GApplication     // out
-	var _cret C.GApplicationFlags // in
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-
-	_cret = C.g_application_get_flags(_arg0)
-	runtime.KeepAlive(application)
-
-	var _applicationFlags ApplicationFlags // out
-
-	_applicationFlags = ApplicationFlags(_cret)
-
-	return _applicationFlags
 }
 
 // InactivityTimeout gets the current inactivity timeout for the application.
@@ -1221,12 +977,16 @@ func (application *Application) Flags() ApplicationFlags {
 //    - guint: timeout, in milliseconds.
 //
 func (application *Application) InactivityTimeout() uint {
-	var _arg0 *C.GApplication // out
-	var _cret C.guint         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_inactivity_timeout(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_inactivity_timeout", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _guint uint // out
@@ -1244,12 +1004,16 @@ func (application *Application) InactivityTimeout() uint {
 //    - ok: TRUE if application is currently marked as busy.
 //
 func (application *Application) IsBusy() bool {
-	var _arg0 *C.GApplication // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_is_busy(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_busy", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _ok bool // out
@@ -1271,12 +1035,16 @@ func (application *Application) IsBusy() bool {
 //    - ok: TRUE if application is registered.
 //
 func (application *Application) IsRegistered() bool {
-	var _arg0 *C.GApplication // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_is_registered(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_registered", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _ok bool // out
@@ -1303,12 +1071,16 @@ func (application *Application) IsRegistered() bool {
 //    - ok: TRUE if application is remote.
 //
 func (application *Application) IsRemote() bool {
-	var _arg0 *C.GApplication // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_is_remote(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_remote", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _ok bool // out
@@ -1329,12 +1101,16 @@ func (application *Application) IsRemote() bool {
 //    - utf8 (optional): base resource path, if one is set.
 //
 func (application *Application) ResourceBasePath() string {
-	var _arg0 *C.GApplication // out
-	var _cret *C.gchar        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_get_resource_base_path(_arg0)
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_resource_base_path", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
@@ -1354,11 +1130,14 @@ func (application *Application) ResourceBasePath() string {
 //
 // To cancel the hold, call g_application_release().
 func (application *Application) Hold() {
-	var _arg0 *C.GApplication // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_application_hold(_arg0)
+	girepository.MustFind("Gio", "Application").InvokeMethod("hold", args[:], nil)
+
 	runtime.KeepAlive(application)
 }
 
@@ -1372,11 +1151,14 @@ func (application *Application) Hold() {
 //
 // To cancel the busy indication, use g_application_unmark_busy().
 func (application *Application) MarkBusy() {
-	var _arg0 *C.GApplication // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_application_mark_busy(_arg0)
+	girepository.MustFind("Gio", "Application").InvokeMethod("mark_busy", args[:], nil)
+
 	runtime.KeepAlive(application)
 }
 
@@ -1401,25 +1183,30 @@ func (application *Application) MarkBusy() {
 //    - hint (or ""), but never NULL.
 //
 func (application *Application) Open(files []Filer, hint string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 **C.GFile       // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 **C.void // out
 	var _arg2 C.gint
-	var _arg3 *C.gchar // out
+	var _arg3 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg2 = (C.gint)(len(files))
-	_arg1 = (**C.GFile)(C.calloc(C.size_t(len(files)), C.size_t(unsafe.Sizeof(uint(0)))))
+	_arg1 = (**C.void)(C.calloc(C.size_t(len(files)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice((**C.GFile)(_arg1), len(files))
+		out := unsafe.Slice((**C.void)(_arg1), len(files))
 		for i := range files {
-			out[i] = (*C.GFile)(unsafe.Pointer(externglib.InternObject(files[i]).Native()))
+			out[i] = (*C.void)(unsafe.Pointer(coreglib.InternObject(files[i]).Native()))
 		}
 	}
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(hint)))
+	_arg3 = (*C.void)(unsafe.Pointer(C.CString(hint)))
 	defer C.free(unsafe.Pointer(_arg3))
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
+	*(*[]Filer)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_application_open(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gio", "Application").InvokeMethod("open", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(files)
 	runtime.KeepAlive(hint)
@@ -1438,11 +1225,14 @@ func (application *Application) Open(files []Filer, hint string) {
 // The result of calling g_application_run() again after it returns is
 // unspecified.
 func (application *Application) Quit() {
-	var _arg0 *C.GApplication // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_application_quit(_arg0)
+	girepository.MustFind("Gio", "Application").InvokeMethod("quit", args[:], nil)
+
 	runtime.KeepAlive(application)
 }
 
@@ -1480,18 +1270,21 @@ func (application *Application) Quit() {
 //    - ctx (optional) or NULL.
 //
 func (application *Application) Register(ctx context.Context) error {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_register(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "Application").InvokeMethod("register", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(ctx)
 
@@ -1511,120 +1304,15 @@ func (application *Application) Register(ctx context.Context) error {
 // Never call this function except to cancel the effect of a previous call to
 // g_application_hold().
 func (application *Application) Release() {
-	var _arg0 *C.GApplication // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_application_release(_arg0)
+	girepository.MustFind("Gio", "Application").InvokeMethod("release", args[:], nil)
+
 	runtime.KeepAlive(application)
-}
-
-// Run runs the application.
-//
-// This function is intended to be run from main() and its return value is
-// intended to be returned by main(). Although you are expected to pass the
-// argc, argv parameters from main() to this function, it is possible to pass
-// NULL if argv is not available or commandline handling is not required. Note
-// that on Windows, argc and argv are ignored, and g_win32_get_command_line() is
-// called internally (for proper support of Unicode commandline arguments).
-//
-// #GApplication will attempt to parse the commandline arguments. You can add
-// commandline flags to the list of recognised options by way of
-// g_application_add_main_option_entries(). After this, the
-// #GApplication::handle-local-options signal is emitted, from which the
-// application can inspect the values of its Entrys.
-//
-// #GApplication::handle-local-options is a good place to handle options such as
-// --version, where an immediate reply from the local process is desired
-// (instead of communicating with an already-running instance). A
-// #GApplication::handle-local-options handler can stop further processing by
-// returning a non-negative value, which then becomes the exit status of the
-// process.
-//
-// What happens next depends on the flags: if G_APPLICATION_HANDLES_COMMAND_LINE
-// was specified then the remaining commandline arguments are sent to the
-// primary instance, where a #GApplication::command-line signal is emitted.
-// Otherwise, the remaining commandline arguments are assumed to be a list of
-// files. If there are no files listed, the application is activated via the
-// #GApplication::activate signal. If there are one or more files, and
-// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via the
-// #GApplication::open signal.
-//
-// If you are interested in doing more complicated local handling of the
-// commandline then you should implement your own #GApplication subclass and
-// override local_command_line(). In this case, you most likely want to return
-// TRUE from your local_command_line() implementation to suppress the default
-// handling. See
-// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
-// example.
-//
-// If, after the above is done, the use count of the application is zero then
-// the exit status is returned immediately. If the use count is non-zero then
-// the default main context is iterated until the use count falls to zero, at
-// which point 0 is returned.
-//
-// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run for as
-// much as 10 seconds with a use count of zero while waiting for the message
-// that caused the activation to arrive. After that, if the use count falls to
-// zero the application will exit immediately, except in the case that
-// g_application_set_inactivity_timeout() is in use.
-//
-// This function sets the prgname (g_set_prgname()), if not already set, to the
-// basename of argv[0].
-//
-// Much like g_main_loop_run(), this function will acquire the main context for
-// the duration that the application is running.
-//
-// Since 2.40, applications that are not explicitly flagged as services or
-// launchers (ie: neither G_APPLICATION_IS_SERVICE or G_APPLICATION_IS_LAUNCHER
-// are given as flags) will check (from the default handler for
-// local_command_line) if "--gapplication-service" was given in the command
-// line. If this flag is present then normal commandline processing is
-// interrupted and the G_APPLICATION_IS_SERVICE flag is set. This provides a
-// "compromise" solution whereby running an application directly from the
-// commandline will invoke it in the normal way (which can be useful for
-// debugging) while still allowing applications to be D-Bus activated in service
-// mode. The D-Bus service file should invoke the executable with
-// "--gapplication-service" as the sole commandline argument. This approach is
-// suitable for use by most graphical applications but should not be used from
-// applications like editors that need precise control over when processes
-// invoked via the commandline will exit and what their exit status will be.
-//
-// The function takes the following parameters:
-//
-//    - argv (optional): the argv from main(), or NULL.
-//
-// The function returns the following values:
-//
-//    - gint: exit status.
-//
-func (application *Application) Run(argv []string) int {
-	var _arg0 *C.GApplication // out
-	var _arg2 **C.char        // out
-	var _arg1 C.int
-	var _cret C.int // in
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	_arg1 = (C.int)(len(argv))
-	_arg2 = (**C.char)(C.calloc(C.size_t(len(argv)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((**C.char)(_arg2), len(argv))
-		for i := range argv {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(argv[i])))
-			defer C.free(unsafe.Pointer(out[i]))
-		}
-	}
-
-	_cret = C.g_application_run(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(argv)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // SendNotification sends a notification on behalf of application to the desktop
@@ -1658,18 +1346,22 @@ func (application *Application) Run(argv []string) int {
 //    - notification to send.
 //
 func (application *Application) SendNotification(id string, notification *Notification) {
-	var _arg0 *C.GApplication  // out
-	var _arg1 *C.gchar         // out
-	var _arg2 *C.GNotification // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if id != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_application_send_notification(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "Application").InvokeMethod("send_notification", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(notification)
@@ -1688,15 +1380,18 @@ func (application *Application) SendNotification(id string, notification *Notifi
 //    - actionGroup (optional) or NULL.
 //
 func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.GActionGroup // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if actionGroup != nil {
-		_arg1 = (*C.GActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_set_action_group(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_action_group", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(actionGroup)
 }
@@ -1714,16 +1409,19 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 //    - applicationId (optional): identifier for application.
 //
 func (application *Application) SetApplicationID(applicationId string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if applicationId != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_set_application_id(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_application_id", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(applicationId)
 }
@@ -1734,36 +1432,17 @@ func (application *Application) SetApplicationID(applicationId string) {
 // This function does not take its own reference on application. If application
 // is destroyed then the default application will revert back to NULL.
 func (application *Application) SetDefault() {
-	var _arg0 *C.GApplication // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
 	if application != nil {
-		_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	}
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_application_set_default(_arg0)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_default", args[:], nil)
+
 	runtime.KeepAlive(application)
-}
-
-// SetFlags sets the flags for application.
-//
-// The flags can only be modified if application has not yet been registered.
-//
-// See Flags.
-//
-// The function takes the following parameters:
-//
-//    - flags for application.
-//
-func (application *Application) SetFlags(flags ApplicationFlags) {
-	var _arg0 *C.GApplication     // out
-	var _arg1 C.GApplicationFlags // out
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	_arg1 = C.GApplicationFlags(flags)
-
-	C.g_application_set_flags(_arg0, _arg1)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(flags)
 }
 
 // SetInactivityTimeout sets the current inactivity timeout for the application.
@@ -1780,13 +1459,16 @@ func (application *Application) SetFlags(flags ApplicationFlags) {
 //    - inactivityTimeout: timeout, in milliseconds.
 //
 func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
-	var _arg0 *C.GApplication // out
-	var _arg1 C.guint         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = C.guint(inactivityTimeout)
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_set_inactivity_timeout(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_inactivity_timeout", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(inactivityTimeout)
 }
@@ -1802,16 +1484,19 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 //      list of options, or NULL.
 //
 func (application *Application) SetOptionContextDescription(description string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if description != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(description)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_set_option_context_description(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_description", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(description)
 }
@@ -1830,16 +1515,19 @@ func (application *Application) SetOptionContextDescription(description string) 
 //      of --help output, after the usage summary programname [OPTION...].
 //
 func (application *Application) SetOptionContextParameterString(parameterString string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if parameterString != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(parameterString)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(parameterString)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_parameter_string", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(parameterString)
 }
@@ -1854,16 +1542,19 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 //      of options, or NULL.
 //
 func (application *Application) SetOptionContextSummary(summary string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if summary != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(summary)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(summary)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_set_option_context_summary(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_summary", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(summary)
 }
@@ -1905,43 +1596,21 @@ func (application *Application) SetOptionContextSummary(summary string) {
 //    - resourcePath (optional): resource path to use.
 //
 func (application *Application) SetResourceBasePath(resourcePath string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if resourcePath != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_set_resource_base_path(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_resource_base_path", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(resourcePath)
-}
-
-// UnbindBusyProperty destroys a binding between property and the busy state of
-// application that was previously created with
-// g_application_bind_busy_property().
-//
-// The function takes the following parameters:
-//
-//    - object: #GObject.
-//    - property: name of a boolean property of object.
-//
-func (application *Application) UnbindBusyProperty(object *externglib.Object, property string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 C.gpointer      // out
-	var _arg2 *C.gchar        // out
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(object)
-	runtime.KeepAlive(property)
 }
 
 // UnmarkBusy decreases the busy count of application.
@@ -1952,11 +1621,14 @@ func (application *Application) UnbindBusyProperty(object *externglib.Object, pr
 // This function must only be called to cancel the effect of a previous call to
 // g_application_mark_busy().
 func (application *Application) UnmarkBusy() {
-	var _arg0 *C.GApplication // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_application_unmark_busy(_arg0)
+	girepository.MustFind("Gio", "Application").InvokeMethod("unmark_busy", args[:], nil)
+
 	runtime.KeepAlive(application)
 }
 
@@ -1978,14 +1650,17 @@ func (application *Application) UnmarkBusy() {
 //    - id of a previously sent notification.
 //
 func (application *Application) WithdrawNotification(id string) {
-	var _arg0 *C.GApplication // out
-	var _arg1 *C.gchar        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_application_withdraw_notification(_arg0, _arg1)
+	girepository.MustFind("Gio", "Application").InvokeMethod("withdraw_notification", args[:], nil)
+
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
 }
@@ -2004,14 +1679,15 @@ func (application *Application) WithdrawNotification(id string) {
 //    - application (optional): default application for this process, or NULL.
 //
 func ApplicationGetDefault() *Application {
-	var _cret *C.GApplication // in
+	var _cret *C.void // in
 
-	_cret = C.g_application_get_default()
+	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _application *Application // out
 
 	if _cret != nil {
-		_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+		_application = wrapApplication(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _application
@@ -2073,13 +1749,17 @@ func ApplicationGetDefault() *Application {
 //    - ok: TRUE if application_id is valid.
 //
 func ApplicationIDIsValid(applicationId string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_application_id_is_valid(_arg1)
+	_gret := girepository.MustFind("Gio", "id_is_valid").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(applicationId)
 
 	var _ok bool // out

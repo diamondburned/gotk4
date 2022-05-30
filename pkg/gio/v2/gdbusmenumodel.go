@@ -6,11 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // DBusMenuModelGet obtains a BusMenuModel for the menu model which is exported
@@ -34,27 +36,33 @@ import "C"
 //    - dBusMenuModel object. Free with g_object_unref().
 //
 func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *DBusMenuModel {
-	var _arg1 *C.GDBusConnection // out
-	var _arg2 *C.gchar           // out
-	var _arg3 *C.gchar           // out
-	var _cret *C.GDBusMenuModel  // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if busName != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(busName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg3))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg2))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.g_dbus_menu_model_get(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Gio", "get").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(busName)
 	runtime.KeepAlive(objectPath)
 
 	var _dBusMenuModel *DBusMenuModel // out
 
-	_dBusMenuModel = wrapDBusMenuModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMenuModel = wrapDBusMenuModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMenuModel
 }

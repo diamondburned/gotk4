@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtklistitemfactory.go.
-var GTypeListItemFactory = externglib.Type(C.gtk_list_item_factory_get_type())
+var GTypeListItemFactory = coreglib.Type(C.gtk_list_item_factory_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeListItemFactory, F: marshalListItemFactory},
 	})
 }
@@ -76,11 +77,11 @@ type ListItemFactoryOverrider interface {
 // Reusing factories across different views is allowed, but very uncommon.
 type ListItemFactory struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*ListItemFactory)(nil)
+	_ coreglib.Objector = (*ListItemFactory)(nil)
 )
 
 func classInitListItemFactorier(gclassPtr, data C.gpointer) {
@@ -91,12 +92,12 @@ func classInitListItemFactorier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapListItemFactory(obj *externglib.Object) *ListItemFactory {
+func wrapListItemFactory(obj *coreglib.Object) *ListItemFactory {
 	return &ListItemFactory{
 		Object: obj,
 	}
 }
 
 func marshalListItemFactory(p uintptr) (interface{}, error) {
-	return wrapListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapListItemFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

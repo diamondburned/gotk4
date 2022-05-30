@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -17,10 +17,10 @@ import (
 import "C"
 
 // glib.Type values for gdatetime.go.
-var GTypeDateTime = externglib.Type(C.g_date_time_get_type())
+var GTypeDateTime = coreglib.Type(C.g_date_time_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDateTime, F: marshalDateTime},
 	})
 }
@@ -57,7 +57,7 @@ type dateTime struct {
 }
 
 func marshalDateTime(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &DateTime{&dateTime{(*C.GDateTime)(b)}}, nil
 }
 

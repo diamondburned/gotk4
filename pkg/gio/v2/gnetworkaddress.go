@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gnetworkaddress.go.
-var GTypeNetworkAddress = externglib.Type(C.g_network_address_get_type())
+var GTypeNetworkAddress = coreglib.Type(C.g_network_address_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNetworkAddress, F: marshalNetworkAddress},
 	})
 }
@@ -38,13 +39,13 @@ type NetworkAddressOverrider interface {
 // See Connectable for an example of using the connectable interface.
 type NetworkAddress struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	SocketConnectable
 }
 
 var (
-	_ externglib.Objector = (*NetworkAddress)(nil)
+	_ coreglib.Objector = (*NetworkAddress)(nil)
 )
 
 func classInitNetworkAddresser(gclassPtr, data C.gpointer) {
@@ -55,7 +56,7 @@ func classInitNetworkAddresser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
+func wrapNetworkAddress(obj *coreglib.Object) *NetworkAddress {
 	return &NetworkAddress{
 		Object: obj,
 		SocketConnectable: SocketConnectable{
@@ -65,7 +66,7 @@ func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 }
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
-	return wrapNetworkAddress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNetworkAddress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNetworkAddress creates a new Connectable for connecting to the given
@@ -86,21 +87,26 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 //    - networkAddress: new Address.
 //
 func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
-	var _arg1 *C.gchar              // out
-	var _arg2 C.guint16             // out
-	var _cret *C.GSocketConnectable // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
+	var _cret *C.void   // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(port)
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = C.guint16(port)
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_network_address_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("new_NetworkAddress", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(hostname)
 	runtime.KeepAlive(port)
 
 	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }
@@ -126,17 +132,21 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 //    - networkAddress: new Address.
 //
 func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
-	var _arg1 C.guint16             // out
-	var _cret *C.GSocketConnectable // in
+	var args [1]girepository.Argument
+	var _arg0 C.guint16 // out
+	var _cret *C.void   // in
 
-	_arg1 = C.guint16(port)
+	_arg0 = C.guint16(port)
+	*(*uint16)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_network_address_new_loopback(_arg1)
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("new_NetworkAddress_loopback", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(port)
 
 	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }
@@ -149,12 +159,16 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 //    - utf8 addr's hostname.
 //
 func (addr *NetworkAddress) Hostname() string {
-	var _arg0 *C.GNetworkAddress // out
-	var _cret *C.gchar           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(externglib.InternObject(addr).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
+	*(**NetworkAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_network_address_get_hostname(_arg0)
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_hostname", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(addr)
 
 	var _utf8 string // out
@@ -171,12 +185,16 @@ func (addr *NetworkAddress) Hostname() string {
 //    - guint16 addr's port (which may be 0).
 //
 func (addr *NetworkAddress) Port() uint16 {
-	var _arg0 *C.GNetworkAddress // out
-	var _cret C.guint16          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint16 // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(externglib.InternObject(addr).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
+	*(**NetworkAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_network_address_get_port(_arg0)
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_port", args[:], nil)
+	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(addr)
 
 	var _guint16 uint16 // out
@@ -193,12 +211,16 @@ func (addr *NetworkAddress) Port() uint16 {
 //    - utf8 (optional) addr's scheme (NULL if not built from URI).
 //
 func (addr *NetworkAddress) Scheme() string {
-	var _arg0 *C.GNetworkAddress // out
-	var _cret *C.gchar           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(externglib.InternObject(addr).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
+	*(**NetworkAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_network_address_get_scheme(_arg0)
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_scheme", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(addr)
 
 	var _utf8 string // out
@@ -241,23 +263,28 @@ func (addr *NetworkAddress) Scheme() string {
 //    - networkAddress: new Address, or NULL on error.
 //
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
-	var _arg1 *C.gchar              // out
-	var _arg2 C.guint16             // out
-	var _cret *C.GSocketConnectable // in
-	var _cerr *C.GError             // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
+	var _cret *C.void   // in
+	var _cerr *C.void   // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = C.guint16(defaultPort)
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_network_address_parse(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "parse").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(hostAndPort)
 	runtime.KeepAlive(defaultPort)
 
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out
 
-	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -281,23 +308,28 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 //    - networkAddress: new Address, or NULL on error.
 //
 func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
-	var _arg1 *C.gchar              // out
-	var _arg2 C.guint16             // out
-	var _cret *C.GSocketConnectable // in
-	var _cerr *C.GError             // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
+	var _cret *C.void   // in
+	var _cerr *C.void   // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = C.guint16(defaultPort)
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_network_address_parse_uri(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "parse_uri").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(defaultPort)
 
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out
 
-	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

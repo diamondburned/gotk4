@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkpopoveraccessible.go.
-var GTypePopoverAccessible = externglib.Type(C.gtk_popover_accessible_get_type())
+var GTypePopoverAccessible = coreglib.Type(C.gtk_popover_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePopoverAccessible, F: marshalPopoverAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type PopoverAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*PopoverAccessible)(nil)
+	_ coreglib.Objector = (*PopoverAccessible)(nil)
 )
 
 func classInitPopoverAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitPopoverAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
+func wrapPopoverAccessible(obj *coreglib.Object) *PopoverAccessible {
 	return &PopoverAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -64,5 +63,5 @@ func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 }
 
 func marshalPopoverAccessible(p uintptr) (interface{}, error) {
-	return wrapPopoverAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPopoverAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

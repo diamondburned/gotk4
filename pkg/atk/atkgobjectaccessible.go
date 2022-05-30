@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for atkgobjectaccessible.go.
-var GTypeGObjectAccessible = externglib.Type(C.atk_gobject_accessible_get_type())
+var GTypeGObjectAccessible = coreglib.Type(C.atk_gobject_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGObjectAccessible, F: marshalGObjectAccessible},
 	})
 }
@@ -37,7 +38,7 @@ type GObjectAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*GObjectAccessible)(nil)
+	_ coreglib.Objector = (*GObjectAccessible)(nil)
 )
 
 func classInitGObjectAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +49,7 @@ func classInitGObjectAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
+func wrapGObjectAccessible(obj *coreglib.Object) *GObjectAccessible {
 	return &GObjectAccessible{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -57,7 +58,7 @@ func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 }
 
 func marshalGObjectAccessible(p uintptr) (interface{}, error) {
-	return wrapGObjectAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGObjectAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Object gets the GObject for which obj is the accessible object.
@@ -66,18 +67,22 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 //
 //    - object which is the object for which obj is the accessible object.
 //
-func (obj *GObjectAccessible) Object() *externglib.Object {
-	var _arg0 *C.AtkGObjectAccessible // out
-	var _cret *C.GObject              // in
+func (obj *GObjectAccessible) Object() *coreglib.Object {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer(externglib.InternObject(obj).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	*(**GObjectAccessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_gobject_accessible_get_object(_arg0)
+	_gret := girepository.MustFind("Atk", "GObjectAccessible").InvokeMethod("get_object", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(obj)
 
-	var _object *externglib.Object // out
+	var _object *coreglib.Object // out
 
-	_object = externglib.Take(unsafe.Pointer(_cret))
+	_object = coreglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -92,18 +97,22 @@ func (obj *GObjectAccessible) Object() *externglib.Object {
 //
 //    - object which is the accessible object for the obj.
 //
-func GObjectAccessibleForObject(obj *externglib.Object) *ObjectClass {
-	var _arg1 *C.GObject   // out
-	var _cret *C.AtkObject // in
+func GObjectAccessibleForObject(obj *coreglib.Object) *ObjectClass {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(obj.Native()))
+	*(**coreglib.Object)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_gobject_accessible_for_object(_arg1)
+	_gret := girepository.MustFind("Atk", "for_object").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(obj)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }

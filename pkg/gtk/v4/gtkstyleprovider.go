@@ -5,20 +5,21 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkstyleprovider.go.
-var GTypeStyleProvider = externglib.Type(C.gtk_style_provider_get_type())
+var GTypeStyleProvider = coreglib.Type(C.gtk_style_provider_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStyleProvider, F: marshalStyleProvider},
 	})
 }
@@ -65,30 +66,30 @@ const STYLE_PROVIDER_PRIORITY_USER = 800
 // underlying type by calling Cast().
 type StyleProvider struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*StyleProvider)(nil)
+	_ coreglib.Objector = (*StyleProvider)(nil)
 )
 
 // StyleProviderer describes StyleProvider's interface methods.
 type StyleProviderer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseStyleProvider() *StyleProvider
 }
 
 var _ StyleProviderer = (*StyleProvider)(nil)
 
-func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
+func wrapStyleProvider(obj *coreglib.Object) *StyleProvider {
 	return &StyleProvider{
 		Object: obj,
 	}
 }
 
 func marshalStyleProvider(p uintptr) (interface{}, error) {
-	return wrapStyleProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStyleProvider(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *StyleProvider) baseStyleProvider() *StyleProvider {
@@ -104,7 +105,7 @@ func BaseStyleProvider(obj StyleProviderer) *StyleProvider {
 func _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -116,6 +117,6 @@ func _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(arg0 C.gpointer, arg1 C.
 	f()
 }
 
-func (v *StyleProvider) ConnectGTKPrivateChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "gtk-private-changed", false, unsafe.Pointer(C._gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged), f)
+func (v *StyleProvider) ConnectGTKPrivateChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "gtk-private-changed", false, unsafe.Pointer(C._gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged), f)
 }

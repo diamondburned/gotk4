@@ -5,21 +5,22 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk4_EventControllerLegacy_ConnectEvent(gpointer, GdkEvent*, guintptr);
 import "C"
 
 // glib.Type values for gtkeventcontrollerlegacy.go.
-var GTypeEventControllerLegacy = externglib.Type(C.gtk_event_controller_legacy_get_type())
+var GTypeEventControllerLegacy = coreglib.Type(C.gtk_event_controller_legacy_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEventControllerLegacy, F: marshalEventControllerLegacy},
 	})
 }
@@ -50,7 +51,7 @@ func classInitEventControllerLegacier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEventControllerLegacy(obj *externglib.Object) *EventControllerLegacy {
+func wrapEventControllerLegacy(obj *coreglib.Object) *EventControllerLegacy {
 	return &EventControllerLegacy{
 		EventController: EventController{
 			Object: obj,
@@ -59,14 +60,14 @@ func wrapEventControllerLegacy(obj *externglib.Object) *EventControllerLegacy {
 }
 
 func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
-	return wrapEventControllerLegacy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEventControllerLegacy(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_EventControllerLegacy_ConnectEvent
 func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(event gdk.Eventer) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -83,8 +84,8 @@ func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.Gdk
 			panic("object of type gdk.Eventer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gdk.Eventer)
 			return ok
 		})
@@ -105,8 +106,8 @@ func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.Gdk
 }
 
 // ConnectEvent is emitted for each GDK event delivered to controller.
-func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "event", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerLegacy_ConnectEvent), f)
+func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "event", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerLegacy_ConnectEvent), f)
 }
 
 // NewEventControllerLegacy creates a new legacy event controller.
@@ -116,13 +117,14 @@ func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) (ok bool)
 //    - eventControllerLegacy: newly created event controller.
 //
 func NewEventControllerLegacy() *EventControllerLegacy {
-	var _cret *C.GtkEventController // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_event_controller_legacy_new()
+	_gret := girepository.MustFind("Gtk", "EventControllerLegacy").InvokeMethod("new_EventControllerLegacy", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _eventControllerLegacy *EventControllerLegacy // out
 
-	_eventControllerLegacy = wrapEventControllerLegacy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerLegacy = wrapEventControllerLegacy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerLegacy
 }

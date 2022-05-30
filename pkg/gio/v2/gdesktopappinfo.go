@@ -2,8 +2,13 @@
 
 package gio
 
+import (
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+)
+
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME: extension point for default

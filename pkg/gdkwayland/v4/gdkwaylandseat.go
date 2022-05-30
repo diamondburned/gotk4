@@ -5,20 +5,21 @@ package gdkwayland
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/wayland/gdkwayland.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkwaylandseat.go.
-var GTypeWaylandSeat = externglib.Type(C.gdk_wayland_seat_get_type())
+var GTypeWaylandSeat = coreglib.Type(C.gdk_wayland_seat_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWaylandSeat, F: marshalWaylandSeat},
 	})
 }
@@ -48,7 +49,7 @@ func classInitWaylandSeater(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
+func wrapWaylandSeat(obj *coreglib.Object) *WaylandSeat {
 	return &WaylandSeat{
 		Seat: gdk.Seat{
 			Object: obj,
@@ -57,5 +58,5 @@ func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
 }
 
 func marshalWaylandSeat(p uintptr) (interface{}, error) {
-	return wrapWaylandSeat(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandSeat(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

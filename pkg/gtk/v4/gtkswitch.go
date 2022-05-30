@@ -6,21 +6,22 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk4_Switch_ConnectStateSet(gpointer, gboolean, guintptr);
 // extern void _gotk4_gtk4_Switch_ConnectActivate(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkswitch.go.
-var GTypeSwitch = externglib.Type(C.gtk_switch_get_type())
+var GTypeSwitch = coreglib.Type(C.gtk_switch_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSwitch, F: marshalSwitch},
 	})
 }
@@ -55,19 +56,19 @@ type Switch struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Actionable
 }
 
 var (
-	_ Widgetter           = (*Switch)(nil)
-	_ externglib.Objector = (*Switch)(nil)
+	_ Widgetter         = (*Switch)(nil)
+	_ coreglib.Objector = (*Switch)(nil)
 )
 
-func wrapSwitch(obj *externglib.Object) *Switch {
+func wrapSwitch(obj *coreglib.Object) *Switch {
 	return &Switch{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -84,7 +85,7 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -103,14 +104,14 @@ func wrapSwitch(obj *externglib.Object) *Switch {
 }
 
 func marshalSwitch(p uintptr) (interface{}, error) {
-	return wrapSwitch(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSwitch(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_Switch_ConnectActivate
 func _gotk4_gtk4_Switch_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -126,15 +127,15 @@ func _gotk4_gtk4_Switch_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 //
 // Applications should never connect to this signal, but use the
 // gtk.Switch:active property.
-func (self *Switch) ConnectActivate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Switch_ConnectActivate), f)
+func (self *Switch) ConnectActivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Switch_ConnectActivate), f)
 }
 
 //export _gotk4_gtk4_Switch_ConnectStateSet
 func _gotk4_gtk4_Switch_ConnectStateSet(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(state bool) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -172,8 +173,8 @@ func _gotk4_gtk4_Switch_ConnectStateSet(arg0 C.gpointer, arg1 C.gboolean, arg2 C
 // Visually, the underlying state is represented by the trough color of the
 // switch, while the gtk.Switch`:active property is represented by the position
 // of the switch.
-func (self *Switch) ConnectStateSet(f func(state bool) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "state-set", false, unsafe.Pointer(C._gotk4_gtk4_Switch_ConnectStateSet), f)
+func (self *Switch) ConnectStateSet(f func(state bool) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "state-set", false, unsafe.Pointer(C._gotk4_gtk4_Switch_ConnectStateSet), f)
 }
 
 // NewSwitch creates a new GtkSwitch widget.
@@ -183,13 +184,14 @@ func (self *Switch) ConnectStateSet(f func(state bool) (ok bool)) externglib.Sig
 //    - _switch: newly created GtkSwitch instance.
 //
 func NewSwitch() *Switch {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_switch_new()
+	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("new_Switch", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var __switch *Switch // out
 
-	__switch = wrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
+	__switch = wrapSwitch(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
 }
@@ -201,12 +203,16 @@ func NewSwitch() *Switch {
 //    - ok: TRUE if the GtkSwitch is active, and FALSE otherwise.
 //
 func (self *Switch) Active() bool {
-	var _arg0 *C.GtkSwitch // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Switch)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_switch_get_active(_arg0)
+	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_active", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -225,12 +231,16 @@ func (self *Switch) Active() bool {
 //    - ok: underlying state.
 //
 func (self *Switch) State() bool {
-	var _arg0 *C.GtkSwitch // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Switch)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_switch_get_state(_arg0)
+	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_state", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -249,15 +259,18 @@ func (self *Switch) State() bool {
 //    - isActive: TRUE if self should be active, and FALSE otherwise.
 //
 func (self *Switch) SetActive(isActive bool) {
-	var _arg0 *C.GtkSwitch // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
+	*(**Switch)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_switch_set_active(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_active", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(isActive)
 }
@@ -275,15 +288,18 @@ func (self *Switch) SetActive(isActive bool) {
 //    - state: new state.
 //
 func (self *Switch) SetState(state bool) {
-	var _arg0 *C.GtkSwitch // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if state {
 		_arg1 = C.TRUE
 	}
+	*(**Switch)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_switch_set_state(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_state", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(state)
 }

@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkactionbar.go.
-var GTypeActionBar = externglib.Type(C.gtk_action_bar_get_type())
+var GTypeActionBar = coreglib.Type(C.gtk_action_bar_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeActionBar, F: marshalActionBar},
 	})
 }
@@ -59,12 +58,12 @@ func classInitActionBarrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapActionBar(obj *externglib.Object) *ActionBar {
+func wrapActionBar(obj *coreglib.Object) *ActionBar {
 	return &ActionBar{
 		Bin: Bin{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -81,7 +80,7 @@ func wrapActionBar(obj *externglib.Object) *ActionBar {
 }
 
 func marshalActionBar(p uintptr) (interface{}, error) {
-	return wrapActionBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapActionBar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewActionBar creates a new ActionBar widget.
@@ -91,13 +90,14 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 //    - actionBar: new ActionBar.
 //
 func NewActionBar() *ActionBar {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_action_bar_new()
+	_gret := girepository.MustFind("Gtk", "ActionBar").InvokeMethod("new_ActionBar", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _actionBar *ActionBar // out
 
-	_actionBar = wrapActionBar(externglib.Take(unsafe.Pointer(_cret)))
+	_actionBar = wrapActionBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _actionBar
 }
@@ -109,12 +109,16 @@ func NewActionBar() *ActionBar {
 //    - widget (optional): center Widget or NULL.
 //
 func (actionBar *ActionBar) CenterWidget() Widgetter {
-	var _arg0 *C.GtkActionBar // out
-	var _cret *C.GtkWidget    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	*(**ActionBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_bar_get_center_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "ActionBar").InvokeMethod("get_center_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionBar)
 
 	var _widget Widgetter // out
@@ -123,8 +127,8 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -147,13 +151,16 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 //    - child to be added to action_bar.
 //
 func (actionBar *ActionBar) PackEnd(child Widgetter) {
-	var _arg0 *C.GtkActionBar // out
-	var _arg1 *C.GtkWidget    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**ActionBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_bar_pack_end(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("pack_end", args[:], nil)
+
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(child)
 }
@@ -166,13 +173,16 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 //    - child to be added to action_bar.
 //
 func (actionBar *ActionBar) PackStart(child Widgetter) {
-	var _arg0 *C.GtkActionBar // out
-	var _arg1 *C.GtkWidget    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**ActionBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_bar_pack_start(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("pack_start", args[:], nil)
+
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(child)
 }
@@ -184,15 +194,18 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 //    - centerWidget (optional): widget to use for the center.
 //
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
-	var _arg0 *C.GtkActionBar // out
-	var _arg1 *C.GtkWidget    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(externglib.InternObject(actionBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 	if centerWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(centerWidget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(centerWidget).Native()))
 	}
+	*(**ActionBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("set_center_widget", args[:], nil)
+
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(centerWidget)
 }

@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcellrendererspin.go.
-var GTypeCellRendererSpin = externglib.Type(C.gtk_cell_renderer_spin_get_type())
+var GTypeCellRendererSpin = coreglib.Type(C.gtk_cell_renderer_spin_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellRendererSpin, F: marshalCellRendererSpin},
 	})
 }
@@ -46,11 +47,11 @@ var (
 	_ CellRendererer = (*CellRendererSpin)(nil)
 )
 
-func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
+func wrapCellRendererSpin(obj *coreglib.Object) *CellRendererSpin {
 	return &CellRendererSpin{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 			},
@@ -59,7 +60,7 @@ func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
 }
 
 func marshalCellRendererSpin(p uintptr) (interface{}, error) {
-	return wrapCellRendererSpin(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellRendererSpin(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererSpin creates a new CellRendererSpin.
@@ -69,13 +70,14 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 //    - cellRendererSpin: new CellRendererSpin.
 //
 func NewCellRendererSpin() *CellRendererSpin {
-	var _cret *C.GtkCellRenderer // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_cell_renderer_spin_new()
+	_gret := girepository.MustFind("Gtk", "CellRendererSpin").InvokeMethod("new_CellRendererSpin", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererSpin *CellRendererSpin // out
 
-	_cellRendererSpin = wrapCellRendererSpin(externglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererSpin = wrapCellRendererSpin(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpin
 }

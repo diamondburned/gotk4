@@ -9,25 +9,24 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkselection.go.
 var (
-	GTypeTargetFlags = externglib.Type(C.gtk_target_flags_get_type())
-	GTypeTargetEntry = externglib.Type(C.gtk_target_entry_get_type())
-	GTypeTargetList  = externglib.Type(C.gtk_target_list_get_type())
+	GTypeTargetFlags = coreglib.Type(C.gtk_target_flags_get_type())
+	GTypeTargetEntry = coreglib.Type(C.gtk_target_entry_get_type())
+	GTypeTargetList  = coreglib.Type(C.gtk_target_list_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTargetFlags, F: marshalTargetFlags},
 		{T: GTypeTargetEntry, F: marshalTargetEntry},
 		{T: GTypeTargetList, F: marshalTargetList},
@@ -53,7 +52,7 @@ const (
 )
 
 func marshalTargetFlags(p uintptr) (interface{}, error) {
-	return TargetFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return TargetFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TargetFlags.
@@ -102,55 +101,15 @@ func (t TargetFlags) Has(other TargetFlags) bool {
 //    - widget: Widget.
 //
 func SelectionRemoveAll(widget Widgetter) {
-	var _arg1 *C.GtkWidget // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_selection_remove_all(_arg1)
+	girepository.MustFind("Gtk", "selection_remove_all").Invoke(args[:], nil)
+
 	runtime.KeepAlive(widget)
-}
-
-// TargetTableNewFromList: this function creates an TargetEntry array that
-// contains the same targets as the passed list. The returned table is newly
-// allocated and should be freed using gtk_target_table_free() when no longer
-// needed.
-//
-// The function takes the following parameters:
-//
-//    - list: TargetList.
-//
-// The function returns the following values:
-//
-//    - targetEntrys: new table.
-//
-func TargetTableNewFromList(list *TargetList) []TargetEntry {
-	var _arg1 *C.GtkTargetList  // out
-	var _cret *C.GtkTargetEntry // in
-	var _arg2 C.gint            // in
-
-	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
-
-	_cret = C.gtk_target_table_new_from_list(_arg1, &_arg2)
-	runtime.KeepAlive(list)
-
-	var _targetEntrys []TargetEntry // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		src := unsafe.Slice((*C.GtkTargetEntry)(_cret), _arg2)
-		_targetEntrys = make([]TargetEntry, _arg2)
-		for i := 0; i < int(_arg2); i++ {
-			_targetEntrys[i] = *(*TargetEntry)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-			runtime.SetFinalizer(
-				gextras.StructIntern(unsafe.Pointer(&_targetEntrys[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.gtk_target_entry_free((*C.GtkTargetEntry)(intern.C))
-				},
-			)
-		}
-	}
-
-	return _targetEntrys
 }
 
 // TargetEntry represents a single type of data than can be supplied for by a
@@ -167,23 +126,28 @@ type targetEntry struct {
 }
 
 func marshalTargetEntry(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &TargetEntry{&targetEntry{(*C.GtkTargetEntry)(b)}}, nil
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
 func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
-	var _arg1 *C.gchar          // out
-	var _arg2 C.guint           // out
-	var _arg3 C.guint           // out
-	var _cret *C.GtkTargetEntry // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _arg2 C.guint // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(target)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint(flags)
-	_arg3 = C.guint(info)
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(target)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = C.guint(flags)
+	_arg2 = C.guint(info)
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_target_entry_new(_arg1, _arg2, _arg3)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(info)
@@ -232,12 +196,15 @@ func (t *TargetEntry) Info() uint {
 //      gtk_target_entry_free().
 //
 func (data *TargetEntry) Copy() *TargetEntry {
-	var _arg0 *C.GtkTargetEntry // out
-	var _cret *C.GtkTargetEntry // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(data)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
+	*(**TargetEntry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_target_entry_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(data)
 
 	var _targetEntry *TargetEntry // out
@@ -267,40 +234,8 @@ type targetList struct {
 }
 
 func marshalTargetList(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &TargetList{&targetList{(*C.GtkTargetList)(b)}}, nil
-}
-
-// NewTargetList constructs a struct TargetList.
-func NewTargetList(targets []TargetEntry) *TargetList {
-	var _arg1 *C.GtkTargetEntry // out
-	var _arg2 C.guint
-	var _cret *C.GtkTargetList // in
-
-	_arg2 = (C.guint)(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
-		for i := range targets {
-			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
-		}
-	}
-
-	_cret = C.gtk_target_list_new(_arg1, _arg2)
-	runtime.KeepAlive(targets)
-
-	var _targetList *TargetList // out
-
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_targetList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
-		},
-	)
-
-	return _targetList
 }
 
 // AddImageTargets appends the image targets supported by SelectionData to the
@@ -313,17 +248,19 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 //      a pixbuf into the format.
 //
 func (list *TargetList) AddImageTargets(info uint, writable bool) {
-	var _arg0 *C.GtkTargetList // out
-	var _arg1 C.guint          // out
-	var _arg2 C.gboolean       // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.guint    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
 	if writable {
 		_arg2 = C.TRUE
 	}
+	*(**TargetList)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_target_list_add_image_targets(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(writable)
@@ -342,50 +279,26 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 //    - buffer: TextBuffer.
 //
 func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer *TextBuffer) {
-	var _arg0 *C.GtkTargetList // out
-	var _arg1 C.guint          // out
-	var _arg2 C.gboolean       // out
-	var _arg3 *C.GtkTextBuffer // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.guint    // out
+	var _arg2 C.gboolean // out
+	var _arg3 *C.void    // out
 
-	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
 	if deserializable {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**TargetList)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(deserializable)
 	runtime.KeepAlive(buffer)
-}
-
-// AddTable prepends a table of TargetEntry to a target list.
-//
-// The function takes the following parameters:
-//
-//    - targets: table of TargetEntry.
-//
-func (list *TargetList) AddTable(targets []TargetEntry) {
-	var _arg0 *C.GtkTargetList  // out
-	var _arg1 *C.GtkTargetEntry // out
-	var _arg2 C.guint
-
-	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg2 = (C.guint)(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
-		for i := range targets {
-			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
-		}
-	}
-
-	C.gtk_target_list_add_table(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(list)
-	runtime.KeepAlive(targets)
 }
 
 // AddTextTargets appends the text targets supported by SelectionData to the
@@ -396,13 +309,14 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 //    - info: ID that will be passed back to the application.
 //
 func (list *TargetList) AddTextTargets(info uint) {
-	var _arg0 *C.GtkTargetList // out
-	var _arg1 C.guint          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
+	*(**TargetList)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_target_list_add_text_targets(_arg0, _arg1)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
 }
@@ -415,13 +329,14 @@ func (list *TargetList) AddTextTargets(info uint) {
 //    - info: ID that will be passed back to the application.
 //
 func (list *TargetList) AddURITargets(info uint) {
-	var _arg0 *C.GtkTargetList // out
-	var _arg1 C.guint          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
+	*(**TargetList)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_target_list_add_uri_targets(_arg0, _arg1)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
 }

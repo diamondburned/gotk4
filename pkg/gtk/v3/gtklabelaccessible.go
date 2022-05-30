@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtklabelaccessible.go.
-var GTypeLabelAccessible = externglib.Type(C.gtk_label_accessible_get_type())
+var GTypeLabelAccessible = coreglib.Type(C.gtk_label_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeLabelAccessible, F: marshalLabelAccessible},
 	})
 }
@@ -33,13 +32,13 @@ type LabelAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Hypertext
 	atk.Text
 }
 
 var (
-	_ externglib.Objector = (*LabelAccessible)(nil)
+	_ coreglib.Objector = (*LabelAccessible)(nil)
 )
 
 func classInitLabelAccessibler(gclassPtr, data C.gpointer) {
@@ -50,7 +49,7 @@ func classInitLabelAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
+func wrapLabelAccessible(obj *coreglib.Object) *LabelAccessible {
 	return &LabelAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -73,5 +72,5 @@ func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 }
 
 func marshalLabelAccessible(p uintptr) (interface{}, error) {
-	return wrapLabelAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapLabelAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

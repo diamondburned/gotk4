@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmisc.go.
-var GTypeMisc = externglib.Type(C.gtk_misc_get_type())
+var GTypeMisc = coreglib.Type(C.gtk_misc_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMisc, F: marshalMisc},
 	})
 }
@@ -59,7 +58,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Miscer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseMisc() *Misc
 }
 
@@ -73,10 +72,10 @@ func classInitMiscer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMisc(obj *externglib.Object) *Misc {
+func wrapMisc(obj *coreglib.Object) *Misc {
 	return &Misc{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -91,7 +90,7 @@ func wrapMisc(obj *externglib.Object) *Misc {
 }
 
 func marshalMisc(p uintptr) (interface{}, error) {
-	return wrapMisc(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMisc(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (misc *Misc) baseMisc() *Misc {
@@ -101,64 +100,6 @@ func (misc *Misc) baseMisc() *Misc {
 // BaseMisc returns the underlying base object.
 func BaseMisc(obj Miscer) *Misc {
 	return obj.baseMisc()
-}
-
-// Alignment gets the X and Y alignment of the widget within its allocation. See
-// gtk_misc_set_alignment().
-//
-// Deprecated: Use Widget alignment and margin properties.
-//
-// The function returns the following values:
-//
-//    - xalign (optional): location to store X alignment of misc, or NULL.
-//    - yalign (optional): location to store Y alignment of misc, or NULL.
-//
-func (misc *Misc) Alignment() (xalign float32, yalign float32) {
-	var _arg0 *C.GtkMisc // out
-	var _arg1 C.gfloat   // in
-	var _arg2 C.gfloat   // in
-
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer(externglib.InternObject(misc).Native()))
-
-	C.gtk_misc_get_alignment(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(misc)
-
-	var _xalign float32 // out
-	var _yalign float32 // out
-
-	_xalign = float32(_arg1)
-	_yalign = float32(_arg2)
-
-	return _xalign, _yalign
-}
-
-// Padding gets the padding in the X and Y directions of the widget. See
-// gtk_misc_set_padding().
-//
-// Deprecated: Use Widget alignment and margin properties.
-//
-// The function returns the following values:
-//
-//    - xpad (optional): location to store padding in the X direction, or NULL.
-//    - ypad (optional): location to store padding in the Y direction, or NULL.
-//
-func (misc *Misc) Padding() (xpad int, ypad int) {
-	var _arg0 *C.GtkMisc // out
-	var _arg1 C.gint     // in
-	var _arg2 C.gint     // in
-
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer(externglib.InternObject(misc).Native()))
-
-	C.gtk_misc_get_padding(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(misc)
-
-	var _xpad int // out
-	var _ypad int // out
-
-	_xpad = int(_arg1)
-	_ypad = int(_arg2)
-
-	return _xpad, _ypad
 }
 
 // SetAlignment sets the alignment of the widget.
@@ -172,15 +113,19 @@ func (misc *Misc) Padding() (xpad int, ypad int) {
 //    - yalign: vertical alignment, from 0 (top) to 1 (bottom).
 //
 func (misc *Misc) SetAlignment(xalign, yalign float32) {
-	var _arg0 *C.GtkMisc // out
-	var _arg1 C.gfloat   // out
-	var _arg2 C.gfloat   // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.gfloat // out
+	var _arg2 C.gfloat // out
 
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer(externglib.InternObject(misc).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
+	*(**Misc)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_misc_set_alignment(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_alignment", args[:], nil)
+
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)
@@ -198,15 +143,19 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 //      pixels.
 //
 func (misc *Misc) SetPadding(xpad, ypad int) {
-	var _arg0 *C.GtkMisc // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkMisc)(unsafe.Pointer(externglib.InternObject(misc).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 	_arg1 = C.gint(xpad)
 	_arg2 = C.gint(ypad)
+	*(**Misc)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_misc_set_padding(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_padding", args[:], nil)
+
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xpad)
 	runtime.KeepAlive(ypad)

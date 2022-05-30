@@ -6,11 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
+// #include <glib.h>
 import "C"
 
 // X11DeviceGetID returns the device ID as seen by XInput2.
@@ -30,12 +32,16 @@ import "C"
 //    - gint: XInput2 device ID.
 //
 func X11DeviceGetID(device *X11DeviceCore) int {
-	var _arg1 *C.GdkDevice // out
-	var _cret C.gint       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg1 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**X11DeviceCore)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_x11_device_get_id(_arg1)
+	_gret := girepository.MustFind("GdkX11", "x11_device_get_id").Invoke(args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _gint int // out

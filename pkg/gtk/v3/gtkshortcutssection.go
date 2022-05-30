@@ -6,22 +6,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(gpointer, gint, guintptr);
 import "C"
 
 // glib.Type values for gtkshortcutssection.go.
-var GTypeShortcutsSection = externglib.Type(C.gtk_shortcuts_section_get_type())
+var GTypeShortcutsSection = coreglib.Type(C.gtk_shortcuts_section_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutsSection, F: marshalShortcutsSection},
 	})
 }
@@ -46,8 +45,8 @@ type ShortcutsSection struct {
 }
 
 var (
-	_ Containerer         = (*ShortcutsSection)(nil)
-	_ externglib.Objector = (*ShortcutsSection)(nil)
+	_ Containerer       = (*ShortcutsSection)(nil)
+	_ coreglib.Objector = (*ShortcutsSection)(nil)
 )
 
 func classInitShortcutsSectioner(gclassPtr, data C.gpointer) {
@@ -58,12 +57,12 @@ func classInitShortcutsSectioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
+func wrapShortcutsSection(obj *coreglib.Object) *ShortcutsSection {
 	return &ShortcutsSection{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -84,14 +83,14 @@ func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
 }
 
 func marshalShortcutsSection(p uintptr) (interface{}, error) {
-	return wrapShortcutsSection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutsSection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage
 func _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(object int) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -113,6 +112,6 @@ func _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1
 	return cret
 }
 
-func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage), f)
+func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage), f)
 }

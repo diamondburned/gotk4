@@ -5,33 +5,29 @@ package gtk
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_Menu_ConnectMoveScroll(gpointer, GtkScrollType, guintptr);
-// extern void _gotk4_gtk3_Menu_ConnectPoppedUp(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmenu.go.
 var (
-	GTypeArrowPlacement = externglib.Type(C.gtk_arrow_placement_get_type())
-	GTypeMenu           = externglib.Type(C.gtk_menu_get_type())
+	GTypeArrowPlacement = coreglib.Type(C.gtk_arrow_placement_get_type())
+	GTypeMenu           = coreglib.Type(C.gtk_menu_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeArrowPlacement, F: marshalArrowPlacement},
 		{T: GTypeMenu, F: marshalMenu},
 	})
@@ -51,7 +47,7 @@ const (
 )
 
 func marshalArrowPlacement(p uintptr) (interface{}, error) {
-	return ArrowPlacement(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ArrowPlacement(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ArrowPlacement.
@@ -115,12 +111,12 @@ func classInitMenuer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMenu(obj *externglib.Object) *Menu {
+func wrapMenu(obj *coreglib.Object) *Menu {
 	return &Menu{
 		MenuShell: MenuShell{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -137,86 +133,7 @@ func wrapMenu(obj *externglib.Object) *Menu {
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
-	return wrapMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_Menu_ConnectMoveScroll
-func _gotk4_gtk3_Menu_ConnectMoveScroll(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
-	var f func(scrollType ScrollType)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scrollType ScrollType))
-	}
-
-	var _scrollType ScrollType // out
-
-	_scrollType = ScrollType(arg1)
-
-	f(_scrollType)
-}
-
-func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(menu, "move-scroll", false, unsafe.Pointer(C._gotk4_gtk3_Menu_ConnectMoveScroll), f)
-}
-
-//export _gotk4_gtk3_Menu_ConnectPoppedUp
-func _gotk4_gtk3_Menu_ConnectPoppedUp(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
-	var f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool))
-	}
-
-	var _flippedRect cgo.Handle // out
-	var _finalRect cgo.Handle   // out
-	var _flippedX bool          // out
-	var _flippedY bool          // out
-
-	_flippedRect = (cgo.Handle)(unsafe.Pointer(arg1))
-	_finalRect = (cgo.Handle)(unsafe.Pointer(arg2))
-	if arg3 != 0 {
-		_flippedX = true
-	}
-	if arg4 != 0 {
-		_flippedY = true
-	}
-
-	f(_flippedRect, _finalRect, _flippedX, _flippedY)
-}
-
-// ConnectPoppedUp is emitted when the position of menu is finalized after being
-// popped up using gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (), or
-// gtk_menu_popup_at_pointer ().
-//
-// menu might be flipped over the anchor rectangle in order to keep it
-// on-screen, in which case flipped_x and flipped_y will be set to TRUE
-// accordingly.
-//
-// flipped_rect is the ideal position of menu after any possible flipping, but
-// before any possible sliding. final_rect is flipped_rect, but possibly
-// translated in the case that flipping is still ineffective in keeping menu
-// on-screen.
-//
-// ! (popup-slide.png)
-//
-// The blue menu is menu's ideal position, the green menu is flipped_rect, and
-// the red menu is final_rect.
-//
-// See gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (),
-// gtk_menu_popup_at_pointer (), Menu:anchor-hints, Menu:rect-anchor-dx,
-// Menu:rect-anchor-dy, and Menu:menu-type-hint.
-func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flippedX, flippedY bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(menu, "popped-up", false, unsafe.Pointer(C._gotk4_gtk3_Menu_ConnectPoppedUp), f)
+	return wrapMenu(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenu creates a new Menu.
@@ -226,13 +143,14 @@ func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect cgo.Handle, flip
 //    - menu: new Menu.
 //
 func NewMenu() *Menu {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_menu_new()
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("new_Menu", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _menu *Menu // out
 
-	_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
+	_menu = wrapMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -257,17 +175,21 @@ func NewMenu() *Menu {
 //    - menu: new Menu.
 //
 func NewMenuFromModel(model gio.MenuModeller) *Menu {
-	var _arg1 *C.GMenuModel // out
-	var _cret *C.GtkWidget  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*gio.MenuModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_new_from_model(_arg1)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("new_Menu_from_model", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(model)
 
 	var _menu *Menu // out
 
-	_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
+	_menu = wrapMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -289,21 +211,28 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 //    - bottomAttach: row number to attach the bottom of the item to.
 //
 func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.guint      // out
-	var _arg3 C.guint      // out
-	var _arg4 C.guint      // out
-	var _arg5 C.guint      // out
+	var args [6]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.guint // out
+	var _arg3 C.guint // out
+	var _arg4 C.guint // out
+	var _arg5 C.guint // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.guint(leftAttach)
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)
 	_arg5 = C.guint(bottomAttach)
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint)(unsafe.Pointer(&args[3])) = _arg3
+	*(*uint)(unsafe.Pointer(&args[4])) = _arg4
+	*(*uint)(unsafe.Pointer(&args[5])) = _arg5
 
-	C.gtk_menu_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("attach", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(leftAttach)
@@ -316,11 +245,14 @@ func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bo
 // function will call the callback function, detacher, provided when the
 // gtk_menu_attach_to_widget() function was called.
 func (menu *Menu) Detach() {
-	var _arg0 *C.GtkMenu // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_menu_detach(_arg0)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("detach", args[:], nil)
+
 	runtime.KeepAlive(menu)
 }
 
@@ -332,17 +264,21 @@ func (menu *Menu) Detach() {
 //    - accelGroup associated with the menu.
 //
 func (menu *Menu) AccelGroup() *AccelGroup {
-	var _arg0 *C.GtkMenu       // out
-	var _cret *C.GtkAccelGroup // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_accel_group(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_accel_group", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _accelGroup *AccelGroup // out
 
-	_accelGroup = wrapAccelGroup(externglib.Take(unsafe.Pointer(_cret)))
+	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelGroup
 }
@@ -354,12 +290,16 @@ func (menu *Menu) AccelGroup() *AccelGroup {
 //    - utf8: accelerator path set on the menu.
 //
 func (menu *Menu) AccelPath() string {
-	var _arg0 *C.GtkMenu // out
-	var _cret *C.gchar   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_accel_path(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_accel_path", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _utf8 string // out
@@ -378,12 +318,16 @@ func (menu *Menu) AccelPath() string {
 //      been made, the first menu item is selected.
 //
 func (menu *Menu) Active() Widgetter {
-	var _arg0 *C.GtkMenu   // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_active(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_active", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _widget Widgetter // out
@@ -394,8 +338,8 @@ func (menu *Menu) Active() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -416,12 +360,16 @@ func (menu *Menu) Active() Widgetter {
 //    - widget that the menu is attached to.
 //
 func (menu *Menu) AttachWidget() Widgetter {
-	var _arg0 *C.GtkMenu   // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_attach_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_attach_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _widget Widgetter // out
@@ -432,8 +380,8 @@ func (menu *Menu) AttachWidget() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -455,12 +403,16 @@ func (menu *Menu) AttachWidget() Widgetter {
 //      if no monitor has been set.
 //
 func (menu *Menu) Monitor() int {
-	var _arg0 *C.GtkMenu // out
-	var _cret C.gint     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_monitor(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_monitor", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _gint int // out
@@ -478,12 +430,16 @@ func (menu *Menu) Monitor() int {
 //    - ok: whether the menu reserves toggle space.
 //
 func (menu *Menu) ReserveToggleSize() bool {
-	var _arg0 *C.GtkMenu // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_reserve_toggle_size(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_reserve_toggle_size", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _ok bool // out
@@ -505,12 +461,16 @@ func (menu *Menu) ReserveToggleSize() bool {
 //    - ok: TRUE if the menu is currently torn off.
 //
 func (menu *Menu) TearoffState() bool {
-	var _arg0 *C.GtkMenu // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_tearoff_state(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_tearoff_state", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _ok bool // out
@@ -532,12 +492,16 @@ func (menu *Menu) TearoffState() bool {
 //      string is owned by GTK+ and should not be modified or freed.
 //
 func (menu *Menu) Title() string {
-	var _arg0 *C.GtkMenu // out
-	var _cret *C.gchar   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_title(_arg0)
+	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_title", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _utf8 string // out
@@ -554,24 +518,30 @@ func (menu *Menu) Title() string {
 //    - monitor to place the menu on.
 //
 func (menu *Menu) PlaceOnMonitor(monitor *gdk.Monitor) {
-	var _arg0 *C.GtkMenu    // out
-	var _arg1 *C.GdkMonitor // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_place_on_monitor(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("place_on_monitor", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(monitor)
 }
 
 // Popdown removes the menu from the screen.
 func (menu *Menu) Popdown() {
-	var _arg0 *C.GtkMenu // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_menu_popdown(_arg0)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("popdown", args[:], nil)
+
 	runtime.KeepAlive(menu)
 }
 
@@ -594,121 +564,19 @@ func (menu *Menu) Popdown() {
 //      current event.
 //
 func (menu *Menu) PopupAtPointer(triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu  // out
-	var _arg1 *C.GdkEvent // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if triggerEvent != nil {
-		_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
 	}
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_popup_at_pointer(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("popup_at_pointer", args[:], nil)
+
 	runtime.KeepAlive(menu)
-	runtime.KeepAlive(triggerEvent)
-}
-
-// PopupAtRect displays menu and makes it available for selection.
-//
-// See gtk_menu_popup_at_widget () and gtk_menu_popup_at_pointer (), which
-// handle more common cases for popping up menus.
-//
-// menu will be positioned at rect, aligning their anchor points. rect is
-// relative to the top-left corner of rect_window. rect_anchor and menu_anchor
-// determine anchor points on rect and menu to pin together. menu can optionally
-// be offset by Menu:rect-anchor-dx and Menu:rect-anchor-dy.
-//
-// Anchors should be specified under the assumption that the text direction is
-// left-to-right; they will be flipped horizontally automatically if the text
-// direction is right-to-left.
-//
-// Other properties that influence the behaviour of this function are
-// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-// signal to find out how it was actually positioned.
-//
-// The function takes the following parameters:
-//
-//    - rectWindow rect is relative to.
-//    - rect to align menu with.
-//    - rectAnchor: point on rect to align with menu's anchor point.
-//    - menuAnchor: point on menu to align with rect's anchor point.
-//    - triggerEvent (optional) that initiated this request or NULL if it's the
-//      current event.
-//
-func (menu *Menu) PopupAtRect(rectWindow gdk.Windower, rect *gdk.Rectangle, rectAnchor, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu      // out
-	var _arg1 *C.GdkWindow    // out
-	var _arg2 *C.GdkRectangle // out
-	var _arg3 C.GdkGravity    // out
-	var _arg4 C.GdkGravity    // out
-	var _arg5 *C.GdkEvent     // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(rectWindow).Native()))
-	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
-	_arg3 = C.GdkGravity(rectAnchor)
-	_arg4 = C.GdkGravity(menuAnchor)
-	if triggerEvent != nil {
-		_arg5 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
-	}
-
-	C.gtk_menu_popup_at_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(rectWindow)
-	runtime.KeepAlive(rect)
-	runtime.KeepAlive(rectAnchor)
-	runtime.KeepAlive(menuAnchor)
-	runtime.KeepAlive(triggerEvent)
-}
-
-// PopupAtWidget displays menu and makes it available for selection.
-//
-// See gtk_menu_popup_at_pointer () to pop up a menu at the master pointer.
-// gtk_menu_popup_at_rect () also allows you to position a menu at an arbitrary
-// rectangle.
-//
-// ! (popup-anchors.png)
-//
-// menu will be positioned at widget, aligning their anchor points.
-// widget_anchor and menu_anchor determine anchor points on widget and menu to
-// pin together. menu can optionally be offset by Menu:rect-anchor-dx and
-// Menu:rect-anchor-dy.
-//
-// Anchors should be specified under the assumption that the text direction is
-// left-to-right; they will be flipped horizontally automatically if the text
-// direction is right-to-left.
-//
-// Other properties that influence the behaviour of this function are
-// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-// signal to find out how it was actually positioned.
-//
-// The function takes the following parameters:
-//
-//    - widget to align menu with.
-//    - widgetAnchor: point on widget to align with menu's anchor point.
-//    - menuAnchor: point on menu to align with widget's anchor point.
-//    - triggerEvent (optional) that initiated this request or NULL if it's the
-//      current event.
-//
-func (menu *Menu) PopupAtWidget(widget Widgetter, widgetAnchor, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.GdkGravity // out
-	var _arg3 C.GdkGravity // out
-	var _arg4 *C.GdkEvent  // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg2 = C.GdkGravity(widgetAnchor)
-	_arg3 = C.GdkGravity(menuAnchor)
-	if triggerEvent != nil {
-		_arg4 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
-	}
-
-	C.gtk_menu_popup_at_widget(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(widgetAnchor)
-	runtime.KeepAlive(menuAnchor)
 	runtime.KeepAlive(triggerEvent)
 }
 
@@ -721,15 +589,19 @@ func (menu *Menu) PopupAtWidget(widget Widgetter, widgetAnchor, menuAnchor gdk.G
 //      - 1.
 //
 func (menu *Menu) ReorderChild(child Widgetter, position int) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.gint       // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.gint(position)
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_menu_reorder_child(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("reorder_child", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(position)
@@ -737,11 +609,14 @@ func (menu *Menu) ReorderChild(child Widgetter, position int) {
 
 // Reposition repositions the menu according to its position function.
 func (menu *Menu) Reposition() {
-	var _arg0 *C.GtkMenu // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**Menu)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_menu_reposition(_arg0)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("reposition", args[:], nil)
+
 	runtime.KeepAlive(menu)
 }
 
@@ -755,15 +630,18 @@ func (menu *Menu) Reposition() {
 //    - accelGroup (optional) to be associated with the menu.
 //
 func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
-	var _arg0 *C.GtkMenu       // out
-	var _arg1 *C.GtkAccelGroup // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if accelGroup != nil {
-		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	}
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_accel_group(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_accel_group", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(accelGroup)
 }
@@ -795,16 +673,19 @@ func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 //    - accelPath (optional): valid accelerator path, or NULL to unset the path.
 //
 func (menu *Menu) SetAccelPath(accelPath string) {
-	var _arg0 *C.GtkMenu // out
-	var _arg1 *C.gchar   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if accelPath != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_accel_path(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_accel_path", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(accelPath)
 }
@@ -817,13 +698,16 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 //    - index of the menu item to select. Index values are from 0 to n-1.
 //
 func (menu *Menu) SetActive(index uint) {
-	var _arg0 *C.GtkMenu // out
-	var _arg1 C.guint    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	_arg1 = C.guint(index)
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_active(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_active", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(index)
 }
@@ -842,13 +726,16 @@ func (menu *Menu) SetActive(index uint) {
 //    - monitorNum: number of the monitor on which the menu should be popped up.
 //
 func (menu *Menu) SetMonitor(monitorNum int) {
-	var _arg0 *C.GtkMenu // out
-	var _arg1 C.gint     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	_arg1 = C.gint(monitorNum)
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_monitor(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_monitor", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(monitorNum)
 }
@@ -861,15 +748,18 @@ func (menu *Menu) SetMonitor(monitorNum int) {
 //    - reserveToggleSize: whether to reserve size for toggles.
 //
 func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
-	var _arg0 *C.GtkMenu // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if reserveToggleSize {
 		_arg1 = C.TRUE
 	}
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_reserve_toggle_size(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_reserve_toggle_size", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(reserveToggleSize)
 }
@@ -882,15 +772,18 @@ func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
 //      widget the menu is attached to.
 //
 func (menu *Menu) SetScreen(screen *gdk.Screen) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GdkScreen // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if screen != nil {
-		_arg1 = (*C.GdkScreen)(unsafe.Pointer(externglib.InternObject(screen).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	}
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_screen(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_screen", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(screen)
 }
@@ -907,15 +800,18 @@ func (menu *Menu) SetScreen(screen *gdk.Screen) {
 //    - tornOff: if TRUE, menu is displayed as a tearoff menu.
 //
 func (menu *Menu) SetTearoffState(tornOff bool) {
-	var _arg0 *C.GtkMenu // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if tornOff {
 		_arg1 = C.TRUE
 	}
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_tearoff_state(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_tearoff_state", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(tornOff)
 }
@@ -934,16 +830,19 @@ func (menu *Menu) SetTearoffState(tornOff bool) {
 //      inherit the title of the parent menu item, if any.
 //
 func (menu *Menu) SetTitle(title string) {
-	var _arg0 *C.GtkMenu // out
-	var _arg1 *C.gchar   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if title != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_set_title(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_title", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(title)
 }
@@ -960,19 +859,23 @@ func (menu *Menu) SetTitle(title string) {
 //    - list: list of menus attached to his widget.
 //
 func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
-	var _arg1 *C.GtkWidget // out
-	var _cret *C.GList     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
+	_gret := girepository.MustFind("Gtk", "get_for_attach_widget").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _list []Widgetter // out
 
 	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
+		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
 			objptr := unsafe.Pointer(src)
@@ -980,8 +883,8 @@ func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 				panic("object of type gtk.Widgetter is nil")
 			}
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})

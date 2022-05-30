@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkwindowgroup.go.
-var GTypeWindowGroup = externglib.Type(C.gtk_window_group_get_type())
+var GTypeWindowGroup = coreglib.Type(C.gtk_window_group_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWindowGroup, F: marshalWindowGroup},
 	})
 }
@@ -46,11 +47,11 @@ type WindowGroupOverrider interface {
 // have been removed, the window group will be freed.
 type WindowGroup struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*WindowGroup)(nil)
+	_ coreglib.Objector = (*WindowGroup)(nil)
 )
 
 func classInitWindowGrouper(gclassPtr, data C.gpointer) {
@@ -61,14 +62,14 @@ func classInitWindowGrouper(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
+func wrapWindowGroup(obj *coreglib.Object) *WindowGroup {
 	return &WindowGroup{
 		Object: obj,
 	}
 }
 
 func marshalWindowGroup(p uintptr) (interface{}, error) {
-	return wrapWindowGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWindowGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindowGroup creates a new GtkWindowGroup object.
@@ -80,13 +81,14 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 //    - windowGroup: new GtkWindowGroup.
 //
 func NewWindowGroup() *WindowGroup {
-	var _cret *C.GtkWindowGroup // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_window_group_new()
+	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("new_WindowGroup", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _windowGroup *WindowGroup // out
 
-	_windowGroup = wrapWindowGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_windowGroup = wrapWindowGroup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }
@@ -98,13 +100,16 @@ func NewWindowGroup() *WindowGroup {
 //    - window: GtkWindow to add.
 //
 func (windowGroup *WindowGroup) AddWindow(window *Window) {
-	var _arg0 *C.GtkWindowGroup // out
-	var _arg1 *C.GtkWindow      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**WindowGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_group_add_window(_arg0, _arg1)
+	girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("add_window", args[:], nil)
+
 	runtime.KeepAlive(windowGroup)
 	runtime.KeepAlive(window)
 }
@@ -116,21 +121,25 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 //    - list: a newly-allocated list of windows inside the group.
 //
 func (windowGroup *WindowGroup) ListWindows() []*Window {
-	var _arg0 *C.GtkWindowGroup // out
-	var _cret *C.GList          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+	*(**WindowGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_group_list_windows(_arg0)
+	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("list_windows", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(windowGroup)
 
 	var _list []*Window // out
 
 	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWindow)(v)
+		src := (*C.void)(v)
 		var dst *Window // out
-		dst = wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		dst = wrapWindow(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -144,13 +153,16 @@ func (windowGroup *WindowGroup) ListWindows() []*Window {
 //    - window: GtkWindow to remove.
 //
 func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
-	var _arg0 *C.GtkWindowGroup // out
-	var _arg1 *C.GtkWindow      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(externglib.InternObject(windowGroup).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**WindowGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_group_remove_window(_arg0, _arg1)
+	girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("remove_window", args[:], nil)
+
 	runtime.KeepAlive(windowGroup)
 	runtime.KeepAlive(window)
 }

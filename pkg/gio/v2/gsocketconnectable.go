@@ -6,22 +6,23 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_enumerate(GSocketConnectable*);
 // extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(GSocketConnectable*);
 // extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(GSocketConnectable*);
 import "C"
 
 // glib.Type values for gsocketconnectable.go.
-var GTypeSocketConnectable = externglib.Type(C.g_socket_connectable_get_type())
+var GTypeSocketConnectable = coreglib.Type(C.g_socket_connectable_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSocketConnectable, F: marshalSocketConnectable},
 	})
 }
@@ -121,16 +122,16 @@ type SocketConnectableOverrider interface {
 // underlying type by calling Cast().
 type SocketConnectable struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*SocketConnectable)(nil)
+	_ coreglib.Objector = (*SocketConnectable)(nil)
 )
 
 // SocketConnectabler describes SocketConnectable's interface methods.
 type SocketConnectabler interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// Enumerate creates a AddressEnumerator for connectable.
 	Enumerate() SocketAddressEnumeratorrer
@@ -153,50 +154,50 @@ func ifaceInitSocketConnectabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketConnectableIface_enumerate
 func _gotk4_gio2_SocketConnectableIface_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SocketConnectableOverrider)
 
 	socketAddressEnumerator := iface.Enumerate()
 
-	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(socketAddressEnumerator).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddressEnumerator).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(socketAddressEnumerator).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddressEnumerator).Native()))
 
 	return cret
 }
 
 //export _gotk4_gio2_SocketConnectableIface_proxy_enumerate
 func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SocketConnectableOverrider)
 
 	socketAddressEnumerator := iface.ProxyEnumerate()
 
-	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(socketAddressEnumerator).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddressEnumerator).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(socketAddressEnumerator).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddressEnumerator).Native()))
 
 	return cret
 }
 
 //export _gotk4_gio2_SocketConnectableIface_to_string
 func _gotk4_gio2_SocketConnectableIface_to_string(arg0 *C.GSocketConnectable) (cret *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SocketConnectableOverrider)
 
 	utf8 := iface.String()
 
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
 
-func wrapSocketConnectable(obj *externglib.Object) *SocketConnectable {
+func wrapSocketConnectable(obj *coreglib.Object) *SocketConnectable {
 	return &SocketConnectable{
 		Object: obj,
 	}
 }
 
 func marshalSocketConnectable(p uintptr) (interface{}, error) {
-	return wrapSocketConnectable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSocketConnectable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Enumerate creates a AddressEnumerator for connectable.
@@ -206,12 +207,15 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 //    - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
-	var _arg0 *C.GSocketConnectable       // out
-	var _cret *C.GSocketAddressEnumerator // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(connectable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	*(**SocketConnectable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_connectable_enumerate(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connectable)
 
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
@@ -222,8 +226,8 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 			panic("object of type gio.SocketAddressEnumeratorrer is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(SocketAddressEnumeratorrer)
 			return ok
 		})
@@ -248,12 +252,15 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 //    - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorrer {
-	var _arg0 *C.GSocketConnectable       // out
-	var _cret *C.GSocketAddressEnumerator // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(connectable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	*(**SocketConnectable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connectable)
 
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
@@ -264,8 +271,8 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 			panic("object of type gio.SocketAddressEnumeratorrer is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(SocketAddressEnumeratorrer)
 			return ok
 		})
@@ -292,12 +299,15 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 //    - utf8: formatted string.
 //
 func (connectable *SocketConnectable) String() string {
-	var _arg0 *C.GSocketConnectable // out
-	var _cret *C.gchar              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(externglib.InternObject(connectable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	*(**SocketConnectable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_connectable_to_string(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connectable)
 
 	var _utf8 string // out

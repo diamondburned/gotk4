@@ -7,22 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktoolitemgroup.go.
-var GTypeToolItemGroup = externglib.Type(C.gtk_tool_item_group_get_type())
+var GTypeToolItemGroup = coreglib.Type(C.gtk_tool_item_group_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeToolItemGroup, F: marshalToolItemGroup},
 	})
 }
@@ -42,18 +40,18 @@ type ToolItemGroup struct {
 	_ [0]func() // equal guard
 	Container
 
-	*externglib.Object
+	*coreglib.Object
 	atk.ImplementorIface
-	externglib.InitiallyUnowned
+	coreglib.InitiallyUnowned
 	Buildable
 	ToolShell
 	Widget
 }
 
 var (
-	_ Containerer         = (*ToolItemGroup)(nil)
-	_ externglib.Objector = (*ToolItemGroup)(nil)
-	_ Widgetter           = (*ToolItemGroup)(nil)
+	_ Containerer       = (*ToolItemGroup)(nil)
+	_ coreglib.Objector = (*ToolItemGroup)(nil)
+	_ Widgetter         = (*ToolItemGroup)(nil)
 )
 
 func classInitToolItemGrouper(gclassPtr, data C.gpointer) {
@@ -64,11 +62,11 @@ func classInitToolItemGrouper(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
+func wrapToolItemGroup(obj *coreglib.Object) *ToolItemGroup {
 	return &ToolItemGroup{
 		Container: Container{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -84,7 +82,7 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 		ImplementorIface: atk.ImplementorIface{
 			Object: obj,
 		},
-		InitiallyUnowned: externglib.InitiallyUnowned{
+		InitiallyUnowned: coreglib.InitiallyUnowned{
 			Object: obj,
 		},
 		Buildable: Buildable{
@@ -92,7 +90,7 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 		},
 		ToolShell: ToolShell{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -105,7 +103,7 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 			},
 		},
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -120,7 +118,7 @@ func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 }
 
 func marshalToolItemGroup(p uintptr) (interface{}, error) {
-	return wrapToolItemGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapToolItemGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToolItemGroup creates a new tool item group with label label.
@@ -134,18 +132,22 @@ func marshalToolItemGroup(p uintptr) (interface{}, error) {
 //    - toolItemGroup: new ToolItemGroup.
 //
 func NewToolItemGroup(label string) *ToolItemGroup {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_group_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("new_ToolItemGroup", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(label)
 
 	var _toolItemGroup *ToolItemGroup // out
 
-	_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
+	_toolItemGroup = wrapToolItemGroup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItemGroup
 }
@@ -157,12 +159,16 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 //    - ok: TRUE if group is collapsed, FALSE if it is expanded.
 //
 func (group *ToolItemGroup) Collapsed() bool {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _cret C.gboolean          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**ToolItemGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_group_get_collapsed(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_collapsed", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 
 	var _ok bool // out
@@ -186,69 +192,30 @@ func (group *ToolItemGroup) Collapsed() bool {
 //    - toolItem at position (x, y).
 //
 func (group *ToolItemGroup) DropItem(x, y int) *ToolItem {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 C.gint              // out
-	var _arg2 C.gint              // out
-	var _cret *C.GtkToolItem      // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_tool_item_group_get_drop_item(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_drop_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
-}
-
-// Ellipsize gets the ellipsization mode of group.
-//
-// The function returns the following values:
-//
-//    - ellipsizeMode of group.
-//
-func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkToolItemGroup  // out
-	var _cret C.PangoEllipsizeMode // in
-
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-
-	_cret = C.gtk_tool_item_group_get_ellipsize(_arg0)
-	runtime.KeepAlive(group)
-
-	var _ellipsizeMode pango.EllipsizeMode // out
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
-}
-
-// HeaderRelief gets the relief mode of the header button of group.
-//
-// The function returns the following values:
-//
-//    - reliefStyle: ReliefStyle.
-//
-func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _cret C.GtkReliefStyle    // in
-
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-
-	_cret = C.gtk_tool_item_group_get_header_relief(_arg0)
-	runtime.KeepAlive(group)
-
-	var _reliefStyle ReliefStyle // out
-
-	_reliefStyle = ReliefStyle(_cret)
-
-	return _reliefStyle
 }
 
 // ItemPosition gets the position of item in group as index.
@@ -262,14 +229,18 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 //    - gint: index of item in group or -1 if item is no child of group.
 //
 func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 *C.GtkToolItem      // out
-	var _cret C.gint              // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_tool_item_group_get_item_position(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_item_position", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(item)
 
@@ -289,12 +260,16 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 //      set with gtk_tool_item_group_set_label_widget().
 //
 func (group *ToolItemGroup) Label() string {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _cret *C.gchar            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**ToolItemGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_group_get_label(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 
 	var _utf8 string // out
@@ -312,12 +287,16 @@ func (group *ToolItemGroup) Label() string {
 //    - widget: label widget of group.
 //
 func (group *ToolItemGroup) LabelWidget() Widgetter {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _cret *C.GtkWidget        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**ToolItemGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_group_get_label_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_label_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 
 	var _widget Widgetter // out
@@ -328,8 +307,8 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -350,12 +329,16 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 //    - guint: number of tool items in group.
 //
 func (group *ToolItemGroup) NItems() uint {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _cret C.guint             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**ToolItemGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_item_group_get_n_items(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_n_items", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 
 	var _guint uint // out
@@ -376,20 +359,24 @@ func (group *ToolItemGroup) NItems() uint {
 //    - toolItem at index.
 //
 func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 C.guint             // out
-	var _cret *C.GtkToolItem      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	_arg1 = C.guint(index)
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_tool_item_group_get_nth_item(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_nth_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(index)
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }
@@ -403,15 +390,19 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 //      list.
 //
 func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 *C.GtkToolItem      // out
-	var _arg2 C.gint              // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 	_arg2 = C.gint(position)
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
+	*(**ToolItem)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tool_item_group_insert(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("insert", args[:], nil)
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(position)
@@ -424,55 +415,20 @@ func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 //    - collapsed: whether the group should be collapsed or expanded.
 //
 func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 C.gboolean          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if collapsed {
 		_arg1 = C.TRUE
 	}
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_group_set_collapsed(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_collapsed", args[:], nil)
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(collapsed)
-}
-
-// SetEllipsize sets the ellipsization mode which should be used by labels in
-// group.
-//
-// The function takes the following parameters:
-//
-//    - ellipsize labels in group should use.
-//
-func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
-	var _arg0 *C.GtkToolItemGroup  // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-	_arg1 = C.PangoEllipsizeMode(ellipsize)
-
-	C.gtk_tool_item_group_set_ellipsize(_arg0, _arg1)
-	runtime.KeepAlive(group)
-	runtime.KeepAlive(ellipsize)
-}
-
-// SetHeaderRelief: set the button relief of the group header. See
-// gtk_button_set_relief() for details.
-//
-// The function takes the following parameters:
-//
-//    - style: ReliefStyle.
-//
-func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 C.GtkReliefStyle    // out
-
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-	_arg1 = C.GtkReliefStyle(style)
-
-	C.gtk_tool_item_group_set_header_relief(_arg0, _arg1)
-	runtime.KeepAlive(group)
-	runtime.KeepAlive(style)
 }
 
 // SetItemPosition sets the position of item in the list of children of group.
@@ -484,15 +440,19 @@ func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 //      means end of list.
 //
 func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 *C.GtkToolItem      // out
-	var _arg2 C.gint              // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 	_arg2 = C.gint(position)
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
+	*(**ToolItem)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tool_item_group_set_item_position(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_item_position", args[:], nil)
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(position)
@@ -506,14 +466,17 @@ func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 //    - label: new human-readable label of of the group.
 //
 func (group *ToolItemGroup) SetLabel(label string) {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 *C.gchar            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_group_set_label(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_label", args[:], nil)
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 }
@@ -526,13 +489,16 @@ func (group *ToolItemGroup) SetLabel(label string) {
 //    - labelWidget: widget to be displayed in place of the usual label.
 //
 func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
-	var _arg0 *C.GtkToolItemGroup // out
-	var _arg1 *C.GtkWidget        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(labelWidget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
+	*(**ToolItemGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tool_item_group_set_label_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_label_widget", args[:], nil)
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(labelWidget)
 }

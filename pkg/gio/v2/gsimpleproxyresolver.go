@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gsimpleproxyresolver.go.
-var GTypeSimpleProxyResolver = externglib.Type(C.g_simple_proxy_resolver_get_type())
+var GTypeSimpleProxyResolver = coreglib.Type(C.g_simple_proxy_resolver_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSimpleProxyResolver, F: marshalSimpleProxyResolver},
 	})
 }
@@ -36,13 +37,13 @@ type SimpleProxyResolverOverrider interface {
 // and used manually, such as with g_socket_client_set_proxy_resolver().
 type SimpleProxyResolver struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	ProxyResolver
 }
 
 var (
-	_ externglib.Objector = (*SimpleProxyResolver)(nil)
+	_ coreglib.Objector = (*SimpleProxyResolver)(nil)
 )
 
 func classInitSimpleProxyResolverer(gclassPtr, data C.gpointer) {
@@ -53,7 +54,7 @@ func classInitSimpleProxyResolverer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
+func wrapSimpleProxyResolver(obj *coreglib.Object) *SimpleProxyResolver {
 	return &SimpleProxyResolver{
 		Object: obj,
 		ProxyResolver: ProxyResolver{
@@ -63,7 +64,7 @@ func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 }
 
 func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
-	return wrapSimpleProxyResolver(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSimpleProxyResolver(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // SetDefaultProxy sets the default proxy on resolver, to be used for any URIs
@@ -78,14 +79,17 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 //    - defaultProxy: default proxy to use.
 //
 func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
-	var _arg0 *C.GSimpleProxyResolver // out
-	var _arg1 *C.gchar                // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(defaultProxy)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(defaultProxy)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**SimpleProxyResolver)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
+	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_default_proxy", args[:], nil)
+
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(defaultProxy)
 }
@@ -104,17 +108,21 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 //    - proxy to use for uri_scheme.
 //
 func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
-	var _arg0 *C.GSimpleProxyResolver // out
-	var _arg1 *C.gchar                // out
-	var _arg2 *C.gchar                // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(externglib.InternObject(resolver).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriScheme)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(proxy)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(proxy)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**SimpleProxyResolver)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_uri_proxy", args[:], nil)
+
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(uriScheme)
 	runtime.KeepAlive(proxy)

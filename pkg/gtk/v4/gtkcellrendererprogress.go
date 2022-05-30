@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcellrendererprogress.go.
-var GTypeCellRendererProgress = externglib.Type(C.gtk_cell_renderer_progress_get_type())
+var GTypeCellRendererProgress = coreglib.Type(C.gtk_cell_renderer_progress_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellRendererProgress, F: marshalCellRendererProgress},
 	})
 }
@@ -37,10 +38,10 @@ var (
 	_ CellRendererer = (*CellRendererProgress)(nil)
 )
 
-func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
+func wrapCellRendererProgress(obj *coreglib.Object) *CellRendererProgress {
 	return &CellRendererProgress{
 		CellRenderer: CellRenderer{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 		},
@@ -51,7 +52,7 @@ func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 }
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
-	return wrapCellRendererProgress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellRendererProgress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererProgress creates a new CellRendererProgress.
@@ -61,13 +62,14 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 //    - cellRendererProgress: new cell renderer.
 //
 func NewCellRendererProgress() *CellRendererProgress {
-	var _cret *C.GtkCellRenderer // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_cell_renderer_progress_new()
+	_gret := girepository.MustFind("Gtk", "CellRendererProgress").InvokeMethod("new_CellRendererProgress", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererProgress *CellRendererProgress // out
 
-	_cellRendererProgress = wrapCellRendererProgress(externglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererProgress
 }

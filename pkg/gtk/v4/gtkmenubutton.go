@@ -7,22 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer);
-// extern void callbackDelete(gpointer);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmenubutton.go.
-var GTypeMenuButton = externglib.Type(C.gtk_menu_button_get_type())
+var GTypeMenuButton = coreglib.Type(C.gtk_menu_button_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMenuButton, F: marshalMenuButton},
 	})
 }
@@ -48,7 +47,7 @@ func _gotk4_gtk4_MenuButtonCreatePopupFunc(arg1 *C.GtkMenuButton, arg2 C.gpointe
 
 	var _menuButton *MenuButton // out
 
-	_menuButton = wrapMenuButton(externglib.Take(unsafe.Pointer(arg1)))
+	_menuButton = wrapMenuButton(coreglib.Take(unsafe.Pointer(arg1)))
 
 	fn(_menuButton)
 }
@@ -118,10 +117,10 @@ var (
 	_ Widgetter = (*MenuButton)(nil)
 )
 
-func wrapMenuButton(obj *externglib.Object) *MenuButton {
+func wrapMenuButton(obj *coreglib.Object) *MenuButton {
 	return &MenuButton{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -139,7 +138,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 }
 
 func marshalMenuButton(p uintptr) (interface{}, error) {
-	return wrapMenuButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMenuButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMenuButton creates a new GtkMenuButton widget with downwards-pointing
@@ -152,37 +151,16 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 //    - menuButton: newly created GtkMenuButton.
 //
 func NewMenuButton() *MenuButton {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_menu_button_new()
+	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("new_MenuButton", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _menuButton *MenuButton // out
 
-	_menuButton = wrapMenuButton(externglib.Take(unsafe.Pointer(_cret)))
+	_menuButton = wrapMenuButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuButton
-}
-
-// Direction returns the direction the popup will be pointing at when popped up.
-//
-// The function returns the following values:
-//
-//    - arrowType: GtkArrowType value.
-//
-func (menuButton *MenuButton) Direction() ArrowType {
-	var _arg0 *C.GtkMenuButton // out
-	var _cret C.GtkArrowType   // in
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
-
-	_cret = C.gtk_menu_button_get_direction(_arg0)
-	runtime.KeepAlive(menuButton)
-
-	var _arrowType ArrowType // out
-
-	_arrowType = ArrowType(_cret)
-
-	return _arrowType
 }
 
 // HasFrame returns whether the button has a frame.
@@ -192,12 +170,16 @@ func (menuButton *MenuButton) Direction() ArrowType {
 //    - ok: TRUE if the button has a frame.
 //
 func (menuButton *MenuButton) HasFrame() bool {
-	var _arg0 *C.GtkMenuButton // out
-	var _cret C.gboolean       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_button_get_has_frame(_arg0)
+	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_has_frame", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menuButton)
 
 	var _ok bool // out
@@ -216,12 +198,16 @@ func (menuButton *MenuButton) HasFrame() bool {
 //    - utf8: name of the icon shown in the button.
 //
 func (menuButton *MenuButton) IconName() string {
-	var _arg0 *C.GtkMenuButton // out
-	var _cret *C.char          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_button_get_icon_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_icon_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menuButton)
 
 	var _utf8 string // out
@@ -238,12 +224,16 @@ func (menuButton *MenuButton) IconName() string {
 //    - utf8: label shown in the button.
 //
 func (menuButton *MenuButton) Label() string {
-	var _arg0 *C.GtkMenuButton // out
-	var _cret *C.char          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_button_get_label(_arg0)
+	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menuButton)
 
 	var _utf8 string // out
@@ -260,12 +250,16 @@ func (menuButton *MenuButton) Label() string {
 //    - menuModel (optional): GMenuModel or NULL.
 //
 func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
-	var _arg0 *C.GtkMenuButton // out
-	var _cret *C.GMenuModel    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_button_get_menu_model(_arg0)
+	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_menu_model", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menuButton)
 
 	var _menuModel gio.MenuModeller // out
@@ -274,8 +268,8 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(gio.MenuModeller)
 				return ok
 			})
@@ -299,18 +293,22 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 //    - popover (optional): GtkPopover or NULL.
 //
 func (menuButton *MenuButton) Popover() *Popover {
-	var _arg0 *C.GtkMenuButton // out
-	var _cret *C.GtkPopover    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_button_get_popover(_arg0)
+	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_popover", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menuButton)
 
 	var _popover *Popover // out
 
 	if _cret != nil {
-		_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
+		_popover = wrapPopover(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _popover
@@ -325,12 +323,16 @@ func (menuButton *MenuButton) Popover() *Popover {
 //      accelerator keys.
 //
 func (menuButton *MenuButton) UseUnderline() bool {
-	var _arg0 *C.GtkMenuButton // out
-	var _cret C.gboolean       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_menu_button_get_use_underline(_arg0)
+	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_use_underline", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menuButton)
 
 	var _ok bool // out
@@ -344,86 +346,28 @@ func (menuButton *MenuButton) UseUnderline() bool {
 
 // Popdown dismiss the menu.
 func (menuButton *MenuButton) Popdown() {
-	var _arg0 *C.GtkMenuButton // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_menu_button_popdown(_arg0)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("popdown", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
 }
 
 // Popup: pop up the menu.
 func (menuButton *MenuButton) Popup() {
-	var _arg0 *C.GtkMenuButton // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**MenuButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_menu_button_popup(_arg0)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("popup", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
-}
-
-// SetCreatePopupFunc sets func to be called when a popup is about to be shown.
-//
-// func should use one of
-//
-//    - gtk.MenuButton.SetPopover()
-//    - gtk.MenuButton.SetMenuModel()
-//
-// to set a popup for menu_button. If func is non-NULL, menu_button will always
-// be sensitive.
-//
-// Using this function will not reset the menu widget attached to menu_button.
-// Instead, this can be done manually in func.
-//
-// The function takes the following parameters:
-//
-//    - fn (optional): function to call when a popup is about to be shown, but
-//      none has been provided via other means, or NULL to reset to default
-//      behavior.
-//
-func (menuButton *MenuButton) SetCreatePopupFunc(fn MenuButtonCreatePopupFunc) {
-	var _arg0 *C.GtkMenuButton               // out
-	var _arg1 C.GtkMenuButtonCreatePopupFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
-	if fn != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_MenuButtonCreatePopupFunc)
-		_arg2 = C.gpointer(gbox.Assign(fn))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.gtk_menu_button_set_create_popup_func(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(menuButton)
-	runtime.KeepAlive(fn)
-}
-
-// SetDirection sets the direction in which the popup will be popped up.
-//
-// If the button is automatically populated with an arrow icon, its direction
-// will be changed to match.
-//
-// If the does not fit in the available space in the given direction, GTK will
-// its best to keep it inside the screen and fully visible.
-//
-// If you pass GTK_ARROW_NONE for a direction, the popup will behave as if you
-// passed GTK_ARROW_DOWN (although you won’t see any arrows).
-//
-// The function takes the following parameters:
-//
-//    - direction: GtkArrowType.
-//
-func (menuButton *MenuButton) SetDirection(direction ArrowType) {
-	var _arg0 *C.GtkMenuButton // out
-	var _arg1 C.GtkArrowType   // out
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
-	_arg1 = C.GtkArrowType(direction)
-
-	C.gtk_menu_button_set_direction(_arg0, _arg1)
-	runtime.KeepAlive(menuButton)
-	runtime.KeepAlive(direction)
 }
 
 // SetHasFrame sets the style of the button.
@@ -433,15 +377,18 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 //    - hasFrame: whether the button should have a visible frame.
 //
 func (menuButton *MenuButton) SetHasFrame(hasFrame bool) {
-	var _arg0 *C.GtkMenuButton // out
-	var _arg1 C.gboolean       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if hasFrame {
 		_arg1 = C.TRUE
 	}
+	*(**MenuButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_button_set_has_frame(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_has_frame", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
 	runtime.KeepAlive(hasFrame)
 }
@@ -453,14 +400,17 @@ func (menuButton *MenuButton) SetHasFrame(hasFrame bool) {
 //    - iconName: icon name.
 //
 func (menuButton *MenuButton) SetIconName(iconName string) {
-	var _arg0 *C.GtkMenuButton // out
-	var _arg1 *C.char          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**MenuButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_button_set_icon_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_icon_name", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
 	runtime.KeepAlive(iconName)
 }
@@ -472,14 +422,17 @@ func (menuButton *MenuButton) SetIconName(iconName string) {
 //    - label: label.
 //
 func (menuButton *MenuButton) SetLabel(label string) {
-	var _arg0 *C.GtkMenuButton // out
-	var _arg1 *C.char          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**MenuButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_button_set_label(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_label", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
 	runtime.KeepAlive(label)
 }
@@ -501,15 +454,18 @@ func (menuButton *MenuButton) SetLabel(label string) {
 //      button.
 //
 func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
-	var _arg0 *C.GtkMenuButton // out
-	var _arg1 *C.GMenuModel    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if menuModel != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(menuModel).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuModel).Native()))
 	}
+	*(**MenuButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_menu_model", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
 	runtime.KeepAlive(menuModel)
 }
@@ -527,15 +483,18 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 //    - popover (optional): GtkPopover, or NULL to unset and disable the button.
 //
 func (menuButton *MenuButton) SetPopover(popover Widgetter) {
-	var _arg0 *C.GtkMenuButton // out
-	var _arg1 *C.GtkWidget     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if popover != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	}
+	*(**MenuButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_button_set_popover(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_popover", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
 	runtime.KeepAlive(popover)
 }
@@ -547,15 +506,18 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 //    - useUnderline: TRUE if underlines in the text indicate mnemonics.
 //
 func (menuButton *MenuButton) SetUseUnderline(useUnderline bool) {
-	var _arg0 *C.GtkMenuButton // out
-	var _arg1 C.gboolean       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(externglib.InternObject(menuButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if useUnderline {
 		_arg1 = C.TRUE
 	}
+	*(**MenuButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_menu_button_set_use_underline(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_use_underline", args[:], nil)
+
 	runtime.KeepAlive(menuButton)
 	runtime.KeepAlive(useUnderline)
 }

@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkimagecellaccessible.go.
-var GTypeImageCellAccessible = externglib.Type(C.gtk_image_cell_accessible_get_type())
+var GTypeImageCellAccessible = coreglib.Type(C.gtk_image_cell_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeImageCellAccessible, F: marshalImageCellAccessible},
 	})
 }
@@ -33,13 +32,13 @@ type ImageCellAccessible struct {
 	_ [0]func() // equal guard
 	RendererCellAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Image
 	atk.ObjectClass
 }
 
 var (
-	_ externglib.Objector = (*ImageCellAccessible)(nil)
+	_ coreglib.Objector = (*ImageCellAccessible)(nil)
 )
 
 func classInitImageCellAccessibler(gclassPtr, data C.gpointer) {
@@ -50,7 +49,7 @@ func classInitImageCellAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
+func wrapImageCellAccessible(obj *coreglib.Object) *ImageCellAccessible {
 	return &ImageCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{
@@ -87,5 +86,5 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 }
 
 func marshalImageCellAccessible(p uintptr) (interface{}, error) {
-	return wrapImageCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapImageCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

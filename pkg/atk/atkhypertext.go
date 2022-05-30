@@ -6,12 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(AtkHypertext*, gint);
 // extern gint _gotk4_atk1_HypertextIface_get_link_index(AtkHypertext*, gint);
 // extern gint _gotk4_atk1_HypertextIface_get_n_links(AtkHypertext*);
@@ -20,10 +21,10 @@ import (
 import "C"
 
 // glib.Type values for atkhypertext.go.
-var GTypeHypertext = externglib.Type(C.atk_hypertext_get_type())
+var GTypeHypertext = coreglib.Type(C.atk_hypertext_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeHypertext, F: marshalHypertext},
 	})
 }
@@ -78,16 +79,16 @@ type HypertextOverrider interface {
 // underlying type by calling Cast().
 type Hypertext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Hypertext)(nil)
+	_ coreglib.Objector = (*Hypertext)(nil)
 )
 
 // Hypertexter describes Hypertext's interface methods.
 type Hypertexter interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// Link gets the link in this hypertext document at index link_index.
 	Link(linkIndex int) *Hyperlink
@@ -99,7 +100,7 @@ type Hypertexter interface {
 
 	// Link-selected: "link-selected" signal is emitted by an AtkHyperText
 	// object when one of the hyperlinks associated with the object is selected.
-	ConnectLinkSelected(func(arg1 int)) externglib.SignalHandle
+	ConnectLinkSelected(func(arg1 int)) coreglib.SignalHandle
 }
 
 var _ Hypertexter = (*Hypertext)(nil)
@@ -114,7 +115,7 @@ func ifaceInitHypertexter(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_HypertextIface_get_link
 func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cret *C.AtkHyperlink) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	var _linkIndex int // out
@@ -123,14 +124,14 @@ func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cre
 
 	hyperlink := iface.Link(_linkIndex)
 
-	cret = (*C.AtkHyperlink)(unsafe.Pointer(externglib.InternObject(hyperlink).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
 
 	return cret
 }
 
 //export _gotk4_atk1_HypertextIface_get_link_index
 func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint) (cret C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	var _charIndex int // out
@@ -146,7 +147,7 @@ func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint
 
 //export _gotk4_atk1_HypertextIface_get_n_links
 func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	gint := iface.NLinks()
@@ -158,7 +159,7 @@ func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) 
 
 //export _gotk4_atk1_HypertextIface_link_selected
 func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	var _linkIndex int // out
@@ -168,21 +169,21 @@ func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint)
 	iface.LinkSelected(_linkIndex)
 }
 
-func wrapHypertext(obj *externglib.Object) *Hypertext {
+func wrapHypertext(obj *coreglib.Object) *Hypertext {
 	return &Hypertext{
 		Object: obj,
 	}
 }
 
 func marshalHypertext(p uintptr) (interface{}, error) {
-	return wrapHypertext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapHypertext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_atk1_Hypertext_ConnectLinkSelected
 func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
 	var f func(arg1 int)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -200,8 +201,8 @@ func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg
 
 // ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
 // object when one of the hyperlinks associated with the object is selected.
-func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(hypertext, "link-selected", false, unsafe.Pointer(C._gotk4_atk1_Hypertext_ConnectLinkSelected), f)
+func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(hypertext, "link-selected", false, unsafe.Pointer(C._gotk4_atk1_Hypertext_ConnectLinkSelected), f)
 }
 
 // Link gets the link in this hypertext document at index link_index.
@@ -215,20 +216,23 @@ func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) externglib.Sig
 //    - hyperlink: link in this hypertext document at index link_index.
 //
 func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
-	var _arg0 *C.AtkHypertext // out
-	var _arg1 C.gint          // out
-	var _cret *C.AtkHyperlink // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(externglib.InternObject(hypertext).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 	_arg1 = C.gint(linkIndex)
+	*(**Hypertext)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(linkIndex)
 
 	var _hyperlink *Hyperlink // out
 
-	_hyperlink = wrapHyperlink(externglib.Take(unsafe.Pointer(_cret)))
+	_hyperlink = wrapHyperlink(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hyperlink
 }
@@ -246,14 +250,17 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 //      no hyperlink associated with this character.
 //
 func (hypertext *Hypertext) LinkIndex(charIndex int) int {
-	var _arg0 *C.AtkHypertext // out
-	var _arg1 C.gint          // out
-	var _cret C.gint          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(externglib.InternObject(hypertext).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 	_arg1 = C.gint(charIndex)
+	*(**Hypertext)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(charIndex)
 
@@ -271,12 +278,15 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 //    - gint: number of links within this hypertext document.
 //
 func (hypertext *Hypertext) NLinks() int {
-	var _arg0 *C.AtkHypertext // out
-	var _cret C.gint          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(externglib.InternObject(hypertext).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	*(**Hypertext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_hypertext_get_n_links(_arg0)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(hypertext)
 
 	var _gint int // out

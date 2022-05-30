@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktearoffmenuitem.go.
-var GTypeTearoffMenuItem = externglib.Type(C.gtk_tearoff_menu_item_get_type())
+var GTypeTearoffMenuItem = coreglib.Type(C.gtk_tearoff_menu_item_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTearoffMenuItem, F: marshalTearoffMenuItem},
 	})
 }
@@ -49,8 +48,8 @@ type TearoffMenuItem struct {
 }
 
 var (
-	_ Binner              = (*TearoffMenuItem)(nil)
-	_ externglib.Objector = (*TearoffMenuItem)(nil)
+	_ Binner            = (*TearoffMenuItem)(nil)
+	_ coreglib.Objector = (*TearoffMenuItem)(nil)
 )
 
 func classInitTearoffMenuItemmer(gclassPtr, data C.gpointer) {
@@ -61,13 +60,13 @@ func classInitTearoffMenuItemmer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
+func wrapTearoffMenuItem(obj *coreglib.Object) *TearoffMenuItem {
 	return &TearoffMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -83,7 +82,7 @@ func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -103,7 +102,7 @@ func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 }
 
 func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
-	return wrapTearoffMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTearoffMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTearoffMenuItem creates a new TearoffMenuItem.
@@ -116,13 +115,14 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 //    - tearoffMenuItem: new TearoffMenuItem.
 //
 func NewTearoffMenuItem() *TearoffMenuItem {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_tearoff_menu_item_new()
+	_gret := girepository.MustFind("Gtk", "TearoffMenuItem").InvokeMethod("new_TearoffMenuItem", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _tearoffMenuItem *TearoffMenuItem // out
 
-	_tearoffMenuItem = wrapTearoffMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_tearoffMenuItem = wrapTearoffMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _tearoffMenuItem
 }

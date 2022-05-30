@@ -4,24 +4,24 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gfileinfo.go.
-var GTypeFileInfo = externglib.Type(C.g_file_info_get_type())
+var GTypeFileInfo = coreglib.Type(C.g_file_info_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFileInfo, F: marshalFileInfo},
 	})
 }
@@ -555,11 +555,11 @@ type FileInfoOverrider interface {
 // AttributeMatcher allows for searching through a Info for attributes.
 type FileInfo struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*FileInfo)(nil)
+	_ coreglib.Objector = (*FileInfo)(nil)
 )
 
 func classInitFileInfor(gclassPtr, data C.gpointer) {
@@ -570,14 +570,14 @@ func classInitFileInfor(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFileInfo(obj *externglib.Object) *FileInfo {
+func wrapFileInfo(obj *coreglib.Object) *FileInfo {
 	return &FileInfo{
 		Object: obj,
 	}
 }
 
 func marshalFileInfo(p uintptr) (interface{}, error) {
-	return wrapFileInfo(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFileInfo(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFileInfo creates a new file info structure.
@@ -587,24 +587,28 @@ func marshalFileInfo(p uintptr) (interface{}, error) {
 //    - fileInfo: Info.
 //
 func NewFileInfo() *FileInfo {
-	var _cret *C.GFileInfo // in
+	var _cret *C.void // in
 
-	_cret = C.g_file_info_new()
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("new_FileInfo", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fileInfo *FileInfo // out
 
-	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileInfo
 }
 
 // ClearStatus clears the status information from info.
 func (info *FileInfo) ClearStatus() {
-	var _arg0 *C.GFileInfo // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_file_info_clear_status(_arg0)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("clear_status", args[:], nil)
+
 	runtime.KeepAlive(info)
 }
 
@@ -617,13 +621,16 @@ func (info *FileInfo) ClearStatus() {
 //    - destInfo: destination to copy attributes to.
 //
 func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GFileInfo // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(srcInfo).Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(destInfo).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srcInfo).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(destInfo).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_copy_into(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("copy_into", args[:], nil)
+
 	runtime.KeepAlive(srcInfo)
 	runtime.KeepAlive(destInfo)
 }
@@ -635,17 +642,21 @@ func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
 //    - fileInfo: duplicate Info of other.
 //
 func (other *FileInfo) Dup() *FileInfo {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GFileInfo // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(other).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_dup(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("dup", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(other)
 
 	var _fileInfo *FileInfo // out
 
-	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileInfo
 }
@@ -664,15 +675,19 @@ func (other *FileInfo) Dup() *FileInfo {
 //      must be freed with g_free().
 //
 func (info *FileInfo) AttributeAsString(attribute string) string {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret *C.char      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_as_string(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_as_string", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -698,15 +713,19 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 //    - ok: boolean value contained within the attribute.
 //
 func (info *FileInfo) AttributeBoolean(attribute string) bool {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.gboolean   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_boolean(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_boolean", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -732,15 +751,19 @@ func (info *FileInfo) AttributeBoolean(attribute string) bool {
 //      otherwise.
 //
 func (info *FileInfo) AttributeByteString(attribute string) string {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret *C.char      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_byte_string(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_byte_string", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -751,51 +774,6 @@ func (info *FileInfo) AttributeByteString(attribute string) string {
 	}
 
 	return _utf8
-}
-
-// AttributeData gets the attribute type, value and status for an attribute key.
-//
-// The function takes the following parameters:
-//
-//    - attribute: file attribute key.
-//
-// The function returns the following values:
-//
-//    - typ (optional): return location for the attribute type, or NULL.
-//    - valuePp (optional): return location for the attribute value, or NULL; the
-//      attribute value will not be NULL.
-//    - status (optional): return location for the attribute status, or NULL.
-//    - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
-//
-func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, cgo.Handle, FileAttributeStatus, bool) {
-	var _arg0 *C.GFileInfo           // out
-	var _arg1 *C.char                // out
-	var _arg2 C.GFileAttributeType   // in
-	var _arg3 C.gpointer             // in
-	var _arg4 C.GFileAttributeStatus // in
-	var _cret C.gboolean             // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_file_info_get_attribute_data(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(attribute)
-
-	var _typ FileAttributeType      // out
-	var _valuePp cgo.Handle         // out
-	var _status FileAttributeStatus // out
-	var _ok bool                    // out
-
-	_typ = FileAttributeType(_arg2)
-	_valuePp = (cgo.Handle)(unsafe.Pointer(_arg3))
-	_status = FileAttributeStatus(_arg4)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _typ, _valuePp, _status, _ok
 }
 
 // AttributeInt32 gets a signed 32-bit integer contained within the attribute.
@@ -811,15 +789,19 @@ func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, cgo.Ha
 //    - gint32: signed 32-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeInt32(attribute string) int32 {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.gint32     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _cret C.gint32 // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_int32(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_int32", args[:], nil)
+	_cret = *(*C.gint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -843,15 +825,19 @@ func (info *FileInfo) AttributeInt32(attribute string) int32 {
 //    - gint64: signed 64-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeInt64(attribute string) int64 {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.gint64     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _cret C.gint64 // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_int64(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_int64", args[:], nil)
+	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -873,57 +859,30 @@ func (info *FileInfo) AttributeInt64(attribute string) int64 {
 //
 //    - object (optional) associated with the given attribute, or NULL otherwise.
 //
-func (info *FileInfo) AttributeObject(attribute string) *externglib.Object {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret *C.GObject   // in
+func (info *FileInfo) AttributeObject(attribute string) *coreglib.Object {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_object(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_object", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
-	var _object *externglib.Object // out
+	var _object *coreglib.Object // out
 
 	if _cret != nil {
-		_object = externglib.Take(unsafe.Pointer(_cret))
+		_object = coreglib.Take(unsafe.Pointer(_cret))
 	}
 
 	return _object
-}
-
-// AttributeStatus gets the attribute status for an attribute key.
-//
-// The function takes the following parameters:
-//
-//    - attribute: file attribute key.
-//
-// The function returns the following values:
-//
-//    - fileAttributeStatus for the given attribute, or
-//      G_FILE_ATTRIBUTE_STATUS_UNSET if the key is invalid.
-//
-func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
-	var _arg0 *C.GFileInfo           // out
-	var _arg1 *C.char                // out
-	var _cret C.GFileAttributeStatus // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_file_info_get_attribute_status(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(attribute)
-
-	var _fileAttributeStatus FileAttributeStatus // out
-
-	_fileAttributeStatus = FileAttributeStatus(_cret)
-
-	return _fileAttributeStatus
 }
 
 // AttributeString gets the value of a string attribute. If the attribute does
@@ -939,15 +898,19 @@ func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 //      NULL otherwise.
 //
 func (info *FileInfo) AttributeString(attribute string) string {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret *C.char      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_string(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_string", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -973,15 +936,19 @@ func (info *FileInfo) AttributeString(attribute string) string {
 //      otherwise. Do not free. These returned strings are UTF-8.
 //
 func (info *FileInfo) AttributeStringv(attribute string) []string {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret **C.char     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _cret **C.char // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_stringv(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_stringv", args[:], nil)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -990,7 +957,7 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 	if _cret != nil {
 		{
 			var i int
-			var z *C.char
+			var z *C.void
 			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
@@ -1006,37 +973,6 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 	return _utf8s
 }
 
-// AttributeType gets the attribute type for an attribute key.
-//
-// The function takes the following parameters:
-//
-//    - attribute: file attribute key.
-//
-// The function returns the following values:
-//
-//    - fileAttributeType for the given attribute, or
-//      G_FILE_ATTRIBUTE_TYPE_INVALID if the key is not set.
-//
-func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
-	var _arg0 *C.GFileInfo         // out
-	var _arg1 *C.char              // out
-	var _cret C.GFileAttributeType // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_file_info_get_attribute_type(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(attribute)
-
-	var _fileAttributeType FileAttributeType // out
-
-	_fileAttributeType = FileAttributeType(_cret)
-
-	return _fileAttributeType
-}
-
 // AttributeUint32 gets an unsigned 32-bit integer contained within the
 // attribute. If the attribute does not contain an unsigned 32-bit integer, or
 // is invalid, 0 will be returned.
@@ -1050,15 +986,19 @@ func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 //    - guint32: unsigned 32-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeUint32(attribute string) uint32 {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.guint32    // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_uint32(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_uint32", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -1082,15 +1022,19 @@ func (info *FileInfo) AttributeUint32(attribute string) uint32 {
 //    - guint64: unsigned 64-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeUint64(attribute string) uint64 {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.guint64    // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _cret C.guint64 // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_get_attribute_uint64(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_attribute_uint64", args[:], nil)
+	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -1109,12 +1053,16 @@ func (info *FileInfo) AttributeUint64(attribute string) uint64 {
 //      unknown.
 //
 func (info *FileInfo) ContentType() string {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_content_type(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_content_type", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -1135,12 +1083,16 @@ func (info *FileInfo) ContentType() string {
 //    - dateTime (optional) or NULL.
 //
 func (info *FileInfo) DeletionDate() *glib.DateTime {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GDateTime // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_deletion_date(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_deletion_date", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _dateTime *glib.DateTime // out
@@ -1166,12 +1118,16 @@ func (info *FileInfo) DeletionDate() *glib.DateTime {
 //    - utf8: string containing the display name.
 //
 func (info *FileInfo) DisplayName() string {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_display_name(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_display_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -1188,12 +1144,16 @@ func (info *FileInfo) DisplayName() string {
 //    - utf8: string containing the edit name.
 //
 func (info *FileInfo) EditName() string {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_edit_name(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_edit_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -1212,12 +1172,16 @@ func (info *FileInfo) EditName() string {
 //      attribute.
 //
 func (info *FileInfo) ETag() string {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_etag(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_etag", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -1229,30 +1193,6 @@ func (info *FileInfo) ETag() string {
 	return _utf8
 }
 
-// FileType gets a file's type (whether it is a regular file, symlink, etc).
-// This is different from the file's content type, see
-// g_file_info_get_content_type().
-//
-// The function returns the following values:
-//
-//    - fileType for the given file.
-//
-func (info *FileInfo) FileType() FileType {
-	var _arg0 *C.GFileInfo // out
-	var _cret C.GFileType  // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-
-	_cret = C.g_file_info_get_file_type(_arg0)
-	runtime.KeepAlive(info)
-
-	var _fileType FileType // out
-
-	_fileType = FileType(_cret)
-
-	return _fileType
-}
-
 // Icon gets the icon for a file.
 //
 // The function returns the following values:
@@ -1260,18 +1200,22 @@ func (info *FileInfo) FileType() FileType {
 //    - icon (optional) for the given info.
 //
 func (info *FileInfo) Icon() *Icon {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GIcon     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_icon(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_icon", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _icon *Icon // out
 
 	if _cret != nil {
-		_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
+		_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _icon
@@ -1284,12 +1228,16 @@ func (info *FileInfo) Icon() *Icon {
 //    - ok: TRUE if file is a backup file, FALSE otherwise.
 //
 func (info *FileInfo) IsBackup() bool {
-	var _arg0 *C.GFileInfo // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_is_backup(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_is_backup", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
@@ -1308,12 +1256,16 @@ func (info *FileInfo) IsBackup() bool {
 //    - ok: TRUE if the file is a hidden file, FALSE otherwise.
 //
 func (info *FileInfo) IsHidden() bool {
-	var _arg0 *C.GFileInfo // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_is_hidden(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_is_hidden", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
@@ -1332,12 +1284,16 @@ func (info *FileInfo) IsHidden() bool {
 //    - ok: TRUE if the given info is a symlink.
 //
 func (info *FileInfo) IsSymlink() bool {
-	var _arg0 *C.GFileInfo // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_is_symlink(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_is_symlink", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
@@ -1361,12 +1317,16 @@ func (info *FileInfo) IsSymlink() bool {
 //    - dateTime (optional): modification time, or NULL if unknown.
 //
 func (info *FileInfo) ModificationDateTime() *glib.DateTime {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GDateTime // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_modification_date_time(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_modification_date_time", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _dateTime *glib.DateTime // out
@@ -1384,32 +1344,6 @@ func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 	return _dateTime
 }
 
-// ModificationTime gets the modification time of the current info and sets it
-// in result.
-//
-// Deprecated: Use g_file_info_get_modification_date_time() instead, as Val is
-// deprecated due to the year 2038 problem.
-//
-// The function returns the following values:
-//
-//    - result: Val.
-//
-func (info *FileInfo) ModificationTime() *glib.TimeVal {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 C.GTimeVal   // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-
-	C.g_file_info_get_modification_time(_arg0, &_arg1)
-	runtime.KeepAlive(info)
-
-	var _result *glib.TimeVal // out
-
-	_result = (*glib.TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _result
-}
-
 // Name gets the name for a file. This is guaranteed to always be set.
 //
 // The function returns the following values:
@@ -1417,12 +1351,16 @@ func (info *FileInfo) ModificationTime() *glib.TimeVal {
 //    - filename: string containing the file name.
 //
 func (info *FileInfo) Name() string {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_name(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _filename string // out
@@ -1430,30 +1368,6 @@ func (info *FileInfo) Name() string {
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
-}
-
-// Size gets the file's size (in bytes). The size is retrieved through the value
-// of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted from
-// #guint64 to #goffset before returning the result.
-//
-// The function returns the following values:
-//
-//    - gint64 containing the file's size (in bytes).
-//
-func (info *FileInfo) Size() int64 {
-	var _arg0 *C.GFileInfo // out
-	var _cret C.goffset    // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-
-	_cret = C.g_file_info_get_size(_arg0)
-	runtime.KeepAlive(info)
-
-	var _gint64 int64 // out
-
-	_gint64 = int64(_cret)
-
-	return _gint64
 }
 
 // SortOrder gets the value of the sort_order attribute from the Info. See
@@ -1464,12 +1378,16 @@ func (info *FileInfo) Size() int64 {
 //    - gint32 containing the value of the "standard::sort_order" attribute.
 //
 func (info *FileInfo) SortOrder() int32 {
-	var _arg0 *C.GFileInfo // out
-	var _cret C.gint32     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.gint32 // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_sort_order(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_sort_order", args[:], nil)
+	_cret = *(*C.gint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _gint32 int32 // out
@@ -1486,18 +1404,22 @@ func (info *FileInfo) SortOrder() int32 {
 //    - icon (optional) for the given info.
 //
 func (info *FileInfo) SymbolicIcon() *Icon {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GIcon     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_symbolic_icon(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_symbolic_icon", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _icon *Icon // out
 
 	if _cret != nil {
-		_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
+		_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _icon
@@ -1510,12 +1432,16 @@ func (info *FileInfo) SymbolicIcon() *Icon {
 //    - utf8 (optional): string containing the symlink target.
 //
 func (info *FileInfo) SymlinkTarget() string {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_file_info_get_symlink_target(_arg0)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("get_symlink_target", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
@@ -1539,15 +1465,19 @@ func (info *FileInfo) SymlinkTarget() string {
 //    - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
 //
 func (info *FileInfo) HasAttribute(attribute string) bool {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.gboolean   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_has_attribute(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("has_attribute", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
@@ -1572,15 +1502,19 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 //    - ok: TRUE if info has an attribute in name_space, FALSE otherwise.
 //
 func (info *FileInfo) HasNamespace(nameSpace string) bool {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.gboolean   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(nameSpace)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_has_namespace(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("has_namespace", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(nameSpace)
 
@@ -1606,17 +1540,21 @@ func (info *FileInfo) HasNamespace(nameSpace string) bool {
 //      possible attribute types for the given name_space, or NULL on error.
 //
 func (info *FileInfo) ListAttributes(nameSpace string) []string {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret **C.char     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _cret **C.char // in
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
 	if nameSpace != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(nameSpace)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_file_info_list_attributes(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FileInfo").InvokeMethod("list_attributes", args[:], nil)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(nameSpace)
 
@@ -1626,7 +1564,7 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
-			var z *C.char
+			var z *C.void
 			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
@@ -1650,44 +1588,19 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 //    - attribute: file attribute key.
 //
 func (info *FileInfo) RemoveAttribute(attribute string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_remove_attribute(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("remove_attribute", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
-}
-
-// SetAttribute sets the attribute to contain the given value, if possible. To
-// unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for type.
-//
-// The function takes the following parameters:
-//
-//    - attribute: file attribute key.
-//    - typ: AttributeType.
-//    - valueP: pointer to the value.
-//
-func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valueP cgo.Handle) {
-	var _arg0 *C.GFileInfo         // out
-	var _arg1 *C.char              // out
-	var _arg2 C.GFileAttributeType // out
-	var _arg3 C.gpointer           // out
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GFileAttributeType(typ)
-	_arg3 = (C.gpointer)(unsafe.Pointer(valueP))
-
-	C.g_file_info_set_attribute(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(attribute)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(valueP)
 }
 
 // SetAttributeBoolean sets the attribute to contain the given attr_value, if
@@ -1699,18 +1612,22 @@ func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valu
 //    - attrValue: boolean value.
 //
 func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 C.gboolean   // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if attrValue {
 		_arg2 = C.TRUE
 	}
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_boolean(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_boolean", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1725,17 +1642,21 @@ func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 //    - attrValue: byte string.
 //
 func (info *FileInfo) SetAttributeByteString(attribute, attrValue string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 *C.char      // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attrValue)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attrValue)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_byte_string(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_byte_string", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1750,16 +1671,20 @@ func (info *FileInfo) SetAttributeByteString(attribute, attrValue string) {
 //    - attrValue: signed 32-bit integer.
 //
 func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 C.gint32     // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.gint32 // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint32(attrValue)
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_int32(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_int32", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1774,16 +1699,20 @@ func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 //    - attrValue: int64 value to set attribute to.
 //
 func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 C.gint64     // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.gint64 // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(attrValue)
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_int64", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1796,13 +1725,16 @@ func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 //    - mask: AttributeMatcher.
 //
 func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
-	var _arg0 *C.GFileInfo             // out
-	var _arg1 *C.GFileAttributeMatcher // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(mask)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(mask)))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_attribute_mask(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_mask", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(mask)
 }
@@ -1815,61 +1747,24 @@ func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 //    - attribute: file attribute key.
 //    - attrValue: #GObject.
 //
-func (info *FileInfo) SetAttributeObject(attribute string, attrValue *externglib.Object) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 *C.GObject   // out
+func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.Object) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GObject)(unsafe.Pointer(attrValue.Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(attrValue.Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_object(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_object", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
-}
-
-// SetAttributeStatus sets the attribute status for an attribute key. This is
-// only needed by external code that implement g_file_set_attributes_from_info()
-// or similar functions.
-//
-// The attribute must exist in info for this to work. Otherwise FALSE is
-// returned and info is unchanged.
-//
-// The function takes the following parameters:
-//
-//    - attribute: file attribute key.
-//    - status: AttributeStatus.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the status was changed, FALSE if the key was not set.
-//
-func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
-	var _arg0 *C.GFileInfo           // out
-	var _arg1 *C.char                // out
-	var _arg2 C.GFileAttributeStatus // out
-	var _cret C.gboolean             // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GFileAttributeStatus(status)
-
-	_cret = C.g_file_info_set_attribute_status(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(attribute)
-	runtime.KeepAlive(status)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SetAttributeString sets the attribute to contain the given attr_value, if
@@ -1881,17 +1776,21 @@ func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeS
 //    - attrValue: UTF-8 string.
 //
 func (info *FileInfo) SetAttributeString(attribute, attrValue string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 *C.char      // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attrValue)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attrValue)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_string(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_string", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1908,28 +1807,32 @@ func (info *FileInfo) SetAttributeString(attribute, attrValue string) {
 //    - attrValue: NULL terminated array of UTF-8 strings.
 //
 func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 **C.char     // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 **C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.calloc(C.size_t((len(attrValue) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.void)(C.calloc(C.size_t((len(attrValue) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(attrValue)+1)
-			var zero *C.char
+			var zero *C.void
 			out[len(attrValue)] = zero
 			for i := range attrValue {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(attrValue[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(attrValue[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_stringv(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_stringv", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1944,16 +1847,20 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 //    - attrValue: unsigned 32-bit integer.
 //
 func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 C.guint32    // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _arg2 C.guint32 // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint32(attrValue)
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_uint32(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_uint32", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1968,16 +1875,20 @@ func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 //    - attrValue: unsigned 64-bit integer.
 //
 func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _arg2 C.guint64    // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _arg2 C.guint64 // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(attrValue)
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_file_info_set_attribute_uint64(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_attribute_uint64", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
@@ -1991,14 +1902,17 @@ func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 //    - contentType: content type. See [GContentType][gio-GContentType].
 //
 func (info *FileInfo) SetContentType(contentType string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_content_type(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_content_type", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(contentType)
 }
@@ -2011,14 +1925,17 @@ func (info *FileInfo) SetContentType(contentType string) {
 //    - displayName: string containing a display name.
 //
 func (info *FileInfo) SetDisplayName(displayName string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_display_name(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_display_name", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(displayName)
 }
@@ -2031,35 +1948,19 @@ func (info *FileInfo) SetDisplayName(displayName string) {
 //    - editName: string containing an edit name.
 //
 func (info *FileInfo) SetEditName(editName string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(editName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(editName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_edit_name(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_edit_name", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(editName)
-}
-
-// SetFileType sets the file type in a Info to type. See
-// G_FILE_ATTRIBUTE_STANDARD_TYPE.
-//
-// The function takes the following parameters:
-//
-//    - typ: Type.
-//
-func (info *FileInfo) SetFileType(typ FileType) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 C.GFileType  // out
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = C.GFileType(typ)
-
-	C.g_file_info_set_file_type(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(typ)
 }
 
 // SetIcon sets the icon for a given Info. See G_FILE_ATTRIBUTE_STANDARD_ICON.
@@ -2069,13 +1970,16 @@ func (info *FileInfo) SetFileType(typ FileType) {
 //    - icon: #GIcon.
 //
 func (info *FileInfo) SetIcon(icon Iconner) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GIcon     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_icon(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_icon", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(icon)
 }
@@ -2088,15 +1992,18 @@ func (info *FileInfo) SetIcon(icon Iconner) {
 //    - isHidden: #gboolean.
 //
 func (info *FileInfo) SetIsHidden(isHidden bool) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
 	if isHidden {
 		_arg1 = C.TRUE
 	}
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_is_hidden(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_is_hidden", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(isHidden)
 }
@@ -2109,15 +2016,18 @@ func (info *FileInfo) SetIsHidden(isHidden bool) {
 //    - isSymlink: #gboolean.
 //
 func (info *FileInfo) SetIsSymlink(isSymlink bool) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
 	if isSymlink {
 		_arg1 = C.TRUE
 	}
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_is_symlink(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_is_symlink", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(isSymlink)
 }
@@ -2131,13 +2041,16 @@ func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 //    - mtime: Time.
 //
 func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GDateTime // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(mtime)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(mtime)))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_modification_date_time(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_modification_date_time", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(mtime)
 }
@@ -2154,13 +2067,16 @@ func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
 //    - mtime: Val.
 //
 func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GTimeVal  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(mtime)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(mtime)))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_modification_time(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_modification_time", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(mtime)
 }
@@ -2173,35 +2089,19 @@ func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 //    - name: string containing a name.
 //
 func (info *FileInfo) SetName(name string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_name(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_name", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
-}
-
-// SetSize sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file info to
-// the given size.
-//
-// The function takes the following parameters:
-//
-//    - size containing the file's size.
-//
-func (info *FileInfo) SetSize(size int64) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 C.goffset    // out
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = C.goffset(size)
-
-	C.g_file_info_set_size(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(size)
 }
 
 // SetSortOrder sets the sort order attribute in the file info structure. See
@@ -2212,13 +2112,16 @@ func (info *FileInfo) SetSize(size int64) {
 //    - sortOrder: sort order integer.
 //
 func (info *FileInfo) SetSortOrder(sortOrder int32) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 C.gint32     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.gint32 // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
 	_arg1 = C.gint32(sortOrder)
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_sort_order(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_sort_order", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(sortOrder)
 }
@@ -2231,13 +2134,16 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 //    - icon: #GIcon.
 //
 func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GIcon     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_symbolic_icon", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(icon)
 }
@@ -2250,14 +2156,17 @@ func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 //    - symlinkTarget: static string containing a path to a symlink target.
 //
 func (info *FileInfo) SetSymlinkTarget(symlinkTarget string) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkTarget)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(symlinkTarget)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FileInfo)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_file_info_set_symlink_target(_arg0, _arg1)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("set_symlink_target", args[:], nil)
+
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(symlinkTarget)
 }
@@ -2265,10 +2174,13 @@ func (info *FileInfo) SetSymlinkTarget(symlinkTarget string) {
 // UnsetAttributeMask unsets a mask set by g_file_info_set_attribute_mask(), if
 // one is set.
 func (info *FileInfo) UnsetAttributeMask() {
-	var _arg0 *C.GFileInfo // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(externglib.InternObject(info).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(**FileInfo)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_file_info_unset_attribute_mask(_arg0)
+	girepository.MustFind("Gio", "FileInfo").InvokeMethod("unset_attribute_mask", args[:], nil)
+
 	runtime.KeepAlive(info)
 }

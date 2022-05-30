@@ -7,85 +7,27 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_CellAreaContextClass_allocate(GtkCellAreaContext*, int, int);
-// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width(GtkCellAreaContext*, int, int*, int*);
-// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height(GtkCellAreaContext*, int, int*, int*);
+// #include <glib.h>
 // extern void _gotk4_gtk4_CellAreaContextClass_reset(GtkCellAreaContext*);
 import "C"
 
 // glib.Type values for gtkcellareacontext.go.
-var GTypeCellAreaContext = externglib.Type(C.gtk_cell_area_context_get_type())
+var GTypeCellAreaContext = coreglib.Type(C.gtk_cell_area_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellAreaContext, F: marshalCellAreaContext},
 	})
 }
 
 // CellAreaContextOverrider contains methods that are overridable.
 type CellAreaContextOverrider interface {
-	// Allocate allocates a width and/or a height for all rows which are to be
-	// rendered with context.
-	//
-	// Usually allocation is performed only horizontally or sometimes vertically
-	// since a group of rows are usually rendered side by side vertically or
-	// horizontally and share either the same width or the same height.
-	// Sometimes they are allocated in both horizontal and vertical orientations
-	// producing a homogeneous effect of the rows. This is generally the case
-	// for TreeView when TreeView:fixed-height-mode is enabled.
-	//
-	// The function takes the following parameters:
-	//
-	//    - width: allocated width for all TreeModel rows rendered with context,
-	//      or -1.
-	//    - height: allocated height for all TreeModel rows rendered with
-	//      context, or -1.
-	//
-	Allocate(width, height int)
-	// PreferredHeightForWidth gets the accumulative preferred height for width
-	// for all rows which have been requested for the same said width with this
-	// context.
-	//
-	// After gtk_cell_area_context_reset() is called and/or before ever
-	// requesting the size of a CellArea, the returned values are -1.
-	//
-	// The function takes the following parameters:
-	//
-	//    - width: proposed width for allocation.
-	//
-	// The function returns the following values:
-	//
-	//    - minimumHeight (optional): location to store the minimum height, or
-	//      NULL.
-	//    - naturalHeight (optional): location to store the natural height, or
-	//      NULL.
-	//
-	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
-	// PreferredWidthForHeight gets the accumulative preferred width for height
-	// for all rows which have been requested for the same said height with this
-	// context.
-	//
-	// After gtk_cell_area_context_reset() is called and/or before ever
-	// requesting the size of a CellArea, the returned values are -1.
-	//
-	// The function takes the following parameters:
-	//
-	//    - height: proposed height for allocation.
-	//
-	// The function returns the following values:
-	//
-	//    - minimumWidth (optional): location to store the minimum width, or
-	//      NULL.
-	//    - naturalWidth (optional): location to store the natural width, or
-	//      NULL.
-	//
-	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 	// Reset resets any previously cached request and allocation data.
 	//
 	// When underlying TreeModel data changes its important to reset the context
@@ -121,11 +63,11 @@ type CellAreaContextOverrider interface {
 // and gtk_cell_area_event().
 type CellAreaContext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*CellAreaContext)(nil)
+	_ coreglib.Objector = (*CellAreaContext)(nil)
 )
 
 func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
@@ -139,153 +81,27 @@ func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
-	if _, ok := goval.(interface{ Allocate(width, height int) }); ok {
-		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_allocate)
-	}
-
-	if _, ok := goval.(interface {
-		PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
-	}); ok {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width)
-	}
-
-	if _, ok := goval.(interface {
-		PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
-	}); ok {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height)
-	}
-
 	if _, ok := goval.(interface{ Reset() }); ok {
 		pclass.reset = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_reset)
 	}
 }
 
-//export _gotk4_gtk4_CellAreaContextClass_allocate
-func _gotk4_gtk4_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 C.int, arg2 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Allocate(width, height int) })
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	iface.Allocate(_width, _height)
-}
-
-//export _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width
-func _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.GtkCellAreaContext, arg1 C.int, arg2 *C.int, arg3 *C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
-	})
-
-	var _width int // out
-
-	_width = int(arg1)
-
-	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_width)
-
-	*arg2 = C.int(minimumHeight)
-	*arg3 = C.int(naturalHeight)
-}
-
-//export _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height
-func _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.GtkCellAreaContext, arg1 C.int, arg2 *C.int, arg3 *C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
-	})
-
-	var _height int // out
-
-	_height = int(arg1)
-
-	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_height)
-
-	*arg2 = C.int(minimumWidth)
-	*arg3 = C.int(naturalWidth)
-}
-
 //export _gotk4_gtk4_CellAreaContextClass_reset
 func _gotk4_gtk4_CellAreaContextClass_reset(arg0 *C.GtkCellAreaContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Reset() })
 
 	iface.Reset()
 }
 
-func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
+func wrapCellAreaContext(obj *coreglib.Object) *CellAreaContext {
 	return &CellAreaContext{
 		Object: obj,
 	}
 }
 
 func marshalCellAreaContext(p uintptr) (interface{}, error) {
-	return wrapCellAreaContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Allocate allocates a width and/or a height for all rows which are to be
-// rendered with context.
-//
-// Usually allocation is performed only horizontally or sometimes vertically
-// since a group of rows are usually rendered side by side vertically or
-// horizontally and share either the same width or the same height. Sometimes
-// they are allocated in both horizontal and vertical orientations producing a
-// homogeneous effect of the rows. This is generally the case for TreeView when
-// TreeView:fixed-height-mode is enabled.
-//
-// The function takes the following parameters:
-//
-//    - width: allocated width for all TreeModel rows rendered with context, or
-//      -1.
-//    - height: allocated height for all TreeModel rows rendered with context, or
-//      -1.
-//
-func (context *CellAreaContext) Allocate(width, height int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // out
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	C.gtk_cell_area_context_allocate(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// Allocation fetches the current allocation size for context.
-//
-// If the context was not allocated in width or height, or if the context was
-// recently reset with gtk_cell_area_context_reset(), the returned value will be
-// -1.
-//
-// The function returns the following values:
-//
-//    - width (optional): location to store the allocated width, or NULL.
-//    - height (optional): location to store the allocated height, or NULL.
-//
-func (context *CellAreaContext) Allocation() (width int, height int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // in
-	var _arg2 C.int                 // in
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_cell_area_context_get_allocation(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(context)
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(_arg1)
-	_height = int(_arg2)
-
-	return _width, _height
+	return wrapCellAreaContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Area fetches the CellArea this context was created by.
@@ -303,12 +119,16 @@ func (context *CellAreaContext) Allocation() (width int, height int) {
 //    - cellArea this context was created by.
 //
 func (context *CellAreaContext) Area() CellAreaer {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _cret *C.GtkCellArea        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**CellAreaContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_cell_area_context_get_area(_arg0)
+	_gret := girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("get_area", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _cellArea CellAreaer // out
@@ -319,8 +139,8 @@ func (context *CellAreaContext) Area() CellAreaer {
 			panic("object of type gtk.CellAreaer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(CellAreaer)
 			return ok
 		})
@@ -332,195 +152,6 @@ func (context *CellAreaContext) Area() CellAreaer {
 	}
 
 	return _cellArea
-}
-
-// PreferredHeight gets the accumulative preferred height for all rows which
-// have been requested with this context.
-//
-// After gtk_cell_area_context_reset() is called and/or before ever requesting
-// the size of a CellArea, the returned values are 0.
-//
-// The function returns the following values:
-//
-//    - minimumHeight (optional): location to store the minimum height, or NULL.
-//    - naturalHeight (optional): location to store the natural height, or NULL.
-//
-func (context *CellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // in
-	var _arg2 C.int                 // in
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_cell_area_context_get_preferred_height(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(context)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg1)
-	_naturalHeight = int(_arg2)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// PreferredHeightForWidth gets the accumulative preferred height for width for
-// all rows which have been requested for the same said width with this context.
-//
-// After gtk_cell_area_context_reset() is called and/or before ever requesting
-// the size of a CellArea, the returned values are -1.
-//
-// The function takes the following parameters:
-//
-//    - width: proposed width for allocation.
-//
-// The function returns the following values:
-//
-//    - minimumHeight (optional): location to store the minimum height, or NULL.
-//    - naturalHeight (optional): location to store the natural height, or NULL.
-//
-func (context *CellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // in
-	var _arg3 C.int                 // in
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(width)
-
-	C.gtk_cell_area_context_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(width)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg2)
-	_naturalHeight = int(_arg3)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// PreferredWidth gets the accumulative preferred width for all rows which have
-// been requested with this context.
-//
-// After gtk_cell_area_context_reset() is called and/or before ever requesting
-// the size of a CellArea, the returned values are 0.
-//
-// The function returns the following values:
-//
-//    - minimumWidth (optional): location to store the minimum width, or NULL.
-//    - naturalWidth (optional): location to store the natural width, or NULL.
-//
-func (context *CellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // in
-	var _arg2 C.int                 // in
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_cell_area_context_get_preferred_width(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(context)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg1)
-	_naturalWidth = int(_arg2)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// PreferredWidthForHeight gets the accumulative preferred width for height for
-// all rows which have been requested for the same said height with this
-// context.
-//
-// After gtk_cell_area_context_reset() is called and/or before ever requesting
-// the size of a CellArea, the returned values are -1.
-//
-// The function takes the following parameters:
-//
-//    - height: proposed height for allocation.
-//
-// The function returns the following values:
-//
-//    - minimumWidth (optional): location to store the minimum width, or NULL.
-//    - naturalWidth (optional): location to store the natural width, or NULL.
-//
-func (context *CellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // in
-	var _arg3 C.int                 // in
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(height)
-
-	C.gtk_cell_area_context_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(height)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg2)
-	_naturalWidth = int(_arg3)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// PushPreferredHeight causes the minimum and/or natural height to grow if the
-// new proposed sizes exceed the current minimum and natural height.
-//
-// This is used by CellAreaContext implementations during the request process
-// over a series of TreeModel rows to progressively push the requested height
-// over a series of gtk_cell_area_get_preferred_height() requests.
-//
-// The function takes the following parameters:
-//
-//    - minimumHeight: proposed new minimum height for context.
-//    - naturalHeight: proposed new natural height for context.
-//
-func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // out
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(minimumHeight)
-	_arg2 = C.int(naturalHeight)
-
-	C.gtk_cell_area_context_push_preferred_height(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(minimumHeight)
-	runtime.KeepAlive(naturalHeight)
-}
-
-// PushPreferredWidth causes the minimum and/or natural width to grow if the new
-// proposed sizes exceed the current minimum and natural width.
-//
-// This is used by CellAreaContext implementations during the request process
-// over a series of TreeModel rows to progressively push the requested width
-// over a series of gtk_cell_area_get_preferred_width() requests.
-//
-// The function takes the following parameters:
-//
-//    - minimumWidth: proposed new minimum width for context.
-//    - naturalWidth: proposed new natural width for context.
-//
-func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth int) {
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // out
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(minimumWidth)
-	_arg2 = C.int(naturalWidth)
-
-	C.gtk_cell_area_context_push_preferred_width(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(minimumWidth)
-	runtime.KeepAlive(naturalWidth)
 }
 
 // Reset resets any previously cached request and allocation data.
@@ -540,10 +171,13 @@ func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth in
 // all the displayed row heights using
 // gtk_cell_area_get_preferred_height_for_width().
 func (context *CellAreaContext) Reset() {
-	var _arg0 *C.GtkCellAreaContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**CellAreaContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_cell_area_context_reset(_arg0)
+	girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("reset", args[:], nil)
+
 	runtime.KeepAlive(context)
 }

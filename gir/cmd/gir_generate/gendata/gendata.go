@@ -73,7 +73,7 @@ var GenerateExceptions = []string{
 // ImportOverrides is the list of imports to defer to another library, usually
 // because it's tedious or impossible to generate.
 //
-// Not included: externglib (gotk3/gotk3/glib).
+// Not included: coreglib (gotk3/gotk3/glib).
 var ImportOverrides = map[string]string{}
 
 // Packages lists pkg-config packages and optionally the namespaces to be
@@ -94,6 +94,18 @@ var Packages = []Package{
 	}},
 	{"gtk4", nil},     // includes Gdk
 	{"gtk+-3.0", nil}, // includes Gdk
+}
+
+// DynamicLinkNamespaces lists namespaces that should be generated directly
+// using Cgo. It includes important core packages as well as packages that are
+// small but performance-sensitive.
+var DynamicLinkNamespaces = []string{
+	"GLib-2",
+	"GObject-2",
+	"Graphene-1",
+	"Pango-1",
+	"PangoCairo-1",
+	"GdkPixbuf-2",
 }
 
 // Preprocessors defines a list of preprocessors that the main generator will
@@ -403,7 +415,7 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 	h.Import("runtime")
 	h.ImportCore("gextras")
 	h.NeedsExternGLib()
-	h.AddMarshaler("externglib.TypeVariant", "Variant")
+	h.AddMarshaler("coreglib.TypeVariant", "Variant")
 
 	p := fg.Pen()
 	p.Line(`
@@ -582,7 +594,7 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 // package. It is generated so that users don't have to import both glib
 // packages.
 func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
-	fg := nsgen.MakeFile("externglib.go")
+	fg := nsgen.MakeFile("coreglib.go")
 
 	h := fg.Header()
 	h.NeedsExternGLib()
@@ -624,17 +636,17 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 
 		p.Linef("// %s is an alias for pkg/core/glib.%[1]s.", fn.Name)
 		p.Linef("func %s(%s) %s {", fn.Name, strings.Join(fn.Params, ", "), fn.Return)
-		p.Linef("  return externglib.%s(%s)", fn.Name, strings.Join(names, ", "))
+		p.Linef("  return coreglib.%s(%s)", fn.Name, strings.Join(names, ", "))
 		p.Linef("}")
 	}
 
-	// TODO: right now, we have both externglib.Variant and glib.Variant.
-	// externglib's implementation is more idiomatic and clean, but glib's
+	// TODO: right now, we have both coreglib.Variant and glib.Variant.
+	// coreglib's implementation is more idiomatic and clean, but glib's
 	// generated implementation is more faithful.
 	//
 	// For now, we'll keep the generated implementation, since it appears more
 	// complete, but in the future, if there are too many incorrect methods that
-	// users may fall for, then it's better to switch to externglib.
+	// users may fall for, then it's better to switch to coreglib.
 
 	types := []string{
 		"Object",
@@ -648,7 +660,7 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 
 	for _, t := range types {
 		p.Linef("// %s is an alias for pkg/core/glib.%[1]s.", t)
-		p.Linef("type %s = externglib.%[1]s", t)
+		p.Linef("type %s = coreglib.%[1]s", t)
 	}
 
 	consts := []string{
@@ -689,15 +701,15 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 			p.EmptyLine()
 			continue
 		}
-		p.Linef("%s = externglib.%[1]s", c)
+		p.Linef("%s = coreglib.%[1]s", c)
 	}
 	p.Linef(")")
 
 	p.Linef("// NewVariantValue creates a new GValue from a GVariant. This function")
-	p.Linef("// only exists as a workaround for externglib's cyclical imports. It")
-	p.Linef("// be removed in the future once externglib is merged in.")
-	p.Linef("func NewVariantValue(variant *Variant) *externglib.Value {")
-	p.Linef("  value := externglib.InitValue(externglib.TypeVariant)")
+	p.Linef("// only exists as a workaround for coreglib's cyclical imports. It")
+	p.Linef("// be removed in the future once coreglib is merged in.")
+	p.Linef("func NewVariantValue(variant *Variant) *coreglib.Value {")
+	p.Linef("  value := coreglib.InitValue(coreglib.TypeVariant)")
 	p.Linef("  C.g_value_set_variant(")
 	p.Linef("    (*C.GValue)(unsafe.Pointer(value.Native())),")
 	p.Linef("    (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant))),")
@@ -919,12 +931,12 @@ func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 
 			w := C.%s(
 				(*C.gchar)(unsafe.Pointer(ctitle)),
-				(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
+				(*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native())),
 				(C.GtkDialogFlags)(flags),
 			)
 			runtime.KeepAlive(parent)
 
-			return wrapDialog(externglib.Take(unsafe.Pointer(w)))
+			return wrapDialog(coreglib.Take(unsafe.Pointer(w)))
 		}
 	`, name)
 
@@ -956,14 +968,14 @@ func GtkNewMessageDialog(nsgen *girgen.NamespaceGenerator) error {
 		// from ResponseType.
 		func NewMessageDialog(parent *Window, flags DialogFlags, typ MessageType, buttons ButtonsType) *MessageDialog {
 			w := C._gotk4_gtk_message_dialog_new2(
-				(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
+				(*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native())),
 				(C.GtkDialogFlags)(flags),
 				(C.GtkMessageType)(typ),
 				(C.GtkButtonsType)(buttons),
 			)
 			runtime.KeepAlive(parent)
 
-			return wrapMessageDialog(externglib.Take(unsafe.Pointer(w)))
+			return wrapMessageDialog(coreglib.Take(unsafe.Pointer(w)))
 		}
 	`)
 

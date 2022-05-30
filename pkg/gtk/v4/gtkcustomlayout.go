@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcustomlayout.go.
-var GTypeCustomLayout = externglib.Type(C.gtk_custom_layout_get_type())
+var GTypeCustomLayout = coreglib.Type(C.gtk_custom_layout_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCustomLayout, F: marshalCustomLayout},
 	})
 }
@@ -48,7 +49,7 @@ func classInitCustomLayouter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
+func wrapCustomLayout(obj *coreglib.Object) *CustomLayout {
 	return &CustomLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -57,5 +58,5 @@ func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
 }
 
 func marshalCustomLayout(p uintptr) (interface{}, error) {
-	return wrapCustomLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCustomLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

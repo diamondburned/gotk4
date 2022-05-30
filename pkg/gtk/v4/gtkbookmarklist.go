@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbookmarklist.go.
-var GTypeBookmarkList = externglib.Type(C.gtk_bookmark_list_get_type())
+var GTypeBookmarkList = coreglib.Type(C.gtk_bookmark_list_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBookmarkList, F: marshalBookmarkList},
 	})
 }
@@ -37,13 +38,13 @@ type BookmarkListOverrider interface {
 // added: recent::private (boolean) and recent:applications (stringv).
 type BookmarkList struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	gio.ListModel
 }
 
 var (
-	_ externglib.Objector = (*BookmarkList)(nil)
+	_ coreglib.Objector = (*BookmarkList)(nil)
 )
 
 func classInitBookmarkLister(gclassPtr, data C.gpointer) {
@@ -54,7 +55,7 @@ func classInitBookmarkLister(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
+func wrapBookmarkList(obj *coreglib.Object) *BookmarkList {
 	return &BookmarkList{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -64,7 +65,7 @@ func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
 }
 
 func marshalBookmarkList(p uintptr) (interface{}, error) {
-	return wrapBookmarkList(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBookmarkList(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBookmarkList creates a new GtkBookmarkList with the given attributes.
@@ -79,26 +80,31 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 //    - bookmarkList: new GtkBookmarkList.
 //
 func NewBookmarkList(filename, attributes string) *BookmarkList {
-	var _arg1 *C.char            // out
-	var _arg2 *C.char            // out
-	var _cret *C.GtkBookmarkList // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if filename != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_arg1))
+		_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(_arg0))
 	}
 	if attributes != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(attributes)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_bookmark_list_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("new_BookmarkList", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(attributes)
 
 	var _bookmarkList *BookmarkList // out
 
-	_bookmarkList = wrapBookmarkList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bookmarkList = wrapBookmarkList(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bookmarkList
 }
@@ -110,12 +116,16 @@ func NewBookmarkList(filename, attributes string) *BookmarkList {
 //    - utf8 (optional): queried attributes.
 //
 func (self *BookmarkList) Attributes() string {
-	var _arg0 *C.GtkBookmarkList // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_bookmark_list_get_attributes(_arg0)
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_attributes", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -134,12 +144,16 @@ func (self *BookmarkList) Attributes() string {
 //    - utf8: filename of the .xbel file.
 //
 func (self *BookmarkList) Filename() string {
-	var _arg0 *C.GtkBookmarkList // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_bookmark_list_get_filename(_arg0)
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_filename", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -147,28 +161,6 @@ func (self *BookmarkList) Filename() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// IOPriority gets the IO priority to use while loading file.
-//
-// The function returns the following values:
-//
-//    - gint: IO priority.
-//
-func (self *BookmarkList) IOPriority() int {
-	var _arg0 *C.GtkBookmarkList // out
-	var _cret C.int              // in
-
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_bookmark_list_get_io_priority(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // IsLoading returns TRUE if the files are currently being loaded.
@@ -181,12 +173,16 @@ func (self *BookmarkList) IOPriority() int {
 //    - ok: TRUE if self is loading.
 //
 func (self *BookmarkList) IsLoading() bool {
-	var _arg0 *C.GtkBookmarkList // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_bookmark_list_is_loading(_arg0)
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("is_loading", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -209,36 +205,19 @@ func (self *BookmarkList) IsLoading() bool {
 //    - attributes (optional) to enumerate.
 //
 func (self *BookmarkList) SetAttributes(attributes string) {
-	var _arg0 *C.GtkBookmarkList // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if attributes != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(attributes)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**BookmarkList)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_bookmark_list_set_attributes(_arg0, _arg1)
+	girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("set_attributes", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(attributes)
-}
-
-// SetIOPriority sets the IO priority to use while loading files.
-//
-// The default IO priority is G_PRIORITY_DEFAULT.
-//
-// The function takes the following parameters:
-//
-//    - ioPriority: IO priority to use.
-//
-func (self *BookmarkList) SetIOPriority(ioPriority int) {
-	var _arg0 *C.GtkBookmarkList // out
-	var _arg1 C.int              // out
-
-	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.int(ioPriority)
-
-	C.gtk_bookmark_list_set_io_priority(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(ioPriority)
 }

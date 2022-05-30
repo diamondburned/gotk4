@@ -8,14 +8,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_HandleBoxClass_child_attached(GtkHandleBox*, GtkWidget*);
 // extern void _gotk4_gtk3_HandleBoxClass_child_detached(GtkHandleBox*, GtkWidget*);
 // extern void _gotk4_gtk3_HandleBox_ConnectChildAttached(gpointer, GtkWidget*, guintptr);
@@ -23,10 +22,10 @@ import (
 import "C"
 
 // glib.Type values for gtkhandlebox.go.
-var GTypeHandleBox = externglib.Type(C.gtk_handle_box_get_type())
+var GTypeHandleBox = coreglib.Type(C.gtk_handle_box_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeHandleBox, F: marshalHandleBox},
 	})
 }
@@ -94,7 +93,7 @@ func classInitHandleBoxer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_HandleBoxClass_child_attached
 func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChildAttached(child Widgetter) })
 
 	var _child Widgetter // out
@@ -105,8 +104,8 @@ func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.GtkHandleBox, arg1 *C.Gtk
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -122,7 +121,7 @@ func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.GtkHandleBox, arg1 *C.Gtk
 
 //export _gotk4_gtk3_HandleBoxClass_child_detached
 func _gotk4_gtk3_HandleBoxClass_child_detached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChildDetached(child Widgetter) })
 
 	var _child Widgetter // out
@@ -133,8 +132,8 @@ func _gotk4_gtk3_HandleBoxClass_child_detached(arg0 *C.GtkHandleBox, arg1 *C.Gtk
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -148,12 +147,12 @@ func _gotk4_gtk3_HandleBoxClass_child_detached(arg0 *C.GtkHandleBox, arg1 *C.Gtk
 	iface.ChildDetached(_child)
 }
 
-func wrapHandleBox(obj *externglib.Object) *HandleBox {
+func wrapHandleBox(obj *coreglib.Object) *HandleBox {
 	return &HandleBox{
 		Bin: Bin{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -170,14 +169,14 @@ func wrapHandleBox(obj *externglib.Object) *HandleBox {
 }
 
 func marshalHandleBox(p uintptr) (interface{}, error) {
-	return wrapHandleBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapHandleBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_HandleBox_ConnectChildAttached
 func _gotk4_gtk3_HandleBox_ConnectChildAttached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
 	var f func(widget Widgetter)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -194,8 +193,8 @@ func _gotk4_gtk3_HandleBox_ConnectChildAttached(arg0 C.gpointer, arg1 *C.GtkWidg
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -211,15 +210,15 @@ func _gotk4_gtk3_HandleBox_ConnectChildAttached(arg0 C.gpointer, arg1 *C.GtkWidg
 
 // ConnectChildAttached: this signal is emitted when the contents of the
 // handlebox are reattached to the main window.
-func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(handleBox, "child-attached", false, unsafe.Pointer(C._gotk4_gtk3_HandleBox_ConnectChildAttached), f)
+func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(handleBox, "child-attached", false, unsafe.Pointer(C._gotk4_gtk3_HandleBox_ConnectChildAttached), f)
 }
 
 //export _gotk4_gtk3_HandleBox_ConnectChildDetached
 func _gotk4_gtk3_HandleBox_ConnectChildDetached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
 	var f func(widget Widgetter)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -236,8 +235,8 @@ func _gotk4_gtk3_HandleBox_ConnectChildDetached(arg0 C.gpointer, arg1 *C.GtkWidg
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -253,8 +252,8 @@ func _gotk4_gtk3_HandleBox_ConnectChildDetached(arg0 C.gpointer, arg1 *C.GtkWidg
 
 // ConnectChildDetached: this signal is emitted when the contents of the
 // handlebox are detached from the main window.
-func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(handleBox, "child-detached", false, unsafe.Pointer(C._gotk4_gtk3_HandleBox_ConnectChildDetached), f)
+func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(handleBox, "child-detached", false, unsafe.Pointer(C._gotk4_gtk3_HandleBox_ConnectChildDetached), f)
 }
 
 // NewHandleBox: create a new handle box.
@@ -266,13 +265,14 @@ func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) exter
 //    - handleBox: new HandleBox.
 //
 func NewHandleBox() *HandleBox {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_handle_box_new()
+	_gret := girepository.MustFind("Gtk", "HandleBox").InvokeMethod("new_HandleBox", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _handleBox *HandleBox // out
 
-	_handleBox = wrapHandleBox(externglib.Take(unsafe.Pointer(_cret)))
+	_handleBox = wrapHandleBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _handleBox
 }
@@ -286,12 +286,16 @@ func NewHandleBox() *HandleBox {
 //    - ok: TRUE if the child is currently detached, otherwise FALSE.
 //
 func (handleBox *HandleBox) ChildDetached() bool {
-	var _arg0 *C.GtkHandleBox // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(externglib.InternObject(handleBox).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(handleBox).Native()))
+	*(**HandleBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_handle_box_get_child_detached(_arg0)
+	_gret := girepository.MustFind("Gtk", "HandleBox").InvokeMethod("get_child_detached", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(handleBox)
 
 	var _ok bool // out
@@ -301,151 +305,4 @@ func (handleBox *HandleBox) ChildDetached() bool {
 	}
 
 	return _ok
-}
-
-// HandlePosition gets the handle position of the handle box. See
-// gtk_handle_box_set_handle_position().
-//
-// Deprecated: HandleBox has been deprecated.
-//
-// The function returns the following values:
-//
-//    - positionType: current handle position.
-//
-func (handleBox *HandleBox) HandlePosition() PositionType {
-	var _arg0 *C.GtkHandleBox   // out
-	var _cret C.GtkPositionType // in
-
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(externglib.InternObject(handleBox).Native()))
-
-	_cret = C.gtk_handle_box_get_handle_position(_arg0)
-	runtime.KeepAlive(handleBox)
-
-	var _positionType PositionType // out
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
-}
-
-// ShadowType gets the type of shadow drawn around the handle box. See
-// gtk_handle_box_set_shadow_type().
-//
-// Deprecated: HandleBox has been deprecated.
-//
-// The function returns the following values:
-//
-//    - shadowType: type of shadow currently drawn around the handle box.
-//
-func (handleBox *HandleBox) ShadowType() ShadowType {
-	var _arg0 *C.GtkHandleBox // out
-	var _cret C.GtkShadowType // in
-
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(externglib.InternObject(handleBox).Native()))
-
-	_cret = C.gtk_handle_box_get_shadow_type(_arg0)
-	runtime.KeepAlive(handleBox)
-
-	var _shadowType ShadowType // out
-
-	_shadowType = ShadowType(_cret)
-
-	return _shadowType
-}
-
-// SnapEdge gets the edge used for determining reattachment of the handle box.
-// See gtk_handle_box_set_snap_edge().
-//
-// Deprecated: HandleBox has been deprecated.
-//
-// The function returns the following values:
-//
-//    - positionType: edge used for determining reattachment, or
-//      (GtkPositionType)-1 if this is determined (as per default) from the
-//      handle position.
-//
-func (handleBox *HandleBox) SnapEdge() PositionType {
-	var _arg0 *C.GtkHandleBox   // out
-	var _cret C.GtkPositionType // in
-
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(externglib.InternObject(handleBox).Native()))
-
-	_cret = C.gtk_handle_box_get_snap_edge(_arg0)
-	runtime.KeepAlive(handleBox)
-
-	var _positionType PositionType // out
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
-}
-
-// SetHandlePosition sets the side of the handlebox where the handle is drawn.
-//
-// Deprecated: HandleBox has been deprecated.
-//
-// The function takes the following parameters:
-//
-//    - position: side of the handlebox where the handle should be drawn.
-//
-func (handleBox *HandleBox) SetHandlePosition(position PositionType) {
-	var _arg0 *C.GtkHandleBox   // out
-	var _arg1 C.GtkPositionType // out
-
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(externglib.InternObject(handleBox).Native()))
-	_arg1 = C.GtkPositionType(position)
-
-	C.gtk_handle_box_set_handle_position(_arg0, _arg1)
-	runtime.KeepAlive(handleBox)
-	runtime.KeepAlive(position)
-}
-
-// SetShadowType sets the type of shadow to be drawn around the border of the
-// handle box.
-//
-// Deprecated: HandleBox has been deprecated.
-//
-// The function takes the following parameters:
-//
-//    - typ: shadow type.
-//
-func (handleBox *HandleBox) SetShadowType(typ ShadowType) {
-	var _arg0 *C.GtkHandleBox // out
-	var _arg1 C.GtkShadowType // out
-
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(externglib.InternObject(handleBox).Native()))
-	_arg1 = C.GtkShadowType(typ)
-
-	C.gtk_handle_box_set_shadow_type(_arg0, _arg1)
-	runtime.KeepAlive(handleBox)
-	runtime.KeepAlive(typ)
-}
-
-// SetSnapEdge sets the snap edge of a handlebox. The snap edge is the edge of
-// the detached child that must be aligned with the corresponding edge of the
-// “ghost” left behind when the child was detached to reattach the torn-off
-// window. Usually, the snap edge should be chosen so that it stays in the same
-// place on the screen when the handlebox is torn off.
-//
-// If the snap edge is not set, then an appropriate value will be guessed from
-// the handle position. If the handle position is GTK_POS_RIGHT or GTK_POS_LEFT,
-// then the snap edge will be GTK_POS_TOP, otherwise it will be GTK_POS_LEFT.
-//
-// Deprecated: HandleBox has been deprecated.
-//
-// The function takes the following parameters:
-//
-//    - edge: snap edge, or -1 to unset the value; in which case GTK+ will try to
-//      guess an appropriate value in the future.
-//
-func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
-	var _arg0 *C.GtkHandleBox   // out
-	var _arg1 C.GtkPositionType // out
-
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(externglib.InternObject(handleBox).Native()))
-	_arg1 = C.GtkPositionType(edge)
-
-	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
-	runtime.KeepAlive(handleBox)
-	runtime.KeepAlive(edge)
 }

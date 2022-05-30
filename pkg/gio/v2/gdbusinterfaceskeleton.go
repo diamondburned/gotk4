@@ -9,13 +9,14 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(GDBusInterfaceSkeleton*);
 // extern GVariant* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(GDBusInterfaceSkeleton*);
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
@@ -24,10 +25,10 @@ import (
 import "C"
 
 // glib.Type values for gdbusinterfaceskeleton.go.
-var GTypeDBusInterfaceSkeleton = externglib.Type(C.g_dbus_interface_skeleton_get_type())
+var GTypeDBusInterfaceSkeleton = coreglib.Type(C.g_dbus_interface_skeleton_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDBusInterfaceSkeleton, F: marshalDBusInterfaceSkeleton},
 	})
 }
@@ -69,13 +70,13 @@ type DBusInterfaceSkeletonOverrider interface {
 // service side.
 type DBusInterfaceSkeleton struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	DBusInterface
 }
 
 var (
-	_ externglib.Objector = (*DBusInterfaceSkeleton)(nil)
+	_ coreglib.Objector = (*DBusInterfaceSkeleton)(nil)
 )
 
 // DBusInterfaceSkeletonner describes types inherited from class DBusInterfaceSkeleton.
@@ -83,7 +84,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type DBusInterfaceSkeletonner interface {
-	externglib.Objector
+	coreglib.Objector
 	baseDBusInterfaceSkeleton() *DBusInterfaceSkeleton
 }
 
@@ -121,7 +122,7 @@ func classInitDBusInterfaceSkeletonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_flush
 func _gotk4_gio2_DBusInterfaceSkeletonClass_flush(arg0 *C.GDBusInterfaceSkeleton) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Flush() })
 
 	iface.Flush()
@@ -129,14 +130,14 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_flush(arg0 *C.GDBusInterfaceSkeleton
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method
 func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.GDBusInterfaceSkeleton, arg1 *C.GDBusMethodInvocation) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		GAuthorizeMethod(invocation *DBusMethodInvocation) bool
 	})
 
 	var _invocation *DBusMethodInvocation // out
 
-	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg1)))
+	_invocation = wrapDBusMethodInvocation(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := iface.GAuthorizeMethod(_invocation)
 
@@ -149,29 +150,29 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.GDBusInte
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_info
 func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GDBusInterfaceInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Info() *DBusInterfaceInfo })
 
 	dBusInterfaceInfo := iface.Info()
 
-	cret = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfo)))
+	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfo)))
 
 	return cret
 }
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties
 func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GVariant) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Properties() *glib.Variant })
 
 	variant := iface.Properties()
 
-	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	return cret
 }
 
-func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
+func wrapDBusInterfaceSkeleton(obj *coreglib.Object) *DBusInterfaceSkeleton {
 	return &DBusInterfaceSkeleton{
 		Object: obj,
 		DBusInterface: DBusInterface{
@@ -181,7 +182,7 @@ func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 }
 
 func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
-	return wrapDBusInterfaceSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusInterfaceSkeleton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (interface_ *DBusInterfaceSkeleton) baseDBusInterfaceSkeleton() *DBusInterfaceSkeleton {
@@ -197,7 +198,7 @@ func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkele
 func _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(arg0 C.gpointer, arg1 *C.GDBusMethodInvocation, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(invocation *DBusMethodInvocation) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -208,7 +209,7 @@ func _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(arg0 C.gpointer, 
 
 	var _invocation *DBusMethodInvocation // out
 
-	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg1)))
+	_invocation = wrapDBusMethodInvocation(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := f(_invocation)
 
@@ -248,8 +249,8 @@ func _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(arg0 C.gpointer, 
 // G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flags
 // set, no dedicated thread is ever used and the call will be handled in the
 // same thread as the object that interface belongs to was exported in.
-func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation *DBusMethodInvocation) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(interface_, "g-authorize-method", false, unsafe.Pointer(C._gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod), f)
+func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocation *DBusMethodInvocation) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(interface_, "g-authorize-method", false, unsafe.Pointer(C._gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod), f)
 }
 
 // Export exports interface_ at object_path on connection.
@@ -266,17 +267,21 @@ func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocati
 //    - objectPath: path to export the interface at.
 //
 func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, objectPath string) error {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _arg1 *C.GDBusConnection        // out
-	var _arg2 *C.gchar                  // out
-	var _cerr *C.GError                 // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[1])) = _arg1
+	*(**DBusConnection)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
+	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("export", args[:], nil)
+
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
@@ -298,11 +303,14 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 // in an idle handler). This technique is useful for collapsing multiple
 // property changes into one.
 func (interface_ *DBusInterfaceSkeleton) Flush() {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_interface_skeleton_flush(_arg0)
+	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("flush", args[:], nil)
+
 	runtime.KeepAlive(interface_)
 }
 
@@ -314,18 +322,22 @@ func (interface_ *DBusInterfaceSkeleton) Flush() {
 //      Do not free, the object belongs to interface_.
 //
 func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _cret *C.GDBusConnection        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_interface_skeleton_get_connection(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_connection", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 
 	var _dBusConnection *DBusConnection // out
 
 	if _cret != nil {
-		_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
+		_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _dBusConnection
@@ -340,49 +352,29 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 //      with g_object_unref().
 //
 func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _cret *C.GList                  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_connections", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 
 	var _list []*DBusConnection // out
 
 	_list = make([]*DBusConnection, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GDBusConnection)(v)
+		src := (*C.void)(v)
 		var dst *DBusConnection // out
-		dst = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
 	return _list
-}
-
-// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior of
-// interface_.
-//
-// The function returns the following values:
-//
-//    - dBusInterfaceSkeletonFlags: one or more flags from the
-//      BusInterfaceSkeletonFlags enumeration.
-//
-func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
-	var _arg0 *C.GDBusInterfaceSkeleton     // out
-	var _cret C.GDBusInterfaceSkeletonFlags // in
-
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
-
-	_cret = C.g_dbus_interface_skeleton_get_flags(_arg0)
-	runtime.KeepAlive(interface_)
-
-	var _dBusInterfaceSkeletonFlags DBusInterfaceSkeletonFlags // out
-
-	_dBusInterfaceSkeletonFlags = DBusInterfaceSkeletonFlags(_cret)
-
-	return _dBusInterfaceSkeletonFlags
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface implemented
@@ -393,12 +385,16 @@ func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 //    - dBusInterfaceInfo (never NULL). Do not free.
 //
 func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _cret *C.GDBusInterfaceInfo     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_interface_skeleton_get_info(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_info", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
@@ -423,12 +419,16 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 //      exported anywhere. Do not free, the string belongs to interface_.
 //
 func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _cret *C.gchar                  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_interface_skeleton_get_object_path(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_object_path", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 
 	var _utf8 string // out
@@ -448,12 +448,16 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 //      g_variant_unref().
 //
 func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _cret *C.GVariant               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_interface_skeleton_get_properties(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_properties", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 
 	var _variant *glib.Variant // out
@@ -480,14 +484,18 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 //    - ok: TRUE if interface_ is exported on connection, FALSE otherwise.
 //
 func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnection) bool {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _arg1 *C.GDBusConnection        // out
-	var _cret C.gboolean                // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_interface_skeleton_has_connection(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("has_connection", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
 
@@ -500,34 +508,19 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 	return _ok
 }
 
-// SetFlags sets flags describing what the behavior of skeleton should be.
-//
-// The function takes the following parameters:
-//
-//    - flags flags from the BusInterfaceSkeletonFlags enumeration.
-//
-func (interface_ *DBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
-	var _arg0 *C.GDBusInterfaceSkeleton     // out
-	var _arg1 C.GDBusInterfaceSkeletonFlags // out
-
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
-	_arg1 = C.GDBusInterfaceSkeletonFlags(flags)
-
-	C.g_dbus_interface_skeleton_set_flags(_arg0, _arg1)
-	runtime.KeepAlive(interface_)
-	runtime.KeepAlive(flags)
-}
-
 // Unexport stops exporting interface_ on all connections it is exported on.
 //
 // To unexport interface_ from only a single connection, use
 // g_dbus_interface_skeleton_unexport_from_connection().
 func (interface_ *DBusInterfaceSkeleton) Unexport() {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_interface_skeleton_unexport(_arg0)
+	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("unexport", args[:], nil)
+
 	runtime.KeepAlive(interface_)
 }
 
@@ -541,13 +534,16 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 //    - connection: BusConnection.
 //
 func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBusConnection) {
-	var _arg0 *C.GDBusInterfaceSkeleton // out
-	var _arg1 *C.GDBusConnection        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusInterfaceSkeleton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("unexport_from_connection", args[:], nil)
+
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
 }

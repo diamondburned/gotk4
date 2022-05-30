@@ -7,21 +7,22 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_gio2_FilenameCompleterClass_got_completion_data(GFilenameCompleter*);
 // extern void _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gfilenamecompleter.go.
-var GTypeFilenameCompleter = externglib.Type(C.g_filename_completer_get_type())
+var GTypeFilenameCompleter = coreglib.Type(C.g_filename_completer_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFilenameCompleter, F: marshalFilenameCompleter},
 	})
 }
@@ -36,11 +37,11 @@ type FilenameCompleterOverrider interface {
 // completion strings for widget implementations.
 type FilenameCompleter struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*FilenameCompleter)(nil)
+	_ coreglib.Objector = (*FilenameCompleter)(nil)
 )
 
 func classInitFilenameCompleterer(gclassPtr, data C.gpointer) {
@@ -61,27 +62,27 @@ func classInitFilenameCompleterer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_FilenameCompleterClass_got_completion_data
 func _gotk4_gio2_FilenameCompleterClass_got_completion_data(arg0 *C.GFilenameCompleter) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ GotCompletionData() })
 
 	iface.GotCompletionData()
 }
 
-func wrapFilenameCompleter(obj *externglib.Object) *FilenameCompleter {
+func wrapFilenameCompleter(obj *coreglib.Object) *FilenameCompleter {
 	return &FilenameCompleter{
 		Object: obj,
 	}
 }
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
-	return wrapFilenameCompleter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFilenameCompleter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData
 func _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -95,8 +96,8 @@ func _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(arg0 C.gpointer, arg
 
 // ConnectGotCompletionData is emitted when the file name completion information
 // comes available.
-func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(completer, "got-completion-data", false, unsafe.Pointer(C._gotk4_gio2_FilenameCompleter_ConnectGotCompletionData), f)
+func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(completer, "got-completion-data", false, unsafe.Pointer(C._gotk4_gio2_FilenameCompleter_ConnectGotCompletionData), f)
 }
 
 // NewFilenameCompleter creates a new filename completer.
@@ -106,13 +107,14 @@ func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) externgli
 //    - filenameCompleter: Completer.
 //
 func NewFilenameCompleter() *FilenameCompleter {
-	var _cret *C.GFilenameCompleter // in
+	var _cret *C.void // in
 
-	_cret = C.g_filename_completer_new()
+	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("new_FilenameCompleter", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _filenameCompleter *FilenameCompleter // out
 
-	_filenameCompleter = wrapFilenameCompleter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_filenameCompleter = wrapFilenameCompleter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _filenameCompleter
 }
@@ -129,15 +131,19 @@ func NewFilenameCompleter() *FilenameCompleter {
 //      string is not owned by GIO, so remember to g_free() it when finished.
 //
 func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
-	var _arg0 *C.GFilenameCompleter // out
-	var _arg1 *C.char               // out
-	var _cret *C.char               // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(externglib.InternObject(completer).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(initialText)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(initialText)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FilenameCompleter)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("get_completion_suffix", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(initialText)
 
@@ -163,15 +169,19 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 //      array must be freed by g_strfreev() when finished.
 //
 func (completer *FilenameCompleter) Completions(initialText string) []string {
-	var _arg0 *C.GFilenameCompleter // out
-	var _arg1 *C.char               // out
-	var _cret **C.char              // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _cret **C.char // in
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(externglib.InternObject(completer).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(initialText)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(initialText)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**FilenameCompleter)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_filename_completer_get_completions(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("get_completions", args[:], nil)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(initialText)
 
@@ -180,7 +190,7 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
-		var z *C.char
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -204,15 +214,18 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 //    - dirsOnly: #gboolean.
 //
 func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
-	var _arg0 *C.GFilenameCompleter // out
-	var _arg1 C.gboolean            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(externglib.InternObject(completer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
 	if dirsOnly {
 		_arg1 = C.TRUE
 	}
+	*(**FilenameCompleter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_filename_completer_set_dirs_only(_arg0, _arg1)
+	girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("set_dirs_only", args[:], nil)
+
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(dirsOnly)
 }

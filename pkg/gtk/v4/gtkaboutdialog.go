@@ -7,24 +7,25 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk4_AboutDialog_ConnectActivateLink(gpointer, gchar*, guintptr);
 import "C"
 
 // glib.Type values for gtkaboutdialog.go.
 var (
-	GTypeLicense     = externglib.Type(C.gtk_license_get_type())
-	GTypeAboutDialog = externglib.Type(C.gtk_about_dialog_get_type())
+	GTypeLicense     = coreglib.Type(C.gtk_license_get_type())
+	GTypeAboutDialog = coreglib.Type(C.gtk_about_dialog_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeLicense, F: marshalLicense},
 		{T: GTypeAboutDialog, F: marshalAboutDialog},
 	})
@@ -75,7 +76,7 @@ const (
 )
 
 func marshalLicense(p uintptr) (interface{}, error) {
-	return License(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return License(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for License.
@@ -175,15 +176,15 @@ type AboutDialog struct {
 }
 
 var (
-	_ Widgetter           = (*AboutDialog)(nil)
-	_ externglib.Objector = (*AboutDialog)(nil)
+	_ Widgetter         = (*AboutDialog)(nil)
+	_ coreglib.Objector = (*AboutDialog)(nil)
 )
 
-func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
+func wrapAboutDialog(obj *coreglib.Object) *AboutDialog {
 	return &AboutDialog{
 		Window: Window{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -201,7 +202,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 			Root: Root{
 				NativeSurface: NativeSurface{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -225,14 +226,14 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 }
 
 func marshalAboutDialog(p uintptr) (interface{}, error) {
-	return wrapAboutDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAboutDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_AboutDialog_ConnectActivateLink
 func _gotk4_gtk4_AboutDialog_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(uri string) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -258,8 +259,8 @@ func _gotk4_gtk4_AboutDialog_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar,
 //
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk.ShowURI().
-func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(about, "activate-link", false, unsafe.Pointer(C._gotk4_gtk4_AboutDialog_ConnectActivateLink), f)
+func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(about, "activate-link", false, unsafe.Pointer(C._gotk4_gtk4_AboutDialog_ConnectActivateLink), f)
 }
 
 // NewAboutDialog creates a new GtkAboutDialog.
@@ -269,13 +270,14 @@ func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) exte
 //    - aboutDialog: newly created GtkAboutDialog.
 //
 func NewAboutDialog() *AboutDialog {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_about_dialog_new()
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("new_AboutDialog", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _aboutDialog *AboutDialog // out
 
-	_aboutDialog = wrapAboutDialog(externglib.Take(unsafe.Pointer(_cret)))
+	_aboutDialog = wrapAboutDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _aboutDialog
 }
@@ -288,28 +290,32 @@ func NewAboutDialog() *AboutDialog {
 //    - people who belong to that section.
 //
 func (about *AboutDialog) AddCreditSection(sectionName string, people []string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
-	var _arg2 **C.char          // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 **C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(sectionName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(sectionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	{
-		_arg2 = (**C.char)(C.calloc(C.size_t((len(people) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (**C.void)(C.calloc(C.size_t((len(people) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg2))
 		{
 			out := unsafe.Slice(_arg2, len(people)+1)
-			var zero *C.char
+			var zero *C.void
 			out[len(people)] = zero
 			for i := range people {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(people[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(people[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_about_dialog_add_credit_section(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("add_credit_section", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(sectionName)
 	runtime.KeepAlive(people)
@@ -324,19 +330,23 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 //      is owned by the about dialog and must not be modified.
 //
 func (about *AboutDialog) Artists() []string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret **C.char          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret **C.char // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_artists(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_artists", args[:], nil)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
 
 	{
 		var i int
-		var z *C.char
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -360,19 +370,23 @@ func (about *AboutDialog) Artists() []string {
 //      is owned by the about dialog and must not be modified.
 //
 func (about *AboutDialog) Authors() []string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret **C.char          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret **C.char // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_authors(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_authors", args[:], nil)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
 
 	{
 		var i int
-		var z *C.char
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -395,12 +409,16 @@ func (about *AboutDialog) Authors() []string {
 //      must not be modified.
 //
 func (about *AboutDialog) Comments() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_comments(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_comments", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -420,12 +438,16 @@ func (about *AboutDialog) Comments() string {
 //      dialog and must not be modified.
 //
 func (about *AboutDialog) Copyright() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_copyright(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_copyright", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -446,19 +468,23 @@ func (about *AboutDialog) Copyright() string {
 //      array is owned by the about dialog and must not be modified.
 //
 func (about *AboutDialog) Documenters() []string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret **C.char          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret **C.char // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_documenters(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_documenters", args[:], nil)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8s []string // out
 
 	{
 		var i int
-		var z *C.char
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -481,12 +507,16 @@ func (about *AboutDialog) Documenters() []string {
 //      dialog and must not be modified.
 //
 func (about *AboutDialog) License() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_license(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_license", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -498,28 +528,6 @@ func (about *AboutDialog) License() string {
 	return _utf8
 }
 
-// LicenseType retrieves the license type.
-//
-// The function returns the following values:
-//
-//    - license: gtk.License value.
-//
-func (about *AboutDialog) LicenseType() License {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret C.GtkLicense      // in
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
-
-	_cret = C.gtk_about_dialog_get_license_type(_arg0)
-	runtime.KeepAlive(about)
-
-	var _license License // out
-
-	_license = License(_cret)
-
-	return _license
-}
-
 // Logo returns the paintable displayed as logo in the about dialog.
 //
 // The function returns the following values:
@@ -529,19 +537,23 @@ func (about *AboutDialog) LicenseType() License {
 //      owned by the about dialog.
 //
 func (about *AboutDialog) Logo() *gdk.Paintable {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.GdkPaintable   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_logo(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_logo", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _paintable *gdk.Paintable // out
 
 	if _cret != nil {
 		{
-			obj := externglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_paintable = &gdk.Paintable{
 				Object: obj,
 			}
@@ -560,12 +572,16 @@ func (about *AboutDialog) Logo() *gdk.Paintable {
 //      dialog.
 //
 func (about *AboutDialog) LogoIconName() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_logo_icon_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -585,12 +601,16 @@ func (about *AboutDialog) LogoIconName() string {
 //      and must not be modified.
 //
 func (about *AboutDialog) ProgramName() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_program_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_program_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -610,12 +630,16 @@ func (about *AboutDialog) ProgramName() string {
 //    - utf8 (optional): system information.
 //
 func (about *AboutDialog) SystemInformation() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_system_information(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_system_information", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -635,12 +659,16 @@ func (about *AboutDialog) SystemInformation() string {
 //    - utf8 (optional): translator credits string.
 //
 func (about *AboutDialog) TranslatorCredits() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_translator_credits", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -660,12 +688,16 @@ func (about *AboutDialog) TranslatorCredits() string {
 //      and must not be modified.
 //
 func (about *AboutDialog) Version() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_version(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_version", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -684,12 +716,16 @@ func (about *AboutDialog) Version() string {
 //    - utf8 (optional): website URL.
 //
 func (about *AboutDialog) Website() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_website(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_website", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -708,12 +744,16 @@ func (about *AboutDialog) Website() string {
 //    - utf8 (optional): label used for the website link.
 //
 func (about *AboutDialog) WebsiteLabel() string {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_website_label(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_website_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _utf8 string // out
@@ -733,12 +773,16 @@ func (about *AboutDialog) WebsiteLabel() string {
 //    - ok: TRUE if the license text is wrapped.
 //
 func (about *AboutDialog) WrapLicense() bool {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**AboutDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
+	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_wrap_license", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(about)
 
 	var _ok bool // out
@@ -758,25 +802,28 @@ func (about *AboutDialog) WrapLicense() bool {
 //    - artists authors of the artwork of the application.
 //
 func (about *AboutDialog) SetArtists(artists []string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 **C.char          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 **C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	{
-		_arg1 = (**C.char)(C.calloc(C.size_t((len(artists) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.void)(C.calloc(C.size_t((len(artists) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(artists)+1)
-			var zero *C.char
+			var zero *C.void
 			out[len(artists)] = zero
 			for i := range artists {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(artists[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(artists[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_artists(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_artists", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(artists)
 }
@@ -789,25 +836,28 @@ func (about *AboutDialog) SetArtists(artists []string) {
 //    - authors of the application.
 //
 func (about *AboutDialog) SetAuthors(authors []string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 **C.char          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 **C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	{
-		_arg1 = (**C.char)(C.calloc(C.size_t((len(authors) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.void)(C.calloc(C.size_t((len(authors) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(authors)+1)
-			var zero *C.char
+			var zero *C.void
 			out[len(authors)] = zero
 			for i := range authors {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(authors[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(authors[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_authors(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_authors", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(authors)
 }
@@ -821,16 +871,19 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 //    - comments (optional) string.
 //
 func (about *AboutDialog) SetComments(comments string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if comments != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(comments)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(comments)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_comments(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_comments", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(comments)
 }
@@ -844,16 +897,19 @@ func (about *AboutDialog) SetComments(comments string) {
 //    - copyright (optional) string.
 //
 func (about *AboutDialog) SetCopyright(copyright string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if copyright != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(copyright)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(copyright)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_copyright(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_copyright", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(copyright)
 }
@@ -866,25 +922,28 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 //    - documenters authors of the documentation of the application.
 //
 func (about *AboutDialog) SetDocumenters(documenters []string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 **C.char          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 **C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	{
-		_arg1 = (**C.char)(C.calloc(C.size_t((len(documenters) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.void)(C.calloc(C.size_t((len(documenters) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(documenters)+1)
-			var zero *C.char
+			var zero *C.void
 			out[len(documenters)] = zero
 			for i := range documenters {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(documenters[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(documenters[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_documenters(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_documenters", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(documenters)
 }
@@ -899,39 +958,21 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 //    - license (optional) information.
 //
 func (about *AboutDialog) SetLicense(license string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if license != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(license)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(license)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_license(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_license", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(license)
-}
-
-// SetLicenseType sets the license of the application showing the about dialog
-// from a list of known licenses.
-//
-// This function overrides the license set using gtk.AboutDialog.SetLicense().
-//
-// The function takes the following parameters:
-//
-//    - licenseType: type of license.
-//
-func (about *AboutDialog) SetLicenseType(licenseType License) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 C.GtkLicense      // out
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
-	_arg1 = C.GtkLicense(licenseType)
-
-	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
-	runtime.KeepAlive(about)
-	runtime.KeepAlive(licenseType)
 }
 
 // SetLogo sets the logo in the about dialog.
@@ -941,15 +982,18 @@ func (about *AboutDialog) SetLicenseType(licenseType License) {
 //    - logo (optional): GdkPaintable.
 //
 func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.GdkPaintable   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if logo != nil {
-		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(logo).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(logo).Native()))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_logo(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_logo", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(logo)
 }
@@ -962,16 +1006,19 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 //    - iconName (optional): icon name.
 //
 func (about *AboutDialog) SetLogoIconName(iconName string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if iconName != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_logo_icon_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_logo_icon_name", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(iconName)
 }
@@ -985,16 +1032,19 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 //    - name (optional): program name.
 //
 func (about *AboutDialog) SetProgramName(name string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if name != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_program_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_program_name", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(name)
 }
@@ -1011,16 +1061,19 @@ func (about *AboutDialog) SetProgramName(name string) {
 //    - systemInformation (optional): system information.
 //
 func (about *AboutDialog) SetSystemInformation(systemInformation string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if systemInformation != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(systemInformation)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(systemInformation)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_system_information(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_system_information", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(systemInformation)
 }
@@ -1047,16 +1100,19 @@ func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 //    - translatorCredits (optional): translator credits.
 //
 func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if translatorCredits != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(translatorCredits)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(translatorCredits)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_translator_credits(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_translator_credits", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(translatorCredits)
 }
@@ -1068,16 +1124,19 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 //    - version (optional) string.
 //
 func (about *AboutDialog) SetVersion(version string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if version != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(version)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(version)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_version(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_version", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(version)
 }
@@ -1089,16 +1148,19 @@ func (about *AboutDialog) SetVersion(version string) {
 //    - website (optional): URL string starting with http://.
 //
 func (about *AboutDialog) SetWebsite(website string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if website != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(website)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(website)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_website(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_website", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(website)
 }
@@ -1110,14 +1172,17 @@ func (about *AboutDialog) SetWebsite(website string) {
 //    - websiteLabel: label used for the website link.
 //
 func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 *C.char           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(websiteLabel)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(websiteLabel)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_website_label(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_website_label", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(websiteLabel)
 }
@@ -1130,15 +1195,18 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 //    - wrapLicense: whether to wrap the license.
 //
 func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(externglib.InternObject(about).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if wrapLicense {
 		_arg1 = C.TRUE
 	}
+	*(**AboutDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_wrap_license", args[:], nil)
+
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(wrapLicense)
 }

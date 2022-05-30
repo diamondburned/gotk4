@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11window.go.
-var GTypeX11Window = externglib.Type(C.gdk_x11_window_get_type())
+var GTypeX11Window = coreglib.Type(C.gdk_x11_window_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11Window, F: marshalX11Window},
 	})
 }
@@ -36,12 +37,16 @@ func init() {
 //    - guint32: time stamp.
 //
 func X11GetServerTime(window *X11Window) uint32 {
-	var _arg1 *C.GdkWindow // out
-	var _cret C.guint32    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**X11Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_x11_get_server_time(_arg1)
+	_gret := girepository.MustFind("GdkX11", "x11_get_server_time").Invoke(args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _guint32 uint32 // out
@@ -72,7 +77,7 @@ func classInitX11Windower(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11Window(obj *externglib.Object) *X11Window {
+func wrapX11Window(obj *coreglib.Object) *X11Window {
 	return &X11Window{
 		Window: gdk.Window{
 			Object: obj,
@@ -81,7 +86,7 @@ func wrapX11Window(obj *externglib.Object) *X11Window {
 }
 
 func marshalX11Window(p uintptr) (interface{}, error) {
-	return wrapX11Window(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11Window(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Desktop gets the number of the workspace window is on.
@@ -91,12 +96,16 @@ func marshalX11Window(p uintptr) (interface{}, error) {
 //    - guint32: current workspace of window.
 //
 func (window *X11Window) Desktop() uint32 {
-	var _arg0 *C.GdkWindow // out
-	var _cret C.guint32    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**X11Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_x11_window_get_desktop(_arg0)
+	_gret := girepository.MustFind("GdkX11", "X11Window").InvokeMethod("get_desktop", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _guint32 uint32 // out
@@ -112,11 +121,14 @@ func (window *X11Window) Desktop() uint32 {
 // specification. Will not do anything if the window is already on all
 // workspaces.
 func (window *X11Window) MoveToCurrentDesktop() {
-	var _arg0 *C.GdkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**X11Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_x11_window_move_to_current_desktop(_arg0)
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("move_to_current_desktop", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -130,48 +142,18 @@ func (window *X11Window) MoveToCurrentDesktop() {
 //    - desktop: number of the workspace to move the window to.
 //
 func (window *X11Window) MoveToDesktop(desktop uint32) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 C.guint32    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	_arg1 = C.guint32(desktop)
+	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_x11_window_move_to_desktop(_arg0, _arg1)
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("move_to_desktop", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(desktop)
-}
-
-// SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
-// only works on GdkX11Window.
-//
-// Deprecated: Use gdk_window_set_shadow_width() instead.
-//
-// The function takes the following parameters:
-//
-//    - left extent.
-//    - right extent.
-//    - top extent.
-//    - bottom extent.
-//
-func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 C.int        // out
-	var _arg2 C.int        // out
-	var _arg3 C.int        // out
-	var _arg4 C.int        // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg1 = C.int(left)
-	_arg2 = C.int(right)
-	_arg3 = C.int(top)
-	_arg4 = C.int(bottom)
-
-	C.gdk_x11_window_set_frame_extents(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(left)
-	runtime.KeepAlive(right)
-	runtime.KeepAlive(top)
-	runtime.KeepAlive(bottom)
 }
 
 // SetFrameSyncEnabled: this function can be used to disable frame
@@ -186,15 +168,18 @@ func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
 //    - frameSyncEnabled: whether frame-synchronization should be enabled.
 //
 func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if frameSyncEnabled {
 		_arg1 = C.TRUE
 	}
+	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_x11_window_set_frame_sync_enabled(_arg0, _arg1)
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_frame_sync_enabled", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(frameSyncEnabled)
 }
@@ -211,15 +196,18 @@ func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 //    - hideTitlebarWhenMaximized: whether to hide the titlebar when maximized.
 //
 func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if hideTitlebarWhenMaximized {
 		_arg1 = C.TRUE
 	}
+	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_x11_window_set_hide_titlebar_when_maximized(_arg0, _arg1)
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_hide_titlebar_when_maximized", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(hideTitlebarWhenMaximized)
 }
@@ -238,14 +226,17 @@ func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized 
 //    - variant: theme variant to export.
 //
 func (window *X11Window) SetThemeVariant(variant string) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variant)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(variant)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_x11_window_set_theme_variant(_arg0, _arg1)
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_theme_variant", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(variant)
 }
@@ -266,13 +257,16 @@ func (window *X11Window) SetThemeVariant(variant string) {
 //    - timestamp: XServer timestamp to which the property should be set.
 //
 func (window *X11Window) SetUserTime(timestamp uint32) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 C.guint32    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	_arg1 = C.guint32(timestamp)
+	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_x11_window_set_user_time(_arg0, _arg1)
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_user_time", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(timestamp)
 }
@@ -287,19 +281,23 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 //    - value (optional): property value, or NULL to delete.
 //
 func (window *X11Window) SetUTF8Property(name, value string) {
-	var _arg0 *C.GdkWindow // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.gchar     // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if value != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
+		_arg2 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
+	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gdk_x11_window_set_utf8_property(_arg0, _arg1, _arg2)
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_utf8_property", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)

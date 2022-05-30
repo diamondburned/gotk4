@@ -3,23 +3,22 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_GesturePan_ConnectPan(gpointer, GtkPanDirection, gdouble, guintptr);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkgesturepan.go.
-var GTypeGesturePan = externglib.Type(C.gtk_gesture_pan_get_type())
+var GTypeGesturePan = coreglib.Type(C.gtk_gesture_pan_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGesturePan, F: marshalGesturePan},
 	})
 }
@@ -58,7 +57,7 @@ func classInitGesturePanner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGesturePan(obj *externglib.Object) *GesturePan {
+func wrapGesturePan(obj *coreglib.Object) *GesturePan {
 	return &GesturePan{
 		GestureDrag: GestureDrag{
 			GestureSingle: GestureSingle{
@@ -73,101 +72,5 @@ func wrapGesturePan(obj *externglib.Object) *GesturePan {
 }
 
 func marshalGesturePan(p uintptr) (interface{}, error) {
-	return wrapGesturePan(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_GesturePan_ConnectPan
-func _gotk4_gtk4_GesturePan_ConnectPan(arg0 C.gpointer, arg1 C.GtkPanDirection, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(direction PanDirection, offset float64)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(direction PanDirection, offset float64))
-	}
-
-	var _direction PanDirection // out
-	var _offset float64         // out
-
-	_direction = PanDirection(arg1)
-	_offset = float64(arg2)
-
-	f(_direction, _offset)
-}
-
-// ConnectPan is emitted once a panning gesture along the expected axis is
-// detected.
-func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(gesture, "pan", false, unsafe.Pointer(C._gotk4_gtk4_GesturePan_ConnectPan), f)
-}
-
-// NewGesturePan returns a newly created GtkGesture that recognizes pan
-// gestures.
-//
-// The function takes the following parameters:
-//
-//    - orientation: expected orientation.
-//
-// The function returns the following values:
-//
-//    - gesturePan: newly created GtkGesturePan.
-//
-func NewGesturePan(orientation Orientation) *GesturePan {
-	var _arg1 C.GtkOrientation // out
-	var _cret *C.GtkGesture    // in
-
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_gesture_pan_new(_arg1)
-	runtime.KeepAlive(orientation)
-
-	var _gesturePan *GesturePan // out
-
-	_gesturePan = wrapGesturePan(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _gesturePan
-}
-
-// Orientation returns the orientation of the pan gestures that this gesture
-// expects.
-//
-// The function returns the following values:
-//
-//    - orientation: expected orientation for pan gestures.
-//
-func (gesture *GesturePan) Orientation() Orientation {
-	var _arg0 *C.GtkGesturePan // out
-	var _cret C.GtkOrientation // in
-
-	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
-
-	_cret = C.gtk_gesture_pan_get_orientation(_arg0)
-	runtime.KeepAlive(gesture)
-
-	var _orientation Orientation // out
-
-	_orientation = Orientation(_cret)
-
-	return _orientation
-}
-
-// SetOrientation sets the orientation to be expected on pan gestures.
-//
-// The function takes the following parameters:
-//
-//    - orientation: expected orientation.
-//
-func (gesture *GesturePan) SetOrientation(orientation Orientation) {
-	var _arg0 *C.GtkGesturePan // out
-	var _arg1 C.GtkOrientation // out
-
-	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
-	_arg1 = C.GtkOrientation(orientation)
-
-	C.gtk_gesture_pan_set_orientation(_arg0, _arg1)
-	runtime.KeepAlive(gesture)
-	runtime.KeepAlive(orientation)
+	return wrapGesturePan(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

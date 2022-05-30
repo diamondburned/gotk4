@@ -5,20 +5,21 @@ package gdkx11
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11visual.go.
-var GTypeX11Visual = externglib.Type(C.gdk_x11_visual_get_type())
+var GTypeX11Visual = coreglib.Type(C.gdk_x11_visual_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11Visual, F: marshalX11Visual},
 	})
 }
@@ -33,7 +34,7 @@ type X11Visual struct {
 }
 
 var (
-	_ externglib.Objector = (*X11Visual)(nil)
+	_ coreglib.Objector = (*X11Visual)(nil)
 )
 
 func classInitX11Visualer(gclassPtr, data C.gpointer) {
@@ -44,7 +45,7 @@ func classInitX11Visualer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11Visual(obj *externglib.Object) *X11Visual {
+func wrapX11Visual(obj *coreglib.Object) *X11Visual {
 	return &X11Visual{
 		Visual: gdk.Visual{
 			Object: obj,
@@ -53,5 +54,5 @@ func wrapX11Visual(obj *externglib.Object) *X11Visual {
 }
 
 func marshalX11Visual(p uintptr) (interface{}, error) {
-	return wrapX11Visual(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11Visual(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

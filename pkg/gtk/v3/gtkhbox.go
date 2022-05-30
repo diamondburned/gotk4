@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkhbox.go.
-var GTypeHBox = externglib.Type(C.gtk_hbox_get_type())
+var GTypeHBox = coreglib.Type(C.gtk_hbox_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeHBox, F: marshalHBox},
 	})
 }
@@ -53,8 +52,8 @@ type HBox struct {
 }
 
 var (
-	_ Containerer         = (*HBox)(nil)
-	_ externglib.Objector = (*HBox)(nil)
+	_ Containerer       = (*HBox)(nil)
+	_ coreglib.Objector = (*HBox)(nil)
 )
 
 func classInitHBoxer(gclassPtr, data C.gpointer) {
@@ -65,12 +64,12 @@ func classInitHBoxer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapHBox(obj *externglib.Object) *HBox {
+func wrapHBox(obj *coreglib.Object) *HBox {
 	return &HBox{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -91,7 +90,7 @@ func wrapHBox(obj *externglib.Object) *HBox {
 }
 
 func marshalHBox(p uintptr) (interface{}, error) {
-	return wrapHBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapHBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHBox creates a new HBox.
@@ -111,22 +110,27 @@ func marshalHBox(p uintptr) (interface{}, error) {
 //    - hBox: new HBox.
 //
 func NewHBox(homogeneous bool, spacing int) *HBox {
-	var _arg1 C.gboolean   // out
-	var _arg2 C.gint       // out
-	var _cret *C.GtkWidget // in
+	var args [2]girepository.Argument
+	var _arg0 C.gboolean // out
+	var _arg1 C.gint     // out
+	var _cret *C.void    // in
 
 	if homogeneous {
-		_arg1 = C.TRUE
+		_arg0 = C.TRUE
 	}
-	_arg2 = C.gint(spacing)
+	_arg1 = C.gint(spacing)
+	*(*bool)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_hbox_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "HBox").InvokeMethod("new_HBox", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(homogeneous)
 	runtime.KeepAlive(spacing)
 
 	var _hBox *HBox // out
 
-	_hBox = wrapHBox(externglib.Take(unsafe.Pointer(_cret)))
+	_hBox = wrapHBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hBox
 }

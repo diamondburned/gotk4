@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gemblem.go.
-var GTypeEmblem = externglib.Type(C.g_emblem_get_type())
+var GTypeEmblem = coreglib.Type(C.g_emblem_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEmblem, F: marshalEmblem},
 	})
 }
@@ -34,13 +35,13 @@ type EmblemOverrider interface {
 // may be added in the future.
 type Emblem struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Icon
 }
 
 var (
-	_ externglib.Objector = (*Emblem)(nil)
+	_ coreglib.Objector = (*Emblem)(nil)
 )
 
 func classInitEmblemmer(gclassPtr, data C.gpointer) {
@@ -51,7 +52,7 @@ func classInitEmblemmer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEmblem(obj *externglib.Object) *Emblem {
+func wrapEmblem(obj *coreglib.Object) *Emblem {
 	return &Emblem{
 		Object: obj,
 		Icon: Icon{
@@ -61,7 +62,7 @@ func wrapEmblem(obj *externglib.Object) *Emblem {
 }
 
 func marshalEmblem(p uintptr) (interface{}, error) {
-	return wrapEmblem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEmblem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEmblem creates a new emblem for icon.
@@ -75,47 +76,21 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 //    - emblem: new #GEmblem.
 //
 func NewEmblem(icon Iconner) *Emblem {
-	var _arg1 *C.GIcon   // out
-	var _cret *C.GEmblem // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(*Iconner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_emblem_new(_arg1)
+	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("new_Emblem", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(icon)
 
 	var _emblem *Emblem // out
 
-	_emblem = wrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _emblem
-}
-
-// NewEmblemWithOrigin creates a new emblem for icon.
-//
-// The function takes the following parameters:
-//
-//    - icon: GIcon containing the icon.
-//    - origin: GEmblemOrigin enum defining the emblem's origin.
-//
-// The function returns the following values:
-//
-//    - emblem: new #GEmblem.
-//
-func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
-	var _arg1 *C.GIcon        // out
-	var _arg2 C.GEmblemOrigin // out
-	var _cret *C.GEmblem      // in
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
-	_arg2 = C.GEmblemOrigin(origin)
-
-	_cret = C.g_emblem_new_with_origin(_arg1, _arg2)
-	runtime.KeepAlive(icon)
-	runtime.KeepAlive(origin)
-
-	var _emblem *Emblem // out
-
-	_emblem = wrapEmblem(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_emblem = wrapEmblem(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _emblem
 }
@@ -128,39 +103,21 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 //      or freed.
 //
 func (emblem *Emblem) GetIcon() *Icon {
-	var _arg0 *C.GEmblem // out
-	var _cret *C.GIcon   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(externglib.InternObject(emblem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
+	*(**Emblem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_emblem_get_icon(_arg0)
+	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("get_icon", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(emblem)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _icon
-}
-
-// Origin gets the origin of the emblem.
-//
-// The function returns the following values:
-//
-//    - emblemOrigin: origin of the emblem.
-//
-func (emblem *Emblem) Origin() EmblemOrigin {
-	var _arg0 *C.GEmblem      // out
-	var _cret C.GEmblemOrigin // in
-
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(externglib.InternObject(emblem).Native()))
-
-	_cret = C.g_emblem_get_origin(_arg0)
-	runtime.KeepAlive(emblem)
-
-	var _emblemOrigin EmblemOrigin // out
-
-	_emblemOrigin = EmblemOrigin(_cret)
-
-	return _emblemOrigin
 }

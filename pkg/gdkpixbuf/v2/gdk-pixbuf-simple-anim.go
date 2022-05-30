@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -15,10 +15,10 @@ import (
 import "C"
 
 // glib.Type values for gdk-pixbuf-simple-anim.go.
-var GTypePixbufSimpleAnim = externglib.Type(C.gdk_pixbuf_simple_anim_get_type())
+var GTypePixbufSimpleAnim = coreglib.Type(C.gdk_pixbuf_simple_anim_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePixbufSimpleAnim, F: marshalPixbufSimpleAnim},
 	})
 }
@@ -34,7 +34,7 @@ type PixbufSimpleAnim struct {
 }
 
 var (
-	_ externglib.Objector = (*PixbufSimpleAnim)(nil)
+	_ coreglib.Objector = (*PixbufSimpleAnim)(nil)
 )
 
 func classInitPixbufSimpleAnimmer(gclassPtr, data C.gpointer) {
@@ -45,7 +45,7 @@ func classInitPixbufSimpleAnimmer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
+func wrapPixbufSimpleAnim(obj *coreglib.Object) *PixbufSimpleAnim {
 	return &PixbufSimpleAnim{
 		PixbufAnimation: PixbufAnimation{
 			Object: obj,
@@ -54,7 +54,7 @@ func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
 }
 
 func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
-	return wrapPixbufSimpleAnim(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPixbufSimpleAnim(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPixbufSimpleAnim creates a new, empty animation.
@@ -86,7 +86,7 @@ func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 
 	var _pixbufSimpleAnim *PixbufSimpleAnim // out
 
-	_pixbufSimpleAnim = wrapPixbufSimpleAnim(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufSimpleAnim = wrapPixbufSimpleAnim(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufSimpleAnim
 }
@@ -102,8 +102,8 @@ func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(externglib.InternObject(animation).Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 	runtime.KeepAlive(animation)
@@ -120,7 +120,7 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
 	runtime.KeepAlive(animation)
@@ -145,7 +145,7 @@ func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
 
-	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 	if loop {
 		_arg1 = C.TRUE
 	}

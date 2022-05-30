@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmenuaccessible.go.
-var GTypeMenuAccessible = externglib.Type(C.gtk_menu_accessible_get_type())
+var GTypeMenuAccessible = coreglib.Type(C.gtk_menu_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMenuAccessible, F: marshalMenuAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type MenuAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*MenuAccessible)(nil)
+	_ coreglib.Objector = (*MenuAccessible)(nil)
 )
 
 func classInitMenuAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitMenuAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMenuAccessible(obj *externglib.Object) *MenuAccessible {
+func wrapMenuAccessible(obj *coreglib.Object) *MenuAccessible {
 	return &MenuAccessible{
 		MenuShellAccessible: MenuShellAccessible{
 			ContainerAccessible: ContainerAccessible{
@@ -69,5 +68,5 @@ func wrapMenuAccessible(obj *externglib.Object) *MenuAccessible {
 }
 
 func marshalMenuAccessible(p uintptr) (interface{}, error) {
-	return wrapMenuAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMenuAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

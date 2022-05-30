@@ -2,8 +2,13 @@
 
 package atk
 
+import (
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+)
+
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
+// #include <glib.h>
 import "C"
 
 // BINARY_AGE: like atk_get_binary_age(), but from the headers used at
@@ -54,7 +59,8 @@ const VERSION_MIN_REQUIRED = 2
 func GetBinaryAge() uint {
 	var _cret C.guint // in
 
-	_cret = C.atk_get_binary_age()
+	_gret := girepository.MustFind("Atk", "get_binary_age").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -73,7 +79,8 @@ func GetBinaryAge() uint {
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
-	_cret = C.atk_get_interface_age()
+	_gret := girepository.MustFind("Atk", "get_interface_age").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -96,7 +103,8 @@ func GetInterfaceAge() uint {
 func GetMajorVersion() uint {
 	var _cret C.guint // in
 
-	_cret = C.atk_get_major_version()
+	_gret := girepository.MustFind("Atk", "get_major_version").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -119,7 +127,8 @@ func GetMajorVersion() uint {
 func GetMicroVersion() uint {
 	var _cret C.guint // in
 
-	_cret = C.atk_get_micro_version()
+	_gret := girepository.MustFind("Atk", "get_micro_version").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -142,7 +151,8 @@ func GetMicroVersion() uint {
 func GetMinorVersion() uint {
 	var _cret C.guint // in
 
-	_cret = C.atk_get_minor_version()
+	_gret := girepository.MustFind("Atk", "get_minor_version").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 

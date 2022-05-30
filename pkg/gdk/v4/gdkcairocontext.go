@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkcairocontext.go.
-var GTypeCairoContext = externglib.Type(C.gdk_cairo_context_get_type())
+var GTypeCairoContext = coreglib.Type(C.gdk_cairo_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCairoContext, F: marshalCairoContext},
 	})
 }
@@ -44,13 +45,13 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type CairoContexter interface {
-	externglib.Objector
+	coreglib.Objector
 	baseCairoContext() *CairoContext
 }
 
 var _ CairoContexter = (*CairoContext)(nil)
 
-func wrapCairoContext(obj *externglib.Object) *CairoContext {
+func wrapCairoContext(obj *coreglib.Object) *CairoContext {
 	return &CairoContext{
 		DrawContext: DrawContext{
 			Object: obj,
@@ -59,7 +60,7 @@ func wrapCairoContext(obj *externglib.Object) *CairoContext {
 }
 
 func marshalCairoContext(p uintptr) (interface{}, error) {
-	return wrapCairoContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCairoContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (self *CairoContext) baseCairoContext() *CairoContext {
@@ -86,12 +87,16 @@ func BaseCairoContext(obj CairoContexter) *CairoContext {
 //      GdkSurface. NULL is returned when context is not drawing.
 //
 func (self *CairoContext) CairoCreate() *cairo.Context {
-	var _arg0 *C.GdkCairoContext // out
-	var _cret *C.cairo_t         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**CairoContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_cairo_context_cairo_create(_arg0)
+	_gret := girepository.MustFind("Gdk", "CairoContext").InvokeMethod("cairo_create", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _context *cairo.Context // out
@@ -99,7 +104,7 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	if _cret != nil {
 		_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(_context, func(v *cairo.Context) {
-			C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+			C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})
 	}
 

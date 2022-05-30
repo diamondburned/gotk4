@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkalignment.go.
-var GTypeAlignment = externglib.Type(C.gtk_alignment_get_type())
+var GTypeAlignment = coreglib.Type(C.gtk_alignment_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAlignment, F: marshalAlignment},
 	})
 }
@@ -64,12 +63,12 @@ func classInitAlignmenter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapAlignment(obj *externglib.Object) *Alignment {
+func wrapAlignment(obj *coreglib.Object) *Alignment {
 	return &Alignment{
 		Bin: Bin{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -86,7 +85,7 @@ func wrapAlignment(obj *externglib.Object) *Alignment {
 }
 
 func marshalAlignment(p uintptr) (interface{}, error) {
-	return wrapAlignment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAlignment(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAlignment creates a new Alignment.
@@ -111,18 +110,25 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 //    - alignment: new Alignment.
 //
 func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
-	var _arg1 C.gfloat     // out
-	var _arg2 C.gfloat     // out
-	var _arg3 C.gfloat     // out
-	var _arg4 C.gfloat     // out
-	var _cret *C.GtkWidget // in
+	var args [4]girepository.Argument
+	var _arg0 C.gfloat // out
+	var _arg1 C.gfloat // out
+	var _arg2 C.gfloat // out
+	var _arg3 C.gfloat // out
+	var _cret *C.void  // in
 
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
-	_arg3 = C.gfloat(xscale)
-	_arg4 = C.gfloat(yscale)
+	_arg0 = C.gfloat(xalign)
+	_arg1 = C.gfloat(yalign)
+	_arg2 = C.gfloat(xscale)
+	_arg3 = C.gfloat(yscale)
+	*(*float32)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.gtk_alignment_new(_arg1, _arg2, _arg3, _arg4)
+	_gret := girepository.MustFind("Gtk", "Alignment").InvokeMethod("new_Alignment", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)
 	runtime.KeepAlive(xscale)
@@ -130,50 +136,9 @@ func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 
 	var _alignment *Alignment // out
 
-	_alignment = wrapAlignment(externglib.Take(unsafe.Pointer(_cret)))
+	_alignment = wrapAlignment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _alignment
-}
-
-// Padding gets the padding on the different sides of the widget. See
-// gtk_alignment_set_padding ().
-//
-// Deprecated: Use Widget alignment and margin properties.
-//
-// The function returns the following values:
-//
-//    - paddingTop (optional): location to store the padding for the top of the
-//      widget, or NULL.
-//    - paddingBottom (optional): location to store the padding for the bottom of
-//      the widget, or NULL.
-//    - paddingLeft (optional): location to store the padding for the left of the
-//      widget, or NULL.
-//    - paddingRight (optional): location to store the padding for the right of
-//      the widget, or NULL.
-//
-func (alignment *Alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
-	var _arg0 *C.GtkAlignment // out
-	var _arg1 C.guint         // in
-	var _arg2 C.guint         // in
-	var _arg3 C.guint         // in
-	var _arg4 C.guint         // in
-
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(externglib.InternObject(alignment).Native()))
-
-	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(alignment)
-
-	var _paddingTop uint    // out
-	var _paddingBottom uint // out
-	var _paddingLeft uint   // out
-	var _paddingRight uint  // out
-
-	_paddingTop = uint(_arg1)
-	_paddingBottom = uint(_arg2)
-	_paddingLeft = uint(_arg3)
-	_paddingRight = uint(_arg4)
-
-	return _paddingTop, _paddingBottom, _paddingLeft, _paddingRight
 }
 
 // Set sets the Alignment values.
@@ -194,19 +159,25 @@ func (alignment *Alignment) Padding() (paddingTop uint, paddingBottom uint, padd
 //      space, from 0 to 1. The values are similar to xscale.
 //
 func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
-	var _arg0 *C.GtkAlignment // out
-	var _arg1 C.gfloat        // out
-	var _arg2 C.gfloat        // out
-	var _arg3 C.gfloat        // out
-	var _arg4 C.gfloat        // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.gfloat // out
+	var _arg2 C.gfloat // out
+	var _arg3 C.gfloat // out
+	var _arg4 C.gfloat // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(externglib.InternObject(alignment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
 	_arg3 = C.gfloat(xscale)
 	_arg4 = C.gfloat(yscale)
+	*(**Alignment)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
 
-	C.gtk_alignment_set(_arg0, _arg1, _arg2, _arg3, _arg4)
+	girepository.MustFind("Gtk", "Alignment").InvokeMethod("set", args[:], nil)
+
 	runtime.KeepAlive(alignment)
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)
@@ -228,19 +199,25 @@ func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 //    - paddingRight: padding at the right of the widget.
 //
 func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
-	var _arg0 *C.GtkAlignment // out
-	var _arg1 C.guint         // out
-	var _arg2 C.guint         // out
-	var _arg3 C.guint         // out
-	var _arg4 C.guint         // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _arg2 C.guint // out
+	var _arg3 C.guint // out
+	var _arg4 C.guint // out
 
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(externglib.InternObject(alignment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
 	_arg1 = C.guint(paddingTop)
 	_arg2 = C.guint(paddingBottom)
 	_arg3 = C.guint(paddingLeft)
 	_arg4 = C.guint(paddingRight)
+	*(**Alignment)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint)(unsafe.Pointer(&args[3])) = _arg3
+	*(*uint)(unsafe.Pointer(&args[4])) = _arg4
 
-	C.gtk_alignment_set_padding(_arg0, _arg1, _arg2, _arg3, _arg4)
+	girepository.MustFind("Gtk", "Alignment").InvokeMethod("set_padding", args[:], nil)
+
 	runtime.KeepAlive(alignment)
 	runtime.KeepAlive(paddingTop)
 	runtime.KeepAlive(paddingBottom)

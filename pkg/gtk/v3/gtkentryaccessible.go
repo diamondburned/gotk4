@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkentryaccessible.go.
-var GTypeEntryAccessible = externglib.Type(C.gtk_entry_accessible_get_type())
+var GTypeEntryAccessible = coreglib.Type(C.gtk_entry_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEntryAccessible, F: marshalEntryAccessible},
 	})
 }
@@ -33,14 +32,14 @@ type EntryAccessible struct {
 	_ [0]func() // equal guard
 	WidgetAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Action
 	atk.EditableText
 	atk.Text
 }
 
 var (
-	_ externglib.Objector = (*EntryAccessible)(nil)
+	_ coreglib.Objector = (*EntryAccessible)(nil)
 )
 
 func classInitEntryAccessibler(gclassPtr, data C.gpointer) {
@@ -51,7 +50,7 @@ func classInitEntryAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
+func wrapEntryAccessible(obj *coreglib.Object) *EntryAccessible {
 	return &EntryAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -77,5 +76,5 @@ func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 }
 
 func marshalEntryAccessible(p uintptr) (interface{}, error) {
-	return wrapEntryAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEntryAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

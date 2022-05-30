@@ -5,37 +5,35 @@ package pango
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
-// extern gboolean _gotk4_pango1_AttrFilterFunc(PangoAttribute*, gpointer);
 import "C"
 
 // glib.Type values for pango-attributes.go.
 var (
-	GTypeAttrType     = externglib.Type(C.pango_attr_type_get_type())
-	GTypeOverline     = externglib.Type(C.pango_overline_get_type())
-	GTypeUnderline    = externglib.Type(C.pango_underline_get_type())
-	GTypeShowFlags    = externglib.Type(C.pango_show_flags_get_type())
-	GTypeAttrIterator = externglib.Type(C.pango_attr_iterator_get_type())
-	GTypeAttrList     = externglib.Type(C.pango_attr_list_get_type())
-	GTypeAttribute    = externglib.Type(C.pango_attribute_get_type())
-	GTypeColor        = externglib.Type(C.pango_color_get_type())
+	GTypeAttrType     = coreglib.Type(C.pango_attr_type_get_type())
+	GTypeOverline     = coreglib.Type(C.pango_overline_get_type())
+	GTypeUnderline    = coreglib.Type(C.pango_underline_get_type())
+	GTypeShowFlags    = coreglib.Type(C.pango_show_flags_get_type())
+	GTypeAttrIterator = coreglib.Type(C.pango_attr_iterator_get_type())
+	GTypeAttrList     = coreglib.Type(C.pango_attr_list_get_type())
+	GTypeAttribute    = coreglib.Type(C.pango_attribute_get_type())
+	GTypeColor        = coreglib.Type(C.pango_color_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAttrType, F: marshalAttrType},
 		{T: GTypeOverline, F: marshalOverline},
 		{T: GTypeUnderline, F: marshalUnderline},
@@ -136,7 +134,7 @@ const (
 )
 
 func marshalAttrType(p uintptr) (interface{}, error) {
-	return AttrType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return AttrType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AttrType.
@@ -287,7 +285,7 @@ const (
 )
 
 func marshalOverline(p uintptr) (interface{}, error) {
-	return Overline(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Overline(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Overline.
@@ -338,7 +336,7 @@ const (
 )
 
 func marshalUnderline(p uintptr) (interface{}, error) {
-	return Underline(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Underline(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Underline.
@@ -381,7 +379,7 @@ const (
 )
 
 func marshalShowFlags(p uintptr) (interface{}, error) {
-	return ShowFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ShowFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ShowFlags.
@@ -419,28 +417,6 @@ func (s ShowFlags) String() string {
 // Has returns true if s contains other.
 func (s ShowFlags) Has(other ShowFlags) bool {
 	return (s & other) == other
-}
-
-// AttrDataCopyFunc: type of a function that can duplicate user data for an
-// attribute.
-type AttrDataCopyFunc func() (gpointer cgo.Handle)
-
-//export _gotk4_pango1_AttrDataCopyFunc
-func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gconstpointer) (cret C.gpointer) {
-	var fn AttrDataCopyFunc
-	{
-		v := gbox.Get(uintptr(arg1))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(AttrDataCopyFunc)
-	}
-
-	gpointer := fn()
-
-	cret = (C.gpointer)(unsafe.Pointer(gpointer))
-
-	return cret
 }
 
 // AttrFilterFunc: type of a function filtering a list of attributes.
@@ -1751,7 +1727,7 @@ type attrIterator struct {
 }
 
 func marshalAttrIterator(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &AttrIterator{&attrIterator{(*C.PangoAttrIterator)(b)}}, nil
 }
 
@@ -2000,7 +1976,7 @@ type attrList struct {
 }
 
 func marshalAttrList(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &AttrList{&attrList{(*C.PangoAttrList)(b)}}, nil
 }
 
@@ -2116,49 +2092,6 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 	}
 
 	return _ok
-}
-
-// Filter: given a PangoAttrList and callback function, removes any elements of
-// list for which func returns TRUE and inserts them into a new list.
-//
-// The function takes the following parameters:
-//
-//    - fn: callback function; returns TRUE if an attribute should be filtered
-//      out.
-//
-// The function returns the following values:
-//
-//    - attrList (optional): new PangoAttrList or NULL if no attributes of the
-//      given types were found.
-//
-func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
-	var _arg0 *C.PangoAttrList      // out
-	var _arg1 C.PangoAttrFilterFunc // out
-	var _arg2 C.gpointer
-	var _cret *C.PangoAttrList // in
-
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*[0]byte)(C._gotk4_pango1_AttrFilterFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(list)
-	runtime.KeepAlive(fn)
-
-	var _attrList *AttrList // out
-
-	if _cret != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
-		)
-	}
-
-	return _attrList
 }
 
 // Attributes gets a list of all attributes in list.
@@ -2539,7 +2472,7 @@ type attribute struct {
 }
 
 func marshalAttribute(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Attribute{&attribute{(*C.PangoAttribute)(b)}}, nil
 }
 
@@ -2628,7 +2561,7 @@ type color struct {
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Color{&color{(*C.PangoColor)(b)}}, nil
 }
 

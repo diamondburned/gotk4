@@ -7,23 +7,22 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_ToggleActionClass_toggled(GtkToggleAction*);
 // extern void _gotk4_gtk3_ToggleAction_ConnectToggled(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtktoggleaction.go.
-var GTypeToggleAction = externglib.Type(C.gtk_toggle_action_get_type())
+var GTypeToggleAction = coreglib.Type(C.gtk_toggle_action_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeToggleAction, F: marshalToggleAction},
 	})
 }
@@ -44,7 +43,7 @@ type ToggleAction struct {
 }
 
 var (
-	_ externglib.Objector = (*ToggleAction)(nil)
+	_ coreglib.Objector = (*ToggleAction)(nil)
 )
 
 func classInitToggleActioner(gclassPtr, data C.gpointer) {
@@ -65,13 +64,13 @@ func classInitToggleActioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToggleActionClass_toggled
 func _gotk4_gtk3_ToggleActionClass_toggled(arg0 *C.GtkToggleAction) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
 	iface.Toggled()
 }
 
-func wrapToggleAction(obj *externglib.Object) *ToggleAction {
+func wrapToggleAction(obj *coreglib.Object) *ToggleAction {
 	return &ToggleAction{
 		Action: Action{
 			Object: obj,
@@ -83,14 +82,14 @@ func wrapToggleAction(obj *externglib.Object) *ToggleAction {
 }
 
 func marshalToggleAction(p uintptr) (interface{}, error) {
-	return wrapToggleAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapToggleAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ToggleAction_ConnectToggled
 func _gotk4_gtk3_ToggleAction_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -104,8 +103,8 @@ func _gotk4_gtk3_ToggleAction_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectToggled: should be connected if you wish to perform an action whenever
 // the ToggleAction state is changed.
-func (action *ToggleAction) ConnectToggled(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(action, "toggled", false, unsafe.Pointer(C._gotk4_gtk3_ToggleAction_ConnectToggled), f)
+func (action *ToggleAction) ConnectToggled(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(action, "toggled", false, unsafe.Pointer(C._gotk4_gtk3_ToggleAction_ConnectToggled), f)
 }
 
 // NewToggleAction creates a new ToggleAction object. To add the action to a
@@ -127,28 +126,35 @@ func (action *ToggleAction) ConnectToggled(f func()) externglib.SignalHandle {
 //    - toggleAction: new ToggleAction.
 //
 func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
-	var _arg1 *C.gchar           // out
-	var _arg2 *C.gchar           // out
-	var _arg3 *C.gchar           // out
-	var _arg4 *C.gchar           // out
-	var _cret *C.GtkToggleAction // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg0))
 	if label != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if tooltip != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(_arg3))
+		_arg2 = (*C.void)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	if stockId != "" {
-		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(_arg4))
+		_arg3 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.gtk_toggle_action_new(_arg1, _arg2, _arg3, _arg4)
+	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("new_ToggleAction", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(tooltip)
@@ -156,7 +162,7 @@ func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 
 	var _toggleAction *ToggleAction // out
 
-	_toggleAction = wrapToggleAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_toggleAction = wrapToggleAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _toggleAction
 }
@@ -170,12 +176,16 @@ func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 //    - ok: checked state of the toggle action.
 //
 func (action *ToggleAction) Active() bool {
-	var _arg0 *C.GtkToggleAction // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**ToggleAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_toggle_action_get_active(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_active", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -197,12 +207,16 @@ func (action *ToggleAction) Active() bool {
 //    - ok: whether the action should have proxies like a radio action.
 //
 func (action *ToggleAction) DrawAsRadio() bool {
-	var _arg0 *C.GtkToggleAction // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**ToggleAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_draw_as_radio", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -223,15 +237,18 @@ func (action *ToggleAction) DrawAsRadio() bool {
 //    - isActive: whether the action should be checked or not.
 //
 func (action *ToggleAction) SetActive(isActive bool) {
-	var _arg0 *C.GtkToggleAction // out
-	var _arg1 C.gboolean         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if isActive {
 		_arg1 = C.TRUE
 	}
+	*(**ToggleAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_toggle_action_set_active(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_active", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(isActive)
 }
@@ -246,15 +263,18 @@ func (action *ToggleAction) SetActive(isActive bool) {
 //    - drawAsRadio: whether the action should have proxies like a radio action.
 //
 func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
-	var _arg0 *C.GtkToggleAction // out
-	var _arg1 C.gboolean         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if drawAsRadio {
 		_arg1 = C.TRUE
 	}
+	*(**ToggleAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_toggle_action_set_draw_as_radio(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_draw_as_radio", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(drawAsRadio)
 }
@@ -263,10 +283,13 @@ func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 //
 // Deprecated: since version 3.10.
 func (action *ToggleAction) Toggled() {
-	var _arg0 *C.GtkToggleAction // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**ToggleAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_toggle_action_toggled(_arg0)
+	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("toggled", args[:], nil)
+
 	runtime.KeepAlive(action)
 }

@@ -4,24 +4,24 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gmemoryoutputstream.go.
-var GTypeMemoryOutputStream = externglib.Type(C.g_memory_output_stream_get_type())
+var GTypeMemoryOutputStream = coreglib.Type(C.g_memory_output_stream_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMemoryOutputStream, F: marshalMemoryOutputStream},
 	})
 }
@@ -39,14 +39,14 @@ type MemoryOutputStream struct {
 	_ [0]func() // equal guard
 	OutputStream
 
-	*externglib.Object
+	*coreglib.Object
 	PollableOutputStream
 	Seekable
 }
 
 var (
-	_ OutputStreamer      = (*MemoryOutputStream)(nil)
-	_ externglib.Objector = (*MemoryOutputStream)(nil)
+	_ OutputStreamer    = (*MemoryOutputStream)(nil)
+	_ coreglib.Objector = (*MemoryOutputStream)(nil)
 )
 
 func classInitMemoryOutputStreamer(gclassPtr, data C.gpointer) {
@@ -57,7 +57,7 @@ func classInitMemoryOutputStreamer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
+func wrapMemoryOutputStream(obj *coreglib.Object) *MemoryOutputStream {
 	return &MemoryOutputStream{
 		OutputStream: OutputStream{
 			Object: obj,
@@ -75,7 +75,7 @@ func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 }
 
 func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
-	return wrapMemoryOutputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMemoryOutputStream(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()
@@ -84,41 +84,16 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 func NewMemoryOutputStreamResizable() *MemoryOutputStream {
-	var _cret *C.GOutputStream // in
+	var _cret *C.void // in
 
-	_cret = C.g_memory_output_stream_new_resizable()
+	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("new_MemoryOutputStream_resizable", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _memoryOutputStream *MemoryOutputStream // out
 
-	_memoryOutputStream = wrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_memoryOutputStream = wrapMemoryOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryOutputStream
-}
-
-// Data gets any loaded data from the ostream.
-//
-// Note that the returned pointer may become invalid on the next write or
-// truncate operation on the stream.
-//
-// The function returns the following values:
-//
-//    - gpointer (optional): pointer to the stream's data, or NULL if the data
-//      has been stolen.
-//
-func (ostream *MemoryOutputStream) Data() cgo.Handle {
-	var _arg0 *C.GMemoryOutputStream // out
-	var _cret C.gpointer             // in
-
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(externglib.InternObject(ostream).Native()))
-
-	_cret = C.g_memory_output_stream_get_data(_arg0)
-	runtime.KeepAlive(ostream)
-
-	var _gpointer cgo.Handle // out
-
-	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
-
-	return _gpointer
 }
 
 // DataSize returns the number of bytes from the start up to including the last
@@ -129,12 +104,16 @@ func (ostream *MemoryOutputStream) Data() cgo.Handle {
 //    - gsize: number of bytes written to the stream.
 //
 func (ostream *MemoryOutputStream) DataSize() uint {
-	var _arg0 *C.GMemoryOutputStream // out
-	var _cret C.gsize                // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gsize // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(externglib.InternObject(ostream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
+	*(**MemoryOutputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_memory_output_stream_get_data_size(_arg0)
+	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("get_data_size", args[:], nil)
+	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(ostream)
 
 	var _gsize uint // out
@@ -164,12 +143,16 @@ func (ostream *MemoryOutputStream) DataSize() uint {
 //    - gsize: number of bytes allocated for the data buffer.
 //
 func (ostream *MemoryOutputStream) Size() uint {
-	var _arg0 *C.GMemoryOutputStream // out
-	var _cret C.gsize                // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gsize // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(externglib.InternObject(ostream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
+	*(**MemoryOutputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_memory_output_stream_get_size(_arg0)
+	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("get_size", args[:], nil)
+	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(ostream)
 
 	var _gsize uint // out
@@ -187,12 +170,16 @@ func (ostream *MemoryOutputStream) Size() uint {
 //    - bytes stream's data.
 //
 func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
-	var _arg0 *C.GMemoryOutputStream // out
-	var _cret *C.GBytes              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(externglib.InternObject(ostream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
+	*(**MemoryOutputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_memory_output_stream_steal_as_bytes(_arg0)
+	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("steal_as_bytes", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(ostream)
 
 	var _bytes *glib.Bytes // out
@@ -206,31 +193,4 @@ func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 	)
 
 	return _bytes
-}
-
-// StealData gets any loaded data from the ostream. Ownership of the data is
-// transferred to the caller; when no longer needed it must be freed using the
-// free function set in ostream's OutputStream:destroy-function property.
-//
-// ostream must be closed before calling this function.
-//
-// The function returns the following values:
-//
-//    - gpointer (optional) stream's data, or NULL if it has previously been
-//      stolen.
-//
-func (ostream *MemoryOutputStream) StealData() cgo.Handle {
-	var _arg0 *C.GMemoryOutputStream // out
-	var _cret C.gpointer             // in
-
-	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(externglib.InternObject(ostream).Native()))
-
-	_cret = C.g_memory_output_stream_steal_data(_arg0)
-	runtime.KeepAlive(ostream)
-
-	var _gpointer cgo.Handle // out
-
-	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
-
-	return _gpointer
 }

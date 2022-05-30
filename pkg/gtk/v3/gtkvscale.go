@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkvscale.go.
-var GTypeVScale = externglib.Type(C.gtk_vscale_get_type())
+var GTypeVScale = coreglib.Type(C.gtk_vscale_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVScale, F: marshalVScale},
 	})
 }
@@ -54,12 +53,12 @@ func classInitVScaler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapVScale(obj *externglib.Object) *VScale {
+func wrapVScale(obj *coreglib.Object) *VScale {
 	return &VScale{
 		Scale: Scale{
 			Range: Range{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -80,7 +79,7 @@ func wrapVScale(obj *externglib.Object) *VScale {
 }
 
 func marshalVScale(p uintptr) (interface{}, error) {
-	return wrapVScale(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVScale(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVScale creates a new VScale.
@@ -96,17 +95,21 @@ func marshalVScale(p uintptr) (interface{}, error) {
 //    - vScale: new VScale.
 //
 func NewVScale(adjustment *Adjustment) *VScale {
-	var _arg1 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_vscale_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _vScale *VScale // out
 
-	_vScale = wrapVScale(externglib.Take(unsafe.Pointer(_cret)))
+	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScale
 }
@@ -134,23 +137,29 @@ func NewVScale(adjustment *Adjustment) *VScale {
 //    - vScale: new VScale.
 //
 func NewVScaleWithRange(min, max, step float64) *VScale {
-	var _arg1 C.gdouble    // out
-	var _arg2 C.gdouble    // out
-	var _arg3 C.gdouble    // out
-	var _cret *C.GtkWidget // in
+	var args [3]girepository.Argument
+	var _arg0 C.gdouble // out
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
+	var _cret *C.void   // in
 
-	_arg1 = C.gdouble(min)
-	_arg2 = C.gdouble(max)
-	_arg3 = C.gdouble(step)
+	_arg0 = C.gdouble(min)
+	_arg1 = C.gdouble(max)
+	_arg2 = C.gdouble(step)
+	*(*float64)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_vscale_new_with_range(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale_with_range", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
 	runtime.KeepAlive(step)
 
 	var _vScale *VScale // out
 
-	_vScale = wrapVScale(externglib.Take(unsafe.Pointer(_cret)))
+	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScale
 }

@@ -8,21 +8,20 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcontainercellaccessible.go.
-var GTypeContainerCellAccessible = externglib.Type(C.gtk_container_cell_accessible_get_type())
+var GTypeContainerCellAccessible = coreglib.Type(C.gtk_container_cell_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeContainerCellAccessible, F: marshalContainerCellAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type ContainerCellAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ContainerCellAccessible)(nil)
+	_ coreglib.Objector = (*ContainerCellAccessible)(nil)
 )
 
 func classInitContainerCellAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitContainerCellAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessible {
+func wrapContainerCellAccessible(obj *coreglib.Object) *ContainerCellAccessible {
 	return &ContainerCellAccessible{
 		CellAccessible: CellAccessible{
 			Accessible: Accessible{
@@ -76,19 +75,20 @@ func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessibl
 }
 
 func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
-	return wrapContainerCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapContainerCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // The function returns the following values:
 //
 func NewContainerCellAccessible() *ContainerCellAccessible {
-	var _cret *C.GtkContainerCellAccessible // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_container_cell_accessible_new()
+	_gret := girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("new_ContainerCellAccessible", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _containerCellAccessible *ContainerCellAccessible // out
 
-	_containerCellAccessible = wrapContainerCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_containerCellAccessible = wrapContainerCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _containerCellAccessible
 }
@@ -96,13 +96,16 @@ func NewContainerCellAccessible() *ContainerCellAccessible {
 // The function takes the following parameters:
 //
 func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
-	var _arg0 *C.GtkContainerCellAccessible // out
-	var _arg1 *C.GtkCellAccessible          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(externglib.InternObject(container).Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**ContainerCellAccessible)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("add_child", args[:], nil)
+
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
 }
@@ -112,21 +115,25 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 // The function returns the following values:
 //
 func (container *ContainerCellAccessible) Children() []*CellAccessible {
-	var _arg0 *C.GtkContainerCellAccessible // out
-	var _cret *C.GList                      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(externglib.InternObject(container).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	*(**ContainerCellAccessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_container_cell_accessible_get_children(_arg0)
+	_gret := girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("get_children", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(container)
 
 	var _list []*CellAccessible // out
 
 	_list = make([]*CellAccessible, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkCellAccessible)(v)
+		src := (*C.void)(v)
 		var dst *CellAccessible // out
-		dst = wrapCellAccessible(externglib.Take(unsafe.Pointer(src)))
+		dst = wrapCellAccessible(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -136,13 +143,16 @@ func (container *ContainerCellAccessible) Children() []*CellAccessible {
 // The function takes the following parameters:
 //
 func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
-	var _arg0 *C.GtkContainerCellAccessible // out
-	var _arg1 *C.GtkCellAccessible          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(externglib.InternObject(container).Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**ContainerCellAccessible)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("remove_child", args[:], nil)
+
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
 }

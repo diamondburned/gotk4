@@ -3,23 +3,23 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_GestureSwipe_ConnectSwipe(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // glib.Type values for gtkgestureswipe.go.
-var GTypeGestureSwipe = externglib.Type(C.gtk_gesture_swipe_get_type())
+var GTypeGestureSwipe = coreglib.Type(C.gtk_gesture_swipe_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGestureSwipe, F: marshalGestureSwipe},
 	})
 }
@@ -56,7 +56,7 @@ func classInitGestureSwiper(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
+func wrapGestureSwipe(obj *coreglib.Object) *GestureSwipe {
 	return &GestureSwipe{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -69,14 +69,14 @@ func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
 }
 
 func marshalGestureSwipe(p uintptr) (interface{}, error) {
-	return wrapGestureSwipe(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGestureSwipe(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_GestureSwipe_ConnectSwipe
 func _gotk4_gtk4_GestureSwipe_ConnectSwipe(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(velocityX, velocityY float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -97,8 +97,8 @@ func _gotk4_gtk4_GestureSwipe_ConnectSwipe(arg0 C.gpointer, arg1 C.gdouble, arg2
 // ConnectSwipe is emitted when the recognized gesture is finished.
 //
 // Velocity and direction are a product of previously recorded events.
-func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(gesture, "swipe", false, unsafe.Pointer(C._gotk4_gtk4_GestureSwipe_ConnectSwipe), f)
+func (v *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "swipe", false, unsafe.Pointer(C._gotk4_gtk4_GestureSwipe_ConnectSwipe), f)
 }
 
 // NewGestureSwipe returns a newly created GtkGesture that recognizes swipes.
@@ -108,49 +108,14 @@ func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) 
 //    - gestureSwipe: newly created GtkGestureSwipe.
 //
 func NewGestureSwipe() *GestureSwipe {
-	var _cret *C.GtkGesture // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_gesture_swipe_new()
+	_gret := girepository.MustFind("Gtk", "GestureSwipe").InvokeMethod("new_GestureSwipe", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureSwipe *GestureSwipe // out
 
-	_gestureSwipe = wrapGestureSwipe(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureSwipe = wrapGestureSwipe(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureSwipe
-}
-
-// Velocity gets the current velocity.
-//
-// If the gesture is recognized, this function returns TRUE and fills in
-// velocity_x and velocity_y with the recorded velocity, as per the last events
-// processed.
-//
-// The function returns the following values:
-//
-//    - velocityX: return value for the velocity in the X axis, in pixels/sec.
-//    - velocityY: return value for the velocity in the Y axis, in pixels/sec.
-//    - ok: whether velocity could be calculated.
-//
-func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
-	var _arg0 *C.GtkGestureSwipe // out
-	var _arg1 C.double           // in
-	var _arg2 C.double           // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
-
-	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(gesture)
-
-	var _velocityX float64 // out
-	var _velocityY float64 // out
-	var _ok bool           // out
-
-	_velocityX = float64(_arg1)
-	_velocityY = float64(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _velocityX, _velocityY, _ok
 }

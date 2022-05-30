@@ -6,55 +6,28 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
-// extern GType _gotk4_gio2_ListModelInterface_get_item_type(GListModel*);
-// extern gpointer _gotk4_gio2_ListModelInterface_get_item(GListModel*, guint);
+// #include <glib.h>
 // extern guint _gotk4_gio2_ListModelInterface_get_n_items(GListModel*);
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
 import "C"
 
 // glib.Type values for glistmodel.go.
-var GTypeListModel = externglib.Type(C.g_list_model_get_type())
+var GTypeListModel = coreglib.Type(C.g_list_model_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeListModel, F: marshalListModel},
 	})
 }
 
 // ListModelOverrider contains methods that are overridable.
 type ListModelOverrider interface {
-	// Item: get the item at position. If position is greater than the number of
-	// items in list, NULL is returned.
-	//
-	// NULL is never returned for an index that is smaller than the length of
-	// the list. See g_list_model_get_n_items().
-	//
-	// The function takes the following parameters:
-	//
-	//    - position of the item to fetch.
-	//
-	// The function returns the following values:
-	//
-	//    - object (optional) at position.
-	//
-	Item(position uint) *externglib.Object
-	// ItemType gets the type of the items in list. All items returned from
-	// g_list_model_get_type() are of that type or a subtype, or are an
-	// implementation of that interface.
-	//
-	// The item type of a Model can not change during the life of the model.
-	//
-	// The function returns the following values:
-	//
-	//    - gType of the items contained in list.
-	//
-	ItemType() externglib.Type
 	// NItems gets the number of items in list.
 	//
 	// Depending on the model implementation, calling this function may be less
@@ -115,72 +88,39 @@ type ListModelOverrider interface {
 // underlying type by calling Cast().
 type ListModel struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*ListModel)(nil)
+	_ coreglib.Objector = (*ListModel)(nil)
 )
 
 // ListModeller describes ListModel's interface methods.
 type ListModeller interface {
-	externglib.Objector
+	coreglib.Objector
 
-	// ItemType gets the type of the items in list.
-	ItemType() externglib.Type
 	// NItems gets the number of items in list.
 	NItems() uint
 	// Item: get the item at position.
-	Item(position uint) *externglib.Object
+	Item(position uint) *coreglib.Object
 	// ItemsChanged emits the Model::items-changed signal on list.
 	ItemsChanged(position, removed, added uint)
 
 	// Items-changed: this signal is emitted whenever items were added to or
 	// removed from list.
-	ConnectItemsChanged(func(position, removed, added uint)) externglib.SignalHandle
+	ConnectItemsChanged(func(position, removed, added uint)) coreglib.SignalHandle
 }
 
 var _ ListModeller = (*ListModel)(nil)
 
 func ifaceInitListModeller(gifacePtr, data C.gpointer) {
 	iface := (*C.GListModelInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_item = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item)
-	iface.get_item_type = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item_type)
 	iface.get_n_items = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_n_items)
-}
-
-//export _gotk4_gio2_ListModelInterface_get_item
-func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.GListModel, arg1 C.guint) (cret C.gpointer) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ListModelOverrider)
-
-	var _position uint // out
-
-	_position = uint(arg1)
-
-	object := iface.Item(_position)
-
-	cret = C.gpointer(unsafe.Pointer(object.Native()))
-	C.g_object_ref(C.gpointer(object.Native()))
-
-	return cret
-}
-
-//export _gotk4_gio2_ListModelInterface_get_item_type
-func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.GListModel) (cret C.GType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ListModelOverrider)
-
-	gType := iface.ItemType()
-
-	cret = C.GType(gType)
-
-	return cret
 }
 
 //export _gotk4_gio2_ListModelInterface_get_n_items
 func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.GListModel) (cret C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
 	guint := iface.NItems()
@@ -190,21 +130,21 @@ func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.GListModel) (cret C.guin
 	return cret
 }
 
-func wrapListModel(obj *externglib.Object) *ListModel {
+func wrapListModel(obj *coreglib.Object) *ListModel {
 	return &ListModel{
 		Object: obj,
 	}
 }
 
 func marshalListModel(p uintptr) (interface{}, error) {
-	return wrapListModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapListModel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_ListModel_ConnectItemsChanged
 func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.guintptr) {
 	var f func(position, removed, added uint)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -230,34 +170,8 @@ func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, ar
 //
 // Note: If removed != added, the positions of all later items in the model
 // change.
-func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(list, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_ListModel_ConnectItemsChanged), f)
-}
-
-// ItemType gets the type of the items in list. All items returned from
-// g_list_model_get_type() are of that type or a subtype, or are an
-// implementation of that interface.
-//
-// The item type of a Model can not change during the life of the model.
-//
-// The function returns the following values:
-//
-//    - gType of the items contained in list.
-//
-func (list *ListModel) ItemType() externglib.Type {
-	var _arg0 *C.GListModel // out
-	var _cret C.GType       // in
-
-	_arg0 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(list).Native()))
-
-	_cret = C.g_list_model_get_item_type(_arg0)
-	runtime.KeepAlive(list)
-
-	var _gType externglib.Type // out
-
-	_gType = externglib.Type(_cret)
-
-	return _gType
+func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(list, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_ListModel_ConnectItemsChanged), f)
 }
 
 // NItems gets the number of items in list.
@@ -271,12 +185,15 @@ func (list *ListModel) ItemType() externglib.Type {
 //    - guint: number of items in list.
 //
 func (list *ListModel) NItems() uint {
-	var _arg0 *C.GListModel // out
-	var _cret C.guint       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(list).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	*(**ListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_list_model_get_n_items(_arg0)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 
 	var _guint uint // out
@@ -300,22 +217,25 @@ func (list *ListModel) NItems() uint {
 //
 //    - object (optional) at position.
 //
-func (list *ListModel) Item(position uint) *externglib.Object {
-	var _arg0 *C.GListModel // out
-	var _arg1 C.guint       // out
-	var _cret *C.GObject    // in
+func (list *ListModel) Item(position uint) *coreglib.Object {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(list).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 	_arg1 = C.guint(position)
+	*(**ListModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_list_model_get_object(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)
 
-	var _object *externglib.Object // out
+	var _object *coreglib.Object // out
 
 	if _cret != nil {
-		_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 	}
 
 	return _object
@@ -347,17 +267,20 @@ func (list *ListModel) Item(position uint) *externglib.Object {
 //    - added: number of items added.
 //
 func (list *ListModel) ItemsChanged(position, removed, added uint) {
-	var _arg0 *C.GListModel // out
-	var _arg1 C.guint       // out
-	var _arg2 C.guint       // out
-	var _arg3 C.guint       // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _arg2 C.guint // out
+	var _arg3 C.guint // out
 
-	_arg0 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(list).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(removed)
 	_arg3 = C.guint(added)
+	*(**ListModel)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(removed)

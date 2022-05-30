@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbox.go.
-var GTypeBox = externglib.Type(C.gtk_box_get_type())
+var GTypeBox = coreglib.Type(C.gtk_box_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBox, F: marshalBox},
 	})
 }
@@ -79,13 +78,13 @@ type Box struct {
 	_ [0]func() // equal guard
 	Container
 
-	*externglib.Object
+	*coreglib.Object
 	Orientable
 }
 
 var (
-	_ Containerer         = (*Box)(nil)
-	_ externglib.Objector = (*Box)(nil)
+	_ Containerer       = (*Box)(nil)
+	_ coreglib.Objector = (*Box)(nil)
 )
 
 func classInitBoxer(gclassPtr, data C.gpointer) {
@@ -96,11 +95,11 @@ func classInitBoxer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBox(obj *externglib.Object) *Box {
+func wrapBox(obj *coreglib.Object) *Box {
 	return &Box{
 		Container: Container{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -120,59 +119,7 @@ func wrapBox(obj *externglib.Object) *Box {
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
-	return wrapBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewBox creates a new Box.
-//
-// The function takes the following parameters:
-//
-//    - orientation box’s orientation.
-//    - spacing: number of pixels to place by default between children.
-//
-// The function returns the following values:
-//
-//    - box: new Box.
-//
-func NewBox(orientation Orientation, spacing int) *Box {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 C.gint           // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = C.gint(spacing)
-
-	_cret = C.gtk_box_new(_arg1, _arg2)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(spacing)
-
-	var _box *Box // out
-
-	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _box
-}
-
-// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-//
-// The function returns the following values:
-//
-//    - baselinePosition: baseline position.
-//
-func (box *Box) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBox             // out
-	var _cret C.GtkBaselinePosition // in
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-
-	_cret = C.gtk_box_get_baseline_position(_arg0)
-	runtime.KeepAlive(box)
-
-	var _baselinePosition BaselinePosition // out
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
+	return wrapBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CenterWidget retrieves the center widget of the box.
@@ -182,12 +129,16 @@ func (box *Box) BaselinePosition() BaselinePosition {
 //    - widget (optional): center widget or NULL in case no center widget is set.
 //
 func (box *Box) CenterWidget() Widgetter {
-	var _arg0 *C.GtkBox    // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**Box)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_box_get_center_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_center_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 
 	var _widget Widgetter // out
@@ -196,8 +147,8 @@ func (box *Box) CenterWidget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -220,12 +171,16 @@ func (box *Box) CenterWidget() Widgetter {
 //    - ok: TRUE if the box is homogeneous.
 //
 func (box *Box) Homogeneous() bool {
-	var _arg0 *C.GtkBox  // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**Box)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_box_get_homogeneous(_arg0)
+	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_homogeneous", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
@@ -244,12 +199,16 @@ func (box *Box) Homogeneous() bool {
 //    - gint: spacing between children.
 //
 func (box *Box) Spacing() int {
-	var _arg0 *C.GtkBox // out
-	var _cret C.gint    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**Box)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_box_get_spacing(_arg0)
+	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_spacing", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 
 	var _gint int // out
@@ -280,14 +239,15 @@ func (box *Box) Spacing() int {
 //      padding pixels are also put between child and the reference edge of box.
 //
 func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
-	var _arg0 *C.GtkBox    // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.gboolean   // out
-	var _arg3 C.gboolean   // out
-	var _arg4 C.guint      // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
+	var _arg3 C.gboolean // out
+	var _arg4 C.guint    // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -295,8 +255,13 @@ func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
 		_arg3 = C.TRUE
 	}
 	_arg4 = C.guint(padding)
+	*(**Box)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	C.gtk_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
+	girepository.MustFind("Gtk", "Box").InvokeMethod("pack_end", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(expand)
@@ -325,14 +290,15 @@ func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
 //      padding pixels are also put between child and the reference edge of box.
 //
 func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint) {
-	var _arg0 *C.GtkBox    // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.gboolean   // out
-	var _arg3 C.gboolean   // out
-	var _arg4 C.guint      // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
+	var _arg3 C.gboolean // out
+	var _arg4 C.guint    // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
@@ -340,58 +306,18 @@ func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint) {
 		_arg3 = C.TRUE
 	}
 	_arg4 = C.guint(padding)
+	*(**Box)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	C.gtk_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
+	girepository.MustFind("Gtk", "Box").InvokeMethod("pack_start", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(expand)
 	runtime.KeepAlive(fill)
 	runtime.KeepAlive(padding)
-}
-
-// QueryChildPacking obtains information about how child is packed into box.
-//
-// The function takes the following parameters:
-//
-//    - child of the child to query.
-//
-// The function returns the following values:
-//
-//    - expand: pointer to return location for expand child property.
-//    - fill: pointer to return location for fill child property.
-//    - padding: pointer to return location for padding child property.
-//    - packType: pointer to return location for pack-type child property.
-//
-func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padding uint, packType PackType) {
-	var _arg0 *C.GtkBox     // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.gboolean    // in
-	var _arg3 C.gboolean    // in
-	var _arg4 C.guint       // in
-	var _arg5 C.GtkPackType // in
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-
-	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(child)
-
-	var _expand bool       // out
-	var _fill bool         // out
-	var _padding uint      // out
-	var _packType PackType // out
-
-	if _arg2 != 0 {
-		_expand = true
-	}
-	if _arg3 != 0 {
-		_fill = true
-	}
-	_padding = uint(_arg4)
-	_packType = PackType(_arg5)
-
-	return _expand, _fill, _padding, _packType
 }
 
 // ReorderChild moves child to a new position in the list of box children. The
@@ -410,39 +336,21 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 //      from 0. If negative, indicates the end of the list.
 //
 func (box *Box) ReorderChild(child Widgetter, position int) {
-	var _arg0 *C.GtkBox    // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.gint       // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.gint(position)
+	*(**Box)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_box_reorder_child(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Box").InvokeMethod("reorder_child", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
-	runtime.KeepAlive(position)
-}
-
-// SetBaselinePosition sets the baseline position of a box. This affects only
-// horizontal boxes with at least one baseline aligned child. If there is more
-// vertical space available than requested, and the baseline is not allocated by
-// the parent then position is used to allocate the baseline wrt the extra space
-// available.
-//
-// The function takes the following parameters:
-//
-//    - position: BaselinePosition.
-//
-func (box *Box) SetBaselinePosition(position BaselinePosition) {
-	var _arg0 *C.GtkBox             // out
-	var _arg1 C.GtkBaselinePosition // out
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = C.GtkBaselinePosition(position)
-
-	C.gtk_box_set_baseline_position(_arg0, _arg1)
-	runtime.KeepAlive(box)
 	runtime.KeepAlive(position)
 }
 
@@ -455,55 +363,20 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 //    - widget (optional) to center.
 //
 func (box *Box) SetCenterWidget(widget Widgetter) {
-	var _arg0 *C.GtkBox    // out
-	var _arg1 *C.GtkWidget // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**Box)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_box_set_center_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Box").InvokeMethod("set_center_widget", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(widget)
-}
-
-// SetChildPacking sets the way child is packed into box.
-//
-// The function takes the following parameters:
-//
-//    - child of the child to set.
-//    - expand: new value of the expand child property.
-//    - fill: new value of the fill child property.
-//    - padding: new value of the padding child property.
-//    - packType: new value of the pack-type child property.
-//
-func (box *Box) SetChildPacking(child Widgetter, expand, fill bool, padding uint, packType PackType) {
-	var _arg0 *C.GtkBox     // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.gboolean    // out
-	var _arg3 C.gboolean    // out
-	var _arg4 C.guint       // out
-	var _arg5 C.GtkPackType // out
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
-	if expand {
-		_arg2 = C.TRUE
-	}
-	if fill {
-		_arg3 = C.TRUE
-	}
-	_arg4 = C.guint(padding)
-	_arg5 = C.GtkPackType(packType)
-
-	C.gtk_box_set_child_packing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(expand)
-	runtime.KeepAlive(fill)
-	runtime.KeepAlive(padding)
-	runtime.KeepAlive(packType)
 }
 
 // SetHomogeneous sets the Box:homogeneous property of box, controlling whether
@@ -515,15 +388,18 @@ func (box *Box) SetChildPacking(child Widgetter, expand, fill bool, padding uint
 //      variable allotments.
 //
 func (box *Box) SetHomogeneous(homogeneous bool) {
-	var _arg0 *C.GtkBox  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
+	*(**Box)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_box_set_homogeneous(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Box").InvokeMethod("set_homogeneous", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(homogeneous)
 }
@@ -536,13 +412,16 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 //    - spacing: number of pixels to put between children.
 //
 func (box *Box) SetSpacing(spacing int) {
-	var _arg0 *C.GtkBox // out
-	var _arg1 C.gint    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	_arg1 = C.gint(spacing)
+	*(**Box)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_box_set_spacing(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Box").InvokeMethod("set_spacing", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)
 }

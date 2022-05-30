@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkdrawcontext.go.
-var GTypeDrawContext = externglib.Type(C.gdk_draw_context_get_type())
+var GTypeDrawContext = coreglib.Type(C.gdk_draw_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDrawContext, F: marshalDrawContext},
 	})
 }
@@ -35,11 +36,11 @@ func init() {
 // A GdkDrawContext is always associated with a single toplevel surface.
 type DrawContext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DrawContext)(nil)
+	_ coreglib.Objector = (*DrawContext)(nil)
 )
 
 // DrawContexter describes types inherited from class DrawContext.
@@ -47,20 +48,20 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type DrawContexter interface {
-	externglib.Objector
+	coreglib.Objector
 	baseDrawContext() *DrawContext
 }
 
 var _ DrawContexter = (*DrawContext)(nil)
 
-func wrapDrawContext(obj *externglib.Object) *DrawContext {
+func wrapDrawContext(obj *coreglib.Object) *DrawContext {
 	return &DrawContext{
 		Object: obj,
 	}
 }
 
 func marshalDrawContext(p uintptr) (interface{}, error) {
-	return wrapDrawContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDrawContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (context *DrawContext) baseDrawContext() *DrawContext {
@@ -100,13 +101,16 @@ func BaseDrawContext(obj DrawContexter) *DrawContext {
 //    - region: minimum region that should be drawn.
 //
 func (context *DrawContext) BeginFrame(region *cairo.Region) {
-	var _arg0 *C.GdkDrawContext // out
-	var _arg1 *C.cairo_region_t // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(region.Native()))
+	*(**DrawContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_draw_context_begin_frame(_arg0, _arg1)
+	girepository.MustFind("Gdk", "DrawContext").InvokeMethod("begin_frame", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(region)
 }
@@ -121,11 +125,14 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 // before returning; it is not recommended to call glFlush() explicitly before
 // calling this function.
 func (context *DrawContext) EndFrame() {
-	var _arg0 *C.GdkDrawContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_draw_context_end_frame(_arg0)
+	girepository.MustFind("Gdk", "DrawContext").InvokeMethod("end_frame", args[:], nil)
+
 	runtime.KeepAlive(context)
 }
 
@@ -136,18 +143,22 @@ func (context *DrawContext) EndFrame() {
 //    - display (optional): GdkDisplay or NULL.
 //
 func (context *DrawContext) Display() *Display {
-	var _arg0 *C.GdkDrawContext // out
-	var _cret *C.GdkDisplay     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_draw_context_get_display(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _display *Display // out
 
 	if _cret != nil {
-		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _display
@@ -167,12 +178,16 @@ func (context *DrawContext) Display() *Display {
 //    - region (optional): cairo region or NULL if not drawing a frame.
 //
 func (context *DrawContext) FrameRegion() *cairo.Region {
-	var _arg0 *C.GdkDrawContext // out
-	var _cret *C.cairo_region_t // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_draw_context_get_frame_region(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_frame_region", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _region *cairo.Region // out
@@ -184,7 +199,7 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 		}
 		C.cairo_region_reference(_cret)
 		runtime.SetFinalizer(_region, func(v *cairo.Region) {
-			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+			C.cairo_region_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})
 	}
 
@@ -198,12 +213,16 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 //    - surface (optional) or NULL.
 //
 func (context *DrawContext) Surface() Surfacer {
-	var _arg0 *C.GdkDrawContext // out
-	var _cret *C.GdkSurface     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_draw_context_get_surface(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_surface", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _surface Surfacer // out
@@ -212,8 +231,8 @@ func (context *DrawContext) Surface() Surfacer {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Surfacer)
 				return ok
 			})
@@ -241,12 +260,16 @@ func (context *DrawContext) Surface() Surfacer {
 //      gdk.DrawContext.EndFrame() calls.
 //
 func (context *DrawContext) IsInFrame() bool {
-	var _arg0 *C.GdkDrawContext // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_draw_context_is_in_frame(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("is_in_frame", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ok bool // out

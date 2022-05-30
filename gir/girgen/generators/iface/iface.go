@@ -298,7 +298,7 @@ func (g *Generator) Use(typ interface{}) bool {
 
 		p.Linef("var f func%s", g.GoTail)
 		p.Linef("{")
-		p.Linef("  closure := externglib.ConnectedGeneratedClosure(uintptr(%s))", closure)
+		p.Linef("  closure := coreglib.ConnectedGeneratedClosure(uintptr(%s))", closure)
 		p.Linef("  if closure == nil {")
 		p.Linef(`     panic("given unknown closure user_data")`)
 		p.Linef("  }")

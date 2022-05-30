@@ -7,20 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbuilderlistitemfactory.go.
-var GTypeBuilderListItemFactory = externglib.Type(C.gtk_builder_list_item_factory_get_type())
+var GTypeBuilderListItemFactory = coreglib.Type(C.gtk_builder_list_item_factory_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBuilderListItemFactory, F: marshalBuilderListItemFactory},
 	})
 }
@@ -57,7 +58,7 @@ type BuilderListItemFactory struct {
 }
 
 var (
-	_ externglib.Objector = (*BuilderListItemFactory)(nil)
+	_ coreglib.Objector = (*BuilderListItemFactory)(nil)
 )
 
 func classInitBuilderListItemFactorier(gclassPtr, data C.gpointer) {
@@ -68,7 +69,7 @@ func classInitBuilderListItemFactorier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory {
+func wrapBuilderListItemFactory(obj *coreglib.Object) *BuilderListItemFactory {
 	return &BuilderListItemFactory{
 		ListItemFactory: ListItemFactory{
 			Object: obj,
@@ -77,7 +78,7 @@ func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory 
 }
 
 func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
-	return wrapBuilderListItemFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBuilderListItemFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBuilderListItemFactoryFromBytes creates a new GtkBuilderListItemFactory
@@ -93,22 +94,27 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 //    - builderListItemFactory: new GtkBuilderListItemFactory.
 //
 func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) *BuilderListItemFactory {
-	var _arg1 *C.GtkBuilderScope    // out
-	var _arg2 *C.GBytes             // out
-	var _cret *C.GtkListItemFactory // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if scope != nil {
-		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(externglib.InternObject(scope).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
 	}
-	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(*BuilderScoper)(unsafe.Pointer(&args[0])) = _arg0
+	*(**glib.Bytes)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_builder_list_item_factory_new_from_bytes(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("new_BuilderListItemFactory_from_bytes", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(scope)
 	runtime.KeepAlive(bytes)
 
 	var _builderListItemFactory *BuilderListItemFactory // out
 
-	_builderListItemFactory = wrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builderListItemFactory = wrapBuilderListItemFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderListItemFactory
 }
@@ -127,23 +133,28 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) 
 //    - builderListItemFactory: new GtkBuilderListItemFactory.
 //
 func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
-	var _arg1 *C.GtkBuilderScope    // out
-	var _arg2 *C.char               // out
-	var _cret *C.GtkListItemFactory // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if scope != nil {
-		_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(externglib.InternObject(scope).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
 	}
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(*BuilderScoper)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("new_BuilderListItemFactory_from_resource", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(scope)
 	runtime.KeepAlive(resourcePath)
 
 	var _builderListItemFactory *BuilderListItemFactory // out
 
-	_builderListItemFactory = wrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builderListItemFactory = wrapBuilderListItemFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderListItemFactory
 }
@@ -156,12 +167,16 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 //    - bytes: GtkBuilder data.
 //
 func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
-	var _arg0 *C.GtkBuilderListItemFactory // out
-	var _cret *C.GBytes                    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**BuilderListItemFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_builder_list_item_factory_get_bytes(_arg0)
+	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("get_bytes", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _bytes *glib.Bytes // out
@@ -185,12 +200,16 @@ func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 //    - utf8 (optional): path to the resource or NULL if none.
 //
 func (self *BuilderListItemFactory) Resource() string {
-	var _arg0 *C.GtkBuilderListItemFactory // out
-	var _cret *C.char                      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**BuilderListItemFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
+	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("get_resource", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -209,18 +228,22 @@ func (self *BuilderListItemFactory) Resource() string {
 //    - builderScope (optional): scope used when constructing listitems.
 //
 func (self *BuilderListItemFactory) Scope() *BuilderScope {
-	var _arg0 *C.GtkBuilderListItemFactory // out
-	var _cret *C.GtkBuilderScope           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**BuilderListItemFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
+	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("get_scope", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _builderScope *BuilderScope // out
 
 	if _cret != nil {
-		_builderScope = wrapBuilderScope(externglib.Take(unsafe.Pointer(_cret)))
+		_builderScope = wrapBuilderScope(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _builderScope

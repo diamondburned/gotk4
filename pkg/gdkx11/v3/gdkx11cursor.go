@@ -5,20 +5,21 @@ package gdkx11
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11cursor.go.
-var GTypeX11Cursor = externglib.Type(C.gdk_x11_cursor_get_type())
+var GTypeX11Cursor = coreglib.Type(C.gdk_x11_cursor_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11Cursor, F: marshalX11Cursor},
 	})
 }
@@ -44,7 +45,7 @@ func classInitX11Cursorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11Cursor(obj *externglib.Object) *X11Cursor {
+func wrapX11Cursor(obj *coreglib.Object) *X11Cursor {
 	return &X11Cursor{
 		Cursor: gdk.Cursor{
 			Object: obj,
@@ -53,5 +54,5 @@ func wrapX11Cursor(obj *externglib.Object) *X11Cursor {
 }
 
 func marshalX11Cursor(p uintptr) (interface{}, error) {
-	return wrapX11Cursor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11Cursor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

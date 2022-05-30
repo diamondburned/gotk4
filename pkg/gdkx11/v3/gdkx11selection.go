@@ -5,10 +5,13 @@ package gdkx11
 import (
 	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
+// #include <glib.h>
 import "C"
 
 // X11FreeCompoundText frees the data returned from
@@ -20,10 +23,13 @@ import "C"
 //      gdk_x11_display_string_to_compound_text().
 //
 func X11FreeCompoundText(ctext *byte) {
-	var _arg1 *C.guchar // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.guchar)(unsafe.Pointer(ctext))
+	_arg0 = (*C.void)(unsafe.Pointer(ctext))
+	*(**byte)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_x11_free_compound_text(_arg1)
+	girepository.MustFind("GdkX11", "x11_free_compound_text").Invoke(args[:], nil)
+
 	runtime.KeepAlive(ctext)
 }

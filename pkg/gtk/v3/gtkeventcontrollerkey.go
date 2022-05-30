@@ -6,28 +6,23 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_EventControllerKey_ConnectKeyPressed(gpointer, guint, guint, GdkModifierType, guintptr);
-// extern gboolean _gotk4_gtk3_EventControllerKey_ConnectModifiers(gpointer, GdkModifierType, guintptr);
+// #include <glib.h>
 // extern void _gotk4_gtk3_EventControllerKey_ConnectFocusIn(gpointer, guintptr);
 // extern void _gotk4_gtk3_EventControllerKey_ConnectFocusOut(gpointer, guintptr);
 // extern void _gotk4_gtk3_EventControllerKey_ConnectIMUpdate(gpointer, guintptr);
-// extern void _gotk4_gtk3_EventControllerKey_ConnectKeyReleased(gpointer, guint, guint, GdkModifierType, guintptr);
 import "C"
 
 // glib.Type values for gtkeventcontrollerkey.go.
-var GTypeEventControllerKey = externglib.Type(C.gtk_event_controller_key_get_type())
+var GTypeEventControllerKey = coreglib.Type(C.gtk_event_controller_key_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEventControllerKey, F: marshalEventControllerKey},
 	})
 }
@@ -57,7 +52,7 @@ func classInitEventControllerKeyer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
+func wrapEventControllerKey(obj *coreglib.Object) *EventControllerKey {
 	return &EventControllerKey{
 		EventController: EventController{
 			Object: obj,
@@ -66,14 +61,14 @@ func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 }
 
 func marshalEventControllerKey(p uintptr) (interface{}, error) {
-	return wrapEventControllerKey(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEventControllerKey(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_EventControllerKey_ConnectFocusIn
 func _gotk4_gtk3_EventControllerKey_ConnectFocusIn(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -85,15 +80,15 @@ func _gotk4_gtk3_EventControllerKey_ConnectFocusIn(arg0 C.gpointer, arg1 C.guint
 	f()
 }
 
-func (controller *EventControllerKey) ConnectFocusIn(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "focus-in", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectFocusIn), f)
+func (controller *EventControllerKey) ConnectFocusIn(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(controller, "focus-in", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectFocusIn), f)
 }
 
 //export _gotk4_gtk3_EventControllerKey_ConnectFocusOut
 func _gotk4_gtk3_EventControllerKey_ConnectFocusOut(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -105,15 +100,15 @@ func _gotk4_gtk3_EventControllerKey_ConnectFocusOut(arg0 C.gpointer, arg1 C.guin
 	f()
 }
 
-func (controller *EventControllerKey) ConnectFocusOut(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "focus-out", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectFocusOut), f)
+func (controller *EventControllerKey) ConnectFocusOut(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(controller, "focus-out", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectFocusOut), f)
 }
 
 //export _gotk4_gtk3_EventControllerKey_ConnectIMUpdate
 func _gotk4_gtk3_EventControllerKey_ConnectIMUpdate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -125,102 +120,8 @@ func _gotk4_gtk3_EventControllerKey_ConnectIMUpdate(arg0 C.gpointer, arg1 C.guin
 	f()
 }
 
-func (controller *EventControllerKey) ConnectIMUpdate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "im-update", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectIMUpdate), f)
-}
-
-//export _gotk4_gtk3_EventControllerKey_ConnectKeyPressed
-func _gotk4_gtk3_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(keyval, keycode uint, state gdk.ModifierType) (ok bool)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(keyval, keycode uint, state gdk.ModifierType) (ok bool))
-	}
-
-	var _keyval uint            // out
-	var _keycode uint           // out
-	var _state gdk.ModifierType // out
-
-	_keyval = uint(arg1)
-	_keycode = uint(arg2)
-	_state = gdk.ModifierType(arg3)
-
-	ok := f(_keyval, _keycode, _state)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// ConnectKeyPressed: this signal is emitted whenever a key is pressed.
-func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "key-pressed", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectKeyPressed), f)
-}
-
-//export _gotk4_gtk3_EventControllerKey_ConnectKeyReleased
-func _gotk4_gtk3_EventControllerKey_ConnectKeyReleased(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) {
-	var f func(keyval, keycode uint, state gdk.ModifierType)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(keyval, keycode uint, state gdk.ModifierType))
-	}
-
-	var _keyval uint            // out
-	var _keycode uint           // out
-	var _state gdk.ModifierType // out
-
-	_keyval = uint(arg1)
-	_keycode = uint(arg2)
-	_state = gdk.ModifierType(arg3)
-
-	f(_keyval, _keycode, _state)
-}
-
-// ConnectKeyReleased: this signal is emitted whenever a key is released.
-func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "key-released", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectKeyReleased), f)
-}
-
-//export _gotk4_gtk3_EventControllerKey_ConnectModifiers
-func _gotk4_gtk3_EventControllerKey_ConnectModifiers(arg0 C.gpointer, arg1 C.GdkModifierType, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object gdk.ModifierType) (ok bool)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object gdk.ModifierType) (ok bool))
-	}
-
-	var _object gdk.ModifierType // out
-
-	_object = gdk.ModifierType(arg1)
-
-	ok := f(_object)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-func (controller *EventControllerKey) ConnectModifiers(f func(object gdk.ModifierType) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(controller, "modifiers", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectModifiers), f)
+func (controller *EventControllerKey) ConnectIMUpdate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(controller, "im-update", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectIMUpdate), f)
 }
 
 // The function takes the following parameters:
@@ -228,17 +129,21 @@ func (controller *EventControllerKey) ConnectModifiers(f func(object gdk.Modifie
 // The function returns the following values:
 //
 func NewEventControllerKey(widget Widgetter) *EventControllerKey {
-	var _arg1 *C.GtkWidget          // out
-	var _cret *C.GtkEventController // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_event_controller_key_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("new_EventControllerKey", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _eventControllerKey *EventControllerKey // out
 
-	_eventControllerKey = wrapEventControllerKey(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerKey = wrapEventControllerKey(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerKey
 }
@@ -248,14 +153,18 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 // The function returns the following values:
 //
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
-	var _arg0 *C.GtkEventControllerKey // out
-	var _arg1 *C.GtkWidget             // out
-	var _cret C.gboolean               // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**EventControllerKey)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("forward", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(widget)
 
@@ -271,12 +180,16 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 // The function returns the following values:
 //
 func (controller *EventControllerKey) Group() uint {
-	var _arg0 *C.GtkEventControllerKey // out
-	var _cret C.guint                  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	*(**EventControllerKey)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_event_controller_key_get_group(_arg0)
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_group", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(controller)
 
 	var _guint uint // out
@@ -293,12 +206,16 @@ func (controller *EventControllerKey) Group() uint {
 //    - imContext: IM context.
 //
 func (controller *EventControllerKey) IMContext() IMContexter {
-	var _arg0 *C.GtkEventControllerKey // out
-	var _cret *C.GtkIMContext          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	*(**EventControllerKey)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_im_context", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(controller)
 
 	var _imContext IMContexter // out
@@ -309,8 +226,8 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 			panic("object of type gtk.IMContexter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(IMContexter)
 			return ok
 		})
@@ -327,13 +244,16 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 // The function takes the following parameters:
 //
 func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
-	var _arg0 *C.GtkEventControllerKey // out
-	var _arg1 *C.GtkIMContext          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-	_arg1 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(imContext).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imContext).Native()))
+	*(**EventControllerKey)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_event_controller_key_set_im_context(_arg0, _arg1)
+	girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("set_im_context", args[:], nil)
+
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(imContext)
 }

@@ -5,21 +5,22 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(GtkShortcutManager*, GtkShortcutController*);
 // extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
 import "C"
 
 // glib.Type values for gtkshortcutmanager.go.
-var GTypeShortcutManager = externglib.Type(C.gtk_shortcut_manager_get_type())
+var GTypeShortcutManager = coreglib.Type(C.gtk_shortcut_manager_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutManager, F: marshalShortcutManager},
 	})
 }
@@ -51,16 +52,16 @@ type ShortcutManagerOverrider interface {
 // underlying type by calling Cast().
 type ShortcutManager struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*ShortcutManager)(nil)
+	_ coreglib.Objector = (*ShortcutManager)(nil)
 )
 
 // ShortcutManagerer describes ShortcutManager's interface methods.
 type ShortcutManagerer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseShortcutManager() *ShortcutManager
 }
@@ -75,36 +76,36 @@ func ifaceInitShortcutManagerer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk4_ShortcutManagerInterface_add_controller
 func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 
 	var _controller *ShortcutController // out
 
-	_controller = wrapShortcutController(externglib.Take(unsafe.Pointer(arg1)))
+	_controller = wrapShortcutController(coreglib.Take(unsafe.Pointer(arg1)))
 
 	iface.AddController(_controller)
 }
 
 //export _gotk4_gtk4_ShortcutManagerInterface_remove_controller
 func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 
 	var _controller *ShortcutController // out
 
-	_controller = wrapShortcutController(externglib.Take(unsafe.Pointer(arg1)))
+	_controller = wrapShortcutController(coreglib.Take(unsafe.Pointer(arg1)))
 
 	iface.RemoveController(_controller)
 }
 
-func wrapShortcutManager(obj *externglib.Object) *ShortcutManager {
+func wrapShortcutManager(obj *coreglib.Object) *ShortcutManager {
 	return &ShortcutManager{
 		Object: obj,
 	}
 }
 
 func marshalShortcutManager(p uintptr) (interface{}, error) {
-	return wrapShortcutManager(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutManager(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (self *ShortcutManager) baseShortcutManager() *ShortcutManager {

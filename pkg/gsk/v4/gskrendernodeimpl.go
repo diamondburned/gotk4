@@ -5,45 +5,46 @@ package gsk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gsk/gsk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gskrendernodeimpl.go.
 var (
-	GTypeBlendNode                   = externglib.Type(C.gsk_blend_node_get_type())
-	GTypeBlurNode                    = externglib.Type(C.gsk_blur_node_get_type())
-	GTypeBorderNode                  = externglib.Type(C.gsk_border_node_get_type())
-	GTypeCairoNode                   = externglib.Type(C.gsk_cairo_node_get_type())
-	GTypeClipNode                    = externglib.Type(C.gsk_clip_node_get_type())
-	GTypeColorMatrixNode             = externglib.Type(C.gsk_color_matrix_node_get_type())
-	GTypeColorNode                   = externglib.Type(C.gsk_color_node_get_type())
-	GTypeConicGradientNode           = externglib.Type(C.gsk_conic_gradient_node_get_type())
-	GTypeContainerNode               = externglib.Type(C.gsk_container_node_get_type())
-	GTypeCrossFadeNode               = externglib.Type(C.gsk_cross_fade_node_get_type())
-	GTypeDebugNode                   = externglib.Type(C.gsk_debug_node_get_type())
-	GTypeGLShaderNode                = externglib.Type(C.gsk_gl_shader_node_get_type())
-	GTypeInsetShadowNode             = externglib.Type(C.gsk_inset_shadow_node_get_type())
-	GTypeLinearGradientNode          = externglib.Type(C.gsk_linear_gradient_node_get_type())
-	GTypeOpacityNode                 = externglib.Type(C.gsk_opacity_node_get_type())
-	GTypeOutsetShadowNode            = externglib.Type(C.gsk_outset_shadow_node_get_type())
-	GTypeRadialGradientNode          = externglib.Type(C.gsk_radial_gradient_node_get_type())
-	GTypeRepeatNode                  = externglib.Type(C.gsk_repeat_node_get_type())
-	GTypeRepeatingLinearGradientNode = externglib.Type(C.gsk_repeating_linear_gradient_node_get_type())
-	GTypeRepeatingRadialGradientNode = externglib.Type(C.gsk_repeating_radial_gradient_node_get_type())
-	GTypeRoundedClipNode             = externglib.Type(C.gsk_rounded_clip_node_get_type())
-	GTypeShadowNode                  = externglib.Type(C.gsk_shadow_node_get_type())
-	GTypeTextNode                    = externglib.Type(C.gsk_text_node_get_type())
-	GTypeTextureNode                 = externglib.Type(C.gsk_texture_node_get_type())
-	GTypeTransformNode               = externglib.Type(C.gsk_transform_node_get_type())
+	GTypeBlendNode                   = coreglib.Type(C.gsk_blend_node_get_type())
+	GTypeBlurNode                    = coreglib.Type(C.gsk_blur_node_get_type())
+	GTypeBorderNode                  = coreglib.Type(C.gsk_border_node_get_type())
+	GTypeCairoNode                   = coreglib.Type(C.gsk_cairo_node_get_type())
+	GTypeClipNode                    = coreglib.Type(C.gsk_clip_node_get_type())
+	GTypeColorMatrixNode             = coreglib.Type(C.gsk_color_matrix_node_get_type())
+	GTypeColorNode                   = coreglib.Type(C.gsk_color_node_get_type())
+	GTypeConicGradientNode           = coreglib.Type(C.gsk_conic_gradient_node_get_type())
+	GTypeContainerNode               = coreglib.Type(C.gsk_container_node_get_type())
+	GTypeCrossFadeNode               = coreglib.Type(C.gsk_cross_fade_node_get_type())
+	GTypeDebugNode                   = coreglib.Type(C.gsk_debug_node_get_type())
+	GTypeGLShaderNode                = coreglib.Type(C.gsk_gl_shader_node_get_type())
+	GTypeInsetShadowNode             = coreglib.Type(C.gsk_inset_shadow_node_get_type())
+	GTypeLinearGradientNode          = coreglib.Type(C.gsk_linear_gradient_node_get_type())
+	GTypeOpacityNode                 = coreglib.Type(C.gsk_opacity_node_get_type())
+	GTypeOutsetShadowNode            = coreglib.Type(C.gsk_outset_shadow_node_get_type())
+	GTypeRadialGradientNode          = coreglib.Type(C.gsk_radial_gradient_node_get_type())
+	GTypeRepeatNode                  = coreglib.Type(C.gsk_repeat_node_get_type())
+	GTypeRepeatingLinearGradientNode = coreglib.Type(C.gsk_repeating_linear_gradient_node_get_type())
+	GTypeRepeatingRadialGradientNode = coreglib.Type(C.gsk_repeating_radial_gradient_node_get_type())
+	GTypeRoundedClipNode             = coreglib.Type(C.gsk_rounded_clip_node_get_type())
+	GTypeShadowNode                  = coreglib.Type(C.gsk_shadow_node_get_type())
+	GTypeTextNode                    = coreglib.Type(C.gsk_text_node_get_type())
+	GTypeTextureNode                 = coreglib.Type(C.gsk_texture_node_get_type())
+	GTypeTransformNode               = coreglib.Type(C.gsk_transform_node_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBlendNode, F: marshalBlendNode},
 		{T: GTypeBlurNode, F: marshalBlurNode},
 		{T: GTypeBorderNode, F: marshalBorderNode},
@@ -83,7 +84,7 @@ var (
 	_ RenderNoder = (*BlendNode)(nil)
 )
 
-func wrapBlendNode(obj *externglib.Object) *BlendNode {
+func wrapBlendNode(obj *coreglib.Object) *BlendNode {
 	return &BlendNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -92,7 +93,7 @@ func wrapBlendNode(obj *externglib.Object) *BlendNode {
 }
 
 func marshalBlendNode(p uintptr) (interface{}, error) {
-	return wrapBlendNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBlendNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BlurNode: render node applying a blur effect to its single child.
@@ -105,7 +106,7 @@ var (
 	_ RenderNoder = (*BlurNode)(nil)
 )
 
-func wrapBlurNode(obj *externglib.Object) *BlurNode {
+func wrapBlurNode(obj *coreglib.Object) *BlurNode {
 	return &BlurNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -114,7 +115,7 @@ func wrapBlurNode(obj *externglib.Object) *BlurNode {
 }
 
 func marshalBlurNode(p uintptr) (interface{}, error) {
-	return wrapBlurNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBlurNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BorderNode: render node for a border.
@@ -127,7 +128,7 @@ var (
 	_ RenderNoder = (*BorderNode)(nil)
 )
 
-func wrapBorderNode(obj *externglib.Object) *BorderNode {
+func wrapBorderNode(obj *coreglib.Object) *BorderNode {
 	return &BorderNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -136,7 +137,7 @@ func wrapBorderNode(obj *externglib.Object) *BorderNode {
 }
 
 func marshalBorderNode(p uintptr) (interface{}, error) {
-	return wrapBorderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBorderNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CairoNode: render node for a Cairo surface.
@@ -149,7 +150,7 @@ var (
 	_ RenderNoder = (*CairoNode)(nil)
 )
 
-func wrapCairoNode(obj *externglib.Object) *CairoNode {
+func wrapCairoNode(obj *coreglib.Object) *CairoNode {
 	return &CairoNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -158,7 +159,7 @@ func wrapCairoNode(obj *externglib.Object) *CairoNode {
 }
 
 func marshalCairoNode(p uintptr) (interface{}, error) {
-	return wrapCairoNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCairoNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ClipNode: render node applying a rectangular clip to its single child node.
@@ -171,7 +172,7 @@ var (
 	_ RenderNoder = (*ClipNode)(nil)
 )
 
-func wrapClipNode(obj *externglib.Object) *ClipNode {
+func wrapClipNode(obj *coreglib.Object) *ClipNode {
 	return &ClipNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -180,7 +181,7 @@ func wrapClipNode(obj *externglib.Object) *ClipNode {
 }
 
 func marshalClipNode(p uintptr) (interface{}, error) {
-	return wrapClipNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapClipNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ColorMatrixNode: render node controlling the color matrix of its single child
@@ -194,7 +195,7 @@ var (
 	_ RenderNoder = (*ColorMatrixNode)(nil)
 )
 
-func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
+func wrapColorMatrixNode(obj *coreglib.Object) *ColorMatrixNode {
 	return &ColorMatrixNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -203,7 +204,7 @@ func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 }
 
 func marshalColorMatrixNode(p uintptr) (interface{}, error) {
-	return wrapColorMatrixNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapColorMatrixNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ColorNode: render node for a solid color.
@@ -216,7 +217,7 @@ var (
 	_ RenderNoder = (*ColorNode)(nil)
 )
 
-func wrapColorNode(obj *externglib.Object) *ColorNode {
+func wrapColorNode(obj *coreglib.Object) *ColorNode {
 	return &ColorNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -225,7 +226,7 @@ func wrapColorNode(obj *externglib.Object) *ColorNode {
 }
 
 func marshalColorNode(p uintptr) (interface{}, error) {
-	return wrapColorNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapColorNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConicGradientNode: render node for a conic gradient.
@@ -238,7 +239,7 @@ var (
 	_ RenderNoder = (*ConicGradientNode)(nil)
 )
 
-func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
+func wrapConicGradientNode(obj *coreglib.Object) *ConicGradientNode {
 	return &ConicGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -247,7 +248,7 @@ func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 }
 
 func marshalConicGradientNode(p uintptr) (interface{}, error) {
-	return wrapConicGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapConicGradientNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ContainerNode: render node that can contain other render nodes.
@@ -260,7 +261,7 @@ var (
 	_ RenderNoder = (*ContainerNode)(nil)
 )
 
-func wrapContainerNode(obj *externglib.Object) *ContainerNode {
+func wrapContainerNode(obj *coreglib.Object) *ContainerNode {
 	return &ContainerNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -269,7 +270,7 @@ func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 }
 
 func marshalContainerNode(p uintptr) (interface{}, error) {
-	return wrapContainerNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapContainerNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CrossFadeNode: render node cross fading between two child nodes.
@@ -282,7 +283,7 @@ var (
 	_ RenderNoder = (*CrossFadeNode)(nil)
 )
 
-func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
+func wrapCrossFadeNode(obj *coreglib.Object) *CrossFadeNode {
 	return &CrossFadeNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -291,7 +292,7 @@ func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 }
 
 func marshalCrossFadeNode(p uintptr) (interface{}, error) {
-	return wrapCrossFadeNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCrossFadeNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DebugNode: render node that emits a debugging message when drawing its child
@@ -305,7 +306,7 @@ var (
 	_ RenderNoder = (*DebugNode)(nil)
 )
 
-func wrapDebugNode(obj *externglib.Object) *DebugNode {
+func wrapDebugNode(obj *coreglib.Object) *DebugNode {
 	return &DebugNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -314,7 +315,7 @@ func wrapDebugNode(obj *externglib.Object) *DebugNode {
 }
 
 func marshalDebugNode(p uintptr) (interface{}, error) {
-	return wrapDebugNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDebugNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GLShaderNode: render node using a GL shader when drawing its children nodes.
@@ -327,7 +328,7 @@ var (
 	_ RenderNoder = (*GLShaderNode)(nil)
 )
 
-func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
+func wrapGLShaderNode(obj *coreglib.Object) *GLShaderNode {
 	return &GLShaderNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -336,7 +337,7 @@ func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 }
 
 func marshalGLShaderNode(p uintptr) (interface{}, error) {
-	return wrapGLShaderNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGLShaderNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // InsetShadowNode: render node for an inset shadow.
@@ -349,7 +350,7 @@ var (
 	_ RenderNoder = (*InsetShadowNode)(nil)
 )
 
-func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
+func wrapInsetShadowNode(obj *coreglib.Object) *InsetShadowNode {
 	return &InsetShadowNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -358,7 +359,7 @@ func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 }
 
 func marshalInsetShadowNode(p uintptr) (interface{}, error) {
-	return wrapInsetShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapInsetShadowNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // LinearGradientNode: render node for a linear gradient.
@@ -371,7 +372,7 @@ var (
 	_ RenderNoder = (*LinearGradientNode)(nil)
 )
 
-func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
+func wrapLinearGradientNode(obj *coreglib.Object) *LinearGradientNode {
 	return &LinearGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -380,7 +381,7 @@ func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 }
 
 func marshalLinearGradientNode(p uintptr) (interface{}, error) {
-	return wrapLinearGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapLinearGradientNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // OpacityNode: render node controlling the opacity of its single child node.
@@ -393,7 +394,7 @@ var (
 	_ RenderNoder = (*OpacityNode)(nil)
 )
 
-func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
+func wrapOpacityNode(obj *coreglib.Object) *OpacityNode {
 	return &OpacityNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -402,7 +403,7 @@ func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 }
 
 func marshalOpacityNode(p uintptr) (interface{}, error) {
-	return wrapOpacityNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapOpacityNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // OutsetShadowNode: render node for an outset shadow.
@@ -415,7 +416,7 @@ var (
 	_ RenderNoder = (*OutsetShadowNode)(nil)
 )
 
-func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
+func wrapOutsetShadowNode(obj *coreglib.Object) *OutsetShadowNode {
 	return &OutsetShadowNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -424,7 +425,7 @@ func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 }
 
 func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
-	return wrapOutsetShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapOutsetShadowNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // RadialGradientNode: render node for a radial gradient.
@@ -437,7 +438,7 @@ var (
 	_ RenderNoder = (*RadialGradientNode)(nil)
 )
 
-func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
+func wrapRadialGradientNode(obj *coreglib.Object) *RadialGradientNode {
 	return &RadialGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -446,7 +447,7 @@ func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 }
 
 func marshalRadialGradientNode(p uintptr) (interface{}, error) {
-	return wrapRadialGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRadialGradientNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // RepeatNode: render node repeating its single child node.
@@ -459,7 +460,7 @@ var (
 	_ RenderNoder = (*RepeatNode)(nil)
 )
 
-func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
+func wrapRepeatNode(obj *coreglib.Object) *RepeatNode {
 	return &RepeatNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -468,7 +469,7 @@ func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 }
 
 func marshalRepeatNode(p uintptr) (interface{}, error) {
-	return wrapRepeatNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRepeatNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // RepeatingLinearGradientNode: render node for a repeating linear gradient.
@@ -481,7 +482,7 @@ var (
 	_ RenderNoder = (*RepeatingLinearGradientNode)(nil)
 )
 
-func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGradientNode {
+func wrapRepeatingLinearGradientNode(obj *coreglib.Object) *RepeatingLinearGradientNode {
 	return &RepeatingLinearGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -490,7 +491,7 @@ func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGra
 }
 
 func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
-	return wrapRepeatingLinearGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRepeatingLinearGradientNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // RepeatingRadialGradientNode: render node for a repeating radial gradient.
@@ -503,7 +504,7 @@ var (
 	_ RenderNoder = (*RepeatingRadialGradientNode)(nil)
 )
 
-func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGradientNode {
+func wrapRepeatingRadialGradientNode(obj *coreglib.Object) *RepeatingRadialGradientNode {
 	return &RepeatingRadialGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -512,7 +513,7 @@ func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGra
 }
 
 func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
-	return wrapRepeatingRadialGradientNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRepeatingRadialGradientNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // RoundedClipNode: render node applying a rounded rectangle clip to its single
@@ -526,7 +527,7 @@ var (
 	_ RenderNoder = (*RoundedClipNode)(nil)
 )
 
-func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
+func wrapRoundedClipNode(obj *coreglib.Object) *RoundedClipNode {
 	return &RoundedClipNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -535,7 +536,7 @@ func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 }
 
 func marshalRoundedClipNode(p uintptr) (interface{}, error) {
-	return wrapRoundedClipNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRoundedClipNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ShadowNode: render node drawing one or more shadows behind its single child
@@ -549,7 +550,7 @@ var (
 	_ RenderNoder = (*ShadowNode)(nil)
 )
 
-func wrapShadowNode(obj *externglib.Object) *ShadowNode {
+func wrapShadowNode(obj *coreglib.Object) *ShadowNode {
 	return &ShadowNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -558,7 +559,7 @@ func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 }
 
 func marshalShadowNode(p uintptr) (interface{}, error) {
-	return wrapShadowNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShadowNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // TextNode: render node drawing a set of glyphs.
@@ -571,7 +572,7 @@ var (
 	_ RenderNoder = (*TextNode)(nil)
 )
 
-func wrapTextNode(obj *externglib.Object) *TextNode {
+func wrapTextNode(obj *coreglib.Object) *TextNode {
 	return &TextNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -580,7 +581,7 @@ func wrapTextNode(obj *externglib.Object) *TextNode {
 }
 
 func marshalTextNode(p uintptr) (interface{}, error) {
-	return wrapTextNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTextNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // TextureNode: render node for a Texture.
@@ -593,7 +594,7 @@ var (
 	_ RenderNoder = (*TextureNode)(nil)
 )
 
-func wrapTextureNode(obj *externglib.Object) *TextureNode {
+func wrapTextureNode(obj *coreglib.Object) *TextureNode {
 	return &TextureNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -602,7 +603,7 @@ func wrapTextureNode(obj *externglib.Object) *TextureNode {
 }
 
 func marshalTextureNode(p uintptr) (interface{}, error) {
-	return wrapTextureNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTextureNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // TransformNode: render node applying a GskTransform to its single child node.
@@ -615,7 +616,7 @@ var (
 	_ RenderNoder = (*TransformNode)(nil)
 )
 
-func wrapTransformNode(obj *externglib.Object) *TransformNode {
+func wrapTransformNode(obj *coreglib.Object) *TransformNode {
 	return &TransformNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -624,5 +625,5 @@ func wrapTransformNode(obj *externglib.Object) *TransformNode {
 }
 
 func marshalTransformNode(p uintptr) (interface{}, error) {
-	return wrapTransformNode(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTransformNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

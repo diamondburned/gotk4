@@ -10,7 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -19,10 +19,10 @@ import (
 import "C"
 
 // glib.Type values for giochannel.go.
-var GTypeIOChannel = externglib.Type(C.g_io_channel_get_type())
+var GTypeIOChannel = coreglib.Type(C.g_io_channel_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIOChannel, F: marshalIOChannel},
 	})
 }
@@ -309,7 +309,7 @@ type ioChannel struct {
 }
 
 func marshalIOChannel(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &IOChannel{&ioChannel{(*C.GIOChannel)(b)}}, nil
 }
 

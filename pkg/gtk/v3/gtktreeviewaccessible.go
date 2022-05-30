@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktreeviewaccessible.go.
-var GTypeTreeViewAccessible = externglib.Type(C.gtk_tree_view_accessible_get_type())
+var GTypeTreeViewAccessible = coreglib.Type(C.gtk_tree_view_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTreeViewAccessible, F: marshalTreeViewAccessible},
 	})
 }
@@ -33,14 +32,14 @@ type TreeViewAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Selection
 	atk.Table
 	CellAccessibleParent
 }
 
 var (
-	_ externglib.Objector = (*TreeViewAccessible)(nil)
+	_ coreglib.Objector = (*TreeViewAccessible)(nil)
 )
 
 func classInitTreeViewAccessibler(gclassPtr, data C.gpointer) {
@@ -51,7 +50,7 @@ func classInitTreeViewAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
+func wrapTreeViewAccessible(obj *coreglib.Object) *TreeViewAccessible {
 	return &TreeViewAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -79,5 +78,5 @@ func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 }
 
 func marshalTreeViewAccessible(p uintptr) (interface{}, error) {
-	return wrapTreeViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTreeViewAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

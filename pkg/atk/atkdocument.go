@@ -4,19 +4,18 @@ package atk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern gchar* _gotk4_atk1_DocumentIface_get_document_type(AtkDocument*);
 // extern gint _gotk4_atk1_DocumentIface_get_current_page_number(AtkDocument*);
 // extern gint _gotk4_atk1_DocumentIface_get_page_count(AtkDocument*);
-// extern gpointer _gotk4_atk1_DocumentIface_get_document(AtkDocument*);
 // extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
@@ -24,10 +23,10 @@ import (
 import "C"
 
 // glib.Type values for atkdocument.go.
-var GTypeDocument = externglib.Type(C.atk_document_get_type())
+var GTypeDocument = coreglib.Type(C.atk_document_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDocument, F: marshalDocument},
 	})
 }
@@ -43,24 +42,22 @@ func init() {
 // underlying type by calling Cast().
 type Document struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Document)(nil)
+	_ coreglib.Objector = (*Document)(nil)
 )
 
 // Documenter describes Document's interface methods.
 type Documenter interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// AttributeValue retrieves the value of the given attribute_name inside
 	// document.
 	AttributeValue(attributeName string) string
 	// CurrentPageNumber retrieves the current page number inside document.
 	CurrentPageNumber() int
-	// Document gets a gpointer that points to an instance of the DOM.
-	Document() cgo.Handle
 	// DocumentType gets a string indicating the document type.
 	DocumentType() string
 	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
@@ -74,36 +71,36 @@ type Documenter interface {
 
 	// Load-complete: 'load-complete' signal is emitted when a pending load of a
 	// static document has completed.
-	ConnectLoadComplete(func()) externglib.SignalHandle
+	ConnectLoadComplete(func()) coreglib.SignalHandle
 	// Load-stopped: 'load-stopped' signal is emitted when a pending load of
 	// document contents is cancelled, paused, or otherwise interrupted by the
 	// user or application logic.
-	ConnectLoadStopped(func()) externglib.SignalHandle
+	ConnectLoadStopped(func()) coreglib.SignalHandle
 	// Page-changed: 'page-changed' signal is emitted when the current page of a
 	// document changes, e.g.
-	ConnectPageChanged(func(pageNumber int)) externglib.SignalHandle
+	ConnectPageChanged(func(pageNumber int)) coreglib.SignalHandle
 	// Reload: 'reload' signal is emitted when the contents of a document is
 	// refreshed from its source.
-	ConnectReload(func()) externglib.SignalHandle
+	ConnectReload(func()) coreglib.SignalHandle
 }
 
 var _ Documenter = (*Document)(nil)
 
-func wrapDocument(obj *externglib.Object) *Document {
+func wrapDocument(obj *coreglib.Object) *Document {
 	return &Document{
 		Object: obj,
 	}
 }
 
 func marshalDocument(p uintptr) (interface{}, error) {
-	return wrapDocument(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDocument(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_atk1_Document_ConnectLoadComplete
 func _gotk4_atk1_Document_ConnectLoadComplete(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -122,15 +119,15 @@ func _gotk4_atk1_Document_ConnectLoadComplete(arg0 C.gpointer, arg1 C.guintptr) 
 // should be safe for clients to assume that the AtkDocument's static contents
 // are fully loaded into the container. (Dynamic document contents should be
 // exposed via other signals.).
-func (document *Document) ConnectLoadComplete(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(document, "load-complete", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadComplete), f)
+func (document *Document) ConnectLoadComplete(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "load-complete", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadComplete), f)
 }
 
 //export _gotk4_atk1_Document_ConnectLoadStopped
 func _gotk4_atk1_Document_ConnectLoadStopped(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -147,15 +144,15 @@ func _gotk4_atk1_Document_ConnectLoadStopped(arg0 C.gpointer, arg1 C.guintptr) {
 // or application logic. It should not however be emitted while waiting for a
 // resource (for instance while blocking on a file or network read) unless a
 // user-significant timeout has occurred.
-func (document *Document) ConnectLoadStopped(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(document, "load-stopped", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadStopped), f)
+func (document *Document) ConnectLoadStopped(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "load-stopped", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadStopped), f)
 }
 
 //export _gotk4_atk1_Document_ConnectPageChanged
 func _gotk4_atk1_Document_ConnectPageChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
 	var f func(pageNumber int)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -173,15 +170,15 @@ func _gotk4_atk1_Document_ConnectPageChanged(arg0 C.gpointer, arg1 C.gint, arg2 
 
 // ConnectPageChanged: 'page-changed' signal is emitted when the current page of
 // a document changes, e.g. pressing page up/down in a document viewer.
-func (document *Document) ConnectPageChanged(f func(pageNumber int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(document, "page-changed", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectPageChanged), f)
+func (document *Document) ConnectPageChanged(f func(pageNumber int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "page-changed", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectPageChanged), f)
 }
 
 //export _gotk4_atk1_Document_ConnectReload
 func _gotk4_atk1_Document_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -197,8 +194,8 @@ func _gotk4_atk1_Document_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
 // refreshed from its source. Once 'reload' has been emitted, a matching
 // 'load-complete' or 'load-stopped' signal should follow, which clients may
 // await before interrogating ATK for the latest document content.
-func (document *Document) ConnectReload(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(document, "reload", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectReload), f)
+func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "reload", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectReload), f)
 }
 
 // AttributeValue retrieves the value of the given attribute_name inside
@@ -216,15 +213,18 @@ func (document *Document) ConnectReload(f func()) externglib.SignalHandle {
 //      specified for this document.
 //
 func (document *Document) AttributeValue(attributeName string) string {
-	var _arg0 *C.AtkDocument // out
-	var _arg1 *C.gchar       // out
-	var _cret *C.gchar       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attributeName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Document)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.atk_document_get_attribute_value(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(document)
 	runtime.KeepAlive(attributeName)
 
@@ -245,12 +245,15 @@ func (document *Document) AttributeValue(attributeName string) string {
 //      know by the implementor, or irrelevant.
 //
 func (document *Document) CurrentPageNumber() int {
-	var _arg0 *C.AtkDocument // out
-	var _cret C.gint         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_document_get_current_page_number(_arg0)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(document)
 
 	var _gint int // out
@@ -258,33 +261,6 @@ func (document *Document) CurrentPageNumber() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// Document gets a gpointer that points to an instance of the DOM. It is up to
-// the caller to check atk_document_get_type to determine how to cast this
-// pointer.
-//
-// Deprecated: Since 2.12. document is already a representation of the document.
-// Use it directly, or one of its children, as an instance of the DOM.
-//
-// The function returns the following values:
-//
-//    - gpointer (optional) that points to an instance of the DOM.
-//
-func (document *Document) Document() cgo.Handle {
-	var _arg0 *C.AtkDocument // out
-	var _cret C.gpointer     // in
-
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
-
-	_cret = C.atk_document_get_document(_arg0)
-	runtime.KeepAlive(document)
-
-	var _gpointer cgo.Handle // out
-
-	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
-
-	return _gpointer
 }
 
 // DocumentType gets a string indicating the document type.
@@ -297,12 +273,15 @@ func (document *Document) Document() cgo.Handle {
 //    - utf8: string indicating the document type.
 //
 func (document *Document) DocumentType() string {
-	var _arg0 *C.AtkDocument // out
-	var _cret *C.gchar       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_document_get_document_type(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(document)
 
 	var _utf8 string // out
@@ -326,12 +305,15 @@ func (document *Document) DocumentType() string {
 //      specify a locale.
 //
 func (document *Document) Locale() string {
-	var _arg0 *C.AtkDocument // out
-	var _cret *C.gchar       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_document_get_locale(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(document)
 
 	var _utf8 string // out
@@ -349,12 +331,15 @@ func (document *Document) Locale() string {
 //      the implementor or irrelevant.
 //
 func (document *Document) PageCount() int {
-	var _arg0 *C.AtkDocument // out
-	var _cret C.gint         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_document_get_page_count(_arg0)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(document)
 
 	var _gint int // out
@@ -380,18 +365,22 @@ func (document *Document) PageCount() int {
 //      allow the attribute to be modified.
 //
 func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
-	var _arg0 *C.AtkDocument // out
-	var _arg1 *C.gchar       // out
-	var _arg2 *C.gchar       // out
-	var _cret C.gboolean     // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkDocument)(unsafe.Pointer(externglib.InternObject(document).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attributeName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attributeValue)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**Document)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.atk_document_set_attribute_value(_arg0, _arg1, _arg2)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(document)
 	runtime.KeepAlive(attributeName)
 	runtime.KeepAlive(attributeValue)

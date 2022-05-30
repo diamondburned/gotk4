@@ -8,30 +8,26 @@ import (
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GdkPaintable* _gotk4_gdk4_PaintableInterface_get_current_image(GdkPaintable*);
-// extern GdkPaintableFlags _gotk4_gdk4_PaintableInterface_get_flags(GdkPaintable*);
-// extern double _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(GdkPaintable*);
-// extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_height(GdkPaintable*);
-// extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_width(GdkPaintable*);
-// extern void _gotk4_gdk4_PaintableInterface_snapshot(GdkPaintable*, GdkSnapshot*, double, double);
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateContents(gpointer, guintptr);
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateSize(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gdkpaintable.go.
 var (
-	GTypePaintableFlags = externglib.Type(C.gdk_paintable_flags_get_type())
-	GTypePaintable      = externglib.Type(C.gdk_paintable_get_type())
+	GTypePaintableFlags = coreglib.Type(C.gdk_paintable_flags_get_type())
+	GTypePaintable      = coreglib.Type(C.gdk_paintable_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePaintableFlags, F: marshalPaintableFlags},
 		{T: GTypePaintable, F: marshalPaintable},
 	})
@@ -52,7 +48,7 @@ const (
 )
 
 func marshalPaintableFlags(p uintptr) (interface{}, error) {
-	return PaintableFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return PaintableFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for PaintableFlags.
@@ -103,87 +99,6 @@ type PaintableOverrider interface {
 	//    - ret: immutable paintable for the current contents of paintable.
 	//
 	CurrentImage() *Paintable
-	// Flags: get flags for the paintable.
-	//
-	// This is oftentimes useful for optimizations.
-	//
-	// See gdk.PaintableFlags for the flags and what they mean.
-	//
-	// The function returns the following values:
-	//
-	//    - paintableFlags: GdkPaintableFlags for this paintable.
-	//
-	Flags() PaintableFlags
-	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
-	// like to be displayed at.
-	//
-	// The aspect ratio is the width divided by the height, so a value of 0.5
-	// means that the paintable prefers to be displayed twice as high as it is
-	// wide. Consumers of this interface can use this to preserve aspect ratio
-	// when displaying the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to gdk.Paintable.Snapshot().
-	//
-	// Usually when a paintable returns nonzero values from
-	// gdk.Paintable.GetIntrinsicWidth() and gdk.Paintable.GetIntrinsicHeight()
-	// the aspect ratio should conform to those values, though that is not
-	// required.
-	//
-	// If the paintable does not have a preferred aspect ratio, it returns 0.
-	// Negative values are never returned.
-	//
-	// The function returns the following values:
-	//
-	//    - gdouble: intrinsic aspect ratio of paintable or 0 if none.
-	//
-	IntrinsicAspectRatio() float64
-	// IntrinsicHeight gets the preferred height the paintable would like to be
-	// displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to gdk.Paintable.Snapshot().
-	//
-	// If the paintable does not have a preferred height, it returns 0. Negative
-	// values are never returned.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: intrinsic height of paintable or 0 if none.
-	//
-	IntrinsicHeight() int
-	// IntrinsicWidth gets the preferred width the paintable would like to be
-	// displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
-	//
-	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to gdk.Paintable.Snapshot().
-	//
-	// If the paintable does not have a preferred width, it returns 0. Negative
-	// values are never returned.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: intrinsic width of paintable or 0 if none.
-	//
-	IntrinsicWidth() int
-	// Snapshot snapshots the given paintable with the given width and height.
-	//
-	// The paintable is drawn at the current (0,0) offset of the snapshot. If
-	// width and height are not larger than zero, this function will do nothing.
-	//
-	// The function takes the following parameters:
-	//
-	//    - snapshot: GdkSnapshot to snapshot to.
-	//    - width to snapshot in.
-	//    - height to snapshot in.
-	//
-	Snapshot(snapshot Snapshotter, width, height float64)
 }
 
 // Paintable: GdkPaintable is a simple interface used by GTK to represent
@@ -235,47 +150,32 @@ type PaintableOverrider interface {
 // underlying type by calling Cast().
 type Paintable struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Paintable)(nil)
+	_ coreglib.Objector = (*Paintable)(nil)
 )
 
 // Paintabler describes Paintable's interface methods.
 type Paintabler interface {
-	externglib.Objector
+	coreglib.Objector
 
-	// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
-	ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by paintable.
 	CurrentImage() *Paintable
-	// Flags: get flags for the paintable.
-	Flags() PaintableFlags
-	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
-	// like to be displayed at.
-	IntrinsicAspectRatio() float64
-	// IntrinsicHeight gets the preferred height the paintable would like to be
-	// displayed at.
-	IntrinsicHeight() int
-	// IntrinsicWidth gets the preferred width the paintable would like to be
-	// displayed at.
-	IntrinsicWidth() int
 	// InvalidateContents: called by implementations of GdkPaintable to
 	// invalidate their contents.
 	InvalidateContents()
 	// InvalidateSize: called by implementations of GdkPaintable to invalidate
 	// their size.
 	InvalidateSize()
-	// Snapshot snapshots the given paintable with the given width and height.
-	Snapshot(snapshot Snapshotter, width, height float64)
 
 	// Invalidate-contents is emitted when the contents of the paintable change.
-	ConnectInvalidateContents(func()) externglib.SignalHandle
+	ConnectInvalidateContents(func()) coreglib.SignalHandle
 	// Invalidate-size is emitted when the intrinsic size of the paintable
 	// changes.
-	ConnectInvalidateSize(func()) externglib.SignalHandle
+	ConnectInvalidateSize(func()) coreglib.SignalHandle
 }
 
 var _ Paintabler = (*Paintable)(nil)
@@ -283,121 +183,36 @@ var _ Paintabler = (*Paintable)(nil)
 func ifaceInitPaintabler(gifacePtr, data C.gpointer) {
 	iface := (*C.GdkPaintableInterface)(unsafe.Pointer(gifacePtr))
 	iface.get_current_image = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_current_image)
-	iface.get_flags = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_flags)
-	iface.get_intrinsic_aspect_ratio = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio)
-	iface.get_intrinsic_height = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_height)
-	iface.get_intrinsic_width = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_width)
-	iface.snapshot = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_snapshot)
 }
 
 //export _gotk4_gdk4_PaintableInterface_get_current_image
 func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.GdkPaintable) (cret *C.GdkPaintable) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
 	ret := iface.CurrentImage()
 
-	cret = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(ret).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(ret).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(ret).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(ret).Native()))
 
 	return cret
 }
 
-//export _gotk4_gdk4_PaintableInterface_get_flags
-func _gotk4_gdk4_PaintableInterface_get_flags(arg0 *C.GdkPaintable) (cret C.GdkPaintableFlags) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PaintableOverrider)
-
-	paintableFlags := iface.Flags()
-
-	cret = C.GdkPaintableFlags(paintableFlags)
-
-	return cret
-}
-
-//export _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio
-func _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(arg0 *C.GdkPaintable) (cret C.double) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PaintableOverrider)
-
-	gdouble := iface.IntrinsicAspectRatio()
-
-	cret = C.double(gdouble)
-
-	return cret
-}
-
-//export _gotk4_gdk4_PaintableInterface_get_intrinsic_height
-func _gotk4_gdk4_PaintableInterface_get_intrinsic_height(arg0 *C.GdkPaintable) (cret C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PaintableOverrider)
-
-	gint := iface.IntrinsicHeight()
-
-	cret = C.int(gint)
-
-	return cret
-}
-
-//export _gotk4_gdk4_PaintableInterface_get_intrinsic_width
-func _gotk4_gdk4_PaintableInterface_get_intrinsic_width(arg0 *C.GdkPaintable) (cret C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PaintableOverrider)
-
-	gint := iface.IntrinsicWidth()
-
-	cret = C.int(gint)
-
-	return cret
-}
-
-//export _gotk4_gdk4_PaintableInterface_snapshot
-func _gotk4_gdk4_PaintableInterface_snapshot(arg0 *C.GdkPaintable, arg1 *C.GdkSnapshot, arg2 C.double, arg3 C.double) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PaintableOverrider)
-
-	var _snapshot Snapshotter // out
-	var _width float64        // out
-	var _height float64       // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Snapshotter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Snapshotter)
-			return ok
-		})
-		rv, ok := casted.(Snapshotter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Snapshotter")
-		}
-		_snapshot = rv
-	}
-	_width = float64(arg2)
-	_height = float64(arg3)
-
-	iface.Snapshot(_snapshot, _width, _height)
-}
-
-func wrapPaintable(obj *externglib.Object) *Paintable {
+func wrapPaintable(obj *coreglib.Object) *Paintable {
 	return &Paintable{
 		Object: obj,
 	}
 }
 
 func marshalPaintable(p uintptr) (interface{}, error) {
-	return wrapPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPaintable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gdk4_Paintable_ConnectInvalidateContents
 func _gotk4_gdk4_Paintable_ConnectInvalidateContents(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -414,15 +229,15 @@ func _gotk4_gdk4_Paintable_ConnectInvalidateContents(arg0 C.gpointer, arg1 C.gui
 //
 // Examples for such an event would be videos changing to the next frame or the
 // icon theme for an icon changing.
-func (paintable *Paintable) ConnectInvalidateContents(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(paintable, "invalidate-contents", false, unsafe.Pointer(C._gotk4_gdk4_Paintable_ConnectInvalidateContents), f)
+func (paintable *Paintable) ConnectInvalidateContents(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(paintable, "invalidate-contents", false, unsafe.Pointer(C._gotk4_gdk4_Paintable_ConnectInvalidateContents), f)
 }
 
 //export _gotk4_gdk4_Paintable_ConnectInvalidateSize
 func _gotk4_gdk4_Paintable_ConnectInvalidateSize(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -443,64 +258,8 @@ func _gotk4_gdk4_Paintable_ConnectInvalidateSize(arg0 C.gpointer, arg1 C.guintpt
 //
 // Examples for such an event would be a paintable displaying the contents of a
 // toplevel surface being resized.
-func (paintable *Paintable) ConnectInvalidateSize(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(paintable, "invalidate-size", false, unsafe.Pointer(C._gotk4_gdk4_Paintable_ConnectInvalidateSize), f)
-}
-
-// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
-//
-// Applies the sizing algorithm outlined in the CSS Image spec
-// (https://drafts.csswg.org/css-images-3/#default-sizing) to the given
-// paintable. See that link for more details.
-//
-// It is not necessary to call this function when both specified_width and
-// specified_height are known, but it is useful to call this function in
-// GtkWidget:measure implementations to compute the other dimension when only
-// one dimension is given.
-//
-// The function takes the following parameters:
-//
-//    - specifiedWidth: width paintable could be drawn into or 0.0 if unknown.
-//    - specifiedHeight: height paintable could be drawn into or 0.0 if unknown.
-//    - defaultWidth: width paintable would be drawn into if no other constraints
-//      were given.
-//    - defaultHeight: height paintable would be drawn into if no other
-//      constraints were given.
-//
-// The function returns the following values:
-//
-//    - concreteWidth will be set to the concrete width computed.
-//    - concreteHeight will be set to the concrete height computed.
-//
-func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
-	var _arg0 *C.GdkPaintable // out
-	var _arg1 C.double        // out
-	var _arg2 C.double        // out
-	var _arg3 C.double        // out
-	var _arg4 C.double        // out
-	var _arg5 C.double        // in
-	var _arg6 C.double        // in
-
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
-	_arg1 = C.double(specifiedWidth)
-	_arg2 = C.double(specifiedHeight)
-	_arg3 = C.double(defaultWidth)
-	_arg4 = C.double(defaultHeight)
-
-	C.gdk_paintable_compute_concrete_size(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
-	runtime.KeepAlive(paintable)
-	runtime.KeepAlive(specifiedWidth)
-	runtime.KeepAlive(specifiedHeight)
-	runtime.KeepAlive(defaultWidth)
-	runtime.KeepAlive(defaultHeight)
-
-	var _concreteWidth float64  // out
-	var _concreteHeight float64 // out
-
-	_concreteWidth = float64(_arg5)
-	_concreteHeight = float64(_arg6)
-
-	return _concreteWidth, _concreteHeight
+func (paintable *Paintable) ConnectInvalidateSize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(paintable, "invalidate-size", false, unsafe.Pointer(C._gotk4_gdk4_Paintable_ConnectInvalidateSize), f)
 }
 
 // CurrentImage gets an immutable paintable for the current contents displayed
@@ -516,147 +275,22 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 //    - ret: immutable paintable for the current contents of paintable.
 //
 func (paintable *Paintable) CurrentImage() *Paintable {
-	var _arg0 *C.GdkPaintable // out
-	var _cret *C.GdkPaintable // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	*(**Paintable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_paintable_get_current_image(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(paintable)
 
 	var _ret *Paintable // out
 
-	_ret = wrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = wrapPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
-}
-
-// Flags: get flags for the paintable.
-//
-// This is oftentimes useful for optimizations.
-//
-// See gdk.PaintableFlags for the flags and what they mean.
-//
-// The function returns the following values:
-//
-//    - paintableFlags: GdkPaintableFlags for this paintable.
-//
-func (paintable *Paintable) Flags() PaintableFlags {
-	var _arg0 *C.GdkPaintable     // out
-	var _cret C.GdkPaintableFlags // in
-
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
-
-	_cret = C.gdk_paintable_get_flags(_arg0)
-	runtime.KeepAlive(paintable)
-
-	var _paintableFlags PaintableFlags // out
-
-	_paintableFlags = PaintableFlags(_cret)
-
-	return _paintableFlags
-}
-
-// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would like
-// to be displayed at.
-//
-// The aspect ratio is the width divided by the height, so a value of 0.5 means
-// that the paintable prefers to be displayed twice as high as it is wide.
-// Consumers of this interface can use this to preserve aspect ratio when
-// displaying the paintable.
-//
-// This is a purely informational value and does not in any way limit the values
-// that may be passed to gdk.Paintable.Snapshot().
-//
-// Usually when a paintable returns nonzero values from
-// gdk.Paintable.GetIntrinsicWidth() and gdk.Paintable.GetIntrinsicHeight() the
-// aspect ratio should conform to those values, though that is not required.
-//
-// If the paintable does not have a preferred aspect ratio, it returns 0.
-// Negative values are never returned.
-//
-// The function returns the following values:
-//
-//    - gdouble: intrinsic aspect ratio of paintable or 0 if none.
-//
-func (paintable *Paintable) IntrinsicAspectRatio() float64 {
-	var _arg0 *C.GdkPaintable // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
-
-	_cret = C.gdk_paintable_get_intrinsic_aspect_ratio(_arg0)
-	runtime.KeepAlive(paintable)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// IntrinsicHeight gets the preferred height the paintable would like to be
-// displayed at.
-//
-// Consumers of this interface can use this to reserve enough space to draw the
-// paintable.
-//
-// This is a purely informational value and does not in any way limit the values
-// that may be passed to gdk.Paintable.Snapshot().
-//
-// If the paintable does not have a preferred height, it returns 0. Negative
-// values are never returned.
-//
-// The function returns the following values:
-//
-//    - gint: intrinsic height of paintable or 0 if none.
-//
-func (paintable *Paintable) IntrinsicHeight() int {
-	var _arg0 *C.GdkPaintable // out
-	var _cret C.int           // in
-
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
-
-	_cret = C.gdk_paintable_get_intrinsic_height(_arg0)
-	runtime.KeepAlive(paintable)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// IntrinsicWidth gets the preferred width the paintable would like to be
-// displayed at.
-//
-// Consumers of this interface can use this to reserve enough space to draw the
-// paintable.
-//
-// This is a purely informational value and does not in any way limit the values
-// that may be passed to gdk.Paintable.Snapshot().
-//
-// If the paintable does not have a preferred width, it returns 0. Negative
-// values are never returned.
-//
-// The function returns the following values:
-//
-//    - gint: intrinsic width of paintable or 0 if none.
-//
-func (paintable *Paintable) IntrinsicWidth() int {
-	var _arg0 *C.GdkPaintable // out
-	var _cret C.int           // in
-
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
-
-	_cret = C.gdk_paintable_get_intrinsic_width(_arg0)
-	runtime.KeepAlive(paintable)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // InvalidateContents: called by implementations of GdkPaintable to invalidate
@@ -670,11 +304,12 @@ func (paintable *Paintable) IntrinsicWidth() int {
 // If a paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must not
 // call this function.
 func (paintable *Paintable) InvalidateContents() {
-	var _arg0 *C.GdkPaintable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	*(**Paintable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_paintable_invalidate_contents(_arg0)
 	runtime.KeepAlive(paintable)
 }
 
@@ -689,75 +324,11 @@ func (paintable *Paintable) InvalidateContents() {
 // If a paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not call
 // this function.
 func (paintable *Paintable) InvalidateSize() {
-	var _arg0 *C.GdkPaintable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	*(**Paintable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_paintable_invalidate_size(_arg0)
 	runtime.KeepAlive(paintable)
-}
-
-// Snapshot snapshots the given paintable with the given width and height.
-//
-// The paintable is drawn at the current (0,0) offset of the snapshot. If width
-// and height are not larger than zero, this function will do nothing.
-//
-// The function takes the following parameters:
-//
-//    - snapshot: GdkSnapshot to snapshot to.
-//    - width to snapshot in.
-//    - height to snapshot in.
-//
-func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64) {
-	var _arg0 *C.GdkPaintable // out
-	var _arg1 *C.GdkSnapshot  // out
-	var _arg2 C.double        // out
-	var _arg3 C.double        // out
-
-	_arg0 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
-	_arg1 = (*C.GdkSnapshot)(unsafe.Pointer(externglib.InternObject(snapshot).Native()))
-	_arg2 = C.double(width)
-	_arg3 = C.double(height)
-
-	C.gdk_paintable_snapshot(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(paintable)
-	runtime.KeepAlive(snapshot)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// NewPaintableEmpty returns a paintable that has the given intrinsic size and
-// draws nothing.
-//
-// This is often useful for implementing the
-// PaintableInterface.get_current_image() virtual function when the paintable is
-// in an incomplete state (like a gtk.MediaStream before receiving the first
-// frame).
-//
-// The function takes the following parameters:
-//
-//    - intrinsicWidth: intrinsic width to report. Can be 0 for no width.
-//    - intrinsicHeight: intrinsic height to report. Can be 0 for no height.
-//
-// The function returns the following values:
-//
-//    - paintable: GdkPaintable.
-//
-func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) *Paintable {
-	var _arg1 C.int           // out
-	var _arg2 C.int           // out
-	var _cret *C.GdkPaintable // in
-
-	_arg1 = C.int(intrinsicWidth)
-	_arg2 = C.int(intrinsicHeight)
-
-	_cret = C.gdk_paintable_new_empty(_arg1, _arg2)
-	runtime.KeepAlive(intrinsicWidth)
-	runtime.KeepAlive(intrinsicHeight)
-
-	var _paintable *Paintable // out
-
-	_paintable = wrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _paintable
 }

@@ -6,21 +6,22 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmountoperation.go.
-var GTypeMountOperation = externglib.Type(C.gtk_mount_operation_get_type())
+var GTypeMountOperation = coreglib.Type(C.gtk_mount_operation_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMountOperation, F: marshalMountOperation},
 	})
 }
@@ -47,7 +48,7 @@ type MountOperation struct {
 }
 
 var (
-	_ externglib.Objector = (*MountOperation)(nil)
+	_ coreglib.Objector = (*MountOperation)(nil)
 )
 
 func classInitMountOperationer(gclassPtr, data C.gpointer) {
@@ -58,7 +59,7 @@ func classInitMountOperationer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMountOperation(obj *externglib.Object) *MountOperation {
+func wrapMountOperation(obj *coreglib.Object) *MountOperation {
 	return &MountOperation{
 		MountOperation: gio.MountOperation{
 			Object: obj,
@@ -67,7 +68,7 @@ func wrapMountOperation(obj *externglib.Object) *MountOperation {
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
-	return wrapMountOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMountOperation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMountOperation creates a new GtkMountOperation.
@@ -81,19 +82,23 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 //    - mountOperation: new GtkMountOperation.
 //
 func NewMountOperation(parent *Window) *MountOperation {
-	var _arg1 *C.GtkWindow       // out
-	var _cret *C.GMountOperation // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_mount_operation_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("new_MountOperation", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(parent)
 
 	var _mountOperation *MountOperation // out
 
-	_mountOperation = wrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mountOperation = wrapMountOperation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }
@@ -106,18 +111,22 @@ func NewMountOperation(parent *Window) *MountOperation {
 //    - display on which windows of op are shown.
 //
 func (op *MountOperation) Display() *gdk.Display {
-	var _arg0 *C.GtkMountOperation // out
-	var _cret *C.GdkDisplay        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_mount_operation_get_display(_arg0)
+	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _display *gdk.Display // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_display = &gdk.Display{
 			Object: obj,
 		}
@@ -133,17 +142,21 @@ func (op *MountOperation) Display() *gdk.Display {
 //    - window: transient parent for windows shown by op.
 //
 func (op *MountOperation) Parent() *Window {
-	var _arg0 *C.GtkMountOperation // out
-	var _cret *C.GtkWindow         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_mount_operation_get_parent(_arg0)
+	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("get_parent", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -156,12 +169,16 @@ func (op *MountOperation) Parent() *Window {
 //    - ok: TRUE if op is currently displaying a window.
 //
 func (op *MountOperation) IsShowing() bool {
-	var _arg0 *C.GtkMountOperation // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_mount_operation_is_showing(_arg0)
+	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("is_showing", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -180,13 +197,16 @@ func (op *MountOperation) IsShowing() bool {
 //    - display: GdkDisplay.
 //
 func (op *MountOperation) SetDisplay(display *gdk.Display) {
-	var _arg0 *C.GtkMountOperation // out
-	var _arg1 *C.GdkDisplay        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_mount_operation_set_display(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MountOperation").InvokeMethod("set_display", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(display)
 }
@@ -199,15 +219,18 @@ func (op *MountOperation) SetDisplay(display *gdk.Display) {
 //    - parent (optional): transient parent of the window, or NULL.
 //
 func (op *MountOperation) SetParent(parent *Window) {
-	var _arg0 *C.GtkMountOperation // out
-	var _arg1 *C.GtkWindow         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_mount_operation_set_parent(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MountOperation").InvokeMethod("set_parent", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(parent)
 }

@@ -6,22 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtknumerableicon.go.
-var GTypeNumerableIcon = externglib.Type(C.gtk_numerable_icon_get_type())
+var GTypeNumerableIcon = coreglib.Type(C.gtk_numerable_icon_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNumerableIcon, F: marshalNumerableIcon},
 	})
 }
@@ -43,7 +42,7 @@ type NumerableIcon struct {
 }
 
 var (
-	_ externglib.Objector = (*NumerableIcon)(nil)
+	_ coreglib.Objector = (*NumerableIcon)(nil)
 )
 
 func classInitNumerableIconner(gclassPtr, data C.gpointer) {
@@ -54,7 +53,7 @@ func classInitNumerableIconner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
+func wrapNumerableIcon(obj *coreglib.Object) *NumerableIcon {
 	return &NumerableIcon{
 		EmblemedIcon: gio.EmblemedIcon{
 			Object: obj,
@@ -66,7 +65,7 @@ func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 }
 
 func marshalNumerableIcon(p uintptr) (interface{}, error) {
-	return wrapNumerableIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNumerableIcon(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // BackgroundGIcon returns the #GIcon that was set as the base background image,
@@ -80,19 +79,23 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 //    - icon (optional) or NULL.
 //
 func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _cret *C.GIcon            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**NumerableIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
+	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_background_gicon", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _icon *gio.Icon // out
 
 	if _cret != nil {
 		{
-			obj := externglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_icon = &gio.Icon{
 				Object: obj,
 			}
@@ -112,12 +115,16 @@ func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 //    - utf8 (optional): icon name, or NULL.
 //
 func (self *NumerableIcon) BackgroundIconName() string {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _cret *C.gchar            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**NumerableIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numerable_icon_get_background_icon_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_background_icon_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -138,12 +145,16 @@ func (self *NumerableIcon) BackgroundIconName() string {
 //    - gint: currently displayed value.
 //
 func (self *NumerableIcon) Count() int {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _cret C.gint              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**NumerableIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numerable_icon_get_count(_arg0)
+	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_count", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _gint int // out
@@ -162,12 +173,16 @@ func (self *NumerableIcon) Count() int {
 //    - utf8 (optional): currently displayed label.
 //
 func (self *NumerableIcon) Label() string {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _cret *C.gchar            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**NumerableIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numerable_icon_get_label(_arg0)
+	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -190,18 +205,22 @@ func (self *NumerableIcon) Label() string {
 //      should not be unreffed. Use g_object_ref() if you want to keep it around.
 //
 func (self *NumerableIcon) StyleContext() *StyleContext {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _cret *C.GtkStyleContext  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**NumerableIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numerable_icon_get_style_context(_arg0)
+	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_style_context", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _styleContext *StyleContext // out
 
 	if _cret != nil {
-		_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
+		_styleContext = wrapStyleContext(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _styleContext
@@ -223,15 +242,18 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 //    - icon (optional) or NULL.
 //
 func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _arg1 *C.GIcon            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if icon != nil {
-		_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	}
+	*(**NumerableIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
+	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_background_gicon", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(icon)
 }
@@ -253,16 +275,19 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 //    - iconName (optional): icon name, or NULL.
 //
 func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _arg1 *C.gchar            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if iconName != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**NumerableIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_numerable_icon_set_background_icon_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_background_icon_name", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(iconName)
 }
@@ -283,13 +308,16 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 //    - count: number between -99 and 99.
 //
 func (self *NumerableIcon) SetCount(count int) {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _arg1 C.gint              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.gint(count)
+	*(**NumerableIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_numerable_icon_set_count(_arg0, _arg1)
+	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_count", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(count)
 }
@@ -314,16 +342,19 @@ func (self *NumerableIcon) SetCount(count int) {
 //    - label (optional): short label, or NULL.
 //
 func (self *NumerableIcon) SetLabel(label string) {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _arg1 *C.gchar            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if label != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**NumerableIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_numerable_icon_set_label(_arg0, _arg1)
+	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_label", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(label)
 }
@@ -338,13 +369,16 @@ func (self *NumerableIcon) SetLabel(label string) {
 //    - style: StyleContext.
 //
 func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
-	var _arg0 *C.GtkNumerableIcon // out
-	var _arg1 *C.GtkStyleContext  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(style).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	*(**NumerableIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_numerable_icon_set_style_context(_arg0, _arg1)
+	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_style_context", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(style)
 }
@@ -362,18 +396,22 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 //    - icon: new #GIcon.
 //
 func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
-	var _arg1 *C.GIcon // out
-	var _cret *C.GIcon // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(baseIcon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIcon).Native()))
+	*(*gio.Iconner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numerable_icon_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "new").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseIcon)
 
 	var _icon *gio.Icon // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_icon = &gio.Icon{
 			Object: obj,
 		}
@@ -398,21 +436,26 @@ func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
 //    - icon: new #GIcon.
 //
 func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) *gio.Icon {
-	var _arg1 *C.GIcon           // out
-	var _arg2 *C.GtkStyleContext // out
-	var _cret *C.GIcon           // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(baseIcon).Native()))
-	_arg2 = (*C.GtkStyleContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIcon).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*gio.Iconner)(unsafe.Pointer(&args[0])) = _arg0
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_numerable_icon_new_with_style_context(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "new_with_style_context").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseIcon)
 	runtime.KeepAlive(context)
 
 	var _icon *gio.Icon // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_icon = &gio.Icon{
 			Object: obj,
 		}

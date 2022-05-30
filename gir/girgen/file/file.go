@@ -38,9 +38,9 @@ type Marshaler struct {
 func (m Marshaler) GLibType() string {
 	// Small hack to allow overriding.
 	if strings.Contains(m.GLibGetType, ".") {
-		return fmt.Sprintf("externglib.Type(%s)", m.GLibGetType)
+		return fmt.Sprintf("coreglib.Type(%s)", m.GLibGetType)
 	}
-	return fmt.Sprintf("externglib.Type(C.%s())", m.GLibGetType)
+	return fmt.Sprintf("coreglib.Type(C.%s())", m.GLibGetType)
 }
 
 // Header describes the side effects of the conversion, such as importing new
@@ -107,7 +107,7 @@ func (h *Header) ImportAlias(path, alias string) {
 
 // needsExternGLib adds the external gotk3/glib import.
 func (h *Header) NeedsExternGLib() {
-	h.ImportAlias("github.com/diamondburned/gotk4/pkg/core/glib", "externglib")
+	h.ImportAlias("github.com/diamondburned/gotk4/pkg/core/glib", "coreglib")
 }
 
 func (h *Header) ImportPubl(resolved *types.Resolved) {

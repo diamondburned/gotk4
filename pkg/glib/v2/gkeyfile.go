@@ -10,7 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -19,10 +19,10 @@ import (
 import "C"
 
 // glib.Type values for gkeyfile.go.
-var GTypeKeyFile = externglib.Type(C.g_key_file_get_type())
+var GTypeKeyFile = coreglib.Type(C.g_key_file_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeKeyFile, F: marshalKeyFile},
 	})
 }
@@ -251,7 +251,7 @@ type keyFile struct {
 }
 
 func marshalKeyFile(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &KeyFile{&keyFile{(*C.GKeyFile)(b)}}, nil
 }
 

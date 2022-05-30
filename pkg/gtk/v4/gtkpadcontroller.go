@@ -7,25 +7,25 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkpadcontroller.go.
 var (
-	GTypePadActionType = externglib.Type(C.gtk_pad_action_type_get_type())
-	GTypePadController = externglib.Type(C.gtk_pad_controller_get_type())
+	GTypePadActionType = coreglib.Type(C.gtk_pad_action_type_get_type())
+	GTypePadController = coreglib.Type(C.gtk_pad_controller_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePadActionType, F: marshalPadActionType},
 		{T: GTypePadController, F: marshalPadController},
 	})
@@ -44,7 +44,7 @@ const (
 )
 
 func marshalPadActionType(p uintptr) (interface{}, error) {
-	return PadActionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PadActionType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PadActionType.
@@ -126,7 +126,7 @@ func classInitPadControllerer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapPadController(obj *externglib.Object) *PadController {
+func wrapPadController(obj *coreglib.Object) *PadController {
 	return &PadController{
 		EventController: EventController{
 			Object: obj,
@@ -135,7 +135,7 @@ func wrapPadController(obj *externglib.Object) *PadController {
 }
 
 func marshalPadController(p uintptr) (interface{}, error) {
-	return wrapPadController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPadController(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPadController creates a new GtkPadController that will associate events
@@ -163,99 +163,29 @@ func marshalPadController(p uintptr) (interface{}, error) {
 //    - padController: newly created GtkPadController.
 //
 func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
-	var _arg1 *C.GActionGroup     // out
-	var _arg2 *C.GdkDevice        // out
-	var _cret *C.GtkPadController // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GActionGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if pad != nil {
-		_arg2 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(pad).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 	}
+	*(*gio.ActionGrouper)(unsafe.Pointer(&args[0])) = _arg0
+	*(*gdk.Devicer)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_pad_controller_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "PadController").InvokeMethod("new_PadController", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(pad)
 
 	var _padController *PadController // out
 
-	_padController = wrapPadController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_padController = wrapPadController(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _padController
-}
-
-// SetAction adds an individual action to controller.
-//
-// This action will only be activated if the given button/ring/strip number in
-// index is interacted while the current mode is mode. -1 may be used for simple
-// cases, so the action is triggered on all modes.
-//
-// The given label should be considered user-visible, so internationalization
-// rules apply. Some windowing systems may be able to use those for user
-// feedback.
-//
-// The function takes the following parameters:
-//
-//    - typ: type of pad feature that will trigger this action.
-//    - index: 0-indexed button/ring/strip number that will trigger this action.
-//    - mode that will trigger this action, or -1 for all modes.
-//    - label: human readable description of this action, this string should be
-//      deemed user-visible.
-//    - actionName: action name that will be activated in the Group.
-//
-func (controller *PadController) SetAction(typ PadActionType, index, mode int, label, actionName string) {
-	var _arg0 *C.GtkPadController // out
-	var _arg1 C.GtkPadActionType  // out
-	var _arg2 C.int               // out
-	var _arg3 C.int               // out
-	var _arg4 *C.char             // out
-	var _arg5 *C.char             // out
-
-	_arg0 = (*C.GtkPadController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-	_arg1 = C.GtkPadActionType(typ)
-	_arg2 = C.int(index)
-	_arg3 = C.int(mode)
-	_arg4 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg5))
-
-	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(controller)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(index)
-	runtime.KeepAlive(mode)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(actionName)
-}
-
-// SetActionEntries: convenience function to add a group of action entries on
-// controller.
-//
-// See gtk.PadActionEntry and gtk.PadController.SetAction().
-//
-// The function takes the following parameters:
-//
-//    - entries: action entries to set on controller.
-//
-func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
-	var _arg0 *C.GtkPadController  // out
-	var _arg1 *C.GtkPadActionEntry // out
-	var _arg2 C.int
-
-	_arg0 = (*C.GtkPadController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-	_arg2 = (C.int)(len(entries))
-	_arg1 = (*C.GtkPadActionEntry)(C.calloc(C.size_t(len(entries)), C.size_t(C.sizeof_GtkPadActionEntry)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.GtkPadActionEntry)(_arg1), len(entries))
-		for i := range entries {
-			out[i] = *(*C.GtkPadActionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
-		}
-	}
-
-	C.gtk_pad_controller_set_action_entries(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(controller)
-	runtime.KeepAlive(entries)
 }
 
 // PadActionEntry: struct defining a pad action entry.
@@ -268,41 +198,4 @@ type PadActionEntry struct {
 // padActionEntry is the struct that's finalized.
 type padActionEntry struct {
 	native *C.GtkPadActionEntry
-}
-
-// Type: type of pad feature that will trigger this action entry.
-func (p *PadActionEntry) Type() PadActionType {
-	var v PadActionType // out
-	v = PadActionType(p.native._type)
-	return v
-}
-
-// Index: 0-indexed button/ring/strip number that will trigger this action
-// entry.
-func (p *PadActionEntry) Index() int {
-	var v int // out
-	v = int(p.native.index)
-	return v
-}
-
-// Mode: mode that will trigger this action entry, or -1 for all modes.
-func (p *PadActionEntry) Mode() int {
-	var v int // out
-	v = int(p.native.mode)
-	return v
-}
-
-// Label: human readable description of this action entry, this string should be
-// deemed user-visible.
-func (p *PadActionEntry) Label() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(p.native.label)))
-	return v
-}
-
-// ActionName: action name that will be activated in the Group.
-func (p *PadActionEntry) ActionName() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(p.native.action_name)))
-	return v
 }

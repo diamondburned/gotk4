@@ -7,19 +7,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkdevicetool.go.
-var GTypeDeviceToolType = externglib.Type(C.gdk_device_tool_type_get_type())
+var GTypeDeviceToolType = coreglib.Type(C.gdk_device_tool_type_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDeviceToolType, F: marshalDeviceToolType},
 	})
 }
@@ -48,7 +49,7 @@ const (
 )
 
 func marshalDeviceToolType(p uintptr) (interface{}, error) {
-	return DeviceToolType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DeviceToolType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DeviceToolType.
@@ -90,12 +91,16 @@ func (d DeviceToolType) String() string {
 //    - guint64: hardware identificator of this tool.
 //
 func (tool *DeviceTool) HardwareID() uint64 {
-	var _arg0 *C.GdkDeviceTool // out
-	var _cret C.guint64        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint64 // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(externglib.InternObject(tool).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
+	*(**DeviceTool)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
+	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_hardware_id", args[:], nil)
+	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(tool)
 
 	var _guint64 uint64 // out
@@ -113,12 +118,16 @@ func (tool *DeviceTool) HardwareID() uint64 {
 //    - guint64: serial ID for this tool.
 //
 func (tool *DeviceTool) Serial() uint64 {
-	var _arg0 *C.GdkDeviceTool // out
-	var _cret C.guint64        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint64 // in
 
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(externglib.InternObject(tool).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
+	*(**DeviceTool)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_tool_get_serial(_arg0)
+	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_serial", args[:], nil)
+	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(tool)
 
 	var _guint64 uint64 // out
@@ -126,27 +135,4 @@ func (tool *DeviceTool) Serial() uint64 {
 	_guint64 = uint64(_cret)
 
 	return _guint64
-}
-
-// ToolType gets the DeviceToolType of the tool.
-//
-// The function returns the following values:
-//
-//    - deviceToolType: physical type for this tool. This can be used to figure
-//      out what sort of pen is being used, such as an airbrush or a pencil.
-//
-func (tool *DeviceTool) ToolType() DeviceToolType {
-	var _arg0 *C.GdkDeviceTool    // out
-	var _cret C.GdkDeviceToolType // in
-
-	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(externglib.InternObject(tool).Native()))
-
-	_cret = C.gdk_device_tool_get_tool_type(_arg0)
-	runtime.KeepAlive(tool)
-
-	var _deviceToolType DeviceToolType // out
-
-	_deviceToolType = DeviceToolType(_cret)
-
-	return _deviceToolType
 }

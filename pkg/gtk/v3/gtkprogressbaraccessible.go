@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkprogressbaraccessible.go.
-var GTypeProgressBarAccessible = externglib.Type(C.gtk_progress_bar_accessible_get_type())
+var GTypeProgressBarAccessible = coreglib.Type(C.gtk_progress_bar_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeProgressBarAccessible, F: marshalProgressBarAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type ProgressBarAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ProgressBarAccessible)(nil)
+	_ coreglib.Objector = (*ProgressBarAccessible)(nil)
 )
 
 func classInitProgressBarAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitProgressBarAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
+func wrapProgressBarAccessible(obj *coreglib.Object) *ProgressBarAccessible {
 	return &ProgressBarAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -67,5 +66,5 @@ func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
 }
 
 func marshalProgressBarAccessible(p uintptr) (interface{}, error) {
-	return wrapProgressBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapProgressBarAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -5,19 +5,20 @@ package gio
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gproxyaddressenumerator.go.
-var GTypeProxyAddressEnumerator = externglib.Type(C.g_proxy_address_enumerator_get_type())
+var GTypeProxyAddressEnumerator = coreglib.Type(C.g_proxy_address_enumerator_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeProxyAddressEnumerator, F: marshalProxyAddressEnumerator},
 	})
 }
@@ -51,7 +52,7 @@ func classInitProxyAddressEnumeratorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator {
+func wrapProxyAddressEnumerator(obj *coreglib.Object) *ProxyAddressEnumerator {
 	return &ProxyAddressEnumerator{
 		SocketAddressEnumerator: SocketAddressEnumerator{
 			Object: obj,
@@ -60,5 +61,5 @@ func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator 
 }
 
 func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
-	return wrapProxyAddressEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapProxyAddressEnumerator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

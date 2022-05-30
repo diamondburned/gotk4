@@ -88,7 +88,7 @@ func builtinType(imp, typ string, girType gir.Type) *Resolved {
 	}
 }
 
-// externGLibType returns an external GLib type from gotk3.
+// externGLibType returns an external GLib type from core/glib.
 func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 	if typ.CType == "" {
 		typ.CType = ctyp
@@ -96,7 +96,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 
 	imp := ResolvedImport{
 		Path:    "github.com/diamondburned/gotk4/pkg/core/glib",
-		Package: "externglib",
+		Package: "coreglib",
 	}
 
 	var ptr uint8
@@ -111,7 +111,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		ptr--
 	}
 
-	goType = "externglib." + strings.TrimPrefix(goType, "*")
+	goType = "coreglib." + strings.TrimPrefix(goType, "*")
 
 	return &Resolved{
 		Builtin:    &goType,
@@ -122,25 +122,6 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		Ptr:        ptr,
 	}
 }
-
-//// dereferenceOffset subtracts 1 from ptrs if the ctype does not have a pointer.
-//// It is better explained with an example:
-////
-//// If the C type is *GObject, then this wouldn't subtract anything, but if the C
-//// type is a gpointer, then we'd be subtracting 1. This code is similar to the
-//// one in TypeResolver.
-//func dereferenceOffset(ptrs int, typ string) int {
-//	if ptrs == 0 {
-//		return ptrs
-//	}
-
-//	count := strings.Count(typ, "*")
-//	if count > 1 {
-//		count = 1
-//	}
-
-//	return ptrs - (1 - count)
-//}
 
 // typeFromResult creates a resolved type from the given type result.
 func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult) *Resolved {
@@ -552,7 +533,7 @@ func (typ *Resolved) ImplName() string {
 
 	name := strcases.PascalToGo(typ.Extern.Name())
 	if name == "Object" {
-		// Avoid collision with externglib.Object, since that might be embedded
+		// Avoid collision with coreglib.Object, since that might be embedded
 		// into an implementation struct.
 		name = "ObjectClass"
 	}
@@ -576,7 +557,7 @@ func (typ *Resolved) PublicName() string {
 
 	switch typ.Extern.Type.(type) {
 	case *gir.Class:
-		// Avoid collision with externglib.Object, since that might be embedded
+		// Avoid collision with coreglib.Object, since that might be embedded
 		// into an implementation struct.
 		if name == "Object" {
 			name = "ObjectClass"
@@ -623,7 +604,7 @@ func (typ *Resolved) PublicType(needsNamespace bool) string {
 			return typ.ptr(true) + "Objector"
 		}
 
-		return typ.ptr(true) + "externglib.Objector"
+		return typ.ptr(true) + "coreglib.Objector"
 	}
 
 	if typ.Builtin != nil {
@@ -713,7 +694,7 @@ var BuiltinHandledTypes = []FilterMatcher{
 	// Ignore all of ByteArray's methods and functions. Use the C namespace,
 	// because record methods aren't filtered properly.
 	RegexFilter(`C.g_byte_array_.*`),
-	// Already covered by externglib.
+	// Already covered by coreglib.
 	AbsoluteFilter("GLib.Type"),
 }
 
@@ -763,7 +744,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	// Treat actual gpointer types as the pseudo cgo.Handle type. Check both GIR
 	// and C type to avoid masked gpointer types that aren't actually arbitrary.
 	if typ.Name == "gpointer" && IsGpointer(typ.CType) {
-		return builtinType("runtime/cgo", "Handle", typ)
+		return builtinType("unsafe", "Pointer", typ)
 	}
 
 	// Fill namespace.

@@ -10,31 +10,30 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer);
-// extern void callbackDelete(gpointer);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkshortcutaction.go.
 var (
-	GTypeShortcutActionFlags = externglib.Type(C.gtk_shortcut_action_flags_get_type())
-	GTypeActivateAction      = externglib.Type(C.gtk_activate_action_get_type())
-	GTypeCallbackAction      = externglib.Type(C.gtk_callback_action_get_type())
-	GTypeMnemonicAction      = externglib.Type(C.gtk_mnemonic_action_get_type())
-	GTypeNamedAction         = externglib.Type(C.gtk_named_action_get_type())
-	GTypeNothingAction       = externglib.Type(C.gtk_nothing_action_get_type())
-	GTypeShortcutAction      = externglib.Type(C.gtk_shortcut_action_get_type())
-	GTypeSignalAction        = externglib.Type(C.gtk_signal_action_get_type())
+	GTypeShortcutActionFlags = coreglib.Type(C.gtk_shortcut_action_flags_get_type())
+	GTypeActivateAction      = coreglib.Type(C.gtk_activate_action_get_type())
+	GTypeCallbackAction      = coreglib.Type(C.gtk_callback_action_get_type())
+	GTypeMnemonicAction      = coreglib.Type(C.gtk_mnemonic_action_get_type())
+	GTypeNamedAction         = coreglib.Type(C.gtk_named_action_get_type())
+	GTypeNothingAction       = coreglib.Type(C.gtk_nothing_action_get_type())
+	GTypeShortcutAction      = coreglib.Type(C.gtk_shortcut_action_get_type())
+	GTypeSignalAction        = coreglib.Type(C.gtk_signal_action_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutActionFlags, F: marshalShortcutActionFlags},
 		{T: GTypeActivateAction, F: marshalActivateAction},
 		{T: GTypeCallbackAction, F: marshalCallbackAction},
@@ -59,7 +58,7 @@ const (
 )
 
 func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
-	return ShortcutActionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ShortcutActionFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ShortcutActionFlags.
@@ -116,8 +115,8 @@ func _gotk4_gtk4_ShortcutFunc(arg1 *C.GtkWidget, arg2 *C.GVariant, arg3 C.gpoint
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -169,7 +168,7 @@ func classInitActivateActioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapActivateAction(obj *externglib.Object) *ActivateAction {
+func wrapActivateAction(obj *coreglib.Object) *ActivateAction {
 	return &ActivateAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -178,7 +177,7 @@ func wrapActivateAction(obj *externglib.Object) *ActivateAction {
 }
 
 func marshalActivateAction(p uintptr) (interface{}, error) {
-	return wrapActivateAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapActivateAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ActivateActionGet gets the activate action.
@@ -191,13 +190,14 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 //    - activateAction: activate action.
 //
 func ActivateActionGet() *ActivateAction {
-	var _cret *C.GtkShortcutAction // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_activate_action_get()
+	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _activateAction *ActivateAction // out
 
-	_activateAction = wrapActivateAction(externglib.Take(unsafe.Pointer(_cret)))
+	_activateAction = wrapActivateAction(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _activateAction
 }
@@ -224,7 +224,7 @@ func classInitCallbackActioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
+func wrapCallbackAction(obj *coreglib.Object) *CallbackAction {
 	return &CallbackAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -233,40 +233,7 @@ func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
 }
 
 func marshalCallbackAction(p uintptr) (interface{}, error) {
-	return wrapCallbackAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewCallbackAction: create a custom action that calls the given callback when
-// activated.
-//
-// The function takes the following parameters:
-//
-//    - callback (optional) to call.
-//
-// The function returns the following values:
-//
-//    - callbackAction: new shortcut action.
-//
-func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
-	var _arg1 C.GtkShortcutFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-	var _cret *C.GtkShortcutAction // in
-
-	if callback != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
-		_arg2 = C.gpointer(gbox.Assign(callback))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	_cret = C.gtk_callback_action_new(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(callback)
-
-	var _callbackAction *CallbackAction // out
-
-	_callbackAction = wrapCallbackAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _callbackAction
+	return wrapCallbackAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // MnemonicActionOverrider contains methods that are overridable.
@@ -291,7 +258,7 @@ func classInitMnemonicActioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
+func wrapMnemonicAction(obj *coreglib.Object) *MnemonicAction {
 	return &MnemonicAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -300,7 +267,7 @@ func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 }
 
 func marshalMnemonicAction(p uintptr) (interface{}, error) {
-	return wrapMnemonicAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMnemonicAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // MnemonicActionGet gets the mnemonic action.
@@ -313,13 +280,14 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 //    - mnemonicAction: mnemonic action.
 //
 func MnemonicActionGet() *MnemonicAction {
-	var _cret *C.GtkShortcutAction // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_mnemonic_action_get()
+	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _mnemonicAction *MnemonicAction // out
 
-	_mnemonicAction = wrapMnemonicAction(externglib.Take(unsafe.Pointer(_cret)))
+	_mnemonicAction = wrapMnemonicAction(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _mnemonicAction
 }
@@ -346,7 +314,7 @@ func classInitNamedActioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNamedAction(obj *externglib.Object) *NamedAction {
+func wrapNamedAction(obj *coreglib.Object) *NamedAction {
 	return &NamedAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -355,7 +323,7 @@ func wrapNamedAction(obj *externglib.Object) *NamedAction {
 }
 
 func marshalNamedAction(p uintptr) (interface{}, error) {
-	return wrapNamedAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNamedAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNamedAction creates an action that when activated, activates the named
@@ -374,18 +342,22 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 //    - namedAction: new GtkShortcutAction.
 //
 func NewNamedAction(name string) *NamedAction {
-	var _arg1 *C.char              // out
-	var _cret *C.GtkShortcutAction // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_named_action_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("new_NamedAction", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(name)
 
 	var _namedAction *NamedAction // out
 
-	_namedAction = wrapNamedAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_namedAction = wrapNamedAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _namedAction
 }
@@ -397,12 +369,16 @@ func NewNamedAction(name string) *NamedAction {
 //    - utf8: name of the action to activate.
 //
 func (self *NamedAction) ActionName() string {
-	var _arg0 *C.GtkNamedAction // out
-	var _cret *C.char           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**NamedAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_named_action_get_action_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("get_action_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -434,7 +410,7 @@ func classInitNothingActioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNothingAction(obj *externglib.Object) *NothingAction {
+func wrapNothingAction(obj *coreglib.Object) *NothingAction {
 	return &NothingAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -443,7 +419,7 @@ func wrapNothingAction(obj *externglib.Object) *NothingAction {
 }
 
 func marshalNothingAction(p uintptr) (interface{}, error) {
-	return wrapNothingAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNothingAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NothingActionGet gets the nothing action.
@@ -455,13 +431,14 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 //    - nothingAction: nothing action.
 //
 func NothingActionGet() *NothingAction {
-	var _cret *C.GtkShortcutAction // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_nothing_action_get()
+	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _nothingAction *NothingAction // out
 
-	_nothingAction = wrapNothingAction(externglib.Take(unsafe.Pointer(_cret)))
+	_nothingAction = wrapNothingAction(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _nothingAction
 }
@@ -499,11 +476,11 @@ type ShortcutActionOverrider interface {
 //    - gtk.NothingAction: a shortcut action that does nothing.
 type ShortcutAction struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*ShortcutAction)(nil)
+	_ coreglib.Objector = (*ShortcutAction)(nil)
 )
 
 // ShortcutActioner describes types inherited from class ShortcutAction.
@@ -511,7 +488,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ShortcutActioner interface {
-	externglib.Objector
+	coreglib.Objector
 	baseShortcutAction() *ShortcutAction
 }
 
@@ -525,14 +502,14 @@ func classInitShortcutActioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapShortcutAction(obj *externglib.Object) *ShortcutAction {
+func wrapShortcutAction(obj *coreglib.Object) *ShortcutAction {
 	return &ShortcutAction{
 		Object: obj,
 	}
 }
 
 func marshalShortcutAction(p uintptr) (interface{}, error) {
-	return wrapShortcutAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (self *ShortcutAction) baseShortcutAction() *ShortcutAction {
@@ -570,69 +547,26 @@ func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
 //    - shortcutAction (optional): new GtkShortcutAction or NULL on error.
 //
 func NewShortcutActionParseString(str string) *ShortcutAction {
-	var _arg1 *C.char              // out
-	var _cret *C.GtkShortcutAction // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_shortcut_action_parse_string(_arg1)
+	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("new_ShortcutAction_parse_string", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _shortcutAction *ShortcutAction // out
 
 	if _cret != nil {
-		_shortcutAction = wrapShortcutAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_shortcutAction = wrapShortcutAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _shortcutAction
-}
-
-// Activate activates the action on the widget with the given args.
-//
-// Note that some actions ignore the passed in flags, widget or args.
-//
-// Activation of an action can fail for various reasons. If the action is not
-// supported by the widget, if the args don't match the action or if the
-// activation otherwise had no effect, FALSE will be returned.
-//
-// The function takes the following parameters:
-//
-//    - flags to activate with.
-//    - widget: target of the activation.
-//    - args (optional) arguments to pass.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if this action was activated successfully.
-//
-func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool {
-	var _arg0 *C.GtkShortcutAction     // out
-	var _arg1 C.GtkShortcutActionFlags // out
-	var _arg2 *C.GtkWidget             // out
-	var _arg3 *C.GVariant              // out
-	var _cret C.gboolean               // in
-
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GtkShortcutActionFlags(flags)
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	if args != nil {
-		_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
-	}
-
-	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(args)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // String prints the given action into a human-readable string.
@@ -645,12 +579,16 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 //    - utf8: new string.
 //
 func (self *ShortcutAction) String() string {
-	var _arg0 *C.GtkShortcutAction // out
-	var _cret *C.char              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ShortcutAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_shortcut_action_to_string(_arg0)
+	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("to_string", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -686,7 +624,7 @@ func classInitSignalActioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSignalAction(obj *externglib.Object) *SignalAction {
+func wrapSignalAction(obj *coreglib.Object) *SignalAction {
 	return &SignalAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -695,7 +633,7 @@ func wrapSignalAction(obj *externglib.Object) *SignalAction {
 }
 
 func marshalSignalAction(p uintptr) (interface{}, error) {
-	return wrapSignalAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSignalAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSignalAction creates an action that when activated, emits the given action
@@ -712,18 +650,22 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 //    - signalAction: new GtkShortcutAction.
 //
 func NewSignalAction(signalName string) *SignalAction {
-	var _arg1 *C.char              // out
-	var _cret *C.GtkShortcutAction // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(signalName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_signal_action_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("new_SignalAction", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(signalName)
 
 	var _signalAction *SignalAction // out
 
-	_signalAction = wrapSignalAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_signalAction = wrapSignalAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _signalAction
 }
@@ -735,12 +677,16 @@ func NewSignalAction(signalName string) *SignalAction {
 //    - utf8: name of the signal to emit.
 //
 func (self *SignalAction) SignalName() string {
-	var _arg0 *C.GtkSignalAction // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**SignalAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_signal_action_get_signal_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("get_signal_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out

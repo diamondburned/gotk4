@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gfilterinputstream.go.
-var GTypeFilterInputStream = externglib.Type(C.g_filter_input_stream_get_type())
+var GTypeFilterInputStream = coreglib.Type(C.g_filter_input_stream_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFilterInputStream, F: marshalFilterInputStream},
 	})
 }
@@ -45,7 +46,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type FilterInputStreamer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseFilterInputStream() *FilterInputStream
 }
 
@@ -59,7 +60,7 @@ func classInitFilterInputStreamer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFilterInputStream(obj *externglib.Object) *FilterInputStream {
+func wrapFilterInputStream(obj *coreglib.Object) *FilterInputStream {
 	return &FilterInputStream{
 		InputStream: InputStream{
 			Object: obj,
@@ -68,7 +69,7 @@ func wrapFilterInputStream(obj *externglib.Object) *FilterInputStream {
 }
 
 func marshalFilterInputStream(p uintptr) (interface{}, error) {
-	return wrapFilterInputStream(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFilterInputStream(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (stream *FilterInputStream) baseFilterInputStream() *FilterInputStream {
@@ -87,12 +88,16 @@ func BaseFilterInputStream(obj FilterInputStreamer) *FilterInputStream {
 //    - inputStream: Stream.
 //
 func (stream *FilterInputStream) BaseStream() InputStreamer {
-	var _arg0 *C.GFilterInputStream // out
-	var _cret *C.GInputStream       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**FilterInputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_filter_input_stream_get_base_stream(_arg0)
+	_gret := girepository.MustFind("Gio", "FilterInputStream").InvokeMethod("get_base_stream", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _inputStream InputStreamer // out
@@ -103,8 +108,8 @@ func (stream *FilterInputStream) BaseStream() InputStreamer {
 			panic("object of type gio.InputStreamer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(InputStreamer)
 			return ok
 		})
@@ -126,12 +131,16 @@ func (stream *FilterInputStream) BaseStream() InputStreamer {
 //    - ok: TRUE if the base stream will be closed.
 //
 func (stream *FilterInputStream) CloseBaseStream() bool {
-	var _arg0 *C.GFilterInputStream // out
-	var _cret C.gboolean            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**FilterInputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_filter_input_stream_get_close_base_stream(_arg0)
+	_gret := girepository.MustFind("Gio", "FilterInputStream").InvokeMethod("get_close_base_stream", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stream)
 
 	var _ok bool // out
@@ -151,15 +160,18 @@ func (stream *FilterInputStream) CloseBaseStream() bool {
 //    - closeBase: TRUE to close the base stream.
 //
 func (stream *FilterInputStream) SetCloseBaseStream(closeBase bool) {
-	var _arg0 *C.GFilterInputStream // out
-	var _arg1 C.gboolean            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	if closeBase {
 		_arg1 = C.TRUE
 	}
+	*(**FilterInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_filter_input_stream_set_close_base_stream(_arg0, _arg1)
+	girepository.MustFind("Gio", "FilterInputStream").InvokeMethod("set_close_base_stream", args[:], nil)
+
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(closeBase)
 }

@@ -6,22 +6,23 @@ import (
 	"fmt"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkshortcutsshortcut.go.
 var (
-	GTypeShortcutType      = externglib.Type(C.gtk_shortcut_type_get_type())
-	GTypeShortcutsShortcut = externglib.Type(C.gtk_shortcuts_shortcut_get_type())
+	GTypeShortcutType      = coreglib.Type(C.gtk_shortcut_type_get_type())
+	GTypeShortcutsShortcut = coreglib.Type(C.gtk_shortcuts_shortcut_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutType, F: marshalShortcutType},
 		{T: GTypeShortcutsShortcut, F: marshalShortcutsShortcut},
 	})
@@ -66,7 +67,7 @@ const (
 )
 
 func marshalShortcutType(p uintptr) (interface{}, error) {
-	return ShortcutType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ShortcutType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ShortcutType.
@@ -122,10 +123,10 @@ func classInitShortcutsShortcutter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
+func wrapShortcutsShortcut(obj *coreglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -143,5 +144,5 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 }
 
 func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
-	return wrapShortcutsShortcut(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutsShortcut(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

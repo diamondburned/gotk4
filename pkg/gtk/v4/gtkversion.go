@@ -5,10 +5,13 @@ package gtk
 import (
 	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at
@@ -70,16 +73,22 @@ const MINOR_VERSION = 2
 //      is owned by GTK and should not be modified or freed.
 //
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
+	var args [3]girepository.Argument
+	var _arg0 C.guint // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
-	var _arg3 C.guint // out
-	var _cret *C.char // in
+	var _cret *C.void // in
 
-	_arg1 = C.guint(requiredMajor)
-	_arg2 = C.guint(requiredMinor)
-	_arg3 = C.guint(requiredMicro)
+	_arg0 = C.guint(requiredMajor)
+	_arg1 = C.guint(requiredMinor)
+	_arg2 = C.guint(requiredMicro)
+	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Gtk", "check_version").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(requiredMajor)
 	runtime.KeepAlive(requiredMinor)
 	runtime.KeepAlive(requiredMicro)
@@ -104,7 +113,8 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 func GetBinaryAge() uint {
 	var _cret C.guint // in
 
-	_cret = C.gtk_get_binary_age()
+	_gret := girepository.MustFind("Gtk", "get_binary_age").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -124,7 +134,8 @@ func GetBinaryAge() uint {
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
-	_cret = C.gtk_get_interface_age()
+	_gret := girepository.MustFind("Gtk", "get_interface_age").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -149,7 +160,8 @@ func GetInterfaceAge() uint {
 func GetMajorVersion() uint {
 	var _cret C.guint // in
 
-	_cret = C.gtk_get_major_version()
+	_gret := girepository.MustFind("Gtk", "get_major_version").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -174,7 +186,8 @@ func GetMajorVersion() uint {
 func GetMicroVersion() uint {
 	var _cret C.guint // in
 
-	_cret = C.gtk_get_micro_version()
+	_gret := girepository.MustFind("Gtk", "get_micro_version").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -199,7 +212,8 @@ func GetMicroVersion() uint {
 func GetMinorVersion() uint {
 	var _cret C.guint // in
 
-	_cret = C.gtk_get_minor_version()
+	_gret := girepository.MustFind("Gtk", "get_minor_version").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 

@@ -6,38 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
-
-// NewTestDBus: create a new DBus object.
-//
-// The function takes the following parameters:
-//
-//    - flags: DBusFlags.
-//
-// The function returns the following values:
-//
-//    - testDBus: new DBus.
-//
-func NewTestDBus(flags TestDBusFlags) *TestDBus {
-	var _arg1 C.GTestDBusFlags // out
-	var _cret *C.GTestDBus     // in
-
-	_arg1 = C.GTestDBusFlags(flags)
-
-	_cret = C.g_test_dbus_new(_arg1)
-	runtime.KeepAlive(flags)
-
-	var _testDBus *TestDBus // out
-
-	_testDBus = wrapTestDBus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _testDBus
-}
 
 // AddServiceDir: add a path where dbus-daemon will look up .service files. This
 // can't be called after g_test_dbus_up().
@@ -47,14 +23,17 @@ func NewTestDBus(flags TestDBusFlags) *TestDBus {
 //    - path to a directory containing .service files.
 //
 func (self *TestDBus) AddServiceDir(path string) {
-	var _arg0 *C.GTestDBus // out
-	var _arg1 *C.gchar     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**TestDBus)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_test_dbus_add_service_dir(_arg0, _arg1)
+	girepository.MustFind("Gio", "TestDBus").InvokeMethod("add_service_dir", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(path)
 }
@@ -65,11 +44,14 @@ func (self *TestDBus) AddServiceDir(path string) {
 // to be destroyed. This is done to ensure that the next unit test won't get a
 // leaked singleton from this test.
 func (self *TestDBus) Down() {
-	var _arg0 *C.GTestDBus // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**TestDBus)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_test_dbus_down(_arg0)
+	girepository.MustFind("Gio", "TestDBus").InvokeMethod("down", args[:], nil)
+
 	runtime.KeepAlive(self)
 }
 
@@ -82,12 +64,16 @@ func (self *TestDBus) Down() {
 //    - utf8 (optional) address of the bus, or NULL.
 //
 func (self *TestDBus) BusAddress() string {
-	var _arg0 *C.GTestDBus // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**TestDBus)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_test_dbus_get_bus_address(_arg0)
+	_gret := girepository.MustFind("Gio", "TestDBus").InvokeMethod("get_bus_address", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -99,28 +85,6 @@ func (self *TestDBus) BusAddress() string {
 	return _utf8
 }
 
-// Flags: get the flags of the DBus object.
-//
-// The function returns the following values:
-//
-//    - testDBusFlags: value of DBus:flags property.
-//
-func (self *TestDBus) Flags() TestDBusFlags {
-	var _arg0 *C.GTestDBus     // out
-	var _cret C.GTestDBusFlags // in
-
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.g_test_dbus_get_flags(_arg0)
-	runtime.KeepAlive(self)
-
-	var _testDBusFlags TestDBusFlags // out
-
-	_testDBusFlags = TestDBusFlags(_cret)
-
-	return _testDBusFlags
-}
-
 // Stop the session bus started by g_test_dbus_up().
 //
 // Unlike g_test_dbus_down(), this won't verify the BusConnection singleton
@@ -128,11 +92,14 @@ func (self *TestDBus) Flags() TestDBusFlags {
 // to verify behaviour after the session bus has been stopped can use this
 // function but should still call g_test_dbus_down() when done.
 func (self *TestDBus) Stop() {
-	var _arg0 *C.GTestDBus // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**TestDBus)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_test_dbus_stop(_arg0)
+	girepository.MustFind("Gio", "TestDBus").InvokeMethod("stop", args[:], nil)
+
 	runtime.KeepAlive(self)
 }
 
@@ -145,11 +112,14 @@ func (self *TestDBus) Stop() {
 // If this function is called from unit test's main(), then g_test_dbus_down()
 // must be called after g_test_run().
 func (self *TestDBus) Up() {
-	var _arg0 *C.GTestDBus // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GTestDBus)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**TestDBus)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_test_dbus_up(_arg0)
+	girepository.MustFind("Gio", "TestDBus").InvokeMethod("up", args[:], nil)
+
 	runtime.KeepAlive(self)
 }
 
@@ -160,5 +130,5 @@ func (self *TestDBus) Up() {
 // bus is running. It is not necessary to call this if unit test already calls
 // g_test_dbus_up() before acquiring the session bus.
 func TestDBusUnset() {
-	C.g_test_dbus_unset()
+	girepository.MustFind("Gio", "unset").Invoke(nil, nil)
 }

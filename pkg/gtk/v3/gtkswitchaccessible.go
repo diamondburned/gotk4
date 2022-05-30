@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkswitchaccessible.go.
-var GTypeSwitchAccessible = externglib.Type(C.gtk_switch_accessible_get_type())
+var GTypeSwitchAccessible = coreglib.Type(C.gtk_switch_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSwitchAccessible, F: marshalSwitchAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type SwitchAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*SwitchAccessible)(nil)
+	_ coreglib.Objector = (*SwitchAccessible)(nil)
 )
 
 func classInitSwitchAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitSwitchAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSwitchAccessible(obj *externglib.Object) *SwitchAccessible {
+func wrapSwitchAccessible(obj *coreglib.Object) *SwitchAccessible {
 	return &SwitchAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -67,5 +66,5 @@ func wrapSwitchAccessible(obj *externglib.Object) *SwitchAccessible {
 }
 
 func marshalSwitchAccessible(p uintptr) (interface{}, error) {
-	return wrapSwitchAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSwitchAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

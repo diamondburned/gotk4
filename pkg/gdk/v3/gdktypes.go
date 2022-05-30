@@ -9,31 +9,32 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdktypes.go.
 var (
-	GTypeAxisUse        = externglib.Type(C.gdk_axis_use_get_type())
-	GTypeByteOrder      = externglib.Type(C.gdk_byte_order_get_type())
-	GTypeGLError        = externglib.Type(C.gdk_gl_error_get_type())
-	GTypeGrabOwnership  = externglib.Type(C.gdk_grab_ownership_get_type())
-	GTypeGrabStatus     = externglib.Type(C.gdk_grab_status_get_type())
-	GTypeModifierIntent = externglib.Type(C.gdk_modifier_intent_get_type())
-	GTypeWindowTypeHint = externglib.Type(C.gdk_window_type_hint_get_type())
-	GTypeAxisFlags      = externglib.Type(C.gdk_axis_flags_get_type())
-	GTypeEventMask      = externglib.Type(C.gdk_event_mask_get_type())
-	GTypeModifierType   = externglib.Type(C.gdk_modifier_type_get_type())
-	GTypeRectangle      = externglib.Type(C.gdk_rectangle_get_type())
+	GTypeAxisUse        = coreglib.Type(C.gdk_axis_use_get_type())
+	GTypeByteOrder      = coreglib.Type(C.gdk_byte_order_get_type())
+	GTypeGLError        = coreglib.Type(C.gdk_gl_error_get_type())
+	GTypeGrabOwnership  = coreglib.Type(C.gdk_grab_ownership_get_type())
+	GTypeGrabStatus     = coreglib.Type(C.gdk_grab_status_get_type())
+	GTypeModifierIntent = coreglib.Type(C.gdk_modifier_intent_get_type())
+	GTypeWindowTypeHint = coreglib.Type(C.gdk_window_type_hint_get_type())
+	GTypeAxisFlags      = coreglib.Type(C.gdk_axis_flags_get_type())
+	GTypeEventMask      = coreglib.Type(C.gdk_event_mask_get_type())
+	GTypeModifierType   = coreglib.Type(C.gdk_modifier_type_get_type())
+	GTypeRectangle      = coreglib.Type(C.gdk_rectangle_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAxisUse, F: marshalAxisUse},
 		{T: GTypeByteOrder, F: marshalByteOrder},
 		{T: GTypeGLError, F: marshalGLError},
@@ -91,7 +92,7 @@ const (
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
-	return AxisUse(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return AxisUse(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for AxisUse.
@@ -140,7 +141,7 @@ const (
 )
 
 func marshalByteOrder(p uintptr) (interface{}, error) {
-	return ByteOrder(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ByteOrder(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ByteOrder.
@@ -168,7 +169,7 @@ const (
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
-	return GLError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return GLError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GLError.
@@ -199,7 +200,7 @@ const (
 )
 
 func marshalGrabOwnership(p uintptr) (interface{}, error) {
-	return GrabOwnership(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return GrabOwnership(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GrabOwnership.
@@ -238,7 +239,7 @@ const (
 )
 
 func marshalGrabStatus(p uintptr) (interface{}, error) {
-	return GrabStatus(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return GrabStatus(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for GrabStatus.
@@ -301,7 +302,7 @@ const (
 )
 
 func marshalModifierIntent(p uintptr) (interface{}, error) {
-	return ModifierIntent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ModifierIntent(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ModifierIntent.
@@ -373,7 +374,7 @@ const (
 )
 
 func marshalWindowTypeHint(p uintptr) (interface{}, error) {
-	return WindowTypeHint(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return WindowTypeHint(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WindowTypeHint.
@@ -437,7 +438,7 @@ const (
 )
 
 func marshalAxisFlags(p uintptr) (interface{}, error) {
-	return AxisFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return AxisFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AxisFlags.
@@ -574,7 +575,7 @@ const (
 )
 
 func marshalEventMask(p uintptr) (interface{}, error) {
-	return EventMask(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return EventMask(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for EventMask.
@@ -753,7 +754,7 @@ const (
 )
 
 func marshalModifierType(p uintptr) (interface{}, error) {
-	return ModifierType(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ModifierType(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ModifierType.
@@ -905,54 +906,8 @@ type rectangle struct {
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
-}
-
-// NewRectangle creates a new Rectangle instance from the given
-// fields.
-func NewRectangle(x, y, width, height int) Rectangle {
-	var f0 C.int // out
-	f0 = C.int(x)
-	var f1 C.int // out
-	f1 = C.int(y)
-	var f2 C.int // out
-	f2 = C.int(width)
-	var f3 C.int // out
-	f3 = C.int(height)
-
-	v := C.GdkRectangle{
-		x:      f0,
-		y:      f1,
-		width:  f2,
-		height: f3,
-	}
-
-	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
-func (r *Rectangle) X() int {
-	var v int // out
-	v = int(r.native.x)
-	return v
-}
-
-func (r *Rectangle) Y() int {
-	var v int // out
-	v = int(r.native.y)
-	return v
-}
-
-func (r *Rectangle) Width() int {
-	var v int // out
-	v = int(r.native.width)
-	return v
-}
-
-func (r *Rectangle) Height() int {
-	var v int // out
-	v = int(r.native.height)
-	return v
 }
 
 // Equal checks if the two given rectangles are equal.
@@ -966,14 +921,17 @@ func (r *Rectangle) Height() int {
 //    - ok: TRUE if the rectangles are equal.
 //
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
-	var _arg0 *C.GdkRectangle // out
-	var _arg1 *C.GdkRectangle // out
-	var _cret C.gboolean      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect1)))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect2)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
+	*(**Rectangle)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(rect1)
 	runtime.KeepAlive(rect2)
 
@@ -984,78 +942,4 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	}
 
 	return _ok
-}
-
-// Intersect calculates the intersection of two rectangles. It is allowed for
-// dest to be the same as either src1 or src2. If the rectangles do not
-// intersect, dest’s width and height is set to 0 and its x and y values are
-// undefined. If you are only interested in whether the rectangles intersect,
-// but not in the intersecting area itself, pass NULL for dest.
-//
-// The function takes the following parameters:
-//
-//    - src2: Rectangle.
-//
-// The function returns the following values:
-//
-//    - dest (optional): return location for the intersection of src1 and src2,
-//      or NULL.
-//    - ok: TRUE if the rectangles intersect.
-//
-func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
-	var _arg0 *C.GdkRectangle // out
-	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src1)))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
-
-	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(src1)
-	runtime.KeepAlive(src2)
-
-	var _dest *Rectangle // out
-	var _ok bool         // out
-
-	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _dest, _ok
-}
-
-// Union calculates the union of two rectangles. The union of rectangles src1
-// and src2 is the smallest rectangle which includes both src1 and src2 within
-// it. It is allowed for dest to be the same as either src1 or src2.
-//
-// Note that this function does not ignore 'empty' rectangles (ie. with zero
-// width or height).
-//
-// The function takes the following parameters:
-//
-//    - src2: Rectangle.
-//
-// The function returns the following values:
-//
-//    - dest: return location for the union of src1 and src2.
-//
-func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
-	var _arg0 *C.GdkRectangle // out
-	var _arg1 *C.GdkRectangle // out
-	var _arg2 C.GdkRectangle  // in
-
-	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src1)))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
-
-	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(src1)
-	runtime.KeepAlive(src2)
-
-	var _dest *Rectangle // out
-
-	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _dest
 }

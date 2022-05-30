@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtcpwrapperconnection.go.
-var GTypeTCPWrapperConnection = externglib.Type(C.g_tcp_wrapper_connection_get_type())
+var GTypeTCPWrapperConnection = coreglib.Type(C.g_tcp_wrapper_connection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTCPWrapperConnection, F: marshalTCPWrapperConnection},
 	})
 }
@@ -48,7 +49,7 @@ func classInitTCPWrapperConnectioner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
+func wrapTCPWrapperConnection(obj *coreglib.Object) *TCPWrapperConnection {
 	return &TCPWrapperConnection{
 		TCPConnection: TCPConnection{
 			SocketConnection: SocketConnection{
@@ -61,7 +62,7 @@ func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 }
 
 func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
-	return wrapTCPWrapperConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTCPWrapperConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTCPWrapperConnection wraps base_io_stream and socket together as a
@@ -77,20 +78,25 @@ func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 //    - tcpWrapperConnection: new Connection.
 //
 func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrapperConnection {
-	var _arg1 *C.GIOStream         // out
-	var _arg2 *C.GSocket           // out
-	var _cret *C.GSocketConnection // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(baseIoStream).Native()))
-	_arg2 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(*IOStreamer)(unsafe.Pointer(&args[0])) = _arg0
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("new_TcpWrapperConnection", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(socket)
 
 	var _tcpWrapperConnection *TCPWrapperConnection // out
 
-	_tcpWrapperConnection = wrapTCPWrapperConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tcpWrapperConnection = wrapTCPWrapperConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tcpWrapperConnection
 }
@@ -102,12 +108,16 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 //    - ioStream conn's base OStream.
 //
 func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
-	var _arg0 *C.GTcpWrapperConnection // out
-	var _cret *C.GIOStream             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TCPWrapperConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
+	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("get_base_io_stream", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _ioStream IOStreamer // out
@@ -118,8 +128,8 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 			panic("object of type gio.IOStreamer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(IOStreamer)
 			return ok
 		})

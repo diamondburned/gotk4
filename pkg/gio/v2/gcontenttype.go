@@ -7,11 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // ContentTypeCanBeExecutable checks if a content type can be executable. Note
@@ -28,13 +30,17 @@ import "C"
 //      FALSE otherwise.
 //
 func ContentTypeCanBeExecutable(typ string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_can_be_executable(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_can_be_executable").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -58,16 +64,21 @@ func ContentTypeCanBeExecutable(typ string) bool {
 //    - ok: TRUE if the two strings are identical or equivalent, FALSE otherwise.
 //
 func ContentTypeEquals(type1, type2 string) bool {
-	var _arg1 *C.gchar   // out
-	var _arg2 *C.gchar   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(type1)))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(type1)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(type2)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(type2)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_content_type_equals(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "content_type_equals").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(type1)
 	runtime.KeepAlive(type2)
 
@@ -93,13 +104,17 @@ func ContentTypeEquals(type1, type2 string) bool {
 //      with g_free().
 //
 func ContentTypeFromMIMEType(mimeType string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_from_mime_type(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_from_mime_type").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(mimeType)
 
 	var _utf8 string // out
@@ -125,13 +140,17 @@ func ContentTypeFromMIMEType(mimeType string) string {
 //      string with g_free().
 //
 func ContentTypeGetDescription(typ string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_get_description(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_get_description").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 
 	var _utf8 string // out
@@ -158,13 +177,17 @@ func ContentTypeGetDescription(typ string) string {
 //      if unknown. Free with g_free().
 //
 func ContentTypeGetGenericIconName(typ string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_get_generic_icon_name(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_get_generic_icon_name").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 
 	var _utf8 string // out
@@ -189,18 +212,22 @@ func ContentTypeGetGenericIconName(typ string) string {
 //      g_object_unref().
 //
 func ContentTypeGetIcon(typ string) *Icon {
-	var _arg1 *C.gchar // out
-	var _cret *C.GIcon // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_get_icon(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_get_icon").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -217,13 +244,14 @@ func ContentTypeGetIcon(typ string) *Icon {
 func ContentTypeGetMIMEDirs() []string {
 	var _cret **C.gchar // in
 
-	_cret = C.g_content_type_get_mime_dirs()
+	_gret := girepository.MustFind("Gio", "content_type_get_mime_dirs").Invoke(nil, nil)
+	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	var _utf8s []string // out
 
 	{
 		var i int
-		var z *C.gchar
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -251,13 +279,17 @@ func ContentTypeGetMIMEDirs() []string {
 //      unknown; free with g_free().
 //
 func ContentTypeGetMIMEType(typ string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_get_mime_type(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_get_mime_type").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 
 	var _utf8 string // out
@@ -282,69 +314,24 @@ func ContentTypeGetMIMEType(typ string) string {
 //      returned object with g_object_unref().
 //
 func ContentTypeGetSymbolicIcon(typ string) *Icon {
-	var _arg1 *C.gchar // out
-	var _cret *C.GIcon // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_get_symbolic_icon(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_get_symbolic_icon").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
-}
-
-// ContentTypeGuess guesses the content type based on example data. If the
-// function is uncertain, result_uncertain will be set to TRUE. Either filename
-// or data may be NULL, in which case the guess will be based solely on the
-// other argument.
-//
-// The function takes the following parameters:
-//
-//    - filename (optional): string, or NULL.
-//    - data (optional): stream of data, or NULL.
-//
-// The function returns the following values:
-//
-//    - resultUncertain (optional): return location for the certainty of the
-//      result, or NULL.
-//    - utf8: string indicating a guessed content type for the given data. Free
-//      with g_free().
-//
-func ContentTypeGuess(filename string, data []byte) (bool, string) {
-	var _arg1 *C.gchar  // out
-	var _arg2 *C.guchar // out
-	var _arg3 C.gsize
-	var _arg4 C.gboolean // in
-	var _cret *C.gchar   // in
-
-	if filename != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg3 = (C.gsize)(len(data))
-	if len(data) > 0 {
-		_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
-	}
-
-	_cret = C.g_content_type_guess(_arg1, _arg2, _arg3, &_arg4)
-	runtime.KeepAlive(filename)
-	runtime.KeepAlive(data)
-
-	var _resultUncertain bool // out
-	var _utf8 string          // out
-
-	if _arg4 != 0 {
-		_resultUncertain = true
-	}
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _resultUncertain, _utf8
 }
 
 // ContentTypeGuessForTree tries to guess the type of the tree with root root,
@@ -370,12 +357,16 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 //      g_strfreev().
 //
 func ContentTypeGuessForTree(root Filer) []string {
-	var _arg1 *C.GFile  // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
-	_arg1 = (*C.GFile)(unsafe.Pointer(externglib.InternObject(root).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(root).Native()))
+	*(*Filer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_guess_for_tree(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_guess_for_tree").Invoke(args[:], nil)
+	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(root)
 
 	var _utf8s []string // out
@@ -383,7 +374,7 @@ func ContentTypeGuessForTree(root Filer) []string {
 	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
-		var z *C.gchar
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -411,16 +402,21 @@ func ContentTypeGuessForTree(root Filer) []string {
 //    - ok: TRUE if type is a kind of supertype, FALSE otherwise.
 //
 func ContentTypeIsA(typ, supertype string) bool {
-	var _arg1 *C.gchar   // out
-	var _arg2 *C.gchar   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(supertype)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(supertype)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_content_type_is_a(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "content_type_is_a").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(supertype)
 
@@ -446,16 +442,21 @@ func ContentTypeIsA(typ, supertype string) bool {
 //    - ok: TRUE if type is a kind of mime_type, FALSE otherwise.
 //
 func ContentTypeIsMIMEType(typ, mimeType string) bool {
-	var _arg1 *C.gchar   // out
-	var _arg2 *C.gchar   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_content_type_is_mime_type(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "content_type_is_mime_type").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(mimeType)
 
@@ -481,13 +482,17 @@ func ContentTypeIsMIMEType(typ, mimeType string) bool {
 //    - ok: TRUE if the type is the unknown type.
 //
 func ContentTypeIsUnknown(typ string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(typ)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_content_type_is_unknown(_arg1)
+	_gret := girepository.MustFind("Gio", "content_type_is_unknown").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
@@ -528,23 +533,26 @@ func ContentTypeIsUnknown(typ string) bool {
 //      try listed first.
 //
 func ContentTypeSetMIMEDirs(dirs []string) {
-	var _arg1 **C.gchar // out
+	var args [1]girepository.Argument
+	var _arg0 **C.void // out
 
 	{
-		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(dirs) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		_arg0 = (**C.void)(C.calloc(C.size_t((len(dirs) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg0))
 		{
-			out := unsafe.Slice(_arg1, len(dirs)+1)
-			var zero *C.gchar
+			out := unsafe.Slice(_arg0, len(dirs)+1)
+			var zero *C.void
 			out[len(dirs)] = zero
 			for i := range dirs {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(dirs[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(dirs[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(*[]string)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_content_type_set_mime_dirs(_arg1)
+	girepository.MustFind("Gio", "content_type_set_mime_dirs").Invoke(args[:], nil)
+
 	runtime.KeepAlive(dirs)
 }
 
@@ -557,15 +565,16 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 //    - list of the registered content types.
 //
 func ContentTypesGetRegistered() []string {
-	var _cret *C.GList // in
+	var _cret *C.void // in
 
-	_cret = C.g_content_types_get_registered()
+	_gret := girepository.MustFind("Gio", "content_types_get_registered").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _list []string // out
 
 	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.gchar)(v)
+		src := (*C.void)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
 		defer C.free(unsafe.Pointer(src))

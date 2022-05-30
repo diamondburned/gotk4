@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkgltexture.go.
-var GTypeGLTexture = externglib.Type(C.gdk_gl_texture_get_type())
+var GTypeGLTexture = coreglib.Type(C.gdk_gl_texture_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGLTexture, F: marshalGLTexture},
 	})
 }
@@ -45,7 +46,7 @@ func classInitGLTexturer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGLTexture(obj *externglib.Object) *GLTexture {
+func wrapGLTexture(obj *coreglib.Object) *GLTexture {
 	return &GLTexture{
 		Texture: Texture{
 			Object: obj,
@@ -57,7 +58,7 @@ func wrapGLTexture(obj *externglib.Object) *GLTexture {
 }
 
 func marshalGLTexture(p uintptr) (interface{}, error) {
-	return wrapGLTexture(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGLTexture(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Release releases the GL resources held by a GdkGLTexture.
@@ -65,10 +66,13 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 // The texture contents are still available via the gdk.Texture.Download()
 // function, after this function has been called.
 func (self *GLTexture) Release() {
-	var _arg0 *C.GdkGLTexture // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**GLTexture)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_gl_texture_release(_arg0)
+	girepository.MustFind("Gdk", "GLTexture").InvokeMethod("release", args[:], nil)
+
 	runtime.KeepAlive(self)
 }

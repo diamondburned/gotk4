@@ -8,13 +8,13 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // TextBufferDeserializeFunc: function that is called to deserialize rich text
@@ -39,8 +39,8 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTex
 	var _data []byte                // out
 	var _createTags bool            // out
 
-	_registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
-	_contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg2)))
+	_registerBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(arg1)))
+	_contentBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(arg2)))
 	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	_data = make([]byte, arg5)
 	copy(_data, unsafe.Slice((*byte)(unsafe.Pointer(arg4)), arg5))
@@ -51,42 +51,7 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTex
 	_goerr := fn(_registerBuffer, _contentBuffer, _iter, _data, _createTags)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-// TextBufferSerializeFunc: function that is called to serialize the content of
-// a text buffer. It must return the serialized form of the content.
-type TextBufferSerializeFunc func(registerBuffer, contentBuffer *TextBuffer, start, end *TextIter) (length uint, guint8 *byte)
-
-//export _gotk4_gtk3_TextBufferSerializeFunc
-func _gotk4_gtk3_TextBufferSerializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTextBuffer, arg3 *C.GtkTextIter, arg4 *C.GtkTextIter, arg5 *C.gsize, arg6 C.gpointer) (cret *C.guint8) {
-	var fn TextBufferSerializeFunc
-	{
-		v := gbox.Get(uintptr(arg6))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TextBufferSerializeFunc)
-	}
-
-	var _registerBuffer *TextBuffer // out
-	var _contentBuffer *TextBuffer  // out
-	var _start *TextIter            // out
-	var _end *TextIter              // out
-
-	_registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
-	_contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg2)))
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
-
-	length, guint8 := fn(_registerBuffer, _contentBuffer, _start, _end)
-
-	*arg5 = C.gsize(length)
-	if guint8 != nil {
-		cret = (*C.guint8)(unsafe.Pointer(guint8))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret

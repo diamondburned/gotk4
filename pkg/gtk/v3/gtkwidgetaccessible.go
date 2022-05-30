@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkwidgetaccessible.go.
-var GTypeWidgetAccessible = externglib.Type(C.gtk_widget_accessible_get_type())
+var GTypeWidgetAccessible = coreglib.Type(C.gtk_widget_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWidgetAccessible, F: marshalWidgetAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type WidgetAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*WidgetAccessible)(nil)
+	_ coreglib.Objector = (*WidgetAccessible)(nil)
 )
 
 func classInitWidgetAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitWidgetAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
+func wrapWidgetAccessible(obj *coreglib.Object) *WidgetAccessible {
 	return &WidgetAccessible{
 		Accessible: Accessible{
 			ObjectClass: atk.ObjectClass{
@@ -62,5 +61,5 @@ func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
 }
 
 func marshalWidgetAccessible(p uintptr) (interface{}, error) {
-	return wrapWidgetAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWidgetAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

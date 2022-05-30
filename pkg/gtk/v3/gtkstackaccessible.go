@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkstackaccessible.go.
-var GTypeStackAccessible = externglib.Type(C.gtk_stack_accessible_get_type())
+var GTypeStackAccessible = coreglib.Type(C.gtk_stack_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStackAccessible, F: marshalStackAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type StackAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*StackAccessible)(nil)
+	_ coreglib.Objector = (*StackAccessible)(nil)
 )
 
 func classInitStackAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitStackAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
+func wrapStackAccessible(obj *coreglib.Object) *StackAccessible {
 	return &StackAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -64,5 +63,5 @@ func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 }
 
 func marshalStackAccessible(p uintptr) (interface{}, error) {
-	return wrapStackAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStackAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

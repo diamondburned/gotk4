@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtklayoutchild.go.
-var GTypeLayoutChild = externglib.Type(C.gtk_layout_child_get_type())
+var GTypeLayoutChild = coreglib.Type(C.gtk_layout_child_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeLayoutChild, F: marshalLayoutChild},
 	})
 }
@@ -38,11 +39,11 @@ type LayoutChildOverrider interface {
 // layout.
 type LayoutChild struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*LayoutChild)(nil)
+	_ coreglib.Objector = (*LayoutChild)(nil)
 )
 
 // LayoutChilder describes types inherited from class LayoutChild.
@@ -50,7 +51,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type LayoutChilder interface {
-	externglib.Objector
+	coreglib.Objector
 	baseLayoutChild() *LayoutChild
 }
 
@@ -64,14 +65,14 @@ func classInitLayoutChilder(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapLayoutChild(obj *externglib.Object) *LayoutChild {
+func wrapLayoutChild(obj *coreglib.Object) *LayoutChild {
 	return &LayoutChild{
 		Object: obj,
 	}
 }
 
 func marshalLayoutChild(p uintptr) (interface{}, error) {
-	return wrapLayoutChild(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapLayoutChild(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (layoutChild *LayoutChild) baseLayoutChild() *LayoutChild {
@@ -90,12 +91,16 @@ func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
 //    - widget: Widget.
 //
 func (layoutChild *LayoutChild) ChildWidget() Widgetter {
-	var _arg0 *C.GtkLayoutChild // out
-	var _cret *C.GtkWidget      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(externglib.InternObject(layoutChild).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
+	*(**LayoutChild)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_layout_child_get_child_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "LayoutChild").InvokeMethod("get_child_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(layoutChild)
 
 	var _widget Widgetter // out
@@ -106,8 +111,8 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -129,12 +134,16 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 //    - layoutManager: GtkLayoutManager.
 //
 func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
-	var _arg0 *C.GtkLayoutChild   // out
-	var _cret *C.GtkLayoutManager // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(externglib.InternObject(layoutChild).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
+	*(**LayoutChild)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
+	_gret := girepository.MustFind("Gtk", "LayoutChild").InvokeMethod("get_layout_manager", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(layoutChild)
 
 	var _layoutManager LayoutManagerer // out
@@ -145,8 +154,8 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 			panic("object of type gtk.LayoutManagerer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(LayoutManagerer)
 			return ok
 		})

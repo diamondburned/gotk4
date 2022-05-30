@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk4_LinkButton_ConnectActivateLink(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtklinkbutton.go.
-var GTypeLinkButton = externglib.Type(C.gtk_link_button_get_type())
+var GTypeLinkButton = coreglib.Type(C.gtk_link_button_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeLinkButton, F: marshalLinkButton},
 	})
 }
@@ -58,15 +59,15 @@ type LinkButton struct {
 }
 
 var (
-	_ Widgetter           = (*LinkButton)(nil)
-	_ externglib.Objector = (*LinkButton)(nil)
+	_ Widgetter         = (*LinkButton)(nil)
+	_ coreglib.Objector = (*LinkButton)(nil)
 )
 
-func wrapLinkButton(obj *externglib.Object) *LinkButton {
+func wrapLinkButton(obj *coreglib.Object) *LinkButton {
 	return &LinkButton{
 		Button: Button{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -83,7 +84,7 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -103,14 +104,14 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 }
 
 func marshalLinkButton(p uintptr) (interface{}, error) {
-	return wrapLinkButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapLinkButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_LinkButton_ConnectActivateLink
 func _gotk4_gtk4_LinkButton_ConnectActivateLink(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
 	var f func() (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -136,8 +137,8 @@ func _gotk4_gtk4_LinkButton_ConnectActivateLink(arg0 C.gpointer, arg1 C.guintptr
 // To override the default behavior, you can connect to the ::activate-link
 // signal and stop the propagation of the signal by returning TRUE from your
 // handler.
-func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(linkButton, "activate-link", false, unsafe.Pointer(C._gotk4_gtk4_LinkButton_ConnectActivateLink), f)
+func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(linkButton, "activate-link", false, unsafe.Pointer(C._gotk4_gtk4_LinkButton_ConnectActivateLink), f)
 }
 
 // NewLinkButton creates a new GtkLinkButton with the URI as its text.
@@ -151,18 +152,22 @@ func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) externglib
 //    - linkButton: new link button widget.
 //
 func NewLinkButton(uri string) *LinkButton {
-	var _arg1 *C.char      // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_link_button_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("new_LinkButton", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(uri)
 
 	var _linkButton *LinkButton // out
 
-	_linkButton = wrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
+	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
@@ -179,24 +184,29 @@ func NewLinkButton(uri string) *LinkButton {
 //    - linkButton: new link button widget.
 //
 func NewLinkButtonWithLabel(uri, label string) *LinkButton {
-	var _arg1 *C.char      // out
-	var _arg2 *C.char      // out
-	var _cret *C.GtkWidget // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg0))
 	if label != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("new_LinkButton_with_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(label)
 
 	var _linkButton *LinkButton // out
 
-	_linkButton = wrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
+	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
@@ -209,12 +219,16 @@ func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 //      should not be modified or freed.
 //
 func (linkButton *LinkButton) URI() string {
-	var _arg0 *C.GtkLinkButton // out
-	var _cret *C.char          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+	*(**LinkButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_link_button_get_uri(_arg0)
+	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("get_uri", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(linkButton)
 
 	var _utf8 string // out
@@ -236,12 +250,16 @@ func (linkButton *LinkButton) URI() string {
 //    - ok: TRUE if the link has been visited, FALSE otherwise.
 //
 func (linkButton *LinkButton) Visited() bool {
-	var _arg0 *C.GtkLinkButton // out
-	var _cret C.gboolean       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+	*(**LinkButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_link_button_get_visited(_arg0)
+	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("get_visited", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(linkButton)
 
 	var _ok bool // out
@@ -262,14 +280,17 @@ func (linkButton *LinkButton) Visited() bool {
 //    - uri: valid URI.
 //
 func (linkButton *LinkButton) SetURI(uri string) {
-	var _arg0 *C.GtkLinkButton // out
-	var _arg1 *C.char          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**LinkButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_link_button_set_uri(_arg0, _arg1)
+	girepository.MustFind("Gtk", "LinkButton").InvokeMethod("set_uri", args[:], nil)
+
 	runtime.KeepAlive(linkButton)
 	runtime.KeepAlive(uri)
 }
@@ -283,15 +304,18 @@ func (linkButton *LinkButton) SetURI(uri string) {
 //    - visited: new “visited” state.
 //
 func (linkButton *LinkButton) SetVisited(visited bool) {
-	var _arg0 *C.GtkLinkButton // out
-	var _arg1 C.gboolean       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(externglib.InternObject(linkButton).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
 	if visited {
 		_arg1 = C.TRUE
 	}
+	*(**LinkButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_link_button_set_visited(_arg0, _arg1)
+	girepository.MustFind("Gtk", "LinkButton").InvokeMethod("set_visited", args[:], nil)
+
 	runtime.KeepAlive(linkButton)
 	runtime.KeepAlive(visited)
 }

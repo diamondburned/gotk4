@@ -6,21 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktextmark.go.
-var GTypeTextMark = externglib.Type(C.gtk_text_mark_get_type())
+var GTypeTextMark = coreglib.Type(C.gtk_text_mark_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTextMark, F: marshalTextMark},
 	})
 }
@@ -58,11 +57,11 @@ type TextMarkOverrider interface {
 // Marks are typically created using the gtk_text_buffer_create_mark() function.
 type TextMark struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*TextMark)(nil)
+	_ coreglib.Objector = (*TextMark)(nil)
 )
 
 func classInitTextMarker(gclassPtr, data C.gpointer) {
@@ -73,14 +72,14 @@ func classInitTextMarker(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTextMark(obj *externglib.Object) *TextMark {
+func wrapTextMark(obj *coreglib.Object) *TextMark {
 	return &TextMark{
 		Object: obj,
 	}
 }
 
 func marshalTextMark(p uintptr) (interface{}, error) {
-	return wrapTextMark(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTextMark(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTextMark creates a text mark. Add it to a buffer using
@@ -103,25 +102,30 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 //    - textMark: new TextMark.
 //
 func NewTextMark(name string, leftGravity bool) *TextMark {
-	var _arg1 *C.gchar       // out
-	var _arg2 C.gboolean     // out
-	var _cret *C.GtkTextMark // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
+	var _cret *C.void    // in
 
 	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
+		_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg0))
 	}
 	if leftGravity {
-		_arg2 = C.TRUE
+		_arg1 = C.TRUE
 	}
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_text_mark_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("new_TextMark", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(leftGravity)
 
 	var _textMark *TextMark // out
 
-	_textMark = wrapTextMark(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textMark = wrapTextMark(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textMark
 }
@@ -134,17 +138,21 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 //    - textBuffer mark’s TextBuffer.
 //
 func (mark *TextMark) Buffer() *TextBuffer {
-	var _arg0 *C.GtkTextMark   // out
-	var _cret *C.GtkTextBuffer // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_text_mark_get_buffer(_arg0)
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_buffer", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(mark)
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(_cret)))
+	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _textBuffer
 }
@@ -158,12 +166,16 @@ func (mark *TextMark) Buffer() *TextBuffer {
 //    - ok: whether the mark is deleted.
 //
 func (mark *TextMark) Deleted() bool {
-	var _arg0 *C.GtkTextMark // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_text_mark_get_deleted(_arg0)
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_deleted", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(mark)
 
 	var _ok bool // out
@@ -182,12 +194,16 @@ func (mark *TextMark) Deleted() bool {
 //    - ok: TRUE if the mark has left gravity, FALSE otherwise.
 //
 func (mark *TextMark) LeftGravity() bool {
-	var _arg0 *C.GtkTextMark // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_left_gravity", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(mark)
 
 	var _ok bool // out
@@ -206,12 +222,16 @@ func (mark *TextMark) LeftGravity() bool {
 //    - utf8 (optional): mark name.
 //
 func (mark *TextMark) Name() string {
-	var _arg0 *C.GtkTextMark // out
-	var _cret *C.gchar       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_text_mark_get_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(mark)
 
 	var _utf8 string // out
@@ -231,12 +251,16 @@ func (mark *TextMark) Name() string {
 //    - ok: TRUE if visible.
 //
 func (mark *TextMark) Visible() bool {
-	var _arg0 *C.GtkTextMark // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_text_mark_get_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(mark)
 
 	var _ok bool // out
@@ -258,15 +282,18 @@ func (mark *TextMark) Visible() bool {
 //    - setting: visibility of mark.
 //
 func (mark *TextMark) SetVisible(setting bool) {
-	var _arg0 *C.GtkTextMark // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(externglib.InternObject(mark).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**TextMark)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_text_mark_set_visible(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TextMark").InvokeMethod("set_visible", args[:], nil)
+
 	runtime.KeepAlive(mark)
 	runtime.KeepAlive(setting)
 }

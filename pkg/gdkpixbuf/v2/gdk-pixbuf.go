@@ -5,7 +5,7 @@ package gdkpixbuf
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -15,10 +15,10 @@ import (
 import "C"
 
 // glib.Type values for gdk-pixbuf.go.
-var GTypePixbuf = externglib.Type(C.gdk_pixbuf_get_type())
+var GTypePixbuf = coreglib.Type(C.gdk_pixbuf_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePixbuf, F: marshalPixbuf},
 	})
 }
@@ -155,16 +155,16 @@ func init() {
 // allows to e.g. write the image to a socket or store it in a database.
 type Pixbuf struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	gio.LoadableIcon
 }
 
 var (
-	_ externglib.Objector = (*Pixbuf)(nil)
+	_ coreglib.Objector = (*Pixbuf)(nil)
 )
 
-func wrapPixbuf(obj *externglib.Object) *Pixbuf {
+func wrapPixbuf(obj *coreglib.Object) *Pixbuf {
 	return &Pixbuf{
 		Object: obj,
 		LoadableIcon: gio.LoadableIcon{
@@ -176,5 +176,5 @@ func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 }
 
 func marshalPixbuf(p uintptr) (interface{}, error) {
-	return wrapPixbuf(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPixbuf(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

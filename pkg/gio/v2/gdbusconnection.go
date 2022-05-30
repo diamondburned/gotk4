@@ -5,23 +5,20 @@ package gio
 import (
 	"context"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// extern GDBusMessage* _gotk4_gio2_DBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
-// extern void _gotk4_gio2_DBusSignalCallback(GDBusConnection*, gchar*, gchar*, gchar*, gchar*, GVariant*, gpointer);
-// extern void callbackDelete(gpointer);
+// #include <glib.h>
 import "C"
 
 // DBusInterfaceGetPropertyFunc: type of the get_property function in
@@ -45,7 +42,7 @@ func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 	var _interfaceName string       // out
 	var _propertyName string        // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
@@ -54,9 +51,9 @@ func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 	err, variant := fn(_connection, _sender, _objectPath, _interfaceName, _propertyName)
 
 	if err != nil && arg6 != nil {
-		*arg6 = (*C.GError)(gerror.New(err))
+		*arg6 = (*C.void)(gerror.New(err))
 	}
-	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	return cret
 }
@@ -84,7 +81,7 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg1 *C.GDBusConnection, arg2 *C.gc
 	var _parameters *glib.Variant         // out
 	var _invocation *DBusMethodInvocation // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
@@ -97,7 +94,7 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg1 *C.GDBusConnection, arg2 *C.gc
 			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
-	_invocation = wrapDBusMethodInvocation(externglib.AssumeOwnership(unsafe.Pointer(arg7)))
+	_invocation = wrapDBusMethodInvocation(coreglib.AssumeOwnership(unsafe.Pointer(arg7)))
 
 	fn(_connection, _sender, _objectPath, _interfaceName, _methodName, _parameters, _invocation)
 }
@@ -124,7 +121,7 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 	var _propertyName string        // out
 	var _value *glib.Variant        // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
@@ -141,7 +138,7 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 	err, ok := fn(_connection, _sender, _objectPath, _interfaceName, _propertyName, _value)
 
 	if err != nil && arg7 != nil {
-		*arg7 = (*C.GError)(gerror.New(err))
+		*arg7 = (*C.void)(gerror.New(err))
 	}
 	if ok {
 		cret = C.TRUE
@@ -226,8 +223,8 @@ func _gotk4_gio2_DBusMessageFilterFunction(arg1 *C.GDBusConnection, arg2 *C.GDBu
 	var _message *DBusMessage       // out
 	var _incoming bool              // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
-	_message = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(arg2)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
+	_message = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(arg2)))
 	if arg3 != 0 {
 		_incoming = true
 	}
@@ -235,8 +232,8 @@ func _gotk4_gio2_DBusMessageFilterFunction(arg1 *C.GDBusConnection, arg2 *C.GDBu
 	dBusMessage := fn(_connection, _message, _incoming)
 
 	if dBusMessage != nil {
-		cret = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(dBusMessage).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(dBusMessage).Native()))
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(dBusMessage).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(dBusMessage).Native()))
 	}
 
 	return cret
@@ -264,7 +261,7 @@ func _gotk4_gio2_DBusSignalCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3
 	var _signalName string          // out
 	var _parameters *glib.Variant   // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	if arg2 != nil {
 		_senderName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	}
@@ -281,45 +278,6 @@ func _gotk4_gio2_DBusSignalCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3
 	)
 
 	fn(_connection, _senderName, _objectPath, _interfaceName, _signalName, _parameters)
-}
-
-// DBusSubtreeDispatchFunc: type of the dispatch function in BusSubtreeVTable.
-//
-// Subtrees are flat. node, if non-NULL, is always exactly one segment of the
-// object path (ie: it never contains a slash).
-type DBusSubtreeDispatchFunc func(connection *DBusConnection, sender, objectPath, interfaceName, node string) (outUserData cgo.Handle, dBusInterfaceVTable *DBusInterfaceVTable)
-
-//export _gotk4_gio2_DBusSubtreeDispatchFunc
-func _gotk4_gio2_DBusSubtreeDispatchFunc(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gchar, arg6 *C.gpointer, arg7 C.gpointer) (cret *C.GDBusInterfaceVTable) {
-	var fn DBusSubtreeDispatchFunc
-	{
-		v := gbox.Get(uintptr(arg7))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(DBusSubtreeDispatchFunc)
-	}
-
-	var _connection *DBusConnection // out
-	var _sender string              // out
-	var _objectPath string          // out
-	var _interfaceName string       // out
-	var _node string                // out
-
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
-	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_node = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-
-	outUserData, dBusInterfaceVTable := fn(_connection, _sender, _objectPath, _interfaceName, _node)
-
-	*arg6 = (C.gpointer)(unsafe.Pointer(outUserData))
-	if dBusInterfaceVTable != nil {
-		cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
-	}
-
-	return cret
 }
 
 // DBusSubtreeEnumerateFunc: type of the enumerate function in BusSubtreeVTable.
@@ -350,20 +308,20 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg1 *C.GDBusConnection, arg2 *C.gchar
 	var _sender string              // out
 	var _objectPath string          // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 
 	utf8s := fn(_connection, _sender, _objectPath)
 
 	{
-		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		cret = (**C.void)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		{
 			out := unsafe.Slice(cret, len(utf8s)+1)
-			var zero *C.gchar
+			var zero *C.void
 			out[len(utf8s)] = zero
 			for i := range utf8s {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(utf8s[i])))
 			}
 		}
 	}
@@ -407,7 +365,7 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg1 *C.GDBusConnection, arg2 *C.gcha
 	var _objectPath string          // out
 	var _node string                // out
 
-	_connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg1)))
+	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_node = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
@@ -416,56 +374,19 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg1 *C.GDBusConnection, arg2 *C.gcha
 
 	if dBusInterfaceInfos != nil {
 		{
-			cret = (**C.GDBusInterfaceInfo)(C.calloc(C.size_t((len(dBusInterfaceInfos) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+			cret = (**C.void)(C.calloc(C.size_t((len(dBusInterfaceInfos) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 			{
 				out := unsafe.Slice(cret, len(dBusInterfaceInfos)+1)
-				var zero *C.GDBusInterfaceInfo
+				var zero *C.void
 				out[len(dBusInterfaceInfos)] = zero
 				for i := range dBusInterfaceInfos {
-					out[i] = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfos[i])))
+					out[i] = (*C.void)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfos[i])))
 				}
 			}
 		}
 	}
 
 	return cret
-}
-
-// BusGet: asynchronously connects to the message bus specified by bus_type.
-//
-// When the operation is finished, callback will be invoked. You can then call
-// g_bus_get_finish() to get the result of the operation.
-//
-// This is an asynchronous failable function. See g_bus_get_sync() for the
-// synchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - busType: Type.
-//    - callback (optional) to call when the request is satisfied.
-//
-func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 C.GBusType            // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GBusType(busType)
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(busType)
-	runtime.KeepAlive(callback)
 }
 
 // BusGetFinish finishes an operation started with g_bus_get().
@@ -487,72 +408,23 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 //    - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
-	var _arg1 *C.GAsyncResult    // out
-	var _cret *C.GDBusConnection // in
-	var _cerr *C.GError          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_bus_get_finish(_arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "bus_get_finish").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(res)
 
 	var _dBusConnection *DBusConnection // out
 	var _goerr error                    // out
 
-	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _dBusConnection, _goerr
-}
-
-// BusGetSync: synchronously connects to the message bus specified by bus_type.
-// Note that the returned object may shared with other callers, e.g. if two
-// separate parts of a process calls this function with the same bus_type, they
-// will share the same object.
-//
-// This is a synchronous failable function. See g_bus_get() and
-// g_bus_get_finish() for the asynchronous version.
-//
-// The returned object is a singleton, that is, shared with other callers of
-// g_bus_get() and g_bus_get_sync() for bus_type. In the event that you need a
-// private message bus connection, use g_dbus_address_get_for_bus_sync() and
-// g_dbus_connection_new_for_address().
-//
-// Note that the returned BusConnection object will (usually) have the
-// BusConnection:exit-on-close property set to TRUE.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - busType: Type.
-//
-// The function returns the following values:
-//
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
-func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
-	var _arg2 *C.GCancellable    // out
-	var _arg1 C.GBusType         // out
-	var _cret *C.GDBusConnection // in
-	var _cerr *C.GError          // in
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GBusType(busType)
-
-	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(busType)
-
-	var _dBusConnection *DBusConnection // out
-	var _goerr error                    // out
-
-	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -572,19 +444,23 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 //    - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
-	var _arg1 *C.GAsyncResult    // out
-	var _cret *C.GDBusConnection // in
-	var _cerr *C.GError          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_new_finish(_arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("new_DBusConnection_finish", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(res)
 
 	var _dBusConnection *DBusConnection // out
 	var _goerr error                    // out
 
-	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -604,332 +480,28 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 //    - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, error) {
-	var _arg1 *C.GAsyncResult    // out
-	var _cret *C.GDBusConnection // in
-	var _cerr *C.GError          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_new_for_address_finish(_arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("new_DBusConnection_for_address_finish", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(res)
 
 	var _dBusConnection *DBusConnection // out
 	var _goerr error                    // out
 
-	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _dBusConnection, _goerr
-}
-
-// NewDBusConnectionForAddressSync: synchronously connects and sets up a D-Bus
-// client connection for exchanging D-Bus messages with an endpoint specified by
-// address which must be in the D-Bus address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-//
-// This constructor can only be used to initiate client-side connections - use
-// g_dbus_connection_new_sync() if you need to act as the server. In particular,
-// flags cannot contain the G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER,
-// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS or
-// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flags.
-//
-// This is a synchronous failable constructor. See
-// g_dbus_connection_new_for_address() for the asynchronous version.
-//
-// If observer is not NULL it may be used to control the authentication process.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - address d-Bus address.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
-//
-// The function returns the following values:
-//
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
-func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
-	var _arg4 *C.GCancellable        // out
-	var _arg1 *C.gchar               // out
-	var _arg2 C.GDBusConnectionFlags // out
-	var _arg3 *C.GDBusAuthObserver   // out
-	var _cret *C.GDBusConnection     // in
-	var _cerr *C.GError              // in
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GDBusConnectionFlags(flags)
-	if observer != nil {
-		_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
-	}
-
-	_cret = C.g_dbus_connection_new_for_address_sync(_arg1, _arg2, _arg3, _arg4, &_cerr)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(address)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(observer)
-
-	var _dBusConnection *DBusConnection // out
-	var _goerr error                    // out
-
-	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _dBusConnection, _goerr
-}
-
-// NewDBusConnectionSync: synchronously sets up a D-Bus connection for
-// exchanging D-Bus messages with the end represented by stream.
-//
-// If stream is a Connection, then the corresponding #GSocket will be put into
-// non-blocking mode.
-//
-// The D-Bus connection will interact with stream from a worker thread. As a
-// result, the caller should not interact with stream after this method has been
-// called, except by calling g_object_unref() on it.
-//
-// If observer is not NULL it may be used to control the authentication process.
-//
-// This is a synchronous failable constructor. See g_dbus_connection_new() for
-// the asynchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - stream: OStream.
-//    - guid (optional): GUID to use if authenticating as a server or NULL.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
-//
-// The function returns the following values:
-//
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
-func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
-	var _arg5 *C.GCancellable        // out
-	var _arg1 *C.GIOStream           // out
-	var _arg2 *C.gchar               // out
-	var _arg3 C.GDBusConnectionFlags // out
-	var _arg4 *C.GDBusAuthObserver   // out
-	var _cret *C.GDBusConnection     // in
-	var _cerr *C.GError              // in
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
-	if guid != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	_arg3 = C.GDBusConnectionFlags(flags)
-	if observer != nil {
-		_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
-	}
-
-	_cret = C.g_dbus_connection_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(guid)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(observer)
-
-	var _dBusConnection *DBusConnection // out
-	var _goerr error                    // out
-
-	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _dBusConnection, _goerr
-}
-
-// AddFilter adds a message filter. Filters are handlers that are run on all
-// incoming and outgoing messages, prior to standard dispatch. Filters are run
-// in the order that they were added. The same handler can be added as a filter
-// more than once, in which case it will be run more than once. Filters added
-// during a filter callback won't be run on the message being processed. Filter
-// functions are allowed to modify and even drop messages.
-//
-// Note that filters are run in a dedicated message handling thread so they
-// can't block and, generally, can't do anything but signal a worker thread.
-// Also note that filters are rarely needed - use API such as
-// g_dbus_connection_send_message_with_reply(),
-// g_dbus_connection_signal_subscribe() or g_dbus_connection_call() instead.
-//
-// If a filter consumes an incoming message the message is not dispatched
-// anywhere else - not even the standard dispatch machinery (that API such as
-// g_dbus_connection_signal_subscribe() and
-// g_dbus_connection_send_message_with_reply() relies on) will see the message.
-// Similarly, if a filter consumes an outgoing message, the message will not be
-// sent to the other peer.
-//
-// If user_data_free_func is non-NULL, it will be called (in the thread-default
-// main context of the thread you are calling this method from) at some point
-// after user_data is no longer needed. (It is not guaranteed to be called
-// synchronously when the filter is removed, and may be called after connection
-// has been destroyed.).
-//
-// The function takes the following parameters:
-//
-//    - filterFunction: filter function.
-//
-// The function returns the following values:
-//
-//    - guint: filter identifier that can be used with
-//      g_dbus_connection_remove_filter().
-//
-func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
-	var _arg0 *C.GDBusConnection           // out
-	var _arg1 C.GDBusMessageFilterFunction // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-	var _cret C.guint // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gio2_DBusMessageFilterFunction)
-	_arg2 = C.gpointer(gbox.Assign(filterFunction))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	_cret = C.g_dbus_connection_add_filter(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(filterFunction)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// Call: asynchronously invokes the method_name method on the interface_name
-// D-Bus interface on the remote object at object_path owned by bus_name.
-//
-// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If cancellable is canceled, the operation will fail with
-// G_IO_ERROR_CANCELLED. If parameters contains a value not compatible with the
-// D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
-//
-// If reply_type is non-NULL then the reply will be checked for having this type
-// and an error will be raised if it does not match. Said another way, if you
-// give a reply_type then any non-NULL return value will be of this type. Unless
-// it’s G_VARIANT_TYPE_UNIT, the reply_type will be a tuple containing one or
-// more values.
-//
-// If the parameters #GVariant is floating, it is consumed. This allows
-// convenient 'inline' use of g_variant_new(), e.g.:
-//
-//    g_dbus_connection_call (connection,
-//                            "org.freedesktop.StringThings",
-//                            "/org/freedesktop/StringThings",
-//                            "org.freedesktop.StringThings",
-//                            "TwoStrings",
-//                            g_variant_new ("(ss)",
-//                                           "Thing One",
-//                                           "Thing Two"),
-//                            NULL,
-//                            G_DBUS_CALL_FLAGS_NONE,
-//                            -1,
-//                            NULL,
-//                            (GAsyncReadyCallback) two_strings_done,
-//                            NULL);
-//
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call g_dbus_connection_call_finish() to get
-// the result of the operation. See g_dbus_connection_call_sync() for the
-// synchronous version of this function.
-//
-// If callback is NULL then the D-Bus method call message will be sent with the
-// G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - busName (optional): unique or well-known bus name or NULL if connection
-//      is not a message bus connection.
-//    - objectPath: path of remote object.
-//    - interfaceName d-Bus interface to invoke method on.
-//    - methodName: name of the method to invoke.
-//    - parameters (optional) tuple with parameters for the method or NULL if not
-//      passing parameters.
-//    - replyType (optional): expected type of the reply (which will be a tuple),
-//      or NULL.
-//    - flags from the BusCallFlags enumeration.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result of the method invocation.
-//
-func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
-	var _arg0 *C.GDBusConnection     // out
-	var _arg9 *C.GCancellable        // out
-	var _arg1 *C.gchar               // out
-	var _arg2 *C.gchar               // out
-	var _arg3 *C.gchar               // out
-	var _arg4 *C.gchar               // out
-	var _arg5 *C.GVariant            // out
-	var _arg6 *C.GVariantType        // out
-	var _arg7 C.GDBusCallFlags       // out
-	var _arg8 C.gint                 // out
-	var _arg10 C.GAsyncReadyCallback // out
-	var _arg11 C.gpointer
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if busName != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg4))
-	if parameters != nil {
-		_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
-	}
-	if replyType != nil {
-		_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
-	}
-	_arg7 = C.GDBusCallFlags(flags)
-	_arg8 = C.gint(timeoutMsec)
-	if callback != nil {
-		_arg10 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg11 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_connection_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(busName)
-	runtime.KeepAlive(objectPath)
-	runtime.KeepAlive(interfaceName)
-	runtime.KeepAlive(methodName)
-	runtime.KeepAlive(parameters)
-	runtime.KeepAlive(replyType)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(timeoutMsec)
-	runtime.KeepAlive(callback)
 }
 
 // CallFinish finishes an operation started with g_dbus_connection_call().
@@ -944,15 +516,19 @@ func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath,
 //      with return values. Free with g_variant_unref().
 //
 func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, error) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.GAsyncResult    // out
-	var _cret *C.GVariant        // in
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_connection_call_finish(_arg0, _arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("call_finish", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
 
@@ -973,177 +549,6 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	return _variant, _goerr
 }
 
-// CallSync: synchronously invokes the method_name method on the interface_name
-// D-Bus interface on the remote object at object_path owned by bus_name.
-//
-// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If cancellable is canceled, the operation will fail with
-// G_IO_ERROR_CANCELLED. If parameters contains a value not compatible with the
-// D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
-//
-// If reply_type is non-NULL then the reply will be checked for having this type
-// and an error will be raised if it does not match. Said another way, if you
-// give a reply_type then any non-NULL return value will be of this type.
-//
-// If the parameters #GVariant is floating, it is consumed. This allows
-// convenient 'inline' use of g_variant_new(), e.g.:
-//
-//    g_dbus_connection_call_sync (connection,
-//                                 "org.freedesktop.StringThings",
-//                                 "/org/freedesktop/StringThings",
-//                                 "org.freedesktop.StringThings",
-//                                 "TwoStrings",
-//                                 g_variant_new ("(ss)",
-//                                                "Thing One",
-//                                                "Thing Two"),
-//                                 NULL,
-//                                 G_DBUS_CALL_FLAGS_NONE,
-//                                 -1,
-//                                 NULL,
-//                                 &error);
-//
-// The calling thread is blocked until a reply is received. See
-// g_dbus_connection_call() for the asynchronous version of this method.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - busName (optional): unique or well-known bus name or NULL if connection
-//      is not a message bus connection.
-//    - objectPath: path of remote object.
-//    - interfaceName d-Bus interface to invoke method on.
-//    - methodName: name of the method to invoke.
-//    - parameters (optional) tuple with parameters for the method or NULL if not
-//      passing parameters.
-//    - replyType (optional): expected type of the reply, or NULL.
-//    - flags from the BusCallFlags enumeration.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
-//
-// The function returns the following values:
-//
-//    - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
-//      with return values. Free with g_variant_unref().
-//
-func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg9 *C.GCancellable    // out
-	var _arg1 *C.gchar           // out
-	var _arg2 *C.gchar           // out
-	var _arg3 *C.gchar           // out
-	var _arg4 *C.gchar           // out
-	var _arg5 *C.GVariant        // out
-	var _arg6 *C.GVariantType    // out
-	var _arg7 C.GDBusCallFlags   // out
-	var _arg8 C.gint             // out
-	var _cret *C.GVariant        // in
-	var _cerr *C.GError          // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if busName != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg4))
-	if parameters != nil {
-		_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
-	}
-	if replyType != nil {
-		_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
-	}
-	_arg7 = C.GDBusCallFlags(flags)
-	_arg8 = C.gint(timeoutMsec)
-
-	_cret = C.g_dbus_connection_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_cerr)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(busName)
-	runtime.KeepAlive(objectPath)
-	runtime.KeepAlive(interfaceName)
-	runtime.KeepAlive(methodName)
-	runtime.KeepAlive(parameters)
-	runtime.KeepAlive(replyType)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(timeoutMsec)
-
-	var _variant *glib.Variant // out
-	var _goerr error           // out
-
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _variant, _goerr
-}
-
-// Close closes connection. Note that this never causes the process to exit
-// (this might only happen if the other end of a shared message bus connection
-// disconnects, see BusConnection:exit-on-close).
-//
-// Once the connection is closed, operations such as sending a message will
-// return with the error G_IO_ERROR_CLOSED. Closing a connection will not
-// automatically flush the connection so queued messages may be lost. Use
-// g_dbus_connection_flush() if you need such guarantees.
-//
-// If connection is already closed, this method fails with G_IO_ERROR_CLOSED.
-//
-// When connection has been closed, the BusConnection::closed signal is emitted
-// in the [thread-default main context][g-main-context-push-thread-default] of
-// the thread that connection was constructed in.
-//
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call g_dbus_connection_close_finish() to get
-// the result of the operation. See g_dbus_connection_close_sync() for the
-// synchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result.
-//
-func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReadyCallback) {
-	var _arg0 *C.GDBusConnection    // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_connection_close(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(callback)
-}
-
 // CloseFinish finishes an operation started with g_dbus_connection_close().
 //
 // The function takes the following parameters:
@@ -1151,14 +556,17 @@ func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReady
 //    - res obtained from the ReadyCallback passed to g_dbus_connection_close().
 //
 func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.GAsyncResult    // out
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_close_finish(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close_finish", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
 
@@ -1180,18 +588,21 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 //    - ctx (optional) or NULL.
 //
 func (connection *DBusConnection) CloseSync(ctx context.Context) error {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.GCancellable    // out
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_close_sync(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close_sync", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 
@@ -1223,30 +634,37 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 //      passing parameters.
 //
 func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, interfaceName, signalName string, parameters *glib.Variant) error {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.gchar           // out
-	var _arg2 *C.gchar           // out
-	var _arg3 *C.gchar           // out
-	var _arg4 *C.gchar           // out
-	var _arg5 *C.GVariant        // out
-	var _cerr *C.GError          // in
+	var args [6]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _arg4 *C.void // out
+	var _arg5 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if destinationBusName != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(destinationBusName)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(destinationBusName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	_arg3 = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(signalName)))
+	_arg4 = (*C.void)(unsafe.Pointer(C.CString(signalName)))
 	defer C.free(unsafe.Pointer(_arg4))
 	if parameters != nil {
-		_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+		_arg5 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+	*(*string)(unsafe.Pointer(&args[4])) = _arg4
+	*(*string)(unsafe.Pointer(&args[5])) = _arg5
 
-	C.g_dbus_connection_emit_signal(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("emit_signal", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(destinationBusName)
 	runtime.KeepAlive(objectPath)
@@ -1263,49 +681,6 @@ func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, int
 	return _goerr
 }
 
-// Flush: asynchronously flushes connection, that is, writes all queued outgoing
-// message to the transport and then flushes the transport (using
-// g_output_stream_flush_async()). This is useful in programs that wants to emit
-// a D-Bus signal and then exit immediately. Without flushing the connection,
-// there is no guaranteed that the message has been sent to the networking
-// buffers in the OS kernel.
-//
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call g_dbus_connection_flush_finish() to get
-// the result of the operation. See g_dbus_connection_flush_sync() for the
-// synchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result.
-//
-func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReadyCallback) {
-	var _arg0 *C.GDBusConnection    // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_connection_flush(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(callback)
-}
-
 // FlushFinish finishes an operation started with g_dbus_connection_flush().
 //
 // The function takes the following parameters:
@@ -1313,14 +688,17 @@ func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReady
 //    - res obtained from the ReadyCallback passed to g_dbus_connection_flush().
 //
 func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.GAsyncResult    // out
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_flush_finish(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush_finish", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
 
@@ -1342,18 +720,21 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 //    - ctx (optional) or NULL.
 //
 func (connection *DBusConnection) FlushSync(ctx context.Context) error {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.GCancellable    // out
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_flush_sync(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush_sync", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
 
@@ -1366,29 +747,6 @@ func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 	return _goerr
 }
 
-// Capabilities gets the capabilities negotiated with the remote peer.
-//
-// The function returns the following values:
-//
-//    - dBusCapabilityFlags: zero or more flags from the BusCapabilityFlags
-//      enumeration.
-//
-func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
-	var _arg0 *C.GDBusConnection     // out
-	var _cret C.GDBusCapabilityFlags // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-
-	_cret = C.g_dbus_connection_get_capabilities(_arg0)
-	runtime.KeepAlive(connection)
-
-	var _dBusCapabilityFlags DBusCapabilityFlags // out
-
-	_dBusCapabilityFlags = DBusCapabilityFlags(_cret)
-
-	return _dBusCapabilityFlags
-}
-
 // ExitOnClose gets whether the process is terminated when connection is closed
 // by the remote peer. See BusConnection:exit-on-close for more details.
 //
@@ -1398,12 +756,16 @@ func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 //      remote peer.
 //
 func (connection *DBusConnection) ExitOnClose() bool {
-	var _arg0 *C.GDBusConnection // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_get_exit_on_close(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_exit_on_close", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out
@@ -1415,29 +777,6 @@ func (connection *DBusConnection) ExitOnClose() bool {
 	return _ok
 }
 
-// Flags gets the flags used to construct this connection.
-//
-// The function returns the following values:
-//
-//    - dBusConnectionFlags: zero or more flags from the BusConnectionFlags
-//      enumeration.
-//
-func (connection *DBusConnection) Flags() DBusConnectionFlags {
-	var _arg0 *C.GDBusConnection     // out
-	var _cret C.GDBusConnectionFlags // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-
-	_cret = C.g_dbus_connection_get_flags(_arg0)
-	runtime.KeepAlive(connection)
-
-	var _dBusConnectionFlags DBusConnectionFlags // out
-
-	_dBusConnectionFlags = DBusConnectionFlags(_cret)
-
-	return _dBusConnectionFlags
-}
-
 // GUID of the peer performing the role of server when authenticating. See
 // BusConnection:guid for more details.
 //
@@ -1446,12 +785,16 @@ func (connection *DBusConnection) Flags() DBusConnectionFlags {
 //    - utf8: GUID. Do not free this string, it is owned by connection.
 //
 func (connection *DBusConnection) GUID() string {
-	var _arg0 *C.GDBusConnection // out
-	var _cret *C.gchar           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_get_guid(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_guid", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _utf8 string // out
@@ -1473,12 +816,16 @@ func (connection *DBusConnection) GUID() string {
 //      the current thread.
 //
 func (connection *DBusConnection) LastSerial() uint32 {
-	var _arg0 *C.GDBusConnection // out
-	var _cret C.guint32          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_get_last_serial(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_last_serial", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _guint32 uint32 // out
@@ -1503,18 +850,22 @@ func (connection *DBusConnection) LastSerial() uint32 {
 //      it is owned by connection.
 //
 func (connection *DBusConnection) PeerCredentials() *Credentials {
-	var _arg0 *C.GDBusConnection // out
-	var _cret *C.GCredentials    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_get_peer_credentials(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_peer_credentials", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _credentials *Credentials // out
 
 	if _cret != nil {
-		_credentials = wrapCredentials(externglib.Take(unsafe.Pointer(_cret)))
+		_credentials = wrapCredentials(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _credentials
@@ -1530,12 +881,16 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 //    - ioStream: stream used for IO.
 //
 func (connection *DBusConnection) Stream() IOStreamer {
-	var _arg0 *C.GDBusConnection // out
-	var _cret *C.GIOStream       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_get_stream(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_stream", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _ioStream IOStreamer // out
@@ -1546,8 +901,8 @@ func (connection *DBusConnection) Stream() IOStreamer {
 			panic("object of type gio.IOStreamer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(IOStreamer)
 			return ok
 		})
@@ -1571,12 +926,16 @@ func (connection *DBusConnection) Stream() IOStreamer {
 //      connection. Do not free this string, it is owned by connection.
 //
 func (connection *DBusConnection) UniqueName() string {
-	var _arg0 *C.GDBusConnection // out
-	var _cret *C.gchar           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_get_unique_name(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_unique_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _utf8 string // out
@@ -1595,12 +954,16 @@ func (connection *DBusConnection) UniqueName() string {
 //    - ok: TRUE if the connection is closed, FALSE otherwise.
 //
 func (connection *DBusConnection) IsClosed() bool {
-	var _arg0 *C.GDBusConnection // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_connection_is_closed(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("is_closed", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out
@@ -1628,25 +991,33 @@ func (connection *DBusConnection) IsClosed() bool {
 //    - guint: 0 if error is set, otherwise a registration ID (never 0) that can
 //      be used with g_dbus_connection_unregister_object() .
 //
-func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure externglib.AnyClosure) (uint, error) {
-	var _arg0 *C.GDBusConnection    // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GDBusInterfaceInfo // out
-	var _arg3 *C.GClosure           // out
-	var _arg4 *C.GClosure           // out
-	var _arg5 *C.GClosure           // out
-	var _cret C.guint               // in
-	var _cerr *C.GError             // in
+func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint, error) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _arg4 *C.void // out
+	var _arg5 *C.void // out
+	var _cret C.guint // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(interfaceInfo)))
-	_arg3 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(connection), methodCallClosure))
-	_arg4 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(connection), getPropertyClosure))
-	_arg5 = (*C.GClosure)(externglib.NewClosure(externglib.InternObject(connection), setPropertyClosure))
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(interfaceInfo)))
+	_arg3 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), methodCallClosure))
+	_arg4 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), getPropertyClosure))
+	_arg5 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), setPropertyClosure))
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[3])) = _arg3
+	*(*coreglib.AnyClosure)(unsafe.Pointer(&args[4])) = _arg4
+	*(*coreglib.AnyClosure)(unsafe.Pointer(&args[5])) = _arg5
 
-	_cret = C.g_dbus_connection_register_object_with_closures(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("register_object_with_closures", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(interfaceInfo)
@@ -1679,157 +1050,18 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 //    - filterId: identifier obtained from g_dbus_connection_add_filter().
 //
 func (connection *DBusConnection) RemoveFilter(filterId uint) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 C.guint            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = C.guint(filterId)
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_remove_filter(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("remove_filter", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(filterId)
-}
-
-// SendMessage: asynchronously sends message to the peer represented by
-// connection.
-//
-// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by connection and set on message via
-// g_dbus_message_set_serial(). If out_serial is not NULL, then the serial
-// number used will be written to this location prior to submitting the message
-// to the underlying transport. While it has a volatile qualifier, this is a
-// historical artifact and the argument passed to it should not be volatile.
-//
-// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If message is not well-formed, the operation fails with
-// G_IO_ERROR_INVALID_ARGUMENT.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
-//
-// Note that message must be unlocked, unless flags contain the
-// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-//
-// The function takes the following parameters:
-//
-//    - message: BusMessage.
-//    - flags affecting how the message is sent.
-//
-// The function returns the following values:
-//
-//    - outSerial (optional): return location for serial number assigned to
-//      message when sending it or NULL.
-//
-func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
-	var _arg0 *C.GDBusConnection      // out
-	var _arg1 *C.GDBusMessage         // out
-	var _arg2 C.GDBusSendMessageFlags // out
-	var _arg3 C.guint32               // in
-	var _cerr *C.GError               // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg2 = C.GDBusSendMessageFlags(flags)
-
-	C.g_dbus_connection_send_message(_arg0, _arg1, _arg2, &_arg3, &_cerr)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(flags)
-
-	var _outSerial uint32 // out
-	var _goerr error      // out
-
-	_outSerial = uint32(_arg3)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _outSerial, _goerr
-}
-
-// SendMessageWithReply: asynchronously sends message to the peer represented by
-// connection.
-//
-// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by connection and set on message via
-// g_dbus_message_set_serial(). If out_serial is not NULL, then the serial
-// number used will be written to this location prior to submitting the message
-// to the underlying transport. While it has a volatile qualifier, this is a
-// historical artifact and the argument passed to it should not be volatile.
-//
-// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If cancellable is canceled, the operation will fail with
-// G_IO_ERROR_CANCELLED. If message is not well-formed, the operation fails with
-// G_IO_ERROR_INVALID_ARGUMENT.
-//
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call
-// g_dbus_connection_send_message_with_reply_finish() to get the result of the
-// operation. See g_dbus_connection_send_message_with_reply_sync() for the
-// synchronous version.
-//
-// Note that message must be unlocked, unless flags contain the
-// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - message: BusMessage.
-//    - flags affecting how the message is sent.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result.
-//
-// The function returns the following values:
-//
-//    - outSerial (optional): return location for serial number assigned to
-//      message when sending it or NULL.
-//
-func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
-	var _arg0 *C.GDBusConnection      // out
-	var _arg5 *C.GCancellable         // out
-	var _arg1 *C.GDBusMessage         // out
-	var _arg2 C.GDBusSendMessageFlags // out
-	var _arg3 C.gint                  // out
-	var _arg4 C.guint32               // in
-	var _arg6 C.GAsyncReadyCallback   // out
-	var _arg7 C.gpointer
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg2 = C.GDBusSendMessageFlags(flags)
-	_arg3 = C.gint(timeoutMsec)
-	if callback != nil {
-		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg7 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_connection_send_message_with_reply(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(timeoutMsec)
-	runtime.KeepAlive(callback)
-
-	var _outSerial uint32 // out
-
-	_outSerial = uint32(_arg4)
-
-	return _outSerial
 }
 
 // SendMessageWithReplyFinish finishes an operation started with
@@ -1854,111 +1086,31 @@ func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, mess
 //    - dBusMessage: locked BusMessage or NULL if error is set.
 //
 func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.GAsyncResult    // out
-	var _cret *C.GDBusMessage    // in
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(res).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_connection_send_message_with_reply_finish(_arg0, _arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("send_message_with_reply_finish", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
 
 	var _dBusMessage *DBusMessage // out
 	var _goerr error              // out
 
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _dBusMessage, _goerr
-}
-
-// SendMessageWithReplySync: synchronously sends message to the peer represented
-// by connection and blocks the calling thread until a reply is received or the
-// timeout is reached. See g_dbus_connection_send_message_with_reply() for the
-// asynchronous version of this method.
-//
-// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by connection and set on message via
-// g_dbus_message_set_serial(). If out_serial is not NULL, then the serial
-// number used will be written to this location prior to submitting the message
-// to the underlying transport. While it has a volatile qualifier, this is a
-// historical artifact and the argument passed to it should not be volatile.
-//
-// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If cancellable is canceled, the operation will fail with
-// G_IO_ERROR_CANCELLED. If message is not well-formed, the operation fails with
-// G_IO_ERROR_INVALID_ARGUMENT.
-//
-// Note that error is only set if a local in-process error occurred. That is to
-// say that the returned BusMessage object may be of type
-// G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode this
-// to a #GError.
-//
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
-// descriptors.
-//
-// Note that message must be unlocked, unless flags contain the
-// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - message: BusMessage.
-//    - flags affecting how the message is sent.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
-//
-// The function returns the following values:
-//
-//    - outSerial (optional): return location for serial number assigned to
-//      message when sending it or NULL.
-//    - dBusMessage: locked BusMessage that is the reply to message or NULL if
-//      error is set.
-//
-func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int) (uint32, *DBusMessage, error) {
-	var _arg0 *C.GDBusConnection      // out
-	var _arg5 *C.GCancellable         // out
-	var _arg1 *C.GDBusMessage         // out
-	var _arg2 C.GDBusSendMessageFlags // out
-	var _arg3 C.gint                  // out
-	var _arg4 C.guint32               // in
-	var _cret *C.GDBusMessage         // in
-	var _cerr *C.GError               // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(externglib.InternObject(message).Native()))
-	_arg2 = C.GDBusSendMessageFlags(flags)
-	_arg3 = C.gint(timeoutMsec)
-
-	_cret = C.g_dbus_connection_send_message_with_reply_sync(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, &_cerr)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(timeoutMsec)
-
-	var _outSerial uint32         // out
-	var _dBusMessage *DBusMessage // out
-	var _goerr error              // out
-
-	_outSerial = uint32(_arg4)
-	_dBusMessage = wrapDBusMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _outSerial, _dBusMessage, _goerr
 }
 
 // SetExitOnClose sets whether the process should be terminated when connection
@@ -1977,140 +1129,20 @@ func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, 
 //      closed by the remote peer.
 //
 func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 C.gboolean         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if exitOnClose {
 		_arg1 = C.TRUE
 	}
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_set_exit_on_close(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("set_exit_on_close", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(exitOnClose)
-}
-
-// SignalSubscribe subscribes to signals on connection and invokes callback with
-// a whenever the signal is received. Note that callback will be invoked in the
-// [thread-default main context][g-main-context-push-thread-default] of the
-// thread you are calling this method from.
-//
-// If connection is not a message bus connection, sender must be NULL.
-//
-// If sender is a well-known name note that callback is invoked with the unique
-// name for the owner of sender, not the well-known name as one would expect.
-// This is because the message bus rewrites the name. As such, to avoid certain
-// race conditions, users should be tracking the name owner of the well-known
-// name and use that when processing the received signal.
-//
-// If one of G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE or
-// G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH are given, arg0 is interpreted as part of
-// a namespace or path. The first argument of a signal is matched against that
-// part as specified by D-Bus.
-//
-// If user_data_free_func is non-NULL, it will be called (in the thread-default
-// main context of the thread you are calling this method from) at some point
-// after user_data is no longer needed. (It is not guaranteed to be called
-// synchronously when the signal is unsubscribed from, and may be called after
-// connection has been destroyed.)
-//
-// As callback is potentially invoked in a different thread from where it’s
-// emitted, it’s possible for this to happen after
-// g_dbus_connection_signal_unsubscribe() has been called in another thread. Due
-// to this, user_data should have a strong reference which is freed with
-// user_data_free_func, rather than pointing to data whose lifecycle is tied to
-// the signal subscription. For example, if a #GObject is used to store the
-// subscription ID from g_dbus_connection_signal_subscribe(), a strong reference
-// to that #GObject must be passed to user_data, and g_object_unref() passed to
-// user_data_free_func. You are responsible for breaking the resulting reference
-// count cycle by explicitly unsubscribing from the signal when dropping the
-// last external reference to the #GObject. Alternatively, a weak reference may
-// be used.
-//
-// It is guaranteed that if you unsubscribe from a signal using
-// g_dbus_connection_signal_unsubscribe() from the same thread which made the
-// corresponding g_dbus_connection_signal_subscribe() call, callback will not be
-// invoked after g_dbus_connection_signal_unsubscribe() returns.
-//
-// The returned subscription identifier is an opaque value which is guaranteed
-// to never be zero.
-//
-// This function can never fail.
-//
-// The function takes the following parameters:
-//
-//    - sender (optional) name to match on (unique or well-known name) or NULL to
-//      listen from all senders.
-//    - interfaceName (optional) d-Bus interface name to match on or NULL to
-//      match on all interfaces.
-//    - member (optional) d-Bus signal name to match on or NULL to match on all
-//      signals.
-//    - objectPath (optional): object path to match on or NULL to match on all
-//      object paths.
-//    - arg0 (optional) contents of first string argument to match on or NULL to
-//      match on all kinds of arguments.
-//    - flags describing how arg0 is used in subscribing to the signal.
-//    - callback to invoke when there is a signal matching the requested data.
-//
-// The function returns the following values:
-//
-//    - guint: subscription identifier that can be used with
-//      g_dbus_connection_signal_unsubscribe().
-//
-func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member, objectPath, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
-	var _arg0 *C.GDBusConnection    // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.gchar              // out
-	var _arg3 *C.gchar              // out
-	var _arg4 *C.gchar              // out
-	var _arg5 *C.gchar              // out
-	var _arg6 C.GDBusSignalFlags    // out
-	var _arg7 C.GDBusSignalCallback // out
-	var _arg8 C.gpointer
-	var _arg9 C.GDestroyNotify
-	var _cret C.guint // in
-
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	if sender != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(sender)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	if interfaceName != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if member != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(member)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-	if objectPath != "" {
-		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-		defer C.free(unsafe.Pointer(_arg4))
-	}
-	if arg0 != "" {
-		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(arg0)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_arg6 = C.GDBusSignalFlags(flags)
-	_arg7 = (*[0]byte)(C._gotk4_gio2_DBusSignalCallback)
-	_arg8 = C.gpointer(gbox.Assign(callback))
-	_arg9 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	_cret = C.g_dbus_connection_signal_subscribe(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(sender)
-	runtime.KeepAlive(interfaceName)
-	runtime.KeepAlive(member)
-	runtime.KeepAlive(objectPath)
-	runtime.KeepAlive(arg0)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(callback)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
 }
 
 // SignalUnsubscribe unsubscribes from signals.
@@ -2128,13 +1160,16 @@ func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member,
 //      g_dbus_connection_signal_subscribe().
 //
 func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 C.guint            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = C.guint(subscriptionId)
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_signal_unsubscribe(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("signal_unsubscribe", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(subscriptionId)
 }
@@ -2144,11 +1179,14 @@ func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
 // processing messages. Does nothing on if connection wasn't created with this
 // flag or if the method has already been called.
 func (connection *DBusConnection) StartMessageProcessing() {
-	var _arg0 *C.GDBusConnection // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_connection_start_message_processing(_arg0)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("start_message_processing", args[:], nil)
+
 	runtime.KeepAlive(connection)
 }
 
@@ -2164,14 +1202,18 @@ func (connection *DBusConnection) StartMessageProcessing() {
 //    - ok: TRUE if the object was unregistered, FALSE otherwise.
 //
 func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 C.guint            // out
-	var _cret C.gboolean         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.guint    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = C.guint(registrationId)
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_connection_unregister_object(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unregister_object", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(registrationId)
 
@@ -2196,14 +1238,18 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 //    - ok: TRUE if the subtree was unregistered, FALSE otherwise.
 //
 func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 C.guint            // out
-	var _cret C.gboolean         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.guint    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = C.guint(registrationId)
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_connection_unregister_subtree(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unregister_subtree", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(registrationId)
 
@@ -2214,130 +1260,6 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	}
 
 	return _ok
-}
-
-// NewDBusConnection: asynchronously sets up a D-Bus connection for exchanging
-// D-Bus messages with the end represented by stream.
-//
-// If stream is a Connection, then the corresponding #GSocket will be put into
-// non-blocking mode.
-//
-// The D-Bus connection will interact with stream from a worker thread. As a
-// result, the caller should not interact with stream after this method has been
-// called, except by calling g_object_unref() on it.
-//
-// If observer is not NULL it may be used to control the authentication process.
-//
-// When the operation is finished, callback will be invoked. You can then call
-// g_dbus_connection_new_finish() to get the result of the operation.
-//
-// This is an asynchronous failable constructor. See
-// g_dbus_connection_new_sync() for the synchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - stream: OStream.
-//    - guid (optional): GUID to use if authenticating as a server or NULL.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied.
-//
-func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
-	var _arg5 *C.GCancellable        // out
-	var _arg1 *C.GIOStream           // out
-	var _arg2 *C.gchar               // out
-	var _arg3 C.GDBusConnectionFlags // out
-	var _arg4 *C.GDBusAuthObserver   // out
-	var _arg6 C.GAsyncReadyCallback  // out
-	var _arg7 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
-	if guid != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	_arg3 = C.GDBusConnectionFlags(flags)
-	if observer != nil {
-		_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
-	}
-	if callback != nil {
-		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg7 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(guid)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(observer)
-	runtime.KeepAlive(callback)
-}
-
-// NewDBusConnectionForAddress: asynchronously connects and sets up a D-Bus
-// client connection for exchanging D-Bus messages with an endpoint specified by
-// address which must be in the D-Bus address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-//
-// This constructor can only be used to initiate client-side connections - use
-// g_dbus_connection_new() if you need to act as the server. In particular,
-// flags cannot contain the G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER,
-// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS or
-// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flags.
-//
-// When the operation is finished, callback will be invoked. You can then call
-// g_dbus_connection_new_for_address_finish() to get the result of the
-// operation.
-//
-// If observer is not NULL it may be used to control the authentication process.
-//
-// This is an asynchronous failable constructor. See
-// g_dbus_connection_new_for_address_sync() for the synchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - address d-Bus address.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied.
-//
-func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
-	var _arg4 *C.GCancellable        // out
-	var _arg1 *C.gchar               // out
-	var _arg2 C.GDBusConnectionFlags // out
-	var _arg3 *C.GDBusAuthObserver   // out
-	var _arg5 C.GAsyncReadyCallback  // out
-	var _arg6 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GDBusConnectionFlags(flags)
-	if observer != nil {
-		_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
-	}
-	if callback != nil {
-		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg6 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_dbus_connection_new_for_address(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(address)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(observer)
-	runtime.KeepAlive(callback)
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls

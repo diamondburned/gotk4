@@ -8,26 +8,22 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk3_IMContextClass_delete_surrounding(GtkIMContext*, gint, gint);
 // extern gboolean _gotk4_gtk3_IMContextClass_filter_keypress(GtkIMContext*, GdkEventKey*);
-// extern gboolean _gotk4_gtk3_IMContextClass_get_surrounding(GtkIMContext*, gchar**, gint*);
 // extern gboolean _gotk4_gtk3_IMContextClass_retrieve_surrounding(GtkIMContext*);
 // extern gboolean _gotk4_gtk3_IMContext_ConnectDeleteSurrounding(gpointer, gint, gint, guintptr);
 // extern gboolean _gotk4_gtk3_IMContext_ConnectRetrieveSurrounding(gpointer, guintptr);
 // extern void _gotk4_gtk3_IMContextClass_commit(GtkIMContext*, gchar*);
 // extern void _gotk4_gtk3_IMContextClass_focus_in(GtkIMContext*);
 // extern void _gotk4_gtk3_IMContextClass_focus_out(GtkIMContext*);
-// extern void _gotk4_gtk3_IMContextClass_get_preedit_string(GtkIMContext*, gchar**, PangoAttrList**, gint*);
 // extern void _gotk4_gtk3_IMContextClass_preedit_changed(GtkIMContext*);
 // extern void _gotk4_gtk3_IMContextClass_preedit_end(GtkIMContext*);
 // extern void _gotk4_gtk3_IMContextClass_preedit_start(GtkIMContext*);
@@ -43,10 +39,10 @@ import (
 import "C"
 
 // glib.Type values for gtkimcontext.go.
-var GTypeIMContext = externglib.Type(C.gtk_im_context_get_type())
+var GTypeIMContext = coreglib.Type(C.gtk_im_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIMContext, F: marshalIMContext},
 	})
 }
@@ -106,45 +102,6 @@ type IMContextOverrider interface {
 	// change the displayed feedback or reset the contexts state to reflect this
 	// change.
 	FocusOut()
-	// PreeditString: retrieve the current preedit string for the input context,
-	// and a list of attributes to apply to the string. This string should be
-	// displayed inserted at the insertion point.
-	//
-	// The function returns the following values:
-	//
-	//    - str: location to store the retrieved string. The string retrieved
-	//      must be freed with g_free().
-	//    - attrs: location to store the retrieved attribute list. When you are
-	//      done with this list, you must unreference it with
-	//      pango_attr_list_unref().
-	//    - cursorPos: location to store position of cursor (in characters)
-	//      within the preedit string.
-	//
-	PreeditString() (string, *pango.AttrList, int)
-	// Surrounding retrieves context around the insertion point. Input methods
-	// typically want context in order to constrain input text based on existing
-	// text; this is important for languages such as Thai where only some
-	// sequences of characters are allowed.
-	//
-	// This function is implemented by emitting the
-	// GtkIMContext::retrieve_surrounding signal on the input method; in
-	// response to this signal, a widget should provide as much context as is
-	// available, up to an entire paragraph, by calling
-	// gtk_im_context_set_surrounding(). Note that there is no obligation for a
-	// widget to respond to the ::retrieve_surrounding signal, so input methods
-	// must be prepared to function without context.
-	//
-	// The function returns the following values:
-	//
-	//    - text: location to store a UTF-8 encoded string of text holding
-	//      context around the insertion point. If the function returns TRUE,
-	//      then you must free the result stored in this location with g_free().
-	//    - cursorIndex: location to store byte index of the insertion cursor
-	//      within text.
-	//    - ok: TRUE if surrounding text was provided; in this case you must free
-	//      the result stored in *text.
-	//
-	Surrounding() (string, int, bool)
 	PreeditChanged()
 	PreeditEnd()
 	PreeditStart()
@@ -240,11 +197,11 @@ type IMContextOverrider interface {
 // input method to become available to GTK+ applications.
 type IMContext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*IMContext)(nil)
+	_ coreglib.Objector = (*IMContext)(nil)
 )
 
 // IMContexter describes types inherited from class IMContext.
@@ -252,7 +209,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type IMContexter interface {
-	externglib.Objector
+	coreglib.Objector
 	baseIMContext() *IMContext
 }
 
@@ -289,16 +246,6 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 
 	if _, ok := goval.(interface{ FocusOut() }); ok {
 		pclass.focus_out = (*[0]byte)(C._gotk4_gtk3_IMContextClass_focus_out)
-	}
-
-	if _, ok := goval.(interface {
-		PreeditString() (string, *pango.AttrList, int)
-	}); ok {
-		pclass.get_preedit_string = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_preedit_string)
-	}
-
-	if _, ok := goval.(interface{ Surrounding() (string, int, bool) }); ok {
-		pclass.get_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_surrounding)
 	}
 
 	if _, ok := goval.(interface{ PreeditChanged() }); ok {
@@ -342,7 +289,7 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_IMContextClass_commit
 func _gotk4_gtk3_IMContextClass_commit(arg0 *C.GtkIMContext, arg1 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Commit(str string) })
 
 	var _str string // out
@@ -354,7 +301,7 @@ func _gotk4_gtk3_IMContextClass_commit(arg0 *C.GtkIMContext, arg1 *C.gchar) {
 
 //export _gotk4_gtk3_IMContextClass_delete_surrounding
 func _gotk4_gtk3_IMContextClass_delete_surrounding(arg0 *C.GtkIMContext, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DeleteSurrounding(offset, nChars int) bool })
 
 	var _offset int // out
@@ -374,7 +321,7 @@ func _gotk4_gtk3_IMContextClass_delete_surrounding(arg0 *C.GtkIMContext, arg1 C.
 
 //export _gotk4_gtk3_IMContextClass_filter_keypress
 func _gotk4_gtk3_IMContextClass_filter_keypress(arg0 *C.GtkIMContext, arg1 *C.GdkEventKey) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FilterKeypress(event *gdk.EventKey) bool
 	})
@@ -394,7 +341,7 @@ func _gotk4_gtk3_IMContextClass_filter_keypress(arg0 *C.GtkIMContext, arg1 *C.Gd
 
 //export _gotk4_gtk3_IMContextClass_focus_in
 func _gotk4_gtk3_IMContextClass_focus_in(arg0 *C.GtkIMContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FocusIn() })
 
 	iface.FocusIn()
@@ -402,45 +349,15 @@ func _gotk4_gtk3_IMContextClass_focus_in(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk3_IMContextClass_focus_out
 func _gotk4_gtk3_IMContextClass_focus_out(arg0 *C.GtkIMContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FocusOut() })
 
 	iface.FocusOut()
 }
 
-//export _gotk4_gtk3_IMContextClass_get_preedit_string
-func _gotk4_gtk3_IMContextClass_get_preedit_string(arg0 *C.GtkIMContext, arg1 **C.gchar, arg2 **C.PangoAttrList, arg3 *C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		PreeditString() (string, *pango.AttrList, int)
-	})
-
-	str, attrs, cursorPos := iface.PreeditString()
-
-	*arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	*arg2 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
-	*arg3 = C.gint(cursorPos)
-}
-
-//export _gotk4_gtk3_IMContextClass_get_surrounding
-func _gotk4_gtk3_IMContextClass_get_surrounding(arg0 *C.GtkIMContext, arg1 **C.gchar, arg2 *C.gint) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Surrounding() (string, int, bool) })
-
-	text, cursorIndex, ok := iface.Surrounding()
-
-	*arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	*arg2 = C.gint(cursorIndex)
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 //export _gotk4_gtk3_IMContextClass_preedit_changed
 func _gotk4_gtk3_IMContextClass_preedit_changed(arg0 *C.GtkIMContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreeditChanged() })
 
 	iface.PreeditChanged()
@@ -448,7 +365,7 @@ func _gotk4_gtk3_IMContextClass_preedit_changed(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk3_IMContextClass_preedit_end
 func _gotk4_gtk3_IMContextClass_preedit_end(arg0 *C.GtkIMContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreeditEnd() })
 
 	iface.PreeditEnd()
@@ -456,7 +373,7 @@ func _gotk4_gtk3_IMContextClass_preedit_end(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk3_IMContextClass_preedit_start
 func _gotk4_gtk3_IMContextClass_preedit_start(arg0 *C.GtkIMContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreeditStart() })
 
 	iface.PreeditStart()
@@ -464,7 +381,7 @@ func _gotk4_gtk3_IMContextClass_preedit_start(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk3_IMContextClass_reset
 func _gotk4_gtk3_IMContextClass_reset(arg0 *C.GtkIMContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Reset() })
 
 	iface.Reset()
@@ -472,7 +389,7 @@ func _gotk4_gtk3_IMContextClass_reset(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk3_IMContextClass_retrieve_surrounding
 func _gotk4_gtk3_IMContextClass_retrieve_surrounding(arg0 *C.GtkIMContext) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RetrieveSurrounding() bool })
 
 	ok := iface.RetrieveSurrounding()
@@ -486,7 +403,7 @@ func _gotk4_gtk3_IMContextClass_retrieve_surrounding(arg0 *C.GtkIMContext) (cret
 
 //export _gotk4_gtk3_IMContextClass_set_client_window
 func _gotk4_gtk3_IMContextClass_set_client_window(arg0 *C.GtkIMContext, arg1 *C.GdkWindow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetClientWindow(window gdk.Windower) })
 
 	var _window gdk.Windower // out
@@ -495,8 +412,8 @@ func _gotk4_gtk3_IMContextClass_set_client_window(arg0 *C.GtkIMContext, arg1 *C.
 		{
 			objptr := unsafe.Pointer(arg1)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(gdk.Windower)
 				return ok
 			})
@@ -513,7 +430,7 @@ func _gotk4_gtk3_IMContextClass_set_client_window(arg0 *C.GtkIMContext, arg1 *C.
 
 //export _gotk4_gtk3_IMContextClass_set_cursor_location
 func _gotk4_gtk3_IMContextClass_set_cursor_location(arg0 *C.GtkIMContext, arg1 *C.GdkRectangle) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetCursorLocation(area *gdk.Rectangle) })
 
 	var _area *gdk.Rectangle // out
@@ -525,7 +442,7 @@ func _gotk4_gtk3_IMContextClass_set_cursor_location(arg0 *C.GtkIMContext, arg1 *
 
 //export _gotk4_gtk3_IMContextClass_set_surrounding
 func _gotk4_gtk3_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.gchar, arg2 C.gint, arg3 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SetSurrounding(text string, len, cursorIndex int)
 	})
@@ -543,7 +460,7 @@ func _gotk4_gtk3_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.gc
 
 //export _gotk4_gtk3_IMContextClass_set_use_preedit
 func _gotk4_gtk3_IMContextClass_set_use_preedit(arg0 *C.GtkIMContext, arg1 C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetUsePreedit(usePreedit bool) })
 
 	var _usePreedit bool // out
@@ -555,14 +472,14 @@ func _gotk4_gtk3_IMContextClass_set_use_preedit(arg0 *C.GtkIMContext, arg1 C.gbo
 	iface.SetUsePreedit(_usePreedit)
 }
 
-func wrapIMContext(obj *externglib.Object) *IMContext {
+func wrapIMContext(obj *coreglib.Object) *IMContext {
 	return &IMContext{
 		Object: obj,
 	}
 }
 
 func marshalIMContext(p uintptr) (interface{}, error) {
-	return wrapIMContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapIMContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (context *IMContext) baseIMContext() *IMContext {
@@ -578,7 +495,7 @@ func BaseIMContext(obj IMContexter) *IMContext {
 func _gotk4_gtk3_IMContext_ConnectCommit(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(str string)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -597,15 +514,15 @@ func _gotk4_gtk3_IMContext_ConnectCommit(arg0 C.gpointer, arg1 *C.gchar, arg2 C.
 // ConnectCommit signal is emitted when a complete input sequence has been
 // entered by the user. This can be a single character immediately after a key
 // press or the final result of preediting.
-func (context *IMContext) ConnectCommit(f func(str string)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "commit", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectCommit), f)
+func (context *IMContext) ConnectCommit(f func(str string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "commit", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectCommit), f)
 }
 
 //export _gotk4_gtk3_IMContext_ConnectDeleteSurrounding
 func _gotk4_gtk3_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(offset, nChars int) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -631,15 +548,15 @@ func _gotk4_gtk3_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint
 
 // ConnectDeleteSurrounding signal is emitted when the input method needs to
 // delete all or part of the context surrounding the cursor.
-func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "delete-surrounding", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectDeleteSurrounding), f)
+func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "delete-surrounding", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectDeleteSurrounding), f)
 }
 
 //export _gotk4_gtk3_IMContext_ConnectPreeditChanged
 func _gotk4_gtk3_IMContext_ConnectPreeditChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -655,15 +572,15 @@ func _gotk4_gtk3_IMContext_ConnectPreeditChanged(arg0 C.gpointer, arg1 C.guintpt
 // currently being entered has changed. It is also emitted at the end of a
 // preedit sequence, in which case gtk_im_context_get_preedit_string() returns
 // the empty string.
-func (context *IMContext) ConnectPreeditChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectPreeditChanged), f)
+func (context *IMContext) ConnectPreeditChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectPreeditChanged), f)
 }
 
 //export _gotk4_gtk3_IMContext_ConnectPreeditEnd
 func _gotk4_gtk3_IMContext_ConnectPreeditEnd(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -677,15 +594,15 @@ func _gotk4_gtk3_IMContext_ConnectPreeditEnd(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectPreeditEnd signal is emitted when a preediting sequence has been
 // completed or canceled.
-func (context *IMContext) ConnectPreeditEnd(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "preedit-end", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectPreeditEnd), f)
+func (context *IMContext) ConnectPreeditEnd(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "preedit-end", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectPreeditEnd), f)
 }
 
 //export _gotk4_gtk3_IMContext_ConnectPreeditStart
 func _gotk4_gtk3_IMContext_ConnectPreeditStart(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -698,15 +615,15 @@ func _gotk4_gtk3_IMContext_ConnectPreeditStart(arg0 C.gpointer, arg1 C.guintptr)
 }
 
 // ConnectPreeditStart signal is emitted when a new preediting sequence starts.
-func (context *IMContext) ConnectPreeditStart(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "preedit-start", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectPreeditStart), f)
+func (context *IMContext) ConnectPreeditStart(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "preedit-start", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectPreeditStart), f)
 }
 
 //export _gotk4_gtk3_IMContext_ConnectRetrieveSurrounding
 func _gotk4_gtk3_IMContext_ConnectRetrieveSurrounding(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
 	var f func() (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -727,8 +644,8 @@ func _gotk4_gtk3_IMContext_ConnectRetrieveSurrounding(arg0 C.gpointer, arg1 C.gu
 // ConnectRetrieveSurrounding signal is emitted when the input method requires
 // the context surrounding the cursor. The callback should set the input method
 // surrounding context by calling the gtk_im_context_set_surrounding() method.
-func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "retrieve-surrounding", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectRetrieveSurrounding), f)
+func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "retrieve-surrounding", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectRetrieveSurrounding), f)
 }
 
 // DeleteSurrounding asks the widget that the input context is attached to to
@@ -759,16 +676,21 @@ func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) externg
 //    - ok: TRUE if the signal was handled.
 //
 func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 C.gint          // out
-	var _arg2 C.gint          // out
-	var _cret C.gboolean      // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.gint(nChars)
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("delete_surrounding", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(nChars)
@@ -795,14 +717,18 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 //    - ok: TRUE if the input method handled the key event.
 //
 func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.GdkEventKey  // out
-	var _cret C.gboolean      // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("filter_keypress", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(event)
 
@@ -819,11 +745,14 @@ func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 // corresponds has gained focus. The input method may, for example, change the
 // displayed feedback to reflect this change.
 func (context *IMContext) FocusIn() {
-	var _arg0 *C.GtkIMContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**IMContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_im_context_focus_in(_arg0)
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("focus_in", args[:], nil)
+
 	runtime.KeepAlive(context)
 }
 
@@ -831,112 +760,29 @@ func (context *IMContext) FocusIn() {
 // corresponds has lost focus. The input method may, for example, change the
 // displayed feedback or reset the contexts state to reflect this change.
 func (context *IMContext) FocusOut() {
-	var _arg0 *C.GtkIMContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**IMContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_im_context_focus_out(_arg0)
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("focus_out", args[:], nil)
+
 	runtime.KeepAlive(context)
-}
-
-// PreeditString: retrieve the current preedit string for the input context, and
-// a list of attributes to apply to the string. This string should be displayed
-// inserted at the insertion point.
-//
-// The function returns the following values:
-//
-//    - str: location to store the retrieved string. The string retrieved must be
-//      freed with g_free().
-//    - attrs: location to store the retrieved attribute list. When you are done
-//      with this list, you must unreference it with pango_attr_list_unref().
-//    - cursorPos: location to store position of cursor (in characters) within
-//      the preedit string.
-//
-func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
-	var _arg0 *C.GtkIMContext  // out
-	var _arg1 *C.gchar         // in
-	var _arg2 *C.PangoAttrList // in
-	var _arg3 C.gint           // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-
-	var _str string            // out
-	var _attrs *pango.AttrList // out
-	var _cursorPos int         // out
-
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attrs)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-		},
-	)
-	_cursorPos = int(_arg3)
-
-	return _str, _attrs, _cursorPos
-}
-
-// Surrounding retrieves context around the insertion point. Input methods
-// typically want context in order to constrain input text based on existing
-// text; this is important for languages such as Thai where only some sequences
-// of characters are allowed.
-//
-// This function is implemented by emitting the
-// GtkIMContext::retrieve_surrounding signal on the input method; in response to
-// this signal, a widget should provide as much context as is available, up to
-// an entire paragraph, by calling gtk_im_context_set_surrounding(). Note that
-// there is no obligation for a widget to respond to the ::retrieve_surrounding
-// signal, so input methods must be prepared to function without context.
-//
-// The function returns the following values:
-//
-//    - text: location to store a UTF-8 encoded string of text holding context
-//      around the insertion point. If the function returns TRUE, then you must
-//      free the result stored in this location with g_free().
-//    - cursorIndex: location to store byte index of the insertion cursor within
-//      text.
-//    - ok: TRUE if surrounding text was provided; in this case you must free the
-//      result stored in *text.
-//
-func (context *IMContext) Surrounding() (string, int, bool) {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.gchar        // in
-	var _arg2 C.gint          // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(context)
-
-	var _text string     // out
-	var _cursorIndex int // out
-	var _ok bool         // out
-
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_cursorIndex = int(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _text, _cursorIndex, _ok
 }
 
 // Reset: notify the input method that a change such as a change in cursor
 // position has been made. This will typically cause the input method to clear
 // the preedit state.
 func (context *IMContext) Reset() {
-	var _arg0 *C.GtkIMContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**IMContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_im_context_reset(_arg0)
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("reset", args[:], nil)
+
 	runtime.KeepAlive(context)
 }
 
@@ -951,15 +797,18 @@ func (context *IMContext) Reset() {
 //      previous client window no longer exists.
 //
 func (context *IMContext) SetClientWindow(window gdk.Windower) {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.GdkWindow    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if window != nil {
-		_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	}
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_im_context_set_client_window(_arg0, _arg1)
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_client_window", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(window)
 }
@@ -972,13 +821,16 @@ func (context *IMContext) SetClientWindow(window gdk.Windower) {
 //    - area: new location.
 //
 func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.GdkRectangle // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(area)))
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_im_context_set_cursor_location(_arg0, _arg1)
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_cursor_location", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(area)
 }
@@ -996,18 +848,23 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 //    - cursorIndex: byte index of the insertion cursor within text.
 //
 func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.gchar        // out
-	var _arg2 C.gint          // out
-	var _arg3 C.gint          // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
+	var _arg3 C.gint  // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 	_arg3 = C.gint(cursorIndex)
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_im_context_set_surrounding(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_surrounding", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(len)
@@ -1024,15 +881,18 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 //    - usePreedit: whether the IM context should use the preedit string.
 //
 func (context *IMContext) SetUsePreedit(usePreedit bool) {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 C.gboolean      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if usePreedit {
 		_arg1 = C.TRUE
 	}
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_im_context_set_use_preedit(_arg0, _arg1)
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_use_preedit", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(usePreedit)
 }

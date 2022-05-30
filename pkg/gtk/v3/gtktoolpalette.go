@@ -10,25 +10,23 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktoolpalette.go.
 var (
-	GTypeToolPaletteDragTargets = externglib.Type(C.gtk_tool_palette_drag_targets_get_type())
-	GTypeToolPalette            = externglib.Type(C.gtk_tool_palette_get_type())
+	GTypeToolPaletteDragTargets = coreglib.Type(C.gtk_tool_palette_drag_targets_get_type())
+	GTypeToolPalette            = coreglib.Type(C.gtk_tool_palette_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeToolPaletteDragTargets, F: marshalToolPaletteDragTargets},
 		{T: GTypeToolPalette, F: marshalToolPalette},
 	})
@@ -45,7 +43,7 @@ const (
 )
 
 func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
-	return ToolPaletteDragTargets(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ToolPaletteDragTargets(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ToolPaletteDragTargets.
@@ -137,14 +135,14 @@ type ToolPalette struct {
 	_ [0]func() // equal guard
 	Container
 
-	*externglib.Object
+	*coreglib.Object
 	Orientable
 	Scrollable
 }
 
 var (
-	_ Containerer         = (*ToolPalette)(nil)
-	_ externglib.Objector = (*ToolPalette)(nil)
+	_ Containerer       = (*ToolPalette)(nil)
+	_ coreglib.Objector = (*ToolPalette)(nil)
 )
 
 func classInitToolPaletter(gclassPtr, data C.gpointer) {
@@ -155,11 +153,11 @@ func classInitToolPaletter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapToolPalette(obj *externglib.Object) *ToolPalette {
+func wrapToolPalette(obj *coreglib.Object) *ToolPalette {
 	return &ToolPalette{
 		Container: Container{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -182,7 +180,7 @@ func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 }
 
 func marshalToolPalette(p uintptr) (interface{}, error) {
-	return wrapToolPalette(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapToolPalette(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewToolPalette creates a new tool palette.
@@ -192,48 +190,16 @@ func marshalToolPalette(p uintptr) (interface{}, error) {
 //    - toolPalette: new ToolPalette.
 //
 func NewToolPalette() *ToolPalette {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_tool_palette_new()
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("new_ToolPalette", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toolPalette *ToolPalette // out
 
-	_toolPalette = wrapToolPalette(externglib.Take(unsafe.Pointer(_cret)))
+	_toolPalette = wrapToolPalette(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolPalette
-}
-
-// AddDragDest sets palette as drag source (see
-// gtk_tool_palette_set_drag_source()) and sets widget as a drag destination for
-// drags from palette. See gtk_drag_dest_set().
-//
-// The function takes the following parameters:
-//
-//    - widget which should be a drag destination for palette.
-//    - flags that specify what actions GTK+ should take for drops on that
-//      widget.
-//    - targets which the widget should support.
-//    - actions which the widget should suppport.
-//
-func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
-	var _arg0 *C.GtkToolPalette           // out
-	var _arg1 *C.GtkWidget                // out
-	var _arg2 C.GtkDestDefaults           // out
-	var _arg3 C.GtkToolPaletteDragTargets // out
-	var _arg4 C.GdkDragAction             // out
-
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg2 = C.GtkDestDefaults(flags)
-	_arg3 = C.GtkToolPaletteDragTargets(targets)
-	_arg4 = C.GdkDragAction(actions)
-
-	C.gtk_tool_palette_add_drag_dest(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(palette)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(targets)
-	runtime.KeepAlive(actions)
 }
 
 // DragItem: get the dragged item from the selection. This could be a ToolItem
@@ -248,14 +214,18 @@ func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, ta
 //    - widget: dragged item in selection.
 //
 func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 *C.GtkSelectionData // out
-	var _cret *C.GtkWidget        // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selection)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(selection)))
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_tool_palette_get_drag_item(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drag_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(selection)
 
@@ -267,8 +237,8 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -294,16 +264,21 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 //    - toolItemGroup (optional) at position or NULL if there is no such group.
 //
 func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 C.gint              // out
-	var _arg2 C.gint              // out
-	var _cret *C.GtkToolItemGroup // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_tool_palette_get_drop_group(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drop_group", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -311,7 +286,7 @@ func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 	var _toolItemGroup *ToolItemGroup // out
 
 	if _cret != nil {
-		_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
+		_toolItemGroup = wrapToolItemGroup(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _toolItemGroup
@@ -330,16 +305,21 @@ func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 //    - toolItem (optional) at position or NULL if there is no such item.
 //
 func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
-	var _arg0 *C.GtkToolPalette // out
-	var _arg1 C.gint            // out
-	var _arg2 C.gint            // out
-	var _cret *C.GtkToolItem    // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_tool_palette_get_drop_item(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drop_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -347,7 +327,7 @@ func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 	var _toolItem *ToolItem // out
 
 	if _cret != nil {
-		_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
+		_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _toolItem
@@ -365,14 +345,18 @@ func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 //    - ok: TRUE if group is exclusive.
 //
 func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 *C.GtkToolItemGroup // out
-	var _cret C.gboolean          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_tool_palette_get_exclusive(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_exclusive", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 
@@ -397,14 +381,18 @@ func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
 //    - ok: TRUE if group should be given extra space, FALSE otherwise.
 //
 func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 *C.GtkToolItemGroup // out
-	var _cret C.gboolean          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_tool_palette_get_expand(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_expand", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 
@@ -429,14 +417,18 @@ func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 //    - gint: index of group or -1 if group is not a child of palette.
 //
 func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 *C.GtkToolItemGroup // out
-	var _cret C.gint              // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_tool_palette_get_group_position(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_group_position", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 
@@ -456,64 +448,23 @@ func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 //    - adjustment: horizontal adjustment of palette.
 //
 func (palette *ToolPalette) HAdjustment() *Adjustment {
-	var _arg0 *C.GtkToolPalette // out
-	var _cret *C.GtkAdjustment  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	*(**ToolPalette)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_palette_get_hadjustment(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_hadjustment", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
-}
-
-// IconSize gets the size of icons in the tool palette. See
-// gtk_tool_palette_set_icon_size().
-//
-// The function returns the following values:
-//
-//    - gint of icons in the tool palette.
-//
-func (palette *ToolPalette) IconSize() int {
-	var _arg0 *C.GtkToolPalette // out
-	var _cret C.GtkIconSize     // in
-
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-
-	_cret = C.gtk_tool_palette_get_icon_size(_arg0)
-	runtime.KeepAlive(palette)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Style gets the style (icons, text or both) of items in the tool palette.
-//
-// The function returns the following values:
-//
-//    - toolbarStyle of items in the tool palette.
-//
-func (palette *ToolPalette) Style() ToolbarStyle {
-	var _arg0 *C.GtkToolPalette // out
-	var _cret C.GtkToolbarStyle // in
-
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-
-	_cret = C.gtk_tool_palette_get_style(_arg0)
-	runtime.KeepAlive(palette)
-
-	var _toolbarStyle ToolbarStyle // out
-
-	_toolbarStyle = ToolbarStyle(_cret)
-
-	return _toolbarStyle
 }
 
 // VAdjustment gets the vertical adjustment of the tool palette.
@@ -525,39 +476,23 @@ func (palette *ToolPalette) Style() ToolbarStyle {
 //    - adjustment: vertical adjustment of palette.
 //
 func (palette *ToolPalette) VAdjustment() *Adjustment {
-	var _arg0 *C.GtkToolPalette // out
-	var _cret *C.GtkAdjustment  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	*(**ToolPalette)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tool_palette_get_vadjustment(_arg0)
+	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_vadjustment", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(palette)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
-}
-
-// SetDragSource sets the tool palette as a drag source. Enables all groups and
-// items in the tool palette as drag sources on button 1 and button 3 press with
-// copy and move actions. See gtk_drag_source_set().
-//
-// The function takes the following parameters:
-//
-//    - targets: ToolPaletteDragTargets which the widget should support.
-//
-func (palette *ToolPalette) SetDragSource(targets ToolPaletteDragTargets) {
-	var _arg0 *C.GtkToolPalette           // out
-	var _arg1 C.GtkToolPaletteDragTargets // out
-
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = C.GtkToolPaletteDragTargets(targets)
-
-	C.gtk_tool_palette_set_drag_source(_arg0, _arg1)
-	runtime.KeepAlive(palette)
-	runtime.KeepAlive(targets)
 }
 
 // SetExclusive sets whether the group should be exclusive or not. If an
@@ -569,17 +504,21 @@ func (palette *ToolPalette) SetDragSource(targets ToolPaletteDragTargets) {
 //    - exclusive: whether the group should be exclusive or not.
 //
 func (palette *ToolPalette) SetExclusive(group *ToolItemGroup, exclusive bool) {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 *C.GtkToolItemGroup // out
-	var _arg2 C.gboolean          // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if exclusive {
 		_arg2 = C.TRUE
 	}
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
+	*(**ToolItemGroup)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tool_palette_set_exclusive(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("set_exclusive", args[:], nil)
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(exclusive)
@@ -593,17 +532,21 @@ func (palette *ToolPalette) SetExclusive(group *ToolItemGroup, exclusive bool) {
 //    - expand: whether the group should be given extra space.
 //
 func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 *C.GtkToolItemGroup // out
-	var _arg2 C.gboolean          // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if expand {
 		_arg2 = C.TRUE
 	}
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
+	*(**ToolItemGroup)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tool_palette_set_expand(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("set_expand", args[:], nil)
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(expand)
@@ -619,76 +562,50 @@ func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
 //    - position: new index for group.
 //
 func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int) {
-	var _arg0 *C.GtkToolPalette   // out
-	var _arg1 *C.GtkToolItemGroup // out
-	var _arg2 C.gint              // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	_arg2 = C.gint(position)
+	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
+	*(**ToolItemGroup)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_tool_palette_set_group_position(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("set_group_position", args[:], nil)
+
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(position)
-}
-
-// SetIconSize sets the size of icons in the tool palette.
-//
-// The function takes the following parameters:
-//
-//    - iconSize that icons in the tool palette shall have.
-//
-func (palette *ToolPalette) SetIconSize(iconSize int) {
-	var _arg0 *C.GtkToolPalette // out
-	var _arg1 C.GtkIconSize     // out
-
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = C.GtkIconSize(iconSize)
-
-	C.gtk_tool_palette_set_icon_size(_arg0, _arg1)
-	runtime.KeepAlive(palette)
-	runtime.KeepAlive(iconSize)
-}
-
-// SetStyle sets the style (text, icons or both) of items in the tool palette.
-//
-// The function takes the following parameters:
-//
-//    - style that items in the tool palette shall have.
-//
-func (palette *ToolPalette) SetStyle(style ToolbarStyle) {
-	var _arg0 *C.GtkToolPalette // out
-	var _arg1 C.GtkToolbarStyle // out
-
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
-	_arg1 = C.GtkToolbarStyle(style)
-
-	C.gtk_tool_palette_set_style(_arg0, _arg1)
-	runtime.KeepAlive(palette)
-	runtime.KeepAlive(style)
 }
 
 // UnsetIconSize unsets the tool palette icon size set with
 // gtk_tool_palette_set_icon_size(), so that user preferences will be used to
 // determine the icon size.
 func (palette *ToolPalette) UnsetIconSize() {
-	var _arg0 *C.GtkToolPalette // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	*(**ToolPalette)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_tool_palette_unset_icon_size(_arg0)
+	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("unset_icon_size", args[:], nil)
+
 	runtime.KeepAlive(palette)
 }
 
 // UnsetStyle unsets a toolbar style set with gtk_tool_palette_set_style(), so
 // that user preferences will be used to determine the toolbar style.
 func (palette *ToolPalette) UnsetStyle() {
-	var _arg0 *C.GtkToolPalette // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(externglib.InternObject(palette).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	*(**ToolPalette)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_tool_palette_unset_style(_arg0)
+	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("unset_style", args[:], nil)
+
 	runtime.KeepAlive(palette)
 }
 
@@ -700,9 +617,10 @@ func (palette *ToolPalette) UnsetStyle() {
 //    - targetEntry for a dragged group.
 //
 func ToolPaletteGetDragTargetGroup() *TargetEntry {
-	var _cret *C.GtkTargetEntry // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_tool_palette_get_drag_target_group()
+	_gret := girepository.MustFind("Gtk", "get_drag_target_group").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _targetEntry *TargetEntry // out
 
@@ -718,9 +636,10 @@ func ToolPaletteGetDragTargetGroup() *TargetEntry {
 //    - targetEntry for a dragged item.
 //
 func ToolPaletteGetDragTargetItem() *TargetEntry {
-	var _cret *C.GtkTargetEntry // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_tool_palette_get_drag_target_item()
+	_gret := girepository.MustFind("Gtk", "get_drag_target_item").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _targetEntry *TargetEntry // out
 

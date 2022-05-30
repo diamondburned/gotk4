@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkimagemenuitem.go.
-var GTypeImageMenuItem = externglib.Type(C.gtk_image_menu_item_get_type())
+var GTypeImageMenuItem = coreglib.Type(C.gtk_image_menu_item_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeImageMenuItem, F: marshalImageMenuItem},
 	})
 }
@@ -60,8 +59,8 @@ type ImageMenuItem struct {
 }
 
 var (
-	_ Binner              = (*ImageMenuItem)(nil)
-	_ externglib.Objector = (*ImageMenuItem)(nil)
+	_ Binner            = (*ImageMenuItem)(nil)
+	_ coreglib.Objector = (*ImageMenuItem)(nil)
 )
 
 func classInitImageMenuItemmer(gclassPtr, data C.gpointer) {
@@ -72,13 +71,13 @@ func classInitImageMenuItemmer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
+func wrapImageMenuItem(obj *coreglib.Object) *ImageMenuItem {
 	return &ImageMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -94,7 +93,7 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -114,7 +113,7 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 }
 
 func marshalImageMenuItem(p uintptr) (interface{}, error) {
-	return wrapImageMenuItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapImageMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewImageMenuItem creates a new ImageMenuItem with an empty label.
@@ -126,13 +125,14 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 //    - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItem() *ImageMenuItem {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_image_menu_item_new()
+	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -159,23 +159,28 @@ func NewImageMenuItem() *ImageMenuItem {
 //    - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMenuItem {
-	var _arg1 *C.gchar         // out
-	var _arg2 *C.GtkAccelGroup // out
-	var _cret *C.GtkWidget     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg0))
 	if accelGroup != nil {
-		_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	}
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(**AccelGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem_from_stock", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(accelGroup)
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -193,18 +198,22 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 //    - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_image_menu_item_new_with_label(_arg1)
+	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem_with_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(label)
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -225,18 +234,22 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 //    - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_image_menu_item_new_with_mnemonic(_arg1)
+	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem_with_mnemonic", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(label)
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(externglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _imageMenuItem
 }
@@ -251,12 +264,16 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 //    - ok: TRUE if the menu item will always show the image.
 //
 func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _cret C.gboolean          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(externglib.InternObject(imageMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
+	*(**ImageMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
+	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("get_always_show_image", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(imageMenuItem)
 
 	var _ok bool // out
@@ -278,12 +295,16 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 //    - widget set as image of image_menu_item.
 //
 func (imageMenuItem *ImageMenuItem) Image() Widgetter {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _cret *C.GtkWidget        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(externglib.InternObject(imageMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
+	*(**ImageMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_image_menu_item_get_image(_arg0)
+	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("get_image", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(imageMenuItem)
 
 	var _widget Widgetter // out
@@ -294,8 +315,8 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -320,12 +341,16 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 //      the stock item for the item.
 //
 func (imageMenuItem *ImageMenuItem) UseStock() bool {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _cret C.gboolean          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(externglib.InternObject(imageMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
+	*(**ImageMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
+	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("get_use_stock", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(imageMenuItem)
 
 	var _ok bool // out
@@ -352,13 +377,16 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 //    - accelGroup: AccelGroup.
 //
 func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _arg1 *C.GtkAccelGroup    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(externglib.InternObject(imageMenuItem).Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
+	*(**ImageMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_accel_group", args[:], nil)
+
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(accelGroup)
 }
@@ -376,15 +404,18 @@ func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 //    - alwaysShow: TRUE if the menuitem should always show the image.
 //
 func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _arg1 C.gboolean          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(externglib.InternObject(imageMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
 	if alwaysShow {
 		_arg1 = C.TRUE
 	}
+	*(**ImageMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_image_menu_item_set_always_show_image(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_always_show_image", args[:], nil)
+
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(alwaysShow)
 }
@@ -400,15 +431,18 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 //    - image (optional): widget to set as the image for the menu item.
 //
 func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _arg1 *C.GtkWidget        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(externglib.InternObject(imageMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
 	if image != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(image).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	}
+	*(**ImageMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_image_menu_item_set_image(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_image", args[:], nil)
+
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(image)
 }
@@ -423,15 +457,18 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 //    - useStock: TRUE if the menuitem should use a stock item.
 //
 func (imageMenuItem *ImageMenuItem) SetUseStock(useStock bool) {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _arg1 C.gboolean          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(externglib.InternObject(imageMenuItem).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
 	if useStock {
 		_arg1 = C.TRUE
 	}
+	*(**ImageMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_use_stock", args[:], nil)
+
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(useStock)
 }

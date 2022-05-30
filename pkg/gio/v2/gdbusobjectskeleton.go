@@ -7,21 +7,22 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(GDBusObjectSkeleton*, GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
 // extern gboolean _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(gpointer, GDBusInterfaceSkeleton*, GDBusMethodInvocation*, guintptr);
 import "C"
 
 // glib.Type values for gdbusobjectskeleton.go.
-var GTypeDBusObjectSkeleton = externglib.Type(C.g_dbus_object_skeleton_get_type())
+var GTypeDBusObjectSkeleton = coreglib.Type(C.g_dbus_object_skeleton_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDBusObjectSkeleton, F: marshalDBusObjectSkeleton},
 	})
 }
@@ -45,13 +46,13 @@ type DBusObjectSkeletonOverrider interface {
 // This type is intended to be used with BusObjectManager.
 type DBusObjectSkeleton struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	DBusObject
 }
 
 var (
-	_ externglib.Objector = (*DBusObjectSkeleton)(nil)
+	_ coreglib.Objector = (*DBusObjectSkeleton)(nil)
 )
 
 func classInitDBusObjectSkeletonner(gclassPtr, data C.gpointer) {
@@ -74,7 +75,7 @@ func classInitDBusObjectSkeletonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusObjectSkeletonClass_authorize_method
 func _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(arg0 *C.GDBusObjectSkeleton, arg1 *C.GDBusInterfaceSkeleton, arg2 *C.GDBusMethodInvocation) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 	})
@@ -88,8 +89,8 @@ func _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(arg0 *C.GDBusObjectSke
 			panic("object of type gio.DBusInterfaceSkeletonner is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusInterfaceSkeletonner)
 			return ok
 		})
@@ -99,7 +100,7 @@ func _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(arg0 *C.GDBusObjectSke
 		}
 		_interface_ = rv
 	}
-	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg2)))
+	_invocation = wrapDBusMethodInvocation(coreglib.Take(unsafe.Pointer(arg2)))
 
 	ok := iface.AuthorizeMethod(_interface_, _invocation)
 
@@ -110,7 +111,7 @@ func _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(arg0 *C.GDBusObjectSke
 	return cret
 }
 
-func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
+func wrapDBusObjectSkeleton(obj *coreglib.Object) *DBusObjectSkeleton {
 	return &DBusObjectSkeleton{
 		Object: obj,
 		DBusObject: DBusObject{
@@ -120,14 +121,14 @@ func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 }
 
 func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
-	return wrapDBusObjectSkeleton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusObjectSkeleton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod
 func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1 *C.GDBusInterfaceSkeleton, arg2 *C.GDBusMethodInvocation, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(iface DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -145,8 +146,8 @@ func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1
 			panic("object of type gio.DBusInterfaceSkeletonner is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(DBusInterfaceSkeletonner)
 			return ok
 		})
@@ -156,7 +157,7 @@ func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1
 		}
 		_iface = rv
 	}
-	_invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg2)))
+	_invocation = wrapDBusMethodInvocation(coreglib.Take(unsafe.Pointer(arg2)))
 
 	ok := f(_iface, _invocation)
 
@@ -175,8 +176,8 @@ func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1
 // enclosing object.
 //
 // The default class handler just returns TRUE.
-func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(object, "authorize-method", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod), f)
+func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "authorize-method", false, unsafe.Pointer(C._gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod), f)
 }
 
 // NewDBusObjectSkeleton creates a new BusObjectSkeleton.
@@ -190,18 +191,22 @@ func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterf
 //    - dBusObjectSkeleton Free with g_object_unref().
 //
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
-	var _arg1 *C.gchar               // out
-	var _cret *C.GDBusObjectSkeleton // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_object_skeleton_new(_arg1)
+	_gret := girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("new_DBusObjectSkeleton", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObjectSkeleton *DBusObjectSkeleton // out
 
-	_dBusObjectSkeleton = wrapDBusObjectSkeleton(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectSkeleton = wrapDBusObjectSkeleton(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectSkeleton
 }
@@ -219,13 +224,16 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 //    - interface_: BusInterfaceSkeleton.
 //
 func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonner) {
-	var _arg0 *C.GDBusObjectSkeleton    // out
-	var _arg1 *C.GDBusInterfaceSkeleton // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusObjectSkeleton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("add_interface", args[:], nil)
+
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interface_)
 }
@@ -233,11 +241,14 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 // Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
 // interfaces belonging to object. See that method for when flushing is useful.
 func (object *DBusObjectSkeleton) Flush() {
-	var _arg0 *C.GDBusObjectSkeleton // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	*(**DBusObjectSkeleton)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_object_skeleton_flush(_arg0)
+	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("flush", args[:], nil)
+
 	runtime.KeepAlive(object)
 }
 
@@ -248,13 +259,16 @@ func (object *DBusObjectSkeleton) Flush() {
 //    - interface_: BusInterfaceSkeleton.
 //
 func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletonner) {
-	var _arg0 *C.GDBusObjectSkeleton    // out
-	var _arg1 *C.GDBusInterfaceSkeleton // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
-	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusObjectSkeleton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("remove_interface", args[:], nil)
+
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interface_)
 }
@@ -270,14 +284,17 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 //    - interfaceName d-Bus interface name.
 //
 func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
-	var _arg0 *C.GDBusObjectSkeleton // out
-	var _arg1 *C.gchar               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusObjectSkeleton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("remove_interface_by_name", args[:], nil)
+
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interfaceName)
 }
@@ -289,14 +306,17 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 //    - objectPath: valid D-Bus object path.
 //
 func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
-	var _arg0 *C.GDBusObjectSkeleton // out
-	var _arg1 *C.gchar               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(externglib.InternObject(object).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusObjectSkeleton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("set_object_path", args[:], nil)
+
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(objectPath)
 }

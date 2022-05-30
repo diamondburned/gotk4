@@ -7,70 +7,69 @@ import (
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkenums.go.
 var (
-	GTypeAlign              = externglib.Type(C.gtk_align_get_type())
-	GTypeArrowType          = externglib.Type(C.gtk_arrow_type_get_type())
-	GTypeBaselinePosition   = externglib.Type(C.gtk_baseline_position_get_type())
-	GTypeBorderStyle        = externglib.Type(C.gtk_border_style_get_type())
-	GTypeDeleteType         = externglib.Type(C.gtk_delete_type_get_type())
-	GTypeDirectionType      = externglib.Type(C.gtk_direction_type_get_type())
-	GTypeDragResult         = externglib.Type(C.gtk_drag_result_get_type())
-	GTypeEventSequenceState = externglib.Type(C.gtk_event_sequence_state_get_type())
-	GTypeIMPreeditStyle     = externglib.Type(C.gtk_im_preedit_style_get_type())
-	GTypeIMStatusStyle      = externglib.Type(C.gtk_im_status_style_get_type())
-	GTypeIconSize           = externglib.Type(C.gtk_icon_size_get_type())
-	GTypeInputPurpose       = externglib.Type(C.gtk_input_purpose_get_type())
-	GTypeJustification      = externglib.Type(C.gtk_justification_get_type())
-	GTypeLevelBarMode       = externglib.Type(C.gtk_level_bar_mode_get_type())
-	GTypeMenuDirectionType  = externglib.Type(C.gtk_menu_direction_type_get_type())
-	GTypeMessageType        = externglib.Type(C.gtk_message_type_get_type())
-	GTypeNumberUpLayout     = externglib.Type(C.gtk_number_up_layout_get_type())
-	GTypeOrientation        = externglib.Type(C.gtk_orientation_get_type())
-	GTypePackDirection      = externglib.Type(C.gtk_pack_direction_get_type())
-	GTypePackType           = externglib.Type(C.gtk_pack_type_get_type())
-	GTypePageOrientation    = externglib.Type(C.gtk_page_orientation_get_type())
-	GTypePageSet            = externglib.Type(C.gtk_page_set_get_type())
-	GTypePanDirection       = externglib.Type(C.gtk_pan_direction_get_type())
-	GTypePopoverConstraint  = externglib.Type(C.gtk_popover_constraint_get_type())
-	GTypePositionType       = externglib.Type(C.gtk_position_type_get_type())
-	GTypePrintDuplex        = externglib.Type(C.gtk_print_duplex_get_type())
-	GTypePrintPages         = externglib.Type(C.gtk_print_pages_get_type())
-	GTypePrintQuality       = externglib.Type(C.gtk_print_quality_get_type())
-	GTypePropagationPhase   = externglib.Type(C.gtk_propagation_phase_get_type())
-	GTypeReliefStyle        = externglib.Type(C.gtk_relief_style_get_type())
-	GTypeScrollType         = externglib.Type(C.gtk_scroll_type_get_type())
-	GTypeScrollablePolicy   = externglib.Type(C.gtk_scrollable_policy_get_type())
-	GTypeSelectionMode      = externglib.Type(C.gtk_selection_mode_get_type())
-	GTypeSensitivityType    = externglib.Type(C.gtk_sensitivity_type_get_type())
-	GTypeShadowType         = externglib.Type(C.gtk_shadow_type_get_type())
-	GTypeSizeGroupMode      = externglib.Type(C.gtk_size_group_mode_get_type())
-	GTypeSizeRequestMode    = externglib.Type(C.gtk_size_request_mode_get_type())
-	GTypeSortType           = externglib.Type(C.gtk_sort_type_get_type())
-	GTypeStateType          = externglib.Type(C.gtk_state_type_get_type())
-	GTypeTextDirection      = externglib.Type(C.gtk_text_direction_get_type())
-	GTypeToolbarStyle       = externglib.Type(C.gtk_toolbar_style_get_type())
-	GTypeTreeViewGridLines  = externglib.Type(C.gtk_tree_view_grid_lines_get_type())
-	GTypeUnit               = externglib.Type(C.gtk_unit_get_type())
-	GTypeWrapMode           = externglib.Type(C.gtk_wrap_mode_get_type())
-	GTypeInputHints         = externglib.Type(C.gtk_input_hints_get_type())
-	GTypeJunctionSides      = externglib.Type(C.gtk_junction_sides_get_type())
-	GTypeRegionFlags        = externglib.Type(C.gtk_region_flags_get_type())
-	GTypeStateFlags         = externglib.Type(C.gtk_state_flags_get_type())
+	GTypeAlign              = coreglib.Type(C.gtk_align_get_type())
+	GTypeArrowType          = coreglib.Type(C.gtk_arrow_type_get_type())
+	GTypeBaselinePosition   = coreglib.Type(C.gtk_baseline_position_get_type())
+	GTypeBorderStyle        = coreglib.Type(C.gtk_border_style_get_type())
+	GTypeDeleteType         = coreglib.Type(C.gtk_delete_type_get_type())
+	GTypeDirectionType      = coreglib.Type(C.gtk_direction_type_get_type())
+	GTypeDragResult         = coreglib.Type(C.gtk_drag_result_get_type())
+	GTypeEventSequenceState = coreglib.Type(C.gtk_event_sequence_state_get_type())
+	GTypeIMPreeditStyle     = coreglib.Type(C.gtk_im_preedit_style_get_type())
+	GTypeIMStatusStyle      = coreglib.Type(C.gtk_im_status_style_get_type())
+	GTypeIconSize           = coreglib.Type(C.gtk_icon_size_get_type())
+	GTypeInputPurpose       = coreglib.Type(C.gtk_input_purpose_get_type())
+	GTypeJustification      = coreglib.Type(C.gtk_justification_get_type())
+	GTypeLevelBarMode       = coreglib.Type(C.gtk_level_bar_mode_get_type())
+	GTypeMenuDirectionType  = coreglib.Type(C.gtk_menu_direction_type_get_type())
+	GTypeMessageType        = coreglib.Type(C.gtk_message_type_get_type())
+	GTypeNumberUpLayout     = coreglib.Type(C.gtk_number_up_layout_get_type())
+	GTypeOrientation        = coreglib.Type(C.gtk_orientation_get_type())
+	GTypePackDirection      = coreglib.Type(C.gtk_pack_direction_get_type())
+	GTypePackType           = coreglib.Type(C.gtk_pack_type_get_type())
+	GTypePageOrientation    = coreglib.Type(C.gtk_page_orientation_get_type())
+	GTypePageSet            = coreglib.Type(C.gtk_page_set_get_type())
+	GTypePanDirection       = coreglib.Type(C.gtk_pan_direction_get_type())
+	GTypePopoverConstraint  = coreglib.Type(C.gtk_popover_constraint_get_type())
+	GTypePositionType       = coreglib.Type(C.gtk_position_type_get_type())
+	GTypePrintDuplex        = coreglib.Type(C.gtk_print_duplex_get_type())
+	GTypePrintPages         = coreglib.Type(C.gtk_print_pages_get_type())
+	GTypePrintQuality       = coreglib.Type(C.gtk_print_quality_get_type())
+	GTypePropagationPhase   = coreglib.Type(C.gtk_propagation_phase_get_type())
+	GTypeReliefStyle        = coreglib.Type(C.gtk_relief_style_get_type())
+	GTypeScrollType         = coreglib.Type(C.gtk_scroll_type_get_type())
+	GTypeScrollablePolicy   = coreglib.Type(C.gtk_scrollable_policy_get_type())
+	GTypeSelectionMode      = coreglib.Type(C.gtk_selection_mode_get_type())
+	GTypeSensitivityType    = coreglib.Type(C.gtk_sensitivity_type_get_type())
+	GTypeShadowType         = coreglib.Type(C.gtk_shadow_type_get_type())
+	GTypeSizeGroupMode      = coreglib.Type(C.gtk_size_group_mode_get_type())
+	GTypeSizeRequestMode    = coreglib.Type(C.gtk_size_request_mode_get_type())
+	GTypeSortType           = coreglib.Type(C.gtk_sort_type_get_type())
+	GTypeStateType          = coreglib.Type(C.gtk_state_type_get_type())
+	GTypeTextDirection      = coreglib.Type(C.gtk_text_direction_get_type())
+	GTypeToolbarStyle       = coreglib.Type(C.gtk_toolbar_style_get_type())
+	GTypeTreeViewGridLines  = coreglib.Type(C.gtk_tree_view_grid_lines_get_type())
+	GTypeUnit               = coreglib.Type(C.gtk_unit_get_type())
+	GTypeWrapMode           = coreglib.Type(C.gtk_wrap_mode_get_type())
+	GTypeInputHints         = coreglib.Type(C.gtk_input_hints_get_type())
+	GTypeJunctionSides      = coreglib.Type(C.gtk_junction_sides_get_type())
+	GTypeRegionFlags        = coreglib.Type(C.gtk_region_flags_get_type())
+	GTypeStateFlags         = coreglib.Type(C.gtk_state_flags_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAlign, F: marshalAlign},
 		{T: GTypeArrowType, F: marshalArrowType},
 		{T: GTypeBaselinePosition, F: marshalBaselinePosition},
@@ -154,7 +153,7 @@ const (
 )
 
 func marshalAlign(p uintptr) (interface{}, error) {
-	return Align(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Align(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Align.
@@ -192,7 +191,7 @@ const (
 )
 
 func marshalArrowType(p uintptr) (interface{}, error) {
-	return ArrowType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ArrowType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ArrowType.
@@ -230,7 +229,7 @@ const (
 )
 
 func marshalBaselinePosition(p uintptr) (interface{}, error) {
-	return BaselinePosition(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return BaselinePosition(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BaselinePosition.
@@ -274,7 +273,7 @@ const (
 )
 
 func marshalBorderStyle(p uintptr) (interface{}, error) {
-	return BorderStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return BorderStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BorderStyle.
@@ -333,7 +332,7 @@ const (
 )
 
 func marshalDeleteType(p uintptr) (interface{}, error) {
-	return DeleteType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DeleteType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DeleteType.
@@ -379,7 +378,7 @@ const (
 )
 
 func marshalDirectionType(p uintptr) (interface{}, error) {
-	return DirectionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DirectionType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DirectionType.
@@ -423,7 +422,7 @@ const (
 )
 
 func marshalDragResult(p uintptr) (interface{}, error) {
-	return DragResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DragResult(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DragResult.
@@ -459,7 +458,7 @@ const (
 )
 
 func marshalEventSequenceState(p uintptr) (interface{}, error) {
-	return EventSequenceState(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return EventSequenceState(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EventSequenceState.
@@ -492,7 +491,7 @@ const (
 )
 
 func marshalIMPreeditStyle(p uintptr) (interface{}, error) {
-	return IMPreeditStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return IMPreeditStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IMPreeditStyle.
@@ -525,7 +524,7 @@ const (
 )
 
 func marshalIMStatusStyle(p uintptr) (interface{}, error) {
-	return IMStatusStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return IMStatusStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IMStatusStyle.
@@ -563,7 +562,7 @@ const (
 )
 
 func marshalIconSize(p uintptr) (interface{}, error) {
-	return IconSize(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return IconSize(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IconSize.
@@ -634,7 +633,7 @@ const (
 )
 
 func marshalInputPurpose(p uintptr) (interface{}, error) {
-	return InputPurpose(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return InputPurpose(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InputPurpose.
@@ -683,7 +682,7 @@ const (
 )
 
 func marshalJustification(p uintptr) (interface{}, error) {
-	return Justification(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Justification(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Justification.
@@ -714,7 +713,7 @@ const (
 )
 
 func marshalLevelBarMode(p uintptr) (interface{}, error) {
-	return LevelBarMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return LevelBarMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for LevelBarMode.
@@ -745,7 +744,7 @@ const (
 )
 
 func marshalMenuDirectionType(p uintptr) (interface{}, error) {
-	return MenuDirectionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return MenuDirectionType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MenuDirectionType.
@@ -781,7 +780,7 @@ const (
 )
 
 func marshalMessageType(p uintptr) (interface{}, error) {
-	return MessageType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return MessageType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MessageType.
@@ -826,7 +825,7 @@ const (
 )
 
 func marshalNumberUpLayout(p uintptr) (interface{}, error) {
-	return NumberUpLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return NumberUpLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NumberUpLayout.
@@ -866,7 +865,7 @@ const (
 )
 
 func marshalOrientation(p uintptr) (interface{}, error) {
-	return Orientation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Orientation(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Orientation.
@@ -897,7 +896,7 @@ const (
 )
 
 func marshalPackDirection(p uintptr) (interface{}, error) {
-	return PackDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PackDirection(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PackDirection.
@@ -928,7 +927,7 @@ const (
 )
 
 func marshalPackType(p uintptr) (interface{}, error) {
-	return PackType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PackType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PackType.
@@ -958,7 +957,7 @@ const (
 )
 
 func marshalPageOrientation(p uintptr) (interface{}, error) {
-	return PageOrientation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PageOrientation(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PageOrientation.
@@ -990,7 +989,7 @@ const (
 )
 
 func marshalPageSet(p uintptr) (interface{}, error) {
-	return PageSet(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PageSet(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PageSet.
@@ -1022,7 +1021,7 @@ const (
 )
 
 func marshalPanDirection(p uintptr) (interface{}, error) {
-	return PanDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PanDirection(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PanDirection.
@@ -1055,7 +1054,7 @@ const (
 )
 
 func marshalPopoverConstraint(p uintptr) (interface{}, error) {
-	return PopoverConstraint(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PopoverConstraint(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PopoverConstraint.
@@ -1087,7 +1086,7 @@ const (
 )
 
 func marshalPositionType(p uintptr) (interface{}, error) {
-	return PositionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PositionType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PositionType.
@@ -1119,7 +1118,7 @@ const (
 )
 
 func marshalPrintDuplex(p uintptr) (interface{}, error) {
-	return PrintDuplex(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PrintDuplex(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintDuplex.
@@ -1151,7 +1150,7 @@ const (
 )
 
 func marshalPrintPages(p uintptr) (interface{}, error) {
-	return PrintPages(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PrintPages(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintPages.
@@ -1185,7 +1184,7 @@ const (
 )
 
 func marshalPrintQuality(p uintptr) (interface{}, error) {
-	return PrintQuality(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PrintQuality(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PrintQuality.
@@ -1230,7 +1229,7 @@ const (
 )
 
 func marshalPropagationPhase(p uintptr) (interface{}, error) {
-	return PropagationPhase(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PropagationPhase(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PropagationPhase.
@@ -1263,7 +1262,7 @@ const (
 )
 
 func marshalReliefStyle(p uintptr) (interface{}, error) {
-	return ReliefStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ReliefStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ReliefStyle.
@@ -1319,7 +1318,7 @@ const (
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
-	return ScrollType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ScrollType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollType.
@@ -1374,7 +1373,7 @@ const (
 )
 
 func marshalScrollablePolicy(p uintptr) (interface{}, error) {
-	return ScrollablePolicy(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ScrollablePolicy(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollablePolicy.
@@ -1411,7 +1410,7 @@ const (
 )
 
 func marshalSelectionMode(p uintptr) (interface{}, error) {
-	return SelectionMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SelectionMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SelectionMode.
@@ -1444,7 +1443,7 @@ const (
 )
 
 func marshalSensitivityType(p uintptr) (interface{}, error) {
-	return SensitivityType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SensitivityType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SensitivityType.
@@ -1483,7 +1482,7 @@ const (
 )
 
 func marshalShadowType(p uintptr) (interface{}, error) {
-	return ShadowType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ShadowType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ShadowType.
@@ -1520,7 +1519,7 @@ const (
 )
 
 func marshalSizeGroupMode(p uintptr) (interface{}, error) {
-	return SizeGroupMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SizeGroupMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SizeGroupMode.
@@ -1554,7 +1553,7 @@ const (
 )
 
 func marshalSizeRequestMode(p uintptr) (interface{}, error) {
-	return SizeRequestMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SizeRequestMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SizeRequestMode.
@@ -1582,7 +1581,7 @@ const (
 )
 
 func marshalSortType(p uintptr) (interface{}, error) {
-	return SortType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SortType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SortType.
@@ -1629,7 +1628,7 @@ const (
 )
 
 func marshalStateType(p uintptr) (interface{}, error) {
-	return StateType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return StateType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for StateType.
@@ -1667,7 +1666,7 @@ const (
 )
 
 func marshalTextDirection(p uintptr) (interface{}, error) {
-	return TextDirection(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TextDirection(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TextDirection.
@@ -1703,7 +1702,7 @@ const (
 )
 
 func marshalToolbarStyle(p uintptr) (interface{}, error) {
-	return ToolbarStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ToolbarStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ToolbarStyle.
@@ -1737,7 +1736,7 @@ const (
 )
 
 func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
-	return TreeViewGridLines(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TreeViewGridLines(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TreeViewGridLines.
@@ -1771,7 +1770,7 @@ const (
 )
 
 func marshalUnit(p uintptr) (interface{}, error) {
-	return Unit(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Unit(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Unit.
@@ -1808,7 +1807,7 @@ const (
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
-	return WrapMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return WrapMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WrapMode.
@@ -1869,7 +1868,7 @@ const (
 )
 
 func marshalInputHints(p uintptr) (interface{}, error) {
-	return InputHints(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return InputHints(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for InputHints.
@@ -1950,7 +1949,7 @@ const (
 )
 
 func marshalJunctionSides(p uintptr) (interface{}, error) {
-	return JunctionSides(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return JunctionSides(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for JunctionSides.
@@ -2019,7 +2018,7 @@ const (
 )
 
 func marshalRegionFlags(p uintptr) (interface{}, error) {
-	return RegionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return RegionFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for RegionFlags.
@@ -2102,7 +2101,7 @@ const (
 )
 
 func marshalStateFlags(p uintptr) (interface{}, error) {
-	return StateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return StateFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for StateFlags.

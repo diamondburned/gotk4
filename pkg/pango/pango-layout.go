@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -18,16 +18,16 @@ import "C"
 
 // glib.Type values for pango-layout.go.
 var (
-	GTypeAlignment     = externglib.Type(C.pango_alignment_get_type())
-	GTypeEllipsizeMode = externglib.Type(C.pango_ellipsize_mode_get_type())
-	GTypeWrapMode      = externglib.Type(C.pango_wrap_mode_get_type())
-	GTypeLayout        = externglib.Type(C.pango_layout_get_type())
-	GTypeLayoutIter    = externglib.Type(C.pango_layout_iter_get_type())
-	GTypeLayoutLine    = externglib.Type(C.pango_layout_line_get_type())
+	GTypeAlignment     = coreglib.Type(C.pango_alignment_get_type())
+	GTypeEllipsizeMode = coreglib.Type(C.pango_ellipsize_mode_get_type())
+	GTypeWrapMode      = coreglib.Type(C.pango_wrap_mode_get_type())
+	GTypeLayout        = coreglib.Type(C.pango_layout_get_type())
+	GTypeLayoutIter    = coreglib.Type(C.pango_layout_iter_get_type())
+	GTypeLayoutLine    = coreglib.Type(C.pango_layout_line_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAlignment, F: marshalAlignment},
 		{T: GTypeEllipsizeMode, F: marshalEllipsizeMode},
 		{T: GTypeWrapMode, F: marshalWrapMode},
@@ -60,7 +60,7 @@ const (
 )
 
 func marshalAlignment(p uintptr) (interface{}, error) {
-	return Alignment(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Alignment(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Alignment.
@@ -96,7 +96,7 @@ const (
 )
 
 func marshalEllipsizeMode(p uintptr) (interface{}, error) {
-	return EllipsizeMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return EllipsizeMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EllipsizeMode.
@@ -130,7 +130,7 @@ const (
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
-	return WrapMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return WrapMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for WrapMode.
@@ -176,11 +176,11 @@ type LayoutOverrider interface {
 // results of a PangoLayout as a list of lines.
 type Layout struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Layout)(nil)
+	_ coreglib.Objector = (*Layout)(nil)
 )
 
 func classInitLayouter(gclassPtr, data C.gpointer) {
@@ -191,14 +191,14 @@ func classInitLayouter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapLayout(obj *externglib.Object) *Layout {
+func wrapLayout(obj *coreglib.Object) *Layout {
 	return &Layout{
 		Object: obj,
 	}
 }
 
 func marshalLayout(p uintptr) (interface{}, error) {
-	return wrapLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewLayout: create a new PangoLayout object with attributes initialized to
@@ -217,14 +217,14 @@ func NewLayout(context *Context) *Layout {
 	var _arg1 *C.PangoContext // out
 	var _cret *C.PangoLayout  // in
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_cret = C.pango_layout_new(_arg1)
 	runtime.KeepAlive(context)
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -237,7 +237,7 @@ func NewLayout(context *Context) *Layout {
 func (layout *Layout) ContextChanged() {
 	var _arg0 *C.PangoLayout // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_layout_context_changed(_arg0)
 	runtime.KeepAlive(layout)
@@ -257,14 +257,14 @@ func (src *Layout) Copy() *Layout {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.PangoLayout // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 
 	_cret = C.pango_layout_copy(_arg0)
 	runtime.KeepAlive(src)
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -280,7 +280,7 @@ func (layout *Layout) Alignment() Alignment {
 	var _arg0 *C.PangoLayout   // out
 	var _cret C.PangoAlignment // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_alignment(_arg0)
 	runtime.KeepAlive(layout)
@@ -302,7 +302,7 @@ func (layout *Layout) Attributes() *AttrList {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoAttrList // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_attributes(_arg0)
 	runtime.KeepAlive(layout)
@@ -337,7 +337,7 @@ func (layout *Layout) AutoDir() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_auto_dir(_arg0)
 	runtime.KeepAlive(layout)
@@ -361,7 +361,7 @@ func (layout *Layout) Baseline() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_baseline(_arg0)
 	runtime.KeepAlive(layout)
@@ -384,7 +384,7 @@ func (layout *Layout) CharacterCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gint         // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_character_count(_arg0)
 	runtime.KeepAlive(layout)
@@ -408,14 +408,14 @@ func (layout *Layout) Context() *Context {
 	var _arg0 *C.PangoLayout  // out
 	var _cret *C.PangoContext // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_context(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _context *Context // out
 
-	_context = wrapContext(externglib.Take(unsafe.Pointer(_cret)))
+	_context = wrapContext(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _context
 }
@@ -446,7 +446,7 @@ func (layout *Layout) CursorPos(index_ int) (strongPos *Rectangle, weakPos *Rect
 	var _arg2 C.PangoRectangle // in
 	var _arg3 C.PangoRectangle // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(index_)
 
 	C.pango_layout_get_cursor_pos(_arg0, _arg1, &_arg2, &_arg3)
@@ -477,7 +477,7 @@ func (layout *Layout) Direction(index int) Direction {
 	var _arg1 C.int            // out
 	var _cret C.PangoDirection // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(index)
 
 	_cret = C.pango_layout_get_direction(_arg0, _arg1)
@@ -506,7 +506,7 @@ func (layout *Layout) Ellipsize() EllipsizeMode {
 	var _arg0 *C.PangoLayout       // out
 	var _cret C.PangoEllipsizeMode // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_ellipsize(_arg0)
 	runtime.KeepAlive(layout)
@@ -541,7 +541,7 @@ func (layout *Layout) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg1 C.PangoRectangle // in
 	var _arg2 C.PangoRectangle // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_layout_get_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
@@ -567,7 +567,7 @@ func (layout *Layout) FontDescription() *FontDescription {
 	var _arg0 *C.PangoLayout          // out
 	var _cret *C.PangoFontDescription // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_font_description(_arg0)
 	runtime.KeepAlive(layout)
@@ -593,7 +593,7 @@ func (layout *Layout) Height() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_height(_arg0)
 	runtime.KeepAlive(layout)
@@ -617,7 +617,7 @@ func (layout *Layout) Indent() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_indent(_arg0)
 	runtime.KeepAlive(layout)
@@ -640,7 +640,7 @@ func (layout *Layout) Iter() *LayoutIter {
 	var _arg0 *C.PangoLayout     // out
 	var _cret *C.PangoLayoutIter // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_iter(_arg0)
 	runtime.KeepAlive(layout)
@@ -669,7 +669,7 @@ func (layout *Layout) Justify() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_justify(_arg0)
 	runtime.KeepAlive(layout)
@@ -704,7 +704,7 @@ func (layout *Layout) Line(line int) *LayoutLine {
 	var _arg1 C.int              // out
 	var _cret *C.PangoLayoutLine // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(line)
 
 	_cret = C.pango_layout_get_line(_arg0, _arg1)
@@ -737,7 +737,7 @@ func (layout *Layout) LineCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_line_count(_arg0)
 	runtime.KeepAlive(layout)
@@ -771,7 +771,7 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	var _arg1 C.int              // out
 	var _cret *C.PangoLayoutLine // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(line)
 
 	_cret = C.pango_layout_get_line_readonly(_arg0, _arg1)
@@ -804,7 +804,7 @@ func (layout *Layout) LineSpacing() float32 {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.float        // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_line_spacing(_arg0)
 	runtime.KeepAlive(layout)
@@ -831,7 +831,7 @@ func (layout *Layout) Lines() []*LayoutLine {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_lines(_arg0)
 	runtime.KeepAlive(layout)
@@ -872,7 +872,7 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_lines_readonly(_arg0)
 	runtime.KeepAlive(layout)
@@ -910,7 +910,7 @@ func (layout *Layout) LogAttrs() []LogAttr {
 	var _arg1 *C.PangoLogAttr // in
 	var _arg2 C.gint          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_layout_get_log_attrs(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
@@ -950,7 +950,7 @@ func (layout *Layout) LogAttrsReadonly() []LogAttr {
 	var _cret *C.PangoLogAttr // in
 	var _arg1 C.gint          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_log_attrs_readonly(_arg0, &_arg1)
 	runtime.KeepAlive(layout)
@@ -987,7 +987,7 @@ func (layout *Layout) PixelExtents() (inkRect *Rectangle, logicalRect *Rectangle
 	var _arg1 C.PangoRectangle // in
 	var _arg2 C.PangoRectangle // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_layout_get_pixel_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
@@ -1017,7 +1017,7 @@ func (layout *Layout) PixelSize() (width int, height int) {
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_layout_get_pixel_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
@@ -1051,7 +1051,7 @@ func (layout *Layout) Serial() uint {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.guint        // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_serial(_arg0)
 	runtime.KeepAlive(layout)
@@ -1076,7 +1076,7 @@ func (layout *Layout) SingleParagraphMode() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_single_paragraph_mode(_arg0)
 	runtime.KeepAlive(layout)
@@ -1104,7 +1104,7 @@ func (layout *Layout) Size() (width int, height int) {
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_layout_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
@@ -1128,7 +1128,7 @@ func (layout *Layout) Spacing() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_spacing(_arg0)
 	runtime.KeepAlive(layout)
@@ -1155,7 +1155,7 @@ func (layout *Layout) Tabs() *TabArray {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_tabs(_arg0)
 	runtime.KeepAlive(layout)
@@ -1186,7 +1186,7 @@ func (layout *Layout) Text() string {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.char        // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_text(_arg0)
 	runtime.KeepAlive(layout)
@@ -1213,7 +1213,7 @@ func (layout *Layout) UnknownGlyphsCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_unknown_glyphs_count(_arg0)
 	runtime.KeepAlive(layout)
@@ -1235,7 +1235,7 @@ func (layout *Layout) Width() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_width(_arg0)
 	runtime.KeepAlive(layout)
@@ -1260,7 +1260,7 @@ func (layout *Layout) Wrap() WrapMode {
 	var _arg0 *C.PangoLayout  // out
 	var _cret C.PangoWrapMode // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_wrap(_arg0)
 	runtime.KeepAlive(layout)
@@ -1298,7 +1298,7 @@ func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line int, xPos in
 	var _arg3 C.int          // in
 	var _arg4 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(index_)
 	if trailing {
 		_arg2 = C.TRUE
@@ -1339,7 +1339,7 @@ func (layout *Layout) IndexToPos(index_ int) *Rectangle {
 	var _arg1 C.int            // out
 	var _arg2 C.PangoRectangle // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(index_)
 
 	C.pango_layout_index_to_pos(_arg0, _arg1, &_arg2)
@@ -1367,7 +1367,7 @@ func (layout *Layout) IsEllipsized() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_is_ellipsized(_arg0)
 	runtime.KeepAlive(layout)
@@ -1395,7 +1395,7 @@ func (layout *Layout) IsWrapped() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_is_wrapped(_arg0)
 	runtime.KeepAlive(layout)
@@ -1456,7 +1456,7 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 	var _arg5 C.int          // in
 	var _arg6 C.int          // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if strong {
 		_arg1 = C.TRUE
 	}
@@ -1491,7 +1491,7 @@ func (layout *Layout) SetAlignment(alignment Alignment) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoAlignment // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.PangoAlignment(alignment)
 
 	C.pango_layout_set_alignment(_arg0, _arg1)
@@ -1510,7 +1510,7 @@ func (layout *Layout) SetAttributes(attrs *AttrList) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoAttrList // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if attrs != nil {
 		_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 	}
@@ -1546,7 +1546,7 @@ func (layout *Layout) SetAutoDir(autoDir bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if autoDir {
 		_arg1 = C.TRUE
 	}
@@ -1575,7 +1575,7 @@ func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
 	var _arg0 *C.PangoLayout       // out
 	var _arg1 C.PangoEllipsizeMode // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.PangoEllipsizeMode(ellipsize)
 
 	C.pango_layout_set_ellipsize(_arg0, _arg1)
@@ -1597,7 +1597,7 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoLayout          // out
 	var _arg1 *C.PangoFontDescription // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if desc != nil {
 		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 	}
@@ -1640,7 +1640,7 @@ func (layout *Layout) SetHeight(height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(height)
 
 	C.pango_layout_set_height(_arg0, _arg1)
@@ -1665,7 +1665,7 @@ func (layout *Layout) SetIndent(indent int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(indent)
 
 	C.pango_layout_set_indent(_arg0, _arg1)
@@ -1691,7 +1691,7 @@ func (layout *Layout) SetJustify(justify bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if justify {
 		_arg1 = C.TRUE
 	}
@@ -1723,7 +1723,7 @@ func (layout *Layout) SetLineSpacing(factor float32) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.float        // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.float(factor)
 
 	C.pango_layout_set_line_spacing(_arg0, _arg1)
@@ -1749,7 +1749,7 @@ func (layout *Layout) SetMarkup(markup string, length int) {
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
@@ -1791,7 +1791,7 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker 
 	var _arg3 C.gunichar     // out
 	var _arg4 C.gunichar     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
@@ -1825,7 +1825,7 @@ func (layout *Layout) SetSingleParagraphMode(setting bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
@@ -1856,7 +1856,7 @@ func (layout *Layout) SetSpacing(spacing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(spacing)
 
 	C.pango_layout_set_spacing(_arg0, _arg1)
@@ -1878,7 +1878,7 @@ func (layout *Layout) SetTabs(tabs *TabArray) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoTabArray // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if tabs != nil {
 		_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 	}
@@ -1910,7 +1910,7 @@ func (layout *Layout) SetText(text string, length int) {
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
@@ -1935,7 +1935,7 @@ func (layout *Layout) SetWidth(width int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(width)
 
 	C.pango_layout_set_width(_arg0, _arg1)
@@ -1956,7 +1956,7 @@ func (layout *Layout) SetWrap(wrap WrapMode) {
 	var _arg0 *C.PangoLayout  // out
 	var _arg1 C.PangoWrapMode // out
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.PangoWrapMode(wrap)
 
 	C.pango_layout_set_wrap(_arg0, _arg1)
@@ -1995,7 +1995,7 @@ func (layout *Layout) XYToIndex(x, y int) (index_ int, trailing int, ok bool) {
 	var _arg4 C.int          // in
 	var _cret C.gboolean     // in
 
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -2035,7 +2035,7 @@ type layoutIter struct {
 }
 
 func marshalLayoutIter(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &LayoutIter{&layoutIter{(*C.PangoLayoutIter)(b)}}, nil
 }
 
@@ -2213,7 +2213,7 @@ func (iter *LayoutIter) Layout() *Layout {
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(externglib.Take(unsafe.Pointer(_cret)))
+	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -2578,14 +2578,14 @@ type layoutLine struct {
 }
 
 func marshalLayoutLine(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &LayoutLine{&layoutLine{(*C.PangoLayoutLine)(b)}}, nil
 }
 
 // Layout: layout this line belongs to, might be NULL.
 func (l *LayoutLine) Layout() *Layout {
 	var v *Layout // out
-	v = wrapLayout(externglib.Take(unsafe.Pointer(l.native.layout)))
+	v = wrapLayout(coreglib.Take(unsafe.Pointer(l.native.layout)))
 	return v
 }
 

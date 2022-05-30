@@ -8,24 +8,23 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_PlugClass_embedded(GtkPlug*);
 // extern void _gotk4_gtk3_Plug_ConnectEmbedded(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkplug.go.
-var GTypePlug = externglib.Type(C.gtk_plug_get_type())
+var GTypePlug = coreglib.Type(C.gtk_plug_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePlug, F: marshalPlug},
 	})
 }
@@ -78,19 +77,19 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_PlugClass_embedded
 func _gotk4_gtk3_PlugClass_embedded(arg0 *C.GtkPlug) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Embedded() })
 
 	iface.Embedded()
 }
 
-func wrapPlug(obj *externglib.Object) *Plug {
+func wrapPlug(obj *coreglib.Object) *Plug {
 	return &Plug{
 		Window: Window{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -108,14 +107,14 @@ func wrapPlug(obj *externglib.Object) *Plug {
 }
 
 func marshalPlug(p uintptr) (interface{}, error) {
-	return wrapPlug(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPlug(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_Plug_ConnectEmbedded
 func _gotk4_gtk3_Plug_ConnectEmbedded(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -128,8 +127,8 @@ func _gotk4_gtk3_Plug_ConnectEmbedded(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectEmbedded gets emitted when the plug becomes embedded in a socket.
-func (plug *Plug) ConnectEmbedded(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(plug, "embedded", false, unsafe.Pointer(C._gotk4_gtk3_Plug_ConnectEmbedded), f)
+func (plug *Plug) ConnectEmbedded(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(plug, "embedded", false, unsafe.Pointer(C._gotk4_gtk3_Plug_ConnectEmbedded), f)
 }
 
 // Embedded determines whether the plug is embedded in a socket.
@@ -139,12 +138,16 @@ func (plug *Plug) ConnectEmbedded(f func()) externglib.SignalHandle {
 //    - ok: TRUE if the plug is embedded in a socket.
 //
 func (plug *Plug) Embedded() bool {
-	var _arg0 *C.GtkPlug // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	*(**Plug)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_plug_get_embedded(_arg0)
+	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_embedded", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(plug)
 
 	var _ok bool // out
@@ -163,12 +166,16 @@ func (plug *Plug) Embedded() bool {
 //    - window (optional) of the socket, or NULL.
 //
 func (plug *Plug) SocketWindow() gdk.Windower {
-	var _arg0 *C.GtkPlug   // out
-	var _cret *C.GdkWindow // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPlug)(unsafe.Pointer(externglib.InternObject(plug).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	*(**Plug)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_plug_get_socket_window(_arg0)
+	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_socket_window", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(plug)
 
 	var _window gdk.Windower // out
@@ -177,8 +184,8 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(gdk.Windower)
 				return ok
 			})

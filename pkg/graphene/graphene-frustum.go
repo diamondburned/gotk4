@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for graphene-frustum.go.
-var GTypeFrustum = externglib.Type(C.graphene_frustum_get_type())
+var GTypeFrustum = coreglib.Type(C.graphene_frustum_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFrustum, F: marshalFrustum},
 	})
 }
@@ -40,7 +40,7 @@ type frustum struct {
 }
 
 func marshalFrustum(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Frustum{&frustum{(*C.graphene_frustum_t)(b)}}, nil
 }
 

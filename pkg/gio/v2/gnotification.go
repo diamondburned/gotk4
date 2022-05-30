@@ -7,12 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // NewNotification creates a new #GNotification with title as its title.
@@ -30,18 +32,22 @@ import "C"
 //    - notification: new #GNotification instance.
 //
 func NewNotification(title string) *Notification {
-	var _arg1 *C.gchar         // out
-	var _cret *C.GNotification // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_notification_new(_arg1)
+	_gret := girepository.MustFind("Gio", "Notification").InvokeMethod("new_Notification", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(title)
 
 	var _notification *Notification // out
 
-	_notification = wrapNotification(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_notification = wrapNotification(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _notification
 }
@@ -60,17 +66,21 @@ func NewNotification(title string) *Notification {
 //    - detailedAction: detailed action name.
 //
 func (notification *Notification) AddButton(label, detailedAction string) {
-	var _arg0 *C.GNotification // out
-	var _arg1 *C.gchar         // out
-	var _arg2 *C.gchar         // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(detailedAction)))
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_notification_add_button(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("add_button", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(detailedAction)
@@ -89,21 +99,26 @@ func (notification *Notification) AddButton(label, detailedAction string) {
 //    - target (optional) to use as action's parameter, or NULL.
 //
 func (notification *Notification) AddButtonWithTarget(label, action string, target *glib.Variant) {
-	var _arg0 *C.GNotification // out
-	var _arg1 *C.gchar         // out
-	var _arg2 *C.gchar         // out
-	var _arg3 *C.GVariant      // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(action)))
 	defer C.free(unsafe.Pointer(_arg2))
 	if target != nil {
-		_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(target)))
+		_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 	}
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_notification_add_button_with_target_value(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("add_button_with_target_value", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(action)
@@ -117,16 +132,19 @@ func (notification *Notification) AddButtonWithTarget(label, action string, targ
 //    - body (optional): new body for notification, or NULL.
 //
 func (notification *Notification) SetBody(body string) {
-	var _arg0 *C.GNotification // out
-	var _arg1 *C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
 	if body != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(body)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(body)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_notification_set_body(_arg0, _arg1)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("set_body", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(body)
 }
@@ -148,14 +166,17 @@ func (notification *Notification) SetBody(body string) {
 //    - detailedAction: detailed action name.
 //
 func (notification *Notification) SetDefaultAction(detailedAction string) {
-	var _arg0 *C.GNotification // out
-	var _arg1 *C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(detailedAction)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_notification_set_default_action(_arg0, _arg1)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("set_default_action", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(detailedAction)
 }
@@ -175,18 +196,22 @@ func (notification *Notification) SetDefaultAction(detailedAction string) {
 //    - target (optional) to use as action's parameter, or NULL.
 //
 func (notification *Notification) SetDefaultActionAndTarget(action string, target *glib.Variant) {
-	var _arg0 *C.GNotification // out
-	var _arg1 *C.gchar         // out
-	var _arg2 *C.GVariant      // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(action)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if target != nil {
-		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(target)))
+		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 	}
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_notification_set_default_action_and_target_value(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("set_default_action_and_target_value", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(target)
@@ -199,34 +224,18 @@ func (notification *Notification) SetDefaultActionAndTarget(action string, targe
 //    - icon to be shown in notification, as a #GIcon.
 //
 func (notification *Notification) SetIcon(icon Iconner) {
-	var _arg0 *C.GNotification // out
-	var _arg1 *C.GIcon         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_notification_set_icon(_arg0, _arg1)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("set_icon", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(icon)
-}
-
-// SetPriority sets the priority of notification to priority. See Priority for
-// possible values.
-//
-// The function takes the following parameters:
-//
-//    - priority: Priority.
-//
-func (notification *Notification) SetPriority(priority NotificationPriority) {
-	var _arg0 *C.GNotification        // out
-	var _arg1 C.GNotificationPriority // out
-
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
-	_arg1 = C.GNotificationPriority(priority)
-
-	C.g_notification_set_priority(_arg0, _arg1)
-	runtime.KeepAlive(notification)
-	runtime.KeepAlive(priority)
 }
 
 // SetTitle sets the title of notification to title.
@@ -236,14 +245,17 @@ func (notification *Notification) SetPriority(priority NotificationPriority) {
 //    - title: new title for notification.
 //
 func (notification *Notification) SetTitle(title string) {
-	var _arg0 *C.GNotification // out
-	var _arg1 *C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_notification_set_title(_arg0, _arg1)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("set_title", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(title)
 }
@@ -258,15 +270,18 @@ func (notification *Notification) SetTitle(title string) {
 //    - urgent: TRUE if notification is urgent.
 //
 func (notification *Notification) SetUrgent(urgent bool) {
-	var _arg0 *C.GNotification // out
-	var _arg1 C.gboolean       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GNotification)(unsafe.Pointer(externglib.InternObject(notification).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
 	if urgent {
 		_arg1 = C.TRUE
 	}
+	*(**Notification)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_notification_set_urgent(_arg0, _arg1)
+	girepository.MustFind("Gio", "Notification").InvokeMethod("set_urgent", args[:], nil)
+
 	runtime.KeepAlive(notification)
 	runtime.KeepAlive(urgent)
 }

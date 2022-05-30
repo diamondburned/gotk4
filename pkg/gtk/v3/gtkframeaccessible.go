@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkframeaccessible.go.
-var GTypeFrameAccessible = externglib.Type(C.gtk_frame_accessible_get_type())
+var GTypeFrameAccessible = coreglib.Type(C.gtk_frame_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFrameAccessible, F: marshalFrameAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type FrameAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*FrameAccessible)(nil)
+	_ coreglib.Objector = (*FrameAccessible)(nil)
 )
 
 func classInitFrameAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitFrameAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
+func wrapFrameAccessible(obj *coreglib.Object) *FrameAccessible {
 	return &FrameAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -64,5 +63,5 @@ func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 }
 
 func marshalFrameAccessible(p uintptr) (interface{}, error) {
-	return wrapFrameAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFrameAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

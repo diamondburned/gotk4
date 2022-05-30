@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkappchooser.go.
-var GTypeAppChooser = externglib.Type(C.gtk_app_chooser_get_type())
+var GTypeAppChooser = coreglib.Type(C.gtk_app_chooser_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAppChooser, F: marshalAppChooser},
 	})
 }
@@ -55,7 +56,7 @@ var (
 
 // AppChooserer describes AppChooser's interface methods.
 type AppChooserer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// AppInfo returns the currently selected application.
 	AppInfo() *gio.AppInfo
@@ -68,10 +69,10 @@ type AppChooserer interface {
 
 var _ AppChooserer = (*AppChooser)(nil)
 
-func wrapAppChooser(obj *externglib.Object) *AppChooser {
+func wrapAppChooser(obj *coreglib.Object) *AppChooser {
 	return &AppChooser{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -89,7 +90,7 @@ func wrapAppChooser(obj *externglib.Object) *AppChooser {
 }
 
 func marshalAppChooser(p uintptr) (interface{}, error) {
-	return wrapAppChooser(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAppChooser(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AppInfo returns the currently selected application.
@@ -100,19 +101,22 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //      NULL if none is selected. Free with g_object_unref().
 //
 func (self *AppChooser) AppInfo() *gio.AppInfo {
-	var _arg0 *C.GtkAppChooser // out
-	var _cret *C.GAppInfo      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_get_app_info(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _appInfo *gio.AppInfo // out
 
 	if _cret != nil {
 		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_appInfo = &gio.AppInfo{
 				Object: obj,
 			}
@@ -130,12 +134,15 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 //    - utf8: content type of self. Free with g_free().
 //
 func (self *AppChooser) ContentType() string {
-	var _arg0 *C.GtkAppChooser // out
-	var _cret *C.char          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_get_content_type(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -148,10 +155,11 @@ func (self *AppChooser) ContentType() string {
 
 // Refresh reloads the list of applications.
 func (self *AppChooser) Refresh() {
-	var _arg0 *C.GtkAppChooser // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooser)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_app_chooser_refresh(_arg0)
 	runtime.KeepAlive(self)
 }

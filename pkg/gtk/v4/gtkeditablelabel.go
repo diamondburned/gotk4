@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkeditablelabel.go.
-var GTypeEditableLabel = externglib.Type(C.gtk_editable_label_get_type())
+var GTypeEditableLabel = coreglib.Type(C.gtk_editable_label_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEditableLabel, F: marshalEditableLabel},
 	})
 }
@@ -56,13 +57,13 @@ type EditableLabel struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Editable
 }
 
 var (
-	_ Widgetter           = (*EditableLabel)(nil)
-	_ externglib.Objector = (*EditableLabel)(nil)
+	_ Widgetter         = (*EditableLabel)(nil)
+	_ coreglib.Objector = (*EditableLabel)(nil)
 )
 
 func classInitEditableLabeller(gclassPtr, data C.gpointer) {
@@ -73,10 +74,10 @@ func classInitEditableLabeller(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
+func wrapEditableLabel(obj *coreglib.Object) *EditableLabel {
 	return &EditableLabel{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -93,7 +94,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 		Object: obj,
 		Editable: Editable{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -112,7 +113,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 }
 
 func marshalEditableLabel(p uintptr) (interface{}, error) {
-	return wrapEditableLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEditableLabel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEditableLabel creates a new GtkEditableLabel widget.
@@ -126,18 +127,22 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 //    - editableLabel: new GtkEditableLabel.
 //
 func NewEditableLabel(str string) *EditableLabel {
-	var _arg1 *C.char      // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_editable_label_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("new_EditableLabel", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _editableLabel *EditableLabel // out
 
-	_editableLabel = wrapEditableLabel(externglib.Take(unsafe.Pointer(_cret)))
+	_editableLabel = wrapEditableLabel(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _editableLabel
 }
@@ -149,12 +154,16 @@ func NewEditableLabel(str string) *EditableLabel {
 //    - ok: TRUE if self is currently in editing mode.
 //
 func (self *EditableLabel) Editing() bool {
-	var _arg0 *C.GtkEditableLabel // out
-	var _cret C.gboolean          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**EditableLabel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_editable_label_get_editing(_arg0)
+	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("get_editing", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -168,11 +177,14 @@ func (self *EditableLabel) Editing() bool {
 
 // StartEditing switches the label into “editing mode”.
 func (self *EditableLabel) StartEditing() {
-	var _arg0 *C.GtkEditableLabel // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**EditableLabel)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_editable_label_start_editing(_arg0)
+	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("start_editing", args[:], nil)
+
 	runtime.KeepAlive(self)
 }
 
@@ -187,15 +199,18 @@ func (self *EditableLabel) StartEditing() {
 //    - commit: whether to set the edited text on the label.
 //
 func (self *EditableLabel) StopEditing(commit bool) {
-	var _arg0 *C.GtkEditableLabel // out
-	var _arg1 C.gboolean          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if commit {
 		_arg1 = C.TRUE
 	}
+	*(**EditableLabel)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_editable_label_stop_editing(_arg0, _arg1)
+	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("stop_editing", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(commit)
 }

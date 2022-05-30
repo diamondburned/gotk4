@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -17,10 +17,10 @@ import (
 import "C"
 
 // glib.Type values for graphene-ray.go.
-var GTypeRay = externglib.Type(C.graphene_ray_get_type())
+var GTypeRay = coreglib.Type(C.graphene_ray_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRay, F: marshalRay},
 	})
 }
@@ -67,7 +67,7 @@ type ray struct {
 }
 
 func marshalRay(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Ray{&ray{(*C.graphene_ray_t)(b)}}, nil
 }
 

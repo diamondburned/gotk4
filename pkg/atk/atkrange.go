@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for atkrange.go.
-var GTypeRange = externglib.Type(C.atk_range_get_type())
+var GTypeRange = coreglib.Type(C.atk_range_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRange, F: marshalRange},
 	})
 }
@@ -40,23 +41,28 @@ type _range struct {
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Range{&_range{(*C.AtkRange)(b)}}, nil
 }
 
 // NewRange constructs a struct Range.
 func NewRange(lowerLimit float64, upperLimit float64, description string) *Range {
-	var _arg1 C.gdouble   // out
-	var _arg2 C.gdouble   // out
-	var _arg3 *C.gchar    // out
-	var _cret *C.AtkRange // in
+	var args [3]girepository.Argument
+	var _arg0 C.gdouble // out
+	var _arg1 C.gdouble // out
+	var _arg2 *C.void   // out
+	var _cret *C.void   // in
 
-	_arg1 = C.gdouble(lowerLimit)
-	_arg2 = C.gdouble(upperLimit)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg3))
+	_arg0 = C.gdouble(lowerLimit)
+	_arg1 = C.gdouble(upperLimit)
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+	*(*float64)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.atk_range_new(_arg1, _arg2, _arg3)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(lowerLimit)
 	runtime.KeepAlive(upperLimit)
 	runtime.KeepAlive(description)
@@ -81,12 +87,15 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 //    - _range: new Range copy of src.
 //
 func (src *Range) Copy() *Range {
-	var _arg0 *C.AtkRange // out
-	var _cret *C.AtkRange // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(src)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_range_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(src)
 
 	var __range *Range // out
@@ -109,12 +118,15 @@ func (src *Range) Copy() *Range {
 //    - utf8: human-readable description of range.
 //
 func (_range *Range) Description() string {
-	var _arg0 *C.AtkRange // out
-	var _cret *C.gchar    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_range_get_description(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _utf8 string // out
@@ -131,12 +143,15 @@ func (_range *Range) Description() string {
 //    - gdouble: lower limit of range.
 //
 func (_range *Range) LowerLimit() float64 {
-	var _arg0 *C.AtkRange // out
-	var _cret C.gdouble   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_range_get_lower_limit(_arg0)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out
@@ -153,12 +168,15 @@ func (_range *Range) LowerLimit() float64 {
 //    - gdouble: upper limit of range.
 //
 func (_range *Range) UpperLimit() float64 {
-	var _arg0 *C.AtkRange // out
-	var _cret C.gdouble   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_range_get_upper_limit(_arg0)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out

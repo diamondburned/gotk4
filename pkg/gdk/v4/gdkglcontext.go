@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkglcontext.go.
-var GTypeGLContext = externglib.Type(C.gdk_gl_context_get_type())
+var GTypeGLContext = coreglib.Type(C.gdk_gl_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGLContext, F: marshalGLContext},
 	})
 }
@@ -88,13 +89,13 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type GLContexter interface {
-	externglib.Objector
+	coreglib.Objector
 	baseGLContext() *GLContext
 }
 
 var _ GLContexter = (*GLContext)(nil)
 
-func wrapGLContext(obj *externglib.Object) *GLContext {
+func wrapGLContext(obj *coreglib.Object) *GLContext {
 	return &GLContext{
 		DrawContext: DrawContext{
 			Object: obj,
@@ -103,7 +104,7 @@ func wrapGLContext(obj *externglib.Object) *GLContext {
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
-	return wrapGLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGLContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (context *GLContext) baseGLContext() *GLContext {
@@ -125,12 +126,16 @@ func BaseGLContext(obj GLContexter) *GLContext {
 //    - ok: TRUE if debugging is enabled.
 //
 func (context *GLContext) DebugEnabled() bool {
-	var _arg0 *C.GdkGLContext // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_gl_context_get_debug_enabled(_arg0)
+	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_debug_enabled", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -149,18 +154,22 @@ func (context *GLContext) DebugEnabled() bool {
 //    - display (optional): GdkDisplay or NULL.
 //
 func (context *GLContext) Display() *Display {
-	var _arg0 *C.GdkGLContext // out
-	var _cret *C.GdkDisplay   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_gl_context_get_display(_arg0)
+	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _display *Display // out
 
 	if _cret != nil {
-		_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _display
@@ -175,12 +184,16 @@ func (context *GLContext) Display() *Display {
 //    - ok: TRUE if the context should be forward-compatible.
 //
 func (context *GLContext) ForwardCompatible() bool {
-	var _arg0 *C.GdkGLContext // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_gl_context_get_forward_compatible(_arg0)
+	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_forward_compatible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -192,34 +205,6 @@ func (context *GLContext) ForwardCompatible() bool {
 	return _ok
 }
 
-// RequiredVersion retrieves required OpenGL version.
-//
-// See gdk.GLContext.SetRequiredVersion().
-//
-// The function returns the following values:
-//
-//    - major (optional): return location for the major version to request.
-//    - minor (optional): return location for the minor version to request.
-//
-func (context *GLContext) RequiredVersion() (major int, minor int) {
-	var _arg0 *C.GdkGLContext // out
-	var _arg1 C.int           // in
-	var _arg2 C.int           // in
-
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gdk_gl_context_get_required_version(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(context)
-
-	var _major int // out
-	var _minor int // out
-
-	_major = int(_arg1)
-	_minor = int(_arg2)
-
-	return _major, _minor
-}
-
 // SharedContext retrieves the GdkGLContext that this context share data with.
 //
 // The function returns the following values:
@@ -227,12 +212,16 @@ func (context *GLContext) RequiredVersion() (major int, minor int) {
 //    - glContext (optional): GdkGLContext or NULL.
 //
 func (context *GLContext) SharedContext() GLContexter {
-	var _arg0 *C.GdkGLContext // out
-	var _cret *C.GdkGLContext // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_gl_context_get_shared_context(_arg0)
+	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_shared_context", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _glContext GLContexter // out
@@ -241,8 +230,8 @@ func (context *GLContext) SharedContext() GLContexter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(GLContexter)
 				return ok
 			})
@@ -264,12 +253,16 @@ func (context *GLContext) SharedContext() GLContexter {
 //    - surface (optional): GdkSurface or NULL.
 //
 func (context *GLContext) Surface() Surfacer {
-	var _arg0 *C.GdkGLContext // out
-	var _cret *C.GdkSurface   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_gl_context_get_surface(_arg0)
+	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_surface", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _surface Surfacer // out
@@ -278,8 +271,8 @@ func (context *GLContext) Surface() Surfacer {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Surfacer)
 				return ok
 			})
@@ -301,12 +294,16 @@ func (context *GLContext) Surface() Surfacer {
 //    - ok: TRUE if the GdkGLContext is using an OpenGL ES profile.
 //
 func (context *GLContext) UseES() bool {
-	var _arg0 *C.GdkGLContext // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_gl_context_get_use_es(_arg0)
+	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_use_es", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -316,34 +313,6 @@ func (context *GLContext) UseES() bool {
 	}
 
 	return _ok
-}
-
-// Version retrieves the OpenGL version of the context.
-//
-// The context must be realized prior to calling this function.
-//
-// The function returns the following values:
-//
-//    - major: return location for the major version.
-//    - minor: return location for the minor version.
-//
-func (context *GLContext) Version() (major int, minor int) {
-	var _arg0 *C.GdkGLContext // out
-	var _arg1 C.int           // in
-	var _arg2 C.int           // in
-
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	C.gdk_gl_context_get_version(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(context)
-
-	var _major int // out
-	var _minor int // out
-
-	_major = int(_arg1)
-	_minor = int(_arg2)
-
-	return _major, _minor
 }
 
 // IsLegacy: whether the GdkGLContext is in legacy mode or not.
@@ -368,12 +337,16 @@ func (context *GLContext) Version() (major int, minor int) {
 //    - ok: TRUE if the GL context is in legacy mode.
 //
 func (context *GLContext) IsLegacy() bool {
-	var _arg0 *C.GdkGLContext // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_gl_context_is_legacy(_arg0)
+	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("is_legacy", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ok bool // out
@@ -387,11 +360,14 @@ func (context *GLContext) IsLegacy() bool {
 
 // MakeCurrent makes the context the current one.
 func (context *GLContext) MakeCurrent() {
-	var _arg0 *C.GdkGLContext // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_gl_context_make_current(_arg0)
+	girepository.MustFind("Gdk", "GLContext").InvokeMethod("make_current", args[:], nil)
+
 	runtime.KeepAlive(context)
 }
 
@@ -399,12 +375,15 @@ func (context *GLContext) MakeCurrent() {
 //
 // It is safe to call this function on a realized GdkGLContext.
 func (context *GLContext) Realize() error {
-	var _arg0 *C.GdkGLContext // out
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**GLContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gdk_gl_context_realize(_arg0, &_cerr)
+	girepository.MustFind("Gdk", "GLContext").InvokeMethod("realize", args[:], nil)
+
 	runtime.KeepAlive(context)
 
 	var _goerr error // out
@@ -429,15 +408,18 @@ func (context *GLContext) Realize() error {
 //    - enabled: whether to enable debugging in the context.
 //
 func (context *GLContext) SetDebugEnabled(enabled bool) {
-	var _arg0 *C.GdkGLContext // out
-	var _arg1 C.gboolean      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if enabled {
 		_arg1 = C.TRUE
 	}
+	*(**GLContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_gl_context_set_debug_enabled(_arg0, _arg1)
+	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_debug_enabled", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(enabled)
 }
@@ -458,75 +440,20 @@ func (context *GLContext) SetDebugEnabled(enabled bool) {
 //    - compatible: whether the context should be forward-compatible.
 //
 func (context *GLContext) SetForwardCompatible(compatible bool) {
-	var _arg0 *C.GdkGLContext // out
-	var _arg1 C.gboolean      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if compatible {
 		_arg1 = C.TRUE
 	}
+	*(**GLContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_gl_context_set_forward_compatible(_arg0, _arg1)
+	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_forward_compatible", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(compatible)
-}
-
-// SetRequiredVersion sets the major and minor version of OpenGL to request.
-//
-// Setting major and minor to zero will use the default values.
-//
-// The GdkGLContext must not be realized or made current prior to calling this
-// function.
-//
-// The function takes the following parameters:
-//
-//    - major version to request.
-//    - minor version to request.
-//
-func (context *GLContext) SetRequiredVersion(major, minor int) {
-	var _arg0 *C.GdkGLContext // out
-	var _arg1 C.int           // out
-	var _arg2 C.int           // out
-
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(major)
-	_arg2 = C.int(minor)
-
-	C.gdk_gl_context_set_required_version(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(major)
-	runtime.KeepAlive(minor)
-}
-
-// SetUseES requests that GDK create an OpenGL ES context instead of an OpenGL
-// one.
-//
-// Not all platforms support OpenGL ES.
-//
-// The context must not have been realized.
-//
-// By default, GDK will attempt to automatically detect whether the underlying
-// GL implementation is OpenGL or OpenGL ES once the context is realized.
-//
-// You should check the return value of gdk.GLContext.GetUseES() after calling
-// gdk.GLContext.Realize() to decide whether to use the OpenGL or OpenGL ES API,
-// extensions, or shaders.
-//
-// The function takes the following parameters:
-//
-//    - useEs: whether the context should use OpenGL ES instead of OpenGL, or -1
-//      to allow auto-detection.
-//
-func (context *GLContext) SetUseES(useEs int) {
-	var _arg0 *C.GdkGLContext // out
-	var _arg1 C.int           // out
-
-	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(useEs)
-
-	C.gdk_gl_context_set_use_es(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(useEs)
 }
 
 // GLContextClearCurrent clears the current GdkGLContext.
@@ -534,7 +461,7 @@ func (context *GLContext) SetUseES(useEs int) {
 // Any OpenGL call after this function returns will be ignored until
 // gdk.GLContext.MakeCurrent() is called.
 func GLContextClearCurrent() {
-	C.gdk_gl_context_clear_current()
+	girepository.MustFind("Gdk", "clear_current").Invoke(nil, nil)
 }
 
 // GLContextGetCurrent retrieves the current GdkGLContext.
@@ -544,9 +471,10 @@ func GLContextClearCurrent() {
 //    - glContext (optional): current GdkGLContext, or NULL.
 //
 func GLContextGetCurrent() GLContexter {
-	var _cret *C.GdkGLContext // in
+	var _cret *C.void // in
 
-	_cret = C.gdk_gl_context_get_current()
+	_gret := girepository.MustFind("Gdk", "get_current").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _glContext GLContexter // out
 
@@ -554,8 +482,8 @@ func GLContextGetCurrent() GLContexter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(GLContexter)
 				return ok
 			})

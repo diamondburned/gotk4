@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkvbbox.go.
-var GTypeVButtonBox = externglib.Type(C.gtk_vbutton_box_get_type())
+var GTypeVButtonBox = coreglib.Type(C.gtk_vbutton_box_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVButtonBox, F: marshalVButtonBox},
 	})
 }
@@ -35,8 +34,8 @@ type VButtonBox struct {
 }
 
 var (
-	_ Containerer         = (*VButtonBox)(nil)
-	_ externglib.Objector = (*VButtonBox)(nil)
+	_ Containerer       = (*VButtonBox)(nil)
+	_ coreglib.Objector = (*VButtonBox)(nil)
 )
 
 func classInitVButtonBoxer(gclassPtr, data C.gpointer) {
@@ -47,13 +46,13 @@ func classInitVButtonBoxer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapVButtonBox(obj *externglib.Object) *VButtonBox {
+func wrapVButtonBox(obj *coreglib.Object) *VButtonBox {
 	return &VButtonBox{
 		ButtonBox: ButtonBox{
 			Box: Box{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -75,7 +74,7 @@ func wrapVButtonBox(obj *externglib.Object) *VButtonBox {
 }
 
 func marshalVButtonBox(p uintptr) (interface{}, error) {
-	return wrapVButtonBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVButtonBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVButtonBox creates a new vertical button box.
@@ -87,13 +86,14 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 //    - vButtonBox: new button box Widget.
 //
 func NewVButtonBox() *VButtonBox {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_vbutton_box_new()
+	_gret := girepository.MustFind("Gtk", "VButtonBox").InvokeMethod("new_VButtonBox", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _vButtonBox *VButtonBox // out
 
-	_vButtonBox = wrapVButtonBox(externglib.Take(unsafe.Pointer(_cret)))
+	_vButtonBox = wrapVButtonBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vButtonBox
 }

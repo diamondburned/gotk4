@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkhscrollbar.go.
-var GTypeHScrollbar = externglib.Type(C.gtk_hscrollbar_get_type())
+var GTypeHScrollbar = coreglib.Type(C.gtk_hscrollbar_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeHScrollbar, F: marshalHScrollbar},
 	})
 }
@@ -54,12 +53,12 @@ func classInitHScrollbarrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
+func wrapHScrollbar(obj *coreglib.Object) *HScrollbar {
 	return &HScrollbar{
 		Scrollbar: Scrollbar{
 			Range: Range{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -80,7 +79,7 @@ func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 }
 
 func marshalHScrollbar(p uintptr) (interface{}, error) {
-	return wrapHScrollbar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapHScrollbar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHScrollbar creates a new horizontal scrollbar.
@@ -96,19 +95,23 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 //    - hScrollbar: new HScrollbar.
 //
 func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
-	var _arg1 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if adjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_hscrollbar_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "HScrollbar").InvokeMethod("new_HScrollbar", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _hScrollbar *HScrollbar // out
 
-	_hScrollbar = wrapHScrollbar(externglib.Take(unsafe.Pointer(_cret)))
+	_hScrollbar = wrapHScrollbar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScrollbar
 }

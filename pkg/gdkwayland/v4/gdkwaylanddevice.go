@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/wayland/gdkwayland.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkwaylanddevice.go.
-var GTypeWaylandDevice = externglib.Type(C.gdk_wayland_device_get_type())
+var GTypeWaylandDevice = coreglib.Type(C.gdk_wayland_device_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWaylandDevice, F: marshalWaylandDevice},
 	})
 }
@@ -52,7 +53,7 @@ func classInitWaylandDevicer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWaylandDevice(obj *externglib.Object) *WaylandDevice {
+func wrapWaylandDevice(obj *coreglib.Object) *WaylandDevice {
 	return &WaylandDevice{
 		Device: gdk.Device{
 			Object: obj,
@@ -61,7 +62,7 @@ func wrapWaylandDevice(obj *externglib.Object) *WaylandDevice {
 }
 
 func marshalWaylandDevice(p uintptr) (interface{}, error) {
-	return wrapWaylandDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandDevice(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NodePath returns the /dev/input/event* path of this device.
@@ -77,12 +78,16 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 //    - utf8 (optional): /dev/input/event* path of this device.
 //
 func (device *WaylandDevice) NodePath() string {
-	var _arg0 *C.GdkDevice // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**WaylandDevice)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_wayland_device_get_node_path(_arg0)
+	_gret := girepository.MustFind("GdkWayland", "WaylandDevice").InvokeMethod("get_node_path", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out

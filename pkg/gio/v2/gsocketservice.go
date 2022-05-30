@@ -7,21 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gio2_SocketServiceClass_incoming(GSocketService*, GSocketConnection*, GObject*);
-// extern gboolean _gotk4_gio2_SocketService_ConnectIncoming(gpointer, GSocketConnection*, GObject, guintptr);
 import "C"
 
 // glib.Type values for gsocketservice.go.
-var GTypeSocketService = externglib.Type(C.g_socket_service_get_type())
+var GTypeSocketService = coreglib.Type(C.g_socket_service_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSocketService, F: marshalSocketService},
 	})
 }
@@ -35,7 +35,7 @@ type SocketServiceOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Incoming(connection *SocketConnection, sourceObject *externglib.Object) bool
+	Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
 }
 
 // SocketService is an object that represents a service that is provided to the
@@ -66,7 +66,7 @@ type SocketService struct {
 }
 
 var (
-	_ externglib.Objector = (*SocketService)(nil)
+	_ coreglib.Objector = (*SocketService)(nil)
 )
 
 func classInitSocketServicer(gclassPtr, data C.gpointer) {
@@ -81,7 +81,7 @@ func classInitSocketServicer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GSocketServiceClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		Incoming(connection *SocketConnection, sourceObject *externglib.Object) bool
+		Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	}); ok {
 		pclass.incoming = (*[0]byte)(C._gotk4_gio2_SocketServiceClass_incoming)
 	}
@@ -89,16 +89,16 @@ func classInitSocketServicer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketServiceClass_incoming
 func _gotk4_gio2_SocketServiceClass_incoming(arg0 *C.GSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Incoming(connection *SocketConnection, sourceObject *externglib.Object) bool
+		Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	})
 
-	var _connection *SocketConnection    // out
-	var _sourceObject *externglib.Object // out
+	var _connection *SocketConnection  // out
+	var _sourceObject *coreglib.Object // out
 
-	_connection = wrapSocketConnection(externglib.Take(unsafe.Pointer(arg1)))
-	_sourceObject = externglib.Take(unsafe.Pointer(arg2))
+	_connection = wrapSocketConnection(coreglib.Take(unsafe.Pointer(arg1)))
+	_sourceObject = coreglib.Take(unsafe.Pointer(arg2))
 
 	ok := iface.Incoming(_connection, _sourceObject)
 
@@ -109,7 +109,7 @@ func _gotk4_gio2_SocketServiceClass_incoming(arg0 *C.GSocketService, arg1 *C.GSo
 	return cret
 }
 
-func wrapSocketService(obj *externglib.Object) *SocketService {
+func wrapSocketService(obj *coreglib.Object) *SocketService {
 	return &SocketService{
 		SocketListener: SocketListener{
 			Object: obj,
@@ -118,45 +118,7 @@ func wrapSocketService(obj *externglib.Object) *SocketService {
 }
 
 func marshalSocketService(p uintptr) (interface{}, error) {
-	return wrapSocketService(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gio2_SocketService_ConnectIncoming
-func _gotk4_gio2_SocketService_ConnectIncoming(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool))
-	}
-
-	var _connection *SocketConnection    // out
-	var _sourceObject *externglib.Object // out
-
-	_connection = wrapSocketConnection(externglib.Take(unsafe.Pointer(arg1)))
-	_sourceObject = externglib.Take(unsafe.Pointer(&arg2))
-
-	ok := f(_connection, _sourceObject)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// ConnectIncoming signal is emitted when a new incoming connection to service
-// needs to be handled. The handler must initiate the handling of connection,
-// but may not block; in essence, asynchronous operations must be used.
-//
-// connection will be unreffed once the signal handler returns, so you need to
-// ref it yourself if you are planning to use it.
-func (service *SocketService) ConnectIncoming(f func(connection *SocketConnection, sourceObject *externglib.Object) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(service, "incoming", false, unsafe.Pointer(C._gotk4_gio2_SocketService_ConnectIncoming), f)
+	return wrapSocketService(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocketService creates a new Service with no sockets to listen for. New
@@ -172,13 +134,14 @@ func (service *SocketService) ConnectIncoming(f func(connection *SocketConnectio
 //    - socketService: new Service.
 //
 func NewSocketService() *SocketService {
-	var _cret *C.GSocketService // in
+	var _cret *C.void // in
 
-	_cret = C.g_socket_service_new()
+	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("new_SocketService", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socketService *SocketService // out
 
-	_socketService = wrapSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketService = wrapSocketService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketService
 }
@@ -192,12 +155,16 @@ func NewSocketService() *SocketService {
 //    - ok: TRUE if the service is active, FALSE otherwise.
 //
 func (service *SocketService) IsActive() bool {
-	var _arg0 *C.GSocketService // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(externglib.InternObject(service).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
+	*(**SocketService)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_service_is_active(_arg0)
+	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("is_active", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(service)
 
 	var _ok bool // out
@@ -216,11 +183,14 @@ func (service *SocketService) IsActive() bool {
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
 func (service *SocketService) Start() {
-	var _arg0 *C.GSocketService // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(externglib.InternObject(service).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
+	*(**SocketService)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_socket_service_start(_arg0)
+	girepository.MustFind("Gio", "SocketService").InvokeMethod("start", args[:], nil)
+
 	runtime.KeepAlive(service)
 }
 
@@ -240,10 +210,13 @@ func (service *SocketService) Start() {
 // service will start accepting connections immediately when a new socket is
 // added.
 func (service *SocketService) Stop() {
-	var _arg0 *C.GSocketService // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(externglib.InternObject(service).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
+	*(**SocketService)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_socket_service_stop(_arg0)
+	girepository.MustFind("Gio", "SocketService").InvokeMethod("stop", args[:], nil)
+
 	runtime.KeepAlive(service)
 }

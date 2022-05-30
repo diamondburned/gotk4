@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcolorseldialog.go.
-var GTypeColorSelectionDialog = externglib.Type(C.gtk_color_selection_dialog_get_type())
+var GTypeColorSelectionDialog = coreglib.Type(C.gtk_color_selection_dialog_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeColorSelectionDialog, F: marshalColorSelectionDialog},
 	})
 }
@@ -47,14 +46,14 @@ func classInitColorSelectionDialogger(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
+func wrapColorSelectionDialog(obj *coreglib.Object) *ColorSelectionDialog {
 	return &ColorSelectionDialog{
 		Dialog: Dialog{
 			Window: Window{
 				Bin: Bin{
 					Container: Container{
 						Widget: Widget{
-							InitiallyUnowned: externglib.InitiallyUnowned{
+							InitiallyUnowned: coreglib.InitiallyUnowned{
 								Object: obj,
 							},
 							Object: obj,
@@ -73,7 +72,7 @@ func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 }
 
 func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
-	return wrapColorSelectionDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapColorSelectionDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorSelectionDialog creates a new ColorSelectionDialog.
@@ -87,18 +86,22 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 //    - colorSelectionDialog: ColorSelectionDialog.
 //
 func NewColorSelectionDialog(title string) *ColorSelectionDialog {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_selection_dialog_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "ColorSelectionDialog").InvokeMethod("new_ColorSelectionDialog", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(title)
 
 	var _colorSelectionDialog *ColorSelectionDialog // out
 
-	_colorSelectionDialog = wrapColorSelectionDialog(externglib.Take(unsafe.Pointer(_cret)))
+	_colorSelectionDialog = wrapColorSelectionDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelectionDialog
 }
@@ -110,12 +113,16 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 //    - widget: embedded ColorSelection.
 //
 func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
-	var _arg0 *C.GtkColorSelectionDialog // out
-	var _cret *C.GtkWidget               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(externglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**ColorSelectionDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorSelectionDialog").InvokeMethod("get_color_selection", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(colorsel)
 
 	var _widget Widgetter // out
@@ -126,8 +133,8 @@ func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})

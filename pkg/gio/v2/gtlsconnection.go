@@ -10,45 +10,28 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
-// extern gboolean _gotk4_gio2_TlsConnectionClass_accept_certificate(GTlsConnection*, GTlsCertificate*, GTlsCertificateFlags);
-// extern gboolean _gotk4_gio2_TlsConnectionClass_get_binding_data(GTlsConnection*, GTlsChannelBindingType, GByteArray*, GError**);
+// #include <glib.h>
 // extern gboolean _gotk4_gio2_TlsConnectionClass_handshake(GTlsConnection*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_TlsConnectionClass_handshake_finish(GTlsConnection*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(gpointer, GTlsCertificate*, GTlsCertificateFlags, guintptr);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // glib.Type values for gtlsconnection.go.
-var GTypeTLSConnection = externglib.Type(C.g_tls_connection_get_type())
+var GTypeTLSConnection = coreglib.Type(C.g_tls_connection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTLSConnection, F: marshalTLSConnection},
 	})
 }
 
 // TLSConnectionOverrider contains methods that are overridable.
 type TLSConnectionOverrider interface {
-	// The function takes the following parameters:
-	//
-	//    - peerCert
-	//    - errors
-	//
-	// The function returns the following values:
-	//
-	AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
-	// The function takes the following parameters:
-	//
-	//    - typ
-	//    - data
-	//
-	BindingData(typ TLSChannelBindingType, data []byte) error
 	// Handshake attempts a TLS handshake on conn.
 	//
 	// On the client side, it is never necessary to call this method; although
@@ -113,7 +96,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type TLSConnectioner interface {
-	externglib.Objector
+	coreglib.Objector
 	baseTLSConnection() *TLSConnection
 }
 
@@ -131,18 +114,6 @@ func classInitTLSConnectioner(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GTlsConnectionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
-	}); ok {
-		pclass.accept_certificate = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_accept_certificate)
-	}
-
-	if _, ok := goval.(interface {
-		BindingData(typ TLSChannelBindingType, data []byte) error
-	}); ok {
-		pclass.get_binding_data = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_get_binding_data)
-	}
-
-	if _, ok := goval.(interface {
 		Handshake(ctx context.Context) error
 	}); ok {
 		pclass.handshake = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_handshake)
@@ -155,70 +126,9 @@ func classInitTLSConnectioner(gclassPtr, data C.gpointer) {
 	}
 }
 
-//export _gotk4_gio2_TlsConnectionClass_accept_certificate
-func _gotk4_gio2_TlsConnectionClass_accept_certificate(arg0 *C.GTlsConnection, arg1 *C.GTlsCertificate, arg2 C.GTlsCertificateFlags) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
-	})
-
-	var _peerCert TLSCertificater   // out
-	var _errors TLSCertificateFlags // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.TLSCertificater is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSCertificater)
-			return ok
-		})
-		rv, ok := casted.(TLSCertificater)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
-		}
-		_peerCert = rv
-	}
-	_errors = TLSCertificateFlags(arg2)
-
-	ok := iface.AcceptCertificate(_peerCert, _errors)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_TlsConnectionClass_get_binding_data
-func _gotk4_gio2_TlsConnectionClass_get_binding_data(arg0 *C.GTlsConnection, arg1 C.GTlsChannelBindingType, arg2 *C.GByteArray, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		BindingData(typ TLSChannelBindingType, data []byte) error
-	})
-
-	var _typ TLSChannelBindingType // out
-	var _data []byte               // out
-
-	_typ = TLSChannelBindingType(arg1)
-	_data = make([]byte, arg2.len)
-	copy(_data, unsafe.Slice((*byte)(arg2.data), arg2.len))
-
-	_goerr := iface.BindingData(_typ, _data)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
 //export _gotk4_gio2_TlsConnectionClass_handshake
 func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Handshake(ctx context.Context) error
 	})
@@ -232,7 +142,7 @@ func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GC
 	_goerr := iface.Handshake(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -240,7 +150,7 @@ func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GC
 
 //export _gotk4_gio2_TlsConnectionClass_handshake_finish
 func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		HandshakeFinish(result AsyncResulter) error
 	})
@@ -253,8 +163,8 @@ func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg
 			panic("object of type gio.AsyncResulter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(AsyncResulter)
 			return ok
 		})
@@ -268,13 +178,13 @@ func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg
 	_goerr := iface.HandshakeFinish(_result)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
 }
 
-func wrapTLSConnection(obj *externglib.Object) *TLSConnection {
+func wrapTLSConnection(obj *coreglib.Object) *TLSConnection {
 	return &TLSConnection{
 		IOStream: IOStream{
 			Object: obj,
@@ -283,7 +193,7 @@ func wrapTLSConnection(obj *externglib.Object) *TLSConnection {
 }
 
 func marshalTLSConnection(p uintptr) (interface{}, error) {
-	return wrapTLSConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTLSConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (conn *TLSConnection) baseTLSConnection() *TLSConnection {
@@ -295,120 +205,6 @@ func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
 	return obj.baseTLSConnection()
 }
 
-//export _gotk4_gio2_TlsConnection_ConnectAcceptCertificate
-func _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(arg0 C.gpointer, arg1 *C.GTlsCertificate, arg2 C.GTlsCertificateFlags, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool))
-	}
-
-	var _peerCert TLSCertificater   // out
-	var _errors TLSCertificateFlags // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.TLSCertificater is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(TLSCertificater)
-			return ok
-		})
-		rv, ok := casted.(TLSCertificater)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
-		}
-		_peerCert = rv
-	}
-	_errors = TLSCertificateFlags(arg2)
-
-	ok := f(_peerCert, _errors)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// ConnectAcceptCertificate is emitted during the TLS handshake after the peer
-// certificate has been received. You can examine peer_cert's certification path
-// by calling g_tls_certificate_get_issuer() on it.
-//
-// For a client-side connection, peer_cert is the server's certificate, and the
-// signal will only be emitted if the certificate was not acceptable according
-// to conn's ClientConnection:validation_flags. If you would like the
-// certificate to be accepted despite errors, return TRUE from the signal
-// handler. Otherwise, if no handler accepts the certificate, the handshake will
-// fail with G_TLS_ERROR_BAD_CERTIFICATE.
-//
-// For a server-side connection, peer_cert is the certificate presented by the
-// client, if this was requested via the server's
-// ServerConnection:authentication_mode. On the server side, the signal is
-// always emitted when the client presents a certificate, and the certificate
-// will only be accepted if a handler returns TRUE.
-//
-// Note that if this signal is emitted as part of asynchronous I/O in the main
-// thread, then you should not attempt to interact with the user before
-// returning from the signal handler. If you want to let the user decide whether
-// or not to accept the certificate, you would have to return FALSE from the
-// signal handler on the first attempt, and then after the connection attempt
-// returns a G_TLS_ERROR_BAD_CERTIFICATE, you can interact with the user, and if
-// the user decides to accept the certificate, remember that fact, create a new
-// connection, and return TRUE from the signal handler the next time.
-//
-// If you are doing I/O in another thread, you do not need to worry about this,
-// and can simply block in the signal handler until the UI thread returns an
-// answer.
-func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertificater, errors TLSCertificateFlags) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(conn, "accept-certificate", false, unsafe.Pointer(C._gotk4_gio2_TlsConnection_ConnectAcceptCertificate), f)
-}
-
-// EmitAcceptCertificate: used by Connection implementations to emit the
-// Connection::accept-certificate signal.
-//
-// The function takes the following parameters:
-//
-//    - peerCert peer's Certificate.
-//    - errors problems with peer_cert.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if one of the signal handlers has returned TRUE to accept
-//      peer_cert.
-//
-func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
-	var _arg0 *C.GTlsConnection      // out
-	var _arg1 *C.GTlsCertificate     // out
-	var _arg2 C.GTlsCertificateFlags // out
-	var _cret C.gboolean             // in
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(externglib.InternObject(peerCert).Native()))
-	_arg2 = C.GTlsCertificateFlags(errors)
-
-	_cret = C.g_tls_connection_emit_accept_certificate(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(conn)
-	runtime.KeepAlive(peerCert)
-	runtime.KeepAlive(errors)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Certificate gets conn's certificate, as set by
 // g_tls_connection_set_certificate().
 //
@@ -417,12 +213,16 @@ func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, error
 //    - tlsCertificate (optional) conn's certificate, or NULL.
 //
 func (conn *TLSConnection) Certificate() TLSCertificater {
-	var _arg0 *C.GTlsConnection  // out
-	var _cret *C.GTlsCertificate // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_connection_get_certificate(_arg0)
+	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_certificate", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificate TLSCertificater // out
@@ -431,8 +231,8 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(TLSCertificater)
 				return ok
 			})
@@ -447,53 +247,6 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 	return _tlsCertificate
 }
 
-// ChannelBindingData: query the TLS backend for TLS channel binding data of
-// type for conn.
-//
-// This call retrieves TLS channel binding data as specified in RFC 5056
-// (https://tools.ietf.org/html/rfc5056), RFC 5929
-// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data is
-// returned in data. The data is resized by the callee using Array buffer
-// management and will be freed when the data is destroyed by
-// g_byte_array_unref(). If data is NULL, it will only check whether TLS backend
-// is able to fetch the data (e.g. whether type is supported by the TLS
-// backend). It does not guarantee that the data will be available though. That
-// could happen if TLS connection does not support type or the binding data is
-// not available yet due to additional negotiation or input required.
-//
-// The function takes the following parameters:
-//
-//    - typ type of data to fetch.
-//
-// The function returns the following values:
-//
-//    - data (optional) is filled with the binding data, or NULL.
-//
-func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
-	var _arg0 *C.GTlsConnection        // out
-	var _arg1 C.GTlsChannelBindingType // out
-	var _arg2 C.GByteArray             // in
-	var _cerr *C.GError                // in
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	_arg1 = C.GTlsChannelBindingType(typ)
-
-	C.g_tls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
-	runtime.KeepAlive(conn)
-	runtime.KeepAlive(typ)
-
-	var _data []byte // out
-	var _goerr error // out
-
-	_data = make([]byte, _arg2.len)
-	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _data, _goerr
-}
-
 // Database gets the certificate database that conn uses to verify peer
 // certificates. See g_tls_connection_set_database().
 //
@@ -502,12 +255,16 @@ func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte
 //    - tlsDatabase (optional): certificate database that conn uses or NULL.
 //
 func (conn *TLSConnection) Database() TLSDatabaser {
-	var _arg0 *C.GTlsConnection // out
-	var _cret *C.GTlsDatabase   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_connection_get_database(_arg0)
+	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_database", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _tlsDatabase TLSDatabaser // out
@@ -516,8 +273,8 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(TLSDatabaser)
 				return ok
 			})
@@ -541,18 +298,22 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 //    - tlsInteraction (optional): interaction object.
 //
 func (conn *TLSConnection) Interaction() *TLSInteraction {
-	var _arg0 *C.GTlsConnection  // out
-	var _cret *C.GTlsInteraction // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_connection_get_interaction(_arg0)
+	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_interaction", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _tlsInteraction *TLSInteraction // out
 
 	if _cret != nil {
-		_tlsInteraction = wrapTLSInteraction(externglib.Take(unsafe.Pointer(_cret)))
+		_tlsInteraction = wrapTLSInteraction(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _tlsInteraction
@@ -571,12 +332,16 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 //    - utf8 (optional): negotiated protocol, or NULL.
 //
 func (conn *TLSConnection) NegotiatedProtocol() string {
-	var _arg0 *C.GTlsConnection // out
-	var _cret *C.gchar          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_connection_get_negotiated_protocol(_arg0)
+	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_negotiated_protocol", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _utf8 string // out
@@ -597,12 +362,16 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 //    - tlsCertificate (optional) conn's peer's certificate, or NULL.
 //
 func (conn *TLSConnection) PeerCertificate() TLSCertificater {
-	var _arg0 *C.GTlsConnection  // out
-	var _cret *C.GTlsCertificate // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_connection_get_peer_certificate(_arg0)
+	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_peer_certificate", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _tlsCertificate TLSCertificater // out
@@ -611,8 +380,8 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(TLSCertificater)
 				return ok
 			})
@@ -627,57 +396,6 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	return _tlsCertificate
 }
 
-// PeerCertificateErrors gets the errors associated with validating conn's
-// peer's certificate, after the handshake has completed or failed. (It is not
-// set during the emission of Connection::accept-certificate.).
-//
-// The function returns the following values:
-//
-//    - tlsCertificateFlags conn's peer's certificate errors.
-//
-func (conn *TLSConnection) PeerCertificateErrors() TLSCertificateFlags {
-	var _arg0 *C.GTlsConnection      // out
-	var _cret C.GTlsCertificateFlags // in
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-
-	_cret = C.g_tls_connection_get_peer_certificate_errors(_arg0)
-	runtime.KeepAlive(conn)
-
-	var _tlsCertificateFlags TLSCertificateFlags // out
-
-	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-
-	return _tlsCertificateFlags
-}
-
-// RehandshakeMode gets conn rehandshaking mode. See
-// g_tls_connection_set_rehandshake_mode() for details.
-//
-// Deprecated: Changing the rehandshake mode is no longer required for
-// compatibility. Also, rehandshaking has been removed from the TLS protocol in
-// TLS 1.3.
-//
-// The function returns the following values:
-//
-//    - tlsRehandshakeMode: G_TLS_REHANDSHAKE_SAFELY.
-//
-func (conn *TLSConnection) RehandshakeMode() TLSRehandshakeMode {
-	var _arg0 *C.GTlsConnection     // out
-	var _cret C.GTlsRehandshakeMode // in
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-
-	_cret = C.g_tls_connection_get_rehandshake_mode(_arg0)
-	runtime.KeepAlive(conn)
-
-	var _tlsRehandshakeMode TLSRehandshakeMode // out
-
-	_tlsRehandshakeMode = TLSRehandshakeMode(_cret)
-
-	return _tlsRehandshakeMode
-}
-
 // RequireCloseNotify tests whether or not conn expects a proper TLS close
 // notification when the connection is closed. See
 // g_tls_connection_set_require_close_notify() for details.
@@ -687,12 +405,16 @@ func (conn *TLSConnection) RehandshakeMode() TLSRehandshakeMode {
 //    - ok: TRUE if conn requires a proper TLS close notification.
 //
 func (conn *TLSConnection) RequireCloseNotify() bool {
-	var _arg0 *C.GTlsConnection // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_connection_get_require_close_notify(_arg0)
+	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_require_close_notify", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _ok bool // out
@@ -714,12 +436,16 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 //    - ok: whether conn uses the system certificate database.
 //
 func (conn *TLSConnection) UseSystemCertDB() bool {
-	var _arg0 *C.GTlsConnection // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_connection_get_use_system_certdb(_arg0)
+	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_use_system_certdb", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(conn)
 
 	var _ok bool // out
@@ -764,18 +490,21 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 //    - ctx (optional) or NULL.
 //
 func (conn *TLSConnection) Handshake(ctx context.Context) error {
-	var _arg0 *C.GTlsConnection // out
-	var _arg1 *C.GCancellable   // out
-	var _cerr *C.GError         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_handshake(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
 
@@ -788,41 +517,6 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 	return _goerr
 }
 
-// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
-// g_tls_connection_handshake() for more information.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the handshake is complete.
-//
-func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsConnection     // out
-	var _arg2 *C.GCancellable       // out
-	var _arg1 C.int                 // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.int(ioPriority)
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_tls_connection_handshake_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(conn)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_tls_connection_handshake() for more information.
 //
@@ -831,14 +525,17 @@ func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, c
 //    - result: Result.
 //
 func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
-	var _arg0 *C.GTlsConnection // out
-	var _arg1 *C.GAsyncResult   // out
-	var _cerr *C.GError         // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_handshake_finish(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake_finish", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)
 
@@ -869,25 +566,28 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 //      "http/1.1", "h2"), or NULL.
 //
 func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
-	var _arg0 *C.GTlsConnection // out
-	var _arg1 **C.gchar         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 **C.void // out
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	{
-		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg1 = (**C.void)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		defer C.free(unsafe.Pointer(_arg1))
 		{
 			out := unsafe.Slice(_arg1, len(protocols)+1)
-			var zero *C.gchar
+			var zero *C.void
 			out[len(protocols)] = zero
 			for i := range protocols {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(protocols[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_set_advertised_protocols(_arg0, _arg1)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_advertised_protocols", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(protocols)
 }
@@ -913,13 +613,16 @@ func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 //    - certificate to use for conn.
 //
 func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
-	var _arg0 *C.GTlsConnection  // out
-	var _arg1 *C.GTlsCertificate // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(externglib.InternObject(certificate).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_set_certificate(_arg0, _arg1)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_certificate", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(certificate)
 }
@@ -937,15 +640,18 @@ func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 //    - database (optional): Database.
 //
 func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
-	var _arg0 *C.GTlsConnection // out
-	var _arg1 *C.GTlsDatabase   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if database != nil {
-		_arg1 = (*C.GTlsDatabase)(unsafe.Pointer(externglib.InternObject(database).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_set_database(_arg0, _arg1)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_database", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(database)
 }
@@ -962,42 +668,20 @@ func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 //    - interaction (optional) object, or NULL.
 //
 func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
-	var _arg0 *C.GTlsConnection  // out
-	var _arg1 *C.GTlsInteraction // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if interaction != nil {
-		_arg1 = (*C.GTlsInteraction)(unsafe.Pointer(externglib.InternObject(interaction).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
 	}
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_set_interaction(_arg0, _arg1)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_interaction", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(interaction)
-}
-
-// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
-// longer supported and will have no effect. With TLS 1.3, rehandshaking has
-// been removed from the TLS protocol, replaced by separate post-handshake
-// authentication and rekey operations.
-//
-// Deprecated: Changing the rehandshake mode is no longer required for
-// compatibility. Also, rehandshaking has been removed from the TLS protocol in
-// TLS 1.3.
-//
-// The function takes the following parameters:
-//
-//    - mode: rehandshaking mode.
-//
-func (conn *TLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
-	var _arg0 *C.GTlsConnection     // out
-	var _arg1 C.GTlsRehandshakeMode // out
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
-	_arg1 = C.GTlsRehandshakeMode(mode)
-
-	C.g_tls_connection_set_rehandshake_mode(_arg0, _arg1)
-	runtime.KeepAlive(conn)
-	runtime.KeepAlive(mode)
 }
 
 // SetRequireCloseNotify sets whether or not conn expects a proper TLS close
@@ -1031,15 +715,18 @@ func (conn *TLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 //    - requireCloseNotify: whether or not to require close notification.
 //
 func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
-	var _arg0 *C.GTlsConnection // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if requireCloseNotify {
 		_arg1 = C.TRUE
 	}
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_set_require_close_notify(_arg0, _arg1)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_require_close_notify", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(requireCloseNotify)
 }
@@ -1058,15 +745,18 @@ func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 //    - useSystemCertdb: whether to use the system certificate database.
 //
 func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
-	var _arg0 *C.GTlsConnection // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(externglib.InternObject(conn).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if useSystemCertdb {
 		_arg1 = C.TRUE
 	}
+	*(**TLSConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_tls_connection_set_use_system_certdb(_arg0, _arg1)
+	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_use_system_certdb", args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(useSystemCertdb)
 }

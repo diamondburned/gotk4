@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkradiomenuitemaccessible.go.
-var GTypeRadioMenuItemAccessible = externglib.Type(C.gtk_radio_menu_item_accessible_get_type())
+var GTypeRadioMenuItemAccessible = coreglib.Type(C.gtk_radio_menu_item_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRadioMenuItemAccessible, F: marshalRadioMenuItemAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type RadioMenuItemAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*RadioMenuItemAccessible)(nil)
+	_ coreglib.Objector = (*RadioMenuItemAccessible)(nil)
 )
 
 func classInitRadioMenuItemAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitRadioMenuItemAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessible {
+func wrapRadioMenuItemAccessible(obj *coreglib.Object) *RadioMenuItemAccessible {
 	return &RadioMenuItemAccessible{
 		CheckMenuItemAccessible: CheckMenuItemAccessible{
 			MenuItemAccessible: MenuItemAccessible{
@@ -75,5 +74,5 @@ func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessibl
 }
 
 func marshalRadioMenuItemAccessible(p uintptr) (interface{}, error) {
-	return wrapRadioMenuItemAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRadioMenuItemAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

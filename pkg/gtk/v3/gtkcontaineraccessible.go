@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcontaineraccessible.go.
-var GTypeContainerAccessible = externglib.Type(C.gtk_container_accessible_get_type())
+var GTypeContainerAccessible = coreglib.Type(C.gtk_container_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeContainerAccessible, F: marshalContainerAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type ContainerAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ContainerAccessible)(nil)
+	_ coreglib.Objector = (*ContainerAccessible)(nil)
 )
 
 func classInitContainerAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitContainerAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
+func wrapContainerAccessible(obj *coreglib.Object) *ContainerAccessible {
 	return &ContainerAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -62,5 +61,5 @@ func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
 }
 
 func marshalContainerAccessible(p uintptr) (interface{}, error) {
-	return wrapContainerAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapContainerAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkfontchooserwidget.go.
-var GTypeFontChooserWidget = externglib.Type(C.gtk_font_chooser_widget_get_type())
+var GTypeFontChooserWidget = coreglib.Type(C.gtk_font_chooser_widget_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFontChooserWidget, F: marshalFontChooserWidget},
 	})
 }
@@ -50,13 +49,13 @@ type FontChooserWidget struct {
 	_ [0]func() // equal guard
 	Box
 
-	*externglib.Object
+	*coreglib.Object
 	FontChooser
 }
 
 var (
-	_ externglib.Objector = (*FontChooserWidget)(nil)
-	_ Containerer         = (*FontChooserWidget)(nil)
+	_ coreglib.Objector = (*FontChooserWidget)(nil)
+	_ Containerer       = (*FontChooserWidget)(nil)
 )
 
 func classInitFontChooserWidgetter(gclassPtr, data C.gpointer) {
@@ -67,12 +66,12 @@ func classInitFontChooserWidgetter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
+func wrapFontChooserWidget(obj *coreglib.Object) *FontChooserWidget {
 	return &FontChooserWidget{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -97,7 +96,7 @@ func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 }
 
 func marshalFontChooserWidget(p uintptr) (interface{}, error) {
-	return wrapFontChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFontChooserWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFontChooserWidget creates a new FontChooserWidget.
@@ -107,13 +106,14 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 //    - fontChooserWidget: new FontChooserWidget.
 //
 func NewFontChooserWidget() *FontChooserWidget {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_font_chooser_widget_new()
+	_gret := girepository.MustFind("Gtk", "FontChooserWidget").InvokeMethod("new_FontChooserWidget", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fontChooserWidget *FontChooserWidget // out
 
-	_fontChooserWidget = wrapFontChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_fontChooserWidget = wrapFontChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserWidget
 }

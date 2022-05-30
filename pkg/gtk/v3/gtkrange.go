@@ -9,32 +9,25 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_RangeClass_change_value(GtkRange*, GtkScrollType, gdouble);
-// extern gboolean _gotk4_gtk3_Range_ConnectChangeValue(gpointer, GtkScrollType, gdouble, guintptr);
+// #include <glib.h>
 // extern void _gotk4_gtk3_RangeClass_adjust_bounds(GtkRange*, gdouble);
 // extern void _gotk4_gtk3_RangeClass_get_range_border(GtkRange*, GtkBorder*);
-// extern void _gotk4_gtk3_RangeClass_get_range_size_request(GtkRange*, GtkOrientation, gint*, gint*);
-// extern void _gotk4_gtk3_RangeClass_move_slider(GtkRange*, GtkScrollType);
 // extern void _gotk4_gtk3_RangeClass_value_changed(GtkRange*);
 // extern void _gotk4_gtk3_Range_ConnectAdjustBounds(gpointer, gdouble, guintptr);
-// extern void _gotk4_gtk3_Range_ConnectMoveSlider(gpointer, GtkScrollType, guintptr);
 // extern void _gotk4_gtk3_Range_ConnectValueChanged(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkrange.go.
-var GTypeRange = externglib.Type(C.gtk_range_get_type())
+var GTypeRange = coreglib.Type(C.gtk_range_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRange, F: marshalRange},
 	})
 }
@@ -46,25 +39,7 @@ type RangeOverrider interface {
 	AdjustBounds(newValue float64)
 	// The function takes the following parameters:
 	//
-	//    - scroll
-	//    - newValue
-	//
-	// The function returns the following values:
-	//
-	ChangeValue(scroll ScrollType, newValue float64) bool
-	// The function takes the following parameters:
-	//
 	RangeBorder(border_ *Border)
-	// The function takes the following parameters:
-	//
-	//    - orientation
-	//    - minimum
-	//    - natural
-	//
-	RangeSizeRequest(orientation Orientation, minimum, natural *int)
-	// The function takes the following parameters:
-	//
-	MoveSlider(scroll ScrollType)
 	ValueChanged()
 }
 
@@ -79,13 +54,13 @@ type Range struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Orientable
 }
 
 var (
-	_ Widgetter           = (*Range)(nil)
-	_ externglib.Objector = (*Range)(nil)
+	_ Widgetter         = (*Range)(nil)
+	_ coreglib.Objector = (*Range)(nil)
 )
 
 // Ranger describes types inherited from class Range.
@@ -93,7 +68,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Ranger interface {
-	externglib.Objector
+	coreglib.Objector
 	baseRange() *Range
 }
 
@@ -114,24 +89,8 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 		pclass.adjust_bounds = (*[0]byte)(C._gotk4_gtk3_RangeClass_adjust_bounds)
 	}
 
-	if _, ok := goval.(interface {
-		ChangeValue(scroll ScrollType, newValue float64) bool
-	}); ok {
-		pclass.change_value = (*[0]byte)(C._gotk4_gtk3_RangeClass_change_value)
-	}
-
 	if _, ok := goval.(interface{ RangeBorder(border_ *Border) }); ok {
 		pclass.get_range_border = (*[0]byte)(C._gotk4_gtk3_RangeClass_get_range_border)
-	}
-
-	if _, ok := goval.(interface {
-		RangeSizeRequest(orientation Orientation, minimum, natural *int)
-	}); ok {
-		pclass.get_range_size_request = (*[0]byte)(C._gotk4_gtk3_RangeClass_get_range_size_request)
-	}
-
-	if _, ok := goval.(interface{ MoveSlider(scroll ScrollType) }); ok {
-		pclass.move_slider = (*[0]byte)(C._gotk4_gtk3_RangeClass_move_slider)
 	}
 
 	if _, ok := goval.(interface{ ValueChanged() }); ok {
@@ -141,7 +100,7 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_RangeClass_adjust_bounds
 func _gotk4_gtk3_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.gdouble) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AdjustBounds(newValue float64) })
 
 	var _newValue float64 // out
@@ -151,31 +110,9 @@ func _gotk4_gtk3_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.gdouble) {
 	iface.AdjustBounds(_newValue)
 }
 
-//export _gotk4_gtk3_RangeClass_change_value
-func _gotk4_gtk3_RangeClass_change_value(arg0 *C.GtkRange, arg1 C.GtkScrollType, arg2 C.gdouble) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ChangeValue(scroll ScrollType, newValue float64) bool
-	})
-
-	var _scroll ScrollType // out
-	var _newValue float64  // out
-
-	_scroll = ScrollType(arg1)
-	_newValue = float64(arg2)
-
-	ok := iface.ChangeValue(_scroll, _newValue)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 //export _gotk4_gtk3_RangeClass_get_range_border
 func _gotk4_gtk3_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RangeBorder(border_ *Border) })
 
 	var _border_ *Border // out
@@ -185,48 +122,18 @@ func _gotk4_gtk3_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder
 	iface.RangeBorder(_border_)
 }
 
-//export _gotk4_gtk3_RangeClass_get_range_size_request
-func _gotk4_gtk3_RangeClass_get_range_size_request(arg0 *C.GtkRange, arg1 C.GtkOrientation, arg2 *C.gint, arg3 *C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RangeSizeRequest(orientation Orientation, minimum, natural *int)
-	})
-
-	var _orientation Orientation // out
-	var _minimum *int            // out
-	var _natural *int            // out
-
-	_orientation = Orientation(arg1)
-	_minimum = (*int)(unsafe.Pointer(arg2))
-	_natural = (*int)(unsafe.Pointer(arg3))
-
-	iface.RangeSizeRequest(_orientation, _minimum, _natural)
-}
-
-//export _gotk4_gtk3_RangeClass_move_slider
-func _gotk4_gtk3_RangeClass_move_slider(arg0 *C.GtkRange, arg1 C.GtkScrollType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MoveSlider(scroll ScrollType) })
-
-	var _scroll ScrollType // out
-
-	_scroll = ScrollType(arg1)
-
-	iface.MoveSlider(_scroll)
-}
-
 //export _gotk4_gtk3_RangeClass_value_changed
 func _gotk4_gtk3_RangeClass_value_changed(arg0 *C.GtkRange) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ValueChanged() })
 
 	iface.ValueChanged()
 }
 
-func wrapRange(obj *externglib.Object) *Range {
+func wrapRange(obj *coreglib.Object) *Range {
 	return &Range{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -245,7 +152,7 @@ func wrapRange(obj *externglib.Object) *Range {
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
-	return wrapRange(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRange(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (_range *Range) baseRange() *Range {
@@ -261,7 +168,7 @@ func BaseRange(obj Ranger) *Range {
 func _gotk4_gtk3_Range_ConnectAdjustBounds(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
 	var f func(value float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -279,84 +186,15 @@ func _gotk4_gtk3_Range_ConnectAdjustBounds(arg0 C.gpointer, arg1 C.gdouble, arg2
 
 // ConnectAdjustBounds is emitted before clamping a value, to give the
 // application a chance to adjust the bounds.
-func (_range *Range) ConnectAdjustBounds(f func(value float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(_range, "adjust-bounds", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectAdjustBounds), f)
-}
-
-//export _gotk4_gtk3_Range_ConnectChangeValue
-func _gotk4_gtk3_Range_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.gdouble, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(scroll ScrollType, value float64) (ok bool)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scroll ScrollType, value float64) (ok bool))
-	}
-
-	var _scroll ScrollType // out
-	var _value float64     // out
-
-	_scroll = ScrollType(arg1)
-	_value = float64(arg2)
-
-	ok := f(_scroll, _value)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// ConnectChangeValue signal is emitted when a scroll action is performed on a
-// range. It allows an application to determine the type of scroll event that
-// occurred and the resultant new value. The application can handle the event
-// itself and return TRUE to prevent further processing. Or, by returning FALSE,
-// it can pass the event to other handlers until the default GTK+ handler is
-// reached.
-//
-// The value parameter is unrounded. An application that overrides the
-// GtkRange::change-value signal is responsible for clamping the value to the
-// desired number of decimal digits; the default GTK+ handler clamps the value
-// based on Range:round-digits.
-func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(_range, "change-value", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectChangeValue), f)
-}
-
-//export _gotk4_gtk3_Range_ConnectMoveSlider
-func _gotk4_gtk3_Range_ConnectMoveSlider(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
-	var f func(step ScrollType)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step ScrollType))
-	}
-
-	var _step ScrollType // out
-
-	_step = ScrollType(arg1)
-
-	f(_step)
-}
-
-// ConnectMoveSlider: virtual function that moves the slider. Used for
-// keybindings.
-func (_range *Range) ConnectMoveSlider(f func(step ScrollType)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(_range, "move-slider", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectMoveSlider), f)
+func (_range *Range) ConnectAdjustBounds(f func(value float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(_range, "adjust-bounds", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectAdjustBounds), f)
 }
 
 //export _gotk4_gtk3_Range_ConnectValueChanged
 func _gotk4_gtk3_Range_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -369,8 +207,8 @@ func _gotk4_gtk3_Range_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectValueChanged is emitted when the range value changes.
-func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(_range, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectValueChanged), f)
+func (_range *Range) ConnectValueChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(_range, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectValueChanged), f)
 }
 
 // Adjustment: get the Adjustment which is the “model” object for Range. See
@@ -382,17 +220,21 @@ func (_range *Range) ConnectValueChanged(f func()) externglib.SignalHandle {
 //    - adjustment: Adjustment.
 //
 func (_range *Range) Adjustment() *Adjustment {
-	var _arg0 *C.GtkRange      // out
-	var _cret *C.GtkAdjustment // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_adjustment(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_adjustment", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -404,12 +246,16 @@ func (_range *Range) Adjustment() *Adjustment {
 //    - gdouble: current fill level.
 //
 func (_range *Range) FillLevel() float64 {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gdouble   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_fill_level(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_fill_level", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out
@@ -426,12 +272,16 @@ func (_range *Range) FillLevel() float64 {
 //    - ok: TRUE if the range is flippable.
 //
 func (_range *Range) Flippable() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_flippable(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_flippable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -450,12 +300,16 @@ func (_range *Range) Flippable() bool {
 //    - ok: TRUE if the range is inverted.
 //
 func (_range *Range) Inverted() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_inverted(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_inverted", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -465,29 +319,6 @@ func (_range *Range) Inverted() bool {
 	}
 
 	return _ok
-}
-
-// LowerStepperSensitivity gets the sensitivity policy for the stepper that
-// points to the 'lower' end of the GtkRange’s adjustment.
-//
-// The function returns the following values:
-//
-//    - sensitivityType: lower stepper’s sensitivity policy.
-//
-func (_range *Range) LowerStepperSensitivity() SensitivityType {
-	var _arg0 *C.GtkRange          // out
-	var _cret C.GtkSensitivityType // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_lower_stepper_sensitivity(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _sensitivityType SensitivityType // out
-
-	_sensitivityType = SensitivityType(_cret)
-
-	return _sensitivityType
 }
 
 // MinSliderSize: this function is useful mainly for Range subclasses.
@@ -501,12 +332,16 @@ func (_range *Range) LowerStepperSensitivity() SensitivityType {
 //    - gint: minimum size of the range’s slider.
 //
 func (_range *Range) MinSliderSize() int {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gint      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_min_slider_size(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_min_slider_size", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _gint int // out
@@ -516,31 +351,6 @@ func (_range *Range) MinSliderSize() int {
 	return _gint
 }
 
-// RangeRect: this function returns the area that contains the range’s trough
-// and its steppers, in widget->window coordinates.
-//
-// This function is useful mainly for Range subclasses.
-//
-// The function returns the following values:
-//
-//    - rangeRect: return location for the range rectangle.
-//
-func (_range *Range) RangeRect() *gdk.Rectangle {
-	var _arg0 *C.GtkRange    // out
-	var _arg1 C.GdkRectangle // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
-
-	C.gtk_range_get_range_rect(_arg0, &_arg1)
-	runtime.KeepAlive(_range)
-
-	var _rangeRect *gdk.Rectangle // out
-
-	_rangeRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _rangeRect
-}
-
 // RestrictToFillLevel gets whether the range is restricted to the fill level.
 //
 // The function returns the following values:
@@ -548,12 +358,16 @@ func (_range *Range) RangeRect() *gdk.Rectangle {
 //    - ok: TRUE if range is restricted to the fill level.
 //
 func (_range *Range) RestrictToFillLevel() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_restrict_to_fill_level", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -573,12 +387,16 @@ func (_range *Range) RestrictToFillLevel() bool {
 //    - gint: number of digits to round to.
 //
 func (_range *Range) RoundDigits() int {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gint      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_round_digits(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_round_digits", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _gint int // out
@@ -595,12 +413,16 @@ func (_range *Range) RoundDigits() int {
 //    - ok: TRUE if range shows the fill level.
 //
 func (_range *Range) ShowFillLevel() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_show_fill_level(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_show_fill_level", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -610,35 +432,6 @@ func (_range *Range) ShowFillLevel() bool {
 	}
 
 	return _ok
-}
-
-// SliderRange: this function returns sliders range along the long dimension, in
-// widget->window coordinates.
-//
-// This function is useful mainly for Range subclasses.
-//
-// The function returns the following values:
-//
-//    - sliderStart (optional): return location for the slider's start, or NULL.
-//    - sliderEnd (optional): return location for the slider's end, or NULL.
-//
-func (_range *Range) SliderRange() (sliderStart int, sliderEnd int) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gint      // in
-	var _arg2 C.gint      // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
-
-	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(_range)
-
-	var _sliderStart int // out
-	var _sliderEnd int   // out
-
-	_sliderStart = int(_arg1)
-	_sliderEnd = int(_arg2)
-
-	return _sliderStart, _sliderEnd
 }
 
 // SliderSizeFixed: this function is useful mainly for Range subclasses.
@@ -650,12 +443,16 @@ func (_range *Range) SliderRange() (sliderStart int, sliderEnd int) {
 //    - ok: whether the range’s slider has a fixed size.
 //
 func (_range *Range) SliderSizeFixed() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_slider_size_fixed(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_slider_size_fixed", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _ok bool // out
@@ -667,29 +464,6 @@ func (_range *Range) SliderSizeFixed() bool {
 	return _ok
 }
 
-// UpperStepperSensitivity gets the sensitivity policy for the stepper that
-// points to the 'upper' end of the GtkRange’s adjustment.
-//
-// The function returns the following values:
-//
-//    - sensitivityType: upper stepper’s sensitivity policy.
-//
-func (_range *Range) UpperStepperSensitivity() SensitivityType {
-	var _arg0 *C.GtkRange          // out
-	var _cret C.GtkSensitivityType // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_upper_stepper_sensitivity(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _sensitivityType SensitivityType // out
-
-	_sensitivityType = SensitivityType(_cret)
-
-	return _sensitivityType
-}
-
 // Value gets the current value of the range.
 //
 // The function returns the following values:
@@ -697,12 +471,16 @@ func (_range *Range) UpperStepperSensitivity() SensitivityType {
 //    - gdouble: current value of the range.
 //
 func (_range *Range) Value() float64 {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gdouble   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_range_get_value(_arg0)
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_value", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(_range)
 
 	var _gdouble float64 // out
@@ -725,13 +503,16 @@ func (_range *Range) Value() float64 {
 //    - adjustment: Adjustment.
 //
 func (_range *Range) SetAdjustment(adjustment *Adjustment) {
-	var _arg0 *C.GtkRange      // out
-	var _arg1 *C.GtkAdjustment // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_adjustment(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_adjustment", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(adjustment)
 }
@@ -758,13 +539,16 @@ func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 //    - fillLevel: new position of the fill level indicator.
 //
 func (_range *Range) SetFillLevel(fillLevel float64) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gdouble   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(fillLevel)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_fill_level(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_fill_level", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(fillLevel)
 }
@@ -779,15 +563,18 @@ func (_range *Range) SetFillLevel(fillLevel float64) {
 //    - flippable: TRUE to make the range flippable.
 //
 func (_range *Range) SetFlippable(flippable bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	if flippable {
 		_arg1 = C.TRUE
 	}
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_flippable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_flippable", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(flippable)
 }
@@ -802,15 +589,19 @@ func (_range *Range) SetFlippable(flippable bool) {
 //    - page size.
 //
 func (_range *Range) SetIncrements(step, page float64) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gdouble   // out
-	var _arg2 C.gdouble   // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(step)
 	_arg2 = C.gdouble(page)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_range_set_increments(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_increments", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(step)
 	runtime.KeepAlive(page)
@@ -825,36 +616,20 @@ func (_range *Range) SetIncrements(step, page float64) {
 //    - setting: TRUE to invert the range.
 //
 func (_range *Range) SetInverted(setting bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_inverted(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_inverted", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(setting)
-}
-
-// SetLowerStepperSensitivity sets the sensitivity policy for the stepper that
-// points to the 'lower' end of the GtkRange’s adjustment.
-//
-// The function takes the following parameters:
-//
-//    - sensitivity: lower stepper’s sensitivity policy.
-//
-func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
-	var _arg0 *C.GtkRange          // out
-	var _arg1 C.GtkSensitivityType // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
-	_arg1 = C.GtkSensitivityType(sensitivity)
-
-	C.gtk_range_set_lower_stepper_sensitivity(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(sensitivity)
 }
 
 // SetMinSliderSize sets the minimum size of the range’s slider.
@@ -868,13 +643,16 @@ func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
 //    - minSize slider’s minimum size.
 //
 func (_range *Range) SetMinSliderSize(minSize int) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gint      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gint(minSize)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_min_slider_size(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_min_slider_size", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(minSize)
 }
@@ -889,15 +667,19 @@ func (_range *Range) SetMinSliderSize(minSize int) {
 //    - max: maximum range value.
 //
 func (_range *Range) SetRange(min, max float64) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gdouble   // out
-	var _arg2 C.gdouble   // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(min)
 	_arg2 = C.gdouble(max)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_range_set_range(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_range", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
@@ -912,15 +694,18 @@ func (_range *Range) SetRange(min, max float64) {
 //    - restrictToFillLevel: whether the fill level restricts slider movement.
 //
 func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	if restrictToFillLevel {
 		_arg1 = C.TRUE
 	}
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_restrict_to_fill_level(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_restrict_to_fill_level", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(restrictToFillLevel)
 }
@@ -933,13 +718,16 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 //    - roundDigits: precision in digits, or -1.
 //
 func (_range *Range) SetRoundDigits(roundDigits int) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gint      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gint(roundDigits)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_round_digits(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_round_digits", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(roundDigits)
 }
@@ -953,15 +741,18 @@ func (_range *Range) SetRoundDigits(roundDigits int) {
 //    - showFillLevel: whether a fill level indicator graphics is shown.
 //
 func (_range *Range) SetShowFillLevel(showFillLevel bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	if showFillLevel {
 		_arg1 = C.TRUE
 	}
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_show_fill_level(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_show_fill_level", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(showFillLevel)
 }
@@ -976,36 +767,20 @@ func (_range *Range) SetShowFillLevel(showFillLevel bool) {
 //    - sizeFixed: TRUE to make the slider size constant.
 //
 func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	if sizeFixed {
 		_arg1 = C.TRUE
 	}
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_slider_size_fixed(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_slider_size_fixed", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(sizeFixed)
-}
-
-// SetUpperStepperSensitivity sets the sensitivity policy for the stepper that
-// points to the 'upper' end of the GtkRange’s adjustment.
-//
-// The function takes the following parameters:
-//
-//    - sensitivity: upper stepper’s sensitivity policy.
-//
-func (_range *Range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
-	var _arg0 *C.GtkRange          // out
-	var _arg1 C.GtkSensitivityType // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
-	_arg1 = C.GtkSensitivityType(sensitivity)
-
-	C.gtk_range_set_upper_stepper_sensitivity(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(sensitivity)
 }
 
 // SetValue sets the current value of the range; if the value is outside the
@@ -1017,13 +792,16 @@ func (_range *Range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
 //    - value: new value of the range.
 //
 func (_range *Range) SetValue(value float64) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gdouble   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(externglib.InternObject(_range).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(value)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_range_set_value(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_value", args[:], nil)
+
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(value)
 }

@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkapplicationwindow.go.
-var GTypeApplicationWindow = externglib.Type(C.gtk_application_window_get_type())
+var GTypeApplicationWindow = coreglib.Type(C.gtk_application_window_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeApplicationWindow, F: marshalApplicationWindow},
 	})
 }
@@ -98,14 +99,14 @@ type ApplicationWindow struct {
 	_ [0]func() // equal guard
 	Window
 
-	*externglib.Object
+	*coreglib.Object
 	gio.ActionGroup
 	gio.ActionMap
 }
 
 var (
-	_ externglib.Objector = (*ApplicationWindow)(nil)
-	_ Widgetter           = (*ApplicationWindow)(nil)
+	_ coreglib.Objector = (*ApplicationWindow)(nil)
+	_ Widgetter         = (*ApplicationWindow)(nil)
 )
 
 func classInitApplicationWindower(gclassPtr, data C.gpointer) {
@@ -116,11 +117,11 @@ func classInitApplicationWindower(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
+func wrapApplicationWindow(obj *coreglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
 		Window: Window{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -138,7 +139,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 			Root: Root{
 				NativeSurface: NativeSurface{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -169,7 +170,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 }
 
 func marshalApplicationWindow(p uintptr) (interface{}, error) {
-	return wrapApplicationWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapApplicationWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewApplicationWindow creates a new GtkApplicationWindow.
@@ -183,17 +184,21 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 //    - applicationWindow: newly created GtkApplicationWindow.
 //
 func NewApplicationWindow(application *Application) *ApplicationWindow {
-	var _arg1 *C.GtkApplication // out
-	var _cret *C.GtkWidget      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_application_window_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("new_ApplicationWindow", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(application)
 
 	var _applicationWindow *ApplicationWindow // out
 
-	_applicationWindow = wrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_applicationWindow = wrapApplicationWindow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
 }
@@ -207,18 +212,22 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 //    - shortcutsWindow (optional): help overlay associated with window, or NULL.
 //
 func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
-	var _arg0 *C.GtkApplicationWindow // out
-	var _cret *C.GtkShortcutsWindow   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**ApplicationWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_application_window_get_help_overlay(_arg0)
+	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("get_help_overlay", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _shortcutsWindow *ShortcutsWindow // out
 
 	if _cret != nil {
-		_shortcutsWindow = wrapShortcutsWindow(externglib.Take(unsafe.Pointer(_cret)))
+		_shortcutsWindow = wrapShortcutsWindow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _shortcutsWindow
@@ -234,12 +243,16 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 //      a GtkApplication.
 //
 func (window *ApplicationWindow) ID() uint {
-	var _arg0 *C.GtkApplicationWindow // out
-	var _cret C.guint                 // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**ApplicationWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_application_window_get_id(_arg0)
+	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("get_id", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _guint uint // out
@@ -257,12 +270,16 @@ func (window *ApplicationWindow) ID() uint {
 //    - ok: TRUE if window will display a menubar when needed.
 //
 func (window *ApplicationWindow) ShowMenubar() bool {
-	var _arg0 *C.GtkApplicationWindow // out
-	var _cret C.gboolean              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**ApplicationWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_application_window_get_show_menubar(_arg0)
+	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("get_show_menubar", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -286,15 +303,18 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 //    - helpOverlay (optional): GtkShortcutsWindow.
 //
 func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
-	var _arg0 *C.GtkApplicationWindow // out
-	var _arg1 *C.GtkShortcutsWindow   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if helpOverlay != nil {
-		_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(externglib.InternObject(helpOverlay).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(helpOverlay).Native()))
 	}
+	*(**ApplicationWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("set_help_overlay", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(helpOverlay)
 }
@@ -307,15 +327,18 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 //    - showMenubar: whether to show a menubar when needed.
 //
 func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
-	var _arg0 *C.GtkApplicationWindow // out
-	var _arg1 C.gboolean              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if showMenubar {
 		_arg1 = C.TRUE
 	}
+	*(**ApplicationWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("set_show_menubar", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(showMenubar)
 }

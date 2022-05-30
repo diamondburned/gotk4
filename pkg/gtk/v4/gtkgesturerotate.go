@@ -3,23 +3,23 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_GestureRotate_ConnectAngleChanged(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // glib.Type values for gtkgesturerotate.go.
-var GTypeGestureRotate = externglib.Type(C.gtk_gesture_rotate_get_type())
+var GTypeGestureRotate = coreglib.Type(C.gtk_gesture_rotate_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGestureRotate, F: marshalGestureRotate},
 	})
 }
@@ -49,7 +49,7 @@ func classInitGestureRotater(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
+func wrapGestureRotate(obj *coreglib.Object) *GestureRotate {
 	return &GestureRotate{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -60,14 +60,14 @@ func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 }
 
 func marshalGestureRotate(p uintptr) (interface{}, error) {
-	return wrapGestureRotate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGestureRotate(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_GestureRotate_ConnectAngleChanged
 func _gotk4_gtk4_GestureRotate_ConnectAngleChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(angle, angleDelta float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -87,8 +87,8 @@ func _gotk4_gtk4_GestureRotate_ConnectAngleChanged(arg0 C.gpointer, arg1 C.gdoub
 
 // ConnectAngleChanged is emitted when the angle between both tracked points
 // changes.
-func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(gesture, "angle-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureRotate_ConnectAngleChanged), f)
+func (v *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "angle-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureRotate_ConnectAngleChanged), f)
 }
 
 // NewGestureRotate returns a newly created GtkGesture that recognizes 2-touch
@@ -99,39 +99,14 @@ func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float
 //    - gestureRotate: newly created GtkGestureRotate.
 //
 func NewGestureRotate() *GestureRotate {
-	var _cret *C.GtkGesture // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_gesture_rotate_new()
+	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("new_GestureRotate", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureRotate *GestureRotate // out
 
-	_gestureRotate = wrapGestureRotate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureRotate = wrapGestureRotate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureRotate
-}
-
-// AngleDelta gets the angle delta in radians.
-//
-// If gesture is active, this function returns the angle difference in radians
-// since the gesture was first recognized. If gesture is not active, 0 is
-// returned.
-//
-// The function returns the following values:
-//
-//    - gdouble: angle delta in radians.
-//
-func (gesture *GestureRotate) AngleDelta() float64 {
-	var _arg0 *C.GtkGestureRotate // out
-	var _cret C.double            // in
-
-	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
-
-	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
-	runtime.KeepAlive(gesture)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
 }

@@ -7,48 +7,34 @@ import (
 	_ "runtime/cgo"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
-// extern void _gotk4_gdk3_DragContext_ConnectActionChanged(gpointer, GdkDragAction, guintptr);
-// extern void _gotk4_gdk3_DragContext_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
+// #include <glib.h>
 // extern void _gotk4_gdk3_DragContext_ConnectDNDFinished(gpointer, guintptr);
 // extern void _gotk4_gdk3_DragContext_ConnectDropPerformed(gpointer, gint, guintptr);
 import "C"
 
 // glib.Type values for gdk.go.
 var (
-	GTypeStatus      = externglib.Type(C.gdk_status_get_type())
-	GTypeDeviceTool  = externglib.Type(C.gdk_device_tool_get_type())
-	GTypeDragContext = externglib.Type(C.gdk_drag_context_get_type())
+	GTypeStatus      = coreglib.Type(C.gdk_status_get_type())
+	GTypeDeviceTool  = coreglib.Type(C.gdk_device_tool_get_type())
+	GTypeDragContext = coreglib.Type(C.gdk_drag_context_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStatus, F: marshalStatus},
 		{T: GTypeDeviceTool, F: marshalDeviceTool},
 		{T: GTypeDragContext, F: marshalDragContext},
 	})
 }
 
-// The function returns the following values:
-//
-func GLErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gdk_gl_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
+func init() {
+	girepository.Require("Gdk", "3.0")
 }
 
 type Status C.gint
@@ -62,7 +48,7 @@ const (
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {
-	return Status(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return Status(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for Status.
@@ -85,104 +71,47 @@ func (s Status) String() string {
 
 type DeviceTool struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DeviceTool)(nil)
+	_ coreglib.Objector = (*DeviceTool)(nil)
 )
 
-func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
+func wrapDeviceTool(obj *coreglib.Object) *DeviceTool {
 	return &DeviceTool{
 		Object: obj,
 	}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
-	return wrapDeviceTool(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDeviceTool(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 type DragContext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DragContext)(nil)
+	_ coreglib.Objector = (*DragContext)(nil)
 )
 
-func wrapDragContext(obj *externglib.Object) *DragContext {
+func wrapDragContext(obj *coreglib.Object) *DragContext {
 	return &DragContext{
 		Object: obj,
 	}
 }
 
 func marshalDragContext(p uintptr) (interface{}, error) {
-	return wrapDragContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gdk3_DragContext_ConnectActionChanged
-func _gotk4_gdk3_DragContext_ConnectActionChanged(arg0 C.gpointer, arg1 C.GdkDragAction, arg2 C.guintptr) {
-	var f func(action DragAction)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action DragAction))
-	}
-
-	var _action DragAction // out
-
-	_action = DragAction(arg1)
-
-	f(_action)
-}
-
-// ConnectActionChanged: new action is being chosen for the drag and drop
-// operation.
-//
-// This signal will only be emitted if the DragContext manages the drag and drop
-// operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectActionChanged(f func(action DragAction)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "action-changed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectActionChanged), f)
-}
-
-//export _gotk4_gdk3_DragContext_ConnectCancel
-func _gotk4_gdk3_DragContext_ConnectCancel(arg0 C.gpointer, arg1 C.GdkDragCancelReason, arg2 C.guintptr) {
-	var f func(reason DragCancelReason)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(reason DragCancelReason))
-	}
-
-	var _reason DragCancelReason // out
-
-	_reason = DragCancelReason(arg1)
-
-	f(_reason)
-}
-
-// ConnectCancel: drag and drop operation was cancelled.
-//
-// This signal will only be emitted if the DragContext manages the drag and drop
-// operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "cancel", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectCancel), f)
+	return wrapDragContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gdk3_DragContext_ConnectDNDFinished
 func _gotk4_gdk3_DragContext_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -200,15 +129,15 @@ func _gotk4_gdk3_DragContext_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectDNDFinished(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDNDFinished), f)
+func (context *DragContext) ConnectDNDFinished(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDNDFinished), f)
 }
 
 //export _gotk4_gdk3_DragContext_ConnectDropPerformed
 func _gotk4_gdk3_DragContext_ConnectDropPerformed(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
 	var f func(time int)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -229,6 +158,6 @@ func _gotk4_gdk3_DragContext_ConnectDropPerformed(arg0 C.gpointer, arg1 C.gint, 
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectDropPerformed(f func(time int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(context, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDropPerformed), f)
+func (context *DragContext) ConnectDropPerformed(f func(time int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDropPerformed), f)
 }

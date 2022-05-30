@@ -10,7 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -20,12 +20,12 @@ import "C"
 
 // glib.Type values for gregex.go.
 var (
-	GTypeMatchInfo = externglib.Type(C.g_match_info_get_type())
-	GTypeRegex     = externglib.Type(C.g_regex_get_type())
+	GTypeMatchInfo = coreglib.Type(C.g_match_info_get_type())
+	GTypeRegex     = coreglib.Type(C.g_regex_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMatchInfo, F: marshalMatchInfo},
 		{T: GTypeRegex, F: marshalRegex},
 	})
@@ -618,7 +618,7 @@ type matchInfo struct {
 }
 
 func marshalMatchInfo(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &MatchInfo{&matchInfo{(*C.GMatchInfo)(b)}}, nil
 }
 
@@ -1170,7 +1170,7 @@ type regex struct {
 }
 
 func marshalRegex(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Regex{&regex{(*C.GRegex)(b)}}, nil
 }
 

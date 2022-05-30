@@ -2,8 +2,13 @@
 
 package gdk
 
+import (
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+)
+
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
+// #include <glib.h>
 import "C"
 
 const MAJOR_VERSION = 3

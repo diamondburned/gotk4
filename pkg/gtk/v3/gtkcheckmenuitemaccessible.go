@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcheckmenuitemaccessible.go.
-var GTypeCheckMenuItemAccessible = externglib.Type(C.gtk_check_menu_item_accessible_get_type())
+var GTypeCheckMenuItemAccessible = coreglib.Type(C.gtk_check_menu_item_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCheckMenuItemAccessible, F: marshalCheckMenuItemAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type CheckMenuItemAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*CheckMenuItemAccessible)(nil)
+	_ coreglib.Objector = (*CheckMenuItemAccessible)(nil)
 )
 
 func classInitCheckMenuItemAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitCheckMenuItemAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessible {
+func wrapCheckMenuItemAccessible(obj *coreglib.Object) *CheckMenuItemAccessible {
 	return &CheckMenuItemAccessible{
 		MenuItemAccessible: MenuItemAccessible{
 			ContainerAccessible: ContainerAccessible{
@@ -73,5 +72,5 @@ func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessibl
 }
 
 func marshalCheckMenuItemAccessible(p uintptr) (interface{}, error) {
-	return wrapCheckMenuItemAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCheckMenuItemAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

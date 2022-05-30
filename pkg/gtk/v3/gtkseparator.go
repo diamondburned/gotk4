@@ -3,25 +3,23 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkseparator.go.
-var GTypeSeparator = externglib.Type(C.gtk_separator_get_type())
+var GTypeSeparator = coreglib.Type(C.gtk_separator_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSeparator, F: marshalSeparator},
 	})
 }
@@ -44,13 +42,13 @@ type Separator struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Orientable
 }
 
 var (
-	_ Widgetter           = (*Separator)(nil)
-	_ externglib.Objector = (*Separator)(nil)
+	_ Widgetter         = (*Separator)(nil)
+	_ coreglib.Objector = (*Separator)(nil)
 )
 
 func classInitSeparatorrer(gclassPtr, data C.gpointer) {
@@ -61,10 +59,10 @@ func classInitSeparatorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSeparator(obj *externglib.Object) *Separator {
+func wrapSeparator(obj *coreglib.Object) *Separator {
 	return &Separator{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -83,31 +81,5 @@ func wrapSeparator(obj *externglib.Object) *Separator {
 }
 
 func marshalSeparator(p uintptr) (interface{}, error) {
-	return wrapSeparator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewSeparator creates a new Separator with the given orientation.
-//
-// The function takes the following parameters:
-//
-//    - orientation separator’s orientation.
-//
-// The function returns the following values:
-//
-//    - separator: new Separator.
-//
-func NewSeparator(orientation Orientation) *Separator {
-	var _arg1 C.GtkOrientation // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_separator_new(_arg1)
-	runtime.KeepAlive(orientation)
-
-	var _separator *Separator // out
-
-	_separator = wrapSeparator(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _separator
+	return wrapSeparator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

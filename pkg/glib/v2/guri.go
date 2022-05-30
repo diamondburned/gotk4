@@ -10,7 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -19,10 +19,10 @@ import (
 import "C"
 
 // glib.Type values for guri.go.
-var GTypeURI = externglib.Type(C.g_uri_get_type())
+var GTypeURI = coreglib.Type(C.g_uri_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeURI, F: marshalURI},
 	})
 }
@@ -421,7 +421,7 @@ type urI struct {
 }
 
 func marshalURI(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &URI{&urI{(*C.GUri)(b)}}, nil
 }
 

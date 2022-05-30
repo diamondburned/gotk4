@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkwindowcontrols.go.
-var GTypeWindowControls = externglib.Type(C.gtk_window_controls_get_type())
+var GTypeWindowControls = coreglib.Type(C.gtk_window_controls_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWindowControls, F: marshalWindowControls},
 	})
 }
@@ -92,10 +93,10 @@ func classInitWindowControlser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWindowControls(obj *externglib.Object) *WindowControls {
+func wrapWindowControls(obj *coreglib.Object) *WindowControls {
 	return &WindowControls{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -113,33 +114,7 @@ func wrapWindowControls(obj *externglib.Object) *WindowControls {
 }
 
 func marshalWindowControls(p uintptr) (interface{}, error) {
-	return wrapWindowControls(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewWindowControls creates a new GtkWindowControls.
-//
-// The function takes the following parameters:
-//
-//    - side: side.
-//
-// The function returns the following values:
-//
-//    - windowControls: new GtkWindowControls.
-//
-func NewWindowControls(side PackType) *WindowControls {
-	var _arg1 C.GtkPackType // out
-	var _cret *C.GtkWidget  // in
-
-	_arg1 = C.GtkPackType(side)
-
-	_cret = C.gtk_window_controls_new(_arg1)
-	runtime.KeepAlive(side)
-
-	var _windowControls *WindowControls // out
-
-	_windowControls = wrapWindowControls(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _windowControls
+	return wrapWindowControls(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // DecorationLayout gets the decoration layout of this GtkWindowControls.
@@ -149,12 +124,16 @@ func NewWindowControls(side PackType) *WindowControls {
 //    - utf8 (optional): decoration layout or NULL if it is unset.
 //
 func (self *WindowControls) DecorationLayout() string {
-	var _arg0 *C.GtkWindowControls // out
-	var _cret *C.char              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**WindowControls)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
+	_gret := girepository.MustFind("Gtk", "WindowControls").InvokeMethod("get_decoration_layout", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -173,12 +152,16 @@ func (self *WindowControls) DecorationLayout() string {
 //    - ok: TRUE if the widget has window buttons, otherwise FALSE.
 //
 func (self *WindowControls) Empty() bool {
-	var _arg0 *C.GtkWindowControls // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**WindowControls)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_controls_get_empty(_arg0)
+	_gret := girepository.MustFind("Gtk", "WindowControls").InvokeMethod("get_empty", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -188,28 +171,6 @@ func (self *WindowControls) Empty() bool {
 	}
 
 	return _ok
-}
-
-// Side gets the side to which this GtkWindowControls instance belongs.
-//
-// The function returns the following values:
-//
-//    - packType: side.
-//
-func (self *WindowControls) Side() PackType {
-	var _arg0 *C.GtkWindowControls // out
-	var _cret C.GtkPackType        // in
-
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_window_controls_get_side(_arg0)
-	runtime.KeepAlive(self)
-
-	var _packType PackType // out
-
-	_packType = PackType(_cret)
-
-	return _packType
 }
 
 // SetDecorationLayout sets the decoration layout for the title buttons.
@@ -232,37 +193,19 @@ func (self *WindowControls) Side() PackType {
 //    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (self *WindowControls) SetDecorationLayout(layout string) {
-	var _arg0 *C.GtkWindowControls // out
-	var _arg1 *C.char              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if layout != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(layout)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**WindowControls)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
+	girepository.MustFind("Gtk", "WindowControls").InvokeMethod("set_decoration_layout", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(layout)
-}
-
-// SetSide determines which part of decoration layout the GtkWindowControls
-// uses.
-//
-// See gtk.WindowControls:decoration-layout.
-//
-// The function takes the following parameters:
-//
-//    - side: side.
-//
-func (self *WindowControls) SetSide(side PackType) {
-	var _arg0 *C.GtkWindowControls // out
-	var _arg1 C.GtkPackType        // out
-
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GtkPackType(side)
-
-	C.gtk_window_controls_set_side(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(side)
 }

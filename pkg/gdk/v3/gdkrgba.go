@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkrgba.go.
-var GTypeRGBA = externglib.Type(C.gdk_rgba_get_type())
+var GTypeRGBA = coreglib.Type(C.gdk_rgba_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRGBA, F: marshalRGBA},
 	})
 }
@@ -38,7 +39,7 @@ type rgbA struct {
 }
 
 func marshalRGBA(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &RGBA{&rgbA{(*C.GdkRGBA)(b)}}, nil
 }
 
@@ -102,12 +103,15 @@ func (r *RGBA) Alpha() float64 {
 //    - rgbA: newly allocated RGBA, with the same contents as rgba.
 //
 func (rgba *RGBA) Copy() *RGBA {
-	var _arg0 *C.GdkRGBA // out
-	var _cret *C.GdkRGBA // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	*(**RGBA)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_rgba_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(rgba)
 
 	var _rgbA *RGBA // out
@@ -121,59 +125,6 @@ func (rgba *RGBA) Copy() *RGBA {
 	)
 
 	return _rgbA
-}
-
-// Equal compares two RGBA colors.
-//
-// The function takes the following parameters:
-//
-//    - p2: another RGBA pointer.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the two colors compare equal.
-//
-func (p1 *RGBA) Equal(p2 *RGBA) bool {
-	var _arg0 C.gconstpointer // out
-	var _arg1 C.gconstpointer // out
-	var _cret C.gboolean      // in
-
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p1)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p2)))
-
-	_cret = C.gdk_rgba_equal(_arg0, _arg1)
-	runtime.KeepAlive(p1)
-	runtime.KeepAlive(p2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Hash: hash function suitable for using for a hash table that stores RGBAs.
-//
-// The function returns the following values:
-//
-//    - guint: hash value for p.
-//
-func (p *RGBA) Hash() uint {
-	var _arg0 C.gconstpointer // out
-	var _cret C.guint         // in
-
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p)))
-
-	_cret = C.gdk_rgba_hash(_arg0)
-	runtime.KeepAlive(p)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
 }
 
 // Parse parses a textual representation of a color, filling in the red, green,
@@ -205,15 +156,18 @@ func (p *RGBA) Hash() uint {
 //    - ok: TRUE if the parsing succeeded.
 //
 func (rgba *RGBA) Parse(spec string) bool {
-	var _arg0 *C.GdkRGBA // out
-	var _arg1 *C.gchar   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**RGBA)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gdk_rgba_parse(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(rgba)
 	runtime.KeepAlive(spec)
 
@@ -244,12 +198,15 @@ func (rgba *RGBA) Parse(spec string) bool {
 //    - utf8: newly allocated text string.
 //
 func (rgba *RGBA) String() string {
-	var _arg0 *C.GdkRGBA // out
-	var _cret *C.gchar   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	*(**RGBA)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_rgba_to_string(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(rgba)
 
 	var _utf8 string // out

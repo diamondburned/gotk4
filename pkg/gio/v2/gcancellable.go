@@ -9,22 +9,23 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
 // extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gcancellable.go.
-var GTypeCancellable = externglib.Type(C.g_cancellable_get_type())
+var GTypeCancellable = coreglib.Type(C.g_cancellable_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCancellable, F: marshalCancellable},
 	})
 }
@@ -38,11 +39,11 @@ type CancellableOverrider interface {
 // to allow for cancellation of synchronous and asynchronous operations.
 type Cancellable struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Cancellable)(nil)
+	_ coreglib.Objector = (*Cancellable)(nil)
 )
 
 func classInitCancellabler(gclassPtr, data C.gpointer) {
@@ -63,27 +64,27 @@ func classInitCancellabler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_CancellableClass_cancelled
 func _gotk4_gio2_CancellableClass_cancelled(arg0 *C.GCancellable) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancelled() })
 
 	iface.Cancelled()
 }
 
-func wrapCancellable(obj *externglib.Object) *Cancellable {
+func wrapCancellable(obj *coreglib.Object) *Cancellable {
 	return &Cancellable{
 		Object: obj,
 	}
 }
 
 func marshalCancellable(p uintptr) (interface{}, error) {
-	return wrapCancellable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCancellable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_Cancellable_ConnectCancelled
 func _gotk4_gio2_Cancellable_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -142,8 +143,8 @@ func _gotk4_gio2_Cancellable_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) 
 // Note that the cancelled signal is emitted in the thread that the user
 // cancelled from, which may be the main thread. So, the cancellable signal
 // should not do something that can block.
-func (cancellable *Cancellable) ConnectCancelled(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(cancellable, "cancelled", false, unsafe.Pointer(C._gotk4_gio2_Cancellable_ConnectCancelled), f)
+func (cancellable *Cancellable) ConnectCancelled(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(cancellable, "cancelled", false, unsafe.Pointer(C._gotk4_gio2_Cancellable_ConnectCancelled), f)
 }
 
 // NewCancellable creates a new #GCancellable object.
@@ -159,13 +160,14 @@ func (cancellable *Cancellable) ConnectCancelled(f func()) externglib.SignalHand
 //    - cancellable: #GCancellable.
 //
 func NewCancellable() *Cancellable {
-	var _cret *C.GCancellable // in
+	var _cret *C.void // in
 
-	_cret = C.g_cancellable_new()
+	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("new_Cancellable", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cancellable *Cancellable // out
 
-	_cancellable = wrapCancellable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cancellable = wrapCancellable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cancellable
 }
@@ -186,13 +188,16 @@ func NewCancellable() *Cancellable {
 // same thread in which it is running, then the operation's ReadyCallback will
 // not be invoked until the application returns to the main loop.
 func (cancellable *Cancellable) Cancel() {
-	var _arg0 *C.GCancellable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_cancellable_cancel(_arg0)
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("cancel", args[:], nil)
+
 	runtime.KeepAlive(cancellable)
 }
 
@@ -213,54 +218,20 @@ func (cancellable *Cancellable) Cancel() {
 //    - handlerId: handler id of the handler to be disconnected, or 0.
 //
 func (cancellable *Cancellable) Disconnect(handlerId uint32) {
-	var _arg0 *C.GCancellable // out
-	var _arg1 C.gulong        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.gulong // out
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
 	_arg1 = C.gulong(handlerId)
+	*(**Cancellable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_cancellable_disconnect(_arg0, _arg1)
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("disconnect", args[:], nil)
+
 	runtime.KeepAlive(cancellable)
 	runtime.KeepAlive(handlerId)
-}
-
-// Fd gets the file descriptor for a cancellable job. This can be used to
-// implement cancellable operations on Unix systems. The returned fd will turn
-// readable when cancellable is cancelled.
-//
-// You are not supposed to read from the fd yourself, just check for readable
-// status. Reading to unset the readable status is done with
-// g_cancellable_reset().
-//
-// After a successful return from this function, you should use
-// g_cancellable_release_fd() to free up resources allocated for the returned
-// file descriptor.
-//
-// See also g_cancellable_make_pollfd().
-//
-// The function returns the following values:
-//
-//    - gint: valid file descriptor. -1 if the file descriptor is not supported,
-//      or on errors.
-//
-func (cancellable *Cancellable) Fd() int {
-	var _arg0 *C.GCancellable // out
-	var _cret C.int           // in
-
-	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
-	}
-
-	_cret = C.g_cancellable_get_fd(_arg0)
-	runtime.KeepAlive(cancellable)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // IsCancelled checks if a cancellable job has been cancelled.
@@ -271,14 +242,18 @@ func (cancellable *Cancellable) Fd() int {
 //      item is not cancelled.
 //
 func (cancellable *Cancellable) IsCancelled() bool {
-	var _arg0 *C.GCancellable // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_cancellable_is_cancelled(_arg0)
+	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("is_cancelled", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cancellable)
 
 	var _ok bool // out
@@ -293,13 +268,16 @@ func (cancellable *Cancellable) IsCancelled() bool {
 // PopCurrent pops cancellable off the cancellable stack (verifying that
 // cancellable is on the top of the stack).
 func (cancellable *Cancellable) PopCurrent() {
-	var _arg0 *C.GCancellable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_cancellable_pop_current(_arg0)
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("pop_current", args[:], nil)
+
 	runtime.KeepAlive(cancellable)
 }
 
@@ -312,13 +290,16 @@ func (cancellable *Cancellable) PopCurrent() {
 // This is typically called automatically by e.g. #GFile operations, so you
 // rarely have to call this yourself.
 func (cancellable *Cancellable) PushCurrent() {
-	var _arg0 *C.GCancellable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_cancellable_push_current(_arg0)
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("push_current", args[:], nil)
+
 	runtime.KeepAlive(cancellable)
 }
 
@@ -332,13 +313,16 @@ func (cancellable *Cancellable) PushCurrent() {
 // cause the application to run out of file descriptors when many #GCancellables
 // are used at the same time.
 func (cancellable *Cancellable) ReleaseFd() {
-	var _arg0 *C.GCancellable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_cancellable_release_fd(_arg0)
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("release_fd", args[:], nil)
+
 	runtime.KeepAlive(cancellable)
 }
 
@@ -354,27 +338,33 @@ func (cancellable *Cancellable) ReleaseFd() {
 // operations. You should create a fresh cancellable for further async
 // operations.
 func (cancellable *Cancellable) Reset() {
-	var _arg0 *C.GCancellable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_cancellable_reset(_arg0)
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("reset", args[:], nil)
+
 	runtime.KeepAlive(cancellable)
 }
 
 // SetErrorIfCancelled: if the cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
 func (cancellable *Cancellable) SetErrorIfCancelled() error {
-	var _arg0 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("set_error_if_cancelled", args[:], nil)
+
 	runtime.KeepAlive(cancellable)
 
 	var _goerr error // out
@@ -401,14 +391,18 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 //    - source: new #GSource.
 //
 func (cancellable *Cancellable) NewSource() *glib.Source {
-	var _arg0 *C.GCancellable // out
-	var _cret *C.GSource      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(externglib.InternObject(cancellable).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_cancellable_source_new(_arg0)
+	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("source_new", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cancellable)
 
 	var _source *glib.Source // out
@@ -432,14 +426,15 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 //      empty.
 //
 func CancellableGetCurrent() *Cancellable {
-	var _cret *C.GCancellable // in
+	var _cret *C.void // in
 
-	_cret = C.g_cancellable_get_current()
+	_gret := girepository.MustFind("Gio", "get_current").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cancellable *Cancellable // out
 
 	if _cret != nil {
-		_cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(_cret)))
+		_cancellable = wrapCancellable(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _cancellable

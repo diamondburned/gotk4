@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for gvarianttype.go.
-var GTypeVariantType = externglib.Type(C.g_variant_type_get_gtype())
+var GTypeVariantType = coreglib.Type(C.g_variant_type_get_gtype())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVariantType, F: marshalVariantType},
 	})
 }
@@ -194,7 +194,7 @@ type variantType struct {
 }
 
 func marshalVariantType(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &VariantType{&variantType{(*C.GVariantType)(b)}}, nil
 }
 

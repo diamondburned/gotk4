@@ -6,13 +6,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_GestureClick_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureClick_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureClick_ConnectStopped(gpointer, guintptr);
@@ -20,10 +21,10 @@ import (
 import "C"
 
 // glib.Type values for gtkgestureclick.go.
-var GTypeGestureClick = externglib.Type(C.gtk_gesture_click_get_type())
+var GTypeGestureClick = coreglib.Type(C.gtk_gesture_click_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGestureClick, F: marshalGestureClick},
 	})
 }
@@ -55,7 +56,7 @@ func classInitGestureClicker(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGestureClick(obj *externglib.Object) *GestureClick {
+func wrapGestureClick(obj *coreglib.Object) *GestureClick {
 	return &GestureClick{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -68,14 +69,14 @@ func wrapGestureClick(obj *externglib.Object) *GestureClick {
 }
 
 func marshalGestureClick(p uintptr) (interface{}, error) {
-	return wrapGestureClick(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGestureClick(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_GestureClick_ConnectPressed
 func _gotk4_gtk4_GestureClick_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
 	var f func(nPress int, x, y float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -96,15 +97,15 @@ func _gotk4_gtk4_GestureClick_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 
 }
 
 // ConnectPressed is emitted whenever a button or touch press happens.
-func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectPressed), f)
+func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectPressed), f)
 }
 
 //export _gotk4_gtk4_GestureClick_ConnectReleased
 func _gotk4_gtk4_GestureClick_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
 	var f func(nPress int, x, y float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -129,15 +130,15 @@ func _gotk4_gtk4_GestureClick_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2
 // n_press will report the number of press that is paired to this event, note
 // that gtk.GestureClick::stopped may have been emitted between the press and
 // its release, n_press will only start over at the next press.
-func (v *GestureClick) ConnectReleased(f func(nPress int, x, y float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "released", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectReleased), f)
+func (v *GestureClick) ConnectReleased(f func(nPress int, x, y float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "released", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectReleased), f)
 }
 
 //export _gotk4_gtk4_GestureClick_ConnectStopped
 func _gotk4_gtk4_GestureClick_ConnectStopped(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -151,15 +152,15 @@ func _gotk4_gtk4_GestureClick_ConnectStopped(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectStopped is emitted whenever any time/distance threshold has been
 // exceeded.
-func (v *GestureClick) ConnectStopped(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "stopped", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectStopped), f)
+func (v *GestureClick) ConnectStopped(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "stopped", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectStopped), f)
 }
 
 //export _gotk4_gtk4_GestureClick_ConnectUnpairedRelease
 func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guint, arg4 *C.GdkEventSequence, arg5 C.guintptr) {
 	var f func(x, y float64, button uint, sequence *gdk.EventSequence)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -187,8 +188,8 @@ func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdo
 // Due to implicit grabs, this can only happen on situations where input is
 // grabbed elsewhere mid-press or the pressed widget voluntarily relinquishes
 // its implicit grab.
-func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, sequence *gdk.EventSequence)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "unpaired-release", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectUnpairedRelease), f)
+func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, sequence *gdk.EventSequence)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "unpaired-release", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectUnpairedRelease), f)
 }
 
 // NewGestureClick returns a newly created GtkGesture that recognizes single and
@@ -199,13 +200,14 @@ func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, 
 //    - gestureClick: newly created GtkGestureClick.
 //
 func NewGestureClick() *GestureClick {
-	var _cret *C.GtkGesture // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_gesture_click_new()
+	_gret := girepository.MustFind("Gtk", "GestureClick").InvokeMethod("new_GestureClick", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureClick *GestureClick // out
 
-	_gestureClick = wrapGestureClick(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureClick = wrapGestureClick(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureClick
 }

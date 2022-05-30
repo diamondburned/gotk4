@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkseparatortoolitem.go.
-var GTypeSeparatorToolItem = externglib.Type(C.gtk_separator_tool_item_get_type())
+var GTypeSeparatorToolItem = coreglib.Type(C.gtk_separator_tool_item_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSeparatorToolItem, F: marshalSeparatorToolItem},
 	})
 }
@@ -50,8 +49,8 @@ type SeparatorToolItem struct {
 }
 
 var (
-	_ Binner              = (*SeparatorToolItem)(nil)
-	_ externglib.Objector = (*SeparatorToolItem)(nil)
+	_ Binner            = (*SeparatorToolItem)(nil)
+	_ coreglib.Objector = (*SeparatorToolItem)(nil)
 )
 
 func classInitSeparatorToolItemmer(gclassPtr, data C.gpointer) {
@@ -62,13 +61,13 @@ func classInitSeparatorToolItemmer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
+func wrapSeparatorToolItem(obj *coreglib.Object) *SeparatorToolItem {
 	return &SeparatorToolItem{
 		ToolItem: ToolItem{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -90,7 +89,7 @@ func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 }
 
 func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
-	return wrapSeparatorToolItem(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSeparatorToolItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSeparatorToolItem: create a new SeparatorToolItem.
@@ -100,13 +99,14 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 //    - separatorToolItem: new SeparatorToolItem.
 //
 func NewSeparatorToolItem() *SeparatorToolItem {
-	var _cret *C.GtkToolItem // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_separator_tool_item_new()
+	_gret := girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("new_SeparatorToolItem", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _separatorToolItem *SeparatorToolItem // out
 
-	_separatorToolItem = wrapSeparatorToolItem(externglib.Take(unsafe.Pointer(_cret)))
+	_separatorToolItem = wrapSeparatorToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorToolItem
 }
@@ -119,12 +119,16 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 //    - ok: TRUE if item is drawn as a line, or just blank.
 //
 func (item *SeparatorToolItem) Draw() bool {
-	var _arg0 *C.GtkSeparatorToolItem // out
-	var _cret C.gboolean              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	*(**SeparatorToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
+	_gret := girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("get_draw", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(item)
 
 	var _ok bool // out
@@ -145,15 +149,18 @@ func (item *SeparatorToolItem) Draw() bool {
 //    - draw: whether item is drawn as a vertical line.
 //
 func (item *SeparatorToolItem) SetDraw(draw bool) {
-	var _arg0 *C.GtkSeparatorToolItem // out
-	var _arg1 C.gboolean              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(externglib.InternObject(item).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 	if draw {
 		_arg1 = C.TRUE
 	}
+	*(**SeparatorToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("set_draw", args[:], nil)
+
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(draw)
 }

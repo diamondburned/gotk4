@@ -6,26 +6,25 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_PrintOperationPreviewIface_is_selected(GtkPrintOperationPreview*, int);
+// #include <glib.h>
 // extern void _gotk4_gtk4_PrintOperationPreviewIface_end_preview(GtkPrintOperationPreview*);
 // extern void _gotk4_gtk4_PrintOperationPreviewIface_got_page_size(GtkPrintOperationPreview*, GtkPrintContext*, GtkPageSetup*);
 // extern void _gotk4_gtk4_PrintOperationPreviewIface_ready(GtkPrintOperationPreview*, GtkPrintContext*);
-// extern void _gotk4_gtk4_PrintOperationPreviewIface_render_page(GtkPrintOperationPreview*, int);
 // extern void _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize(gpointer, GtkPrintContext*, GtkPageSetup*, guintptr);
 // extern void _gotk4_gtk4_PrintOperationPreview_ConnectReady(gpointer, GtkPrintContext*, guintptr);
 import "C"
 
 // glib.Type values for gtkprintoperationpreview.go.
-var GTypePrintOperationPreview = externglib.Type(C.gtk_print_operation_preview_get_type())
+var GTypePrintOperationPreview = coreglib.Type(C.gtk_print_operation_preview_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePrintOperationPreview, F: marshalPrintOperationPreview},
 	})
 }
@@ -42,37 +41,9 @@ type PrintOperationPreviewOverrider interface {
 	//    - pageSetup
 	//
 	GotPageSize(context *PrintContext, pageSetup *PageSetup)
-	// IsSelected returns whether the given page is included in the set of pages
-	// that have been selected for printing.
-	//
-	// The function takes the following parameters:
-	//
-	//    - pageNr: page number.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the page has been selected for printing.
-	//
-	IsSelected(pageNr int) bool
 	// The function takes the following parameters:
 	//
 	Ready(context *PrintContext)
-	// RenderPage renders a page to the preview.
-	//
-	// This is using the print context that was passed to the
-	// gtk.PrintOperation::preview handler together with preview.
-	//
-	// A custom print preview should use this function to render the currently
-	// selected page.
-	//
-	// Note that this function requires a suitable cairo context to be
-	// associated with the print context.
-	//
-	// The function takes the following parameters:
-	//
-	//    - pageNr: page to render.
-	//
-	RenderPage(pageNr int)
 }
 
 // PrintOperationPreview: GtkPrintOperationPreview is the interface that is used
@@ -85,31 +56,26 @@ type PrintOperationPreviewOverrider interface {
 // underlying type by calling Cast().
 type PrintOperationPreview struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*PrintOperationPreview)(nil)
+	_ coreglib.Objector = (*PrintOperationPreview)(nil)
 )
 
 // PrintOperationPreviewer describes PrintOperationPreview's interface methods.
 type PrintOperationPreviewer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// EndPreview ends a preview.
 	EndPreview()
-	// IsSelected returns whether the given page is included in the set of pages
-	// that have been selected for printing.
-	IsSelected(pageNr int) bool
-	// RenderPage renders a page to the preview.
-	RenderPage(pageNr int)
 
 	// Got-page-size is emitted once for each page that gets rendered to the
 	// preview.
-	ConnectGotPageSize(func(context *PrintContext, pageSetup *PageSetup)) externglib.SignalHandle
+	ConnectGotPageSize(func(context *PrintContext, pageSetup *PageSetup)) coreglib.SignalHandle
 	// Ready signal gets emitted once per preview operation, before the first
 	// page is rendered.
-	ConnectReady(func(context *PrintContext)) externglib.SignalHandle
+	ConnectReady(func(context *PrintContext)) coreglib.SignalHandle
 }
 
 var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
@@ -118,14 +84,12 @@ func ifaceInitPrintOperationPreviewer(gifacePtr, data C.gpointer) {
 	iface := (*C.GtkPrintOperationPreviewIface)(unsafe.Pointer(gifacePtr))
 	iface.end_preview = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_end_preview)
 	iface.got_page_size = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_got_page_size)
-	iface.is_selected = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_is_selected)
 	iface.ready = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_ready)
-	iface.render_page = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_render_page)
 }
 
 //export _gotk4_gtk4_PrintOperationPreviewIface_end_preview
 func _gotk4_gtk4_PrintOperationPreviewIface_end_preview(arg0 *C.GtkPrintOperationPreview) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	iface.EndPreview()
@@ -133,75 +97,45 @@ func _gotk4_gtk4_PrintOperationPreviewIface_end_preview(arg0 *C.GtkPrintOperatio
 
 //export _gotk4_gtk4_PrintOperationPreviewIface_got_page_size
 func _gotk4_gtk4_PrintOperationPreviewIface_got_page_size(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext, arg2 *C.GtkPageSetup) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	var _context *PrintContext // out
 	var _pageSetup *PageSetup  // out
 
-	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
-	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg2)))
+	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
+	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg2)))
 
 	iface.GotPageSize(_context, _pageSetup)
 }
 
-//export _gotk4_gtk4_PrintOperationPreviewIface_is_selected
-func _gotk4_gtk4_PrintOperationPreviewIface_is_selected(arg0 *C.GtkPrintOperationPreview, arg1 C.int) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PrintOperationPreviewOverrider)
-
-	var _pageNr int // out
-
-	_pageNr = int(arg1)
-
-	ok := iface.IsSelected(_pageNr)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 //export _gotk4_gtk4_PrintOperationPreviewIface_ready
 func _gotk4_gtk4_PrintOperationPreviewIface_ready(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	var _context *PrintContext // out
 
-	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
 
 	iface.Ready(_context)
 }
 
-//export _gotk4_gtk4_PrintOperationPreviewIface_render_page
-func _gotk4_gtk4_PrintOperationPreviewIface_render_page(arg0 *C.GtkPrintOperationPreview, arg1 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(PrintOperationPreviewOverrider)
-
-	var _pageNr int // out
-
-	_pageNr = int(arg1)
-
-	iface.RenderPage(_pageNr)
-}
-
-func wrapPrintOperationPreview(obj *externglib.Object) *PrintOperationPreview {
+func wrapPrintOperationPreview(obj *coreglib.Object) *PrintOperationPreview {
 	return &PrintOperationPreview{
 		Object: obj,
 	}
 }
 
 func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
-	return wrapPrintOperationPreview(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPrintOperationPreview(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize
 func _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 *C.GtkPageSetup, arg3 C.guintptr) {
 	var f func(context *PrintContext, pageSetup *PageSetup)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -213,8 +147,8 @@ func _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize(arg0 C.gpointer, arg1 
 	var _context *PrintContext // out
 	var _pageSetup *PageSetup  // out
 
-	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
-	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg2)))
+	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
+	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg2)))
 
 	f(_context, _pageSetup)
 }
@@ -225,15 +159,15 @@ func _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize(arg0 C.gpointer, arg1 
 // A handler for this signal should update the context according to page_setup
 // and set up a suitable cairo context, using
 // gtk.PrintContext.SetCairoContext().
-func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context *PrintContext, pageSetup *PageSetup)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(preview, "got-page-size", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize), f)
+func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context *PrintContext, pageSetup *PageSetup)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(preview, "got-page-size", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize), f)
 }
 
 //export _gotk4_gtk4_PrintOperationPreview_ConnectReady
 func _gotk4_gtk4_PrintOperationPreview_ConnectReady(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) {
 	var f func(context *PrintContext)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -244,7 +178,7 @@ func _gotk4_gtk4_PrintOperationPreview_ConnectReady(arg0 C.gpointer, arg1 *C.Gtk
 
 	var _context *PrintContext // out
 
-	_context = wrapPrintContext(externglib.Take(unsafe.Pointer(arg1)))
+	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
 
 	f(_context)
 }
@@ -253,77 +187,19 @@ func _gotk4_gtk4_PrintOperationPreview_ConnectReady(arg0 C.gpointer, arg1 *C.Gtk
 // page is rendered.
 //
 // A handler for this signal can be used for setup tasks.
-func (preview *PrintOperationPreview) ConnectReady(f func(context *PrintContext)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(preview, "ready", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreview_ConnectReady), f)
+func (preview *PrintOperationPreview) ConnectReady(f func(context *PrintContext)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(preview, "ready", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreview_ConnectReady), f)
 }
 
 // EndPreview ends a preview.
 //
 // This function must be called to finish a custom print preview.
 func (preview *PrintOperationPreview) EndPreview() {
-	var _arg0 *C.GtkPrintOperationPreview // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(externglib.InternObject(preview).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
+	*(**PrintOperationPreview)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_print_operation_preview_end_preview(_arg0)
 	runtime.KeepAlive(preview)
-}
-
-// IsSelected returns whether the given page is included in the set of pages
-// that have been selected for printing.
-//
-// The function takes the following parameters:
-//
-//    - pageNr: page number.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the page has been selected for printing.
-//
-func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
-	var _arg0 *C.GtkPrintOperationPreview // out
-	var _arg1 C.int                       // out
-	var _cret C.gboolean                  // in
-
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(externglib.InternObject(preview).Native()))
-	_arg1 = C.int(pageNr)
-
-	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
-	runtime.KeepAlive(preview)
-	runtime.KeepAlive(pageNr)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// RenderPage renders a page to the preview.
-//
-// This is using the print context that was passed to the
-// gtk.PrintOperation::preview handler together with preview.
-//
-// A custom print preview should use this function to render the currently
-// selected page.
-//
-// Note that this function requires a suitable cairo context to be associated
-// with the print context.
-//
-// The function takes the following parameters:
-//
-//    - pageNr: page to render.
-//
-func (preview *PrintOperationPreview) RenderPage(pageNr int) {
-	var _arg0 *C.GtkPrintOperationPreview // out
-	var _arg1 C.int                       // out
-
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(externglib.InternObject(preview).Native()))
-	_arg1 = C.int(pageNr)
-
-	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
-	runtime.KeepAlive(preview)
-	runtime.KeepAlive(pageNr)
 }

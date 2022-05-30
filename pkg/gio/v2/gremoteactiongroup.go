@@ -7,22 +7,23 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(GRemoteActionGroup*, gchar*, GVariant*, GVariant*);
 // extern void _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(GRemoteActionGroup*, gchar*, GVariant*, GVariant*);
 import "C"
 
 // glib.Type values for gremoteactiongroup.go.
-var GTypeRemoteActionGroup = externglib.Type(C.g_remote_action_group_get_type())
+var GTypeRemoteActionGroup = coreglib.Type(C.g_remote_action_group_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRemoteActionGroup, F: marshalRemoteActionGroup},
 	})
 }
@@ -94,7 +95,7 @@ var ()
 
 // RemoteActionGrouper describes RemoteActionGroup's interface methods.
 type RemoteActionGrouper interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// ActivateActionFull activates the remote action.
 	ActivateActionFull(actionName string, parameter, platformData *glib.Variant)
@@ -112,7 +113,7 @@ func ifaceInitRemoteActionGrouper(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_RemoteActionGroupInterface_activate_action_full
 func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.GRemoteActionGroup, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(RemoteActionGroupOverrider)
 
 	var _actionName string          // out
@@ -144,7 +145,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.GRemote
 
 //export _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full
 func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.GRemoteActionGroup, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(RemoteActionGroupOverrider)
 
 	var _actionName string          // out
@@ -172,7 +173,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.GRe
 	iface.ChangeActionStateFull(_actionName, _value, _platformData)
 }
 
-func wrapRemoteActionGroup(obj *externglib.Object) *RemoteActionGroup {
+func wrapRemoteActionGroup(obj *coreglib.Object) *RemoteActionGroup {
 	return &RemoteActionGroup{
 		ActionGroup: ActionGroup{
 			Object: obj,
@@ -181,7 +182,7 @@ func wrapRemoteActionGroup(obj *externglib.Object) *RemoteActionGroup {
 }
 
 func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
-	return wrapRemoteActionGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRemoteActionGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ActivateActionFull activates the remote action.
@@ -201,20 +202,23 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 //    - platformData: platform data to send.
 //
 func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter, platformData *glib.Variant) {
-	var _arg0 *C.GRemoteActionGroup // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GVariant           // out
-	var _arg3 *C.GVariant           // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
 
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(externglib.InternObject(remote).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(remote).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	if parameter != nil {
-		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
-	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
+	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
+	*(**RemoteActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(**glib.Variant)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_remote_action_group_activate_action_full(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(remote)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(parameter)
@@ -238,18 +242,21 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 //    - platformData: platform data to send.
 //
 func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value, platformData *glib.Variant) {
-	var _arg0 *C.GRemoteActionGroup // out
-	var _arg1 *C.gchar              // out
-	var _arg2 *C.GVariant           // out
-	var _arg3 *C.GVariant           // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
 
-	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(externglib.InternObject(remote).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(remote).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
+	*(**RemoteActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(**glib.Variant)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_remote_action_group_change_action_state_full(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(remote)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(value)

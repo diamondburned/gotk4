@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkspinbuttonaccessible.go.
-var GTypeSpinButtonAccessible = externglib.Type(C.gtk_spin_button_accessible_get_type())
+var GTypeSpinButtonAccessible = coreglib.Type(C.gtk_spin_button_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSpinButtonAccessible, F: marshalSpinButtonAccessible},
 	})
 }
@@ -33,12 +32,12 @@ type SpinButtonAccessible struct {
 	_ [0]func() // equal guard
 	EntryAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Value
 }
 
 var (
-	_ externglib.Objector = (*SpinButtonAccessible)(nil)
+	_ coreglib.Objector = (*SpinButtonAccessible)(nil)
 )
 
 func classInitSpinButtonAccessibler(gclassPtr, data C.gpointer) {
@@ -49,7 +48,7 @@ func classInitSpinButtonAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
+func wrapSpinButtonAccessible(obj *coreglib.Object) *SpinButtonAccessible {
 	return &SpinButtonAccessible{
 		EntryAccessible: EntryAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -81,5 +80,5 @@ func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 }
 
 func marshalSpinButtonAccessible(p uintptr) (interface{}, error) {
-	return wrapSpinButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSpinButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

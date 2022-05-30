@@ -5,21 +5,22 @@ package gdk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gdkvulkancontext.go.
-var GTypeVulkanContext = externglib.Type(C.gdk_vulkan_context_get_type())
+var GTypeVulkanContext = coreglib.Type(C.gdk_vulkan_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVulkanContext, F: marshalVulkanContext},
 	})
 }
@@ -37,13 +38,13 @@ type VulkanContext struct {
 	_ [0]func() // equal guard
 	DrawContext
 
-	*externglib.Object
+	*coreglib.Object
 	gio.Initable
 }
 
 var (
-	_ DrawContexter       = (*VulkanContext)(nil)
-	_ externglib.Objector = (*VulkanContext)(nil)
+	_ DrawContexter     = (*VulkanContext)(nil)
+	_ coreglib.Objector = (*VulkanContext)(nil)
 )
 
 // VulkanContexter describes types inherited from class VulkanContext.
@@ -51,13 +52,13 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type VulkanContexter interface {
-	externglib.Objector
+	coreglib.Objector
 	baseVulkanContext() *VulkanContext
 }
 
 var _ VulkanContexter = (*VulkanContext)(nil)
 
-func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
+func wrapVulkanContext(obj *coreglib.Object) *VulkanContext {
 	return &VulkanContext{
 		DrawContext: DrawContext{
 			Object: obj,
@@ -70,7 +71,7 @@ func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
 }
 
 func marshalVulkanContext(p uintptr) (interface{}, error) {
-	return wrapVulkanContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVulkanContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *VulkanContext) baseVulkanContext() *VulkanContext {
@@ -86,7 +87,7 @@ func BaseVulkanContext(obj VulkanContexter) *VulkanContext {
 func _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -103,6 +104,6 @@ func _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(arg0 C.gpointer, arg1 C.guin
 //
 // Usually this means that the swapchain had to be recreated, for example in
 // response to a change of the surface size.
-func (v *VulkanContext) ConnectImagesUpdated(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "images-updated", false, unsafe.Pointer(C._gotk4_gdk4_VulkanContext_ConnectImagesUpdated), f)
+func (v *VulkanContext) ConnectImagesUpdated(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "images-updated", false, unsafe.Pointer(C._gotk4_gdk4_VulkanContext_ConnectImagesUpdated), f)
 }

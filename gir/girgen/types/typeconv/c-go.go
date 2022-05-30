@@ -374,7 +374,7 @@ func (conv *Converter) cFree(value *ValueConverted, v string) string {
 	v = fmt.Sprintf("(%s)(%s)", value.In.Type, v)
 
 	switch value.Resolved.GType {
-	case "GObject.Value": // *externglib.Value
+	case "GObject.Value": // *coreglib.Value
 		return fmt.Sprintf("C.g_value_unset(%s)", v)
 	case "cairo.Context":
 		return fmt.Sprintf("C.cairo_destroy(%s)", v)
@@ -423,7 +423,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	case "GObject.Type", "GType":
 		value.header.NeedsExternGLib()
 		value.header.NeedsGLibObject()
-		value.p.LineTmpl(value, `<.Out.Set> = <.OutPtr 0>externglib.Type(<.InNamePtr 0>)`)
+		value.p.LineTmpl(value, `<.Out.Set> = <.OutPtr 0>coreglib.Type(<.InNamePtr 0>)`)
 		return true
 
 	case "GObject.Value":
@@ -432,14 +432,14 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.NeedsGLibObject()
 
 		value.p.LineTmpl(value, `<.Out.Set> =
-			<- .OutPtr 1>externglib.ValueFromNative(unsafe.Pointer(<.InNamePtr 1>))`)
+			<- .OutPtr 1>coreglib.ValueFromNative(unsafe.Pointer(<.InNamePtr 1>))`)
 
 		// Set this to be freed if we have the ownership now.
 		if value.ShouldFree() {
 			value.header.Import("runtime")
 
 			// https://pkg.go.dev/github.com/diamondburned/gotk4/pkg/core/glib?utm_source=godoc#Value
-			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.OutName)
+			value.p.Linef("runtime.SetFinalizer(%s, func(v *coreglib.Value) {", value.OutName)
 			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))")
 			value.p.Linef("})")
 		}

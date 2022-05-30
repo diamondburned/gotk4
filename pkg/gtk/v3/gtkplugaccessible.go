@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkplugaccessible.go.
-var GTypePlugAccessible = externglib.Type(C.gtk_plug_accessible_get_type())
+var GTypePlugAccessible = coreglib.Type(C.gtk_plug_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePlugAccessible, F: marshalPlugAccessible},
 	})
 }
@@ -36,7 +35,7 @@ type PlugAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*PlugAccessible)(nil)
+	_ coreglib.Objector = (*PlugAccessible)(nil)
 )
 
 func classInitPlugAccessibler(gclassPtr, data C.gpointer) {
@@ -47,7 +46,7 @@ func classInitPlugAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
+func wrapPlugAccessible(obj *coreglib.Object) *PlugAccessible {
 	return &PlugAccessible{
 		WindowAccessible: WindowAccessible{
 			ContainerAccessible: ContainerAccessible{
@@ -72,18 +71,22 @@ func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
 }
 
 func marshalPlugAccessible(p uintptr) (interface{}, error) {
-	return wrapPlugAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPlugAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // The function returns the following values:
 //
 func (plug *PlugAccessible) ID() string {
-	var _arg0 *C.GtkPlugAccessible // out
-	var _cret *C.gchar             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(externglib.InternObject(plug).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	*(**PlugAccessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_plug_accessible_get_id(_arg0)
+	_gret := girepository.MustFind("Gtk", "PlugAccessible").InvokeMethod("get_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(plug)
 
 	var _utf8 string // out

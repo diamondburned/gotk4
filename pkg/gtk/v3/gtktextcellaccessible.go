@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktextcellaccessible.go.
-var GTypeTextCellAccessible = externglib.Type(C.gtk_text_cell_accessible_get_type())
+var GTypeTextCellAccessible = coreglib.Type(C.gtk_text_cell_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTextCellAccessible, F: marshalTextCellAccessible},
 	})
 }
@@ -33,13 +32,13 @@ type TextCellAccessible struct {
 	_ [0]func() // equal guard
 	RendererCellAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.ObjectClass
 	atk.Text
 }
 
 var (
-	_ externglib.Objector = (*TextCellAccessible)(nil)
+	_ coreglib.Objector = (*TextCellAccessible)(nil)
 )
 
 func classInitTextCellAccessibler(gclassPtr, data C.gpointer) {
@@ -50,7 +49,7 @@ func classInitTextCellAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
+func wrapTextCellAccessible(obj *coreglib.Object) *TextCellAccessible {
 	return &TextCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{
@@ -87,5 +86,5 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 }
 
 func marshalTextCellAccessible(p uintptr) (interface{}, error) {
-	return wrapTextCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTextCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

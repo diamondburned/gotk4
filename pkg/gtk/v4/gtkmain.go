@@ -6,11 +6,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // PRIORITY_RESIZE: use this priority for functionality related to size
@@ -30,7 +32,7 @@ const PRIORITY_RESIZE = 110
 //
 // Most programs should not need to call this function.
 func DisableSetlocale() {
-	C.gtk_disable_setlocale()
+	girepository.MustFind("Gtk", "disable_setlocale").Invoke(nil, nil)
 }
 
 // GetDefaultLanguage returns the Language for the default language currently in
@@ -46,50 +48,16 @@ func DisableSetlocale() {
 //    - language: default language as a Language, must not be freed.
 //
 func GetDefaultLanguage() *pango.Language {
-	var _cret *C.PangoLanguage // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_get_default_language()
+	_gret := girepository.MustFind("Gtk", "get_default_language").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _language *pango.Language // out
 
 	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _language
-}
-
-// GetLocaleDirection: get the direction of the current locale. This is the
-// expected reading direction for text and UI.
-//
-// This function depends on the current locale being set with setlocale() and
-// will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
-// GTK_TEXT_DIR_NONE will never be returned.
-//
-// GTK sets the default text direction according to the locale during
-// gtk_init(), and you should normally use gtk_widget_get_direction() or
-// gtk_widget_get_default_direction() to obtain the current direction.
-//
-// This function is only needed rare cases when the locale is changed after GTK
-// has already been initialized. In this case, you can use it to update the
-// default text direction as follows:
-//
-//    setlocale (LC_ALL, new_locale);
-//    direction = gtk_get_locale_direction ();
-//    gtk_widget_set_default_direction (direction);.
-//
-// The function returns the following values:
-//
-//    - textDirection of the current locale.
-//
-func GetLocaleDirection() TextDirection {
-	var _cret C.GtkTextDirection // in
-
-	_cret = C.gtk_get_locale_direction()
-
-	var _textDirection TextDirection // out
-
-	_textDirection = TextDirection(_cret)
-
-	return _textDirection
 }
 
 // Init: call this function before using any other GTK functions in your GUI
@@ -109,7 +77,7 @@ func GetLocaleDirection() TextDirection {
 // gtk_init(), but notice that other libraries (e.g. libdbus or gvfs) might do
 // similar things.
 func Init() {
-	C.gtk_init()
+	girepository.MustFind("Gtk", "init").Invoke(nil, nil)
 }
 
 // InitCheck: this function does the same work as gtk_init() with only a single
@@ -127,7 +95,8 @@ func Init() {
 func InitCheck() bool {
 	var _cret C.gboolean // in
 
-	_cret = C.gtk_init_check()
+	_gret := girepository.MustFind("Gtk", "init_check").Invoke(nil, nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
@@ -148,7 +117,8 @@ func InitCheck() bool {
 func IsInitialized() bool {
 	var _cret C.gboolean // in
 
-	_cret = C.gtk_is_initialized()
+	_gret := girepository.MustFind("Gtk", "is_initialized").Invoke(nil, nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 

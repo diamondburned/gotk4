@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -18,12 +18,12 @@ import "C"
 
 // glib.Type values for pango-tabs.go.
 var (
-	GTypeTabAlign = externglib.Type(C.pango_tab_align_get_type())
-	GTypeTabArray = externglib.Type(C.pango_tab_array_get_type())
+	GTypeTabAlign = coreglib.Type(C.pango_tab_align_get_type())
+	GTypeTabArray = coreglib.Type(C.pango_tab_array_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTabAlign, F: marshalTabAlign},
 		{T: GTypeTabArray, F: marshalTabArray},
 	})
@@ -39,7 +39,7 @@ const (
 )
 
 func marshalTabAlign(p uintptr) (interface{}, error) {
-	return TabAlign(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TabAlign(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TabAlign.
@@ -68,7 +68,7 @@ type tabArray struct {
 }
 
 func marshalTabArray(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &TabArray{&tabArray{(*C.PangoTabArray)(b)}}, nil
 }
 

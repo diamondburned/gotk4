@@ -8,23 +8,22 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkoffscreenwindow.go.
-var GTypeOffscreenWindow = externglib.Type(C.gtk_offscreen_window_get_type())
+var GTypeOffscreenWindow = coreglib.Type(C.gtk_offscreen_window_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeOffscreenWindow, F: marshalOffscreenWindow},
 	})
 }
@@ -65,13 +64,13 @@ func classInitOffscreenWindower(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
+func wrapOffscreenWindow(obj *coreglib.Object) *OffscreenWindow {
 	return &OffscreenWindow{
 		Window: Window{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -89,7 +88,7 @@ func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 }
 
 func marshalOffscreenWindow(p uintptr) (interface{}, error) {
-	return wrapOffscreenWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapOffscreenWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewOffscreenWindow creates a toplevel container widget that is used to
@@ -100,13 +99,14 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 //    - offscreenWindow: pointer to a Widget.
 //
 func NewOffscreenWindow() *OffscreenWindow {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_offscreen_window_new()
+	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("new_OffscreenWindow", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _offscreenWindow *OffscreenWindow // out
 
-	_offscreenWindow = wrapOffscreenWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_offscreenWindow = wrapOffscreenWindow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _offscreenWindow
 }
@@ -120,19 +120,23 @@ func NewOffscreenWindow() *OffscreenWindow {
 //    - pixbuf (optional) pointer, or NULL.
 //
 func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkOffscreenWindow // out
-	var _cret *C.GdkPixbuf          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(externglib.InternObject(offscreen).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
+	*(**OffscreenWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
+	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_pixbuf", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(offscreen)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	if _cret != nil {
 		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -156,12 +160,16 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 //    - surface (optional) pointer to the offscreen surface, or NULL.
 //
 func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
-	var _arg0 *C.GtkOffscreenWindow // out
-	var _cret *C.cairo_surface_t    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(externglib.InternObject(offscreen).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
+	*(**OffscreenWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_offscreen_window_get_surface(_arg0)
+	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_surface", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(offscreen)
 
 	var _surface *cairo.Surface // out
@@ -170,7 +178,7 @@ func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
 		C.cairo_surface_reference(_cret)
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+			C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})
 	}
 

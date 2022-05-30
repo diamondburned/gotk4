@@ -7,22 +7,23 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkstringfilter.go.
 var (
-	GTypeStringFilterMatchMode = externglib.Type(C.gtk_string_filter_match_mode_get_type())
-	GTypeStringFilter          = externglib.Type(C.gtk_string_filter_get_type())
+	GTypeStringFilterMatchMode = coreglib.Type(C.gtk_string_filter_match_mode_get_type())
+	GTypeStringFilter          = coreglib.Type(C.gtk_string_filter_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStringFilterMatchMode, F: marshalStringFilterMatchMode},
 		{T: GTypeStringFilter, F: marshalStringFilter},
 	})
@@ -42,7 +43,7 @@ const (
 )
 
 func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
-	return StringFilterMatchMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return StringFilterMatchMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for StringFilterMatchMode.
@@ -82,7 +83,7 @@ type StringFilter struct {
 }
 
 var (
-	_ externglib.Objector = (*StringFilter)(nil)
+	_ coreglib.Objector = (*StringFilter)(nil)
 )
 
 func classInitStringFilterer(gclassPtr, data C.gpointer) {
@@ -93,7 +94,7 @@ func classInitStringFilterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapStringFilter(obj *externglib.Object) *StringFilter {
+func wrapStringFilter(obj *coreglib.Object) *StringFilter {
 	return &StringFilter{
 		Filter: Filter{
 			Object: obj,
@@ -102,7 +103,7 @@ func wrapStringFilter(obj *externglib.Object) *StringFilter {
 }
 
 func marshalStringFilter(p uintptr) (interface{}, error) {
-	return wrapStringFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStringFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewStringFilter creates a new string filter.
@@ -119,20 +120,24 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 //    - stringFilter: new GtkStringFilter.
 //
 func NewStringFilter(expression Expressioner) *StringFilter {
-	var _arg1 *C.GtkExpression   // out
-	var _cret *C.GtkStringFilter // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
+	*(*Expressioner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_string_filter_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("new_StringFilter", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(expression)
 
 	var _stringFilter *StringFilter // out
 
-	_stringFilter = wrapStringFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_stringFilter = wrapStringFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringFilter
 }
@@ -145,12 +150,16 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 //    - expression (optional): GtkExpression.
 //
 func (self *StringFilter) Expression() Expressioner {
-	var _arg0 *C.GtkStringFilter // out
-	var _cret *C.GtkExpression   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**StringFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_string_filter_get_expression(_arg0)
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_expression", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
@@ -159,8 +168,8 @@ func (self *StringFilter) Expression() Expressioner {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Expressioner)
 				return ok
 			})
@@ -182,12 +191,16 @@ func (self *StringFilter) Expression() Expressioner {
 //    - ok: TRUE if the filter ignores case.
 //
 func (self *StringFilter) IgnoreCase() bool {
-	var _arg0 *C.GtkStringFilter // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**StringFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_string_filter_get_ignore_case(_arg0)
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_ignore_case", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -199,28 +212,6 @@ func (self *StringFilter) IgnoreCase() bool {
 	return _ok
 }
 
-// MatchMode returns the match mode that the filter is using.
-//
-// The function returns the following values:
-//
-//    - stringFilterMatchMode: match mode of the filter.
-//
-func (self *StringFilter) MatchMode() StringFilterMatchMode {
-	var _arg0 *C.GtkStringFilter         // out
-	var _cret C.GtkStringFilterMatchMode // in
-
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_string_filter_get_match_mode(_arg0)
-	runtime.KeepAlive(self)
-
-	var _stringFilterMatchMode StringFilterMatchMode // out
-
-	_stringFilterMatchMode = StringFilterMatchMode(_cret)
-
-	return _stringFilterMatchMode
-}
-
 // Search gets the search term.
 //
 // The function returns the following values:
@@ -228,12 +219,16 @@ func (self *StringFilter) MatchMode() StringFilterMatchMode {
 //    - utf8 (optional): search term.
 //
 func (self *StringFilter) Search() string {
-	var _arg0 *C.GtkStringFilter // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**StringFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_string_filter_get_search(_arg0)
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_search", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -255,15 +250,18 @@ func (self *StringFilter) Search() string {
 //    - expression (optional): GtkExpression.
 //
 func (self *StringFilter) SetExpression(expression Expressioner) {
-	var _arg0 *C.GtkStringFilter // out
-	var _arg1 *C.GtkExpression   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
+	*(**StringFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_string_filter_set_expression(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_expression", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)
 }
@@ -275,35 +273,20 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 //    - ignoreCase: TRUE to ignore case.
 //
 func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
-	var _arg0 *C.GtkStringFilter // out
-	var _arg1 C.gboolean         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if ignoreCase {
 		_arg1 = C.TRUE
 	}
+	*(**StringFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_string_filter_set_ignore_case(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_ignore_case", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ignoreCase)
-}
-
-// SetMatchMode sets the match mode for the filter.
-//
-// The function takes the following parameters:
-//
-//    - mode: new match mode.
-//
-func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
-	var _arg0 *C.GtkStringFilter         // out
-	var _arg1 C.GtkStringFilterMatchMode // out
-
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GtkStringFilterMatchMode(mode)
-
-	C.gtk_string_filter_set_match_mode(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(mode)
 }
 
 // SetSearch sets the string to search for.
@@ -313,16 +296,19 @@ func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
 //    - search (optional): string to search for or NULL to clear the search.
 //
 func (self *StringFilter) SetSearch(search string) {
-	var _arg0 *C.GtkStringFilter // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if search != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(search)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(search)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**StringFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_string_filter_set_search(_arg0, _arg1)
+	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_search", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(search)
 }

@@ -7,25 +7,25 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_gdk4_Device_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gdk4_Device_ConnectToolChanged(gpointer, GdkDeviceTool*, guintptr);
 import "C"
 
 // glib.Type values for gdkdevice.go.
 var (
-	GTypeInputSource = externglib.Type(C.gdk_input_source_get_type())
-	GTypeDevice      = externglib.Type(C.gdk_device_get_type())
+	GTypeInputSource = coreglib.Type(C.gdk_input_source_get_type())
+	GTypeDevice      = coreglib.Type(C.gdk_device_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeInputSource, F: marshalInputSource},
 		{T: GTypeDevice, F: marshalDevice},
 	})
@@ -56,7 +56,7 @@ const (
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
-	return InputSource(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return InputSource(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InputSource.
@@ -88,11 +88,11 @@ func (i InputSource) String() string {
 // of devices, and their relationships.
 type Device struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Device)(nil)
+	_ coreglib.Objector = (*Device)(nil)
 )
 
 // Devicer describes types inherited from class Device.
@@ -100,20 +100,20 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Devicer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseDevice() *Device
 }
 
 var _ Devicer = (*Device)(nil)
 
-func wrapDevice(obj *externglib.Object) *Device {
+func wrapDevice(obj *coreglib.Object) *Device {
 	return &Device{
 		Object: obj,
 	}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
-	return wrapDevice(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDevice(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (device *Device) baseDevice() *Device {
@@ -129,7 +129,7 @@ func BaseDevice(obj Devicer) *Device {
 func _gotk4_gdk4_Device_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -148,15 +148,15 @@ func _gotk4_gdk4_Device_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 // through the logical device changes (for example, user switches from the USB
 // mouse to a tablet); in that case the logical device will change to reflect
 // the axes and keys on the new physical device.
-func (device *Device) ConnectChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(device, "changed", false, unsafe.Pointer(C._gotk4_gdk4_Device_ConnectChanged), f)
+func (device *Device) ConnectChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(device, "changed", false, unsafe.Pointer(C._gotk4_gdk4_Device_ConnectChanged), f)
 }
 
 //export _gotk4_gdk4_Device_ConnectToolChanged
 func _gotk4_gdk4_Device_ConnectToolChanged(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
 	var f func(tool *DeviceTool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -167,15 +167,15 @@ func _gotk4_gdk4_Device_ConnectToolChanged(arg0 C.gpointer, arg1 *C.GdkDeviceToo
 
 	var _tool *DeviceTool // out
 
-	_tool = wrapDeviceTool(externglib.Take(unsafe.Pointer(arg1)))
+	_tool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(arg1)))
 
 	f(_tool)
 }
 
 // ConnectToolChanged is emitted on pen/eraser devices whenever tools enter or
 // leave proximity.
-func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(device, "tool-changed", false, unsafe.Pointer(C._gotk4_gdk4_Device_ConnectToolChanged), f)
+func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(device, "tool-changed", false, unsafe.Pointer(C._gotk4_gdk4_Device_ConnectToolChanged), f)
 }
 
 // CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
@@ -188,12 +188,16 @@ func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) externglib.Si
 //    - ok: TRUE if Caps Lock is on for device.
 //
 func (device *Device) CapsLockState() bool {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_caps_lock_state(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_caps_lock_state", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _ok bool // out
@@ -212,47 +216,23 @@ func (device *Device) CapsLockState() bool {
 //    - deviceTool: GdkDeviceTool, or NULL.
 //
 func (device *Device) DeviceTool() *DeviceTool {
-	var _arg0 *C.GdkDevice     // out
-	var _cret *C.GdkDeviceTool // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_device_tool(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_device_tool", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _deviceTool *DeviceTool // out
 
-	_deviceTool = wrapDeviceTool(externglib.Take(unsafe.Pointer(_cret)))
+	_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _deviceTool
-}
-
-// Direction returns the direction of effective layout of the keyboard.
-//
-// This is only relevant for keyboard devices.
-//
-// The direction of a layout is the direction of the majority of its symbols.
-// See pango.UnicharDirection().
-//
-// The function returns the following values:
-//
-//    - direction: PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL if it can determine
-//      the direction. PANGO_DIRECTION_NEUTRAL otherwise.
-//
-func (device *Device) Direction() pango.Direction {
-	var _arg0 *C.GdkDevice     // out
-	var _cret C.PangoDirection // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
-
-	_cret = C.gdk_device_get_direction(_arg0)
-	runtime.KeepAlive(device)
-
-	var _direction pango.Direction // out
-
-	_direction = pango.Direction(_cret)
-
-	return _direction
 }
 
 // Display returns the GdkDisplay to which device pertains.
@@ -262,17 +242,21 @@ func (device *Device) Direction() pango.Direction {
 //    - display: GdkDisplay.
 //
 func (device *Device) Display() *Display {
-	var _arg0 *C.GdkDevice  // out
-	var _cret *C.GdkDisplay // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_display(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -286,12 +270,16 @@ func (device *Device) Display() *Display {
 //    - ok: TRUE if the pointer follows device motion.
 //
 func (device *Device) HasCursor() bool {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_has_cursor(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_has_cursor", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _ok bool // out
@@ -303,30 +291,6 @@ func (device *Device) HasCursor() bool {
 	return _ok
 }
 
-// ModifierState retrieves the current modifier state of the keyboard.
-//
-// This is only relevant for keyboard devices.
-//
-// The function returns the following values:
-//
-//    - modifierType: current modifier state.
-//
-func (device *Device) ModifierState() ModifierType {
-	var _arg0 *C.GdkDevice      // out
-	var _cret C.GdkModifierType // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
-
-	_cret = C.gdk_device_get_modifier_state(_arg0)
-	runtime.KeepAlive(device)
-
-	var _modifierType ModifierType // out
-
-	_modifierType = ModifierType(_cret)
-
-	return _modifierType
-}
-
 // Name: name of the device, suitable for showing in a user interface.
 //
 // The function returns the following values:
@@ -334,12 +298,16 @@ func (device *Device) ModifierState() ModifierType {
 //    - utf8: name.
 //
 func (device *Device) Name() string {
-	var _arg0 *C.GdkDevice // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_name(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
@@ -359,12 +327,16 @@ func (device *Device) Name() string {
 //    - ok: TRUE if Num Lock is on for device.
 //
 func (device *Device) NumLockState() bool {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_num_lock_state(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_num_lock_state", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _ok bool // out
@@ -383,12 +355,16 @@ func (device *Device) NumLockState() bool {
 //    - guint: number of touch points.
 //
 func (device *Device) NumTouches() uint {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.guint      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_num_touches(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_num_touches", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _guint uint // out
@@ -408,12 +384,16 @@ func (device *Device) NumTouches() uint {
 //    - utf8 (optional): product ID, or NULL.
 //
 func (device *Device) ProductID() string {
-	var _arg0 *C.GdkDevice // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_product_id(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_product_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
@@ -435,12 +415,16 @@ func (device *Device) ProductID() string {
 //    - ok: TRUE if Scroll Lock is on for device.
 //
 func (device *Device) ScrollLockState() bool {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_scroll_lock_state(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_scroll_lock_state", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _ok bool // out
@@ -459,12 +443,16 @@ func (device *Device) ScrollLockState() bool {
 //    - seat: GdkSeat.
 //
 func (device *Device) Seat() Seater {
-	var _arg0 *C.GdkDevice // out
-	var _cret *C.GdkSeat   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_seat(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_seat", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _seat Seater // out
@@ -475,8 +463,8 @@ func (device *Device) Seat() Seater {
 			panic("object of type gdk.Seater is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Seater)
 			return ok
 		})
@@ -490,79 +478,6 @@ func (device *Device) Seat() Seater {
 	return _seat
 }
 
-// Source determines the type of the device.
-//
-// The function returns the following values:
-//
-//    - inputSource: GdkInputSource.
-//
-func (device *Device) Source() InputSource {
-	var _arg0 *C.GdkDevice     // out
-	var _cret C.GdkInputSource // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
-
-	_cret = C.gdk_device_get_source(_arg0)
-	runtime.KeepAlive(device)
-
-	var _inputSource InputSource // out
-
-	_inputSource = InputSource(_cret)
-
-	return _inputSource
-}
-
-// SurfaceAtPosition obtains the surface underneath device, returning the
-// location of the device in win_x and win_y
-//
-// Returns NULL if the surface tree under device is not known to GDK (for
-// example, belongs to another application).
-//
-// The function returns the following values:
-//
-//    - winX (optional): return location for the X coordinate of the device
-//      location, relative to the surface origin, or NULL.
-//    - winY (optional): return location for the Y coordinate of the device
-//      location, relative to the surface origin, or NULL.
-//    - surface (optional): GdkSurface under the device position, or NULL.
-//
-func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface Surfacer) {
-	var _arg0 *C.GdkDevice  // out
-	var _arg1 C.double      // in
-	var _arg2 C.double      // in
-	var _cret *C.GdkSurface // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
-
-	_cret = C.gdk_device_get_surface_at_position(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(device)
-
-	var _winX float64     // out
-	var _winY float64     // out
-	var _surface Surfacer // out
-
-	_winX = float64(_arg1)
-	_winY = float64(_arg2)
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Surfacer)
-				return ok
-			})
-			rv, ok := casted.(Surfacer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
-			}
-			_surface = rv
-		}
-	}
-
-	return _winX, _winY, _surface
-}
-
 // Timestamp returns the timestamp of the last activity for this device.
 //
 // In practice, this means the timestamp of the last event that was received
@@ -574,12 +489,16 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 //    - guint32: timestamp of the last activity for this device.
 //
 func (device *Device) Timestamp() uint32 {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.guint32    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint32 // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_timestamp(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_timestamp", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _guint32 uint32 // out
@@ -619,12 +538,16 @@ func (device *Device) Timestamp() uint32 {
 //    - utf8 (optional): vendor ID, or NULL.
 //
 func (device *Device) VendorID() string {
-	var _arg0 *C.GdkDevice // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_get_vendor_id(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_vendor_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
@@ -646,12 +569,16 @@ func (device *Device) VendorID() string {
 //    - ok: TRUE if there are layouts with both directions, FALSE otherwise.
 //
 func (device *Device) HasBidiLayouts() bool {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_device_has_bidi_layouts(_arg0)
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("has_bidi_layouts", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(device)
 
 	var _ok bool // out
@@ -673,25 +600,4 @@ type TimeCoord struct {
 // timeCoord is the struct that's finalized.
 type timeCoord struct {
 	native *C.GdkTimeCoord
-}
-
-// Time: timestamp for this event.
-func (t *TimeCoord) Time() uint32 {
-	var v uint32 // out
-	v = uint32(t.native.time)
-	return v
-}
-
-// Flags indicating what axes are present.
-func (t *TimeCoord) Flags() AxisFlags {
-	var v AxisFlags // out
-	v = AxisFlags(t.native.flags)
-	return v
-}
-
-// Axes axis values.
-func (t *TimeCoord) Axes() [12]float64 {
-	var v [12]float64 // out
-	v = *(*[12]float64)(unsafe.Pointer(&t.native.axes))
-	return v
 }

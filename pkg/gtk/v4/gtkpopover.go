@@ -8,13 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_PopoverClass_activate_default(GtkPopover*);
 // extern void _gotk4_gtk4_PopoverClass_closed(GtkPopover*);
 // extern void _gotk4_gtk4_Popover_ConnectActivateDefault(gpointer, guintptr);
@@ -22,10 +23,10 @@ import (
 import "C"
 
 // glib.Type values for gtkpopover.go.
-var GTypePopover = externglib.Type(C.gtk_popover_get_type())
+var GTypePopover = coreglib.Type(C.gtk_popover_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePopover, F: marshalPopover},
 	})
 }
@@ -113,14 +114,14 @@ type Popover struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	NativeSurface
 	ShortcutManager
 }
 
 var (
-	_ Widgetter           = (*Popover)(nil)
-	_ externglib.Objector = (*Popover)(nil)
+	_ Widgetter         = (*Popover)(nil)
+	_ coreglib.Objector = (*Popover)(nil)
 )
 
 func classInitPopoverer(gclassPtr, data C.gpointer) {
@@ -145,7 +146,7 @@ func classInitPopoverer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_PopoverClass_activate_default
 func _gotk4_gtk4_PopoverClass_activate_default(arg0 *C.GtkPopover) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateDefault() })
 
 	iface.ActivateDefault()
@@ -153,16 +154,16 @@ func _gotk4_gtk4_PopoverClass_activate_default(arg0 *C.GtkPopover) {
 
 //export _gotk4_gtk4_PopoverClass_closed
 func _gotk4_gtk4_PopoverClass_closed(arg0 *C.GtkPopover) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Closed() })
 
 	iface.Closed()
 }
 
-func wrapPopover(obj *externglib.Object) *Popover {
+func wrapPopover(obj *coreglib.Object) *Popover {
 	return &Popover{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -179,7 +180,7 @@ func wrapPopover(obj *externglib.Object) *Popover {
 		Object: obj,
 		NativeSurface: NativeSurface{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -201,14 +202,14 @@ func wrapPopover(obj *externglib.Object) *Popover {
 }
 
 func marshalPopover(p uintptr) (interface{}, error) {
-	return wrapPopover(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPopover(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_Popover_ConnectActivateDefault
 func _gotk4_gtk4_Popover_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -224,15 +225,15 @@ func _gotk4_gtk4_Popover_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr
 // widget.
 //
 // This is a keybinding signal (class.SignalAction.html).
-func (popover *Popover) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(popover, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectActivateDefault), f)
+func (popover *Popover) ConnectActivateDefault(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(popover, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectActivateDefault), f)
 }
 
 //export _gotk4_gtk4_Popover_ConnectClosed
 func _gotk4_gtk4_Popover_ConnectClosed(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -245,8 +246,8 @@ func _gotk4_gtk4_Popover_ConnectClosed(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectClosed is emitted when the popover is closed.
-func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(popover, "closed", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectClosed), f)
+func (popover *Popover) ConnectClosed(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(popover, "closed", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectClosed), f)
 }
 
 // NewPopover creates a new GtkPopover.
@@ -256,13 +257,14 @@ func (popover *Popover) ConnectClosed(f func()) externglib.SignalHandle {
 //    - popover: new GtkPopover.
 //
 func NewPopover() *Popover {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_popover_new()
+	_gret := girepository.MustFind("Gtk", "Popover").InvokeMethod("new_Popover", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _popover *Popover // out
 
-	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
+	_popover = wrapPopover(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
 }
@@ -276,12 +278,16 @@ func NewPopover() *Popover {
 //    - ok: TRUE if popover is modal.
 //
 func (popover *Popover) Autohide() bool {
-	var _arg0 *C.GtkPopover // out
-	var _cret C.gboolean    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_popover_get_autohide(_arg0)
+	_gret := girepository.MustFind("Gtk", "Popover").InvokeMethod("get_autohide", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(popover)
 
 	var _ok bool // out
@@ -301,12 +307,16 @@ func (popover *Popover) Autohide() bool {
 //    - ok: TRUE if popover will close after a modal child.
 //
 func (popover *Popover) CascadePopdown() bool {
-	var _arg0 *C.GtkPopover // out
-	var _cret C.gboolean    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_popover_get_cascade_popdown(_arg0)
+	_gret := girepository.MustFind("Gtk", "Popover").InvokeMethod("get_cascade_popdown", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(popover)
 
 	var _ok bool // out
@@ -325,12 +335,16 @@ func (popover *Popover) CascadePopdown() bool {
 //    - widget (optional): child widget of popover.
 //
 func (popover *Popover) Child() Widgetter {
-	var _arg0 *C.GtkPopover // out
-	var _cret *C.GtkWidget  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_popover_get_child(_arg0)
+	_gret := girepository.MustFind("Gtk", "Popover").InvokeMethod("get_child", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(popover)
 
 	var _widget Widgetter // out
@@ -339,8 +353,8 @@ func (popover *Popover) Child() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -363,12 +377,16 @@ func (popover *Popover) Child() Widgetter {
 //    - ok: whether the popover has an arrow.
 //
 func (popover *Popover) HasArrow() bool {
-	var _arg0 *C.GtkPopover // out
-	var _cret C.gboolean    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_popover_get_has_arrow(_arg0)
+	_gret := girepository.MustFind("Gtk", "Popover").InvokeMethod("get_has_arrow", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(popover)
 
 	var _ok bool // out
@@ -387,12 +405,16 @@ func (popover *Popover) HasArrow() bool {
 //    - ok: TRUE if mnemonics are supposed to be visible in this popover.
 //
 func (popover *Popover) MnemonicsVisible() bool {
-	var _arg0 *C.GtkPopover // out
-	var _cret C.gboolean    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_popover_get_mnemonics_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "Popover").InvokeMethod("get_mnemonics_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(popover)
 
 	var _ok bool // out
@@ -404,97 +426,20 @@ func (popover *Popover) MnemonicsVisible() bool {
 	return _ok
 }
 
-// Offset gets the offset previous set with gtk_popover_set_offset().
-//
-// The function returns the following values:
-//
-//    - xOffset (optional): location for the x_offset.
-//    - yOffset (optional): location for the y_offset.
-//
-func (popover *Popover) Offset() (xOffset int, yOffset int) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 C.int         // in
-	var _arg2 C.int         // in
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
-
-	C.gtk_popover_get_offset(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(popover)
-
-	var _xOffset int // out
-	var _yOffset int // out
-
-	_xOffset = int(_arg1)
-	_yOffset = int(_arg2)
-
-	return _xOffset, _yOffset
-}
-
-// PointingTo gets the rectangle that the popover points to.
-//
-// If a rectangle to point to has been set, this function will return TRUE and
-// fill in rect with such rectangle, otherwise it will return FALSE and fill in
-// rect with the parent widget coordinates.
-//
-// The function returns the following values:
-//
-//    - rect: location to store the rectangle.
-//    - ok: TRUE if a rectangle to point to was set.
-//
-func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover  // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
-
-	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
-	runtime.KeepAlive(popover)
-
-	var _rect *gdk.Rectangle // out
-	var _ok bool             // out
-
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _rect, _ok
-}
-
-// Position returns the preferred position of popover.
-//
-// The function returns the following values:
-//
-//    - positionType: preferred position.
-//
-func (popover *Popover) Position() PositionType {
-	var _arg0 *C.GtkPopover     // out
-	var _cret C.GtkPositionType // in
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
-
-	_cret = C.gtk_popover_get_position(_arg0)
-	runtime.KeepAlive(popover)
-
-	var _positionType PositionType // out
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
-}
-
 // Popdown pops popover down.
 //
 // This is different from a gtk.Widget.Hide() call in that it may show the
 // popover with a transition. If you want to hide the popover without a
 // transition, just use gtk.Widget.Hide().
 func (popover *Popover) Popdown() {
-	var _arg0 *C.GtkPopover // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_popover_popdown(_arg0)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("popdown", args[:], nil)
+
 	runtime.KeepAlive(popover)
 }
 
@@ -504,21 +449,27 @@ func (popover *Popover) Popdown() {
 // popover with a transition(). If you want to show the popover without a
 // transition, just use [methodGtk.Widget.show.
 func (popover *Popover) Popup() {
-	var _arg0 *C.GtkPopover // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_popover_popup(_arg0)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("popup", args[:], nil)
+
 	runtime.KeepAlive(popover)
 }
 
 // Present presents the popover to the user.
 func (popover *Popover) Present() {
-	var _arg0 *C.GtkPopover // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**Popover)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_popover_present(_arg0)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("present", args[:], nil)
+
 	runtime.KeepAlive(popover)
 }
 
@@ -535,15 +486,18 @@ func (popover *Popover) Present() {
 //    - autohide: TRUE to dismiss the popover on outside clicks.
 //
 func (popover *Popover) SetAutohide(autohide bool) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 C.gboolean    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	if autohide {
 		_arg1 = C.TRUE
 	}
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_set_autohide(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_autohide", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(autohide)
 }
@@ -558,15 +512,18 @@ func (popover *Popover) SetAutohide(autohide bool) {
 //    - cascadePopdown: TRUE if the popover should follow a child closing.
 //
 func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 C.gboolean    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	if cascadePopdown {
 		_arg1 = C.TRUE
 	}
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_set_cascade_popdown(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_cascade_popdown", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(cascadePopdown)
 }
@@ -578,15 +535,18 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 //    - child (optional) widget.
 //
 func (popover *Popover) SetChild(child Widgetter) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 *C.GtkWidget  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_set_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_child", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(child)
 }
@@ -603,15 +563,18 @@ func (popover *Popover) SetChild(child Widgetter) {
 //      to unset the default widget for the popover.
 //
 func (popover *Popover) SetDefaultWidget(widget Widgetter) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 *C.GtkWidget  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_set_default_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_default_widget", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(widget)
 }
@@ -624,15 +587,18 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 //    - hasArrow: TRUE to draw an arrow.
 //
 func (popover *Popover) SetHasArrow(hasArrow bool) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 C.gboolean    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	if hasArrow {
 		_arg1 = C.TRUE
 	}
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_set_has_arrow(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_has_arrow", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(hasArrow)
 }
@@ -644,43 +610,20 @@ func (popover *Popover) SetHasArrow(hasArrow bool) {
 //    - mnemonicsVisible: new value.
 //
 func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 C.gboolean    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	if mnemonicsVisible {
 		_arg1 = C.TRUE
 	}
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_set_mnemonics_visible(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_mnemonics_visible", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(mnemonicsVisible)
-}
-
-// SetOffset sets the offset to use when calculating the position of the
-// popover.
-//
-// These values are used when preparing the gdk.PopupLayout for positioning the
-// popover.
-//
-// The function takes the following parameters:
-//
-//    - xOffset: x offset to adjust the position by.
-//    - yOffset: y offset to adjust the position by.
-//
-func (popover *Popover) SetOffset(xOffset, yOffset int) {
-	var _arg0 *C.GtkPopover // out
-	var _arg1 C.int         // out
-	var _arg2 C.int         // out
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
-	_arg1 = C.int(xOffset)
-	_arg2 = C.int(yOffset)
-
-	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(popover)
-	runtime.KeepAlive(xOffset)
-	runtime.KeepAlive(yOffset)
 }
 
 // SetPointingTo sets the rectangle that popover points to.
@@ -692,37 +635,16 @@ func (popover *Popover) SetOffset(xOffset, yOffset int) {
 //    - rect: rectangle to point to.
 //
 func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
-	var _arg0 *C.GtkPopover   // out
-	var _arg1 *C.GdkRectangle // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_popover_set_pointing_to(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_pointing_to", args[:], nil)
+
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(rect)
-}
-
-// SetPosition sets the preferred position for popover to appear.
-//
-// If the popover is currently visible, it will be immediately updated.
-//
-// This preference will be respected where possible, although on lack of space
-// (eg. if close to the window edges), the GtkPopover may choose to appear on
-// the opposite side.
-//
-// The function takes the following parameters:
-//
-//    - position: preferred popover position.
-//
-func (popover *Popover) SetPosition(position PositionType) {
-	var _arg0 *C.GtkPopover     // out
-	var _arg1 C.GtkPositionType // out
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(externglib.InternObject(popover).Native()))
-	_arg1 = C.GtkPositionType(position)
-
-	C.gtk_popover_set_position(_arg0, _arg1)
-	runtime.KeepAlive(popover)
-	runtime.KeepAlive(position)
 }

@@ -6,11 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // NewSimplePermission creates a new #GPermission instance that represents an
@@ -25,19 +27,23 @@ import "C"
 //    - simplePermission as a #GPermission.
 //
 func NewSimplePermission(allowed bool) *SimplePermission {
-	var _arg1 C.gboolean     // out
-	var _cret *C.GPermission // in
+	var args [1]girepository.Argument
+	var _arg0 C.gboolean // out
+	var _cret *C.void    // in
 
 	if allowed {
-		_arg1 = C.TRUE
+		_arg0 = C.TRUE
 	}
+	*(*bool)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_simple_permission_new(_arg1)
+	_gret := girepository.MustFind("Gio", "SimplePermission").InvokeMethod("new_SimplePermission", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(allowed)
 
 	var _simplePermission *SimplePermission // out
 
-	_simplePermission = wrapSimplePermission(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simplePermission = wrapSimplePermission(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simplePermission
 }

@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkdrawingcontext.go.
-var GTypeDrawingContext = externglib.Type(C.gdk_drawing_context_get_type())
+var GTypeDrawingContext = coreglib.Type(C.gdk_drawing_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDrawingContext, F: marshalDrawingContext},
 	})
 }
@@ -40,11 +41,11 @@ type DrawingContextOverrider interface {
 // DrawingContext is available since GDK 3.22.
 type DrawingContext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DrawingContext)(nil)
+	_ coreglib.Objector = (*DrawingContext)(nil)
 )
 
 func classInitDrawingContexter(gclassPtr, data C.gpointer) {
@@ -55,14 +56,14 @@ func classInitDrawingContexter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapDrawingContext(obj *externglib.Object) *DrawingContext {
+func wrapDrawingContext(obj *coreglib.Object) *DrawingContext {
 	return &DrawingContext{
 		Object: obj,
 	}
 }
 
 func marshalDrawingContext(p uintptr) (interface{}, error) {
-	return wrapDrawingContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDrawingContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CairoContext retrieves a Cairo context to be used to draw on the Window that
@@ -78,12 +79,16 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 //      context is owned by the DrawingContext and should not be destroyed.
 //
 func (context *DrawingContext) CairoContext() *cairo.Context {
-	var _arg0 *C.GdkDrawingContext // out
-	var _cret *C.cairo_t           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drawing_context_get_cairo_context(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_cairo_context", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ret *cairo.Context // out
@@ -91,7 +96,7 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
 	C.cairo_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
 
 	return _ret
@@ -104,12 +109,16 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 //    - region (optional): cairo region.
 //
 func (context *DrawingContext) Clip() *cairo.Region {
-	var _arg0 *C.GdkDrawingContext // out
-	var _cret *C.cairo_region_t    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drawing_context_get_clip(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_clip", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _region *cairo.Region // out
@@ -120,7 +129,7 @@ func (context *DrawingContext) Clip() *cairo.Region {
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
 		runtime.SetFinalizer(_region, func(v *cairo.Region) {
-			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+			C.cairo_region_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})
 	}
 
@@ -134,12 +143,16 @@ func (context *DrawingContext) Clip() *cairo.Region {
 //    - window: Window.
 //
 func (context *DrawingContext) Window() Windower {
-	var _arg0 *C.GdkDrawingContext // out
-	var _cret *C.GdkWindow         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drawing_context_get_window(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_window", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _window Windower // out
@@ -150,8 +163,8 @@ func (context *DrawingContext) Window() Windower {
 			panic("object of type gdk.Windower is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Windower)
 			return ok
 		})
@@ -172,12 +185,16 @@ func (context *DrawingContext) Window() Windower {
 //    - ok: TRUE if the context is valid.
 //
 func (context *DrawingContext) IsValid() bool {
-	var _arg0 *C.GdkDrawingContext // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drawing_context_is_valid(_arg0)
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("is_valid", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ok bool // out

@@ -8,15 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk3_SocketClass_plug_removed(GtkSocket*);
 // extern gboolean _gotk4_gtk3_Socket_ConnectPlugRemoved(gpointer, guintptr);
 // extern void _gotk4_gtk3_SocketClass_plug_added(GtkSocket*);
@@ -24,10 +23,10 @@ import (
 import "C"
 
 // glib.Type values for gtksocket.go.
-var GTypeSocket = externglib.Type(C.gtk_socket_get_type())
+var GTypeSocket = coreglib.Type(C.gtk_socket_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSocket, F: marshalSocket},
 	})
 }
@@ -117,7 +116,7 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_SocketClass_plug_added
 func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugAdded() })
 
 	iface.PlugAdded()
@@ -125,7 +124,7 @@ func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
 
 //export _gotk4_gtk3_SocketClass_plug_removed
 func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.GtkSocket) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugRemoved() bool })
 
 	ok := iface.PlugRemoved()
@@ -137,11 +136,11 @@ func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.GtkSocket) (cret C.gboolean) {
 	return cret
 }
 
-func wrapSocket(obj *externglib.Object) *Socket {
+func wrapSocket(obj *coreglib.Object) *Socket {
 	return &Socket{
 		Container: Container{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -157,14 +156,14 @@ func wrapSocket(obj *externglib.Object) *Socket {
 }
 
 func marshalSocket(p uintptr) (interface{}, error) {
-	return wrapSocket(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSocket(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_Socket_ConnectPlugAdded
 func _gotk4_gtk3_Socket_ConnectPlugAdded(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -178,15 +177,15 @@ func _gotk4_gtk3_Socket_ConnectPlugAdded(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectPlugAdded: this signal is emitted when a client is successfully added
 // to the socket.
-func (socket_ *Socket) ConnectPlugAdded(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(socket_, "plug-added", false, unsafe.Pointer(C._gotk4_gtk3_Socket_ConnectPlugAdded), f)
+func (socket_ *Socket) ConnectPlugAdded(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(socket_, "plug-added", false, unsafe.Pointer(C._gotk4_gtk3_Socket_ConnectPlugAdded), f)
 }
 
 //export _gotk4_gtk3_Socket_ConnectPlugRemoved
 func _gotk4_gtk3_Socket_ConnectPlugRemoved(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
 	var f func() (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -207,8 +206,8 @@ func _gotk4_gtk3_Socket_ConnectPlugRemoved(arg0 C.gpointer, arg1 C.guintptr) (cr
 // ConnectPlugRemoved: this signal is emitted when a client is removed from the
 // socket. The default action is to destroy the Socket widget, so if you want to
 // reuse it you must add a signal handler that returns TRUE.
-func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(socket_, "plug-removed", false, unsafe.Pointer(C._gotk4_gtk3_Socket_ConnectPlugRemoved), f)
+func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(socket_, "plug-removed", false, unsafe.Pointer(C._gotk4_gtk3_Socket_ConnectPlugRemoved), f)
 }
 
 // NewSocket: create a new empty Socket.
@@ -218,13 +217,14 @@ func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) externglib.SignalH
 //    - socket: new Socket.
 //
 func NewSocket() *Socket {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_socket_new()
+	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("new_Socket", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socket *Socket // out
 
-	_socket = wrapSocket(externglib.Take(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -237,12 +237,16 @@ func NewSocket() *Socket {
 //    - window (optional) of the plug if available, or NULL.
 //
 func (socket_ *Socket) PlugWindow() gdk.Windower {
-	var _arg0 *C.GtkSocket // out
-	var _cret *C.GdkWindow // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkSocket)(unsafe.Pointer(externglib.InternObject(socket_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_socket_get_plug_window(_arg0)
+	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("get_plug_window", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket_)
 
 	var _window gdk.Windower // out
@@ -251,8 +255,8 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(gdk.Windower)
 				return ok
 			})

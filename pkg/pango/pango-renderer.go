@@ -9,7 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -30,12 +30,12 @@ import "C"
 
 // glib.Type values for pango-renderer.go.
 var (
-	GTypeRenderPart = externglib.Type(C.pango_render_part_get_type())
-	GTypeRenderer   = externglib.Type(C.pango_renderer_get_type())
+	GTypeRenderPart = coreglib.Type(C.pango_render_part_get_type())
+	GTypeRenderer   = coreglib.Type(C.pango_renderer_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRenderPart, F: marshalRenderPart},
 		{T: GTypeRenderer, F: marshalRenderer},
 	})
@@ -59,7 +59,7 @@ const (
 )
 
 func marshalRenderPart(p uintptr) (interface{}, error) {
-	return RenderPart(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return RenderPart(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RenderPart.
@@ -222,11 +222,11 @@ type RendererOverrider interface {
 // can be created.
 type Renderer struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Renderer)(nil)
+	_ coreglib.Objector = (*Renderer)(nil)
 )
 
 // Rendererer describes types inherited from class Renderer.
@@ -234,7 +234,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Rendererer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseRenderer() *Renderer
 }
 
@@ -310,7 +310,7 @@ func classInitRendererer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_pango1_RendererClass_begin
 func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Begin() })
 
 	iface.Begin()
@@ -318,7 +318,7 @@ func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
 
 //export _gotk4_pango1_RendererClass_draw_error_underline
 func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DrawErrorUnderline(x, y, width, height int) })
 
 	var _x int      // out
@@ -336,7 +336,7 @@ func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg
 
 //export _gotk4_pango1_RendererClass_draw_glyph
 func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 C.PangoGlyph, arg3 C.double, arg4 C.double) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyph(font Fonter, glyph Glyph, x, y float64)
 	})
@@ -352,8 +352,8 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.Pango
 			panic("object of type pango.Fonter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Fonter)
 			return ok
 		})
@@ -372,7 +372,7 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.Pango
 
 //export _gotk4_pango1_RendererClass_draw_glyph_item
 func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.char, arg2 *C.PangoGlyphItem, arg3 C.int, arg4 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
 	})
@@ -394,7 +394,7 @@ func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.
 
 //export _gotk4_pango1_RendererClass_draw_glyphs
 func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 *C.PangoGlyphString, arg3 C.int, arg4 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 	})
@@ -410,8 +410,8 @@ func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.Pang
 			panic("object of type pango.Fonter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Fonter)
 			return ok
 		})
@@ -430,7 +430,7 @@ func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.Pang
 
 //export _gotk4_pango1_RendererClass_draw_rectangle
 func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawRectangle(part RenderPart, x, y, width, height int)
 	})
@@ -452,7 +452,7 @@ func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.Pa
 
 //export _gotk4_pango1_RendererClass_draw_shape
 func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.PangoAttrShape, arg2 C.int, arg3 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawShape(attr *AttrShape, x, y int)
 	})
@@ -470,7 +470,7 @@ func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.Pango
 
 //export _gotk4_pango1_RendererClass_draw_trapezoid
 func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.double, arg3 C.double, arg4 C.double, arg5 C.double, arg6 C.double, arg7 C.double) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	})
@@ -496,7 +496,7 @@ func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.Pa
 
 //export _gotk4_pango1_RendererClass_end
 func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ End() })
 
 	iface.End()
@@ -504,7 +504,7 @@ func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
 
 //export _gotk4_pango1_RendererClass_part_changed
 func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PartChanged(part RenderPart) })
 
 	var _part RenderPart // out
@@ -516,7 +516,7 @@ func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.Pang
 
 //export _gotk4_pango1_RendererClass_prepare_run
 func _gotk4_pango1_RendererClass_prepare_run(arg0 *C.PangoRenderer, arg1 *C.PangoLayoutRun) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrepareRun(run *LayoutRun) })
 
 	var _run *LayoutRun // out
@@ -526,14 +526,14 @@ func _gotk4_pango1_RendererClass_prepare_run(arg0 *C.PangoRenderer, arg1 *C.Pang
 	iface.PrepareRun(_run)
 }
 
-func wrapRenderer(obj *externglib.Object) *Renderer {
+func wrapRenderer(obj *coreglib.Object) *Renderer {
 	return &Renderer{
 		Object: obj,
 	}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
-	return wrapRenderer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRenderer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (renderer *Renderer) baseRenderer() *Renderer {
@@ -554,7 +554,7 @@ func BaseRenderer(obj Rendererer) *Renderer {
 func (renderer *Renderer) Activate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	C.pango_renderer_activate(_arg0)
 	runtime.KeepAlive(renderer)
@@ -566,7 +566,7 @@ func (renderer *Renderer) Activate() {
 func (renderer *Renderer) Deactivate() {
 	var _arg0 *C.PangoRenderer // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	C.pango_renderer_deactivate(_arg0)
 	runtime.KeepAlive(renderer)
@@ -595,7 +595,7 @@ func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 	var _arg3 C.int            // out
 	var _arg4 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 	_arg3 = C.int(width)
@@ -625,8 +625,8 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	var _arg3 C.double         // out
 	var _arg4 C.double         // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	_arg2 = C.guint32(glyph)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -669,7 +669,7 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 	var _arg3 C.int             // out
 	var _arg4 C.int             // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	if text != "" {
 		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))
@@ -704,8 +704,8 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 	var _arg3 C.int               // out
 	var _arg4 C.int               // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	_arg2 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)
@@ -734,8 +734,8 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
-	_arg1 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
 
@@ -762,7 +762,7 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 	var _arg2 C.int              // out
 	var _arg3 C.int              // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
@@ -798,7 +798,7 @@ func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int
 	var _arg4 C.int             // out
 	var _arg5 C.int             // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
@@ -837,7 +837,7 @@ func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, 
 	var _arg6 C.double          // out
 	var _arg7 C.double          // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	_arg2 = C.double(y1)
 	_arg3 = C.double(x11)
@@ -873,7 +873,7 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	var _arg1 C.PangoRenderPart // out
 	var _cret C.guint16         // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_alpha(_arg0, _arg1)
@@ -903,7 +903,7 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 	var _arg1 C.PangoRenderPart // out
 	var _cret *C.PangoColor     // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 
 	_cret = C.pango_renderer_get_color(_arg0, _arg1)
@@ -935,7 +935,7 @@ func (renderer *Renderer) Layout() *Layout {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	_cret = C.pango_renderer_get_layout(_arg0)
 	runtime.KeepAlive(renderer)
@@ -943,7 +943,7 @@ func (renderer *Renderer) Layout() *Layout {
 	var _layout *Layout // out
 
 	if _cret != nil {
-		_layout = wrapLayout(externglib.Take(unsafe.Pointer(_cret)))
+		_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _layout
@@ -965,7 +965,7 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _arg0 *C.PangoRenderer   // out
 	var _cret *C.PangoLayoutLine // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	_cret = C.pango_renderer_get_layout_line(_arg0)
 	runtime.KeepAlive(renderer)
@@ -1000,7 +1000,7 @@ func (renderer *Renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	_cret = C.pango_renderer_get_matrix(_arg0)
 	runtime.KeepAlive(renderer)
@@ -1037,7 +1037,7 @@ func (renderer *Renderer) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 
 	C.pango_renderer_part_changed(_arg0, _arg1)
@@ -1060,7 +1060,7 @@ func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.guint16         // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	_arg2 = C.guint16(alpha)
 
@@ -1084,7 +1084,7 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 *C.PangoColor     // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.PangoRenderPart(part)
 	if color != nil {
 		_arg2 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
@@ -1107,7 +1107,7 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
 
-	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(externglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	if matrix != nil {
 		_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}

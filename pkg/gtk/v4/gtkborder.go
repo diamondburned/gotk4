@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkborder.go.
-var GTypeBorder = externglib.Type(C.gtk_border_get_type())
+var GTypeBorder = coreglib.Type(C.gtk_border_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBorder, F: marshalBorder},
 	})
 }
@@ -39,15 +40,15 @@ type border struct {
 }
 
 func marshalBorder(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Border{&border{(*C.GtkBorder)(b)}}, nil
 }
 
 // NewBorder constructs a struct Border.
 func NewBorder() *Border {
-	var _cret *C.GtkBorder // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_border_new()
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _border *Border // out
 
@@ -97,12 +98,15 @@ func (b *Border) Bottom() int16 {
 //    - border: copy of border_.
 //
 func (border_ *Border) Copy() *Border {
-	var _arg0 *C.GtkBorder // out
-	var _cret *C.GtkBorder // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(border_)))
+	*(**Border)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_border_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(border_)
 
 	var _border *Border // out

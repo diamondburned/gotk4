@@ -48,6 +48,7 @@ func main() {
 	gen.AddPostprocessors(gendata.Postprocessors)
 	gen.AddFilters(gendata.Filters)
 	gen.AddProcessConverters(gendata.ConversionProcessors)
+	gen.DynamicLinkNamespaces(gendata.DynamicLinkNamespaces)
 
 	if err := genutil.CleanDirectory(output, gendata.PkgExceptions); err != nil {
 		log.Fatalln("failed to clean output directory:", err)

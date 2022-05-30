@@ -6,24 +6,25 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmultifilter.go.
 var (
-	GTypeAnyFilter   = externglib.Type(C.gtk_any_filter_get_type())
-	GTypeEveryFilter = externglib.Type(C.gtk_every_filter_get_type())
-	GTypeMultiFilter = externglib.Type(C.gtk_multi_filter_get_type())
+	GTypeAnyFilter   = coreglib.Type(C.gtk_any_filter_get_type())
+	GTypeEveryFilter = coreglib.Type(C.gtk_every_filter_get_type())
+	GTypeMultiFilter = coreglib.Type(C.gtk_multi_filter_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAnyFilter, F: marshalAnyFilter},
 		{T: GTypeEveryFilter, F: marshalEveryFilter},
 		{T: GTypeMultiFilter, F: marshalMultiFilter},
@@ -55,7 +56,7 @@ func classInitAnyFilterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
+func wrapAnyFilter(obj *coreglib.Object) *AnyFilter {
 	return &AnyFilter{
 		MultiFilter: MultiFilter{
 			Filter: Filter{
@@ -73,7 +74,7 @@ func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 }
 
 func marshalAnyFilter(p uintptr) (interface{}, error) {
-	return wrapAnyFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAnyFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewAnyFilter creates a new empty "any" filter.
@@ -89,13 +90,14 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 //    - anyFilter: new GtkAnyFilter.
 //
 func NewAnyFilter() *AnyFilter {
-	var _cret *C.GtkAnyFilter // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_any_filter_new()
+	_gret := girepository.MustFind("Gtk", "AnyFilter").InvokeMethod("new_AnyFilter", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _anyFilter *AnyFilter // out
 
-	_anyFilter = wrapAnyFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_anyFilter = wrapAnyFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _anyFilter
 }
@@ -124,7 +126,7 @@ func classInitEveryFilterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
+func wrapEveryFilter(obj *coreglib.Object) *EveryFilter {
 	return &EveryFilter{
 		MultiFilter: MultiFilter{
 			Filter: Filter{
@@ -142,7 +144,7 @@ func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 }
 
 func marshalEveryFilter(p uintptr) (interface{}, error) {
-	return wrapEveryFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEveryFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewEveryFilter creates a new empty "every" filter.
@@ -158,13 +160,14 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 //    - everyFilter: new GtkEveryFilter.
 //
 func NewEveryFilter() *EveryFilter {
-	var _cret *C.GtkEveryFilter // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_every_filter_new()
+	_gret := girepository.MustFind("Gtk", "EveryFilter").InvokeMethod("new_EveryFilter", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _everyFilter *EveryFilter // out
 
-	_everyFilter = wrapEveryFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_everyFilter = wrapEveryFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _everyFilter
 }
@@ -179,13 +182,13 @@ type MultiFilter struct {
 	_ [0]func() // equal guard
 	Filter
 
-	*externglib.Object
+	*coreglib.Object
 	gio.ListModel
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*MultiFilter)(nil)
+	_ coreglib.Objector = (*MultiFilter)(nil)
 )
 
 // MultiFilterer describes types inherited from class MultiFilter.
@@ -193,7 +196,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type MultiFilterer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseMultiFilter() *MultiFilter
 }
 
@@ -207,7 +210,7 @@ func classInitMultiFilterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
+func wrapMultiFilter(obj *coreglib.Object) *MultiFilter {
 	return &MultiFilter{
 		Filter: Filter{
 			Object: obj,
@@ -223,7 +226,7 @@ func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 }
 
 func marshalMultiFilter(p uintptr) (interface{}, error) {
-	return wrapMultiFilter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMultiFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (self *MultiFilter) baseMultiFilter() *MultiFilter {
@@ -242,14 +245,17 @@ func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
 //    - filter: new filter to use.
 //
 func (self *MultiFilter) Append(filter *Filter) {
-	var _arg0 *C.GtkMultiFilter // out
-	var _arg1 *C.GtkFilter      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer(externglib.InternObject(filter).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(filter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(filter).Native()))
+	*(**MultiFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_multi_filter_append(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("append", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filter)
 }
@@ -265,13 +271,16 @@ func (self *MultiFilter) Append(filter *Filter) {
 //    - position of filter to remove.
 //
 func (self *MultiFilter) Remove(position uint) {
-	var _arg0 *C.GtkMultiFilter // out
-	var _arg1 C.guint           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
+	*(**MultiFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_multi_filter_remove(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("remove", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 }

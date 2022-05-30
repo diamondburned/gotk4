@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcellrendererspinner.go.
-var GTypeCellRendererSpinner = externglib.Type(C.gtk_cell_renderer_spinner_get_type())
+var GTypeCellRendererSpinner = coreglib.Type(C.gtk_cell_renderer_spinner_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellRendererSpinner, F: marshalCellRendererSpinner},
 	})
 }
@@ -42,10 +43,10 @@ var (
 	_ CellRendererer = (*CellRendererSpinner)(nil)
 )
 
-func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
+func wrapCellRendererSpinner(obj *coreglib.Object) *CellRendererSpinner {
 	return &CellRendererSpinner{
 		CellRenderer: CellRenderer{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 		},
@@ -53,7 +54,7 @@ func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
 }
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
-	return wrapCellRendererSpinner(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellRendererSpinner(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererSpinner returns a new cell renderer which will show a spinner
@@ -64,13 +65,14 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 //    - cellRendererSpinner: new CellRenderer.
 //
 func NewCellRendererSpinner() *CellRendererSpinner {
-	var _cret *C.GtkCellRenderer // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_cell_renderer_spinner_new()
+	_gret := girepository.MustFind("Gtk", "CellRendererSpinner").InvokeMethod("new_CellRendererSpinner", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererSpinner *CellRendererSpinner // out
 
-	_cellRendererSpinner = wrapCellRendererSpinner(externglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererSpinner = wrapCellRendererSpinner(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpinner
 }

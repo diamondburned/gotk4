@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkscalebuttonaccessible.go.
-var GTypeScaleButtonAccessible = externglib.Type(C.gtk_scale_button_accessible_get_type())
+var GTypeScaleButtonAccessible = coreglib.Type(C.gtk_scale_button_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeScaleButtonAccessible, F: marshalScaleButtonAccessible},
 	})
 }
@@ -33,12 +32,12 @@ type ScaleButtonAccessible struct {
 	_ [0]func() // equal guard
 	ButtonAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Value
 }
 
 var (
-	_ externglib.Objector = (*ScaleButtonAccessible)(nil)
+	_ coreglib.Objector = (*ScaleButtonAccessible)(nil)
 )
 
 func classInitScaleButtonAccessibler(gclassPtr, data C.gpointer) {
@@ -49,7 +48,7 @@ func classInitScaleButtonAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
+func wrapScaleButtonAccessible(obj *coreglib.Object) *ScaleButtonAccessible {
 	return &ScaleButtonAccessible{
 		ButtonAccessible: ButtonAccessible{
 			ContainerAccessible: ContainerAccessible{
@@ -80,5 +79,5 @@ func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 }
 
 func marshalScaleButtonAccessible(p uintptr) (interface{}, error) {
-	return wrapScaleButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapScaleButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

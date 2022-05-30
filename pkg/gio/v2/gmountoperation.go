@@ -7,28 +7,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_gio2_MountOperationClass_aborted(GMountOperation*);
-// extern void _gotk4_gio2_MountOperationClass_ask_password(GMountOperation*, char*, char*, char*, GAskPasswordFlags);
 // extern void _gotk4_gio2_MountOperationClass_ask_question(GMountOperation*, char*, char**);
-// extern void _gotk4_gio2_MountOperationClass_reply(GMountOperation*, GMountOperationResult);
 // extern void _gotk4_gio2_MountOperationClass_show_unmount_progress(GMountOperation*, gchar*, gint64, gint64);
 // extern void _gotk4_gio2_MountOperation_ConnectAborted(gpointer, guintptr);
-// extern void _gotk4_gio2_MountOperation_ConnectAskPassword(gpointer, gchar*, gchar*, gchar*, GAskPasswordFlags, guintptr);
-// extern void _gotk4_gio2_MountOperation_ConnectReply(gpointer, GMountOperationResult, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, gchar*, gint64, gint64, guintptr);
 import "C"
 
 // glib.Type values for gmountoperation.go.
-var GTypeMountOperation = externglib.Type(C.g_mount_operation_get_type())
+var GTypeMountOperation = coreglib.Type(C.g_mount_operation_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMountOperation, F: marshalMountOperation},
 	})
 }
@@ -36,14 +33,6 @@ func init() {
 // MountOperationOverrider contains methods that are overridable.
 type MountOperationOverrider interface {
 	Aborted()
-	// The function takes the following parameters:
-	//
-	//    - message
-	//    - defaultUser
-	//    - defaultDomain
-	//    - flags
-	//
-	AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
 	// AskQuestion: virtual implementation of Operation::ask-question.
 	//
 	// The function takes the following parameters:
@@ -52,13 +41,6 @@ type MountOperationOverrider interface {
 	//    - choices: array of strings for each possible choice.
 	//
 	AskQuestion(message string, choices []string)
-	// Reply emits the Operation::reply signal.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: OperationResult.
-	//
-	Reply(result MountOperationResult)
 	// The function takes the following parameters:
 	//
 	//    - message
@@ -90,11 +72,11 @@ type MountOperationOverrider interface {
 // TrueCrypt with various improvements and auditing fixes.
 type MountOperation struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*MountOperation)(nil)
+	_ coreglib.Objector = (*MountOperation)(nil)
 )
 
 func classInitMountOperationer(gclassPtr, data C.gpointer) {
@@ -113,21 +95,9 @@ func classInitMountOperationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
-	}); ok {
-		pclass.ask_password = (*[0]byte)(C._gotk4_gio2_MountOperationClass_ask_password)
-	}
-
-	if _, ok := goval.(interface {
 		AskQuestion(message string, choices []string)
 	}); ok {
 		pclass.ask_question = (*[0]byte)(C._gotk4_gio2_MountOperationClass_ask_question)
-	}
-
-	if _, ok := goval.(interface {
-		Reply(result MountOperationResult)
-	}); ok {
-		pclass.reply = (*[0]byte)(C._gotk4_gio2_MountOperationClass_reply)
 	}
 
 	if _, ok := goval.(interface {
@@ -139,35 +109,15 @@ func classInitMountOperationer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_MountOperationClass_aborted
 func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Aborted() })
 
 	iface.Aborted()
 }
 
-//export _gotk4_gio2_MountOperationClass_ask_password
-func _gotk4_gio2_MountOperationClass_ask_password(arg0 *C.GMountOperation, arg1 *C.char, arg2 *C.char, arg3 *C.char, arg4 C.GAskPasswordFlags) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
-	})
-
-	var _message string         // out
-	var _defaultUser string     // out
-	var _defaultDomain string   // out
-	var _flags AskPasswordFlags // out
-
-	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_defaultUser = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_defaultDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	_flags = AskPasswordFlags(arg4)
-
-	iface.AskPassword(_message, _defaultUser, _defaultDomain, _flags)
-}
-
 //export _gotk4_gio2_MountOperationClass_ask_question
 func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 *C.char, arg2 **C.char) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AskQuestion(message string, choices []string)
 	})
@@ -178,7 +128,7 @@ func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 
 	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	{
 		var i int
-		var z *C.char
+		var z *C.void
 		for p := arg2; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -193,23 +143,9 @@ func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 
 	iface.AskQuestion(_message, _choices)
 }
 
-//export _gotk4_gio2_MountOperationClass_reply
-func _gotk4_gio2_MountOperationClass_reply(arg0 *C.GMountOperation, arg1 C.GMountOperationResult) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Reply(result MountOperationResult)
-	})
-
-	var _result MountOperationResult // out
-
-	_result = MountOperationResult(arg1)
-
-	iface.Reply(_result)
-}
-
 //export _gotk4_gio2_MountOperationClass_show_unmount_progress
 func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.GMountOperation, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 	})
@@ -225,21 +161,21 @@ func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.GMountOperati
 	iface.ShowUnmountProgress(_message, _timeLeft, _bytesLeft)
 }
 
-func wrapMountOperation(obj *externglib.Object) *MountOperation {
+func wrapMountOperation(obj *coreglib.Object) *MountOperation {
 	return &MountOperation{
 		Object: obj,
 	}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
-	return wrapMountOperation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMountOperation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gio2_MountOperation_ConnectAborted
 func _gotk4_gio2_MountOperation_ConnectAborted(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -256,75 +192,15 @@ func _gotk4_gio2_MountOperation_ConnectAborted(arg0 C.gpointer, arg1 C.guintptr)
 //
 // Implementations of GMountOperation should handle this signal by dismissing
 // open password dialogs.
-func (op *MountOperation) ConnectAborted(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(op, "aborted", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectAborted), f)
-}
-
-//export _gotk4_gio2_MountOperation_ConnectAskPassword
-func _gotk4_gio2_MountOperation_ConnectAskPassword(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.GAskPasswordFlags, arg5 C.guintptr) {
-	var f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(message, defaultUser, defaultDomain string, flags AskPasswordFlags))
-	}
-
-	var _message string         // out
-	var _defaultUser string     // out
-	var _defaultDomain string   // out
-	var _flags AskPasswordFlags // out
-
-	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_defaultUser = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_defaultDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	_flags = AskPasswordFlags(arg4)
-
-	f(_message, _defaultUser, _defaultDomain, _flags)
-}
-
-// ConnectAskPassword is emitted when a mount operation asks the user for a
-// password.
-//
-// If the message contains a line break, the first line should be presented as a
-// heading. For example, it may be used as the primary text in a MessageDialog.
-func (op *MountOperation) ConnectAskPassword(f func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(op, "ask-password", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectAskPassword), f)
-}
-
-//export _gotk4_gio2_MountOperation_ConnectReply
-func _gotk4_gio2_MountOperation_ConnectReply(arg0 C.gpointer, arg1 C.GMountOperationResult, arg2 C.guintptr) {
-	var f func(result MountOperationResult)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(result MountOperationResult))
-	}
-
-	var _result MountOperationResult // out
-
-	_result = MountOperationResult(arg1)
-
-	f(_result)
-}
-
-// ConnectReply is emitted when the user has replied to the mount operation.
-func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(op, "reply", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectReply), f)
+func (op *MountOperation) ConnectAborted(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(op, "aborted", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectAborted), f)
 }
 
 //export _gotk4_gio2_MountOperation_ConnectShowUnmountProgress
 func _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64, arg4 C.guintptr) {
 	var f func(message string, timeLeft, bytesLeft int64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -359,8 +235,8 @@ func _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(arg0 C.gpointer, arg1
 //
 // If the message contains a line break, the first line should be presented as a
 // heading. For example, it may be used as the primary text in a MessageDialog.
-func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, timeLeft, bytesLeft int64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(op, "show-unmount-progress", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectShowUnmountProgress), f)
+func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, timeLeft, bytesLeft int64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(op, "show-unmount-progress", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectShowUnmountProgress), f)
 }
 
 // NewMountOperation creates a new mount operation.
@@ -370,13 +246,14 @@ func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, time
 //    - mountOperation: Operation.
 //
 func NewMountOperation() *MountOperation {
-	var _cret *C.GMountOperation // in
+	var _cret *C.void // in
 
-	_cret = C.g_mount_operation_new()
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("new_MountOperation", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _mountOperation *MountOperation // out
 
-	_mountOperation = wrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mountOperation = wrapMountOperation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }
@@ -389,12 +266,16 @@ func NewMountOperation() *MountOperation {
 //    - ok: TRUE if mount operation is anonymous.
 //
 func (op *MountOperation) Anonymous() bool {
-	var _arg0 *C.GMountOperation // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_mount_operation_get_anonymous(_arg0)
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_anonymous", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -406,29 +287,6 @@ func (op *MountOperation) Anonymous() bool {
 	return _ok
 }
 
-// Choice gets a choice from the mount operation.
-//
-// The function returns the following values:
-//
-//    - gint: integer containing an index of the user's choice from the choice's
-//      list, or 0.
-//
-func (op *MountOperation) Choice() int {
-	var _arg0 *C.GMountOperation // out
-	var _cret C.int              // in
-
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
-
-	_cret = C.g_mount_operation_get_choice(_arg0)
-	runtime.KeepAlive(op)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 // Domain gets the domain of the mount operation.
 //
 // The function returns the following values:
@@ -436,12 +294,16 @@ func (op *MountOperation) Choice() int {
 //    - utf8 (optional): string set to the domain.
 //
 func (op *MountOperation) Domain() string {
-	var _arg0 *C.GMountOperation // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_mount_operation_get_domain(_arg0)
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_domain", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out
@@ -461,12 +323,16 @@ func (op *MountOperation) Domain() string {
 //    - ok: TRUE if mount operation is for hidden volume.
 //
 func (op *MountOperation) IsTcryptHiddenVolume() bool {
-	var _arg0 *C.GMountOperation // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(_arg0)
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_hidden_volume", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -486,12 +352,16 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 //    - ok: TRUE if mount operation is for system volume.
 //
 func (op *MountOperation) IsTcryptSystemVolume() bool {
-	var _arg0 *C.GMountOperation // out
-	var _cret C.gboolean         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_mount_operation_get_is_tcrypt_system_volume(_arg0)
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_system_volume", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
@@ -510,12 +380,16 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 //    - utf8 (optional): string containing the password within op.
 //
 func (op *MountOperation) Password() string {
-	var _arg0 *C.GMountOperation // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_mount_operation_get_password(_arg0)
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_password", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out
@@ -527,28 +401,6 @@ func (op *MountOperation) Password() string {
 	return _utf8
 }
 
-// PasswordSave gets the state of saving passwords for the mount operation.
-//
-// The function returns the following values:
-//
-//    - passwordSave: Save flag.
-//
-func (op *MountOperation) PasswordSave() PasswordSave {
-	var _arg0 *C.GMountOperation // out
-	var _cret C.GPasswordSave    // in
-
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
-
-	_cret = C.g_mount_operation_get_password_save(_arg0)
-	runtime.KeepAlive(op)
-
-	var _passwordSave PasswordSave // out
-
-	_passwordSave = PasswordSave(_cret)
-
-	return _passwordSave
-}
-
 // Pim gets a PIM from the mount operation.
 //
 // The function returns the following values:
@@ -556,12 +408,16 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 //    - guint: veraCrypt PIM within op.
 //
 func (op *MountOperation) Pim() uint {
-	var _arg0 *C.GMountOperation // out
-	var _cret C.guint            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_mount_operation_get_pim(_arg0)
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_pim", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _guint uint // out
@@ -578,12 +434,16 @@ func (op *MountOperation) Pim() uint {
 //    - utf8 (optional): string containing the user name.
 //
 func (op *MountOperation) Username() string {
-	var _arg0 *C.GMountOperation // out
-	var _cret *C.char            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_mount_operation_get_username(_arg0)
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_username", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out
@@ -595,24 +455,6 @@ func (op *MountOperation) Username() string {
 	return _utf8
 }
 
-// Reply emits the Operation::reply signal.
-//
-// The function takes the following parameters:
-//
-//    - result: OperationResult.
-//
-func (op *MountOperation) Reply(result MountOperationResult) {
-	var _arg0 *C.GMountOperation      // out
-	var _arg1 C.GMountOperationResult // out
-
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
-	_arg1 = C.GMountOperationResult(result)
-
-	C.g_mount_operation_reply(_arg0, _arg1)
-	runtime.KeepAlive(op)
-	runtime.KeepAlive(result)
-}
-
 // SetAnonymous sets the mount operation to use an anonymous user if anonymous
 // is TRUE.
 //
@@ -621,35 +463,20 @@ func (op *MountOperation) Reply(result MountOperationResult) {
 //    - anonymous: boolean value.
 //
 func (op *MountOperation) SetAnonymous(anonymous bool) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 C.gboolean         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if anonymous {
 		_arg1 = C.TRUE
 	}
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_mount_operation_set_anonymous(_arg0, _arg1)
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_anonymous", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(anonymous)
-}
-
-// SetChoice sets a default choice for the mount operation.
-//
-// The function takes the following parameters:
-//
-//    - choice: integer.
-//
-func (op *MountOperation) SetChoice(choice int) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 C.int              // out
-
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
-	_arg1 = C.int(choice)
-
-	C.g_mount_operation_set_choice(_arg0, _arg1)
-	runtime.KeepAlive(op)
-	runtime.KeepAlive(choice)
 }
 
 // SetDomain sets the mount operation's domain.
@@ -659,16 +486,19 @@ func (op *MountOperation) SetChoice(choice int) {
 //    - domain (optional) to set.
 //
 func (op *MountOperation) SetDomain(domain string) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if domain != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(domain)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(domain)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_mount_operation_set_domain(_arg0, _arg1)
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_domain", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(domain)
 }
@@ -681,15 +511,18 @@ func (op *MountOperation) SetDomain(domain string) {
 //    - hiddenVolume: boolean value.
 //
 func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 C.gboolean         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if hiddenVolume {
 		_arg1 = C.TRUE
 	}
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_mount_operation_set_is_tcrypt_hidden_volume(_arg0, _arg1)
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_hidden_volume", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(hiddenVolume)
 }
@@ -702,15 +535,18 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 //    - systemVolume: boolean value.
 //
 func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 C.gboolean         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if systemVolume {
 		_arg1 = C.TRUE
 	}
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_system_volume", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(systemVolume)
 }
@@ -722,36 +558,21 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 //    - password (optional) to set.
 //
 func (op *MountOperation) SetPassword(password string) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if password != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(password)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(password)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_mount_operation_set_password(_arg0, _arg1)
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_password", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(password)
-}
-
-// SetPasswordSave sets the state of saving passwords for the mount operation.
-//
-// The function takes the following parameters:
-//
-//    - save: set of Save flags.
-//
-func (op *MountOperation) SetPasswordSave(save PasswordSave) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 C.GPasswordSave    // out
-
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
-	_arg1 = C.GPasswordSave(save)
-
-	C.g_mount_operation_set_password_save(_arg0, _arg1)
-	runtime.KeepAlive(op)
-	runtime.KeepAlive(save)
 }
 
 // SetPim sets the mount operation's PIM to pim.
@@ -761,13 +582,16 @@ func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 //    - pim: unsigned integer.
 //
 func (op *MountOperation) SetPim(pim uint) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 C.guint            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	_arg1 = C.guint(pim)
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_mount_operation_set_pim(_arg0, _arg1)
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_pim", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(pim)
 }
@@ -779,16 +603,19 @@ func (op *MountOperation) SetPim(pim uint) {
 //    - username (optional): input username.
 //
 func (op *MountOperation) SetUsername(username string) {
-	var _arg0 *C.GMountOperation // out
-	var _arg1 *C.char            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(externglib.InternObject(op).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if username != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(username)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(username)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_mount_operation_set_username(_arg0, _arg1)
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_username", args[:], nil)
+
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(username)
 }

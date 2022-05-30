@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkiconviewaccessible.go.
-var GTypeIconViewAccessible = externglib.Type(C.gtk_icon_view_accessible_get_type())
+var GTypeIconViewAccessible = coreglib.Type(C.gtk_icon_view_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIconViewAccessible, F: marshalIconViewAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type IconViewAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*IconViewAccessible)(nil)
+	_ coreglib.Objector = (*IconViewAccessible)(nil)
 )
 
 func classInitIconViewAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitIconViewAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapIconViewAccessible(obj *externglib.Object) *IconViewAccessible {
+func wrapIconViewAccessible(obj *coreglib.Object) *IconViewAccessible {
 	return &IconViewAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -69,5 +68,5 @@ func wrapIconViewAccessible(obj *externglib.Object) *IconViewAccessible {
 }
 
 func marshalIconViewAccessible(p uintptr) (interface{}, error) {
-	return wrapIconViewAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapIconViewAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

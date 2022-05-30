@@ -9,84 +9,42 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern GtkWidget* _gotk4_gtk3_ListBoxCreateWidgetFunc(gpointer, gpointer);
-// extern gboolean _gotk4_gtk3_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
-// extern gint _gotk4_gtk3_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// #include <glib.h>
 // extern void _gotk4_gtk3_ListBoxClass_activate_cursor_row(GtkListBox*);
-// extern void _gotk4_gtk3_ListBoxClass_move_cursor(GtkListBox*, GtkMovementStep, gint);
 // extern void _gotk4_gtk3_ListBoxClass_row_activated(GtkListBox*, GtkListBoxRow*);
 // extern void _gotk4_gtk3_ListBoxClass_row_selected(GtkListBox*, GtkListBoxRow*);
 // extern void _gotk4_gtk3_ListBoxClass_select_all(GtkListBox*);
 // extern void _gotk4_gtk3_ListBoxClass_selected_rows_changed(GtkListBox*);
 // extern void _gotk4_gtk3_ListBoxClass_toggle_cursor_row(GtkListBox*);
 // extern void _gotk4_gtk3_ListBoxClass_unselect_all(GtkListBox*);
-// extern void _gotk4_gtk3_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 // extern void _gotk4_gtk3_ListBoxRowClass_activate(GtkListBoxRow*);
 // extern void _gotk4_gtk3_ListBoxRow_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk3_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 // extern void _gotk4_gtk3_ListBox_ConnectActivateCursorRow(gpointer, guintptr);
-// extern void _gotk4_gtk3_ListBox_ConnectMoveCursor(gpointer, GtkMovementStep, gint, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectRowActivated(gpointer, GtkListBoxRow*, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectRowSelected(gpointer, GtkListBoxRow*, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectSelectAll(gpointer, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectToggleCursorRow(gpointer, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectUnselectAll(gpointer, guintptr);
-// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtklistbox.go.
 var (
-	GTypeListBox    = externglib.Type(C.gtk_list_box_get_type())
-	GTypeListBoxRow = externglib.Type(C.gtk_list_box_row_get_type())
+	GTypeListBox    = coreglib.Type(C.gtk_list_box_get_type())
+	GTypeListBoxRow = coreglib.Type(C.gtk_list_box_row_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeListBox, F: marshalListBox},
 		{T: GTypeListBoxRow, F: marshalListBoxRow},
 	})
-}
-
-// ListBoxCreateWidgetFunc: called for list boxes that are bound to a Model with
-// gtk_list_box_bind_model() for each item that gets added to the model.
-//
-// Versions of GTK+ prior to 3.18 called gtk_widget_show_all() on the rows
-// created by the GtkListBoxCreateWidgetFunc, but this forced all widgets inside
-// the row to be shown, and is no longer the case. Applications should be
-// updated to show the desired row widgets.
-type ListBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
-
-//export _gotk4_gtk3_ListBoxCreateWidgetFunc
-func _gotk4_gtk3_ListBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GtkWidget) {
-	var fn ListBoxCreateWidgetFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(ListBoxCreateWidgetFunc)
-	}
-
-	var _item *externglib.Object // out
-
-	_item = externglib.Take(unsafe.Pointer(arg1))
-
-	widget := fn(_item)
-
-	cret = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(widget).Native()))
-
-	return cret
 }
 
 // ListBoxFilterFunc will be called whenever the row changes or is added and
@@ -106,7 +64,7 @@ func _gotk4_gtk3_ListBoxFilterFunc(arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret
 
 	var _row *ListBoxRow // out
 
-	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := fn(_row)
 
@@ -135,8 +93,8 @@ func _gotk4_gtk3_ListBoxForEachFunc(arg1 *C.GtkListBox, arg2 *C.GtkListBoxRow, a
 	var _box *ListBox    // out
 	var _row *ListBoxRow // out
 
-	_box = wrapListBox(externglib.Take(unsafe.Pointer(arg1)))
-	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg2)))
+	_box = wrapListBox(coreglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg2)))
 
 	fn(_box, _row)
 }
@@ -158,8 +116,8 @@ func _gotk4_gtk3_ListBoxSortFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListBoxRow, a
 	var _row1 *ListBoxRow // out
 	var _row2 *ListBoxRow // out
 
-	_row1 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
-	_row2 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg2)))
+	_row1 = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
+	_row2 = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg2)))
 
 	gint := fn(_row1, _row2)
 
@@ -188,9 +146,9 @@ func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListB
 	var _row *ListBoxRow    // out
 	var _before *ListBoxRow // out
 
-	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
 	if arg2 != nil {
-		_before = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg2)))
+		_before = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg2)))
 	}
 
 	fn(_row, _before)
@@ -199,12 +157,6 @@ func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListB
 // ListBoxOverrider contains methods that are overridable.
 type ListBoxOverrider interface {
 	ActivateCursorRow()
-	// The function takes the following parameters:
-	//
-	//    - step
-	//    - count
-	//
-	MoveCursor(step MovementStep, count int)
 	// The function takes the following parameters:
 	//
 	RowActivated(row *ListBoxRow)
@@ -279,12 +231,6 @@ func classInitListBoxer(gclassPtr, data C.gpointer) {
 		pclass.activate_cursor_row = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_activate_cursor_row)
 	}
 
-	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int)
-	}); ok {
-		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_move_cursor)
-	}
-
 	if _, ok := goval.(interface{ RowActivated(row *ListBoxRow) }); ok {
 		pclass.row_activated = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_row_activated)
 	}
@@ -312,55 +258,39 @@ func classInitListBoxer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ListBoxClass_activate_cursor_row
 func _gotk4_gtk3_ListBoxClass_activate_cursor_row(arg0 *C.GtkListBox) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateCursorRow() })
 
 	iface.ActivateCursorRow()
 }
 
-//export _gotk4_gtk3_ListBoxClass_move_cursor
-func _gotk4_gtk3_ListBoxClass_move_cursor(arg0 *C.GtkListBox, arg1 C.GtkMovementStep, arg2 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int)
-	})
-
-	var _step MovementStep // out
-	var _count int         // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-
-	iface.MoveCursor(_step, _count)
-}
-
 //export _gotk4_gtk3_ListBoxClass_row_activated
 func _gotk4_gtk3_ListBoxClass_row_activated(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RowActivated(row *ListBoxRow) })
 
 	var _row *ListBoxRow // out
 
-	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
 
 	iface.RowActivated(_row)
 }
 
 //export _gotk4_gtk3_ListBoxClass_row_selected
 func _gotk4_gtk3_ListBoxClass_row_selected(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RowSelected(row *ListBoxRow) })
 
 	var _row *ListBoxRow // out
 
-	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
 
 	iface.RowSelected(_row)
 }
 
 //export _gotk4_gtk3_ListBoxClass_select_all
 func _gotk4_gtk3_ListBoxClass_select_all(arg0 *C.GtkListBox) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectAll() })
 
 	iface.SelectAll()
@@ -368,7 +298,7 @@ func _gotk4_gtk3_ListBoxClass_select_all(arg0 *C.GtkListBox) {
 
 //export _gotk4_gtk3_ListBoxClass_selected_rows_changed
 func _gotk4_gtk3_ListBoxClass_selected_rows_changed(arg0 *C.GtkListBox) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectedRowsChanged() })
 
 	iface.SelectedRowsChanged()
@@ -376,7 +306,7 @@ func _gotk4_gtk3_ListBoxClass_selected_rows_changed(arg0 *C.GtkListBox) {
 
 //export _gotk4_gtk3_ListBoxClass_toggle_cursor_row
 func _gotk4_gtk3_ListBoxClass_toggle_cursor_row(arg0 *C.GtkListBox) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleCursorRow() })
 
 	iface.ToggleCursorRow()
@@ -384,17 +314,17 @@ func _gotk4_gtk3_ListBoxClass_toggle_cursor_row(arg0 *C.GtkListBox) {
 
 //export _gotk4_gtk3_ListBoxClass_unselect_all
 func _gotk4_gtk3_ListBoxClass_unselect_all(arg0 *C.GtkListBox) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UnselectAll() })
 
 	iface.UnselectAll()
 }
 
-func wrapListBox(obj *externglib.Object) *ListBox {
+func wrapListBox(obj *coreglib.Object) *ListBox {
 	return &ListBox{
 		Container: Container{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -410,14 +340,14 @@ func wrapListBox(obj *externglib.Object) *ListBox {
 }
 
 func marshalListBox(p uintptr) (interface{}, error) {
-	return wrapListBox(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapListBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ListBox_ConnectActivateCursorRow
 func _gotk4_gtk3_ListBox_ConnectActivateCursorRow(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -429,41 +359,15 @@ func _gotk4_gtk3_ListBox_ConnectActivateCursorRow(arg0 C.gpointer, arg1 C.guintp
 	f()
 }
 
-func (box *ListBox) ConnectActivateCursorRow(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "activate-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectActivateCursorRow), f)
-}
-
-//export _gotk4_gtk3_ListBox_ConnectMoveCursor
-func _gotk4_gtk3_ListBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.guintptr) {
-	var f func(object MovementStep, p0 int)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object MovementStep, p0 int))
-	}
-
-	var _object MovementStep // out
-	var _p0 int              // out
-
-	_object = MovementStep(arg1)
-	_p0 = int(arg2)
-
-	f(_object, _p0)
-}
-
-func (box *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectMoveCursor), f)
+func (box *ListBox) ConnectActivateCursorRow(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "activate-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectActivateCursorRow), f)
 }
 
 //export _gotk4_gtk3_ListBox_ConnectRowActivated
 func _gotk4_gtk3_ListBox_ConnectRowActivated(arg0 C.gpointer, arg1 *C.GtkListBoxRow, arg2 C.guintptr) {
 	var f func(row *ListBoxRow)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -474,22 +378,22 @@ func _gotk4_gtk3_ListBox_ConnectRowActivated(arg0 C.gpointer, arg1 *C.GtkListBox
 
 	var _row *ListBoxRow // out
 
-	_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	_row = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
 
 	f(_row)
 }
 
 // ConnectRowActivated signal is emitted when a row has been activated by the
 // user.
-func (box *ListBox) ConnectRowActivated(f func(row *ListBoxRow)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "row-activated", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectRowActivated), f)
+func (box *ListBox) ConnectRowActivated(f func(row *ListBoxRow)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "row-activated", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectRowActivated), f)
 }
 
 //export _gotk4_gtk3_ListBox_ConnectRowSelected
 func _gotk4_gtk3_ListBox_ConnectRowSelected(arg0 C.gpointer, arg1 *C.GtkListBoxRow, arg2 C.guintptr) {
 	var f func(row *ListBoxRow)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -501,7 +405,7 @@ func _gotk4_gtk3_ListBox_ConnectRowSelected(arg0 C.gpointer, arg1 *C.GtkListBoxR
 	var _row *ListBoxRow // out
 
 	if arg1 != nil {
-		_row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+		_row = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
 	}
 
 	f(_row)
@@ -513,15 +417,15 @@ func _gotk4_gtk3_ListBox_ConnectRowSelected(arg0 C.gpointer, arg1 *C.GtkListBoxR
 // When the box is using K_SELECTION_MULTIPLE, this signal will not give you the
 // full picture of selection changes, and you should use the
 // ListBox::selected-rows-changed signal instead.
-func (box *ListBox) ConnectRowSelected(f func(row *ListBoxRow)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "row-selected", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectRowSelected), f)
+func (box *ListBox) ConnectRowSelected(f func(row *ListBoxRow)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "row-selected", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectRowSelected), f)
 }
 
 //export _gotk4_gtk3_ListBox_ConnectSelectAll
 func _gotk4_gtk3_ListBox_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -537,15 +441,15 @@ func _gotk4_gtk3_ListBox_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
 // emitted to select all children of the box, if the selection mode permits it.
 //
 // The default bindings for this signal is Ctrl-a.
-func (box *ListBox) ConnectSelectAll(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "select-all", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectSelectAll), f)
+func (box *ListBox) ConnectSelectAll(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "select-all", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectSelectAll), f)
 }
 
 //export _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged
 func _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -559,15 +463,15 @@ func _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged(arg0 C.gpointer, arg1 C.guin
 
 // ConnectSelectedRowsChanged signal is emitted when the set of selected rows
 // changes.
-func (box *ListBox) ConnectSelectedRowsChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "selected-rows-changed", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectSelectedRowsChanged), f)
+func (box *ListBox) ConnectSelectedRowsChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "selected-rows-changed", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectSelectedRowsChanged), f)
 }
 
 //export _gotk4_gtk3_ListBox_ConnectToggleCursorRow
 func _gotk4_gtk3_ListBox_ConnectToggleCursorRow(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -579,15 +483,15 @@ func _gotk4_gtk3_ListBox_ConnectToggleCursorRow(arg0 C.gpointer, arg1 C.guintptr
 	f()
 }
 
-func (box *ListBox) ConnectToggleCursorRow(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "toggle-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectToggleCursorRow), f)
+func (box *ListBox) ConnectToggleCursorRow(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "toggle-cursor-row", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectToggleCursorRow), f)
 }
 
 //export _gotk4_gtk3_ListBox_ConnectUnselectAll
 func _gotk4_gtk3_ListBox_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -604,8 +508,8 @@ func _gotk4_gtk3_ListBox_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) {
 // permits it.
 //
 // The default bindings for this signal is Ctrl-Shift-a.
-func (box *ListBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(box, "unselect-all", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectUnselectAll), f)
+func (box *ListBox) ConnectUnselectAll(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "unselect-all", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectUnselectAll), f)
 }
 
 // NewListBox creates a new ListBox container.
@@ -615,59 +519,16 @@ func (box *ListBox) ConnectUnselectAll(f func()) externglib.SignalHandle {
 //    - listBox: new ListBox.
 //
 func NewListBox() *ListBox {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_list_box_new()
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("new_ListBox", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _listBox *ListBox // out
 
-	_listBox = wrapListBox(externglib.Take(unsafe.Pointer(_cret)))
+	_listBox = wrapListBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBox
-}
-
-// BindModel binds model to box.
-//
-// If box was already bound to a model, that previous binding is destroyed.
-//
-// The contents of box are cleared and then filled with widgets that represent
-// items from model. box is updated whenever model changes. If model is NULL,
-// box is left empty.
-//
-// It is undefined to add or remove widgets directly (for example, with
-// gtk_list_box_insert() or gtk_container_add()) while box is bound to a model.
-//
-// Note that using a model is incompatible with the filtering and sorting
-// functionality in GtkListBox. When using a model, filtering and sorting should
-// be implemented by the model.
-//
-// The function takes the following parameters:
-//
-//    - model (optional) to be bound to box.
-//    - createWidgetFunc (optional): function that creates widgets for items or
-//      NULL in case you also passed NULL as model.
-//
-func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCreateWidgetFunc) {
-	var _arg0 *C.GtkListBox                // out
-	var _arg1 *C.GListModel                // out
-	var _arg2 C.GtkListBoxCreateWidgetFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
-	}
-	if createWidgetFunc != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gtk3_ListBoxCreateWidgetFunc)
-		_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
-		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.gtk_list_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(createWidgetFunc)
 }
 
 // DragHighlightRow: this is a helper function for implementing DnD onto a
@@ -681,13 +542,16 @@ func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCr
 //    - row: ListBoxRow.
 //
 func (box *ListBox) DragHighlightRow(row *ListBoxRow) {
-	var _arg0 *C.GtkListBox    // out
-	var _arg1 *C.GtkListBoxRow // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_drag_highlight_row(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("drag_highlight_row", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(row)
 }
@@ -695,11 +559,14 @@ func (box *ListBox) DragHighlightRow(row *ListBoxRow) {
 // DragUnhighlightRow: if a row has previously been highlighted via
 // gtk_list_box_drag_highlight_row() it will have the highlight removed.
 func (box *ListBox) DragUnhighlightRow() {
-	var _arg0 *C.GtkListBox // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_list_box_drag_unhighlight_row(_arg0)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("drag_unhighlight_row", args[:], nil)
+
 	runtime.KeepAlive(box)
 }
 
@@ -710,12 +577,16 @@ func (box *ListBox) DragUnhighlightRow() {
 //    - ok: TRUE if rows are activated on single click, FALSE otherwise.
 //
 func (box *ListBox) ActivateOnSingleClick() bool {
-	var _arg0 *C.GtkListBox // out
-	var _cret C.gboolean    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_activate_on_single_click", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
@@ -735,17 +606,21 @@ func (box *ListBox) ActivateOnSingleClick() bool {
 //    - adjustment: adjustment.
 //
 func (box *ListBox) Adjustment() *Adjustment {
-	var _arg0 *C.GtkListBox    // out
-	var _cret *C.GtkAdjustment // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_get_adjustment(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_adjustment", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -762,21 +637,25 @@ func (box *ListBox) Adjustment() *Adjustment {
 //    - listBoxRow (optional): child Widget or NULL.
 //
 func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
-	var _arg0 *C.GtkListBox    // out
-	var _arg1 C.gint           // out
-	var _cret *C.GtkListBoxRow // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	_arg1 = C.gint(index_)
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_list_box_get_row_at_index(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_row_at_index", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(index_)
 
 	var _listBoxRow *ListBoxRow // out
 
 	if _cret != nil {
-		_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _listBoxRow
@@ -794,21 +673,25 @@ func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 //      coordinate.
 //
 func (box *ListBox) RowAtY(y int) *ListBoxRow {
-	var _arg0 *C.GtkListBox    // out
-	var _arg1 C.gint           // out
-	var _cret *C.GtkListBoxRow // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	_arg1 = C.gint(y)
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_list_box_get_row_at_y(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_row_at_y", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(y)
 
 	var _listBoxRow *ListBoxRow // out
 
 	if _cret != nil {
-		_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _listBoxRow
@@ -824,17 +707,21 @@ func (box *ListBox) RowAtY(y int) *ListBoxRow {
 //    - listBoxRow: selected row.
 //
 func (box *ListBox) SelectedRow() *ListBoxRow {
-	var _arg0 *C.GtkListBox    // out
-	var _cret *C.GtkListBoxRow // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_get_selected_row(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_selected_row", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -847,47 +734,29 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 //      g_list_free() when done.
 //
 func (box *ListBox) SelectedRows() []*ListBoxRow {
-	var _arg0 *C.GtkListBox // out
-	var _cret *C.GList      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_get_selected_rows(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_selected_rows", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(box)
 
 	var _list []*ListBoxRow // out
 
 	_list = make([]*ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkListBoxRow)(v)
+		src := (*C.void)(v)
 		var dst *ListBoxRow // out
-		dst = wrapListBoxRow(externglib.Take(unsafe.Pointer(src)))
+		dst = wrapListBoxRow(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
 	return _list
-}
-
-// SelectionMode gets the selection mode of the listbox.
-//
-// The function returns the following values:
-//
-//    - selectionMode: SelectionMode.
-//
-func (box *ListBox) SelectionMode() SelectionMode {
-	var _arg0 *C.GtkListBox      // out
-	var _cret C.GtkSelectionMode // in
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-
-	_cret = C.gtk_list_box_get_selection_mode(_arg0)
-	runtime.KeepAlive(box)
-
-	var _selectionMode SelectionMode // out
-
-	_selectionMode = SelectionMode(_cret)
-
-	return _selectionMode
 }
 
 // Insert the child into the box at position. If a sort function is set, the
@@ -903,15 +772,19 @@ func (box *ListBox) SelectionMode() SelectionMode {
 //    - position to insert child in.
 //
 func (box *ListBox) Insert(child Widgetter, position int) {
-	var _arg0 *C.GtkListBox // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.gint        // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.gint(position)
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_list_box_insert(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("insert", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(position)
@@ -922,33 +795,42 @@ func (box *ListBox) Insert(child Widgetter, position int) {
 // instance, this would be used if the filter function just looked for a
 // specific search string and the entry with the search string has changed.
 func (box *ListBox) InvalidateFilter() {
-	var _arg0 *C.GtkListBox // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_list_box_invalidate_filter(_arg0)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("invalidate_filter", args[:], nil)
+
 	runtime.KeepAlive(box)
 }
 
 // InvalidateHeaders: update the separators for all rows. Call this when result
 // of the header function on the box is changed due to an external factor.
 func (box *ListBox) InvalidateHeaders() {
-	var _arg0 *C.GtkListBox // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_list_box_invalidate_headers(_arg0)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("invalidate_headers", args[:], nil)
+
 	runtime.KeepAlive(box)
 }
 
 // InvalidateSort: update the sorting for all rows. Call this when result of the
 // sort function on the box is changed due to an external factor.
 func (box *ListBox) InvalidateSort() {
-	var _arg0 *C.GtkListBox // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_list_box_invalidate_sort(_arg0)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("invalidate_sort", args[:], nil)
+
 	runtime.KeepAlive(box)
 }
 
@@ -961,24 +843,30 @@ func (box *ListBox) InvalidateSort() {
 //    - child to add.
 //
 func (box *ListBox) Prepend(child Widgetter) {
-	var _arg0 *C.GtkListBox // out
-	var _arg1 *C.GtkWidget  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_prepend(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("prepend", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
 }
 
 // SelectAll: select all children of box, if the selection mode allows it.
 func (box *ListBox) SelectAll() {
-	var _arg0 *C.GtkListBox // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_list_box_select_all(_arg0)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("select_all", args[:], nil)
+
 	runtime.KeepAlive(box)
 }
 
@@ -989,40 +877,20 @@ func (box *ListBox) SelectAll() {
 //    - row (optional) to select or NULL.
 //
 func (box *ListBox) SelectRow(row *ListBoxRow) {
-	var _arg0 *C.GtkListBox    // out
-	var _arg1 *C.GtkListBoxRow // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if row != nil {
-		_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 	}
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_select_row(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("select_row", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(row)
-}
-
-// SelectedForEach calls a function for each selected child.
-//
-// Note that the selection cannot be modified from within this function.
-//
-// The function takes the following parameters:
-//
-//    - fn: function to call for each selected child.
-//
-func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
-	var _arg0 *C.GtkListBox           // out
-	var _arg1 C.GtkListBoxForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxForEachFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(fn)
 }
 
 // SetActivateOnSingleClick: if single is TRUE, rows will be activated when you
@@ -1033,15 +901,18 @@ func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
 //    - single: boolean.
 //
 func (box *ListBox) SetActivateOnSingleClick(single bool) {
-	var _arg0 *C.GtkListBox // out
-	var _arg1 C.gboolean    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if single {
 		_arg1 = C.TRUE
 	}
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_set_activate_on_single_click(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_activate_on_single_click", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(single)
 }
@@ -1059,96 +930,20 @@ func (box *ListBox) SetActivateOnSingleClick(single bool) {
 //    - adjustment (optional): adjustment, or NULL.
 //
 func (box *ListBox) SetAdjustment(adjustment *Adjustment) {
-	var _arg0 *C.GtkListBox    // out
-	var _arg1 *C.GtkAdjustment // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if adjustment != nil {
-		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_set_adjustment(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_adjustment", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(adjustment)
-}
-
-// SetFilterFunc: by setting a filter function on the box one can decide
-// dynamically which of the rows to show. For instance, to implement a search
-// function on a list that filters the original list to only show the matching
-// rows.
-//
-// The filter_func will be called for each row after the call, and it will
-// continue to be called each time a row changes (via
-// gtk_list_box_row_changed()) or when gtk_list_box_invalidate_filter() is
-// called.
-//
-// Note that using a filter function is incompatible with using a model (see
-// gtk_list_box_bind_model()).
-//
-// The function takes the following parameters:
-//
-//    - filterFunc (optional): callback that lets you filter which rows to show.
-//
-func (box *ListBox) SetFilterFunc(filterFunc ListBoxFilterFunc) {
-	var _arg0 *C.GtkListBox          // out
-	var _arg1 C.GtkListBoxFilterFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	if filterFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxFilterFunc)
-		_arg2 = C.gpointer(gbox.Assign(filterFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.gtk_list_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(filterFunc)
-}
-
-// SetHeaderFunc: by setting a header function on the box one can dynamically
-// add headers in front of rows, depending on the contents of the row and its
-// position in the list. For instance, one could use it to add headers in front
-// of the first item of a new kind, in a list sorted by the kind.
-//
-// The update_header can look at the current header widget using
-// gtk_list_box_row_get_header() and either update the state of the widget as
-// needed, or set a new one using gtk_list_box_row_set_header(). If no header is
-// needed, set the header to NULL.
-//
-// Note that you may get many calls update_header to this for a particular row
-// when e.g. changing things that don’t affect the header. In this case it is
-// important for performance to not blindly replace an existing header with an
-// identical one.
-//
-// The update_header function will be called for each row after the call, and it
-// will continue to be called each time a row changes (via
-// gtk_list_box_row_changed()) and when the row before changes (either by
-// gtk_list_box_row_changed() on the previous row, or when the previous row
-// becomes a different row). It is also called for all rows when
-// gtk_list_box_invalidate_headers() is called.
-//
-// The function takes the following parameters:
-//
-//    - updateHeader (optional): callback that lets you add row headers.
-//
-func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
-	var _arg0 *C.GtkListBox                // out
-	var _arg1 C.GtkListBoxUpdateHeaderFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	if updateHeader != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxUpdateHeaderFunc)
-		_arg2 = C.gpointer(gbox.Assign(updateHeader))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.gtk_list_box_set_header_func(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(updateHeader)
 }
 
 // SetPlaceholder sets the placeholder widget that is shown in the list when it
@@ -1159,77 +954,32 @@ func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
 //    - placeholder (optional) or NULL.
 //
 func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
-	var _arg0 *C.GtkListBox // out
-	var _arg1 *C.GtkWidget  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if placeholder != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(placeholder).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(placeholder).Native()))
 	}
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_set_placeholder(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_placeholder", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(placeholder)
 }
 
-// SetSelectionMode sets how selection works in the listbox. See SelectionMode
-// for details.
-//
-// The function takes the following parameters:
-//
-//    - mode: SelectionMode.
-//
-func (box *ListBox) SetSelectionMode(mode SelectionMode) {
-	var _arg0 *C.GtkListBox      // out
-	var _arg1 C.GtkSelectionMode // out
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = C.GtkSelectionMode(mode)
-
-	C.gtk_list_box_set_selection_mode(_arg0, _arg1)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(mode)
-}
-
-// SetSortFunc: by setting a sort function on the box one can dynamically
-// reorder the rows of the list, based on the contents of the rows.
-//
-// The sort_func will be called for each row after the call, and will continue
-// to be called each time a row changes (via gtk_list_box_row_changed()) and
-// when gtk_list_box_invalidate_sort() is called.
-//
-// Note that using a sort function is incompatible with using a model (see
-// gtk_list_box_bind_model()).
-//
-// The function takes the following parameters:
-//
-//    - sortFunc (optional): sort function.
-//
-func (box *ListBox) SetSortFunc(sortFunc ListBoxSortFunc) {
-	var _arg0 *C.GtkListBox        // out
-	var _arg1 C.GtkListBoxSortFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	if sortFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxSortFunc)
-		_arg2 = C.gpointer(gbox.Assign(sortFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.gtk_list_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(sortFunc)
-}
-
 // UnselectAll: unselect all children of box, if the selection mode allows it.
 func (box *ListBox) UnselectAll() {
-	var _arg0 *C.GtkListBox // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_list_box_unselect_all(_arg0)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("unselect_all", args[:], nil)
+
 	runtime.KeepAlive(box)
 }
 
@@ -1240,13 +990,16 @@ func (box *ListBox) UnselectAll() {
 //    - row to unselected.
 //
 func (box *ListBox) UnselectRow(row *ListBoxRow) {
-	var _arg0 *C.GtkListBox    // out
-	var _arg1 *C.GtkListBoxRow // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(externglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_unselect_row(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("unselect_row", args[:], nil)
+
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(row)
 }
@@ -1260,13 +1013,13 @@ type ListBoxRow struct {
 	_ [0]func() // equal guard
 	Bin
 
-	*externglib.Object
+	*coreglib.Object
 	Actionable
 }
 
 var (
-	_ Binner              = (*ListBoxRow)(nil)
-	_ externglib.Objector = (*ListBoxRow)(nil)
+	_ Binner            = (*ListBoxRow)(nil)
+	_ coreglib.Objector = (*ListBoxRow)(nil)
 )
 
 func classInitListBoxRower(gclassPtr, data C.gpointer) {
@@ -1287,18 +1040,18 @@ func classInitListBoxRower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ListBoxRowClass_activate
 func _gotk4_gtk3_ListBoxRowClass_activate(arg0 *C.GtkListBoxRow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
 }
 
-func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
+func wrapListBoxRow(obj *coreglib.Object) *ListBoxRow {
 	return &ListBoxRow{
 		Bin: Bin{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -1314,7 +1067,7 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 		Object: obj,
 		Actionable: Actionable{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -1330,14 +1083,14 @@ func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 }
 
 func marshalListBoxRow(p uintptr) (interface{}, error) {
-	return wrapListBoxRow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapListBoxRow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ListBoxRow_ConnectActivate
 func _gotk4_gtk3_ListBoxRow_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -1354,8 +1107,8 @@ func _gotk4_gtk3_ListBoxRow_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 //
 // If you want to be notified when the user activates a row (by key or not), use
 // the ListBox::row-activated signal on the row’s parent ListBox.
-func (row *ListBoxRow) ConnectActivate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(row, "activate", false, unsafe.Pointer(C._gotk4_gtk3_ListBoxRow_ConnectActivate), f)
+func (row *ListBoxRow) ConnectActivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(row, "activate", false, unsafe.Pointer(C._gotk4_gtk3_ListBoxRow_ConnectActivate), f)
 }
 
 // NewListBoxRow creates a new ListBoxRow, to be used as a child of a ListBox.
@@ -1365,13 +1118,14 @@ func (row *ListBoxRow) ConnectActivate(f func()) externglib.SignalHandle {
 //    - listBoxRow: new ListBoxRow.
 //
 func NewListBoxRow() *ListBoxRow {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_list_box_row_new()
+	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("new_ListBoxRow", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
+	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -1392,11 +1146,14 @@ func NewListBoxRow() *ListBoxRow {
 // gtk_list_box_invalidate_sort() on any model change, but that is more
 // expensive.
 func (row *ListBoxRow) Changed() {
-	var _arg0 *C.GtkListBoxRow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBoxRow)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_list_box_row_changed(_arg0)
+	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("changed", args[:], nil)
+
 	runtime.KeepAlive(row)
 }
 
@@ -1408,12 +1165,16 @@ func (row *ListBoxRow) Changed() {
 //    - ok: TRUE if the row is activatable.
 //
 func (row *ListBoxRow) Activatable() bool {
-	var _arg0 *C.GtkListBoxRow // out
-	var _cret C.gboolean       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBoxRow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_row_get_activatable(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_activatable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(row)
 
 	var _ok bool // out
@@ -1434,12 +1195,16 @@ func (row *ListBoxRow) Activatable() bool {
 //    - widget (optional): current header, or NULL if none.
 //
 func (row *ListBoxRow) Header() Widgetter {
-	var _arg0 *C.GtkListBoxRow // out
-	var _cret *C.GtkWidget     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBoxRow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_row_get_header(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_header", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(row)
 
 	var _widget Widgetter // out
@@ -1448,8 +1213,8 @@ func (row *ListBoxRow) Header() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -1471,12 +1236,16 @@ func (row *ListBoxRow) Header() Widgetter {
 //    - gint: index of the row, or -1 if the row is not in a listbox.
 //
 func (row *ListBoxRow) Index() int {
-	var _arg0 *C.GtkListBoxRow // out
-	var _cret C.gint           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBoxRow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_row_get_index(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_index", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(row)
 
 	var _gint int // out
@@ -1493,12 +1262,16 @@ func (row *ListBoxRow) Index() int {
 //    - ok: TRUE if the row is selectable.
 //
 func (row *ListBoxRow) Selectable() bool {
-	var _arg0 *C.GtkListBoxRow // out
-	var _cret C.gboolean       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBoxRow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_row_get_selectable(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_selectable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(row)
 
 	var _ok bool // out
@@ -1518,12 +1291,16 @@ func (row *ListBoxRow) Selectable() bool {
 //    - ok: TRUE if row is selected.
 //
 func (row *ListBoxRow) IsSelected() bool {
-	var _arg0 *C.GtkListBoxRow // out
-	var _cret C.gboolean       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBoxRow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_box_row_is_selected(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("is_selected", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(row)
 
 	var _ok bool // out
@@ -1542,15 +1319,18 @@ func (row *ListBoxRow) IsSelected() bool {
 //    - activatable: TRUE to mark the row as activatable.
 //
 func (row *ListBoxRow) SetActivatable(activatable bool) {
-	var _arg0 *C.GtkListBoxRow // out
-	var _arg1 C.gboolean       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 	if activatable {
 		_arg1 = C.TRUE
 	}
+	*(**ListBoxRow)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_row_set_activatable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("set_activatable", args[:], nil)
+
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(activatable)
 }
@@ -1564,15 +1344,18 @@ func (row *ListBoxRow) SetActivatable(activatable bool) {
 //    - header (optional): header, or NULL.
 //
 func (row *ListBoxRow) SetHeader(header Widgetter) {
-	var _arg0 *C.GtkListBoxRow // out
-	var _arg1 *C.GtkWidget     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 	if header != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(header).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
 	}
+	*(**ListBoxRow)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_row_set_header(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("set_header", args[:], nil)
+
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(header)
 }
@@ -1584,15 +1367,18 @@ func (row *ListBoxRow) SetHeader(header Widgetter) {
 //    - selectable: TRUE to mark the row as selectable.
 //
 func (row *ListBoxRow) SetSelectable(selectable bool) {
-	var _arg0 *C.GtkListBoxRow // out
-	var _arg1 C.gboolean       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(externglib.InternObject(row).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 	if selectable {
 		_arg1 = C.TRUE
 	}
+	*(**ListBoxRow)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("set_selectable", args[:], nil)
+
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(selectable)
 }

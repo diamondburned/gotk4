@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_ListView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
 // glib.Type values for gtklistview.go.
-var GTypeListView = externglib.Type(C.gtk_list_view_get_type())
+var GTypeListView = coreglib.Type(C.gtk_list_view_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeListView, F: marshalListView},
 	})
 }
@@ -140,11 +141,11 @@ func classInitListViewer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapListView(obj *externglib.Object) *ListView {
+func wrapListView(obj *coreglib.Object) *ListView {
 	return &ListView{
 		ListBase: ListBase{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -170,14 +171,14 @@ func wrapListView(obj *externglib.Object) *ListView {
 }
 
 func marshalListView(p uintptr) (interface{}, error) {
-	return wrapListView(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapListView(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_ListView_ConnectActivate
 func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
 	var f func(position uint)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -198,8 +199,8 @@ func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 //
 // This allows for a convenient way to handle activation in a listview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
-func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ListView_ConnectActivate), f)
+func (self *ListView) ConnectActivate(f func(position uint)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ListView_ConnectActivate), f)
 }
 
 // NewListView creates a new GtkListView that uses the given factory for mapping
@@ -220,26 +221,31 @@ func (self *ListView) ConnectActivate(f func(position uint)) externglib.SignalHa
 //    - listView: new GtkListView using the given model and factory.
 //
 func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
-	var _arg1 *C.GtkSelectionModel  // out
-	var _arg2 *C.GtkListItemFactory // out
-	var _cret *C.GtkWidget          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(model).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 	if factory != nil {
-		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(factory).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(factory).Native()))
 	}
+	*(*SelectionModeller)(unsafe.Pointer(&args[0])) = _arg0
+	*(**ListItemFactory)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_list_view_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "ListView").InvokeMethod("new_ListView", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(factory)
 
 	var _listView *ListView // out
 
-	_listView = wrapListView(externglib.Take(unsafe.Pointer(_cret)))
+	_listView = wrapListView(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _listView
 }
@@ -252,12 +258,16 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 //    - ok: TRUE if rubberband selection is enabled.
 //
 func (self *ListView) EnableRubberband() bool {
-	var _arg0 *C.GtkListView // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ListView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListView").InvokeMethod("get_enable_rubberband", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -276,18 +286,22 @@ func (self *ListView) EnableRubberband() bool {
 //    - listItemFactory (optional): factory in use.
 //
 func (self *ListView) Factory() *ListItemFactory {
-	var _arg0 *C.GtkListView        // out
-	var _cret *C.GtkListItemFactory // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ListView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_view_get_factory(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListView").InvokeMethod("get_factory", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _listItemFactory *ListItemFactory // out
 
 	if _cret != nil {
-		_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _listItemFactory
@@ -300,18 +314,22 @@ func (self *ListView) Factory() *ListItemFactory {
 //    - selectionModel (optional): model in use.
 //
 func (self *ListView) Model() *SelectionModel {
-	var _arg0 *C.GtkListView       // out
-	var _cret *C.GtkSelectionModel // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ListView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_view_get_model(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListView").InvokeMethod("get_model", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _selectionModel *SelectionModel // out
 
 	if _cret != nil {
-		_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _selectionModel
@@ -325,12 +343,16 @@ func (self *ListView) Model() *SelectionModel {
 //    - ok: TRUE if the list box shows separators.
 //
 func (self *ListView) ShowSeparators() bool {
-	var _arg0 *C.GtkListView // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ListView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_view_get_show_separators(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListView").InvokeMethod("get_show_separators", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -350,12 +372,16 @@ func (self *ListView) ShowSeparators() bool {
 //    - ok: TRUE if rows are activated on single click.
 //
 func (self *ListView) SingleClickActivate() bool {
-	var _arg0 *C.GtkListView // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ListView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
+	_gret := girepository.MustFind("Gtk", "ListView").InvokeMethod("get_single_click_activate", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -375,15 +401,18 @@ func (self *ListView) SingleClickActivate() bool {
 //    - enableRubberband: TRUE to enable rubberband selection.
 //
 func (self *ListView) SetEnableRubberband(enableRubberband bool) {
-	var _arg0 *C.GtkListView // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if enableRubberband {
 		_arg1 = C.TRUE
 	}
+	*(**ListView)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_view_set_enable_rubberband(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListView").InvokeMethod("set_enable_rubberband", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(enableRubberband)
 }
@@ -395,15 +424,18 @@ func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 //    - factory (optional) to use or NULL for none.
 //
 func (self *ListView) SetFactory(factory *ListItemFactory) {
-	var _arg0 *C.GtkListView        // out
-	var _arg1 *C.GtkListItemFactory // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	}
+	*(**ListView)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_view_set_factory(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListView").InvokeMethod("set_factory", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(factory)
 }
@@ -417,15 +449,18 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 //    - model (optional) to use or NULL for none.
 //
 func (self *ListView) SetModel(model SelectionModeller) {
-	var _arg0 *C.GtkListView       // out
-	var _arg1 *C.GtkSelectionModel // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
+	*(**ListView)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_view_set_model(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListView").InvokeMethod("set_model", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }
@@ -438,15 +473,18 @@ func (self *ListView) SetModel(model SelectionModeller) {
 //    - showSeparators: TRUE to show separators.
 //
 func (self *ListView) SetShowSeparators(showSeparators bool) {
-	var _arg0 *C.GtkListView // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if showSeparators {
 		_arg1 = C.TRUE
 	}
+	*(**ListView)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_view_set_show_separators(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListView").InvokeMethod("set_show_separators", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(showSeparators)
 }
@@ -459,15 +497,18 @@ func (self *ListView) SetShowSeparators(showSeparators bool) {
 //    - singleClickActivate: TRUE to activate items on single click.
 //
 func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
-	var _arg0 *C.GtkListView // out
-	var _arg1 C.gboolean     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if singleClickActivate {
 		_arg1 = C.TRUE
 	}
+	*(**ListView)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_list_view_set_single_click_activate(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ListView").InvokeMethod("set_single_click_activate", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)
 }

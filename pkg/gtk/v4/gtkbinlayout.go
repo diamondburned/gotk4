@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbinlayout.go.
-var GTypeBinLayout = externglib.Type(C.gtk_bin_layout_get_type())
+var GTypeBinLayout = coreglib.Type(C.gtk_bin_layout_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBinLayout, F: marshalBinLayout},
 	})
 }
@@ -50,7 +51,7 @@ func classInitBinLayouter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBinLayout(obj *externglib.Object) *BinLayout {
+func wrapBinLayout(obj *coreglib.Object) *BinLayout {
 	return &BinLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -59,7 +60,7 @@ func wrapBinLayout(obj *externglib.Object) *BinLayout {
 }
 
 func marshalBinLayout(p uintptr) (interface{}, error) {
-	return wrapBinLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBinLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBinLayout creates a new GtkBinLayout instance.
@@ -69,13 +70,14 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 //    - binLayout: newly created GtkBinLayout.
 //
 func NewBinLayout() *BinLayout {
-	var _cret *C.GtkLayoutManager // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_bin_layout_new()
+	_gret := girepository.MustFind("Gtk", "BinLayout").InvokeMethod("new_BinLayout", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _binLayout *BinLayout // out
 
-	_binLayout = wrapBinLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_binLayout = wrapBinLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _binLayout
 }

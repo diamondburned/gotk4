@@ -40,7 +40,7 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .Marshaler }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
-		return {{ .GoName }}(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+		return {{ .GoName }}(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 	}
 	{{ end }}
 

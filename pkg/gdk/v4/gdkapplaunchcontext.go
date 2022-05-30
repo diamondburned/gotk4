@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkapplaunchcontext.go.
-var GTypeAppLaunchContext = externglib.Type(C.gdk_app_launch_context_get_type())
+var GTypeAppLaunchContext = coreglib.Type(C.gdk_app_launch_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
 	})
 }
@@ -50,10 +51,10 @@ type AppLaunchContext struct {
 }
 
 var (
-	_ externglib.Objector = (*AppLaunchContext)(nil)
+	_ coreglib.Objector = (*AppLaunchContext)(nil)
 )
 
-func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
+func wrapAppLaunchContext(obj *coreglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{
 		AppLaunchContext: gio.AppLaunchContext{
 			Object: obj,
@@ -62,7 +63,7 @@ func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
-	return wrapAppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAppLaunchContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Display gets the GdkDisplay that context is for.
@@ -72,44 +73,23 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 //    - display of context.
 //
 func (context *AppLaunchContext) Display() *Display {
-	var _arg0 *C.GdkAppLaunchContext // out
-	var _cret *C.GdkDisplay          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**AppLaunchContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_app_launch_context_get_display(_arg0)
+	_gret := girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
-}
-
-// SetDesktop sets the workspace on which applications will be launched.
-//
-// This only works when running under a window manager that supports multiple
-// workspaces, as described in the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec).
-//
-// When the workspace is not specified or desktop is set to -1, it is up to the
-// window manager to pick one, typically it will be the current workspace.
-//
-// The function takes the following parameters:
-//
-//    - desktop: number of a workspace, or -1.
-//
-func (context *AppLaunchContext) SetDesktop(desktop int) {
-	var _arg0 *C.GdkAppLaunchContext // out
-	var _arg1 C.int                  // out
-
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = C.int(desktop)
-
-	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(desktop)
 }
 
 // SetIcon sets the icon for applications that are launched with this context.
@@ -124,15 +104,18 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 //    - icon (optional) or NULL.
 //
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
-	var _arg0 *C.GdkAppLaunchContext // out
-	var _arg1 *C.GIcon               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if icon != nil {
-		_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	}
+	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
+	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_icon", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(icon)
 }
@@ -153,16 +136,19 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 //    - iconName (optional): icon name, or NULL.
 //
 func (context *AppLaunchContext) SetIconName(iconName string) {
-	var _arg0 *C.GdkAppLaunchContext // out
-	var _arg1 *C.char                // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if iconName != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_app_launch_context_set_icon_name(_arg0, _arg1)
+	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_icon_name", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(iconName)
 }
@@ -181,13 +167,16 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 //    - timestamp: timestamp.
 //
 func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
-	var _arg0 *C.GdkAppLaunchContext // out
-	var _arg1 C.guint32              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg1 = C.guint32(timestamp)
+	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)
+	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_timestamp", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(timestamp)
 }

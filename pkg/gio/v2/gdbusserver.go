@@ -3,92 +3,17 @@
 package gio
 
 import (
-	"context"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gcancel"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
-
-// NewDBusServerSync creates a new D-Bus server that listens on the first
-// address in address that works.
-//
-// Once constructed, you can use g_dbus_server_get_client_address() to get a
-// D-Bus address string that clients can use to connect.
-//
-// To have control over the available authentication mechanisms and the users
-// that are authorized to connect, it is strongly recommended to provide a
-// non-NULL BusAuthObserver.
-//
-// Connect to the BusServer::new-connection signal to handle incoming
-// connections.
-//
-// The returned BusServer isn't active - you have to start it with
-// g_dbus_server_start().
-//
-// BusServer is used in this [example][gdbus-peer-to-peer].
-//
-// This is a synchronous failable constructor. There is currently no
-// asynchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - address d-Bus address.
-//    - flags flags from the BusServerFlags enumeration.
-//    - guid d-Bus GUID.
-//    - observer (optional) or NULL.
-//
-// The function returns the following values:
-//
-//    - dBusServer or NULL if error is set. Free with g_object_unref().
-//
-func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlags, guid string, observer *DBusAuthObserver) (*DBusServer, error) {
-	var _arg5 *C.GCancellable      // out
-	var _arg1 *C.gchar             // out
-	var _arg2 C.GDBusServerFlags   // out
-	var _arg3 *C.gchar             // out
-	var _arg4 *C.GDBusAuthObserver // out
-	var _cret *C.GDBusServer       // in
-	var _cerr *C.GError            // in
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GDBusServerFlags(flags)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
-	defer C.free(unsafe.Pointer(_arg3))
-	if observer != nil {
-		_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
-	}
-
-	_cret = C.g_dbus_server_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(address)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(guid)
-	runtime.KeepAlive(observer)
-
-	var _dBusServer *DBusServer // out
-	var _goerr error            // out
-
-	_dBusServer = wrapDBusServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _dBusServer, _goerr
-}
 
 // ClientAddress gets a D-Bus address
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses) string
@@ -99,12 +24,16 @@ func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlag
 //    - utf8 d-Bus address string. Do not free, the string is owned by server.
 //
 func (server *DBusServer) ClientAddress() string {
-	var _arg0 *C.GDBusServer // out
-	var _cret *C.gchar       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
+	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_server_get_client_address(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_client_address", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(server)
 
 	var _utf8 string // out
@@ -114,28 +43,6 @@ func (server *DBusServer) ClientAddress() string {
 	return _utf8
 }
 
-// Flags gets the flags for server.
-//
-// The function returns the following values:
-//
-//    - dBusServerFlags: set of flags from the BusServerFlags enumeration.
-//
-func (server *DBusServer) Flags() DBusServerFlags {
-	var _arg0 *C.GDBusServer     // out
-	var _cret C.GDBusServerFlags // in
-
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
-
-	_cret = C.g_dbus_server_get_flags(_arg0)
-	runtime.KeepAlive(server)
-
-	var _dBusServerFlags DBusServerFlags // out
-
-	_dBusServerFlags = DBusServerFlags(_cret)
-
-	return _dBusServerFlags
-}
-
 // GUID gets the GUID for server.
 //
 // The function returns the following values:
@@ -143,12 +50,16 @@ func (server *DBusServer) Flags() DBusServerFlags {
 //    - utf8 d-Bus GUID. Do not free this string, it is owned by server.
 //
 func (server *DBusServer) GUID() string {
-	var _arg0 *C.GDBusServer // out
-	var _cret *C.gchar       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
+	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_server_get_guid(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_guid", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(server)
 
 	var _utf8 string // out
@@ -165,12 +76,16 @@ func (server *DBusServer) GUID() string {
 //    - ok: TRUE if server is active, FALSE otherwise.
 //
 func (server *DBusServer) IsActive() bool {
-	var _arg0 *C.GDBusServer // out
-	var _cret C.gboolean     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
+	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_server_is_active(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("is_active", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(server)
 
 	var _ok bool // out
@@ -184,20 +99,26 @@ func (server *DBusServer) IsActive() bool {
 
 // Start starts server.
 func (server *DBusServer) Start() {
-	var _arg0 *C.GDBusServer // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
+	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_server_start(_arg0)
+	girepository.MustFind("Gio", "DBusServer").InvokeMethod("start", args[:], nil)
+
 	runtime.KeepAlive(server)
 }
 
 // Stop stops server.
 func (server *DBusServer) Stop() {
-	var _arg0 *C.GDBusServer // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GDBusServer)(unsafe.Pointer(externglib.InternObject(server).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
+	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_dbus_server_stop(_arg0)
+	girepository.MustFind("Gio", "DBusServer").InvokeMethod("stop", args[:], nil)
+
 	runtime.KeepAlive(server)
 }

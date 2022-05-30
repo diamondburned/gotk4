@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdbusobjectproxy.go.
-var GTypeDBusObjectProxy = externglib.Type(C.g_dbus_object_proxy_get_type())
+var GTypeDBusObjectProxy = coreglib.Type(C.g_dbus_object_proxy_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDBusObjectProxy, F: marshalDBusObjectProxy},
 	})
 }
@@ -32,13 +33,13 @@ type DBusObjectProxyOverrider interface {
 // yourself - typically BusObjectManagerClient is used to obtain it.
 type DBusObjectProxy struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	DBusObject
 }
 
 var (
-	_ externglib.Objector = (*DBusObjectProxy)(nil)
+	_ coreglib.Objector = (*DBusObjectProxy)(nil)
 )
 
 func classInitDBusObjectProxier(gclassPtr, data C.gpointer) {
@@ -49,7 +50,7 @@ func classInitDBusObjectProxier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
+func wrapDBusObjectProxy(obj *coreglib.Object) *DBusObjectProxy {
 	return &DBusObjectProxy{
 		Object: obj,
 		DBusObject: DBusObject{
@@ -59,7 +60,7 @@ func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 }
 
 func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
-	return wrapDBusObjectProxy(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusObjectProxy(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
@@ -75,21 +76,26 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 //    - dBusObjectProxy: new BusObjectProxy.
 //
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
-	var _arg1 *C.GDBusConnection  // out
-	var _arg2 *C.gchar            // out
-	var _cret *C.GDBusObjectProxy // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("new_DBusObjectProxy", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObjectProxy *DBusObjectProxy // out
 
-	_dBusObjectProxy = wrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectProxy = wrapDBusObjectProxy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectProxy
 }
@@ -101,17 +107,21 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 //    - dBusConnection Do not free, the object is owned by proxy.
 //
 func (proxy *DBusObjectProxy) Connection() *DBusConnection {
-	var _arg0 *C.GDBusObjectProxy // out
-	var _cret *C.GDBusConnection  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(externglib.InternObject(proxy).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	*(**DBusObjectProxy)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_object_proxy_get_connection(_arg0)
+	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("get_connection", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(proxy)
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }

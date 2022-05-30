@@ -8,24 +8,23 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(GtkAppChooserButton*, gchar*);
 // extern void _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(gpointer, gchar*, guintptr);
 import "C"
 
 // glib.Type values for gtkappchooserbutton.go.
-var GTypeAppChooserButton = externglib.Type(C.gtk_app_chooser_button_get_type())
+var GTypeAppChooserButton = coreglib.Type(C.gtk_app_chooser_button_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAppChooserButton, F: marshalAppChooserButton},
 	})
 }
@@ -62,13 +61,13 @@ type AppChooserButton struct {
 	_ [0]func() // equal guard
 	ComboBox
 
-	*externglib.Object
+	*coreglib.Object
 	AppChooser
 }
 
 var (
-	_ externglib.Objector = (*AppChooserButton)(nil)
-	_ Binner              = (*AppChooserButton)(nil)
+	_ coreglib.Objector = (*AppChooserButton)(nil)
+	_ Binner            = (*AppChooserButton)(nil)
 )
 
 func classInitAppChooserButtonner(gclassPtr, data C.gpointer) {
@@ -89,7 +88,7 @@ func classInitAppChooserButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AppChooserButtonClass_custom_item_activated
 func _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(arg0 *C.GtkAppChooserButton, arg1 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CustomItemActivated(itemName string) })
 
 	var _itemName string // out
@@ -99,13 +98,13 @@ func _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(arg0 *C.GtkAppChoos
 	iface.CustomItemActivated(_itemName)
 }
 
-func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
+func wrapAppChooserButton(obj *coreglib.Object) *AppChooserButton {
 	return &AppChooserButton{
 		ComboBox: ComboBox{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -121,7 +120,7 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 			Object: obj,
 			CellEditable: CellEditable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -140,7 +139,7 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 		Object: obj,
 		AppChooser: AppChooser{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -156,14 +155,14 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 }
 
 func marshalAppChooserButton(p uintptr) (interface{}, error) {
-	return wrapAppChooserButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAppChooserButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated
 func _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(itemName string)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -182,8 +181,8 @@ func _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, ar
 // ConnectCustomItemActivated is emitted when a custom item, previously added
 // with gtk_app_chooser_button_append_custom_item(), is activated from the
 // dropdown menu.
-func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "custom-item-activated", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated), f)
+func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "custom-item-activated", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated), f)
 }
 
 // NewAppChooserButton creates a new AppChooserButton for applications that can
@@ -198,18 +197,22 @@ func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)
 //    - appChooserButton: newly created AppChooserButton.
 //
 func NewAppChooserButton(contentType string) *AppChooserButton {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_button_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("new_AppChooserButton", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(contentType)
 
 	var _appChooserButton *AppChooserButton // out
 
-	_appChooserButton = wrapAppChooserButton(externglib.Take(unsafe.Pointer(_cret)))
+	_appChooserButton = wrapAppChooserButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserButton
 }
@@ -227,19 +230,24 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 //    - icon for the custom item.
 //
 func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Iconner) {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _arg1 *C.gchar               // out
-	var _arg2 *C.gchar               // out
-	var _arg3 *C.GIcon               // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**AppChooserButton)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("append_custom_item", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
@@ -249,11 +257,14 @@ func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Icon
 // AppendSeparator appends a separator to the list of applications that is shown
 // in the popup.
 func (self *AppChooserButton) AppendSeparator() {
-	var _arg0 *C.GtkAppChooserButton // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_app_chooser_button_append_separator(_arg0)
+	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("append_separator", args[:], nil)
+
 	runtime.KeepAlive(self)
 }
 
@@ -265,12 +276,16 @@ func (self *AppChooserButton) AppendSeparator() {
 //      which case a default text is displayed.
 //
 func (self *AppChooserButton) Heading() string {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _cret *C.gchar               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("get_heading", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -290,12 +305,16 @@ func (self *AppChooserButton) Heading() string {
 //    - ok: value of AppChooserButton:show-default-item.
 //
 func (self *AppChooserButton) ShowDefaultItem() bool {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _cret C.gboolean             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("get_show_default_item", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -315,12 +334,16 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 //    - ok: value of AppChooserButton:show-dialog-item.
 //
 func (self *AppChooserButton) ShowDialogItem() bool {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _cret C.gboolean             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("get_show_dialog_item", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -342,14 +365,17 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 //    - name of the custom item.
 //
 func (self *AppChooserButton) SetActiveCustomItem(name string) {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _arg1 *C.gchar               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**AppChooserButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_button_set_active_custom_item(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_active_custom_item", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
 }
@@ -362,14 +388,17 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 //    - heading: string containing Pango markup.
 //
 func (self *AppChooserButton) SetHeading(heading string) {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _arg1 *C.gchar               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(heading)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**AppChooserButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_button_set_heading(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_heading", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(heading)
 }
@@ -382,15 +411,18 @@ func (self *AppChooserButton) SetHeading(heading string) {
 //    - setting: new value for AppChooserButton:show-default-item.
 //
 func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _arg1 C.gboolean             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**AppChooserButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_button_set_show_default_item(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_show_default_item", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -403,15 +435,18 @@ func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 //    - setting: new value for AppChooserButton:show-dialog-item.
 //
 func (self *AppChooserButton) SetShowDialogItem(setting bool) {
-	var _arg0 *C.GtkAppChooserButton // out
-	var _arg1 C.gboolean             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**AppChooserButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_show_dialog_item", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }

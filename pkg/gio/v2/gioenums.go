@@ -7,98 +7,99 @@ import (
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gioenums.go.
 var (
-	GTypeBusType                      = externglib.Type(C.g_bus_type_get_type())
-	GTypeConverterResult              = externglib.Type(C.g_converter_result_get_type())
-	GTypeCredentialsType              = externglib.Type(C.g_credentials_type_get_type())
-	GTypeDBusError                    = externglib.Type(C.g_dbus_error_get_type())
-	GTypeDBusMessageByteOrder         = externglib.Type(C.g_dbus_message_byte_order_get_type())
-	GTypeDBusMessageHeaderField       = externglib.Type(C.g_dbus_message_header_field_get_type())
-	GTypeDBusMessageType              = externglib.Type(C.g_dbus_message_type_get_type())
-	GTypeDataStreamByteOrder          = externglib.Type(C.g_data_stream_byte_order_get_type())
-	GTypeDataStreamNewlineType        = externglib.Type(C.g_data_stream_newline_type_get_type())
-	GTypeDriveStartStopType           = externglib.Type(C.g_drive_start_stop_type_get_type())
-	GTypeEmblemOrigin                 = externglib.Type(C.g_emblem_origin_get_type())
-	GTypeFileAttributeStatus          = externglib.Type(C.g_file_attribute_status_get_type())
-	GTypeFileAttributeType            = externglib.Type(C.g_file_attribute_type_get_type())
-	GTypeFileMonitorEvent             = externglib.Type(C.g_file_monitor_event_get_type())
-	GTypeFileType                     = externglib.Type(C.g_file_type_get_type())
-	GTypeFilesystemPreviewType        = externglib.Type(C.g_filesystem_preview_type_get_type())
-	GTypeIOErrorEnum                  = externglib.Type(C.g_io_error_enum_get_type())
-	GTypeIOModuleScopeFlags           = externglib.Type(C.g_io_module_scope_flags_get_type())
-	GTypeMemoryMonitorWarningLevel    = externglib.Type(C.g_memory_monitor_warning_level_get_type())
-	GTypeMountOperationResult         = externglib.Type(C.g_mount_operation_result_get_type())
-	GTypeNetworkConnectivity          = externglib.Type(C.g_network_connectivity_get_type())
-	GTypeNotificationPriority         = externglib.Type(C.g_notification_priority_get_type())
-	GTypePasswordSave                 = externglib.Type(C.g_password_save_get_type())
-	GTypePollableReturn               = externglib.Type(C.g_pollable_return_get_type())
-	GTypeResolverError                = externglib.Type(C.g_resolver_error_get_type())
-	GTypeResolverRecordType           = externglib.Type(C.g_resolver_record_type_get_type())
-	GTypeResourceError                = externglib.Type(C.g_resource_error_get_type())
-	GTypeSocketClientEvent            = externglib.Type(C.g_socket_client_event_get_type())
-	GTypeSocketFamily                 = externglib.Type(C.g_socket_family_get_type())
-	GTypeSocketListenerEvent          = externglib.Type(C.g_socket_listener_event_get_type())
-	GTypeSocketProtocol               = externglib.Type(C.g_socket_protocol_get_type())
-	GTypeSocketType                   = externglib.Type(C.g_socket_type_get_type())
-	GTypeTLSAuthenticationMode        = externglib.Type(C.g_tls_authentication_mode_get_type())
-	GTypeTLSCertificateRequestFlags   = externglib.Type(C.g_tls_certificate_request_flags_get_type())
-	GTypeTLSChannelBindingError       = externglib.Type(C.g_tls_channel_binding_error_get_type())
-	GTypeTLSChannelBindingType        = externglib.Type(C.g_tls_channel_binding_type_get_type())
-	GTypeTLSDatabaseLookupFlags       = externglib.Type(C.g_tls_database_lookup_flags_get_type())
-	GTypeTLSError                     = externglib.Type(C.g_tls_error_get_type())
-	GTypeTLSInteractionResult         = externglib.Type(C.g_tls_interaction_result_get_type())
-	GTypeTLSRehandshakeMode           = externglib.Type(C.g_tls_rehandshake_mode_get_type())
-	GTypeZlibCompressorFormat         = externglib.Type(C.g_zlib_compressor_format_get_type())
-	GTypeAppInfoCreateFlags           = externglib.Type(C.g_app_info_create_flags_get_type())
-	GTypeApplicationFlags             = externglib.Type(C.g_application_flags_get_type())
-	GTypeAskPasswordFlags             = externglib.Type(C.g_ask_password_flags_get_type())
-	GTypeBusNameOwnerFlags            = externglib.Type(C.g_bus_name_owner_flags_get_type())
-	GTypeBusNameWatcherFlags          = externglib.Type(C.g_bus_name_watcher_flags_get_type())
-	GTypeConverterFlags               = externglib.Type(C.g_converter_flags_get_type())
-	GTypeDBusCallFlags                = externglib.Type(C.g_dbus_call_flags_get_type())
-	GTypeDBusCapabilityFlags          = externglib.Type(C.g_dbus_capability_flags_get_type())
-	GTypeDBusConnectionFlags          = externglib.Type(C.g_dbus_connection_flags_get_type())
-	GTypeDBusInterfaceSkeletonFlags   = externglib.Type(C.g_dbus_interface_skeleton_flags_get_type())
-	GTypeDBusMessageFlags             = externglib.Type(C.g_dbus_message_flags_get_type())
-	GTypeDBusObjectManagerClientFlags = externglib.Type(C.g_dbus_object_manager_client_flags_get_type())
-	GTypeDBusPropertyInfoFlags        = externglib.Type(C.g_dbus_property_info_flags_get_type())
-	GTypeDBusProxyFlags               = externglib.Type(C.g_dbus_proxy_flags_get_type())
-	GTypeDBusSendMessageFlags         = externglib.Type(C.g_dbus_send_message_flags_get_type())
-	GTypeDBusServerFlags              = externglib.Type(C.g_dbus_server_flags_get_type())
-	GTypeDBusSignalFlags              = externglib.Type(C.g_dbus_signal_flags_get_type())
-	GTypeDBusSubtreeFlags             = externglib.Type(C.g_dbus_subtree_flags_get_type())
-	GTypeDriveStartFlags              = externglib.Type(C.g_drive_start_flags_get_type())
-	GTypeFileAttributeInfoFlags       = externglib.Type(C.g_file_attribute_info_flags_get_type())
-	GTypeFileCopyFlags                = externglib.Type(C.g_file_copy_flags_get_type())
-	GTypeFileCreateFlags              = externglib.Type(C.g_file_create_flags_get_type())
-	GTypeFileMeasureFlags             = externglib.Type(C.g_file_measure_flags_get_type())
-	GTypeFileMonitorFlags             = externglib.Type(C.g_file_monitor_flags_get_type())
-	GTypeFileQueryInfoFlags           = externglib.Type(C.g_file_query_info_flags_get_type())
-	GTypeIOStreamSpliceFlags          = externglib.Type(C.g_io_stream_splice_flags_get_type())
-	GTypeMountMountFlags              = externglib.Type(C.g_mount_mount_flags_get_type())
-	GTypeMountUnmountFlags            = externglib.Type(C.g_mount_unmount_flags_get_type())
-	GTypeOutputStreamSpliceFlags      = externglib.Type(C.g_output_stream_splice_flags_get_type())
-	GTypeResourceFlags                = externglib.Type(C.g_resource_flags_get_type())
-	GTypeResourceLookupFlags          = externglib.Type(C.g_resource_lookup_flags_get_type())
-	GTypeSocketMsgFlags               = externglib.Type(C.g_socket_msg_flags_get_type())
-	GTypeSubprocessFlags              = externglib.Type(C.g_subprocess_flags_get_type())
-	GTypeTestDBusFlags                = externglib.Type(C.g_test_dbus_flags_get_type())
-	GTypeTLSCertificateFlags          = externglib.Type(C.g_tls_certificate_flags_get_type())
-	GTypeTLSDatabaseVerifyFlags       = externglib.Type(C.g_tls_database_verify_flags_get_type())
-	GTypeTLSPasswordFlags             = externglib.Type(C.g_tls_password_flags_get_type())
+	GTypeBusType                      = coreglib.Type(C.g_bus_type_get_type())
+	GTypeConverterResult              = coreglib.Type(C.g_converter_result_get_type())
+	GTypeCredentialsType              = coreglib.Type(C.g_credentials_type_get_type())
+	GTypeDBusError                    = coreglib.Type(C.g_dbus_error_get_type())
+	GTypeDBusMessageByteOrder         = coreglib.Type(C.g_dbus_message_byte_order_get_type())
+	GTypeDBusMessageHeaderField       = coreglib.Type(C.g_dbus_message_header_field_get_type())
+	GTypeDBusMessageType              = coreglib.Type(C.g_dbus_message_type_get_type())
+	GTypeDataStreamByteOrder          = coreglib.Type(C.g_data_stream_byte_order_get_type())
+	GTypeDataStreamNewlineType        = coreglib.Type(C.g_data_stream_newline_type_get_type())
+	GTypeDriveStartStopType           = coreglib.Type(C.g_drive_start_stop_type_get_type())
+	GTypeEmblemOrigin                 = coreglib.Type(C.g_emblem_origin_get_type())
+	GTypeFileAttributeStatus          = coreglib.Type(C.g_file_attribute_status_get_type())
+	GTypeFileAttributeType            = coreglib.Type(C.g_file_attribute_type_get_type())
+	GTypeFileMonitorEvent             = coreglib.Type(C.g_file_monitor_event_get_type())
+	GTypeFileType                     = coreglib.Type(C.g_file_type_get_type())
+	GTypeFilesystemPreviewType        = coreglib.Type(C.g_filesystem_preview_type_get_type())
+	GTypeIOErrorEnum                  = coreglib.Type(C.g_io_error_enum_get_type())
+	GTypeIOModuleScopeFlags           = coreglib.Type(C.g_io_module_scope_flags_get_type())
+	GTypeMemoryMonitorWarningLevel    = coreglib.Type(C.g_memory_monitor_warning_level_get_type())
+	GTypeMountOperationResult         = coreglib.Type(C.g_mount_operation_result_get_type())
+	GTypeNetworkConnectivity          = coreglib.Type(C.g_network_connectivity_get_type())
+	GTypeNotificationPriority         = coreglib.Type(C.g_notification_priority_get_type())
+	GTypePasswordSave                 = coreglib.Type(C.g_password_save_get_type())
+	GTypePollableReturn               = coreglib.Type(C.g_pollable_return_get_type())
+	GTypeResolverError                = coreglib.Type(C.g_resolver_error_get_type())
+	GTypeResolverRecordType           = coreglib.Type(C.g_resolver_record_type_get_type())
+	GTypeResourceError                = coreglib.Type(C.g_resource_error_get_type())
+	GTypeSocketClientEvent            = coreglib.Type(C.g_socket_client_event_get_type())
+	GTypeSocketFamily                 = coreglib.Type(C.g_socket_family_get_type())
+	GTypeSocketListenerEvent          = coreglib.Type(C.g_socket_listener_event_get_type())
+	GTypeSocketProtocol               = coreglib.Type(C.g_socket_protocol_get_type())
+	GTypeSocketType                   = coreglib.Type(C.g_socket_type_get_type())
+	GTypeTLSAuthenticationMode        = coreglib.Type(C.g_tls_authentication_mode_get_type())
+	GTypeTLSCertificateRequestFlags   = coreglib.Type(C.g_tls_certificate_request_flags_get_type())
+	GTypeTLSChannelBindingError       = coreglib.Type(C.g_tls_channel_binding_error_get_type())
+	GTypeTLSChannelBindingType        = coreglib.Type(C.g_tls_channel_binding_type_get_type())
+	GTypeTLSDatabaseLookupFlags       = coreglib.Type(C.g_tls_database_lookup_flags_get_type())
+	GTypeTLSError                     = coreglib.Type(C.g_tls_error_get_type())
+	GTypeTLSInteractionResult         = coreglib.Type(C.g_tls_interaction_result_get_type())
+	GTypeTLSRehandshakeMode           = coreglib.Type(C.g_tls_rehandshake_mode_get_type())
+	GTypeZlibCompressorFormat         = coreglib.Type(C.g_zlib_compressor_format_get_type())
+	GTypeAppInfoCreateFlags           = coreglib.Type(C.g_app_info_create_flags_get_type())
+	GTypeApplicationFlags             = coreglib.Type(C.g_application_flags_get_type())
+	GTypeAskPasswordFlags             = coreglib.Type(C.g_ask_password_flags_get_type())
+	GTypeBusNameOwnerFlags            = coreglib.Type(C.g_bus_name_owner_flags_get_type())
+	GTypeBusNameWatcherFlags          = coreglib.Type(C.g_bus_name_watcher_flags_get_type())
+	GTypeConverterFlags               = coreglib.Type(C.g_converter_flags_get_type())
+	GTypeDBusCallFlags                = coreglib.Type(C.g_dbus_call_flags_get_type())
+	GTypeDBusCapabilityFlags          = coreglib.Type(C.g_dbus_capability_flags_get_type())
+	GTypeDBusConnectionFlags          = coreglib.Type(C.g_dbus_connection_flags_get_type())
+	GTypeDBusInterfaceSkeletonFlags   = coreglib.Type(C.g_dbus_interface_skeleton_flags_get_type())
+	GTypeDBusMessageFlags             = coreglib.Type(C.g_dbus_message_flags_get_type())
+	GTypeDBusObjectManagerClientFlags = coreglib.Type(C.g_dbus_object_manager_client_flags_get_type())
+	GTypeDBusPropertyInfoFlags        = coreglib.Type(C.g_dbus_property_info_flags_get_type())
+	GTypeDBusProxyFlags               = coreglib.Type(C.g_dbus_proxy_flags_get_type())
+	GTypeDBusSendMessageFlags         = coreglib.Type(C.g_dbus_send_message_flags_get_type())
+	GTypeDBusServerFlags              = coreglib.Type(C.g_dbus_server_flags_get_type())
+	GTypeDBusSignalFlags              = coreglib.Type(C.g_dbus_signal_flags_get_type())
+	GTypeDBusSubtreeFlags             = coreglib.Type(C.g_dbus_subtree_flags_get_type())
+	GTypeDriveStartFlags              = coreglib.Type(C.g_drive_start_flags_get_type())
+	GTypeFileAttributeInfoFlags       = coreglib.Type(C.g_file_attribute_info_flags_get_type())
+	GTypeFileCopyFlags                = coreglib.Type(C.g_file_copy_flags_get_type())
+	GTypeFileCreateFlags              = coreglib.Type(C.g_file_create_flags_get_type())
+	GTypeFileMeasureFlags             = coreglib.Type(C.g_file_measure_flags_get_type())
+	GTypeFileMonitorFlags             = coreglib.Type(C.g_file_monitor_flags_get_type())
+	GTypeFileQueryInfoFlags           = coreglib.Type(C.g_file_query_info_flags_get_type())
+	GTypeIOStreamSpliceFlags          = coreglib.Type(C.g_io_stream_splice_flags_get_type())
+	GTypeMountMountFlags              = coreglib.Type(C.g_mount_mount_flags_get_type())
+	GTypeMountUnmountFlags            = coreglib.Type(C.g_mount_unmount_flags_get_type())
+	GTypeOutputStreamSpliceFlags      = coreglib.Type(C.g_output_stream_splice_flags_get_type())
+	GTypeResourceFlags                = coreglib.Type(C.g_resource_flags_get_type())
+	GTypeResourceLookupFlags          = coreglib.Type(C.g_resource_lookup_flags_get_type())
+	GTypeSocketMsgFlags               = coreglib.Type(C.g_socket_msg_flags_get_type())
+	GTypeSubprocessFlags              = coreglib.Type(C.g_subprocess_flags_get_type())
+	GTypeTestDBusFlags                = coreglib.Type(C.g_test_dbus_flags_get_type())
+	GTypeTLSCertificateFlags          = coreglib.Type(C.g_tls_certificate_flags_get_type())
+	GTypeTLSDatabaseVerifyFlags       = coreglib.Type(C.g_tls_database_verify_flags_get_type())
+	GTypeTLSPasswordFlags             = coreglib.Type(C.g_tls_password_flags_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBusType, F: marshalBusType},
 		{T: GTypeConverterResult, F: marshalConverterResult},
 		{T: GTypeCredentialsType, F: marshalCredentialsType},
@@ -196,7 +197,7 @@ const (
 )
 
 func marshalBusType(p uintptr) (interface{}, error) {
-	return BusType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return BusType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BusType.
@@ -230,7 +231,7 @@ const (
 )
 
 func marshalConverterResult(p uintptr) (interface{}, error) {
-	return ConverterResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ConverterResult(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ConverterResult.
@@ -276,7 +277,7 @@ const (
 )
 
 func marshalCredentialsType(p uintptr) (interface{}, error) {
-	return CredentialsType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return CredentialsType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CredentialsType.
@@ -434,7 +435,7 @@ const (
 )
 
 func marshalDBusError(p uintptr) (interface{}, error) {
-	return DBusError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DBusError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusError.
@@ -547,7 +548,7 @@ const (
 )
 
 func marshalDBusMessageByteOrder(p uintptr) (interface{}, error) {
-	return DBusMessageByteOrder(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DBusMessageByteOrder(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusMessageByteOrder.
@@ -592,7 +593,7 @@ const (
 )
 
 func marshalDBusMessageHeaderField(p uintptr) (interface{}, error) {
-	return DBusMessageHeaderField(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DBusMessageHeaderField(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusMessageHeaderField.
@@ -640,7 +641,7 @@ const (
 )
 
 func marshalDBusMessageType(p uintptr) (interface{}, error) {
-	return DBusMessageType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DBusMessageType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DBusMessageType.
@@ -676,7 +677,7 @@ const (
 )
 
 func marshalDataStreamByteOrder(p uintptr) (interface{}, error) {
-	return DataStreamByteOrder(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DataStreamByteOrder(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DataStreamByteOrder.
@@ -712,7 +713,7 @@ const (
 )
 
 func marshalDataStreamNewlineType(p uintptr) (interface{}, error) {
-	return DataStreamNewlineType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DataStreamNewlineType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DataStreamNewlineType.
@@ -754,7 +755,7 @@ const (
 )
 
 func marshalDriveStartStopType(p uintptr) (interface{}, error) {
-	return DriveStartStopType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DriveStartStopType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DriveStartStopType.
@@ -793,7 +794,7 @@ const (
 )
 
 func marshalEmblemOrigin(p uintptr) (interface{}, error) {
-	return EmblemOrigin(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return EmblemOrigin(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for EmblemOrigin.
@@ -826,7 +827,7 @@ const (
 )
 
 func marshalFileAttributeStatus(p uintptr) (interface{}, error) {
-	return FileAttributeStatus(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return FileAttributeStatus(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileAttributeStatus.
@@ -870,7 +871,7 @@ const (
 )
 
 func marshalFileAttributeType(p uintptr) (interface{}, error) {
-	return FileAttributeType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return FileAttributeType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileAttributeType.
@@ -937,7 +938,7 @@ const (
 )
 
 func marshalFileMonitorEvent(p uintptr) (interface{}, error) {
-	return FileMonitorEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return FileMonitorEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileMonitorEvent.
@@ -1002,7 +1003,7 @@ const (
 )
 
 func marshalFileType(p uintptr) (interface{}, error) {
-	return FileType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return FileType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FileType.
@@ -1044,7 +1045,7 @@ const (
 )
 
 func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
-	return FilesystemPreviewType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return FilesystemPreviewType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for FilesystemPreviewType.
@@ -1195,7 +1196,7 @@ const (
 )
 
 func marshalIOErrorEnum(p uintptr) (interface{}, error) {
-	return IOErrorEnum(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return IOErrorEnum(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IOErrorEnum.
@@ -1313,7 +1314,7 @@ const (
 )
 
 func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
-	return IOModuleScopeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return IOModuleScopeFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for IOModuleScopeFlags.
@@ -1354,7 +1355,7 @@ const (
 )
 
 func marshalMemoryMonitorWarningLevel(p uintptr) (interface{}, error) {
-	return MemoryMonitorWarningLevel(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return MemoryMonitorWarningLevel(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MemoryMonitorWarningLevel.
@@ -1386,7 +1387,7 @@ const (
 )
 
 func marshalMountOperationResult(p uintptr) (interface{}, error) {
-	return MountOperationResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return MountOperationResult(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for MountOperationResult.
@@ -1424,7 +1425,7 @@ const (
 )
 
 func marshalNetworkConnectivity(p uintptr) (interface{}, error) {
-	return NetworkConnectivity(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return NetworkConnectivity(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NetworkConnectivity.
@@ -1466,7 +1467,7 @@ const (
 )
 
 func marshalNotificationPriority(p uintptr) (interface{}, error) {
-	return NotificationPriority(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return NotificationPriority(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for NotificationPriority.
@@ -1501,7 +1502,7 @@ const (
 )
 
 func marshalPasswordSave(p uintptr) (interface{}, error) {
-	return PasswordSave(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PasswordSave(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PasswordSave.
@@ -1540,7 +1541,7 @@ const (
 )
 
 func marshalPollableReturn(p uintptr) (interface{}, error) {
-	return PollableReturn(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PollableReturn(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PollableReturn.
@@ -1572,7 +1573,7 @@ const (
 )
 
 func marshalResolverError(p uintptr) (interface{}, error) {
-	return ResolverError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ResolverError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResolverError.
@@ -1635,7 +1636,7 @@ const (
 )
 
 func marshalResolverRecordType(p uintptr) (interface{}, error) {
-	return ResolverRecordType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ResolverRecordType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResolverRecordType.
@@ -1668,7 +1669,7 @@ const (
 )
 
 func marshalResourceError(p uintptr) (interface{}, error) {
-	return ResourceError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ResourceError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ResourceError.
@@ -1713,7 +1714,7 @@ const (
 )
 
 func marshalSocketClientEvent(p uintptr) (interface{}, error) {
-	return SocketClientEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SocketClientEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketClientEvent.
@@ -1758,7 +1759,7 @@ const (
 )
 
 func marshalSocketFamily(p uintptr) (interface{}, error) {
-	return SocketFamily(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SocketFamily(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketFamily.
@@ -1796,7 +1797,7 @@ const (
 )
 
 func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
-	return SocketListenerEvent(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SocketListenerEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketListenerEvent.
@@ -1838,7 +1839,7 @@ const (
 )
 
 func marshalSocketProtocol(p uintptr) (interface{}, error) {
-	return SocketProtocol(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SocketProtocol(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketProtocol.
@@ -1877,7 +1878,7 @@ const (
 )
 
 func marshalSocketType(p uintptr) (interface{}, error) {
-	return SocketType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return SocketType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for SocketType.
@@ -1909,7 +1910,7 @@ const (
 )
 
 func marshalTLSAuthenticationMode(p uintptr) (interface{}, error) {
-	return TLSAuthenticationMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSAuthenticationMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSAuthenticationMode.
@@ -1937,7 +1938,7 @@ const (
 )
 
 func marshalTLSCertificateRequestFlags(p uintptr) (interface{}, error) {
-	return TLSCertificateRequestFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSCertificateRequestFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSCertificateRequestFlags.
@@ -1977,7 +1978,7 @@ const (
 )
 
 func marshalTLSChannelBindingError(p uintptr) (interface{}, error) {
-	return TLSChannelBindingError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSChannelBindingError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSChannelBindingError.
@@ -2014,7 +2015,7 @@ const (
 )
 
 func marshalTLSChannelBindingType(p uintptr) (interface{}, error) {
-	return TLSChannelBindingType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSChannelBindingType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSChannelBindingType.
@@ -2044,7 +2045,7 @@ const (
 )
 
 func marshalTLSDatabaseLookupFlags(p uintptr) (interface{}, error) {
-	return TLSDatabaseLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSDatabaseLookupFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSDatabaseLookupFlags.
@@ -2091,7 +2092,7 @@ const (
 )
 
 func marshalTLSError(p uintptr) (interface{}, error) {
-	return TLSError(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSError.
@@ -2135,7 +2136,7 @@ const (
 )
 
 func marshalTLSInteractionResult(p uintptr) (interface{}, error) {
-	return TLSInteractionResult(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSInteractionResult(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSInteractionResult.
@@ -2170,7 +2171,7 @@ const (
 )
 
 func marshalTLSRehandshakeMode(p uintptr) (interface{}, error) {
-	return TLSRehandshakeMode(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return TLSRehandshakeMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for TLSRehandshakeMode.
@@ -2201,7 +2202,7 @@ const (
 )
 
 func marshalZlibCompressorFormat(p uintptr) (interface{}, error) {
-	return ZlibCompressorFormat(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ZlibCompressorFormat(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ZlibCompressorFormat.
@@ -2234,7 +2235,7 @@ const (
 )
 
 func marshalAppInfoCreateFlags(p uintptr) (interface{}, error) {
-	return AppInfoCreateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return AppInfoCreateFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AppInfoCreateFlags.
@@ -2323,7 +2324,7 @@ const (
 )
 
 func marshalApplicationFlags(p uintptr) (interface{}, error) {
-	return ApplicationFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ApplicationFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ApplicationFlags.
@@ -2395,7 +2396,7 @@ const (
 )
 
 func marshalAskPasswordFlags(p uintptr) (interface{}, error) {
-	return AskPasswordFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return AskPasswordFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for AskPasswordFlags.
@@ -2459,7 +2460,7 @@ const (
 )
 
 func marshalBusNameOwnerFlags(p uintptr) (interface{}, error) {
-	return BusNameOwnerFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return BusNameOwnerFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for BusNameOwnerFlags.
@@ -2511,7 +2512,7 @@ const (
 )
 
 func marshalBusNameWatcherFlags(p uintptr) (interface{}, error) {
-	return BusNameWatcherFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return BusNameWatcherFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for BusNameWatcherFlags.
@@ -2560,7 +2561,7 @@ const (
 )
 
 func marshalConverterFlags(p uintptr) (interface{}, error) {
-	return ConverterFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ConverterFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ConverterFlags.
@@ -2613,7 +2614,7 @@ const (
 )
 
 func marshalDBusCallFlags(p uintptr) (interface{}, error) {
-	return DBusCallFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusCallFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusCallFlags.
@@ -2663,7 +2664,7 @@ const (
 )
 
 func marshalDBusCapabilityFlags(p uintptr) (interface{}, error) {
-	return DBusCapabilityFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusCapabilityFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusCapabilityFlags.
@@ -2729,7 +2730,7 @@ const (
 )
 
 func marshalDBusConnectionFlags(p uintptr) (interface{}, error) {
-	return DBusConnectionFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusConnectionFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusConnectionFlags.
@@ -2791,7 +2792,7 @@ const (
 )
 
 func marshalDBusInterfaceSkeletonFlags(p uintptr) (interface{}, error) {
-	return DBusInterfaceSkeletonFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusInterfaceSkeletonFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusInterfaceSkeletonFlags.
@@ -2845,7 +2846,7 @@ const (
 )
 
 func marshalDBusMessageFlags(p uintptr) (interface{}, error) {
-	return DBusMessageFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusMessageFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusMessageFlags.
@@ -2900,7 +2901,7 @@ const (
 )
 
 func marshalDBusObjectManagerClientFlags(p uintptr) (interface{}, error) {
-	return DBusObjectManagerClientFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusObjectManagerClientFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusObjectManagerClientFlags.
@@ -2950,7 +2951,7 @@ const (
 )
 
 func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
-	return DBusPropertyInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusPropertyInfoFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusPropertyInfoFlags.
@@ -3023,7 +3024,7 @@ const (
 )
 
 func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
-	return DBusProxyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusProxyFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusProxyFlags.
@@ -3079,7 +3080,7 @@ const (
 )
 
 func marshalDBusSendMessageFlags(p uintptr) (interface{}, error) {
-	return DBusSendMessageFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusSendMessageFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusSendMessageFlags.
@@ -3134,7 +3135,7 @@ const (
 )
 
 func marshalDBusServerFlags(p uintptr) (interface{}, error) {
-	return DBusServerFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusServerFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusServerFlags.
@@ -3195,7 +3196,7 @@ const (
 )
 
 func marshalDBusSignalFlags(p uintptr) (interface{}, error) {
-	return DBusSignalFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusSignalFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusSignalFlags.
@@ -3248,7 +3249,7 @@ const (
 )
 
 func marshalDBusSubtreeFlags(p uintptr) (interface{}, error) {
-	return DBusSubtreeFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DBusSubtreeFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DBusSubtreeFlags.
@@ -3293,7 +3294,7 @@ const (
 )
 
 func marshalDriveStartFlags(p uintptr) (interface{}, error) {
-	return DriveStartFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return DriveStartFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for DriveStartFlags.
@@ -3342,7 +3343,7 @@ const (
 )
 
 func marshalFileAttributeInfoFlags(p uintptr) (interface{}, error) {
-	return FileAttributeInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return FileAttributeInfoFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileAttributeInfoFlags.
@@ -3404,7 +3405,7 @@ const (
 )
 
 func marshalFileCopyFlags(p uintptr) (interface{}, error) {
-	return FileCopyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return FileCopyFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileCopyFlags.
@@ -3471,7 +3472,7 @@ const (
 )
 
 func marshalFileCreateFlags(p uintptr) (interface{}, error) {
-	return FileCreateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return FileCreateFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileCreateFlags.
@@ -3530,7 +3531,7 @@ const (
 )
 
 func marshalFileMeasureFlags(p uintptr) (interface{}, error) {
-	return FileMeasureFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return FileMeasureFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileMeasureFlags.
@@ -3595,7 +3596,7 @@ const (
 )
 
 func marshalFileMonitorFlags(p uintptr) (interface{}, error) {
-	return FileMonitorFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return FileMonitorFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileMonitorFlags.
@@ -3648,7 +3649,7 @@ const (
 )
 
 func marshalFileQueryInfoFlags(p uintptr) (interface{}, error) {
-	return FileQueryInfoFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return FileQueryInfoFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for FileQueryInfoFlags.
@@ -3700,7 +3701,7 @@ const (
 )
 
 func marshalIOStreamSpliceFlags(p uintptr) (interface{}, error) {
-	return IOStreamSpliceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return IOStreamSpliceFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for IOStreamSpliceFlags.
@@ -3749,7 +3750,7 @@ const (
 )
 
 func marshalMountMountFlags(p uintptr) (interface{}, error) {
-	return MountMountFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return MountMountFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for MountMountFlags.
@@ -3795,7 +3796,7 @@ const (
 )
 
 func marshalMountUnmountFlags(p uintptr) (interface{}, error) {
-	return MountUnmountFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return MountUnmountFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for MountUnmountFlags.
@@ -3844,7 +3845,7 @@ const (
 )
 
 func marshalOutputStreamSpliceFlags(p uintptr) (interface{}, error) {
-	return OutputStreamSpliceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return OutputStreamSpliceFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for OutputStreamSpliceFlags.
@@ -3894,7 +3895,7 @@ const (
 )
 
 func marshalResourceFlags(p uintptr) (interface{}, error) {
-	return ResourceFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ResourceFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ResourceFlags.
@@ -3939,7 +3940,7 @@ const (
 )
 
 func marshalResourceLookupFlags(p uintptr) (interface{}, error) {
-	return ResourceLookupFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return ResourceLookupFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for ResourceLookupFlags.
@@ -3994,7 +3995,7 @@ const (
 )
 
 func marshalSocketMsgFlags(p uintptr) (interface{}, error) {
-	return SocketMsgFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return SocketMsgFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for SocketMsgFlags.
@@ -4077,7 +4078,7 @@ const (
 )
 
 func marshalSubprocessFlags(p uintptr) (interface{}, error) {
-	return SubprocessFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return SubprocessFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for SubprocessFlags.
@@ -4136,7 +4137,7 @@ const (
 )
 
 func marshalTestDBusFlags(p uintptr) (interface{}, error) {
-	return TestDBusFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return TestDBusFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TestDBusFlags.
@@ -4200,7 +4201,7 @@ const (
 )
 
 func marshalTLSCertificateFlags(p uintptr) (interface{}, error) {
-	return TLSCertificateFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return TLSCertificateFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TLSCertificateFlags.
@@ -4257,7 +4258,7 @@ const (
 )
 
 func marshalTLSDatabaseVerifyFlags(p uintptr) (interface{}, error) {
-	return TLSDatabaseVerifyFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return TLSDatabaseVerifyFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TLSDatabaseVerifyFlags.
@@ -4308,7 +4309,7 @@ const (
 )
 
 func marshalTLSPasswordFlags(p uintptr) (interface{}, error) {
-	return TLSPasswordFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return TLSPasswordFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for TLSPasswordFlags.

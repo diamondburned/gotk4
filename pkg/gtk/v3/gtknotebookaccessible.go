@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtknotebookaccessible.go.
-var GTypeNotebookAccessible = externglib.Type(C.gtk_notebook_accessible_get_type())
+var GTypeNotebookAccessible = coreglib.Type(C.gtk_notebook_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNotebookAccessible, F: marshalNotebookAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type NotebookAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*NotebookAccessible)(nil)
+	_ coreglib.Objector = (*NotebookAccessible)(nil)
 )
 
 func classInitNotebookAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitNotebookAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
+func wrapNotebookAccessible(obj *coreglib.Object) *NotebookAccessible {
 	return &NotebookAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -69,5 +68,5 @@ func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
 }
 
 func marshalNotebookAccessible(p uintptr) (interface{}, error) {
-	return wrapNotebookAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNotebookAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

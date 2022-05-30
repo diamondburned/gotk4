@@ -10,22 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GSocketAddress* _gotk4_gio2_SocketAddressEnumeratorClass_next(GSocketAddressEnumerator*, GCancellable*, GError**);
 // extern GSocketAddress* _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(GSocketAddressEnumerator*, GAsyncResult*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // glib.Type values for gsocketaddressenumerator.go.
-var GTypeSocketAddressEnumerator = externglib.Type(C.g_socket_address_enumerator_get_type())
+var GTypeSocketAddressEnumerator = coreglib.Type(C.g_socket_address_enumerator_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSocketAddressEnumerator, F: marshalSocketAddressEnumerator},
 	})
 }
@@ -85,11 +85,11 @@ type SocketAddressEnumeratorOverrider interface {
 // with that AddressEnumerator is not possible, and it can be unreffed.
 type SocketAddressEnumerator struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*SocketAddressEnumerator)(nil)
+	_ coreglib.Objector = (*SocketAddressEnumerator)(nil)
 )
 
 // SocketAddressEnumeratorrer describes types inherited from class SocketAddressEnumerator.
@@ -97,7 +97,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type SocketAddressEnumeratorrer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseSocketAddressEnumerator() *SocketAddressEnumerator
 }
 
@@ -129,7 +129,7 @@ func classInitSocketAddressEnumeratorrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next
 func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GSocketAddress) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Next(ctx context.Context) (SocketAddresser, error)
 	})
@@ -142,10 +142,10 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumera
 
 	socketAddress, _goerr := iface.Next(_cancellable)
 
-	cret = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(socketAddress).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddress).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(socketAddress).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddress).Native()))
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -153,7 +153,7 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumera
 
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next_finish
 func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddressEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GSocketAddress) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		NextFinish(result AsyncResulter) (SocketAddresser, error)
 	})
@@ -166,8 +166,8 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddress
 			panic("object of type gio.AsyncResulter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(AsyncResulter)
 			return ok
 		})
@@ -180,23 +180,23 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddress
 
 	socketAddress, _goerr := iface.NextFinish(_result)
 
-	cret = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(socketAddress).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(socketAddress).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(socketAddress).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddress).Native()))
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
+		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
 
 	return cret
 }
 
-func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerator {
+func wrapSocketAddressEnumerator(obj *coreglib.Object) *SocketAddressEnumerator {
 	return &SocketAddressEnumerator{
 		Object: obj,
 	}
 }
 
 func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
-	return wrapSocketAddressEnumerator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSocketAddressEnumerator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (enumerator *SocketAddressEnumerator) baseSocketAddressEnumerator() *SocketAddressEnumerator {
@@ -230,19 +230,23 @@ func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressE
 //      *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddresser, error) {
-	var _arg0 *C.GSocketAddressEnumerator // out
-	var _arg1 *C.GCancellable             // out
-	var _cret *C.GSocketAddress           // in
-	var _cerr *C.GError                   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**SocketAddressEnumerator)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_socket_address_enumerator_next(_arg0, _arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "SocketAddressEnumerator").InvokeMethod("next", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
 
@@ -255,8 +259,8 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 			panic("object of type gio.SocketAddresser is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(SocketAddresser)
 			return ok
 		})
@@ -273,41 +277,6 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 	return _socketAddress, _goerr
 }
 
-// NextAsync: asynchronously retrieves the next Address from enumerator and then
-// calls callback, which must call g_socket_address_enumerator_next_finish() to
-// get the result.
-//
-// It is an error to call this multiple times before the previous callback has
-// finished.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - callback (optional) to call when the request is satisfied.
-//
-func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketAddressEnumerator // out
-	var _arg1 *C.GCancellable             // out
-	var _arg2 C.GAsyncReadyCallback       // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(enumerator)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(callback)
-}
-
 // NextFinish retrieves the result of a completed call to
 // g_socket_address_enumerator_next_async(). See
 // g_socket_address_enumerator_next() for more information about error handling.
@@ -322,15 +291,19 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 //      *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (SocketAddresser, error) {
-	var _arg0 *C.GSocketAddressEnumerator // out
-	var _arg1 *C.GAsyncResult             // out
-	var _cret *C.GSocketAddress           // in
-	var _cerr *C.GError                   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(externglib.InternObject(enumerator).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**SocketAddressEnumerator)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "SocketAddressEnumerator").InvokeMethod("next_finish", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(result)
 
@@ -343,8 +316,8 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 			panic("object of type gio.SocketAddresser is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(SocketAddresser)
 			return ok
 		})

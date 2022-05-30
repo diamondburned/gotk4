@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcellrendererpixbuf.go.
-var GTypeCellRendererPixbuf = externglib.Type(C.gtk_cell_renderer_pixbuf_get_type())
+var GTypeCellRendererPixbuf = coreglib.Type(C.gtk_cell_renderer_pixbuf_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellRendererPixbuf, F: marshalCellRendererPixbuf},
 	})
 }
@@ -44,10 +45,10 @@ var (
 	_ CellRendererer = (*CellRendererPixbuf)(nil)
 )
 
-func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
+func wrapCellRendererPixbuf(obj *coreglib.Object) *CellRendererPixbuf {
 	return &CellRendererPixbuf{
 		CellRenderer: CellRenderer{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 		},
@@ -55,7 +56,7 @@ func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 }
 
 func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
-	return wrapCellRendererPixbuf(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellRendererPixbuf(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCellRendererPixbuf creates a new CellRendererPixbuf. Adjust rendering
@@ -70,13 +71,14 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 //    - cellRendererPixbuf: new cell renderer.
 //
 func NewCellRendererPixbuf() *CellRendererPixbuf {
-	var _cret *C.GtkCellRenderer // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_cell_renderer_pixbuf_new()
+	_gret := girepository.MustFind("Gtk", "CellRendererPixbuf").InvokeMethod("new_CellRendererPixbuf", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererPixbuf *CellRendererPixbuf // out
 
-	_cellRendererPixbuf = wrapCellRendererPixbuf(externglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererPixbuf = wrapCellRendererPixbuf(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererPixbuf
 }

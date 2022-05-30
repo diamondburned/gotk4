@@ -4,12 +4,13 @@ package gtk
 
 import (
 	"runtime"
+
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // GetDebugFlags returns the GTK+ debug flags.
@@ -24,7 +25,8 @@ import "C"
 func GetDebugFlags() uint {
 	var _cret C.guint // in
 
-	_cret = C.gtk_get_debug_flags()
+	_gret := girepository.MustFind("Gtk", "get_debug_flags").Invoke(nil, nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint // out
 
@@ -38,10 +40,13 @@ func GetDebugFlags() uint {
 // The function takes the following parameters:
 //
 func SetDebugFlags(flags uint) {
-	var _arg1 C.guint // out
+	var args [1]girepository.Argument
+	var _arg0 C.guint // out
 
-	_arg1 = C.guint(flags)
+	_arg0 = C.guint(flags)
+	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_set_debug_flags(_arg1)
+	girepository.MustFind("Gtk", "set_debug_flags").Invoke(args[:], nil)
+
 	runtime.KeepAlive(flags)
 }

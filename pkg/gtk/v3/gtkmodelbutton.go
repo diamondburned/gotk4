@@ -7,24 +7,23 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmodelbutton.go.
 var (
-	GTypeButtonRole  = externglib.Type(C.gtk_button_role_get_type())
-	GTypeModelButton = externglib.Type(C.gtk_model_button_get_type())
+	GTypeButtonRole  = coreglib.Type(C.gtk_button_role_get_type())
+	GTypeModelButton = coreglib.Type(C.gtk_model_button_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeButtonRole, F: marshalButtonRole},
 		{T: GTypeModelButton, F: marshalModelButton},
 	})
@@ -43,7 +42,7 @@ const (
 )
 
 func marshalButtonRole(p uintptr) (interface{}, error) {
-	return ButtonRole(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ButtonRole(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ButtonRole.
@@ -135,17 +134,17 @@ type ModelButton struct {
 }
 
 var (
-	_ Binner              = (*ModelButton)(nil)
-	_ externglib.Objector = (*ModelButton)(nil)
+	_ Binner            = (*ModelButton)(nil)
+	_ coreglib.Objector = (*ModelButton)(nil)
 )
 
-func wrapModelButton(obj *externglib.Object) *ModelButton {
+func wrapModelButton(obj *coreglib.Object) *ModelButton {
 	return &ModelButton{
 		Button: Button{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -161,7 +160,7 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -181,7 +180,7 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 }
 
 func marshalModelButton(p uintptr) (interface{}, error) {
-	return wrapModelButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapModelButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewModelButton creates a new GtkModelButton.
@@ -191,13 +190,14 @@ func marshalModelButton(p uintptr) (interface{}, error) {
 //    - modelButton: newly created ModelButton widget.
 //
 func NewModelButton() *ModelButton {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_model_button_new()
+	_gret := girepository.MustFind("Gtk", "ModelButton").InvokeMethod("new_ModelButton", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _modelButton *ModelButton // out
 
-	_modelButton = wrapModelButton(externglib.Take(unsafe.Pointer(_cret)))
+	_modelButton = wrapModelButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _modelButton
 }

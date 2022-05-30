@@ -5,21 +5,20 @@ package gio
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
-// extern void _gotk4_gio2_MemoryMonitorInterface_low_memory_warning(GMemoryMonitor*, GMemoryMonitorWarningLevel);
-// extern void _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(gpointer, GMemoryMonitorWarningLevel, guintptr);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gmemorymonitor.go.
-var GTypeMemoryMonitor = externglib.Type(C.g_memory_monitor_get_type())
+var GTypeMemoryMonitor = coreglib.Type(C.g_memory_monitor_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMemoryMonitor, F: marshalMemoryMonitor},
 	})
 }
@@ -30,9 +29,6 @@ const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
 
 // MemoryMonitorOverrider contains methods that are overridable.
 type MemoryMonitorOverrider interface {
-	// The function takes the following parameters:
-	//
-	LowMemoryWarning(level MemoryMonitorWarningLevel)
 }
 
 // MemoryMonitor will monitor system memory and suggest to the application when
@@ -98,7 +94,7 @@ var ()
 
 // MemoryMonitorrer describes MemoryMonitor's interface methods.
 type MemoryMonitorrer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseMemoryMonitor() *MemoryMonitor
 }
@@ -106,23 +102,9 @@ type MemoryMonitorrer interface {
 var _ MemoryMonitorrer = (*MemoryMonitor)(nil)
 
 func ifaceInitMemoryMonitorrer(gifacePtr, data C.gpointer) {
-	iface := (*C.GMemoryMonitorInterface)(unsafe.Pointer(gifacePtr))
-	iface.low_memory_warning = (*[0]byte)(C._gotk4_gio2_MemoryMonitorInterface_low_memory_warning)
 }
 
-//export _gotk4_gio2_MemoryMonitorInterface_low_memory_warning
-func _gotk4_gio2_MemoryMonitorInterface_low_memory_warning(arg0 *C.GMemoryMonitor, arg1 C.GMemoryMonitorWarningLevel) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(MemoryMonitorOverrider)
-
-	var _level MemoryMonitorWarningLevel // out
-
-	_level = MemoryMonitorWarningLevel(arg1)
-
-	iface.LowMemoryWarning(_level)
-}
-
-func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
+func wrapMemoryMonitor(obj *coreglib.Object) *MemoryMonitor {
 	return &MemoryMonitor{
 		Initable: Initable{
 			Object: obj,
@@ -131,43 +113,16 @@ func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
 }
 
 func marshalMemoryMonitor(p uintptr) (interface{}, error) {
-	return wrapMemoryMonitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMemoryMonitor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (monitor *MemoryMonitor) baseMemoryMonitor() *MemoryMonitor {
-	return monitor
+func (v *MemoryMonitor) baseMemoryMonitor() *MemoryMonitor {
+	return v
 }
 
 // BaseMemoryMonitor returns the underlying base object.
 func BaseMemoryMonitor(obj MemoryMonitorrer) *MemoryMonitor {
 	return obj.baseMemoryMonitor()
-}
-
-//export _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning
-func _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(arg0 C.gpointer, arg1 C.GMemoryMonitorWarningLevel, arg2 C.guintptr) {
-	var f func(level MemoryMonitorWarningLevel)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(level MemoryMonitorWarningLevel))
-	}
-
-	var _level MemoryMonitorWarningLevel // out
-
-	_level = MemoryMonitorWarningLevel(arg1)
-
-	f(_level)
-}
-
-// ConnectLowMemoryWarning is emitted when the system is running low on free
-// memory. The signal handler should then take the appropriate action depending
-// on the warning level. See the MonitorWarningLevel documentation for details.
-func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarningLevel)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(monitor, "low-memory-warning", false, unsafe.Pointer(C._gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning), f)
 }
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the
@@ -178,13 +133,14 @@ func (monitor *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitor
 //    - memoryMonitor: new reference to the default Monitor.
 //
 func MemoryMonitorDupDefault() *MemoryMonitor {
-	var _cret *C.GMemoryMonitor // in
+	var _cret *C.void // in
 
-	_cret = C.g_memory_monitor_dup_default()
+	_gret := girepository.MustFind("Gio", "dup_default").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _memoryMonitor *MemoryMonitor // out
 
-	_memoryMonitor = wrapMemoryMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_memoryMonitor = wrapMemoryMonitor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryMonitor
 }

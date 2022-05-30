@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkwidgetpaintable.go.
-var GTypeWidgetPaintable = externglib.Type(C.gtk_widget_paintable_get_type())
+var GTypeWidgetPaintable = coreglib.Type(C.gtk_widget_paintable_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWidgetPaintable, F: marshalWidgetPaintable},
 	})
 }
@@ -49,13 +50,13 @@ type WidgetPaintableOverrider interface {
 // infinitely growing widget.
 type WidgetPaintable struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	gdk.Paintable
 }
 
 var (
-	_ externglib.Objector = (*WidgetPaintable)(nil)
+	_ coreglib.Objector = (*WidgetPaintable)(nil)
 )
 
 func classInitWidgetPaintabler(gclassPtr, data C.gpointer) {
@@ -66,7 +67,7 @@ func classInitWidgetPaintabler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
+func wrapWidgetPaintable(obj *coreglib.Object) *WidgetPaintable {
 	return &WidgetPaintable{
 		Object: obj,
 		Paintable: gdk.Paintable{
@@ -76,7 +77,7 @@ func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 }
 
 func marshalWidgetPaintable(p uintptr) (interface{}, error) {
-	return wrapWidgetPaintable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWidgetPaintable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
@@ -90,19 +91,23 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 //    - widgetPaintable: new GtkWidgetPaintable.
 //
 func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
-	var _arg1 *C.GtkWidget    // out
-	var _cret *C.GdkPaintable // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_widget_paintable_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "WidgetPaintable").InvokeMethod("new_WidgetPaintable", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _widgetPaintable *WidgetPaintable // out
 
-	_widgetPaintable = wrapWidgetPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_widgetPaintable = wrapWidgetPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _widgetPaintable
 }
@@ -114,12 +119,16 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 //    - widget (optional): observed widget.
 //
 func (self *WidgetPaintable) Widget() Widgetter {
-	var _arg0 *C.GtkWidgetPaintable // out
-	var _cret *C.GtkWidget          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**WidgetPaintable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_widget_paintable_get_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "WidgetPaintable").InvokeMethod("get_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -128,8 +137,8 @@ func (self *WidgetPaintable) Widget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -151,15 +160,18 @@ func (self *WidgetPaintable) Widget() Widgetter {
 //    - widget (optional) to observe or NULL.
 //
 func (self *WidgetPaintable) SetWidget(widget Widgetter) {
-	var _arg0 *C.GtkWidgetPaintable // out
-	var _arg1 *C.GtkWidget          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**WidgetPaintable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "WidgetPaintable").InvokeMethod("set_widget", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
 }

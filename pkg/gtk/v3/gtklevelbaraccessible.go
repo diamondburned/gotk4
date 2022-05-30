@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtklevelbaraccessible.go.
-var GTypeLevelBarAccessible = externglib.Type(C.gtk_level_bar_accessible_get_type())
+var GTypeLevelBarAccessible = coreglib.Type(C.gtk_level_bar_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeLevelBarAccessible, F: marshalLevelBarAccessible},
 	})
 }
@@ -37,7 +36,7 @@ type LevelBarAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*LevelBarAccessible)(nil)
+	_ coreglib.Objector = (*LevelBarAccessible)(nil)
 )
 
 func classInitLevelBarAccessibler(gclassPtr, data C.gpointer) {
@@ -48,7 +47,7 @@ func classInitLevelBarAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
+func wrapLevelBarAccessible(obj *coreglib.Object) *LevelBarAccessible {
 	return &LevelBarAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
@@ -67,5 +66,5 @@ func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 }
 
 func marshalLevelBarAccessible(p uintptr) (interface{}, error) {
-	return wrapLevelBarAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapLevelBarAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

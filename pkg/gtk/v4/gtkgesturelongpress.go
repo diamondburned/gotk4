@@ -3,24 +3,24 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_GestureLongPress_ConnectCancelled(gpointer, guintptr);
 // extern void _gotk4_gtk4_GestureLongPress_ConnectPressed(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // glib.Type values for gtkgesturelongpress.go.
-var GTypeGestureLongPress = externglib.Type(C.gtk_gesture_long_press_get_type())
+var GTypeGestureLongPress = coreglib.Type(C.gtk_gesture_long_press_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGestureLongPress, F: marshalGestureLongPress},
 	})
 }
@@ -60,7 +60,7 @@ func classInitGestureLongPresser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
+func wrapGestureLongPress(obj *coreglib.Object) *GestureLongPress {
 	return &GestureLongPress{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -73,14 +73,14 @@ func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 }
 
 func marshalGestureLongPress(p uintptr) (interface{}, error) {
-	return wrapGestureLongPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGestureLongPress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_GestureLongPress_ConnectCancelled
 func _gotk4_gtk4_GestureLongPress_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -94,15 +94,15 @@ func _gotk4_gtk4_GestureLongPress_ConnectCancelled(arg0 C.gpointer, arg1 C.guint
 
 // ConnectCancelled is emitted whenever a press moved too far, or was released
 // before gtk.GestureLongPress::pressed happened.
-func (gesture *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(gesture, "cancelled", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectCancelled), f)
+func (v *GestureLongPress) ConnectCancelled(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "cancelled", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectCancelled), f)
 }
 
 //export _gotk4_gtk4_GestureLongPress_ConnectPressed
 func _gotk4_gtk4_GestureLongPress_ConnectPressed(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(x, y float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -122,8 +122,8 @@ func _gotk4_gtk4_GestureLongPress_ConnectPressed(arg0 C.gpointer, arg1 C.gdouble
 
 // ConnectPressed is emitted whenever a press goes unmoved/unreleased longer
 // than what the GTK defaults tell.
-func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(gesture, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectPressed), f)
+func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureLongPress_ConnectPressed), f)
 }
 
 // NewGestureLongPress returns a newly created GtkGesture that recognizes long
@@ -134,56 +134,14 @@ func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib
 //    - gestureLongPress: newly created GtkGestureLongPress.
 //
 func NewGestureLongPress() *GestureLongPress {
-	var _cret *C.GtkGesture // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_gesture_long_press_new()
+	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("new_GestureLongPress", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureLongPress *GestureLongPress // out
 
-	_gestureLongPress = wrapGestureLongPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureLongPress = wrapGestureLongPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
-}
-
-// DelayFactor returns the delay factor.
-//
-// The function returns the following values:
-//
-//    - gdouble: delay factor.
-//
-func (gesture *GestureLongPress) DelayFactor() float64 {
-	var _arg0 *C.GtkGestureLongPress // out
-	var _cret C.double               // in
-
-	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
-
-	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
-	runtime.KeepAlive(gesture)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// SetDelayFactor applies the given delay factor.
-//
-// The default long press time will be multiplied by this value. Valid values
-// are in the range [0.5..2.0].
-//
-// The function takes the following parameters:
-//
-//    - delayFactor: delay factor to apply.
-//
-func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
-	var _arg0 *C.GtkGestureLongPress // out
-	var _arg1 C.double               // out
-
-	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
-	_arg1 = C.double(delayFactor)
-
-	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)
-	runtime.KeepAlive(gesture)
-	runtime.KeepAlive(delayFactor)
 }

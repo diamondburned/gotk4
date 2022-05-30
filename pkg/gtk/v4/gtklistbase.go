@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtklistbase.go.
-var GTypeListBase = externglib.Type(C.gtk_list_base_get_type())
+var GTypeListBase = coreglib.Type(C.gtk_list_base_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeListBase, F: marshalListBase},
 	})
 }
@@ -31,14 +32,14 @@ type ListBase struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Orientable
 	Scrollable
 }
 
 var (
-	_ Widgetter           = (*ListBase)(nil)
-	_ externglib.Objector = (*ListBase)(nil)
+	_ Widgetter         = (*ListBase)(nil)
+	_ coreglib.Objector = (*ListBase)(nil)
 )
 
 // ListBaser describes types inherited from class ListBase.
@@ -46,7 +47,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type ListBaser interface {
-	externglib.Objector
+	coreglib.Objector
 	baseListBase() *ListBase
 }
 
@@ -60,10 +61,10 @@ func classInitListBaser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapListBase(obj *externglib.Object) *ListBase {
+func wrapListBase(obj *coreglib.Object) *ListBase {
 	return &ListBase{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -88,7 +89,7 @@ func wrapListBase(obj *externglib.Object) *ListBase {
 }
 
 func marshalListBase(p uintptr) (interface{}, error) {
-	return wrapListBase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapListBase(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *ListBase) baseListBase() *ListBase {

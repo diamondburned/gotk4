@@ -7,11 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // ExportActionGroup exports action_group on connection at object_path.
@@ -45,18 +47,23 @@ import "C"
 //    - guint: ID of the export (never zero), or 0 in case of failure.
 //
 func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 *C.gchar           // out
-	var _arg2 *C.GActionGroup    // out
-	var _cret C.guint            // in
-	var _cerr *C.GError          // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cret C.guint // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GActionGroup)(unsafe.Pointer(externglib.InternObject(actionGroup).Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.g_dbus_connection_export_action_group(_arg0, _arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("export_action_group", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(actionGroup)
@@ -84,13 +91,16 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //    - exportId: ID from g_dbus_connection_export_action_group().
 //
 func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
-	var _arg0 *C.GDBusConnection // out
-	var _arg1 C.guint            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(externglib.InternObject(connection).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = C.guint(exportId)
+	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_connection_unexport_action_group(_arg0, _arg1)
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unexport_action_group", args[:], nil)
+
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(exportId)
 }

@@ -3,75 +3,29 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
-// extern void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
+// #include <glib.h>
 // extern void _gotk4_gtk4_DrawingArea_ConnectResize(gpointer, gint, gint, guintptr);
-// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtkdrawingarea.go.
-var GTypeDrawingArea = externglib.Type(C.gtk_drawing_area_get_type())
+var GTypeDrawingArea = coreglib.Type(C.gtk_drawing_area_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDrawingArea, F: marshalDrawingArea},
 	})
 }
 
-// DrawingAreaDrawFunc: whenever drawing_area needs to redraw, this function
-// will be called.
-//
-// This function should exclusively redraw the contents of the drawing area and
-// must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int)
-
-//export _gotk4_gtk4_DrawingAreaDrawFunc
-func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
-	var fn DrawingAreaDrawFunc
-	{
-		v := gbox.Get(uintptr(arg5))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(DrawingAreaDrawFunc)
-	}
-
-	var _drawingArea *DrawingArea // out
-	var _cr *cairo.Context        // out
-	var _width int                // out
-	var _height int               // out
-
-	_drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg1)))
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg2)))
-	C.cairo_reference(arg2)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_width = int(arg3)
-	_height = int(arg4)
-
-	fn(_drawingArea, _cr, _width, _height)
-}
-
 // DrawingAreaOverrider contains methods that are overridable.
 type DrawingAreaOverrider interface {
-	// The function takes the following parameters:
-	//
-	//    - width
-	//    - height
-	//
-	Resize(width, height int)
 }
 
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
@@ -166,34 +120,12 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
-
-	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
-		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
-	}
 }
 
-//export _gotk4_gtk4_DrawingAreaClass_resize
-func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.GtkDrawingArea, arg1 C.int, arg2 C.int) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Resize(width, height int) })
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	iface.Resize(_width, _height)
-}
-
-func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
+func wrapDrawingArea(obj *coreglib.Object) *DrawingArea {
 	return &DrawingArea{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -211,14 +143,14 @@ func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 }
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
-	return wrapDrawingArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDrawingArea(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_DrawingArea_ConnectResize
 func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
 	var f func(width, height int)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -241,8 +173,8 @@ func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.
 //
 // This is useful in order to keep state up to date with the widget size, like
 // for instance a backing surface.
-func (self *DrawingArea) ConnectResize(f func(width, height int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "resize", false, unsafe.Pointer(C._gotk4_gtk4_DrawingArea_ConnectResize), f)
+func (v *DrawingArea) ConnectResize(f func(width, height int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "resize", false, unsafe.Pointer(C._gotk4_gtk4_DrawingArea_ConnectResize), f)
 }
 
 // NewDrawingArea creates a new drawing area.
@@ -252,142 +184,14 @@ func (self *DrawingArea) ConnectResize(f func(width, height int)) externglib.Sig
 //    - drawingArea: new GtkDrawingArea.
 //
 func NewDrawingArea() *DrawingArea {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_drawing_area_new()
+	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("new_DrawingArea", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _drawingArea *DrawingArea // out
 
-	_drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(_cret)))
+	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
-}
-
-// ContentHeight retrieves the content height of the GtkDrawingArea.
-//
-// The function returns the following values:
-//
-//    - gint: height requested for content of the drawing area.
-//
-func (self *DrawingArea) ContentHeight() int {
-	var _arg0 *C.GtkDrawingArea // out
-	var _cret C.int             // in
-
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_drawing_area_get_content_height(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// ContentWidth retrieves the content width of the GtkDrawingArea.
-//
-// The function returns the following values:
-//
-//    - gint: width requested for content of the drawing area.
-//
-func (self *DrawingArea) ContentWidth() int {
-	var _arg0 *C.GtkDrawingArea // out
-	var _cret C.int             // in
-
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_drawing_area_get_content_width(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// SetContentHeight sets the desired height of the contents of the drawing area.
-//
-// Note that because widgets may be allocated larger sizes than they requested,
-// it is possible that the actual height passed to your draw function is larger
-// than the height set here. You can use gtk.Widget.SetVAlign() to avoid that.
-//
-// If the height is set to 0 (the default), the drawing area may disappear.
-//
-// The function takes the following parameters:
-//
-//    - height of contents.
-//
-func (self *DrawingArea) SetContentHeight(height int) {
-	var _arg0 *C.GtkDrawingArea // out
-	var _arg1 C.int             // out
-
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.int(height)
-
-	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(height)
-}
-
-// SetContentWidth sets the desired width of the contents of the drawing area.
-//
-// Note that because widgets may be allocated larger sizes than they requested,
-// it is possible that the actual width passed to your draw function is larger
-// than the width set here. You can use gtk.Widget.SetHAlign() to avoid that.
-//
-// If the width is set to 0 (the default), the drawing area may disappear.
-//
-// The function takes the following parameters:
-//
-//    - width of contents.
-//
-func (self *DrawingArea) SetContentWidth(width int) {
-	var _arg0 *C.GtkDrawingArea // out
-	var _arg1 C.int             // out
-
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.int(width)
-
-	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(width)
-}
-
-// SetDrawFunc: setting a draw function is the main thing you want to do when
-// using a drawing area.
-//
-// The draw function is called whenever GTK needs to draw the contents of the
-// drawing area to the screen.
-//
-// The draw function will be called during the drawing stage of GTK. In the
-// drawing stage it is not allowed to change properties of any GTK widgets or
-// call any functions that would cause any properties to be changed. You should
-// restrict yourself exclusively to drawing your contents in the draw function.
-//
-// If what you are drawing does change, call gtk.Widget.QueueDraw() on the
-// drawing area. This will cause a redraw and will call draw_func again.
-//
-// The function takes the following parameters:
-//
-//    - drawFunc (optional): callback that lets you draw the drawing area's
-//      contents.
-//
-func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
-	var _arg0 *C.GtkDrawingArea        // out
-	var _arg1 C.GtkDrawingAreaDrawFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	if drawFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
-		_arg2 = C.gpointer(gbox.Assign(drawFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(drawFunc)
 }

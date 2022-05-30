@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkmultisorter.go.
-var GTypeMultiSorter = externglib.Type(C.gtk_multi_sorter_get_type())
+var GTypeMultiSorter = coreglib.Type(C.gtk_multi_sorter_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMultiSorter, F: marshalMultiSorter},
 	})
 }
@@ -36,13 +37,13 @@ type MultiSorter struct {
 	_ [0]func() // equal guard
 	Sorter
 
-	*externglib.Object
+	*coreglib.Object
 	gio.ListModel
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*MultiSorter)(nil)
+	_ coreglib.Objector = (*MultiSorter)(nil)
 )
 
 func classInitMultiSorterer(gclassPtr, data C.gpointer) {
@@ -53,7 +54,7 @@ func classInitMultiSorterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
+func wrapMultiSorter(obj *coreglib.Object) *MultiSorter {
 	return &MultiSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -69,7 +70,7 @@ func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 }
 
 func marshalMultiSorter(p uintptr) (interface{}, error) {
-	return wrapMultiSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapMultiSorter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewMultiSorter creates a new multi sorter.
@@ -83,13 +84,14 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 //    - multiSorter: new GtkMultiSorter.
 //
 func NewMultiSorter() *MultiSorter {
-	var _cret *C.GtkMultiSorter // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_multi_sorter_new()
+	_gret := girepository.MustFind("Gtk", "MultiSorter").InvokeMethod("new_MultiSorter", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _multiSorter *MultiSorter // out
 
-	_multiSorter = wrapMultiSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_multiSorter = wrapMultiSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSorter
 }
@@ -104,14 +106,17 @@ func NewMultiSorter() *MultiSorter {
 //    - sorter to add.
 //
 func (self *MultiSorter) Append(sorter *Sorter) {
-	var _arg0 *C.GtkMultiSorter // out
-	var _arg1 *C.GtkSorter      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(externglib.InternObject(sorter).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(sorter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(sorter).Native()))
+	*(**MultiSorter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_multi_sorter_append(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MultiSorter").InvokeMethod("append", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
 }
@@ -126,13 +131,16 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 //    - position of sorter to remove.
 //
 func (self *MultiSorter) Remove(position uint) {
-	var _arg0 *C.GtkMultiSorter // out
-	var _arg1 C.guint           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
+	*(**MultiSorter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_multi_sorter_remove(_arg0, _arg1)
+	girepository.MustFind("Gtk", "MultiSorter").InvokeMethod("remove", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 }

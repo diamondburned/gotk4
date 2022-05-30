@@ -7,25 +7,24 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
-// extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
+// #include <glib.h>
 // extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectAccept(gpointer, GdkDrop*, guintptr);
 // extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, GdkDrop*, guintptr);
 import "C"
 
 // glib.Type values for gtkdroptargetasync.go.
-var GTypeDropTargetAsync = externglib.Type(C.gtk_drop_target_async_get_type())
+var GTypeDropTargetAsync = coreglib.Type(C.gtk_drop_target_async_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDropTargetAsync, F: marshalDropTargetAsync},
 	})
 }
@@ -83,7 +82,7 @@ func classInitDropTargetAsyncer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
+func wrapDropTargetAsync(obj *coreglib.Object) *DropTargetAsync {
 	return &DropTargetAsync{
 		EventController: EventController{
 			Object: obj,
@@ -92,14 +91,14 @@ func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
 }
 
 func marshalDropTargetAsync(p uintptr) (interface{}, error) {
-	return wrapDropTargetAsync(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDropTargetAsync(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_DropTargetAsync_ConnectAccept
 func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(drop gdk.Dropper) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -116,8 +115,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop,
 			panic("object of type gdk.Dropper is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gdk.Dropper)
 			return ok
 		})
@@ -152,67 +151,15 @@ func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop,
 // processing, such as inspecting the data, this function should return TRUE and
 // proceed as is drop was accepted and if it decides to reject the drop later,
 // it should call gtk.DropTargetAsync.RejectDrop().
-func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "accept", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectAccept), f)
-}
-
-//export _gotk4_gtk4_DropTargetAsync_ConnectDragEnter
-func _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.GdkDragAction) {
-	var f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction))
-	}
-
-	var _drop gdk.Dropper // out
-	var _x float64        // out
-	var _y float64        // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dropper is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.Dropper)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dropper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
-		}
-		_drop = rv
-	}
-	_x = float64(arg2)
-	_y = float64(arg3)
-
-	dragAction := f(_drop, _x, _y)
-
-	cret = C.GdkDragAction(dragAction)
-
-	return cret
-}
-
-// ConnectDragEnter is emitted on the drop site when the pointer enters the
-// widget.
-//
-// It can be used to set up custom highlighting.
-func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "drag-enter", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragEnter), f)
+func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "accept", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectAccept), f)
 }
 
 //export _gotk4_gtk4_DropTargetAsync_ConnectDragLeave
 func _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) {
 	var f func(drop gdk.Dropper)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -229,8 +176,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDr
 			panic("object of type gdk.Dropper is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gdk.Dropper)
 			return ok
 		})
@@ -248,65 +195,15 @@ func _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDr
 // widget.
 //
 // Its main purpose it to undo things done in GtkDropTargetAsync::drag-enter.
-func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "drag-leave", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragLeave), f)
-}
-
-//export _gotk4_gtk4_DropTargetAsync_ConnectDragMotion
-func _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.GdkDragAction) {
-	var f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction))
-	}
-
-	var _drop gdk.Dropper // out
-	var _x float64        // out
-	var _y float64        // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dropper is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.Dropper)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dropper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
-		}
-		_drop = rv
-	}
-	_x = float64(arg2)
-	_y = float64(arg3)
-
-	dragAction := f(_drop, _x, _y)
-
-	cret = C.GdkDragAction(dragAction)
-
-	return cret
-}
-
-// ConnectDragMotion is emitted while the pointer is moving over the drop
-// target.
-func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "drag-motion", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragMotion), f)
+func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "drag-leave", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragLeave), f)
 }
 
 //export _gotk4_gtk4_DropTargetAsync_ConnectDrop
 func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
 	var f func(drop gdk.Dropper, x, y float64) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -325,8 +222,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.GdkDrop, a
 			panic("object of type gdk.Dropper is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gdk.Dropper)
 			return ok
 		})
@@ -362,62 +259,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.GdkDrop, a
 //
 // To receive the data, use one of the read functions provided by gdk.Drop such
 // as gdk.Drop.ReadAsync() or gdk.Drop.ReadValueAsync().
-func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDrop), f)
-}
-
-// NewDropTargetAsync creates a new GtkDropTargetAsync object.
-//
-// The function takes the following parameters:
-//
-//    - formats (optional): supported data formats.
-//    - actions: supported actions.
-//
-// The function returns the following values:
-//
-//    - dropTargetAsync: new GtkDropTargetAsync.
-//
-func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *DropTargetAsync {
-	var _arg1 *C.GdkContentFormats  // out
-	var _arg2 C.GdkDragAction       // out
-	var _cret *C.GtkDropTargetAsync // in
-
-	if formats != nil {
-		_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
-	}
-	_arg2 = C.GdkDragAction(actions)
-
-	_cret = C.gtk_drop_target_async_new(_arg1, _arg2)
-	runtime.KeepAlive(formats)
-	runtime.KeepAlive(actions)
-
-	var _dropTargetAsync *DropTargetAsync // out
-
-	_dropTargetAsync = wrapDropTargetAsync(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _dropTargetAsync
-}
-
-// Actions gets the actions that this drop target supports.
-//
-// The function returns the following values:
-//
-//    - dragAction actions that this drop target supports.
-//
-func (self *DropTargetAsync) Actions() gdk.DragAction {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _cret C.GdkDragAction       // in
-
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_drop_target_async_get_actions(_arg0)
-	runtime.KeepAlive(self)
-
-	var _dragAction gdk.DragAction // out
-
-	_dragAction = gdk.DragAction(_cret)
-
-	return _dragAction
+func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDrop), f)
 }
 
 // Formats gets the data formats that this drop target accepts.
@@ -429,12 +272,16 @@ func (self *DropTargetAsync) Actions() gdk.DragAction {
 //    - contentFormats (optional): supported data formats.
 //
 func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _cret *C.GdkContentFormats  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**DropTargetAsync)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_drop_target_async_get_formats(_arg0)
+	_gret := girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("get_formats", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _contentFormats *gdk.ContentFormats // out
@@ -462,33 +309,18 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 //    - drop of an ongoing drag operation.
 //
 func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _arg1 *C.GdkDrop            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.GdkDrop)(unsafe.Pointer(externglib.InternObject(drop).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drop).Native()))
+	*(**DropTargetAsync)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_drop_target_async_reject_drop(_arg0, _arg1)
+	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("reject_drop", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drop)
-}
-
-// SetActions sets the actions that this drop target supports.
-//
-// The function takes the following parameters:
-//
-//    - actions: supported actions.
-//
-func (self *DropTargetAsync) SetActions(actions gdk.DragAction) {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _arg1 C.GdkDragAction       // out
-
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GdkDragAction(actions)
-
-	C.gtk_drop_target_async_set_actions(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(actions)
 }
 
 // SetFormats sets the data formats that this drop target will accept.
@@ -498,15 +330,18 @@ func (self *DropTargetAsync) SetActions(actions gdk.DragAction) {
 //    - formats (optional): supported data formats or NULL for any format.
 //
 func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
-	var _arg0 *C.GtkDropTargetAsync // out
-	var _arg1 *C.GdkContentFormats  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if formats != nil {
-		_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 	}
+	*(**DropTargetAsync)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_drop_target_async_set_formats(_arg0, _arg1)
+	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("set_formats", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(formats)
 }

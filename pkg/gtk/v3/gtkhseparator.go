@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkhseparator.go.
-var GTypeHSeparator = externglib.Type(C.gtk_hseparator_get_type())
+var GTypeHSeparator = coreglib.Type(C.gtk_hseparator_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeHSeparator, F: marshalHSeparator},
 	})
 }
@@ -45,8 +44,8 @@ type HSeparator struct {
 }
 
 var (
-	_ Widgetter           = (*HSeparator)(nil)
-	_ externglib.Objector = (*HSeparator)(nil)
+	_ Widgetter         = (*HSeparator)(nil)
+	_ coreglib.Objector = (*HSeparator)(nil)
 )
 
 func classInitHSeparatorrer(gclassPtr, data C.gpointer) {
@@ -57,11 +56,11 @@ func classInitHSeparatorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapHSeparator(obj *externglib.Object) *HSeparator {
+func wrapHSeparator(obj *coreglib.Object) *HSeparator {
 	return &HSeparator{
 		Separator: Separator{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -81,7 +80,7 @@ func wrapHSeparator(obj *externglib.Object) *HSeparator {
 }
 
 func marshalHSeparator(p uintptr) (interface{}, error) {
-	return wrapHSeparator(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapHSeparator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewHSeparator creates a new HSeparator.
@@ -93,13 +92,14 @@ func marshalHSeparator(p uintptr) (interface{}, error) {
 //    - hSeparator: new HSeparator.
 //
 func NewHSeparator() *HSeparator {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_hseparator_new()
+	_gret := girepository.MustFind("Gtk", "HSeparator").InvokeMethod("new_HSeparator", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _hSeparator *HSeparator // out
 
-	_hSeparator = wrapHSeparator(externglib.Take(unsafe.Pointer(_cret)))
+	_hSeparator = wrapHSeparator(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hSeparator
 }

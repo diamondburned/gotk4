@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtlsfiledatabase.go.
-var GTypeTLSFileDatabase = externglib.Type(C.g_tls_file_database_get_type())
+var GTypeTLSFileDatabase = coreglib.Type(C.g_tls_file_database_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTLSFileDatabase, F: marshalTLSFileDatabase},
 	})
 }
@@ -45,7 +46,7 @@ var (
 
 // TLSFileDatabaser describes TLSFileDatabase's interface methods.
 type TLSFileDatabaser interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseTLSFileDatabase() *TLSFileDatabase
 }
@@ -55,7 +56,7 @@ var _ TLSFileDatabaser = (*TLSFileDatabase)(nil)
 func ifaceInitTLSFileDatabaser(gifacePtr, data C.gpointer) {
 }
 
-func wrapTLSFileDatabase(obj *externglib.Object) *TLSFileDatabase {
+func wrapTLSFileDatabase(obj *coreglib.Object) *TLSFileDatabase {
 	return &TLSFileDatabase{
 		TLSDatabase: TLSDatabase{
 			Object: obj,
@@ -64,7 +65,7 @@ func wrapTLSFileDatabase(obj *externglib.Object) *TLSFileDatabase {
 }
 
 func marshalTLSFileDatabase(p uintptr) (interface{}, error) {
-	return wrapTLSFileDatabase(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTLSFileDatabase(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *TLSFileDatabase) baseTLSFileDatabase() *TLSFileDatabase {
@@ -90,20 +91,24 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 //    - tlsFileDatabase: new FileDatabase, or NULL on error.
 //
 func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
-	var _arg1 *C.gchar        // out
-	var _cret *C.GTlsDatabase // in
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(anchors)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(anchors)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(anchors)
 
 	var _tlsFileDatabase *TLSFileDatabase // out
 	var _goerr error                      // out
 
-	_tlsFileDatabase = wrapTLSFileDatabase(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsFileDatabase = wrapTLSFileDatabase(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

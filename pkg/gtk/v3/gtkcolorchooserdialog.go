@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcolorchooserdialog.go.
-var GTypeColorChooserDialog = externglib.Type(C.gtk_color_chooser_dialog_get_type())
+var GTypeColorChooserDialog = coreglib.Type(C.gtk_color_chooser_dialog_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeColorChooserDialog, F: marshalColorChooserDialog},
 	})
 }
@@ -36,13 +35,13 @@ type ColorChooserDialog struct {
 	_ [0]func() // equal guard
 	Dialog
 
-	*externglib.Object
+	*coreglib.Object
 	ColorChooser
 }
 
 var (
-	_ externglib.Objector = (*ColorChooserDialog)(nil)
-	_ Binner              = (*ColorChooserDialog)(nil)
+	_ coreglib.Objector = (*ColorChooserDialog)(nil)
+	_ Binner            = (*ColorChooserDialog)(nil)
 )
 
 func classInitColorChooserDialogger(gclassPtr, data C.gpointer) {
@@ -53,14 +52,14 @@ func classInitColorChooserDialogger(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
+func wrapColorChooserDialog(obj *coreglib.Object) *ColorChooserDialog {
 	return &ColorChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
 				Bin: Bin{
 					Container: Container{
 						Widget: Widget{
-							InitiallyUnowned: externglib.InitiallyUnowned{
+							InitiallyUnowned: coreglib.InitiallyUnowned{
 								Object: obj,
 							},
 							Object: obj,
@@ -83,7 +82,7 @@ func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 }
 
 func marshalColorChooserDialog(p uintptr) (interface{}, error) {
-	return wrapColorChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapColorChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewColorChooserDialog creates a new ColorChooserDialog.
@@ -98,25 +97,30 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 //    - colorChooserDialog: new ColorChooserDialog.
 //
 func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
 	if title != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
+		_arg0 = (*C.void)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg0))
 	}
 	if parent != nil {
-		_arg2 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "ColorChooserDialog").InvokeMethod("new_ColorChooserDialog", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(parent)
 
 	var _colorChooserDialog *ColorChooserDialog // out
 
-	_colorChooserDialog = wrapColorChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
+	_colorChooserDialog = wrapColorChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserDialog
 }

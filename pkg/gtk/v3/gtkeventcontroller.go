@@ -7,22 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkeventcontroller.go.
-var GTypeEventController = externglib.Type(C.gtk_event_controller_get_type())
+var GTypeEventController = coreglib.Type(C.gtk_event_controller_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEventController, F: marshalEventController},
 	})
 }
@@ -36,11 +35,11 @@ type EventControllerOverrider interface {
 // consequence of those.
 type EventController struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*EventController)(nil)
+	_ coreglib.Objector = (*EventController)(nil)
 )
 
 // EventControllerer describes types inherited from class EventController.
@@ -48,7 +47,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type EventControllerer interface {
-	externglib.Objector
+	coreglib.Objector
 	baseEventController() *EventController
 }
 
@@ -62,14 +61,14 @@ func classInitEventControllerer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapEventController(obj *externglib.Object) *EventController {
+func wrapEventController(obj *coreglib.Object) *EventController {
 	return &EventController{
 		Object: obj,
 	}
 }
 
 func marshalEventController(p uintptr) (interface{}, error) {
-	return wrapEventController(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEventController(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (controller *EventController) baseEventController() *EventController {
@@ -81,29 +80,6 @@ func BaseEventController(obj EventControllerer) *EventController {
 	return obj.baseEventController()
 }
 
-// PropagationPhase gets the propagation phase at which controller handles
-// events.
-//
-// The function returns the following values:
-//
-//    - propagationPhase: propagation phase.
-//
-func (controller *EventController) PropagationPhase() PropagationPhase {
-	var _arg0 *C.GtkEventController // out
-	var _cret C.GtkPropagationPhase // in
-
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-
-	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
-	runtime.KeepAlive(controller)
-
-	var _propagationPhase PropagationPhase // out
-
-	_propagationPhase = PropagationPhase(_cret)
-
-	return _propagationPhase
-}
-
 // Widget returns the Widget this controller relates to.
 //
 // The function returns the following values:
@@ -111,12 +87,16 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 //    - widget: Widget.
 //
 func (controller *EventController) Widget() Widgetter {
-	var _arg0 *C.GtkEventController // out
-	var _cret *C.GtkWidget          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_event_controller_get_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(controller)
 
 	var _widget Widgetter // out
@@ -127,8 +107,8 @@ func (controller *EventController) Widget() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -155,14 +135,18 @@ func (controller *EventController) Widget() Widgetter {
 //      action.
 //
 func (controller *EventController) HandleEvent(event *gdk.Event) bool {
-	var _arg0 *C.GtkEventController // out
-	var _arg1 *C.GdkEvent           // out
-	var _cret C.gboolean            // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	*(**EventController)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_event_controller_handle_event(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("handle_event", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(event)
 
@@ -179,33 +163,13 @@ func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 // controller did through EventController::handle-event will be dropped at this
 // point.
 func (controller *EventController) Reset() {
-	var _arg0 *C.GtkEventController // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_event_controller_reset(_arg0)
+	girepository.MustFind("Gtk", "EventController").InvokeMethod("reset", args[:], nil)
+
 	runtime.KeepAlive(controller)
-}
-
-// SetPropagationPhase sets the propagation phase at which a controller handles
-// events.
-//
-// If phase is GTK_PHASE_NONE, no automatic event handling will be performed,
-// but other additional gesture maintenance will. In that phase, the events can
-// be managed by calling gtk_event_controller_handle_event().
-//
-// The function takes the following parameters:
-//
-//    - phase: propagation phase.
-//
-func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
-	var _arg0 *C.GtkEventController // out
-	var _arg1 C.GtkPropagationPhase // out
-
-	_arg0 = (*C.GtkEventController)(unsafe.Pointer(externglib.InternObject(controller).Native()))
-	_arg1 = C.GtkPropagationPhase(phase)
-
-	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
-	runtime.KeepAlive(controller)
-	runtime.KeepAlive(phase)
 }

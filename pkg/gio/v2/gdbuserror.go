@@ -7,12 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // DBusErrorEncodeGError creates a D-Bus error name to use for error. If error
@@ -36,14 +36,18 @@ import "C"
 //    - utf8 d-Bus error name (never NULL). Free with g_free().
 //
 func DBusErrorEncodeGError(err error) string {
-	var _arg1 *C.GError // out
-	var _cret *C.gchar  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if err != nil {
-		_arg1 = (*C.GError)(gerror.New(err))
+		_arg0 = (*C.void)(gerror.New(err))
 	}
+	*(*error)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_error_encode_gerror(_arg1)
+	_gret := girepository.MustFind("Gio", "encode_gerror").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(err)
 
 	var _utf8 string // out
@@ -71,14 +75,18 @@ func DBusErrorEncodeGError(err error) string {
 //      not be found. Free with g_free().
 //
 func DBusErrorGetRemoteError(err error) string {
-	var _arg1 *C.GError // out
-	var _cret *C.gchar  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if err != nil {
-		_arg1 = (*C.GError)(gerror.New(err))
+		_arg0 = (*C.void)(gerror.New(err))
 	}
+	*(*error)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_error_get_remote_error(_arg1)
+	_gret := girepository.MustFind("Gio", "get_remote_error").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(err)
 
 	var _utf8 string // out
@@ -105,14 +113,18 @@ func DBusErrorGetRemoteError(err error) string {
 //      otherwise.
 //
 func DBusErrorIsRemoteError(err error) bool {
-	var _arg1 *C.GError  // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	if err != nil {
-		_arg1 = (*C.GError)(gerror.New(err))
+		_arg0 = (*C.void)(gerror.New(err))
 	}
+	*(*error)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_error_is_remote_error(_arg1)
+	_gret := girepository.MustFind("Gio", "is_remote_error").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(err)
 
 	var _ok bool // out
@@ -160,16 +172,21 @@ func DBusErrorIsRemoteError(err error) bool {
 //    - err: allocated #GError. Free with g_error_free().
 //
 func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
-	var _arg1 *C.gchar  // out
-	var _arg2 *C.gchar  // out
-	var _cret *C.GError // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(dbusErrorMessage)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorMessage)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_error_new_for_dbus_error(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "new_for_dbus_error").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(dbusErrorName)
 	runtime.KeepAlive(dbusErrorMessage)
 
@@ -178,84 +195,6 @@ func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 	_err = gerror.Take(unsafe.Pointer(_cret))
 
 	return _err
-}
-
-// DBusErrorRegisterError creates an association to map between dbus_error_name
-// and #GErrors specified by error_domain and error_code.
-//
-// This is typically done in the routine that returns the #GQuark for an error
-// domain.
-//
-// The function takes the following parameters:
-//
-//    - errorDomain for an error domain.
-//    - errorCode: error code.
-//    - dbusErrorName d-Bus error name.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the association was created, FALSE if it already exists.
-//
-func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
-	var _arg1 C.GQuark   // out
-	var _arg2 C.gint     // out
-	var _arg3 *C.gchar   // out
-	var _cret C.gboolean // in
-
-	_arg1 = C.guint32(errorDomain)
-	_arg2 = C.gint(errorCode)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	_cret = C.g_dbus_error_register_error(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(errorDomain)
-	runtime.KeepAlive(errorCode)
-	runtime.KeepAlive(dbusErrorName)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DBusErrorRegisterErrorDomain: helper function for associating a #GError error
-// domain with D-Bus error names.
-//
-// While quark_volatile has a volatile qualifier, this is a historical artifact
-// and the argument passed to it should not be volatile.
-//
-// The function takes the following parameters:
-//
-//    - errorDomainQuarkName: error domain name.
-//    - quarkVolatile: pointer where to store the #GQuark.
-//    - entries: pointer to num_entries BusErrorEntry struct items.
-//
-func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, entries []DBusErrorEntry) {
-	var _arg1 *C.gchar           // out
-	var _arg2 *C.gsize           // out
-	var _arg3 *C.GDBusErrorEntry // out
-	var _arg4 C.guint
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorDomainQuarkName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gsize)(unsafe.Pointer(quarkVolatile))
-	_arg4 = (C.guint)(len(entries))
-	_arg3 = (*C.GDBusErrorEntry)(C.calloc(C.size_t(len(entries)), C.size_t(C.sizeof_GDBusErrorEntry)))
-	defer C.free(unsafe.Pointer(_arg3))
-	{
-		out := unsafe.Slice((*C.GDBusErrorEntry)(_arg3), len(entries))
-		for i := range entries {
-			out[i] = *(*C.GDBusErrorEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
-		}
-	}
-
-	C.g_dbus_error_register_error_domain(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(errorDomainQuarkName)
-	runtime.KeepAlive(quarkVolatile)
-	runtime.KeepAlive(entries)
 }
 
 // DBusErrorStripRemoteError looks for extra information in the error message
@@ -274,53 +213,19 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 //    - ok: TRUE if information was stripped, FALSE otherwise.
 //
 func DBusErrorStripRemoteError(err error) bool {
-	var _arg1 *C.GError  // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	if err != nil {
-		_arg1 = (*C.GError)(gerror.New(err))
+		_arg0 = (*C.void)(gerror.New(err))
 	}
+	*(*error)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_error_strip_remote_error(_arg1)
+	_gret := girepository.MustFind("Gio", "strip_remote_error").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(err)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DBusErrorUnregisterError destroys an association previously set up with
-// g_dbus_error_register_error().
-//
-// The function takes the following parameters:
-//
-//    - errorDomain for an error domain.
-//    - errorCode: error code.
-//    - dbusErrorName d-Bus error name.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the association was destroyed, FALSE if it wasn't found.
-//
-func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
-	var _arg1 C.GQuark   // out
-	var _arg2 C.gint     // out
-	var _arg3 *C.gchar   // out
-	var _cret C.gboolean // in
-
-	_arg1 = C.guint32(errorDomain)
-	_arg2 = C.gint(errorCode)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	_cret = C.g_dbus_error_unregister_error(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(errorDomain)
-	runtime.KeepAlive(errorCode)
-	runtime.KeepAlive(dbusErrorName)
 
 	var _ok bool // out
 

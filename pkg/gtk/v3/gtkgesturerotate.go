@@ -6,22 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_GestureRotate_ConnectAngleChanged(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // glib.Type values for gtkgesturerotate.go.
-var GTypeGestureRotate = externglib.Type(C.gtk_gesture_rotate_get_type())
+var GTypeGestureRotate = coreglib.Type(C.gtk_gesture_rotate_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGestureRotate, F: marshalGestureRotate},
 	})
 }
@@ -50,7 +49,7 @@ func classInitGestureRotater(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
+func wrapGestureRotate(obj *coreglib.Object) *GestureRotate {
 	return &GestureRotate{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -61,14 +60,14 @@ func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 }
 
 func marshalGestureRotate(p uintptr) (interface{}, error) {
-	return wrapGestureRotate(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGestureRotate(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_GestureRotate_ConnectAngleChanged
 func _gotk4_gtk3_GestureRotate_ConnectAngleChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(angle, angleDelta float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -88,8 +87,8 @@ func _gotk4_gtk3_GestureRotate_ConnectAngleChanged(arg0 C.gpointer, arg1 C.gdoub
 
 // ConnectAngleChanged: this signal is emitted when the angle between both
 // tracked points changes.
-func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(gesture, "angle-changed", false, unsafe.Pointer(C._gotk4_gtk3_GestureRotate_ConnectAngleChanged), f)
+func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "angle-changed", false, unsafe.Pointer(C._gotk4_gtk3_GestureRotate_ConnectAngleChanged), f)
 }
 
 // NewGestureRotate returns a newly created Gesture that recognizes 2-touch
@@ -104,17 +103,21 @@ func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float
 //    - gestureRotate: newly created GestureRotate.
 //
 func NewGestureRotate(widget Widgetter) *GestureRotate {
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.GtkGesture // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_gesture_rotate_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("new_GestureRotate", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _gestureRotate *GestureRotate // out
 
-	_gestureRotate = wrapGestureRotate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureRotate = wrapGestureRotate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureRotate
 }
@@ -128,12 +131,16 @@ func NewGestureRotate(widget Widgetter) *GestureRotate {
 //    - gdouble: angle delta in radians.
 //
 func (gesture *GestureRotate) AngleDelta() float64 {
-	var _arg0 *C.GtkGestureRotate // out
-	var _cret C.gdouble           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(externglib.InternObject(gesture).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	*(**GestureRotate)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
+	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("get_angle_delta", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(gesture)
 
 	var _gdouble float64 // out

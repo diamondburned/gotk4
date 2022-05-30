@@ -6,21 +6,22 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern void _gotk4_gtk4_PasswordEntry_ConnectActivate(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkpasswordentry.go.
-var GTypePasswordEntry = externglib.Type(C.gtk_password_entry_get_type())
+var GTypePasswordEntry = coreglib.Type(C.gtk_password_entry_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePasswordEntry, F: marshalPasswordEntry},
 	})
 }
@@ -66,13 +67,13 @@ type PasswordEntry struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Editable
 }
 
 var (
-	_ Widgetter           = (*PasswordEntry)(nil)
-	_ externglib.Objector = (*PasswordEntry)(nil)
+	_ Widgetter         = (*PasswordEntry)(nil)
+	_ coreglib.Objector = (*PasswordEntry)(nil)
 )
 
 func classInitPasswordEntrier(gclassPtr, data C.gpointer) {
@@ -83,10 +84,10 @@ func classInitPasswordEntrier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
+func wrapPasswordEntry(obj *coreglib.Object) *PasswordEntry {
 	return &PasswordEntry{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -103,7 +104,7 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 		Object: obj,
 		Editable: Editable{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -122,14 +123,14 @@ func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 }
 
 func marshalPasswordEntry(p uintptr) (interface{}, error) {
-	return wrapPasswordEntry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPasswordEntry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_PasswordEntry_ConnectActivate
 func _gotk4_gtk4_PasswordEntry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -144,8 +145,8 @@ func _gotk4_gtk4_PasswordEntry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr)
 // ConnectActivate is emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
-func (entry *PasswordEntry) ConnectActivate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk4_PasswordEntry_ConnectActivate), f)
+func (entry *PasswordEntry) ConnectActivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk4_PasswordEntry_ConnectActivate), f)
 }
 
 // NewPasswordEntry creates a GtkPasswordEntry.
@@ -155,13 +156,14 @@ func (entry *PasswordEntry) ConnectActivate(f func()) externglib.SignalHandle {
 //    - passwordEntry: new GtkPasswordEntry.
 //
 func NewPasswordEntry() *PasswordEntry {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_password_entry_new()
+	_gret := girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("new_PasswordEntry", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _passwordEntry *PasswordEntry // out
 
-	_passwordEntry = wrapPasswordEntry(externglib.Take(unsafe.Pointer(_cret)))
+	_passwordEntry = wrapPasswordEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _passwordEntry
 }
@@ -173,12 +175,16 @@ func NewPasswordEntry() *PasswordEntry {
 //    - menuModel: (nullable): the menu model.
 //
 func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
-	var _arg0 *C.GtkPasswordEntry // out
-	var _cret *C.GMenuModel       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**PasswordEntry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
+	_gret := girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("get_extra_menu", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(entry)
 
 	var _menuModel gio.MenuModeller // out
@@ -189,8 +195,8 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 			panic("object of type gio.MenuModeller is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.MenuModeller)
 			return ok
 		})
@@ -212,12 +218,16 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 //    - ok: TRUE if an icon is shown.
 //
 func (entry *PasswordEntry) ShowPeekIcon() bool {
-	var _arg0 *C.GtkPasswordEntry // out
-	var _cret C.gboolean          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**PasswordEntry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
+	_gret := girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("get_show_peek_icon", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out
@@ -237,15 +247,18 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 //    - model (optional): GMenuModel.
 //
 func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
-	var _arg0 *C.GtkPasswordEntry // out
-	var _arg1 *C.GMenuModel       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if model != nil {
-		_arg1 = (*C.GMenuModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
+	*(**PasswordEntry)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
+	girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("set_extra_menu", args[:], nil)
+
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(model)
 }
@@ -260,15 +273,18 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 //    - showPeekIcon: whether to show the peek icon.
 //
 func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
-	var _arg0 *C.GtkPasswordEntry // out
-	var _arg1 C.gboolean          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(externglib.InternObject(entry).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if showPeekIcon {
 		_arg1 = C.TRUE
 	}
+	*(**PasswordEntry)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)
+	girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("set_show_peek_icon", args[:], nil)
+
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(showPeekIcon)
 }

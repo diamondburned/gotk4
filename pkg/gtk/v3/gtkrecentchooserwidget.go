@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkrecentchooserwidget.go.
-var GTypeRecentChooserWidget = externglib.Type(C.gtk_recent_chooser_widget_get_type())
+var GTypeRecentChooserWidget = coreglib.Type(C.gtk_recent_chooser_widget_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRecentChooserWidget, F: marshalRecentChooserWidget},
 	})
 }
@@ -43,13 +42,13 @@ type RecentChooserWidget struct {
 	_ [0]func() // equal guard
 	Box
 
-	*externglib.Object
+	*coreglib.Object
 	RecentChooser
 }
 
 var (
-	_ externglib.Objector = (*RecentChooserWidget)(nil)
-	_ Containerer         = (*RecentChooserWidget)(nil)
+	_ coreglib.Objector = (*RecentChooserWidget)(nil)
+	_ Containerer       = (*RecentChooserWidget)(nil)
 )
 
 func classInitRecentChooserWidgetter(gclassPtr, data C.gpointer) {
@@ -60,12 +59,12 @@ func classInitRecentChooserWidgetter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
+func wrapRecentChooserWidget(obj *coreglib.Object) *RecentChooserWidget {
 	return &RecentChooserWidget{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -90,7 +89,7 @@ func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 }
 
 func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
-	return wrapRecentChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRecentChooserWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRecentChooserWidget creates a new RecentChooserWidget object. This is an
@@ -101,13 +100,14 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 //    - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidget() *RecentChooserWidget {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_recent_chooser_widget_new()
+	_gret := girepository.MustFind("Gtk", "RecentChooserWidget").InvokeMethod("new_RecentChooserWidget", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = wrapRecentChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }
@@ -127,17 +127,21 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 //    - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
-	var _arg1 *C.GtkRecentManager // out
-	var _cret *C.GtkWidget        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**RecentManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
+	_gret := girepository.MustFind("Gtk", "RecentChooserWidget").InvokeMethod("new_RecentChooserWidget_for_manager", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(manager)
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = wrapRecentChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }

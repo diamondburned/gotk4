@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkdrawingarea.go.
-var GTypeDrawingArea = externglib.Type(C.gtk_drawing_area_get_type())
+var GTypeDrawingArea = coreglib.Type(C.gtk_drawing_area_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDrawingArea, F: marshalDrawingArea},
 	})
 }
@@ -122,10 +121,10 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
+func wrapDrawingArea(obj *coreglib.Object) *DrawingArea {
 	return &DrawingArea{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -140,7 +139,7 @@ func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 }
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
-	return wrapDrawingArea(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDrawingArea(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewDrawingArea creates a new drawing area.
@@ -150,13 +149,14 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 //    - drawingArea: new DrawingArea.
 //
 func NewDrawingArea() *DrawingArea {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_drawing_area_new()
+	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("new_DrawingArea", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _drawingArea *DrawingArea // out
 
-	_drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(_cret)))
+	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
 }

@@ -9,21 +9,20 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gsocket.go.
-var GTypeSocket = externglib.Type(C.g_socket_get_type())
+var GTypeSocket = coreglib.Type(C.g_socket_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSocket, F: marshalSocket},
 	})
 }
@@ -83,14 +82,14 @@ type SocketOverrider interface {
 // locking.
 type Socket struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	DatagramBased
 	Initable
 }
 
 var (
-	_ externglib.Objector = (*Socket)(nil)
+	_ coreglib.Objector = (*Socket)(nil)
 )
 
 func classInitSocketter(gclassPtr, data C.gpointer) {
@@ -101,7 +100,7 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSocket(obj *externglib.Object) *Socket {
+func wrapSocket(obj *coreglib.Object) *Socket {
 	return &Socket{
 		Object: obj,
 		DatagramBased: DatagramBased{
@@ -114,56 +113,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 }
 
 func marshalSocket(p uintptr) (interface{}, error) {
-	return wrapSocket(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewSocket creates a new #GSocket with the defined family, type and protocol.
-// If protocol is 0 (G_SOCKET_PROTOCOL_DEFAULT) the default protocol type for
-// the family and type is used.
-//
-// The protocol is a family and type specific int that specifies what kind of
-// protocol to use. Protocol lists several common ones. Many families only
-// support one protocol, and use 0 for this, others support several and using 0
-// means to use the default protocol for the family and type.
-//
-// The protocol id is passed directly to the operating system, so you can use
-// protocols not listed in Protocol if you know the protocol number used for it.
-//
-// The function takes the following parameters:
-//
-//    - family: socket family to use, e.g. G_SOCKET_FAMILY_IPV4.
-//    - typ: socket type to use.
-//    - protocol: id of the protocol to use, or 0 for default.
-//
-// The function returns the following values:
-//
-//    - socket or NULL on error. Free the returned object with g_object_unref().
-//
-func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*Socket, error) {
-	var _arg1 C.GSocketFamily   // out
-	var _arg2 C.GSocketType     // out
-	var _arg3 C.GSocketProtocol // out
-	var _cret *C.GSocket        // in
-	var _cerr *C.GError         // in
-
-	_arg1 = C.GSocketFamily(family)
-	_arg2 = C.GSocketType(typ)
-	_arg3 = C.GSocketProtocol(protocol)
-
-	_cret = C.g_socket_new(_arg1, _arg2, _arg3, &_cerr)
-	runtime.KeepAlive(family)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(protocol)
-
-	var _socket *Socket // out
-	var _goerr error    // out
-
-	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _socket, _goerr
+	return wrapSocket(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocketFromFd creates a new #GSocket from a native file descriptor or
@@ -188,19 +138,23 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 //    - socket or NULL on error. Free the returned object with g_object_unref().
 //
 func NewSocketFromFd(fd int) (*Socket, error) {
-	var _arg1 C.gint     // out
-	var _cret *C.GSocket // in
-	var _cerr *C.GError  // in
+	var args [1]girepository.Argument
+	var _arg0 C.gint  // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = C.gint(fd)
+	_arg0 = C.gint(fd)
+	*(*int)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_new_from_fd(_arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("new_Socket_from_fd", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(fd)
 
 	var _socket *Socket // out
 	var _goerr error    // out
 
-	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -229,26 +183,30 @@ func NewSocketFromFd(fd int) (*Socket, error) {
 //      g_object_unref().
 //
 func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
-	var _arg0 *C.GSocket      // out
-	var _arg1 *C.GCancellable // out
-	var _cret *C.GSocket      // in
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_socket_accept(_arg0, _arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("accept", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 
 	var _ret *Socket // out
 	var _goerr error // out
 
-	_ret = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -285,18 +243,22 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 //    - allowReuse: whether to allow reusing this address.
 //
 func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
-	var _arg0 *C.GSocket        // out
-	var _arg1 *C.GSocketAddress // out
-	var _arg2 C.gboolean        // out
-	var _cerr *C.GError         // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
+	var _cerr *C.void    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 	if allowReuse {
 		_arg2 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*SocketAddresser)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_socket_bind(_arg0, _arg1, _arg2, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("bind", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(allowReuse)
@@ -314,12 +276,15 @@ func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 // socket. This is used to check for errors when g_socket_connect() is used in
 // non-blocking mode.
 func (socket *Socket) CheckConnectResult() error {
-	var _arg0 *C.GSocket // out
-	var _cerr *C.GError  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_socket_check_connect_result(_arg0, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("check_connect_result", args[:], nil)
+
 	runtime.KeepAlive(socket)
 
 	var _goerr error // out
@@ -358,151 +323,16 @@ func (socket *Socket) CheckConnectResult() error {
 // of course, this only works if the client will close its connection after the
 // server does.).
 func (socket *Socket) Close() error {
-	var _arg0 *C.GSocket // out
-	var _cerr *C.GError  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_socket_close(_arg0, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("close", args[:], nil)
+
 	runtime.KeepAlive(socket)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
-
-// ConditionCheck checks on the readiness of socket to perform operations. The
-// operations specified in condition are checked for and masked against the
-// currently-satisfied conditions on socket. The result is returned.
-//
-// Note that on Windows, it is possible for an operation to return
-// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check() has
-// claimed that the socket is ready for writing. Rather than calling
-// g_socket_condition_check() and then writing to the socket if it succeeds, it
-// is generally better to simply try writing to the socket right away, and try
-// again later if the initial attempt returns G_IO_ERROR_WOULD_BLOCK.
-//
-// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
-// conditions will always be set in the output if they are true.
-//
-// This call never blocks.
-//
-// The function takes the following parameters:
-//
-//    - condition mask to check.
-//
-// The function returns the following values:
-//
-//    - ioCondition: GIOCondition mask of the current state.
-//
-func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
-	var _arg0 *C.GSocket     // out
-	var _arg1 C.GIOCondition // out
-	var _cret C.GIOCondition // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = C.GIOCondition(condition)
-
-	_cret = C.g_socket_condition_check(_arg0, _arg1)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(condition)
-
-	var _ioCondition glib.IOCondition // out
-
-	_ioCondition = glib.IOCondition(_cret)
-
-	return _ioCondition
-}
-
-// ConditionTimedWait waits for up to timeout_us microseconds for condition to
-// become true on socket. If the condition is met, TRUE is returned.
-//
-// If cancellable is cancelled before the condition is met, or if timeout_us (or
-// the socket's #GSocket:timeout) is reached before the condition is met, then
-// FALSE is returned and error, if non-NULL, is set to the appropriate value
-// (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-//
-// If you don't want a timeout, use g_socket_condition_wait(). (Alternatively,
-// you can pass -1 for timeout_us.)
-//
-// Note that although timeout_us is in microseconds for consistency with other
-// GLib APIs, this function actually only has millisecond resolution, and the
-// behavior is undefined if timeout_us is not an exact number of milliseconds.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - condition mask to wait for.
-//    - timeoutUs: maximum time (in microseconds) to wait, or -1.
-//
-func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOCondition, timeoutUs int64) error {
-	var _arg0 *C.GSocket      // out
-	var _arg3 *C.GCancellable // out
-	var _arg1 C.GIOCondition  // out
-	var _arg2 C.gint64        // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GIOCondition(condition)
-	_arg2 = C.gint64(timeoutUs)
-
-	C.g_socket_condition_timed_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(condition)
-	runtime.KeepAlive(timeoutUs)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
-
-// ConditionWait waits for condition to become true on socket. When the
-// condition is met, TRUE is returned.
-//
-// If cancellable is cancelled before the condition is met, or if the socket has
-// a timeout set and it is reached before the condition is met, then FALSE is
-// returned and error, if non-NULL, is set to the appropriate value
-// (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-//
-// See also g_socket_condition_timed_wait().
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - condition mask to wait for.
-//
-func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondition) error {
-	var _arg0 *C.GSocket      // out
-	var _arg2 *C.GCancellable // out
-	var _arg1 C.GIOCondition  // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GIOCondition(condition)
-
-	C.g_socket_condition_wait(_arg0, _arg1, _arg2, &_cerr)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(condition)
 
 	var _goerr error // out
 
@@ -536,20 +366,24 @@ func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondit
 //    - address specifying the remote address.
 //
 func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser) error {
-	var _arg0 *C.GSocket        // out
-	var _arg2 *C.GCancellable   // out
-	var _arg1 *C.GSocketAddress // out
-	var _cerr *C.GError         // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg2 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_socket_connect(_arg0, _arg1, _arg2, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("connect", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -581,12 +415,16 @@ func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser
 //      or truncating, or -1 on error.
 //
 func (socket *Socket) AvailableBytes() int {
-	var _arg0 *C.GSocket // out
-	var _cret C.gssize   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.gssize // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_available_bytes(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_available_bytes", args[:], nil)
+	_cret = *(*C.gssize)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _gssize int // out
@@ -604,12 +442,16 @@ func (socket *Socket) AvailableBytes() int {
 //    - ok: TRUE if blocking I/O is used, FALSE otherwise.
 //
 func (socket *Socket) Blocking() bool {
-	var _arg0 *C.GSocket // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_blocking(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_blocking", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -629,12 +471,16 @@ func (socket *Socket) Blocking() bool {
 //    - ok: broadcast setting on socket.
 //
 func (socket *Socket) Broadcast() bool {
-	var _arg0 *C.GSocket // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_broadcast(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_broadcast", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -675,71 +521,28 @@ func (socket *Socket) Broadcast() bool {
 //      must be freed with g_object_unref().
 //
 func (socket *Socket) Credentials() (*Credentials, error) {
-	var _arg0 *C.GSocket      // out
-	var _cret *C.GCredentials // in
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_credentials(_arg0, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_credentials", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _credentials *Credentials // out
 	var _goerr error              // out
 
-	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_credentials = wrapCredentials(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _credentials, _goerr
-}
-
-// Family gets the socket family of the socket.
-//
-// The function returns the following values:
-//
-//    - socketFamily: Family.
-//
-func (socket *Socket) Family() SocketFamily {
-	var _arg0 *C.GSocket      // out
-	var _cret C.GSocketFamily // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-
-	_cret = C.g_socket_get_family(_arg0)
-	runtime.KeepAlive(socket)
-
-	var _socketFamily SocketFamily // out
-
-	_socketFamily = SocketFamily(_cret)
-
-	return _socketFamily
-}
-
-// Fd returns the underlying OS socket object. On unix this is a socket file
-// descriptor, and on Windows this is a Winsock2 SOCKET handle. This may be
-// useful for doing platform specific or otherwise unusual operations on the
-// socket.
-//
-// The function returns the following values:
-//
-//    - gint: file descriptor of the socket.
-//
-func (socket *Socket) Fd() int {
-	var _arg0 *C.GSocket // out
-	var _cret C.int      // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-
-	_cret = C.g_socket_get_fd(_arg0)
-	runtime.KeepAlive(socket)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // Keepalive gets the keepalive mode of the socket. For details on this, see
@@ -750,12 +553,16 @@ func (socket *Socket) Fd() int {
 //    - ok: TRUE if keepalive is active, FALSE otherwise.
 //
 func (socket *Socket) Keepalive() bool {
-	var _arg0 *C.GSocket // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_keepalive(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_keepalive", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -775,12 +582,16 @@ func (socket *Socket) Keepalive() bool {
 //    - gint: maximum number of pending connections.
 //
 func (socket *Socket) ListenBacklog() int {
-	var _arg0 *C.GSocket // out
-	var _cret C.gint     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_listen_backlog(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_listen_backlog", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _gint int // out
@@ -800,13 +611,17 @@ func (socket *Socket) ListenBacklog() int {
 //      g_object_unref().
 //
 func (socket *Socket) LocalAddress() (SocketAddresser, error) {
-	var _arg0 *C.GSocket        // out
-	var _cret *C.GSocketAddress // in
-	var _cerr *C.GError         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_local_address(_arg0, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_local_address", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _socketAddress SocketAddresser // out
@@ -818,8 +633,8 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 			panic("object of type gio.SocketAddresser is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(SocketAddresser)
 			return ok
 		})
@@ -845,12 +660,16 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 //    - ok: multicast loopback setting on socket.
 //
 func (socket *Socket) MulticastLoopback() bool {
-	var _arg0 *C.GSocket // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_multicast_loopback(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_multicast_loopback", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -870,12 +689,16 @@ func (socket *Socket) MulticastLoopback() bool {
 //    - guint: multicast time-to-live setting on socket.
 //
 func (socket *Socket) MulticastTTL() uint {
-	var _arg0 *C.GSocket // out
-	var _cret C.guint    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_multicast_ttl(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_multicast_ttl", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _guint uint // out
@@ -883,78 +706,6 @@ func (socket *Socket) MulticastTTL() uint {
 	_guint = uint(_cret)
 
 	return _guint
-}
-
-// Option gets the value of an integer-valued option on socket, as with
-// getsockopt(). (If you need to fetch a non-integer-valued option, you will
-// need to call getsockopt() directly.)
-//
-// The [<gio/gnetworking.h>][gio-gnetworking.h] header pulls in system headers
-// that will define most of the standard/portable socket options. For unusual
-// socket protocols or platform-dependent options, you may need to include
-// additional headers.
-//
-// Note that even for socket options that are a single byte in size, value is
-// still a pointer to a #gint variable, not a #guchar; g_socket_get_option()
-// will handle the conversion internally.
-//
-// The function takes the following parameters:
-//
-//    - level: "API level" of the option (eg, SOL_SOCKET).
-//    - optname: "name" of the option (eg, SO_BROADCAST).
-//
-// The function returns the following values:
-//
-//    - value: return location for the option value.
-//
-func (socket *Socket) Option(level, optname int) (int, error) {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _arg3 C.gint     // in
-	var _cerr *C.GError  // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = C.gint(level)
-	_arg2 = C.gint(optname)
-
-	C.g_socket_get_option(_arg0, _arg1, _arg2, &_arg3, &_cerr)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(level)
-	runtime.KeepAlive(optname)
-
-	var _value int   // out
-	var _goerr error // out
-
-	_value = int(_arg3)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _value, _goerr
-}
-
-// Protocol gets the socket protocol id the socket was created with. In case the
-// protocol is unknown, -1 is returned.
-//
-// The function returns the following values:
-//
-//    - socketProtocol: protocol id, or -1 if unknown.
-//
-func (socket *Socket) Protocol() SocketProtocol {
-	var _arg0 *C.GSocket        // out
-	var _cret C.GSocketProtocol // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-
-	_cret = C.g_socket_get_protocol(_arg0)
-	runtime.KeepAlive(socket)
-
-	var _socketProtocol SocketProtocol // out
-
-	_socketProtocol = SocketProtocol(_cret)
-
-	return _socketProtocol
 }
 
 // RemoteAddress: try to get the remote address of a connected socket. This is
@@ -966,13 +717,17 @@ func (socket *Socket) Protocol() SocketProtocol {
 //      g_object_unref().
 //
 func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
-	var _arg0 *C.GSocket        // out
-	var _cret *C.GSocketAddress // in
-	var _cerr *C.GError         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_remote_address(_arg0, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_remote_address", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _socketAddress SocketAddresser // out
@@ -984,8 +739,8 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 			panic("object of type gio.SocketAddresser is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(SocketAddresser)
 			return ok
 		})
@@ -1002,28 +757,6 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 	return _socketAddress, _goerr
 }
 
-// SocketType gets the socket type of the socket.
-//
-// The function returns the following values:
-//
-//    - socketType: Type.
-//
-func (socket *Socket) SocketType() SocketType {
-	var _arg0 *C.GSocket    // out
-	var _cret C.GSocketType // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-
-	_cret = C.g_socket_get_socket_type(_arg0)
-	runtime.KeepAlive(socket)
-
-	var _socketType SocketType // out
-
-	_socketType = SocketType(_cret)
-
-	return _socketType
-}
-
 // Timeout gets the timeout setting of the socket. For details on this, see
 // g_socket_set_timeout().
 //
@@ -1032,12 +765,16 @@ func (socket *Socket) SocketType() SocketType {
 //    - guint: timeout in seconds.
 //
 func (socket *Socket) Timeout() uint {
-	var _arg0 *C.GSocket // out
-	var _cret C.guint    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_timeout(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_timeout", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _guint uint // out
@@ -1055,12 +792,16 @@ func (socket *Socket) Timeout() uint {
 //    - guint: time-to-live setting on socket.
 //
 func (socket *Socket) TTL() uint {
-	var _arg0 *C.GSocket // out
-	var _cret C.guint    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_get_ttl(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_ttl", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _guint uint // out
@@ -1077,12 +818,16 @@ func (socket *Socket) TTL() uint {
 //    - ok: TRUE if socket is closed, FALSE otherwise.
 //
 func (socket *Socket) IsClosed() bool {
-	var _arg0 *C.GSocket // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_is_closed(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("is_closed", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -1107,12 +852,16 @@ func (socket *Socket) IsClosed() bool {
 //    - ok: TRUE if socket is connected, FALSE otherwise.
 //
 func (socket *Socket) IsConnected() bool {
-	var _arg0 *C.GSocket // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_is_connected(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("is_connected", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out
@@ -1145,23 +894,28 @@ func (socket *Socket) IsConnected() bool {
 //    - iface (optional): name of the interface to use, or NULL.
 //
 func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
-	var _arg0 *C.GSocket      // out
-	var _arg1 *C.GInetAddress // out
-	var _arg2 C.gboolean      // out
-	var _arg3 *C.gchar        // out
-	var _cerr *C.GError       // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
+	var _arg3 *C.void    // out
+	var _cerr *C.void    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
 	if iface != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		_arg3 = (*C.void)(unsafe.Pointer(C.CString(iface)))
 		defer C.free(unsafe.Pointer(_arg3))
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(**InetAddress)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_socket_join_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("join_multicast_group", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(sourceSpecific)
@@ -1199,23 +953,28 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 //    - iface (optional): name of the interface to use, or NULL.
 //
 func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
-	var _arg0 *C.GSocket      // out
-	var _arg1 *C.GInetAddress // out
-	var _arg2 *C.GInetAddress // out
-	var _arg3 *C.gchar        // out
-	var _cerr *C.GError       // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if sourceSpecific != nil {
-		_arg2 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(sourceSpecific).Native()))
+		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sourceSpecific).Native()))
 	}
 	if iface != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		_arg3 = (*C.void)(unsafe.Pointer(C.CString(iface)))
 		defer C.free(unsafe.Pointer(_arg3))
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(**InetAddress)(unsafe.Pointer(&args[2])) = _arg2
+	*(**InetAddress)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_socket_join_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("join_multicast_group_ssm", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(sourceSpecific)
@@ -1247,23 +1006,28 @@ func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, 
 //    - iface (optional): interface used.
 //
 func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
-	var _arg0 *C.GSocket      // out
-	var _arg1 *C.GInetAddress // out
-	var _arg2 C.gboolean      // out
-	var _arg3 *C.gchar        // out
-	var _cerr *C.GError       // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
+	var _arg3 *C.void    // out
+	var _cerr *C.void    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if sourceSpecific {
 		_arg2 = C.TRUE
 	}
 	if iface != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		_arg3 = (*C.void)(unsafe.Pointer(C.CString(iface)))
 		defer C.free(unsafe.Pointer(_arg3))
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(**InetAddress)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_socket_leave_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("leave_multicast_group", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(sourceSpecific)
@@ -1293,23 +1057,28 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 //    - iface (optional): name of the interface to use, or NULL.
 //
 func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
-	var _arg0 *C.GSocket      // out
-	var _arg1 *C.GInetAddress // out
-	var _arg2 *C.GInetAddress // out
-	var _arg3 *C.gchar        // out
-	var _cerr *C.GError       // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(group).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if sourceSpecific != nil {
-		_arg2 = (*C.GInetAddress)(unsafe.Pointer(externglib.InternObject(sourceSpecific).Native()))
+		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sourceSpecific).Native()))
 	}
 	if iface != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		_arg3 = (*C.void)(unsafe.Pointer(C.CString(iface)))
 		defer C.free(unsafe.Pointer(_arg3))
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(**InetAddress)(unsafe.Pointer(&args[2])) = _arg2
+	*(**InetAddress)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_socket_leave_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("leave_multicast_group_ssm", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(sourceSpecific)
@@ -1333,12 +1102,15 @@ func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress,
 // To set the maximum amount of outstanding clients, use
 // g_socket_set_listen_backlog().
 func (socket *Socket) Listen() error {
-	var _arg0 *C.GSocket // out
-	var _cerr *C.GError  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_socket_listen(_arg0, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("listen", args[:], nil)
+
 	runtime.KeepAlive(socket)
 
 	var _goerr error // out
@@ -1384,24 +1156,30 @@ func (socket *Socket) Listen() error {
 //      peer, or -1 on error.
 //
 func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
-	var _arg0 *C.GSocket      // out
-	var _arg3 *C.GCancellable // out
-	var _arg1 *C.gchar        // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg3 *C.void // out
+	var _arg1 *C.void // out
 	var _arg2 C.gsize
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
+	var _cret C.gssize // in
+	var _cerr *C.void  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(C.CBytes(buffer))
+	_arg1 = (*C.void)(C.CBytes(buffer))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
+	*(*[]byte)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.g_socket_receive(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("receive", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -1437,25 +1215,32 @@ func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 //      peer, or -1 on error.
 //
 func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAddresser, int, error) {
-	var _arg0 *C.GSocket        // out
-	var _arg4 *C.GCancellable   // out
-	var _arg1 *C.GSocketAddress // in
-	var _arg2 *C.gchar          // out
-	var _arg3 C.gsize
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
+	var args [4]girepository.Argument
+	var outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg3 *C.void // out
+	var _out0 *C.void // in
+	var _arg1 *C.void // out
+	var _arg2 C.gsize
+	var _cret C.gssize // in
+	var _cerr *C.void  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg3 = (C.gsize)(len(buffer))
-	_arg2 = (*C.gchar)(C.CBytes(buffer))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg2 = (C.gsize)(len(buffer))
+	_arg1 = (*C.void)(C.CBytes(buffer))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
+	*(*context.Context)(unsafe.Pointer(&args[1])) = _arg1
+	*(*[]byte)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.g_socket_receive_from(_arg0, &_arg1, _arg2, _arg3, _arg4, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("receive_from", args[:], outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -1463,13 +1248,14 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 	var _address SocketAddresser // out
 	var _gssize int              // out
 	var _goerr error             // out
+	_out2 = *(*SocketAddresser)(unsafe.Pointer(&outs[2]))
 
-	if _arg1 != nil {
+	if _out0 != nil {
 		{
-			objptr := unsafe.Pointer(_arg1)
+			objptr := unsafe.Pointer(_out0)
 
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(SocketAddresser)
 				return ok
 			})
@@ -1486,112 +1272,6 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 	}
 
 	return _address, _gssize, _goerr
-}
-
-// ReceiveMessages: receive multiple data messages from socket in one go. This
-// is the most complicated and fully-featured version of this call. For easier
-// use, see g_socket_receive(), g_socket_receive_from(), and
-// g_socket_receive_message().
-//
-// messages must point to an array of Message structs and num_messages must be
-// the length of this array. Each Message contains a pointer to an array of
-// Vector structs describing the buffers that the data received in each message
-// will be written to. Using multiple Vectors is more memory-efficient than
-// manually copying data out of a single buffer to multiple sources, and more
-// system-call-efficient than making multiple calls to g_socket_receive(), such
-// as in scenarios where a lot of data packets need to be received (e.g.
-// high-bandwidth video streaming over RTP/UDP).
-//
-// flags modify how all messages are received. The commonly available arguments
-// for this are available in the MsgFlags enum, but the values there are the
-// same as the system values, and the flags are passed in as-is, so you can pass
-// in system-specific flags too. These flags affect the overall receive
-// operation. Flags affecting individual messages are returned in Message.flags.
-//
-// The other members of Message are treated as described in its documentation.
-//
-// If #GSocket:blocking is TRUE the call will block until num_messages have been
-// received, or the end of the stream is reached.
-//
-// If #GSocket:blocking is FALSE the call will return up to num_messages without
-// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
-// operating system to be received.
-//
-// In blocking mode, if #GSocket:timeout is positive and is reached before any
-// messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up to
-// num_messages are returned. (Note: This is effectively the behaviour of
-// MSG_WAITFORONE with recvmmsg().)
-//
-// To be notified when messages are available, wait for the G_IO_IN condition.
-// Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
-// g_socket_receive_messages() even if you were previously notified of a G_IO_IN
-// condition.
-//
-// If the remote peer closes the connection, any messages queued in the
-// operating system will be returned, and subsequent calls to
-// g_socket_receive_messages() will return 0 (with no error set).
-//
-// On error -1 is returned and error is set accordingly. An error will only be
-// returned if zero messages could be received; otherwise the number of messages
-// successfully received before the error will be returned.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): GCancellable or NULL.
-//    - messages: array of Message structs.
-//    - flags: int containing MsgFlags flags for the overall operation, which may
-//      additionally contain other platform specific flags
-//      (http://man7.org/linux/man-pages/man2/recv.2.html).
-//
-// The function returns the following values:
-//
-//    - gint: number of messages received, or -1 on error. Note that the number
-//      of messages received may be smaller than num_messages if in non-blocking
-//      mode, if the peer closed the connection, or if num_messages was larger
-//      than UIO_MAXIOV (1024), in which case the caller may re-try to receive
-//      the remaining messages.
-//
-func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int) (int, error) {
-	var _arg0 *C.GSocket       // out
-	var _arg4 *C.GCancellable  // out
-	var _arg1 *C.GInputMessage // out
-	var _arg2 C.guint
-	var _arg3 C.gint    // out
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg2 = (C.guint)(len(messages))
-	_arg1 = (*C.GInputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GInputMessage)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.GInputMessage)(_arg1), len(messages))
-		for i := range messages {
-			out[i] = *(*C.GInputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
-		}
-	}
-	_arg3 = C.gint(flags)
-
-	_cret = C.g_socket_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(messages)
-	runtime.KeepAlive(flags)
-
-	var _gint int    // out
-	var _goerr error // out
-
-	_gint = int(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _gint, _goerr
 }
 
 // ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
@@ -1611,28 +1291,35 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 //      peer, or -1 on error.
 //
 func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
-	var _arg0 *C.GSocket      // out
-	var _arg4 *C.GCancellable // out
-	var _arg1 *C.gchar        // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg4 *C.void // out
+	var _arg1 *C.void // out
 	var _arg2 C.gsize
 	var _arg3 C.gboolean // out
 	var _cret C.gssize   // in
-	var _cerr *C.GError  // in
+	var _cerr *C.void    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(C.CBytes(buffer))
+	_arg1 = (*C.void)(C.CBytes(buffer))
 	defer C.free(unsafe.Pointer(_arg1))
 	if blocking {
 		_arg3 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
+	*(*[]byte)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	_cret = C.g_socket_receive_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("receive_with_blocking", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -1675,25 +1362,31 @@ func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, bl
 //      error.
 //
 func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
-	var _arg0 *C.GSocket      // out
-	var _arg3 *C.GCancellable // out
-	var _arg1 *C.gchar        // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg3 *C.void // out
+	var _arg1 *C.void // out
 	var _arg2 C.gsize
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
+	var _cret C.gssize // in
+	var _cerr *C.void  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
+	_arg1 = (*C.void)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.g_socket_send(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("send", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -1707,311 +1400,6 @@ func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 	}
 
 	return _gssize, _goerr
-}
-
-// SendMessage: send data to address on socket. For sending multiple messages
-// see g_socket_send_messages(); for easier use, see g_socket_send() and
-// g_socket_send_to().
-//
-// If address is NULL then the message is sent to the default receiver (set by
-// g_socket_connect()).
-//
-// vectors must point to an array of Vector structs and num_vectors must be the
-// length of this array. (If num_vectors is -1, then vectors is assumed to be
-// terminated by a Vector with a NULL buffer pointer.) The Vector structs
-// describe the buffers that the sent data will be gathered from. Using multiple
-// Vectors is more memory-efficient than manually copying data from multiple
-// sources into a single buffer, and more network-efficient than making multiple
-// calls to g_socket_send().
-//
-// messages, if non-NULL, is taken to point to an array of num_messages
-// ControlMessage instances. These correspond to the control messages to be sent
-// on the socket. If num_messages is -1 then messages is treated as a
-// NULL-terminated array.
-//
-// flags modify how the message is sent. The commonly available arguments for
-// this are available in the MsgFlags enum, but the values there are the same as
-// the system values, and the flags are passed in as-is, so you can pass in
-// system-specific flags too.
-//
-// If the socket is in blocking mode the call will block until there is space
-// for the data in the socket queue. If there is no space available and the
-// socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error will be
-// returned. To be notified when space is available, wait for the G_IO_OUT
-// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
-// g_socket_send() even if you were previously notified of a G_IO_OUT condition.
-// (On Windows in particular, this is very common due to the way the underlying
-// APIs work.)
-//
-// The sum of the sizes of each Vector in vectors must not be greater than
-// G_MAXSSIZE. If the message can be larger than this, then it is mandatory to
-// use the g_socket_send_message_with_timeout() function.
-//
-// On error -1 is returned and error is set accordingly.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): GCancellable or NULL.
-//    - address (optional) or NULL.
-//    - vectors: array of Vector structs.
-//    - messages (optional): pointer to an array of ControlMessages, or NULL.
-//    - flags: int containing MsgFlags flags, which may additionally contain
-//      other platform specific flags
-//      (http://man7.org/linux/man-pages/man2/recv.2.html).
-//
-// The function returns the following values:
-//
-//    - gssize: number of bytes written (which may be less than size), or -1 on
-//      error.
-//
-func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int) (int, error) {
-	var _arg0 *C.GSocket        // out
-	var _arg7 *C.GCancellable   // out
-	var _arg1 *C.GSocketAddress // out
-	var _arg2 *C.GOutputVector  // out
-	var _arg3 C.gint
-	var _arg4 **C.GSocketControlMessage // out
-	var _arg5 C.gint
-	var _arg6 C.gint    // out
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if address != nil {
-		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
-	}
-	_arg3 = (C.gint)(len(vectors))
-	_arg2 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.GOutputVector)(_arg2), len(vectors))
-		for i := range vectors {
-			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
-		}
-	}
-	if messages != nil {
-		_arg5 = (C.gint)(len(messages))
-		_arg4 = (**C.GSocketControlMessage)(C.calloc(C.size_t(len(messages)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg4))
-		{
-			out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
-			for i := range messages {
-				out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(messages[i]).Native()))
-			}
-		}
-	}
-	_arg6 = C.gint(flags)
-
-	_cret = C.g_socket_send_message(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(address)
-	runtime.KeepAlive(vectors)
-	runtime.KeepAlive(messages)
-	runtime.KeepAlive(flags)
-
-	var _gssize int  // out
-	var _goerr error // out
-
-	_gssize = int(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _gssize, _goerr
-}
-
-// SendMessageWithTimeout: this behaves exactly the same as
-// g_socket_send_message(), except that the choice of timeout behavior is
-// determined by the timeout_us argument rather than by socket's properties.
-//
-// On error G_POLLABLE_RETURN_FAILED is returned and error is set accordingly,
-// or if the socket is currently not writable G_POLLABLE_RETURN_WOULD_BLOCK is
-// returned. bytes_written will contain 0 in both cases.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): GCancellable or NULL.
-//    - address (optional) or NULL.
-//    - vectors: array of Vector structs.
-//    - messages (optional): pointer to an array of ControlMessages, or NULL.
-//    - flags: int containing MsgFlags flags, which may additionally contain
-//      other platform specific flags
-//      (http://man7.org/linux/man-pages/man2/recv.2.html).
-//    - timeoutUs: maximum time (in microseconds) to wait, or -1.
-//
-// The function returns the following values:
-//
-//    - bytesWritten (optional): location to store the number of bytes that were
-//      written to the socket.
-//    - pollableReturn: G_POLLABLE_RETURN_OK if all data was successfully
-//      written, G_POLLABLE_RETURN_WOULD_BLOCK if the socket is currently not
-//      writable, or G_POLLABLE_RETURN_FAILED if an error happened and error is
-//      set.
-//
-func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int, timeoutUs int64) (uint, PollableReturn, error) {
-	var _arg0 *C.GSocket        // out
-	var _arg9 *C.GCancellable   // out
-	var _arg1 *C.GSocketAddress // out
-	var _arg2 *C.GOutputVector  // out
-	var _arg3 C.gint
-	var _arg4 **C.GSocketControlMessage // out
-	var _arg5 C.gint
-	var _arg6 C.gint            // out
-	var _arg7 C.gint64          // out
-	var _arg8 C.gsize           // in
-	var _cret C.GPollableReturn // in
-	var _cerr *C.GError         // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if address != nil {
-		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
-	}
-	_arg3 = (C.gint)(len(vectors))
-	_arg2 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.GOutputVector)(_arg2), len(vectors))
-		for i := range vectors {
-			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
-		}
-	}
-	if messages != nil {
-		_arg5 = (C.gint)(len(messages))
-		_arg4 = (**C.GSocketControlMessage)(C.calloc(C.size_t(len(messages)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg4))
-		{
-			out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
-			for i := range messages {
-				out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(externglib.InternObject(messages[i]).Native()))
-			}
-		}
-	}
-	_arg6 = C.gint(flags)
-	_arg7 = C.gint64(timeoutUs)
-
-	_cret = C.g_socket_send_message_with_timeout(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_arg8, _arg9, &_cerr)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(address)
-	runtime.KeepAlive(vectors)
-	runtime.KeepAlive(messages)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(timeoutUs)
-
-	var _bytesWritten uint             // out
-	var _pollableReturn PollableReturn // out
-	var _goerr error                   // out
-
-	_bytesWritten = uint(_arg8)
-	_pollableReturn = PollableReturn(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _bytesWritten, _pollableReturn, _goerr
-}
-
-// SendMessages: send multiple data messages from socket in one go. This is the
-// most complicated and fully-featured version of this call. For easier use, see
-// g_socket_send(), g_socket_send_to(), and g_socket_send_message().
-//
-// messages must point to an array of Message structs and num_messages must be
-// the length of this array. Each Message contains an address to send the data
-// to, and a pointer to an array of Vector structs to describe the buffers that
-// the data to be sent for each message will be gathered from. Using multiple
-// Vectors is more memory-efficient than manually copying data from multiple
-// sources into a single buffer, and more network-efficient than making multiple
-// calls to g_socket_send(). Sending multiple messages in one go avoids the
-// overhead of making a lot of syscalls in scenarios where a lot of data packets
-// need to be sent (e.g. high-bandwidth video streaming over RTP/UDP), or where
-// the same data needs to be sent to multiple recipients.
-//
-// flags modify how the message is sent. The commonly available arguments for
-// this are available in the MsgFlags enum, but the values there are the same as
-// the system values, and the flags are passed in as-is, so you can pass in
-// system-specific flags too.
-//
-// If the socket is in blocking mode the call will block until there is space
-// for all the data in the socket queue. If there is no space available and the
-// socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error will be
-// returned if no data was written at all, otherwise the number of messages sent
-// will be returned. To be notified when space is available, wait for the
-// G_IO_OUT condition. Note though that you may still receive
-// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
-// notified of a G_IO_OUT condition. (On Windows in particular, this is very
-// common due to the way the underlying APIs work.)
-//
-// On error -1 is returned and error is set accordingly. An error will only be
-// returned if zero messages could be sent; otherwise the number of messages
-// successfully sent before the error will be returned.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): GCancellable or NULL.
-//    - messages: array of Message structs.
-//    - flags: int containing MsgFlags flags, which may additionally contain
-//      other platform specific flags
-//      (http://man7.org/linux/man-pages/man2/recv.2.html).
-//
-// The function returns the following values:
-//
-//    - gint: number of messages sent, or -1 on error. Note that the number of
-//      messages sent may be smaller than num_messages if the socket is
-//      non-blocking or if num_messages was larger than UIO_MAXIOV (1024), in
-//      which case the caller may re-try to send the remaining messages.
-//
-func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage, flags int) (int, error) {
-	var _arg0 *C.GSocket        // out
-	var _arg4 *C.GCancellable   // out
-	var _arg1 *C.GOutputMessage // out
-	var _arg2 C.guint
-	var _arg3 C.gint    // out
-	var _cret C.gint    // in
-	var _cerr *C.GError // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg2 = (C.guint)(len(messages))
-	_arg1 = (*C.GOutputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GOutputMessage)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.GOutputMessage)(_arg1), len(messages))
-		for i := range messages {
-			out[i] = *(*C.GOutputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
-		}
-	}
-	_arg3 = C.gint(flags)
-
-	_cret = C.g_socket_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
-	runtime.KeepAlive(socket)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(messages)
-	runtime.KeepAlive(flags)
-
-	var _gint int    // out
-	var _goerr error // out
-
-	_gint = int(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _gint, _goerr
 }
 
 // SendTo tries to send size bytes from buffer to address. If address is NULL
@@ -2031,29 +1419,36 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 //      error.
 //
 func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffer string) (int, error) {
-	var _arg0 *C.GSocket        // out
-	var _arg4 *C.GCancellable   // out
-	var _arg1 *C.GSocketAddress // out
-	var _arg2 *C.gchar          // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg4 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 	var _arg3 C.gsize
-	var _cret C.gssize  // in
-	var _cerr *C.GError // in
+	var _cret C.gssize // in
+	var _cerr *C.void  // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	if address != nil {
-		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 	}
 	_arg3 = (C.gsize)(len(buffer))
-	_arg2 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
+	_arg2 = (*C.void)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(_arg2))
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
+	*(*SocketAddresser)(unsafe.Pointer(&args[3])) = _arg3
+	*(*string)(unsafe.Pointer(&args[4])) = _arg4
 
-	_cret = C.g_socket_send_to(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("send_to", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -2086,29 +1481,36 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 //      error.
 //
 func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, blocking bool) (int, error) {
-	var _arg0 *C.GSocket      // out
-	var _arg4 *C.GCancellable // out
-	var _arg1 *C.gchar        // out
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg4 *C.void // out
+	var _arg1 *C.void // out
 	var _arg2 C.gsize
 	var _arg3 C.gboolean // out
 	var _cret C.gssize   // in
-	var _cerr *C.GError  // in
+	var _cerr *C.void    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg2 = (C.gsize)(len(buffer))
-	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
+	_arg1 = (*C.void)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(_arg1))
 	if blocking {
 		_arg3 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	_cret = C.g_socket_send_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("send_with_blocking", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(buffer)
@@ -2139,15 +1541,18 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, block
 //    - blocking: whether to use blocking I/O or not.
 //
 func (socket *Socket) SetBlocking(blocking bool) {
-	var _arg0 *C.GSocket // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	if blocking {
 		_arg1 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_blocking(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_blocking", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(blocking)
 }
@@ -2160,15 +1565,18 @@ func (socket *Socket) SetBlocking(blocking bool) {
 //    - broadcast: whether socket should allow sending to broadcast addresses.
 //
 func (socket *Socket) SetBroadcast(broadcast bool) {
-	var _arg0 *C.GSocket // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	if broadcast {
 		_arg1 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_broadcast(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_broadcast", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(broadcast)
 }
@@ -2193,15 +1601,18 @@ func (socket *Socket) SetBroadcast(broadcast bool) {
 //    - keepalive: value for the keepalive flag.
 //
 func (socket *Socket) SetKeepalive(keepalive bool) {
-	var _arg0 *C.GSocket // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	if keepalive {
 		_arg1 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_keepalive(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_keepalive", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(keepalive)
 }
@@ -2219,13 +1630,16 @@ func (socket *Socket) SetKeepalive(keepalive bool) {
 //    - backlog: maximum number of pending connections.
 //
 func (socket *Socket) SetListenBacklog(backlog int) {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.gint     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	_arg1 = C.gint(backlog)
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_listen_backlog(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_listen_backlog", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(backlog)
 }
@@ -2240,15 +1654,18 @@ func (socket *Socket) SetListenBacklog(backlog int) {
 //      groups from the local host.
 //
 func (socket *Socket) SetMulticastLoopback(loopback bool) {
-	var _arg0 *C.GSocket // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	if loopback {
 		_arg1 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_multicast_loopback(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_multicast_loopback", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(loopback)
 }
@@ -2262,13 +1679,16 @@ func (socket *Socket) SetMulticastLoopback(loopback bool) {
 //    - ttl: time-to-live value for all multicast datagrams on socket.
 //
 func (socket *Socket) SetMulticastTTL(ttl uint) {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.guint    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	_arg1 = C.guint(ttl)
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_multicast_ttl(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_multicast_ttl", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ttl)
 }
@@ -2289,18 +1709,23 @@ func (socket *Socket) SetMulticastTTL(ttl uint) {
 //    - value to set the option to.
 //
 func (socket *Socket) SetOption(level, optname, value int) error {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _arg3 C.gint     // out
-	var _cerr *C.GError  // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _arg2 C.gint  // out
+	var _arg3 C.gint  // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	_arg1 = C.gint(level)
 	_arg2 = C.gint(optname)
 	_arg3 = C.gint(value)
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.g_socket_set_option(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_option", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(level)
 	runtime.KeepAlive(optname)
@@ -2338,13 +1763,16 @@ func (socket *Socket) SetOption(level, optname, value int) error {
 //    - timeout for socket, in seconds, or 0 for none.
 //
 func (socket *Socket) SetTimeout(timeout uint) {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.guint    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	_arg1 = C.guint(timeout)
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_timeout(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_timeout", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(timeout)
 }
@@ -2357,13 +1785,16 @@ func (socket *Socket) SetTimeout(timeout uint) {
 //    - ttl: time-to-live value for all unicast packets on socket.
 //
 func (socket *Socket) SetTTL(ttl uint) {
-	var _arg0 *C.GSocket // out
-	var _arg1 C.guint    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	_arg1 = C.guint(ttl)
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_socket_set_ttl(_arg0, _arg1)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("set_ttl", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ttl)
 }
@@ -2389,20 +1820,24 @@ func (socket *Socket) SetTTL(ttl uint) {
 //    - shutdownWrite: whether to shut down the write side.
 //
 func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
-	var _arg0 *C.GSocket // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _arg2 C.gboolean // out
-	var _cerr *C.GError  // in
+	var _cerr *C.void    // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	if shutdownRead {
 		_arg1 = C.TRUE
 	}
 	if shutdownWrite {
 		_arg2 = C.TRUE
 	}
+	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
+	*(*bool)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_socket_shutdown(_arg0, _arg1, _arg2, &_cerr)
+	girepository.MustFind("Gio", "Socket").InvokeMethod("shutdown", args[:], nil)
+
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(shutdownRead)
 	runtime.KeepAlive(shutdownWrite)
@@ -2430,12 +1865,16 @@ func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
 //    - ok: TRUE if this socket can be used with IPv4.
 //
 func (socket *Socket) SpeaksIPv4() bool {
-	var _arg0 *C.GSocket // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_speaks_ipv4(_arg0)
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("speaks_ipv4", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(socket)
 
 	var _ok bool // out

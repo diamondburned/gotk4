@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcomboboxaccessible.go.
-var GTypeComboBoxAccessible = externglib.Type(C.gtk_combo_box_accessible_get_type())
+var GTypeComboBoxAccessible = coreglib.Type(C.gtk_combo_box_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeComboBoxAccessible, F: marshalComboBoxAccessible},
 	})
 }
@@ -33,13 +32,13 @@ type ComboBoxAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Action
 	atk.Selection
 }
 
 var (
-	_ externglib.Objector = (*ComboBoxAccessible)(nil)
+	_ coreglib.Objector = (*ComboBoxAccessible)(nil)
 )
 
 func classInitComboBoxAccessibler(gclassPtr, data C.gpointer) {
@@ -50,7 +49,7 @@ func classInitComboBoxAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
+func wrapComboBoxAccessible(obj *coreglib.Object) *ComboBoxAccessible {
 	return &ComboBoxAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -75,5 +74,5 @@ func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 }
 
 func marshalComboBoxAccessible(p uintptr) (interface{}, error) {
-	return wrapComboBoxAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapComboBoxAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

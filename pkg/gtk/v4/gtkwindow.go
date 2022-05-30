@@ -8,14 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // extern gboolean _gotk4_gtk4_WindowClass_close_request(GtkWindow*);
 // extern gboolean _gotk4_gtk4_WindowClass_enable_debugging(GtkWindow*, gboolean);
 // extern gboolean _gotk4_gtk4_Window_ConnectCloseRequest(gpointer, guintptr);
@@ -29,10 +30,10 @@ import (
 import "C"
 
 // glib.Type values for gtkwindow.go.
-var GTypeWindow = externglib.Type(C.gtk_window_get_type())
+var GTypeWindow = coreglib.Type(C.gtk_window_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWindow, F: marshalWindow},
 	})
 }
@@ -104,14 +105,14 @@ type Window struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Root
 	ShortcutManager
 }
 
 var (
-	_ Widgetter           = (*Window)(nil)
-	_ externglib.Objector = (*Window)(nil)
+	_ Widgetter         = (*Window)(nil)
+	_ coreglib.Objector = (*Window)(nil)
 )
 
 func classInitWindower(gclassPtr, data C.gpointer) {
@@ -148,7 +149,7 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_WindowClass_activate_default
 func _gotk4_gtk4_WindowClass_activate_default(arg0 *C.GtkWindow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateDefault() })
 
 	iface.ActivateDefault()
@@ -156,7 +157,7 @@ func _gotk4_gtk4_WindowClass_activate_default(arg0 *C.GtkWindow) {
 
 //export _gotk4_gtk4_WindowClass_activate_focus
 func _gotk4_gtk4_WindowClass_activate_focus(arg0 *C.GtkWindow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateFocus() })
 
 	iface.ActivateFocus()
@@ -164,7 +165,7 @@ func _gotk4_gtk4_WindowClass_activate_focus(arg0 *C.GtkWindow) {
 
 //export _gotk4_gtk4_WindowClass_close_request
 func _gotk4_gtk4_WindowClass_close_request(arg0 *C.GtkWindow) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CloseRequest() bool })
 
 	ok := iface.CloseRequest()
@@ -178,7 +179,7 @@ func _gotk4_gtk4_WindowClass_close_request(arg0 *C.GtkWindow) (cret C.gboolean) 
 
 //export _gotk4_gtk4_WindowClass_enable_debugging
 func _gotk4_gtk4_WindowClass_enable_debugging(arg0 *C.GtkWindow, arg1 C.gboolean) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ EnableDebugging(toggle bool) bool })
 
 	var _toggle bool // out
@@ -198,16 +199,16 @@ func _gotk4_gtk4_WindowClass_enable_debugging(arg0 *C.GtkWindow, arg1 C.gboolean
 
 //export _gotk4_gtk4_WindowClass_keys_changed
 func _gotk4_gtk4_WindowClass_keys_changed(arg0 *C.GtkWindow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ KeysChanged() })
 
 	iface.KeysChanged()
 }
 
-func wrapWindow(obj *externglib.Object) *Window {
+func wrapWindow(obj *coreglib.Object) *Window {
 	return &Window{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -225,7 +226,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 		Root: Root{
 			NativeSurface: NativeSurface{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -248,14 +249,14 @@ func wrapWindow(obj *externglib.Object) *Window {
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
-	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk4_Window_ConnectActivateDefault
 func _gotk4_gtk4_Window_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -271,15 +272,15 @@ func _gotk4_gtk4_Window_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr)
 // of window.
 //
 // This is a keybinding signal (class.SignalAction.html).
-func (window *Window) ConnectActivateDefault(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(window, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateDefault), f)
+func (window *Window) ConnectActivateDefault(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(window, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateDefault), f)
 }
 
 //export _gotk4_gtk4_Window_ConnectActivateFocus
 func _gotk4_gtk4_Window_ConnectActivateFocus(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -295,15 +296,15 @@ func _gotk4_gtk4_Window_ConnectActivateFocus(arg0 C.gpointer, arg1 C.guintptr) {
 // widget of window.
 //
 // This is a keybinding signal (class.SignalAction.html).
-func (window *Window) ConnectActivateFocus(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(window, "activate-focus", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateFocus), f)
+func (window *Window) ConnectActivateFocus(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(window, "activate-focus", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateFocus), f)
 }
 
 //export _gotk4_gtk4_Window_ConnectCloseRequest
 func _gotk4_gtk4_Window_ConnectCloseRequest(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
 	var f func() (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -323,15 +324,15 @@ func _gotk4_gtk4_Window_ConnectCloseRequest(arg0 C.gpointer, arg1 C.guintptr) (c
 
 // ConnectCloseRequest is emitted when the user clicks on the close button of
 // the window.
-func (window *Window) ConnectCloseRequest(f func() (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(window, "close-request", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectCloseRequest), f)
+func (window *Window) ConnectCloseRequest(f func() (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(window, "close-request", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectCloseRequest), f)
 }
 
 //export _gotk4_gtk4_Window_ConnectEnableDebugging
 func _gotk4_gtk4_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(toggle bool) (ok bool)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -364,15 +365,15 @@ func _gotk4_gtk4_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean,
 // This is a keybinding signal (class.SignalAction.html).
 //
 // The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
-func (window *Window) ConnectEnableDebugging(f func(toggle bool) (ok bool)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(window, "enable-debugging", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectEnableDebugging), f)
+func (window *Window) ConnectEnableDebugging(f func(toggle bool) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(window, "enable-debugging", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectEnableDebugging), f)
 }
 
 //export _gotk4_gtk4_Window_ConnectKeysChanged
 func _gotk4_gtk4_Window_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -386,8 +387,8 @@ func _gotk4_gtk4_Window_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectKeysChanged is emitted when the set of accelerators or mnemonics that
 // are associated with window changes.
-func (window *Window) ConnectKeysChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(window, "keys-changed", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectKeysChanged), f)
+func (window *Window) ConnectKeysChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(window, "keys-changed", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectKeysChanged), f)
 }
 
 // NewWindow creates a new GtkWindow.
@@ -407,13 +408,14 @@ func (window *Window) ConnectKeysChanged(f func()) externglib.SignalHandle {
 //    - window: new GtkWindow.
 //
 func NewWindow() *Window {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_window_new()
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("new_Window", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _window *Window // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -425,21 +427,27 @@ func NewWindow() *Window {
 //
 // This function can be used with close buttons in custom titlebars.
 func (window *Window) Close() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_close(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("close", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
 // Destroy: drop the internal reference GTK holds on toplevel windows.
 func (window *Window) Destroy() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_destroy(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("destroy", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -453,11 +461,14 @@ func (window *Window) Destroy() {
 // property, or by listening to notifications of the gtk.Window:fullscreened
 // property.
 func (window *Window) Fullscreen() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_fullscreen(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("fullscreen", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -476,13 +487,16 @@ func (window *Window) Fullscreen() {
 //    - monitor: which monitor to go fullscreen on.
 //
 func (window *Window) FullscreenOnMonitor(monitor *gdk.Monitor) {
-	var _arg0 *C.GtkWindow  // out
-	var _arg1 *C.GdkMonitor // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_fullscreen_on_monitor(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("fullscreen_on_monitor", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(monitor)
 }
@@ -494,18 +508,22 @@ func (window *Window) FullscreenOnMonitor(monitor *gdk.Monitor) {
 //    - application (optional): GtkApplication, or NULL.
 //
 func (window *Window) Application() *Application {
-	var _arg0 *C.GtkWindow      // out
-	var _cret *C.GtkApplication // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_application(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_application", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _application *Application // out
 
 	if _cret != nil {
-		_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
+		_application = wrapApplication(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _application
@@ -518,12 +536,16 @@ func (window *Window) Application() *Application {
 //    - widget (optional): child widget of window.
 //
 func (window *Window) Child() Widgetter {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_child(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_child", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -532,8 +554,8 @@ func (window *Window) Child() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -555,12 +577,16 @@ func (window *Window) Child() Widgetter {
 //    - ok: TRUE if the window has been set to have decorations.
 //
 func (window *Window) Decorated() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_decorated(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_decorated", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -572,36 +598,6 @@ func (window *Window) Decorated() bool {
 	return _ok
 }
 
-// DefaultSize gets the default size of the window.
-//
-// A value of 0 for the width or height indicates that a default size has not
-// been explicitly set for that dimension, so the “natural” size of the window
-// will be used.
-//
-// The function returns the following values:
-//
-//    - width (optional): location to store the default width, or NULL.
-//    - height (optional): location to store the default height, or NULL.
-//
-func (window *Window) DefaultSize() (width int, height int) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.int        // in
-	var _arg2 C.int        // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-
-	C.gtk_window_get_default_size(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(window)
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(_arg1)
-	_height = int(_arg2)
-
-	return _width, _height
-}
-
 // DefaultWidget returns the default widget for window.
 //
 // The function returns the following values:
@@ -609,12 +605,16 @@ func (window *Window) DefaultSize() (width int, height int) {
 //    - widget (optional): default widget, or NULL if there is none.
 //
 func (window *Window) DefaultWidget() Widgetter {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_default_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_default_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -623,8 +623,8 @@ func (window *Window) DefaultWidget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -646,12 +646,16 @@ func (window *Window) DefaultWidget() Widgetter {
 //    - ok: TRUE if the window has been set to have a close button.
 //
 func (window *Window) Deletable() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_deletable(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_deletable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -671,12 +675,16 @@ func (window *Window) Deletable() bool {
 //    - ok: TRUE if the window will be destroyed with its transient parent.
 //
 func (window *Window) DestroyWithParent() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_destroy_with_parent(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_destroy_with_parent", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -699,12 +707,16 @@ func (window *Window) DestroyWithParent() bool {
 //    - widget (optional): currently focused widget, or NULL if there is none.
 //
 func (window *Window) Focus() Widgetter {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_focus(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_focus", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -713,8 +725,8 @@ func (window *Window) Focus() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -736,12 +748,16 @@ func (window *Window) Focus() Widgetter {
 //    - ok: TRUE if “focus rectangles” are supposed to be visible in this window.
 //
 func (window *Window) FocusVisible() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_focus_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_focus_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -762,19 +778,23 @@ func (window *Window) FocusVisible() bool {
 //    - windowGroup: GtkWindowGroup for a window or the default group.
 //
 func (window *Window) Group() *WindowGroup {
-	var _arg0 *C.GtkWindow      // out
-	var _cret *C.GtkWindowGroup // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if window != nil {
-		_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_group(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_group", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _windowGroup *WindowGroup // out
 
-	_windowGroup = wrapWindowGroup(externglib.Take(unsafe.Pointer(_cret)))
+	_windowGroup = wrapWindowGroup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }
@@ -787,12 +807,16 @@ func (window *Window) Group() *WindowGroup {
 //    - ok: TRUE if the window handles F10.
 //
 func (window *Window) HandleMenubarAccel() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_handle_menubar_accel(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_handle_menubar_accel", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -812,12 +836,16 @@ func (window *Window) HandleMenubarAccel() bool {
 //    - ok: TRUE if the window will be hidden.
 //
 func (window *Window) HideOnClose() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_hide_on_close(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_hide_on_close", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -836,12 +864,16 @@ func (window *Window) HideOnClose() bool {
 //    - utf8 (optional): icon name or NULL if the window has no themed icon.
 //
 func (window *Window) IconName() string {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_icon_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_icon_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _utf8 string // out
@@ -860,12 +892,16 @@ func (window *Window) IconName() string {
 //    - ok: TRUE if mnemonics are supposed to be visible in this window.
 //
 func (window *Window) MnemonicsVisible() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_mnemonics_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_mnemonics_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -885,12 +921,16 @@ func (window *Window) MnemonicsVisible() bool {
 //      shown.
 //
 func (window *Window) Modal() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_modal(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_modal", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -909,12 +949,16 @@ func (window *Window) Modal() bool {
 //    - ok: TRUE if the user can resize the window.
 //
 func (window *Window) Resizable() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_resizable(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_resizable", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -935,12 +979,16 @@ func (window *Window) Resizable() bool {
 //      modified or freed.
 //
 func (window *Window) Title() string {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.char      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_title(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_title", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _utf8 string // out
@@ -960,12 +1008,16 @@ func (window *Window) Title() string {
 //    - widget (optional): custom titlebar, or NULL.
 //
 func (window *Window) Titlebar() Widgetter {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_titlebar(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_titlebar", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _widget Widgetter // out
@@ -974,8 +1026,8 @@ func (window *Window) Titlebar() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -998,18 +1050,22 @@ func (window *Window) Titlebar() Widgetter {
 //      parent has been set.
 //
 func (window *Window) TransientFor() *Window {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWindow // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_get_transient_for(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("get_transient_for", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ret *Window // out
 
 	if _cret != nil {
-		_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+		_ret = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _ret
@@ -1022,12 +1078,16 @@ func (window *Window) TransientFor() *Window {
 //    - ok: TRUE if window has an explicit window group.
 //
 func (window *Window) HasGroup() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_has_group(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("has_group", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -1052,12 +1112,16 @@ func (window *Window) HasGroup() bool {
 //    - ok: TRUE if the window part of the current active window.
 //
 func (window *Window) IsActive() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_is_active(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("is_active", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -1084,12 +1148,16 @@ func (window *Window) IsActive() bool {
 //    - ok: whether the window has a fullscreen state.
 //
 func (window *Window) IsFullscreen() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_is_fullscreen(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("is_fullscreen", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -1116,12 +1184,16 @@ func (window *Window) IsFullscreen() bool {
 //    - ok: whether the window has a maximized state.
 //
 func (window *Window) IsMaximized() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_is_maximized(_arg0)
+	_gret := girepository.MustFind("Gtk", "Window").InvokeMethod("is_maximized", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -1146,11 +1218,14 @@ func (window *Window) IsMaximized() bool {
 // property, or by listening to notifications on the gtk.Window:maximized
 // property.
 func (window *Window) Maximize() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_maximize(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("maximize", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -1167,11 +1242,14 @@ func (window *Window) Maximize() {
 //
 // You can track result of this operation via the gdk.Toplevel:state property.
 func (window *Window) Minimize() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_minimize(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("minimize", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -1181,11 +1259,14 @@ func (window *Window) Minimize() {
 // gather a valid timestamp to allow focus stealing prevention to work
 // correctly.
 func (window *Window) Present() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_present(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("present", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -1214,13 +1295,16 @@ func (window *Window) Present() {
 //      which triggered this call.
 //
 func (window *Window) PresentWithTime(timestamp uint32) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.guint32    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	_arg1 = C.guint32(timestamp)
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_present_with_time(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("present_with_time", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(timestamp)
 }
@@ -1243,15 +1327,18 @@ func (window *Window) PresentWithTime(timestamp uint32) {
 //    - application (optional): GtkApplication, or NULL to unset.
 //
 func (window *Window) SetApplication(application *Application) {
-	var _arg0 *C.GtkWindow      // out
-	var _arg1 *C.GtkApplication // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if application != nil {
-		_arg1 = (*C.GtkApplication)(unsafe.Pointer(externglib.InternObject(application).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_application(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_application", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(application)
 }
@@ -1263,15 +1350,18 @@ func (window *Window) SetApplication(application *Application) {
 //    - child (optional) widget.
 //
 func (window *Window) SetChild(child Widgetter) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GtkWidget // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_child", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(child)
 }
@@ -1294,61 +1384,20 @@ func (window *Window) SetChild(child Widgetter) {
 //    - setting: TRUE to decorate the window.
 //
 func (window *Window) SetDecorated(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_decorated(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_decorated", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
-}
-
-// SetDefaultSize sets the default size of a window.
-//
-// If the window’s “natural” size (its size request) is larger than the default,
-// the default will be ignored.
-//
-// Unlike gtk.Widget.SetSizeRequest(), which sets a size request for a widget
-// and thus would keep users from shrinking the window, this function only sets
-// the initial size, just as if the user had resized the window themselves.
-// Users can still shrink the window again as they normally would. Setting a
-// default size of -1 means to use the “natural” default size (the size request
-// of the window).
-//
-// The default size of a window only affects the first time a window is shown;
-// if a window is hidden and re-shown, it will remember the size it had prior to
-// hiding, rather than using the default size.
-//
-// Windows can’t actually be 0x0 in size, they must be at least 1x1, but passing
-// 0 for width and height is OK, resulting in a 1x1 default size.
-//
-// If you use this function to reestablish a previously saved window size, note
-// that the appropriate size to save is the one returned by
-// gtk.Window.GetDefaultSize(). Using the window allocation directly will not
-// work in all circumstances and can lead to growing or shrinking windows.
-//
-// The function takes the following parameters:
-//
-//    - width in pixels, or -1 to unset the default width.
-//    - height in pixels, or -1 to unset the default height.
-//
-func (window *Window) SetDefaultSize(width, height int) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.int        // out
-	var _arg2 C.int        // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	C.gtk_window_set_default_size(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
 }
 
 // SetDefaultWidget sets the default widget.
@@ -1362,15 +1411,18 @@ func (window *Window) SetDefaultSize(width, height int) {
 //      default widget for the toplevel.
 //
 func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GtkWidget // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if defaultWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(defaultWidget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(defaultWidget).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_default_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_default_widget", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(defaultWidget)
 }
@@ -1392,15 +1444,18 @@ func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 //    - setting: TRUE to decorate the window as deletable.
 //
 func (window *Window) SetDeletable(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_deletable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_deletable", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
 }
@@ -1416,15 +1471,18 @@ func (window *Window) SetDeletable(setting bool) {
 //    - setting: whether to destroy window with its transient parent.
 //
 func (window *Window) SetDestroyWithParent(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_destroy_with_parent(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_destroy_with_parent", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
 }
@@ -1439,13 +1497,16 @@ func (window *Window) SetDestroyWithParent(setting bool) {
 //    - display: GdkDisplay.
 //
 func (window *Window) SetDisplay(display *gdk.Display) {
-	var _arg0 *C.GtkWindow  // out
-	var _arg1 *C.GdkDisplay // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_display(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_display", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(display)
 }
@@ -1464,15 +1525,18 @@ func (window *Window) SetDisplay(display *gdk.Display) {
 //      focus widget for the toplevel window.
 //
 func (window *Window) SetFocus(focus Widgetter) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GtkWidget // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if focus != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(focus).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(focus).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_focus(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_focus", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(focus)
 }
@@ -1484,15 +1548,18 @@ func (window *Window) SetFocus(focus Widgetter) {
 //    - setting: new value.
 //
 func (window *Window) SetFocusVisible(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_focus_visible(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_focus_visible", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
 }
@@ -1505,15 +1572,18 @@ func (window *Window) SetFocusVisible(setting bool) {
 //    - handleMenubarAccel: TRUE to make window handle F10.
 //
 func (window *Window) SetHandleMenubarAccel(handleMenubarAccel bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if handleMenubarAccel {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_handle_menubar_accel(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_handle_menubar_accel", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(handleMenubarAccel)
 }
@@ -1526,15 +1596,18 @@ func (window *Window) SetHandleMenubarAccel(handleMenubarAccel bool) {
 //    - setting: whether to hide the window when it is closed.
 //
 func (window *Window) SetHideOnClose(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_hide_on_close(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_hide_on_close", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
 }
@@ -1552,16 +1625,19 @@ func (window *Window) SetHideOnClose(setting bool) {
 //    - name (optional) of the themed icon.
 //
 func (window *Window) SetIconName(name string) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if name != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_icon_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_icon_name", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(name)
 }
@@ -1573,15 +1649,18 @@ func (window *Window) SetIconName(name string) {
 //    - setting: new value.
 //
 func (window *Window) SetMnemonicsVisible(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_mnemonics_visible(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_mnemonics_visible", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
 }
@@ -1598,15 +1677,18 @@ func (window *Window) SetMnemonicsVisible(setting bool) {
 //    - modal: whether the window is modal.
 //
 func (window *Window) SetModal(modal bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if modal {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_modal(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_modal", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(modal)
 }
@@ -1620,15 +1702,18 @@ func (window *Window) SetModal(modal bool) {
 //    - resizable: TRUE if the user can resize this window.
 //
 func (window *Window) SetResizable(resizable bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if resizable {
 		_arg1 = C.TRUE
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_resizable(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_resizable", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(resizable)
 }
@@ -1651,14 +1736,17 @@ func (window *Window) SetResizable(resizable bool) {
 //    - startupId: string with startup-notification identifier.
 //
 func (window *Window) SetStartupID(startupId string) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_startup_id(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_startup_id", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(startupId)
 }
@@ -1679,16 +1767,19 @@ func (window *Window) SetStartupID(startupId string) {
 //    - title (optional) of the window.
 //
 func (window *Window) SetTitle(title string) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.char      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if title != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_title(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_title", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(title)
 }
@@ -1708,15 +1799,18 @@ func (window *Window) SetTitle(title string) {
 //    - titlebar (optional): widget to use as titlebar.
 //
 func (window *Window) SetTitlebar(titlebar Widgetter) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GtkWidget // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if titlebar != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(titlebar).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(titlebar).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_titlebar(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_titlebar", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(titlebar)
 }
@@ -1737,15 +1831,18 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 //    - parent (optional) window, or NULL.
 //
 func (window *Window) SetTransientFor(parent *Window) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GtkWindow // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_set_transient_for(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_transient_for", args[:], nil)
+
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(parent)
 }
@@ -1763,11 +1860,14 @@ func (window *Window) SetTransientFor(parent *Window) {
 // property, or by listening to notifications of the gtk.Window:fullscreened
 // property.
 func (window *Window) Unfullscreen() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_unfullscreen(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("unfullscreen", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -1781,11 +1881,14 @@ func (window *Window) Unfullscreen() {
 // property, or by listening to notifications on the gtk.Window:maximized
 // property.
 func (window *Window) Unmaximize() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_unmaximize(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("unmaximize", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -1799,11 +1902,14 @@ func (window *Window) Unmaximize() {
 //
 // You can track result of this operation via the gdk.Toplevel:state property.
 func (window *Window) Unminimize() {
-	var _arg0 *C.GtkWindow // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_unminimize(_arg0)
+	girepository.MustFind("Gtk", "Window").InvokeMethod("unminimize", args[:], nil)
+
 	runtime.KeepAlive(window)
 }
 
@@ -1817,9 +1923,10 @@ func (window *Window) Unminimize() {
 //    - utf8 (optional): fallback icon name for windows.
 //
 func WindowGetDefaultIconName() string {
-	var _cret *C.char // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_window_get_default_icon_name()
+	_gret := girepository.MustFind("Gtk", "get_default_icon_name").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -1841,14 +1948,15 @@ func WindowGetDefaultIconName() string {
 //    - listModel: list of toplevel widgets.
 //
 func WindowGetToplevels() *gio.ListModel {
-	var _cret *C.GListModel // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_window_get_toplevels()
+	_gret := girepository.MustFind("Gtk", "get_toplevels").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -1869,15 +1977,16 @@ func WindowGetToplevels() *gio.ListModel {
 //    - list of toplevel widgets.
 //
 func WindowListToplevels() []Widgetter {
-	var _cret *C.GList // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_window_list_toplevels()
+	_gret := girepository.MustFind("Gtk", "list_toplevels").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _list []Widgetter // out
 
 	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
+		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
 			objptr := unsafe.Pointer(src)
@@ -1885,8 +1994,8 @@ func WindowListToplevels() []Widgetter {
 				panic("object of type gtk.Widgetter is nil")
 			}
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -1920,13 +2029,16 @@ func WindowListToplevels() []Widgetter {
 //    - setting: TRUE to automatically do startup notification.
 //
 func WindowSetAutoStartupNotification(setting bool) {
-	var _arg1 C.gboolean // out
+	var args [1]girepository.Argument
+	var _arg0 C.gboolean // out
 
 	if setting {
-		_arg1 = C.TRUE
+		_arg0 = C.TRUE
 	}
+	*(*bool)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_set_auto_startup_notification(_arg1)
+	girepository.MustFind("Gtk", "set_auto_startup_notification").Invoke(args[:], nil)
+
 	runtime.KeepAlive(setting)
 }
 
@@ -1940,12 +2052,15 @@ func WindowSetAutoStartupNotification(setting bool) {
 //    - name of the themed icon.
 //
 func WindowSetDefaultIconName(name string) {
-	var _arg1 *C.char // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_set_default_icon_name(_arg1)
+	girepository.MustFind("Gtk", "set_default_icon_name").Invoke(args[:], nil)
+
 	runtime.KeepAlive(name)
 }
 
@@ -1960,12 +2075,15 @@ func WindowSetDefaultIconName(name string) {
 //    - enable: TRUE to enable interactive debugging.
 //
 func WindowSetInteractiveDebugging(enable bool) {
-	var _arg1 C.gboolean // out
+	var args [1]girepository.Argument
+	var _arg0 C.gboolean // out
 
 	if enable {
-		_arg1 = C.TRUE
+		_arg0 = C.TRUE
 	}
+	*(*bool)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_window_set_interactive_debugging(_arg1)
+	girepository.MustFind("Gtk", "set_interactive_debugging").Invoke(args[:], nil)
+
 	runtime.KeepAlive(enable)
 }

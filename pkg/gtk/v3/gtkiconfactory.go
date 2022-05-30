@@ -7,233 +7,22 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkiconfactory.go.
-var GTypeIconFactory = externglib.Type(C.gtk_icon_factory_get_type())
+var GTypeIconFactory = coreglib.Type(C.gtk_icon_factory_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIconFactory, F: marshalIconFactory},
 	})
-}
-
-// IconSizeFromName looks up the icon size associated with name.
-//
-// Deprecated: Use IconTheme instead.
-//
-// The function takes the following parameters:
-//
-//    - name to look up.
-//
-// The function returns the following values:
-//
-//    - gint: icon size (IconSize).
-//
-func IconSizeFromName(name string) int {
-	var _arg1 *C.gchar      // out
-	var _cret C.GtkIconSize // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_icon_size_from_name(_arg1)
-	runtime.KeepAlive(name)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// IconSizeGetName gets the canonical name of the given icon size. The returned
-// string is statically allocated and should not be freed.
-//
-// Deprecated: Use IconTheme instead.
-//
-// The function takes the following parameters:
-//
-//    - size: IconSize.
-//
-// The function returns the following values:
-//
-//    - utf8: name of the given icon size.
-//
-func IconSizeGetName(size int) string {
-	var _arg1 C.GtkIconSize // out
-	var _cret *C.gchar      // in
-
-	_arg1 = C.GtkIconSize(size)
-
-	_cret = C.gtk_icon_size_get_name(_arg1)
-	runtime.KeepAlive(size)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// IconSizeLookup obtains the pixel size of a semantic icon size size:
-// K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t normally
-// needed, gtk_icon_theme_load_icon() is the usual way to get an icon for
-// rendering, then just look at the size of the rendered pixbuf. The rendered
-// pixbuf may not even correspond to the width/height returned by
-// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
-// they like, including changing the usual size.
-//
-// The function takes the following parameters:
-//
-//    - size: icon size (IconSize).
-//
-// The function returns the following values:
-//
-//    - width (optional): location to store icon width.
-//    - height (optional): location to store icon height.
-//    - ok: TRUE if size was a valid size.
-//
-func IconSizeLookup(size int) (width int, height int, ok bool) {
-	var _arg1 C.GtkIconSize // out
-	var _arg2 C.gint        // in
-	var _arg3 C.gint        // in
-	var _cret C.gboolean    // in
-
-	_arg1 = C.GtkIconSize(size)
-
-	_cret = C.gtk_icon_size_lookup(_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(size)
-
-	var _width int  // out
-	var _height int // out
-	var _ok bool    // out
-
-	_width = int(_arg2)
-	_height = int(_arg3)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _width, _height, _ok
-}
-
-// IconSizeLookupForSettings obtains the pixel size of a semantic icon size,
-// possibly modified by user preferences for a particular Settings. Normally
-// size would be K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t
-// normally needed, gtk_widget_render_icon_pixbuf() is the usual way to get an
-// icon for rendering, then just look at the size of the rendered pixbuf. The
-// rendered pixbuf may not even correspond to the width/height returned by
-// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
-// they like, including changing the usual size.
-//
-// Deprecated: Use gtk_icon_size_lookup() instead.
-//
-// The function takes the following parameters:
-//
-//    - settings object, used to determine which set of user preferences to used.
-//    - size: icon size (IconSize).
-//
-// The function returns the following values:
-//
-//    - width (optional): location to store icon width.
-//    - height (optional): location to store icon height.
-//    - ok: TRUE if size was a valid size.
-//
-func IconSizeLookupForSettings(settings *Settings, size int) (width int, height int, ok bool) {
-	var _arg1 *C.GtkSettings // out
-	var _arg2 C.GtkIconSize  // out
-	var _arg3 C.gint         // in
-	var _arg4 C.gint         // in
-	var _cret C.gboolean     // in
-
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(externglib.InternObject(settings).Native()))
-	_arg2 = C.GtkIconSize(size)
-
-	_cret = C.gtk_icon_size_lookup_for_settings(_arg1, _arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(size)
-
-	var _width int  // out
-	var _height int // out
-	var _ok bool    // out
-
-	_width = int(_arg3)
-	_height = int(_arg4)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _width, _height, _ok
-}
-
-// IconSizeRegister registers a new icon size, along the same lines as
-// K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
-//
-// Deprecated: Use IconTheme instead.
-//
-// The function takes the following parameters:
-//
-//    - name of the icon size.
-//    - width: icon width.
-//    - height: icon height.
-//
-// The function returns the following values:
-//
-//    - gint: integer value representing the size (IconSize).
-//
-func IconSizeRegister(name string, width, height int) int {
-	var _arg1 *C.gchar      // out
-	var _arg2 C.gint        // out
-	var _arg3 C.gint        // out
-	var _cret C.GtkIconSize // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(width)
-	_arg3 = C.gint(height)
-
-	_cret = C.gtk_icon_size_register(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// IconSizeRegisterAlias registers alias as another name for target. So calling
-// gtk_icon_size_from_name() with alias as argument will return target.
-//
-// Deprecated: Use IconTheme instead.
-//
-// The function takes the following parameters:
-//
-//    - alias for target.
-//    - target: existing icon size (IconSize).
-//
-func IconSizeRegisterAlias(alias string, target int) {
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GtkIconSize // out
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(alias)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkIconSize(target)
-
-	C.gtk_icon_size_register_alias(_arg1, _arg2)
-	runtime.KeepAlive(alias)
-	runtime.KeepAlive(target)
 }
 
 // IconFactoryOverrider contains methods that are overridable.
@@ -310,13 +99,13 @@ type IconFactoryOverrider interface {
 //    </object>.
 type IconFactory struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*IconFactory)(nil)
+	_ coreglib.Objector = (*IconFactory)(nil)
 )
 
 func classInitIconFactorier(gclassPtr, data C.gpointer) {
@@ -327,7 +116,7 @@ func classInitIconFactorier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapIconFactory(obj *externglib.Object) *IconFactory {
+func wrapIconFactory(obj *coreglib.Object) *IconFactory {
 	return &IconFactory{
 		Object: obj,
 		Buildable: Buildable{
@@ -337,7 +126,7 @@ func wrapIconFactory(obj *externglib.Object) *IconFactory {
 }
 
 func marshalIconFactory(p uintptr) (interface{}, error) {
-	return wrapIconFactory(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapIconFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIconFactory creates a new IconFactory. An icon factory manages a
@@ -359,13 +148,14 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 //    - iconFactory: new IconFactory.
 //
 func NewIconFactory() *IconFactory {
-	var _cret *C.GtkIconFactory // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_icon_factory_new()
+	_gret := girepository.MustFind("Gtk", "IconFactory").InvokeMethod("new_IconFactory", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _iconFactory *IconFactory // out
 
-	_iconFactory = wrapIconFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_iconFactory = wrapIconFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconFactory
 }
@@ -387,16 +177,20 @@ func NewIconFactory() *IconFactory {
 //    - iconSet: icon set.
 //
 func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
-	var _arg0 *C.GtkIconFactory // out
-	var _arg1 *C.gchar          // out
-	var _arg2 *C.GtkIconSet     // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	*(**IconFactory)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_icon_factory_add(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add", args[:], nil)
+
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(iconSet)
@@ -410,11 +204,14 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 //
 // Deprecated: Use IconTheme instead.
 func (factory *IconFactory) AddDefault() {
-	var _arg0 *C.GtkIconFactory // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	*(**IconFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_icon_factory_add_default(_arg0)
+	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add_default", args[:], nil)
+
 	runtime.KeepAlive(factory)
 }
 
@@ -435,15 +232,19 @@ func (factory *IconFactory) AddDefault() {
 //    - iconSet: icon set of stock_id.
 //
 func (factory *IconFactory) Lookup(stockId string) *IconSet {
-	var _arg0 *C.GtkIconFactory // out
-	var _arg1 *C.gchar          // out
-	var _cret *C.GtkIconSet     // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**IconFactory)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "IconFactory").InvokeMethod("lookup", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
 
@@ -467,11 +268,14 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 //
 // Deprecated: Use IconTheme instead.
 func (factory *IconFactory) RemoveDefault() {
-	var _arg0 *C.GtkIconFactory // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(factory).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	*(**IconFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_icon_factory_remove_default(_arg0)
+	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("remove_default", args[:], nil)
+
 	runtime.KeepAlive(factory)
 }
 
@@ -492,13 +296,17 @@ func (factory *IconFactory) RemoveDefault() {
 //    - iconSet or NULL.
 //
 func IconFactoryLookupDefault(stockId string) *IconSet {
-	var _arg1 *C.gchar      // out
-	var _cret *C.GtkIconSet // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_icon_factory_lookup_default(_arg1)
+	_gret := girepository.MustFind("Gtk", "lookup_default").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(stockId)
 
 	var _iconSet *IconSet // out

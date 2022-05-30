@@ -3,22 +3,22 @@
 package atk
 
 import (
-	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for atkregistry.go.
-var GTypeRegistry = externglib.Type(C.atk_registry_get_type())
+var GTypeRegistry = coreglib.Type(C.atk_registry_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRegistry, F: marshalRegistry},
 	})
 }
@@ -35,13 +35,14 @@ func init() {
 //    - registry: default implementation of the ObjectFactory/type registry.
 //
 func GetDefaultRegistry() *Registry {
-	var _cret *C.AtkRegistry // in
+	var _cret *C.void // in
 
-	_cret = C.atk_get_default_registry()
+	_gret := girepository.MustFind("Atk", "get_default_registry").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _registry *Registry // out
 
-	_registry = wrapRegistry(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_registry = wrapRegistry(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _registry
 }
@@ -57,11 +58,11 @@ type RegistryOverrider interface {
 // appropriate GType for application custom widget classes.
 type Registry struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Registry)(nil)
+	_ coreglib.Objector = (*Registry)(nil)
 )
 
 func classInitRegistrier(gclassPtr, data C.gpointer) {
@@ -72,97 +73,12 @@ func classInitRegistrier(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapRegistry(obj *externglib.Object) *Registry {
+func wrapRegistry(obj *coreglib.Object) *Registry {
 	return &Registry{
 		Object: obj,
 	}
 }
 
 func marshalRegistry(p uintptr) (interface{}, error) {
-	return wrapRegistry(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Factory gets an ObjectFactory appropriate for creating Objects appropriate
-// for type.
-//
-// The function takes the following parameters:
-//
-//    - typ with which to look up the associated ObjectFactory.
-//
-// The function returns the following values:
-//
-//    - objectFactory appropriate for creating Objects appropriate for type.
-//
-func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
-	var _arg0 *C.AtkRegistry      // out
-	var _arg1 C.GType             // out
-	var _cret *C.AtkObjectFactory // in
-
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(externglib.InternObject(registry).Native()))
-	_arg1 = C.GType(typ)
-
-	_cret = C.atk_registry_get_factory(_arg0, _arg1)
-	runtime.KeepAlive(registry)
-	runtime.KeepAlive(typ)
-
-	var _objectFactory *ObjectFactory // out
-
-	_objectFactory = wrapObjectFactory(externglib.Take(unsafe.Pointer(_cret)))
-
-	return _objectFactory
-}
-
-// FactoryType provides a #GType indicating the ObjectFactory subclass
-// associated with type.
-//
-// The function takes the following parameters:
-//
-//    - typ with which to look up the associated ObjectFactory subclass.
-//
-// The function returns the following values:
-//
-//    - gType associated with type type.
-//
-func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
-	var _arg0 *C.AtkRegistry // out
-	var _arg1 C.GType        // out
-	var _cret C.GType        // in
-
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(externglib.InternObject(registry).Native()))
-	_arg1 = C.GType(typ)
-
-	_cret = C.atk_registry_get_factory_type(_arg0, _arg1)
-	runtime.KeepAlive(registry)
-	runtime.KeepAlive(typ)
-
-	var _gType externglib.Type // out
-
-	_gType = externglib.Type(_cret)
-
-	return _gType
-}
-
-// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
-// associated factory_type will thereafter be responsible for the creation of
-// new Object implementations for instances appropriate for type.
-//
-// The function takes the following parameters:
-//
-//    - typ: Object type.
-//    - factoryType type to associate with type. Must implement AtkObject
-//      appropriate for type.
-//
-func (registry *Registry) SetFactoryType(typ, factoryType externglib.Type) {
-	var _arg0 *C.AtkRegistry // out
-	var _arg1 C.GType        // out
-	var _arg2 C.GType        // out
-
-	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(externglib.InternObject(registry).Native()))
-	_arg1 = C.GType(typ)
-	_arg2 = C.GType(factoryType)
-
-	C.atk_registry_set_factory_type(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(registry)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(factoryType)
+	return wrapRegistry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -7,11 +7,10 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -19,17 +18,16 @@ import (
 // #include <stdlib.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // glib.Type values for gdk-pixbuf-animation.go.
 var (
-	GTypePixbufAnimation     = externglib.Type(C.gdk_pixbuf_animation_get_type())
-	GTypePixbufAnimationIter = externglib.Type(C.gdk_pixbuf_animation_iter_get_type())
+	GTypePixbufAnimation     = coreglib.Type(C.gdk_pixbuf_animation_get_type())
+	GTypePixbufAnimationIter = coreglib.Type(C.gdk_pixbuf_animation_iter_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePixbufAnimation, F: marshalPixbufAnimation},
 		{T: GTypePixbufAnimationIter, F: marshalPixbufAnimationIter},
 	})
@@ -50,21 +48,21 @@ func init() {
 // time.
 type PixbufAnimation struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*PixbufAnimation)(nil)
+	_ coreglib.Objector = (*PixbufAnimation)(nil)
 )
 
-func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
+func wrapPixbufAnimation(obj *coreglib.Object) *PixbufAnimation {
 	return &PixbufAnimation{
 		Object: obj,
 	}
 }
 
 func marshalPixbufAnimation(p uintptr) (interface{}, error) {
-	return wrapPixbufAnimation(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPixbufAnimation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPixbufAnimationFromFile creates a new animation by loading it from a file.
@@ -99,7 +97,7 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _goerr error                      // out
 
 	if _cret != nil {
-		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbufAnimation = wrapPixbufAnimation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -137,7 +135,7 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 	var _goerr error                      // out
 
 	if _cret != nil {
-		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbufAnimation = wrapPixbufAnimation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -179,7 +177,7 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 		defer runtime.KeepAlive(cancellable)
 		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(ctx)
@@ -189,7 +187,7 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 	var _goerr error                      // out
 
 	if _cret != nil {
-		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbufAnimation = wrapPixbufAnimation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -215,7 +213,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(asyncResult).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(asyncResult).Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
 	runtime.KeepAlive(asyncResult)
@@ -224,7 +222,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _goerr error                      // out
 
 	if _cret != nil {
-		_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbufAnimation = wrapPixbufAnimation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -243,7 +241,7 @@ func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 	runtime.KeepAlive(animation)
@@ -299,7 +297,7 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 	var _arg1 *C.GTimeVal               // out
 	var _cret *C.GdkPixbufAnimationIter // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 	if startTime != nil {
 		_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(startTime)))
 	}
@@ -310,7 +308,7 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 
 	var _pixbufAnimationIter *PixbufAnimationIter // out
 
-	_pixbufAnimationIter = wrapPixbufAnimationIter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pixbufAnimationIter = wrapPixbufAnimationIter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufAnimationIter
 }
@@ -334,14 +332,14 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret *C.GdkPixbuf          // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_static_image(_arg0)
 	runtime.KeepAlive(animation)
 
 	var _pixbuf *Pixbuf // out
 
-	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(_cret)))
+	_pixbuf = wrapPixbuf(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _pixbuf
 }
@@ -356,7 +354,7 @@ func (animation *PixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 	runtime.KeepAlive(animation)
@@ -382,7 +380,7 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(externglib.InternObject(animation).Native()))
+	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 
 	_cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
 	runtime.KeepAlive(animation)
@@ -396,65 +394,25 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 	return _ok
 }
 
-// NewPixbufAnimationFromStreamAsync creates a new animation by asynchronously
-// loading an image from an input stream.
-//
-// For more details see gdk_pixbuf_new_from_stream(), which is the synchronous
-// version of this function.
-//
-// When the operation is finished, callback will be called in the main thread.
-// You can then call gdk_pixbuf_animation_new_from_stream_finish() to get the
-// result of the operation.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object.
-//    - stream from which to load the animation.
-//    - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//      loaded.
-//
-func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 *C.GInputStream       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_pixbuf_animation_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(callback)
-}
-
 // PixbufAnimationIter: opaque object representing an iterator which points to a
 // certain position in an animation.
 type PixbufAnimationIter struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*PixbufAnimationIter)(nil)
+	_ coreglib.Objector = (*PixbufAnimationIter)(nil)
 )
 
-func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
+func wrapPixbufAnimationIter(obj *coreglib.Object) *PixbufAnimationIter {
 	return &PixbufAnimationIter{
 		Object: obj,
 	}
 }
 
 func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
-	return wrapPixbufAnimationIter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPixbufAnimationIter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Advance: possibly advances an animation to a new frame.
@@ -490,7 +448,7 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg1 *C.GTimeVal               // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
 	if currentTime != nil {
 		_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(currentTime)))
 	}
@@ -526,7 +484,7 @@ func (iter *PixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.int                     // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 	runtime.KeepAlive(iter)
@@ -562,14 +520,14 @@ func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret *C.GdkPixbuf              // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_get_pixbuf(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _pixbuf *Pixbuf // out
 
-	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(_cret)))
+	_pixbuf = wrapPixbuf(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _pixbuf
 }
@@ -589,7 +547,7 @@ func (iter *PixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.gboolean                // in
 
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(externglib.InternObject(iter).Native()))
+	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
 
 	_cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
 	runtime.KeepAlive(iter)

@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -17,10 +17,10 @@ import (
 import "C"
 
 // glib.Type values for graphene-euler.go.
-var GTypeEuler = externglib.Type(C.graphene_euler_get_type())
+var GTypeEuler = coreglib.Type(C.graphene_euler_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEuler, F: marshalEuler},
 	})
 }
@@ -213,7 +213,7 @@ type euler struct {
 }
 
 func marshalEuler(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Euler{&euler{(*C.graphene_euler_t)(b)}}, nil
 }
 

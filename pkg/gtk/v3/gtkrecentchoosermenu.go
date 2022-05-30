@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkrecentchoosermenu.go.
-var GTypeRecentChooserMenu = externglib.Type(C.gtk_recent_chooser_menu_get_type())
+var GTypeRecentChooserMenu = coreglib.Type(C.gtk_recent_chooser_menu_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRecentChooserMenu, F: marshalRecentChooserMenu},
 	})
 }
@@ -52,14 +51,14 @@ type RecentChooserMenu struct {
 	_ [0]func() // equal guard
 	Menu
 
-	*externglib.Object
+	*coreglib.Object
 	Activatable
 	RecentChooser
 }
 
 var (
-	_ externglib.Objector = (*RecentChooserMenu)(nil)
-	_ MenuSheller         = (*RecentChooserMenu)(nil)
+	_ coreglib.Objector = (*RecentChooserMenu)(nil)
+	_ MenuSheller       = (*RecentChooserMenu)(nil)
 )
 
 func classInitRecentChooserMenuer(gclassPtr, data C.gpointer) {
@@ -70,13 +69,13 @@ func classInitRecentChooserMenuer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
+func wrapRecentChooserMenu(obj *coreglib.Object) *RecentChooserMenu {
 	return &RecentChooserMenu{
 		Menu: Menu{
 			MenuShell: MenuShell{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -101,7 +100,7 @@ func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 }
 
 func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
-	return wrapRecentChooserMenu(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRecentChooserMenu(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewRecentChooserMenu creates a new RecentChooserMenu widget.
@@ -121,13 +120,14 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 //    - recentChooserMenu: new RecentChooserMenu.
 //
 func NewRecentChooserMenu() *RecentChooserMenu {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_recent_chooser_menu_new()
+	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("new_RecentChooserMenu", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = wrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
+	_recentChooserMenu = wrapRecentChooserMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }
@@ -148,17 +148,21 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 //    - recentChooserMenu: new RecentChooserMenu, bound to manager.
 //
 func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
-	var _arg1 *C.GtkRecentManager // out
-	var _cret *C.GtkWidget        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(externglib.InternObject(manager).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**RecentManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
+	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("new_RecentChooserMenu_for_manager", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(manager)
 
 	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = wrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
+	_recentChooserMenu = wrapRecentChooserMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }
@@ -171,12 +175,16 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 //    - ok: TRUE if numbers should be shown.
 //
 func (menu *RecentChooserMenu) ShowNumbers() bool {
-	var _arg0 *C.GtkRecentChooserMenu // out
-	var _cret C.gboolean              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**RecentChooserMenu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
+	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("get_show_numbers", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(menu)
 
 	var _ok bool // out
@@ -198,15 +206,18 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 //    - showNumbers: whether to show numbers.
 //
 func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
-	var _arg0 *C.GtkRecentChooserMenu // out
-	var _arg1 C.gboolean              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(externglib.InternObject(menu).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if showNumbers {
 		_arg1 = C.TRUE
 	}
+	*(**RecentChooserMenu)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)
+	girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("set_show_numbers", args[:], nil)
+
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(showNumbers)
 }

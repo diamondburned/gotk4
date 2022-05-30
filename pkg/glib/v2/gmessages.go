@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
@@ -270,63 +269,6 @@ func AssertWarning(logDomain, file string, line int, prettyFunction, expression 
 	runtime.KeepAlive(expression)
 }
 
-// LogDefaultHandler: default log handler set up by GLib;
-// g_log_set_default_handler() allows to install an alternate default log
-// handler. This is used if no log handler has been set for the particular log
-// domain and log level combination. It outputs the message to stderr or stdout
-// and if the log level is fatal it calls G_BREAKPOINT(). It automatically
-// prints a new-line character after the message, so one does not need to be
-// manually included in message.
-//
-// The behavior of this log handler can be influenced by a number of environment
-// variables:
-//
-// - G_MESSAGES_PREFIXED: A :-separated list of log levels for which messages
-// should be prefixed by the program name and PID of the application.
-//
-// - G_MESSAGES_DEBUG: A space-separated list of log domains for which debug and
-// informational messages are printed. By default these messages are not
-// printed.
-//
-// stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
-// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest,
-// unless stderr was requested by g_log_writer_default_set_use_stderr().
-//
-// This has no effect if structured logging is enabled; see [Using Structured
-// Logging][using-structured-logging].
-//
-// The function takes the following parameters:
-//
-//    - logDomain (optional): log domain of the message, or NULL for the default
-//      "" application domain.
-//    - logLevel: level of the message.
-//    - message (optional): message.
-//    - unusedData (optional): data passed from g_log() which is unused.
-//
-func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData cgo.Handle) {
-	var _arg1 *C.gchar         // out
-	var _arg2 C.GLogLevelFlags // out
-	var _arg3 *C.gchar         // out
-	var _arg4 C.gpointer       // out
-
-	if logDomain != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg2 = C.GLogLevelFlags(logLevel)
-	if message != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-	_arg4 = (C.gpointer)(unsafe.Pointer(unusedData))
-
-	C.g_log_default_handler(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(logDomain)
-	runtime.KeepAlive(logLevel)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(unusedData)
-}
-
 // LogRemoveHandler removes the log handler.
 //
 // This has no effect if structured logging is enabled; see [Using Structured
@@ -513,68 +455,6 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	runtime.KeepAlive(fields)
 }
 
-// LogWriterDefault: format a structured log message and output it to the
-// default log destination for the platform. On Linux, this is typically the
-// systemd journal, falling back to stdout or stderr if running from the
-// terminal or if output is being redirected to a file.
-//
-// Support for other platform-specific logging mechanisms may be added in
-// future. Distributors of GLib may modify this function to impose their own
-// (documented) platform-specific log writing policies.
-//
-// This is suitable for use as a WriterFunc, and is the default writer used if
-// no other is set using g_log_set_writer_func().
-//
-// As with g_log_default_handler(), this function drops debug and informational
-// messages unless their log domain (or all) is listed in the space-separated
-// G_MESSAGES_DEBUG environment variable.
-//
-// g_log_writer_default() uses the mask set by g_log_set_always_fatal() to
-// determine which messages are fatal. When using a custom writer func instead
-// it is up to the writer function to determine which log messages are fatal.
-//
-// The function takes the following parameters:
-//
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data forming the log message.
-//    - userData (optional): user data passed to g_log_set_writer_func().
-//
-// The function returns the following values:
-//
-//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
-//      otherwise.
-//
-func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField     // out
-	var _arg3 C.gsize
-	var _arg4 C.gpointer         // out
-	var _cret C.GLogWriterOutput // in
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.calloc(C.size_t(len(fields)), C.size_t(C.sizeof_GLogField)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
-		for i := range fields {
-			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
-		}
-	}
-	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
-
-	_cret = C.g_log_writer_default(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(logLevel)
-	runtime.KeepAlive(fields)
-	runtime.KeepAlive(userData)
-
-	var _logWriterOutput LogWriterOutput // out
-
-	_logWriterOutput = LogWriterOutput(_cret)
-
-	return _logWriterOutput
-}
-
 // LogWriterDefaultSetUseStderr: configure whether the built-in log functions
 // (g_log_default_handler() for the old-style API, and both
 // g_log_writer_default() and g_log_writer_standard_streams() for the structured
@@ -747,114 +627,6 @@ func LogWriterIsJournald(outputFd int) bool {
 	}
 
 	return _ok
-}
-
-// LogWriterJournald: format a structured log message and send it to the systemd
-// journal as a set of key–value pairs. All fields are sent to the journal, but
-// if a field has length zero (indicating program-specific data) then only its
-// key will be sent.
-//
-// This is suitable for use as a WriterFunc.
-//
-// If GLib has been compiled without systemd support, this function is still
-// defined, but will always return G_LOG_WRITER_UNHANDLED.
-//
-// The function takes the following parameters:
-//
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data forming the log message.
-//    - userData (optional): user data passed to g_log_set_writer_func().
-//
-// The function returns the following values:
-//
-//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
-//      otherwise.
-//
-func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField     // out
-	var _arg3 C.gsize
-	var _arg4 C.gpointer         // out
-	var _cret C.GLogWriterOutput // in
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.calloc(C.size_t(len(fields)), C.size_t(C.sizeof_GLogField)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
-		for i := range fields {
-			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
-		}
-	}
-	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
-
-	_cret = C.g_log_writer_journald(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(logLevel)
-	runtime.KeepAlive(fields)
-	runtime.KeepAlive(userData)
-
-	var _logWriterOutput LogWriterOutput // out
-
-	_logWriterOutput = LogWriterOutput(_cret)
-
-	return _logWriterOutput
-}
-
-// LogWriterStandardStreams: format a structured log message and print it to
-// either stdout or stderr, depending on its log level. G_LOG_LEVEL_INFO and
-// G_LOG_LEVEL_DEBUG messages are sent to stdout, or to stderr if requested by
-// g_log_writer_default_set_use_stderr(); all other log levels are sent to
-// stderr. Only fields which are understood by this function are included in the
-// formatted string which is printed.
-//
-// If the output stream supports ANSI color escape sequences, they will be used
-// in the output.
-//
-// A trailing new-line character is added to the log message when it is printed.
-//
-// This is suitable for use as a WriterFunc.
-//
-// The function takes the following parameters:
-//
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data forming the log message.
-//    - userData (optional): user data passed to g_log_set_writer_func().
-//
-// The function returns the following values:
-//
-//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
-//      otherwise.
-//
-func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) LogWriterOutput {
-	var _arg1 C.GLogLevelFlags // out
-	var _arg2 *C.GLogField     // out
-	var _arg3 C.gsize
-	var _arg4 C.gpointer         // out
-	var _cret C.GLogWriterOutput // in
-
-	_arg1 = C.GLogLevelFlags(logLevel)
-	_arg3 = (C.gsize)(len(fields))
-	_arg2 = (*C.GLogField)(C.calloc(C.size_t(len(fields)), C.size_t(C.sizeof_GLogField)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.GLogField)(_arg2), len(fields))
-		for i := range fields {
-			out[i] = *(*C.GLogField)(gextras.StructNative(unsafe.Pointer((&fields[i]))))
-		}
-	}
-	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
-
-	_cret = C.g_log_writer_standard_streams(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(logLevel)
-	runtime.KeepAlive(fields)
-	runtime.KeepAlive(userData)
-
-	var _logWriterOutput LogWriterOutput // out
-
-	_logWriterOutput = LogWriterOutput(_cret)
-
-	return _logWriterOutput
 }
 
 // LogWriterSupportsColor: check whether the given output_fd file descriptor

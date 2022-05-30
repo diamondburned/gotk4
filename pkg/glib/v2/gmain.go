@@ -4,30 +4,27 @@ package glib
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <glib.h>
-// extern gboolean _gotk4_glib2_SourceFunc(gpointer);
-// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gmain.go.
 var (
-	GTypeMainContext = externglib.Type(C.g_main_context_get_type())
-	GTypeMainLoop    = externglib.Type(C.g_main_loop_get_type())
-	GTypeSource      = externglib.Type(C.g_source_get_type())
+	GTypeMainContext = coreglib.Type(C.g_main_context_get_type())
+	GTypeMainLoop    = coreglib.Type(C.g_main_loop_get_type())
+	GTypeSource      = coreglib.Type(C.g_source_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeMainContext, F: marshalMainContext},
 		{T: GTypeMainLoop, F: marshalMainLoop},
 		{T: GTypeSource, F: marshalSource},
@@ -167,34 +164,6 @@ func GetRealTime() int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
-}
-
-// IdleRemoveByData removes the idle function with the given data.
-//
-// The function takes the following parameters:
-//
-//    - data (optional) for the idle source's callback.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if an idle source was found and removed.
-//
-func IdleRemoveByData(data cgo.Handle) bool {
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
-
-	_arg1 = (C.gpointer)(unsafe.Pointer(data))
-
-	_cret = C.g_idle_remove_by_data(_arg1)
-	runtime.KeepAlive(data)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // NewIdleSource creates a new idle source.
@@ -420,7 +389,7 @@ type mainContext struct {
 }
 
 func marshalMainContext(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &MainContext{&mainContext{(*C.GMainContext)(b)}}, nil
 }
 
@@ -489,50 +458,6 @@ func (context *MainContext) Dispatch() {
 	runtime.KeepAlive(context)
 }
 
-// FindSourceByFuncsUserData finds a source with the given source functions and
-// user data. If multiple sources exist with the same source function and user
-// data, the first one found will be returned.
-//
-// The function takes the following parameters:
-//
-//    - funcs passed to g_source_new().
-//    - userData (optional): user data from the callback.
-//
-// The function returns the following values:
-//
-//    - source: source, if one was found, otherwise NULL.
-//
-func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) *Source {
-	var _arg0 *C.GMainContext // out
-	var _arg1 *C.GSourceFuncs // out
-	var _arg2 C.gpointer      // out
-	var _cret *C.GSource      // in
-
-	if context != nil {
-		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-	}
-	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(funcs)))
-	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
-
-	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(funcs)
-	runtime.KeepAlive(userData)
-
-	var _source *Source // out
-
-	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
-	)
-
-	return _source
-}
-
 // FindSourceByID finds a #GSource given a pair of context and ID.
 //
 // It is a programmer error to attempt to look up a non-existent source.
@@ -579,80 +504,6 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	)
 
 	return _source
-}
-
-// FindSourceByUserData finds a source with the given user data for the
-// callback. If multiple sources exist with the same user data, the first one
-// found will be returned.
-//
-// The function takes the following parameters:
-//
-//    - userData (optional): user_data for the callback.
-//
-// The function returns the following values:
-//
-//    - source: source, if one was found, otherwise NULL.
-//
-func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
-	var _arg0 *C.GMainContext // out
-	var _arg1 C.gpointer      // out
-	var _cret *C.GSource      // in
-
-	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
-
-	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(userData)
-
-	var _source *Source // out
-
-	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
-	)
-
-	return _source
-}
-
-// InvokeFull invokes a function in such a way that context is owned during the
-// invocation of function.
-//
-// This function is the same as g_main_context_invoke() except that it lets you
-// specify the priority in case function ends up being scheduled as an idle and
-// also lets you give a Notify for data.
-//
-// notify should not assume that it is called from any particular thread or with
-// any particular context acquired.
-//
-// The function takes the following parameters:
-//
-//    - priority at which to run function.
-//    - function to call.
-//
-func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
-	var _arg0 *C.GMainContext // out
-	var _arg1 C.gint          // out
-	var _arg2 C.GSourceFunc   // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	if context != nil {
-		_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
-	}
-	_arg1 = C.gint(priority)
-	_arg2 = (*[0]byte)(C._gotk4_glib2_SourceFunc)
-	_arg3 = C.gpointer(gbox.Assign(function))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.g_main_context_invoke_full(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(priority)
-	runtime.KeepAlive(function)
 }
 
 // IsOwner determines whether this thread holds the (recursive) ownership of
@@ -987,7 +838,7 @@ type mainLoop struct {
 }
 
 func marshalMainLoop(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &MainLoop{&mainLoop{(*C.GMainLoop)(b)}}, nil
 }
 
@@ -1114,7 +965,7 @@ type source struct {
 }
 
 func marshalSource(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Source{&source{(*C.GSource)(b)}}, nil
 }
 
@@ -1515,74 +1366,6 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 	runtime.KeepAlive(childSource)
 }
 
-// SetCallback sets the callback function for a source. The callback for a
-// source is called from the source's dispatch function.
-//
-// The exact type of func depends on the type of source; ie. you should not
-// count on func being called with data as its first parameter. Cast func with
-// G_SOURCE_FUNC() to avoid warnings about incompatible function types.
-//
-// See [memory management of sources][mainloop-memory-management] for details on
-// how to handle memory management of data.
-//
-// Typically, you won't use this function. Instead use functions specific to the
-// type of source you are using, such as g_idle_add() or g_timeout_add().
-//
-// It is safe to call this function multiple times on a source which has already
-// been attached to a context. The changes will take effect for the next time
-// the source is dispatched after this call returns.
-//
-// The function takes the following parameters:
-//
-//    - fn: callback function.
-//
-func (source *Source) SetCallback(fn SourceFunc) {
-	var _arg0 *C.GSource    // out
-	var _arg1 C.GSourceFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (*[0]byte)(C._gotk4_glib2_SourceFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.g_source_set_callback(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(fn)
-}
-
-// SetCallbackIndirect sets the callback function storing the data as a
-// refcounted callback "object". This is used internally. Note that calling
-// g_source_set_callback_indirect() assumes an initial reference count on
-// callback_data, and thus callback_funcs->unref will eventually be called once
-// more than callback_funcs->ref.
-//
-// It is safe to call this function multiple times on a source which has already
-// been attached to a context. The changes will take effect for the next time
-// the source is dispatched after this call returns.
-//
-// The function takes the following parameters:
-//
-//    - callbackData (optional): pointer to callback data "object".
-//    - callbackFuncs functions for reference counting callback_data and getting
-//      the callback and data.
-//
-func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs *SourceCallbackFuncs) {
-	var _arg0 *C.GSource              // out
-	var _arg1 C.gpointer              // out
-	var _arg2 *C.GSourceCallbackFuncs // out
-
-	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (C.gpointer)(unsafe.Pointer(callbackData))
-	_arg2 = (*C.GSourceCallbackFuncs)(gextras.StructNative(unsafe.Pointer(callbackFuncs)))
-
-	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(callbackData)
-	runtime.KeepAlive(callbackFuncs)
-}
-
 // SetCanRecurse sets whether a source can be called recursively. If can_recurse
 // is TRUE, then while the source is being dispatched then this source will be
 // processed normally. Otherwise, all processing of this source is blocked until
@@ -1719,70 +1502,6 @@ func (source *Source) SetReadyTime(readyTime int64) {
 	C.g_source_set_ready_time(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(readyTime)
-}
-
-// SourceRemoveByFuncsUserData removes a source from the default main loop
-// context given the source functions and user data. If multiple sources exist
-// with the same source functions and user data, only one will be destroyed.
-//
-// The function takes the following parameters:
-//
-//    - funcs passed to g_source_new().
-//    - userData (optional): user data for the callback.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if a source was found and removed.
-//
-func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
-	var _arg1 *C.GSourceFuncs // out
-	var _arg2 C.gpointer      // out
-	var _cret C.gboolean      // in
-
-	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(funcs)))
-	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
-
-	_cret = C.g_source_remove_by_funcs_user_data(_arg1, _arg2)
-	runtime.KeepAlive(funcs)
-	runtime.KeepAlive(userData)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SourceRemoveByUserData removes a source from the default main loop context
-// given the user data for the callback. If multiple sources exist with the same
-// user data, only one will be destroyed.
-//
-// The function takes the following parameters:
-//
-//    - userData (optional): user_data for the callback.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if a source was found and removed.
-//
-func SourceRemoveByUserData(userData cgo.Handle) bool {
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
-
-	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
-
-	_cret = C.g_source_remove_by_user_data(_arg1)
-	runtime.KeepAlive(userData)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SourceSetNameByID sets the name of a source using its ID.

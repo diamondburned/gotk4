@@ -6,23 +6,22 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_GestureLongPress_ConnectCancelled(gpointer, guintptr);
 // extern void _gotk4_gtk3_GestureLongPress_ConnectPressed(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // glib.Type values for gtkgesturelongpress.go.
-var GTypeGestureLongPress = externglib.Type(C.gtk_gesture_long_press_get_type())
+var GTypeGestureLongPress = coreglib.Type(C.gtk_gesture_long_press_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeGestureLongPress, F: marshalGestureLongPress},
 	})
 }
@@ -54,7 +53,7 @@ func classInitGestureLongPresser(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
+func wrapGestureLongPress(obj *coreglib.Object) *GestureLongPress {
 	return &GestureLongPress{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -67,14 +66,14 @@ func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 }
 
 func marshalGestureLongPress(p uintptr) (interface{}, error) {
-	return wrapGestureLongPress(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapGestureLongPress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_GestureLongPress_ConnectCancelled
 func _gotk4_gtk3_GestureLongPress_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -88,15 +87,15 @@ func _gotk4_gtk3_GestureLongPress_ConnectCancelled(arg0 C.gpointer, arg1 C.guint
 
 // ConnectCancelled: this signal is emitted whenever a press moved too far, or
 // was released before GestureLongPress::pressed happened.
-func (v *GestureLongPress) ConnectCancelled(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "cancelled", false, unsafe.Pointer(C._gotk4_gtk3_GestureLongPress_ConnectCancelled), f)
+func (v *GestureLongPress) ConnectCancelled(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "cancelled", false, unsafe.Pointer(C._gotk4_gtk3_GestureLongPress_ConnectCancelled), f)
 }
 
 //export _gotk4_gtk3_GestureLongPress_ConnectPressed
 func _gotk4_gtk3_GestureLongPress_ConnectPressed(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
 	var f func(x, y float64)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -116,8 +115,8 @@ func _gotk4_gtk3_GestureLongPress_ConnectPressed(arg0 C.gpointer, arg1 C.gdouble
 
 // ConnectPressed: this signal is emitted whenever a press goes
 // unmoved/unreleased longer than what the GTK+ defaults tell.
-func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_GestureLongPress_ConnectPressed), f)
+func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_GestureLongPress_ConnectPressed), f)
 }
 
 // NewGestureLongPress returns a newly created Gesture that recognizes long
@@ -132,17 +131,21 @@ func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) externglib.Signa
 //    - gestureLongPress: newly created GestureLongPress.
 //
 func NewGestureLongPress(widget Widgetter) *GestureLongPress {
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.GtkGesture // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_gesture_long_press_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("new_GestureLongPress", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _gestureLongPress *GestureLongPress // out
 
-	_gestureLongPress = wrapGestureLongPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureLongPress = wrapGestureLongPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
 }

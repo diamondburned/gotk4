@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkshortcutlabel.go.
-var GTypeShortcutLabel = externglib.Type(C.gtk_shortcut_label_get_type())
+var GTypeShortcutLabel = coreglib.Type(C.gtk_shortcut_label_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutLabel, F: marshalShortcutLabel},
 	})
 }
@@ -38,8 +37,8 @@ type ShortcutLabel struct {
 }
 
 var (
-	_ Containerer         = (*ShortcutLabel)(nil)
-	_ externglib.Objector = (*ShortcutLabel)(nil)
+	_ Containerer       = (*ShortcutLabel)(nil)
+	_ coreglib.Objector = (*ShortcutLabel)(nil)
 )
 
 func classInitShortcutLabeller(gclassPtr, data C.gpointer) {
@@ -50,12 +49,12 @@ func classInitShortcutLabeller(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
+func wrapShortcutLabel(obj *coreglib.Object) *ShortcutLabel {
 	return &ShortcutLabel{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -76,7 +75,7 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 }
 
 func marshalShortcutLabel(p uintptr) (interface{}, error) {
-	return wrapShortcutLabel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutLabel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewShortcutLabel creates a new ShortcutLabel with accelerator set.
@@ -90,18 +89,22 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 //    - shortcutLabel: newly-allocated ShortcutLabel.
 //
 func NewShortcutLabel(accelerator string) *ShortcutLabel {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_shortcut_label_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("new_ShortcutLabel", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(accelerator)
 
 	var _shortcutLabel *ShortcutLabel // out
 
-	_shortcutLabel = wrapShortcutLabel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_shortcutLabel = wrapShortcutLabel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutLabel
 }
@@ -113,12 +116,16 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel {
 //    - utf8 (optional): current accelerator.
 //
 func (self *ShortcutLabel) Accelerator() string {
-	var _arg0 *C.GtkShortcutLabel // out
-	var _cret *C.gchar            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ShortcutLabel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_shortcut_label_get_accelerator(_arg0)
+	_gret := girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("get_accelerator", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -137,12 +144,16 @@ func (self *ShortcutLabel) Accelerator() string {
 //    - utf8 (optional): current text displayed when no accelerator is set.
 //
 func (self *ShortcutLabel) DisabledText() string {
-	var _arg0 *C.GtkShortcutLabel // out
-	var _cret *C.gchar            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ShortcutLabel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
+	_gret := girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("get_disabled_text", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -161,14 +172,17 @@ func (self *ShortcutLabel) DisabledText() string {
 //    - accelerator: new accelerator.
 //
 func (self *ShortcutLabel) SetAccelerator(accelerator string) {
-	var _arg0 *C.GtkShortcutLabel // out
-	var _arg1 *C.gchar            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ShortcutLabel)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_shortcut_label_set_accelerator(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("set_accelerator", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(accelerator)
 }
@@ -181,14 +195,17 @@ func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 //    - disabledText: text to be displayed when no accelerator is set.
 //
 func (self *ShortcutLabel) SetDisabledText(disabledText string) {
-	var _arg0 *C.GtkShortcutLabel // out
-	var _arg1 *C.gchar            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(disabledText)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(disabledText)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ShortcutLabel)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_shortcut_label_set_disabled_text(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("set_disabled_text", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(disabledText)
 }

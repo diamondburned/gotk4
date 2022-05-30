@@ -8,15 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_AppChooserWidgetClass_application_activated(GtkAppChooserWidget*, GAppInfo*);
 // extern void _gotk4_gtk3_AppChooserWidgetClass_application_selected(GtkAppChooserWidget*, GAppInfo*);
 // extern void _gotk4_gtk3_AppChooserWidgetClass_populate_popup(GtkAppChooserWidget*, GtkMenu*, GAppInfo*);
@@ -26,10 +25,10 @@ import (
 import "C"
 
 // glib.Type values for gtkappchooserwidget.go.
-var GTypeAppChooserWidget = externglib.Type(C.gtk_app_chooser_widget_get_type())
+var GTypeAppChooserWidget = coreglib.Type(C.gtk_app_chooser_widget_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAppChooserWidget, F: marshalAppChooserWidget},
 	})
 }
@@ -73,13 +72,13 @@ type AppChooserWidget struct {
 	_ [0]func() // equal guard
 	Box
 
-	*externglib.Object
+	*coreglib.Object
 	AppChooser
 }
 
 var (
-	_ externglib.Objector = (*AppChooserWidget)(nil)
-	_ Containerer         = (*AppChooserWidget)(nil)
+	_ coreglib.Objector = (*AppChooserWidget)(nil)
+	_ Containerer       = (*AppChooserWidget)(nil)
 )
 
 func classInitAppChooserWidgetter(gclassPtr, data C.gpointer) {
@@ -110,7 +109,7 @@ func classInitAppChooserWidgetter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AppChooserWidgetClass_application_activated
 func _gotk4_gtk3_AppChooserWidgetClass_application_activated(arg0 *C.GtkAppChooserWidget, arg1 *C.GAppInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ApplicationActivated(appInfo gio.AppInfor) })
 
 	var _appInfo gio.AppInfor // out
@@ -121,8 +120,8 @@ func _gotk4_gtk3_AppChooserWidgetClass_application_activated(arg0 *C.GtkAppChoos
 			panic("object of type gio.AppInfor is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.AppInfor)
 			return ok
 		})
@@ -138,7 +137,7 @@ func _gotk4_gtk3_AppChooserWidgetClass_application_activated(arg0 *C.GtkAppChoos
 
 //export _gotk4_gtk3_AppChooserWidgetClass_application_selected
 func _gotk4_gtk3_AppChooserWidgetClass_application_selected(arg0 *C.GtkAppChooserWidget, arg1 *C.GAppInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ApplicationSelected(appInfo gio.AppInfor) })
 
 	var _appInfo gio.AppInfor // out
@@ -149,8 +148,8 @@ func _gotk4_gtk3_AppChooserWidgetClass_application_selected(arg0 *C.GtkAppChoose
 			panic("object of type gio.AppInfor is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.AppInfor)
 			return ok
 		})
@@ -166,7 +165,7 @@ func _gotk4_gtk3_AppChooserWidgetClass_application_selected(arg0 *C.GtkAppChoose
 
 //export _gotk4_gtk3_AppChooserWidgetClass_populate_popup
 func _gotk4_gtk3_AppChooserWidgetClass_populate_popup(arg0 *C.GtkAppChooserWidget, arg1 *C.GtkMenu, arg2 *C.GAppInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PopulatePopup(menu *Menu, appInfo gio.AppInfor)
 	})
@@ -174,15 +173,15 @@ func _gotk4_gtk3_AppChooserWidgetClass_populate_popup(arg0 *C.GtkAppChooserWidge
 	var _menu *Menu           // out
 	var _appInfo gio.AppInfor // out
 
-	_menu = wrapMenu(externglib.Take(unsafe.Pointer(arg1)))
+	_menu = wrapMenu(coreglib.Take(unsafe.Pointer(arg1)))
 	{
 		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gio.AppInfor is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.AppInfor)
 			return ok
 		})
@@ -196,12 +195,12 @@ func _gotk4_gtk3_AppChooserWidgetClass_populate_popup(arg0 *C.GtkAppChooserWidge
 	iface.PopulatePopup(_menu, _appInfo)
 }
 
-func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
+func wrapAppChooserWidget(obj *coreglib.Object) *AppChooserWidget {
 	return &AppChooserWidget{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -221,7 +220,7 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 		Object: obj,
 		AppChooser: AppChooser{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -237,14 +236,14 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 }
 
 func marshalAppChooserWidget(p uintptr) (interface{}, error) {
-	return wrapAppChooserWidget(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAppChooserWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated
 func _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
 	var f func(application gio.AppInfor)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -261,8 +260,8 @@ func _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 			panic("object of type gio.AppInfor is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.AppInfor)
 			return ok
 		})
@@ -282,15 +281,15 @@ func _gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 // This usually happens when the user double clicks an item, or an item is
 // selected and the user presses one of the keys Space, Shift+Space, Return or
 // Enter.
-func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "application-activated", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated), f)
+func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "application-activated", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectApplicationActivated), f)
 }
 
 //export _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected
 func _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
 	var f func(application gio.AppInfor)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -307,8 +306,8 @@ func _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, ar
 			panic("object of type gio.AppInfor is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.AppInfor)
 			return ok
 		})
@@ -324,15 +323,15 @@ func _gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, ar
 
 // ConnectApplicationSelected is emitted when an application item is selected
 // from the widget's list.
-func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "application-selected", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected), f)
+func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.AppInfor)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "application-selected", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectApplicationSelected), f)
 }
 
 //export _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup
 func _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkMenu, arg2 *C.GAppInfo, arg3 C.guintptr) {
 	var f func(menu *Menu, application gio.AppInfor)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -344,15 +343,15 @@ func _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.
 	var _menu *Menu               // out
 	var _application gio.AppInfor // out
 
-	_menu = wrapMenu(externglib.Take(unsafe.Pointer(arg1)))
+	_menu = wrapMenu(coreglib.Take(unsafe.Pointer(arg1)))
 	{
 		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
 			panic("object of type gio.AppInfor is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(gio.AppInfor)
 			return ok
 		})
@@ -370,8 +369,8 @@ func _gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.
 // application item. Clients can insert menu items into the provided Menu object
 // in the callback of this signal; the context menu will be shown over the item
 // if at least one item has been added to the menu.
-func (self *AppChooserWidget) ConnectPopulatePopup(f func(menu *Menu, application gio.AppInfor)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup), f)
+func (self *AppChooserWidget) ConnectPopulatePopup(f func(menu *Menu, application gio.AppInfor)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "populate-popup", false, unsafe.Pointer(C._gotk4_gtk3_AppChooserWidget_ConnectPopulatePopup), f)
 }
 
 // NewAppChooserWidget creates a new AppChooserWidget for applications that can
@@ -386,18 +385,22 @@ func (self *AppChooserWidget) ConnectPopulatePopup(f func(menu *Menu, applicatio
 //    - appChooserWidget: newly created AppChooserWidget.
 //
 func NewAppChooserWidget(contentType string) *AppChooserWidget {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_widget_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("new_AppChooserWidget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(contentType)
 
 	var _appChooserWidget *AppChooserWidget // out
 
-	_appChooserWidget = wrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_appChooserWidget = wrapAppChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserWidget
 }
@@ -410,12 +413,16 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 //    - utf8: value of AppChooserWidget:default-text.
 //
 func (self *AppChooserWidget) DefaultText() string {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _cret *C.gchar               // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserWidget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_default_text", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
@@ -432,12 +439,16 @@ func (self *AppChooserWidget) DefaultText() string {
 //    - ok: value of AppChooserWidget:show-all.
 //
 func (self *AppChooserWidget) ShowAll() bool {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _cret C.gboolean             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserWidget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_all", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -457,12 +468,16 @@ func (self *AppChooserWidget) ShowAll() bool {
 //    - ok: value of AppChooserWidget:show-default.
 //
 func (self *AppChooserWidget) ShowDefault() bool {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _cret C.gboolean             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserWidget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_default", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -482,12 +497,16 @@ func (self *AppChooserWidget) ShowDefault() bool {
 //    - ok: value of AppChooserWidget:show-fallback.
 //
 func (self *AppChooserWidget) ShowFallback() bool {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _cret C.gboolean             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserWidget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_fallback", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -507,12 +526,16 @@ func (self *AppChooserWidget) ShowFallback() bool {
 //    - ok: value of AppChooserWidget:show-other.
 //
 func (self *AppChooserWidget) ShowOther() bool {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _cret C.gboolean             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserWidget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_other", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -532,12 +555,16 @@ func (self *AppChooserWidget) ShowOther() bool {
 //    - ok: value of AppChooserWidget:show-recommended.
 //
 func (self *AppChooserWidget) ShowRecommended() bool {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _cret C.gboolean             // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AppChooserWidget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
+	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_recommended", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
@@ -557,14 +584,17 @@ func (self *AppChooserWidget) ShowRecommended() bool {
 //    - text: new value for AppChooserWidget:default-text.
 //
 func (self *AppChooserWidget) SetDefaultText(text string) {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _arg1 *C.gchar               // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**AppChooserWidget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_widget_set_default_text(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_default_text", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(text)
 }
@@ -577,15 +607,18 @@ func (self *AppChooserWidget) SetDefaultText(text string) {
 //    - setting: new value for AppChooserWidget:show-all.
 //
 func (self *AppChooserWidget) SetShowAll(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _arg1 C.gboolean             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**AppChooserWidget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_widget_set_show_all(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_all", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -598,15 +631,18 @@ func (self *AppChooserWidget) SetShowAll(setting bool) {
 //    - setting: new value for AppChooserWidget:show-default.
 //
 func (self *AppChooserWidget) SetShowDefault(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _arg1 C.gboolean             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**AppChooserWidget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_widget_set_show_default(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_default", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -619,15 +655,18 @@ func (self *AppChooserWidget) SetShowDefault(setting bool) {
 //    - setting: new value for AppChooserWidget:show-fallback.
 //
 func (self *AppChooserWidget) SetShowFallback(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _arg1 C.gboolean             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**AppChooserWidget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_widget_set_show_fallback(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_fallback", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -640,15 +679,18 @@ func (self *AppChooserWidget) SetShowFallback(setting bool) {
 //    - setting: new value for AppChooserWidget:show-other.
 //
 func (self *AppChooserWidget) SetShowOther(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _arg1 C.gboolean             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**AppChooserWidget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_widget_set_show_other(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_other", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -661,15 +703,18 @@ func (self *AppChooserWidget) SetShowOther(setting bool) {
 //    - setting: new value for AppChooserWidget:show-recommended.
 //
 func (self *AppChooserWidget) SetShowRecommended(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget // out
-	var _arg1 C.gboolean             // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**AppChooserWidget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
+	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_recommended", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }

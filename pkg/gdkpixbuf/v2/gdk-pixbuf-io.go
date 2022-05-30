@@ -3,31 +3,28 @@
 package gdkpixbuf
 
 import (
-	"context"
 	"fmt"
 	"runtime"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // glib.Type values for gdk-pixbuf-io.go.
-var GTypePixbufFormat = externglib.Type(C.gdk_pixbuf_format_get_type())
+var GTypePixbufFormat = coreglib.Type(C.gdk_pixbuf_format_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePixbufFormat, F: marshalPixbufFormat},
 	})
 }
@@ -102,8 +99,8 @@ func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg1 *C.GdkPixbuf, arg2 *C.GdkPi
 	var _pixbuf *Pixbuf        // out
 	var _anim *PixbufAnimation // out
 
-	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg1)))
-	_anim = wrapPixbufAnimation(externglib.Take(unsafe.Pointer(arg2)))
+	_pixbuf = wrapPixbuf(coreglib.Take(unsafe.Pointer(arg1)))
+	_anim = wrapPixbufAnimation(coreglib.Take(unsafe.Pointer(arg2)))
 
 	fn(_pixbuf, _anim)
 }
@@ -167,7 +164,7 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, ar
 	var _width int      // out
 	var _height int     // out
 
-	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg1)))
+	_pixbuf = wrapPixbuf(coreglib.Take(unsafe.Pointer(arg1)))
 	_x = int(arg2)
 	_y = int(arg3)
 	_width = int(arg4)
@@ -215,47 +212,6 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 	return _width, _height, _pixbufFormat
 }
 
-// PixbufGetFileInfoAsync: asynchronously parses an image file far enough to
-// determine its format and size.
-//
-// For more details see gdk_pixbuf_get_file_info(), which is the synchronous
-// version of this function.
-//
-// When the operation is finished, callback will be called in the main thread.
-// You can then call gdk_pixbuf_get_file_info_finish() to get the result of the
-// operation.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - filename: name of the file to identify.
-//    - callback (optional): GAsyncReadyCallback to call when the file info is
-//      available.
-//
-func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 *C.gchar              // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_pixbuf_get_file_info_async(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(filename)
-	runtime.KeepAlive(callback)
-}
-
 // PixbufGetFileInfoFinish finishes an asynchronous pixbuf parsing operation
 // started with gdk_pixbuf_get_file_info_async().
 //
@@ -277,7 +233,7 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 	var _cret *C.GdkPixbufFormat // in
 	var _cerr *C.GError          // in
 
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(asyncResult).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(asyncResult).Native()))
 
 	_cret = C.gdk_pixbuf_get_file_info_finish(_arg1, &_arg2, &_arg3, &_cerr)
 	runtime.KeepAlive(asyncResult)
@@ -377,7 +333,7 @@ type pixbufFormat struct {
 }
 
 func marshalPixbufFormat(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &PixbufFormat{&pixbufFormat{(*C.GdkPixbufFormat)(b)}}, nil
 }
 

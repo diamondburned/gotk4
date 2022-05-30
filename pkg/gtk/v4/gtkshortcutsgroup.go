@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkshortcutsgroup.go.
-var GTypeShortcutsGroup = externglib.Type(C.gtk_shortcuts_group_get_type())
+var GTypeShortcutsGroup = coreglib.Type(C.gtk_shortcuts_group_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutsGroup, F: marshalShortcutsGroup},
 	})
 }
@@ -40,8 +41,8 @@ type ShortcutsGroup struct {
 }
 
 var (
-	_ Widgetter           = (*ShortcutsGroup)(nil)
-	_ externglib.Objector = (*ShortcutsGroup)(nil)
+	_ Widgetter         = (*ShortcutsGroup)(nil)
+	_ coreglib.Objector = (*ShortcutsGroup)(nil)
 )
 
 func classInitShortcutsGrouper(gclassPtr, data C.gpointer) {
@@ -52,11 +53,11 @@ func classInitShortcutsGrouper(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
+func wrapShortcutsGroup(obj *coreglib.Object) *ShortcutsGroup {
 	return &ShortcutsGroup{
 		Box: Box{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -79,5 +80,5 @@ func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 }
 
 func marshalShortcutsGroup(p uintptr) (interface{}, error) {
-	return wrapShortcutsGroup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutsGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -8,15 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_CellEditableIface_editing_done(GtkCellEditable*);
 // extern void _gotk4_gtk3_CellEditableIface_remove_widget(GtkCellEditable*);
 // extern void _gotk4_gtk3_CellEditableIface_start_editing(GtkCellEditable*, GdkEvent*);
@@ -25,10 +24,10 @@ import (
 import "C"
 
 // glib.Type values for gtkcelleditable.go.
-var GTypeCellEditable = externglib.Type(C.gtk_cell_editable_get_type())
+var GTypeCellEditable = coreglib.Type(C.gtk_cell_editable_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellEditable, F: marshalCellEditable},
 	})
 }
@@ -77,7 +76,7 @@ var (
 
 // CellEditabler describes CellEditable's interface methods.
 type CellEditabler interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// EditingDone emits the CellEditable::editing-done signal.
 	EditingDone()
@@ -88,11 +87,11 @@ type CellEditabler interface {
 
 	// Editing-done: this signal is a sign for the cell renderer to update its
 	// value from the cell_editable.
-	ConnectEditingDone(func()) externglib.SignalHandle
+	ConnectEditingDone(func()) coreglib.SignalHandle
 	// Remove-widget: this signal is meant to indicate that the cell is finished
 	// editing, and the cell_editable widget is being removed and may
 	// subsequently be destroyed.
-	ConnectRemoveWidget(func()) externglib.SignalHandle
+	ConnectRemoveWidget(func()) coreglib.SignalHandle
 }
 
 var _ CellEditabler = (*CellEditable)(nil)
@@ -106,7 +105,7 @@ func ifaceInitCellEditabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CellEditableIface_editing_done
 func _gotk4_gtk3_CellEditableIface_editing_done(arg0 *C.GtkCellEditable) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
 	iface.EditingDone()
@@ -114,7 +113,7 @@ func _gotk4_gtk3_CellEditableIface_editing_done(arg0 *C.GtkCellEditable) {
 
 //export _gotk4_gtk3_CellEditableIface_remove_widget
 func _gotk4_gtk3_CellEditableIface_remove_widget(arg0 *C.GtkCellEditable) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
 	iface.RemoveWidget()
@@ -122,7 +121,7 @@ func _gotk4_gtk3_CellEditableIface_remove_widget(arg0 *C.GtkCellEditable) {
 
 //export _gotk4_gtk3_CellEditableIface_start_editing
 func _gotk4_gtk3_CellEditableIface_start_editing(arg0 *C.GtkCellEditable, arg1 *C.GdkEvent) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
 	var _event *gdk.Event // out
@@ -138,10 +137,10 @@ func _gotk4_gtk3_CellEditableIface_start_editing(arg0 *C.GtkCellEditable, arg1 *
 	iface.StartEditing(_event)
 }
 
-func wrapCellEditable(obj *externglib.Object) *CellEditable {
+func wrapCellEditable(obj *coreglib.Object) *CellEditable {
 	return &CellEditable{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -156,14 +155,14 @@ func wrapCellEditable(obj *externglib.Object) *CellEditable {
 }
 
 func marshalCellEditable(p uintptr) (interface{}, error) {
-	return wrapCellEditable(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellEditable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_CellEditable_ConnectEditingDone
 func _gotk4_gtk3_CellEditable_ConnectEditingDone(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -186,15 +185,15 @@ func _gotk4_gtk3_CellEditable_ConnectEditingDone(arg0 C.gpointer, arg1 C.guintpt
 //
 // gtk_cell_editable_editing_done() is a convenience method for emitting
 // CellEditable::editing-done.
-func (cellEditable *CellEditable) ConnectEditingDone(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(cellEditable, "editing-done", false, unsafe.Pointer(C._gotk4_gtk3_CellEditable_ConnectEditingDone), f)
+func (cellEditable *CellEditable) ConnectEditingDone(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(cellEditable, "editing-done", false, unsafe.Pointer(C._gotk4_gtk3_CellEditable_ConnectEditingDone), f)
 }
 
 //export _gotk4_gtk3_CellEditable_ConnectRemoveWidget
 func _gotk4_gtk3_CellEditable_ConnectRemoveWidget(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -217,27 +216,29 @@ func _gotk4_gtk3_CellEditable_ConnectRemoveWidget(arg0 C.gpointer, arg1 C.guintp
 //
 // gtk_cell_editable_remove_widget() is a convenience method for emitting
 // CellEditable::remove-widget.
-func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(cellEditable, "remove-widget", false, unsafe.Pointer(C._gotk4_gtk3_CellEditable_ConnectRemoveWidget), f)
+func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(cellEditable, "remove-widget", false, unsafe.Pointer(C._gotk4_gtk3_CellEditable_ConnectRemoveWidget), f)
 }
 
 // EditingDone emits the CellEditable::editing-done signal.
 func (cellEditable *CellEditable) EditingDone() {
-	var _arg0 *C.GtkCellEditable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(externglib.InternObject(cellEditable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+	*(**CellEditable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_cell_editable_editing_done(_arg0)
 	runtime.KeepAlive(cellEditable)
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
 func (cellEditable *CellEditable) RemoveWidget() {
-	var _arg0 *C.GtkCellEditable // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(externglib.InternObject(cellEditable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+	*(**CellEditable)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_cell_editable_remove_widget(_arg0)
 	runtime.KeepAlive(cellEditable)
 }
 
@@ -258,15 +259,16 @@ func (cellEditable *CellEditable) RemoveWidget() {
 //      initiated programmatically.
 //
 func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
-	var _arg0 *C.GtkCellEditable // out
-	var _arg1 *C.GdkEvent        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(externglib.InternObject(cellEditable).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 	if event != nil {
-		_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 	}
+	*(**CellEditable)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_cell_editable_start_editing(_arg0, _arg1)
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)
 }

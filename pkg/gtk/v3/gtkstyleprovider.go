@@ -7,23 +7,22 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern GtkIconFactory* _gotk4_gtk3_StyleProviderIface_get_icon_factory(GtkStyleProvider*, GtkWidgetPath*);
 // extern GtkStyleProperties* _gotk4_gtk3_StyleProviderIface_get_style(GtkStyleProvider*, GtkWidgetPath*);
 import "C"
 
 // glib.Type values for gtkstyleprovider.go.
-var GTypeStyleProvider = externglib.Type(C.gtk_style_provider_get_type())
+var GTypeStyleProvider = coreglib.Type(C.gtk_style_provider_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeStyleProvider, F: marshalStyleProvider},
 	})
 }
@@ -100,16 +99,16 @@ type StyleProviderOverrider interface {
 // underlying type by calling Cast().
 type StyleProvider struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*StyleProvider)(nil)
+	_ coreglib.Objector = (*StyleProvider)(nil)
 )
 
 // StyleProviderer describes StyleProvider's interface methods.
 type StyleProviderer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// IconFactory returns the IconFactory defined to be in use for path, or
 	// NULL if none is defined.
@@ -129,7 +128,7 @@ func ifaceInitStyleProviderer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_StyleProviderIface_get_icon_factory
 func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkIconFactory) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StyleProviderOverrider)
 
 	var _path *WidgetPath // out
@@ -146,7 +145,7 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, a
 	iconFactory := iface.IconFactory(_path)
 
 	if iconFactory != nil {
-		cret = (*C.GtkIconFactory)(unsafe.Pointer(externglib.InternObject(iconFactory).Native()))
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconFactory).Native()))
 	}
 
 	return cret
@@ -154,7 +153,7 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, a
 
 //export _gotk4_gtk3_StyleProviderIface_get_style
 func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkStyleProperties) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StyleProviderOverrider)
 
 	var _path *WidgetPath // out
@@ -171,21 +170,21 @@ func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.GtkStyleProvider, arg1 *C.
 	styleProperties := iface.Style(_path)
 
 	if styleProperties != nil {
-		cret = (*C.GtkStyleProperties)(unsafe.Pointer(externglib.InternObject(styleProperties).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(styleProperties).Native()))
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(styleProperties).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(styleProperties).Native()))
 	}
 
 	return cret
 }
 
-func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
+func wrapStyleProvider(obj *coreglib.Object) *StyleProvider {
 	return &StyleProvider{
 		Object: obj,
 	}
 }
 
 func marshalStyleProvider(p uintptr) (interface{}, error) {
-	return wrapStyleProvider(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStyleProvider(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // IconFactory returns the IconFactory defined to be in use for path, or NULL if
@@ -202,21 +201,24 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 //    - iconFactory (optional): icon factory to use for path, or NULL.
 //
 func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
-	var _arg0 *C.GtkStyleProvider // out
-	var _arg1 *C.GtkWidgetPath    // out
-	var _cret *C.GtkIconFactory   // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
-	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**StyleProvider)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_style_provider_get_icon_factory(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(path)
 
 	var _iconFactory *IconFactory // out
 
 	if _cret != nil {
-		_iconFactory = wrapIconFactory(externglib.Take(unsafe.Pointer(_cret)))
+		_iconFactory = wrapIconFactory(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _iconFactory
@@ -237,21 +239,24 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 //    - styleProperties (optional) containing the style settings affecting path.
 //
 func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
-	var _arg0 *C.GtkStyleProvider   // out
-	var _arg1 *C.GtkWidgetPath      // out
-	var _cret *C.GtkStyleProperties // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(externglib.InternObject(provider).Native()))
-	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**StyleProvider)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_style_provider_get_style(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(path)
 
 	var _styleProperties *StyleProperties // out
 
 	if _cret != nil {
-		_styleProperties = wrapStyleProperties(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _styleProperties

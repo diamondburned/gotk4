@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -17,12 +17,12 @@ import "C"
 
 // glib.Type values for gdk-pixbuf-transform.go.
 var (
-	GTypeInterpType     = externglib.Type(C.gdk_interp_type_get_type())
-	GTypePixbufRotation = externglib.Type(C.gdk_pixbuf_rotation_get_type())
+	GTypeInterpType     = coreglib.Type(C.gdk_interp_type_get_type())
+	GTypePixbufRotation = coreglib.Type(C.gdk_pixbuf_rotation_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeInterpType, F: marshalInterpType},
 		{T: GTypePixbufRotation, F: marshalPixbufRotation},
 	})
@@ -66,7 +66,7 @@ const (
 )
 
 func marshalInterpType(p uintptr) (interface{}, error) {
-	return InterpType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return InterpType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for InterpType.
@@ -103,7 +103,7 @@ const (
 )
 
 func marshalPixbufRotation(p uintptr) (interface{}, error) {
-	return PixbufRotation(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return PixbufRotation(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for PixbufRotation.
@@ -162,8 +162,8 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight i
 	var _arg10 C.GdkInterpType // out
 	var _arg11 C.int           // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(dest).Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(dest).Native()))
 	_arg2 = C.int(destX)
 	_arg3 = C.int(destY)
 	_arg4 = C.int(destWidth)
@@ -241,8 +241,8 @@ func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHei
 	var _arg15 C.guint32       // out
 	var _arg16 C.guint32       // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(dest).Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(dest).Native()))
 	_arg2 = C.int(destX)
 	_arg3 = C.int(destY)
 	_arg4 = C.int(destWidth)
@@ -308,7 +308,7 @@ func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType In
 	var _arg7 C.guint32       // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 	_arg1 = C.int(destWidth)
 	_arg2 = C.int(destHeight)
 	_arg3 = C.GdkInterpType(interpType)
@@ -330,7 +330,7 @@ func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType In
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
-		_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbuf = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _pixbuf
@@ -352,7 +352,7 @@ func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	var _arg1 C.gboolean   // out
 	var _cret *C.GdkPixbuf // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 	if horizontal {
 		_arg1 = C.TRUE
 	}
@@ -364,7 +364,7 @@ func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
-		_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbuf = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _pixbuf
@@ -388,7 +388,7 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	var _arg1 C.GdkPixbufRotation // out
 	var _cret *C.GdkPixbuf        // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 	_arg1 = C.GdkPixbufRotation(angle)
 
 	_cret = C.gdk_pixbuf_rotate_simple(_arg0, _arg1)
@@ -398,7 +398,7 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
-		_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbuf = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _pixbuf
@@ -443,8 +443,8 @@ func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, 
 	var _arg9 C.double         // out
 	var _arg10 C.GdkInterpType // out
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(dest).Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(dest).Native()))
 	_arg2 = C.int(destX)
 	_arg3 = C.int(destY)
 	_arg4 = C.int(destWidth)
@@ -505,7 +505,7 @@ func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType)
 	var _arg3 C.GdkInterpType // out
 	var _cret *C.GdkPixbuf    // in
 
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(src).Native()))
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 	_arg1 = C.int(destWidth)
 	_arg2 = C.int(destHeight)
 	_arg3 = C.GdkInterpType(interpType)
@@ -519,7 +519,7 @@ func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType)
 	var _pixbuf *Pixbuf // out
 
 	if _cret != nil {
-		_pixbuf = wrapPixbuf(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_pixbuf = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _pixbuf

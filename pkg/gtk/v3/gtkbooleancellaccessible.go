@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbooleancellaccessible.go.
-var GTypeBooleanCellAccessible = externglib.Type(C.gtk_boolean_cell_accessible_get_type())
+var GTypeBooleanCellAccessible = coreglib.Type(C.gtk_boolean_cell_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBooleanCellAccessible, F: marshalBooleanCellAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type BooleanCellAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*BooleanCellAccessible)(nil)
+	_ coreglib.Objector = (*BooleanCellAccessible)(nil)
 )
 
 func classInitBooleanCellAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitBooleanCellAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
+func wrapBooleanCellAccessible(obj *coreglib.Object) *BooleanCellAccessible {
 	return &BooleanCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{
@@ -76,5 +75,5 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 }
 
 func marshalBooleanCellAccessible(p uintptr) (interface{}, error) {
-	return wrapBooleanCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBooleanCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

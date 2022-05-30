@@ -7,25 +7,24 @@ import (
 	"strings"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
-// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(GtkBuilderScope*, GtkBuilder*, char*);
-// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(GtkBuilderScope*, GtkBuilder*, char*);
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbuilderscope.go.
 var (
-	GTypeBuilderClosureFlags = externglib.Type(C.gtk_builder_closure_flags_get_type())
-	GTypeBuilderScope        = externglib.Type(C.gtk_builder_scope_get_type())
-	GTypeBuilderCScope       = externglib.Type(C.gtk_builder_cscope_get_type())
+	GTypeBuilderClosureFlags = coreglib.Type(C.gtk_builder_closure_flags_get_type())
+	GTypeBuilderScope        = coreglib.Type(C.gtk_builder_scope_get_type())
+	GTypeBuilderCScope       = coreglib.Type(C.gtk_builder_cscope_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBuilderClosureFlags, F: marshalBuilderClosureFlags},
 		{T: GTypeBuilderScope, F: marshalBuilderScope},
 		{T: GTypeBuilderCScope, F: marshalBuilderCScope},
@@ -48,7 +47,7 @@ const (
 )
 
 func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
-	return BuilderClosureFlags(externglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+	return BuilderClosureFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
 }
 
 // String returns the names in string for BuilderClosureFlags.
@@ -84,22 +83,6 @@ func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
 
 // BuilderScopeOverrider contains methods that are overridable.
 type BuilderScopeOverrider interface {
-	// The function takes the following parameters:
-	//
-	//    - builder
-	//    - functionName
-	//
-	// The function returns the following values:
-	//
-	TypeFromFunction(builder *Builder, functionName string) externglib.Type
-	// The function takes the following parameters:
-	//
-	//    - builder
-	//    - typeName
-	//
-	// The function returns the following values:
-	//
-	TypeFromName(builder *Builder, typeName string) externglib.Type
 }
 
 // BuilderScope: GtkBuilderScope is an interface to provide language binding
@@ -121,16 +104,16 @@ type BuilderScopeOverrider interface {
 // underlying type by calling Cast().
 type BuilderScope struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*BuilderScope)(nil)
+	_ coreglib.Objector = (*BuilderScope)(nil)
 )
 
 // BuilderScoper describes BuilderScope's interface methods.
 type BuilderScoper interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseBuilderScope() *BuilderScope
 }
@@ -138,59 +121,20 @@ type BuilderScoper interface {
 var _ BuilderScoper = (*BuilderScope)(nil)
 
 func ifaceInitBuilderScoper(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkBuilderScopeInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_type_from_function = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_function)
-	iface.get_type_from_name = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_name)
 }
 
-//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_function
-func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(BuilderScopeOverrider)
-
-	var _builder *Builder    // out
-	var _functionName string // out
-
-	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
-	_functionName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	gType := iface.TypeFromFunction(_builder, _functionName)
-
-	cret = C.GType(gType)
-
-	return cret
-}
-
-//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_name
-func _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(BuilderScopeOverrider)
-
-	var _builder *Builder // out
-	var _typeName string  // out
-
-	_builder = wrapBuilder(externglib.Take(unsafe.Pointer(arg1)))
-	_typeName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	gType := iface.TypeFromName(_builder, _typeName)
-
-	cret = C.GType(gType)
-
-	return cret
-}
-
-func wrapBuilderScope(obj *externglib.Object) *BuilderScope {
+func wrapBuilderScope(obj *coreglib.Object) *BuilderScope {
 	return &BuilderScope{
 		Object: obj,
 	}
 }
 
 func marshalBuilderScope(p uintptr) (interface{}, error) {
-	return wrapBuilderScope(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBuilderScope(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (self *BuilderScope) baseBuilderScope() *BuilderScope {
-	return self
+func (v *BuilderScope) baseBuilderScope() *BuilderScope {
+	return v
 }
 
 // BaseBuilderScope returns the underlying base object.
@@ -218,13 +162,13 @@ type BuilderCScopeOverrider interface {
 // will require that GModule be supported on the platform.
 type BuilderCScope struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	BuilderScope
 }
 
 var (
-	_ externglib.Objector = (*BuilderCScope)(nil)
+	_ coreglib.Objector = (*BuilderCScope)(nil)
 )
 
 func classInitBuilderCScoper(gclassPtr, data C.gpointer) {
@@ -235,7 +179,7 @@ func classInitBuilderCScoper(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
+func wrapBuilderCScope(obj *coreglib.Object) *BuilderCScope {
 	return &BuilderCScope{
 		Object: obj,
 		BuilderScope: BuilderScope{
@@ -245,7 +189,7 @@ func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
 }
 
 func marshalBuilderCScope(p uintptr) (interface{}, error) {
-	return wrapBuilderCScope(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapBuilderCScope(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewBuilderCScope creates a new GtkBuilderCScope object to use with future
@@ -259,13 +203,14 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 //    - builderCScope: new GtkBuilderCScope.
 //
 func NewBuilderCScope() *BuilderCScope {
-	var _cret *C.GtkBuilderScope // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_builder_cscope_new()
+	_gret := girepository.MustFind("Gtk", "BuilderCScope").InvokeMethod("new_BuilderCScope", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _builderCScope *BuilderCScope // out
 
-	_builderCScope = wrapBuilderCScope(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builderCScope = wrapBuilderCScope(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderCScope
 }

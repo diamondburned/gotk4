@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkroot.go.
-var GTypeRoot = externglib.Type(C.gtk_root_get_type())
+var GTypeRoot = coreglib.Type(C.gtk_root_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRoot, F: marshalRoot},
 	})
 }
@@ -53,7 +54,7 @@ var ()
 
 // Rooter describes Root's interface methods.
 type Rooter interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// Display returns the display that this GtkRoot is on.
 	Display() *gdk.Display
@@ -69,11 +70,11 @@ var _ Rooter = (*Root)(nil)
 func ifaceInitRooter(gifacePtr, data C.gpointer) {
 }
 
-func wrapRoot(obj *externglib.Object) *Root {
+func wrapRoot(obj *coreglib.Object) *Root {
 	return &Root{
 		NativeSurface: NativeSurface{
 			Widget: Widget{
-				InitiallyUnowned: externglib.InitiallyUnowned{
+				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
 				},
 				Object: obj,
@@ -92,7 +93,7 @@ func wrapRoot(obj *externglib.Object) *Root {
 }
 
 func marshalRoot(p uintptr) (interface{}, error) {
-	return wrapRoot(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapRoot(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Display returns the display that this GtkRoot is on.
@@ -102,18 +103,21 @@ func marshalRoot(p uintptr) (interface{}, error) {
 //    - display of root.
 //
 func (self *Root) Display() *gdk.Display {
-	var _arg0 *C.GtkRoot    // out
-	var _cret *C.GdkDisplay // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Root)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_root_get_display(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _display *gdk.Display // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_display = &gdk.Display{
 			Object: obj,
 		}
@@ -133,12 +137,15 @@ func (self *Root) Display() *gdk.Display {
 //    - widget (optional): currently focused widget, or NULL if there is none.
 //
 func (self *Root) Focus() Widgetter {
-	var _arg0 *C.GtkRoot   // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Root)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_root_get_focus(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -147,8 +154,8 @@ func (self *Root) Focus() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -177,15 +184,16 @@ func (self *Root) Focus() Widgetter {
 //      focus widget.
 //
 func (self *Root) SetFocus(focus Widgetter) {
-	var _arg0 *C.GtkRoot   // out
-	var _arg1 *C.GtkWidget // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if focus != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(focus).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(focus).Native()))
 	}
+	*(**Root)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_root_set_focus(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(focus)
 }

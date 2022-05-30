@@ -8,14 +8,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_InfoBarClass_close(GtkInfoBar*);
 // extern void _gotk4_gtk3_InfoBarClass_response(GtkInfoBar*, gint);
 // extern void _gotk4_gtk3_InfoBar_ConnectClose(gpointer, guintptr);
@@ -23,10 +22,10 @@ import (
 import "C"
 
 // glib.Type values for gtkinfobar.go.
-var GTypeInfoBar = externglib.Type(C.gtk_info_bar_get_type())
+var GTypeInfoBar = coreglib.Type(C.gtk_info_bar_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeInfoBar, F: marshalInfoBar},
 	})
 }
@@ -119,8 +118,8 @@ type InfoBar struct {
 }
 
 var (
-	_ Containerer         = (*InfoBar)(nil)
-	_ externglib.Objector = (*InfoBar)(nil)
+	_ Containerer       = (*InfoBar)(nil)
+	_ coreglib.Objector = (*InfoBar)(nil)
 )
 
 func classInitInfoBarrer(gclassPtr, data C.gpointer) {
@@ -145,7 +144,7 @@ func classInitInfoBarrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_InfoBarClass_close
 func _gotk4_gtk3_InfoBarClass_close(arg0 *C.GtkInfoBar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
 	iface.Close()
@@ -153,7 +152,7 @@ func _gotk4_gtk3_InfoBarClass_close(arg0 *C.GtkInfoBar) {
 
 //export _gotk4_gtk3_InfoBarClass_response
 func _gotk4_gtk3_InfoBarClass_response(arg0 *C.GtkInfoBar, arg1 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Response(responseId int) })
 
 	var _responseId int // out
@@ -163,12 +162,12 @@ func _gotk4_gtk3_InfoBarClass_response(arg0 *C.GtkInfoBar, arg1 C.gint) {
 	iface.Response(_responseId)
 }
 
-func wrapInfoBar(obj *externglib.Object) *InfoBar {
+func wrapInfoBar(obj *coreglib.Object) *InfoBar {
 	return &InfoBar{
 		Box: Box{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -189,14 +188,14 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 }
 
 func marshalInfoBar(p uintptr) (interface{}, error) {
-	return wrapInfoBar(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapInfoBar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_InfoBar_ConnectClose
 func _gotk4_gtk3_InfoBar_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -212,15 +211,15 @@ func _gotk4_gtk3_InfoBar_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
 // emitted when the user uses a keybinding to dismiss the info bar.
 //
 // The default binding for this signal is the Escape key.
-func (infoBar *InfoBar) ConnectClose(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(infoBar, "close", false, unsafe.Pointer(C._gotk4_gtk3_InfoBar_ConnectClose), f)
+func (infoBar *InfoBar) ConnectClose(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(infoBar, "close", false, unsafe.Pointer(C._gotk4_gtk3_InfoBar_ConnectClose), f)
 }
 
 //export _gotk4_gtk3_InfoBar_ConnectResponse
 func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
 	var f func(responseId int)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -239,8 +238,8 @@ func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 // ConnectResponse is emitted when an action widget is clicked or the
 // application programmer calls gtk_dialog_response(). The response_id depends
 // on which action widget was clicked.
-func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk3_InfoBar_ConnectResponse), f)
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk3_InfoBar_ConnectResponse), f)
 }
 
 // NewInfoBar creates a new InfoBar object.
@@ -250,13 +249,14 @@ func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) externglib.Signa
 //    - infoBar: new InfoBar object.
 //
 func NewInfoBar() *InfoBar {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_info_bar_new()
+	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("new_InfoBar", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _infoBar *InfoBar // out
 
-	_infoBar = wrapInfoBar(externglib.Take(unsafe.Pointer(_cret)))
+	_infoBar = wrapInfoBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _infoBar
 }
@@ -272,15 +272,19 @@ func NewInfoBar() *InfoBar {
 //    - responseId: response ID for child.
 //
 func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
-	var _arg0 *C.GtkInfoBar // out
-	var _arg1 *C.GtkWidget  // out
-	var _arg2 C.gint        // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.gint(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("add_action_widget", args[:], nil)
+
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(responseId)
@@ -301,24 +305,29 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 //    - button widget that was added.
 //
 func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
-	var _arg0 *C.GtkInfoBar // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.gint        // out
-	var _cret *C.GtkWidget  // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buttonText)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("add_button", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(buttonText)
 	runtime.KeepAlive(responseId)
 
 	var _button *Button // out
 
-	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -330,17 +339,21 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 //    - box: action area.
 //
 func (infoBar *InfoBar) ActionArea() *Box {
-	var _arg0 *C.GtkInfoBar // out
-	var _cret *C.GtkWidget  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**InfoBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_info_bar_get_action_area(_arg0)
+	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("get_action_area", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(infoBar)
 
 	var _box *Box // out
 
-	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -352,41 +365,23 @@ func (infoBar *InfoBar) ActionArea() *Box {
 //    - box: content area.
 //
 func (infoBar *InfoBar) ContentArea() *Box {
-	var _arg0 *C.GtkInfoBar // out
-	var _cret *C.GtkWidget  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**InfoBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_info_bar_get_content_area(_arg0)
+	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("get_content_area", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(infoBar)
 
 	var _box *Box // out
 
-	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
-}
-
-// MessageType returns the message type of the message area.
-//
-// The function returns the following values:
-//
-//    - messageType: message type of the message area.
-//
-func (infoBar *InfoBar) MessageType() MessageType {
-	var _arg0 *C.GtkInfoBar    // out
-	var _cret C.GtkMessageType // in
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
-
-	_cret = C.gtk_info_bar_get_message_type(_arg0)
-	runtime.KeepAlive(infoBar)
-
-	var _messageType MessageType // out
-
-	_messageType = MessageType(_cret)
-
-	return _messageType
 }
 
 // The function returns the following values:
@@ -394,12 +389,16 @@ func (infoBar *InfoBar) MessageType() MessageType {
 //    - ok: current value of the GtkInfoBar:revealed property.
 //
 func (infoBar *InfoBar) Revealed() bool {
-	var _arg0 *C.GtkInfoBar // out
-	var _cret C.gboolean    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**InfoBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_info_bar_get_revealed(_arg0)
+	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("get_revealed", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(infoBar)
 
 	var _ok bool // out
@@ -419,12 +418,16 @@ func (infoBar *InfoBar) Revealed() bool {
 //    - ok: TRUE if the widget displays standard close button.
 //
 func (infoBar *InfoBar) ShowCloseButton() bool {
-	var _arg0 *C.GtkInfoBar // out
-	var _cret C.gboolean    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**InfoBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
+	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("get_show_close_button", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(infoBar)
 
 	var _ok bool // out
@@ -443,13 +446,16 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //    - responseId: response ID.
 //
 func (infoBar *InfoBar) Response(responseId int) {
-	var _arg0 *C.GtkInfoBar // out
-	var _arg1 C.gint        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 	_arg1 = C.gint(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_info_bar_response(_arg0, _arg1)
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("response", args[:], nil)
+
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(responseId)
 }
@@ -466,35 +472,18 @@ func (infoBar *InfoBar) Response(responseId int) {
 //    - responseId: response ID.
 //
 func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
-	var _arg0 *C.GtkInfoBar // out
-	var _arg1 C.gint        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 	_arg1 = C.gint(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_info_bar_set_default_response(_arg0, _arg1)
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_default_response", args[:], nil)
+
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(responseId)
-}
-
-// SetMessageType sets the message type of the message area.
-//
-// GTK+ uses this type to determine how the message is displayed.
-//
-// The function takes the following parameters:
-//
-//    - messageType: MessageType.
-//
-func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
-	var _arg0 *C.GtkInfoBar    // out
-	var _arg1 C.GtkMessageType // out
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
-	_arg1 = C.GtkMessageType(messageType)
-
-	C.gtk_info_bar_set_message_type(_arg0, _arg1)
-	runtime.KeepAlive(infoBar)
-	runtime.KeepAlive(messageType)
 }
 
 // SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
@@ -507,17 +496,21 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 //    - setting: TRUE for sensitive.
 //
 func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
-	var _arg0 *C.GtkInfoBar // out
-	var _arg1 C.gint        // out
-	var _arg2 C.gboolean    // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 	_arg1 = C.gint(responseId)
 	if setting {
 		_arg2 = C.TRUE
 	}
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_response_sensitive", args[:], nil)
+
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(responseId)
 	runtime.KeepAlive(setting)
@@ -534,15 +527,18 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 //    - revealed: new value of the property.
 //
 func (infoBar *InfoBar) SetRevealed(revealed bool) {
-	var _arg0 *C.GtkInfoBar // out
-	var _arg1 C.gboolean    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 	if revealed {
 		_arg1 = C.TRUE
 	}
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_info_bar_set_revealed(_arg0, _arg1)
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_revealed", args[:], nil)
+
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(revealed)
 }
@@ -555,15 +551,18 @@ func (infoBar *InfoBar) SetRevealed(revealed bool) {
 //    - setting: TRUE to include a close button.
 //
 func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
-	var _arg0 *C.GtkInfoBar // out
-	var _arg1 C.gboolean    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(externglib.InternObject(infoBar).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 	if setting {
 		_arg1 = C.TRUE
 	}
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_show_close_button", args[:], nil)
+
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(setting)
 }

@@ -8,24 +8,23 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(GtkAccessible*);
 // extern void _gotk4_gtk3_AccessibleClass_widget_set(GtkAccessible*);
 // extern void _gotk4_gtk3_AccessibleClass_widget_unset(GtkAccessible*);
 import "C"
 
 // glib.Type values for gtkaccessible.go.
-var GTypeAccessible = externglib.Type(C.gtk_accessible_get_type())
+var GTypeAccessible = coreglib.Type(C.gtk_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAccessible, F: marshalAccessible},
 	})
 }
@@ -56,7 +55,7 @@ type Accessible struct {
 }
 
 var (
-	_ externglib.Objector = (*Accessible)(nil)
+	_ coreglib.Objector = (*Accessible)(nil)
 )
 
 func classInitAccessibler(gclassPtr, data C.gpointer) {
@@ -85,7 +84,7 @@ func classInitAccessibler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AccessibleClass_connect_widget_destroyed
 func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectWidgetDestroyed() })
 
 	iface.ConnectWidgetDestroyed()
@@ -93,7 +92,7 @@ func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible)
 
 //export _gotk4_gtk3_AccessibleClass_widget_set
 func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetSet() })
 
 	iface.WidgetSet()
@@ -101,13 +100,13 @@ func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
 
 //export _gotk4_gtk3_AccessibleClass_widget_unset
 func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.GtkAccessible) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetUnset() })
 
 	iface.WidgetUnset()
 }
 
-func wrapAccessible(obj *externglib.Object) *Accessible {
+func wrapAccessible(obj *coreglib.Object) *Accessible {
 	return &Accessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
@@ -116,7 +115,7 @@ func wrapAccessible(obj *externglib.Object) *Accessible {
 }
 
 func marshalAccessible(p uintptr) (interface{}, error) {
-	return wrapAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConnectWidgetDestroyed: this function specifies the callback function to be
@@ -124,11 +123,14 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 func (accessible *Accessible) ConnectWidgetDestroyed() {
-	var _arg0 *C.GtkAccessible // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(accessible).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**Accessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_accessible_connect_widget_destroyed(_arg0)
+	girepository.MustFind("Gtk", "Accessible").InvokeMethod("connect_widget_destroyed", args[:], nil)
+
 	runtime.KeepAlive(accessible)
 }
 
@@ -141,12 +143,16 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 //      or NULL.
 //
 func (accessible *Accessible) Widget() Widgetter {
-	var _arg0 *C.GtkAccessible // out
-	var _cret *C.GtkWidget     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(accessible).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**Accessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_accessible_get_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "Accessible").InvokeMethod("get_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(accessible)
 
 	var _widget Widgetter // out
@@ -155,8 +161,8 @@ func (accessible *Accessible) Widget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -182,15 +188,18 @@ func (accessible *Accessible) Widget() Widgetter {
 //    - widget (optional) or NULL to unset.
 //
 func (accessible *Accessible) SetWidget(widget Widgetter) {
-	var _arg0 *C.GtkAccessible // out
-	var _arg1 *C.GtkWidget     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(externglib.InternObject(accessible).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**Accessible)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_accessible_set_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Accessible").InvokeMethod("set_widget", args[:], nil)
+
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(widget)
 }

@@ -5,25 +5,14 @@ package gio
 import (
 	_ "runtime/cgo"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gio-2.0 gobject-introspection-1.0
-// #cgo CFLAGS: -Wno-deprecated-declarations
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
-// The function returns the following values:
-//
-func DBusErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.g_dbus_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
+func init() {
+	girepository.Require("Gio", "2.0")
 }

@@ -8,15 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern GtkWidget* _gotk4_gtk3_ActionClass_create_menu(GtkAction*);
 // extern GtkWidget* _gotk4_gtk3_ActionClass_create_menu_item(GtkAction*);
 // extern GtkWidget* _gotk4_gtk3_ActionClass_create_tool_item(GtkAction*);
@@ -27,10 +26,10 @@ import (
 import "C"
 
 // glib.Type values for gtkaction.go.
-var GTypeAction = externglib.Type(C.gtk_action_get_type())
+var GTypeAction = coreglib.Type(C.gtk_action_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAction, F: marshalAction},
 	})
 }
@@ -132,13 +131,13 @@ type ActionOverrider interface {
 // When the proxy is activated, it should activate its action.
 type Action struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Buildable
 }
 
 var (
-	_ externglib.Objector = (*Action)(nil)
+	_ coreglib.Objector = (*Action)(nil)
 )
 
 func classInitActioner(gclassPtr, data C.gpointer) {
@@ -179,7 +178,7 @@ func classInitActioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ActionClass_activate
 func _gotk4_gtk3_ActionClass_activate(arg0 *C.GtkAction) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -187,7 +186,7 @@ func _gotk4_gtk3_ActionClass_activate(arg0 *C.GtkAction) {
 
 //export _gotk4_gtk3_ActionClass_connect_proxy
 func _gotk4_gtk3_ActionClass_connect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectProxy(proxy Widgetter) })
 
 	var _proxy Widgetter // out
@@ -198,8 +197,8 @@ func _gotk4_gtk3_ActionClass_connect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget)
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -215,43 +214,43 @@ func _gotk4_gtk3_ActionClass_connect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget)
 
 //export _gotk4_gtk3_ActionClass_create_menu
 func _gotk4_gtk3_ActionClass_create_menu(arg0 *C.GtkAction) (cret *C.GtkWidget) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateMenu() Widgetter })
 
 	widget := iface.CreateMenu()
 
-	cret = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	return cret
 }
 
 //export _gotk4_gtk3_ActionClass_create_menu_item
 func _gotk4_gtk3_ActionClass_create_menu_item(arg0 *C.GtkAction) (cret *C.GtkWidget) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateMenuItem() Widgetter })
 
 	widget := iface.CreateMenuItem()
 
-	cret = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	return cret
 }
 
 //export _gotk4_gtk3_ActionClass_create_tool_item
 func _gotk4_gtk3_ActionClass_create_tool_item(arg0 *C.GtkAction) (cret *C.GtkWidget) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateToolItem() Widgetter })
 
 	widget := iface.CreateToolItem()
 
-	cret = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	return cret
 }
 
 //export _gotk4_gtk3_ActionClass_disconnect_proxy
 func _gotk4_gtk3_ActionClass_disconnect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DisconnectProxy(proxy Widgetter) })
 
 	var _proxy Widgetter // out
@@ -262,8 +261,8 @@ func _gotk4_gtk3_ActionClass_disconnect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidg
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -277,7 +276,7 @@ func _gotk4_gtk3_ActionClass_disconnect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidg
 	iface.DisconnectProxy(_proxy)
 }
 
-func wrapAction(obj *externglib.Object) *Action {
+func wrapAction(obj *coreglib.Object) *Action {
 	return &Action{
 		Object: obj,
 		Buildable: Buildable{
@@ -287,14 +286,14 @@ func wrapAction(obj *externglib.Object) *Action {
 }
 
 func marshalAction(p uintptr) (interface{}, error) {
-	return wrapAction(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_Action_ConnectActivate
 func _gotk4_gtk3_Action_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -307,8 +306,8 @@ func _gotk4_gtk3_Action_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectActivate: "activate" signal is emitted when the action is activated.
-func (action *Action) ConnectActivate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(action, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Action_ConnectActivate), f)
+func (action *Action) ConnectActivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(action, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Action_ConnectActivate), f)
 }
 
 // NewAction creates a new Action object. To add the action to a ActionGroup and
@@ -332,28 +331,35 @@ func (action *Action) ConnectActivate(f func()) externglib.SignalHandle {
 //    - action: new Action.
 //
 func NewAction(name, label, tooltip, stockId string) *Action {
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.gchar     // out
-	var _arg3 *C.gchar     // out
-	var _arg4 *C.gchar     // out
-	var _cret *C.GtkAction // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg0))
 	if label != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if tooltip != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(_arg3))
+		_arg2 = (*C.void)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	if stockId != "" {
-		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(_arg4))
+		_arg3 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("new_Action", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(tooltip)
@@ -361,7 +367,7 @@ func NewAction(name, label, tooltip, stockId string) *Action {
 
 	var _action *Action // out
 
-	_action = wrapAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_action = wrapAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _action
 }
@@ -373,11 +379,14 @@ func NewAction(name, label, tooltip, stockId string) *Action {
 //
 // Deprecated: Use g_action_group_activate_action() on a #GAction instead.
 func (action *Action) Activate() {
-	var _arg0 *C.GtkAction // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_action_activate(_arg0)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("activate", args[:], nil)
+
 	runtime.KeepAlive(action)
 }
 
@@ -389,11 +398,14 @@ func (action *Action) Activate() {
 //
 // Deprecated: Use g_simple_action_set_enabled() to disable the Action instead.
 func (action *Action) BlockActivate() {
-	var _arg0 *C.GtkAction // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_action_block_activate(_arg0)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("block_activate", args[:], nil)
+
 	runtime.KeepAlive(action)
 }
 
@@ -409,61 +421,15 @@ func (action *Action) BlockActivate() {
 // Deprecated: Use #GAction and the accelerator group on an associated Menu
 // instead.
 func (action *Action) ConnectAccelerator() {
-	var _arg0 *C.GtkAction // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_action_connect_accelerator(_arg0)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("connect_accelerator", args[:], nil)
+
 	runtime.KeepAlive(action)
-}
-
-// CreateIcon: this function is intended for use by action implementations to
-// create icons displayed in the proxy widgets.
-//
-// Deprecated: Use g_menu_item_set_icon() to set an icon on a Item, or
-// gtk_container_add() to add a Image to a Button.
-//
-// The function takes the following parameters:
-//
-//    - iconSize: size of the icon (IconSize) that should be created.
-//
-// The function returns the following values:
-//
-//    - widget that displays the icon for this action.
-//
-func (action *Action) CreateIcon(iconSize int) Widgetter {
-	var _arg0 *C.GtkAction  // out
-	var _arg1 C.GtkIconSize // out
-	var _cret *C.GtkWidget  // in
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = C.GtkIconSize(iconSize)
-
-	_cret = C.gtk_action_create_icon(_arg0, _arg1)
-	runtime.KeepAlive(action)
-	runtime.KeepAlive(iconSize)
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	return _widget
 }
 
 // CreateMenu: if action provides a Menu widget as a submenu for the menu item
@@ -478,12 +444,16 @@ func (action *Action) CreateIcon(iconSize int) Widgetter {
 //    - widget: menu item provided by the action, or NULL.
 //
 func (action *Action) CreateMenu() Widgetter {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_create_menu(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("create_menu", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _widget Widgetter // out
@@ -494,8 +464,8 @@ func (action *Action) CreateMenu() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -518,12 +488,16 @@ func (action *Action) CreateMenu() Widgetter {
 //    - widget: menu item connected to the action.
 //
 func (action *Action) CreateMenuItem() Widgetter {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_create_menu_item(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("create_menu_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _widget Widgetter // out
@@ -534,8 +508,8 @@ func (action *Action) CreateMenuItem() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -560,12 +534,16 @@ func (action *Action) CreateMenuItem() Widgetter {
 //    - widget: toolbar item connected to the action.
 //
 func (action *Action) CreateToolItem() Widgetter {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_create_tool_item(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("create_tool_item", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _widget Widgetter // out
@@ -576,8 +554,8 @@ func (action *Action) CreateToolItem() Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -597,11 +575,14 @@ func (action *Action) CreateToolItem() Widgetter {
 // Deprecated: Use #GAction and the accelerator group on an associated Menu
 // instead.
 func (action *Action) DisconnectAccelerator() {
-	var _arg0 *C.GtkAction // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_action_disconnect_accelerator(_arg0)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("disconnect_accelerator", args[:], nil)
+
 	runtime.KeepAlive(action)
 }
 
@@ -616,12 +597,16 @@ func (action *Action) DisconnectAccelerator() {
 //      string is owned by GTK+ and must not be freed or modified.
 //
 func (action *Action) AccelPath() string {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_accel_path(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_accel_path", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -641,12 +626,16 @@ func (action *Action) AccelPath() string {
 //    - ok: TRUE if the menu item proxies will always show their image.
 //
 func (action *Action) AlwaysShowImage() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_always_show_image(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_always_show_image", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -668,18 +657,22 @@ func (action *Action) AlwaysShowImage() bool {
 //    - icon action’s #GIcon if one is set.
 //
 func (action *Action) GIcon() *gio.Icon {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.GIcon     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_gicon(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_gicon", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _icon *gio.Icon // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_icon = &gio.Icon{
 			Object: obj,
 		}
@@ -698,12 +691,16 @@ func (action *Action) GIcon() *gio.Icon {
 //    - utf8: icon name.
 //
 func (action *Action) IconName() string {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_icon_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_icon_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -723,12 +720,16 @@ func (action *Action) IconName() string {
 //    - ok: whether action is important.
 //
 func (action *Action) IsImportant() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_is_important(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_is_important", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -751,12 +752,16 @@ func (action *Action) IsImportant() bool {
 //    - utf8: label text.
 //
 func (action *Action) Label() string {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_label(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -776,12 +781,16 @@ func (action *Action) Label() string {
 //      freed.
 //
 func (action *Action) Name() string {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_name(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -802,19 +811,23 @@ func (action *Action) Name() string {
 //      modified.
 //
 func (action *Action) Proxies() []Widgetter {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.GSList    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_proxies(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_proxies", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _sList []Widgetter // out
 
 	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
+		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
 			objptr := unsafe.Pointer(src)
@@ -822,8 +835,8 @@ func (action *Action) Proxies() []Widgetter {
 				panic("object of type gtk.Widgetter is nil")
 			}
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -850,12 +863,16 @@ func (action *Action) Proxies() []Widgetter {
 //    - ok: TRUE if the action itself is sensitive.
 //
 func (action *Action) Sensitive() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_sensitive(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_sensitive", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -876,12 +893,16 @@ func (action *Action) Sensitive() bool {
 //    - utf8: short label text.
 //
 func (action *Action) ShortLabel() string {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_short_label(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_short_label", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -900,12 +921,16 @@ func (action *Action) ShortLabel() string {
 //    - utf8: stock id.
 //
 func (action *Action) StockID() string {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_stock_id(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_stock_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -925,12 +950,16 @@ func (action *Action) StockID() string {
 //    - utf8: tooltip text.
 //
 func (action *Action) Tooltip() string {
-	var _arg0 *C.GtkAction // out
-	var _cret *C.gchar     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_tooltip(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_tooltip", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _utf8 string // out
@@ -952,12 +981,16 @@ func (action *Action) Tooltip() string {
 //    - ok: TRUE if the action itself is visible.
 //
 func (action *Action) Visible() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -979,12 +1012,16 @@ func (action *Action) Visible() bool {
 //    - ok: whether action is visible when horizontal.
 //
 func (action *Action) VisibleHorizontal() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_visible_horizontal(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_visible_horizontal", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -1006,12 +1043,16 @@ func (action *Action) VisibleHorizontal() bool {
 //    - ok: whether action is visible when horizontal.
 //
 func (action *Action) VisibleVertical() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_get_visible_vertical(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("get_visible_vertical", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -1033,12 +1074,16 @@ func (action *Action) VisibleVertical() bool {
 //      sensitive.
 //
 func (action *Action) IsSensitive() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_is_sensitive(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("is_sensitive", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -1060,12 +1105,16 @@ func (action *Action) IsSensitive() bool {
 //    - ok: TRUE if the action and its associated action group are both visible.
 //
 func (action *Action) IsVisible() bool {
-	var _arg0 *C.GtkAction // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_action_is_visible(_arg0)
+	_gret := girepository.MustFind("Gtk", "Action").InvokeMethod("is_visible", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
@@ -1088,15 +1137,18 @@ func (action *Action) IsVisible() bool {
 //    - accelGroup (optional) or NULL.
 //
 func (action *Action) SetAccelGroup(accelGroup *AccelGroup) {
-	var _arg0 *C.GtkAction     // out
-	var _arg1 *C.GtkAccelGroup // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if accelGroup != nil {
-		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(externglib.InternObject(accelGroup).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	}
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_accel_group(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_accel_group", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(accelGroup)
 }
@@ -1117,14 +1169,17 @@ func (action *Action) SetAccelGroup(accelGroup *AccelGroup) {
 //    - accelPath: accelerator path.
 //
 func (action *Action) SetAccelPath(accelPath string) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.gchar     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_accel_path(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_accel_path", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(accelPath)
 }
@@ -1143,15 +1198,18 @@ func (action *Action) SetAccelPath(accelPath string) {
 //    - alwaysShow: TRUE if menuitem proxies should always show their image.
 //
 func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if alwaysShow {
 		_arg1 = C.TRUE
 	}
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_always_show_image(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_always_show_image", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(alwaysShow)
 }
@@ -1167,13 +1225,16 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 //    - icon to set.
 //
 func (action *Action) SetGIcon(icon gio.Iconner) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.GIcon     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(externglib.InternObject(icon).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_gicon(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_gicon", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(icon)
 }
@@ -1189,14 +1250,17 @@ func (action *Action) SetGIcon(icon gio.Iconner) {
 //    - iconName: icon name to set.
 //
 func (action *Action) SetIconName(iconName string) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.gchar     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_icon_name(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_icon_name", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(iconName)
 }
@@ -1212,15 +1276,18 @@ func (action *Action) SetIconName(iconName string) {
 //    - isImportant: TRUE to make the action important.
 //
 func (action *Action) SetIsImportant(isImportant bool) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if isImportant {
 		_arg1 = C.TRUE
 	}
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_is_important(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_is_important", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(isImportant)
 }
@@ -1236,14 +1303,17 @@ func (action *Action) SetIsImportant(isImportant bool) {
 //    - label text to set.
 //
 func (action *Action) SetLabel(label string) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.gchar     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_label(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_label", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(label)
 }
@@ -1259,15 +1329,18 @@ func (action *Action) SetLabel(label string) {
 //    - sensitive: TRUE to make the action sensitive.
 //
 func (action *Action) SetSensitive(sensitive bool) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if sensitive {
 		_arg1 = C.TRUE
 	}
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_sensitive(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_sensitive", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(sensitive)
 }
@@ -1281,14 +1354,17 @@ func (action *Action) SetSensitive(sensitive bool) {
 //    - shortLabel: label text to set.
 //
 func (action *Action) SetShortLabel(shortLabel string) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.gchar     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(shortLabel)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(shortLabel)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_short_label(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_short_label", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(shortLabel)
 }
@@ -1302,14 +1378,17 @@ func (action *Action) SetShortLabel(shortLabel string) {
 //    - stockId: stock id.
 //
 func (action *Action) SetStockID(stockId string) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.gchar     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_stock_id(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_stock_id", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(stockId)
 }
@@ -1324,14 +1403,17 @@ func (action *Action) SetStockID(stockId string) {
 //    - tooltip text.
 //
 func (action *Action) SetTooltip(tooltip string) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 *C.gchar     // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(tooltip)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_tooltip(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_tooltip", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(tooltip)
 }
@@ -1348,15 +1430,18 @@ func (action *Action) SetTooltip(tooltip string) {
 //    - visible: TRUE to make the action visible.
 //
 func (action *Action) SetVisible(visible bool) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if visible {
 		_arg1 = C.TRUE
 	}
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_visible(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_visible", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(visible)
 }
@@ -1371,15 +1456,18 @@ func (action *Action) SetVisible(visible bool) {
 //    - visibleHorizontal: whether the action is visible horizontally.
 //
 func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if visibleHorizontal {
 		_arg1 = C.TRUE
 	}
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_visible_horizontal(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_visible_horizontal", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(visibleHorizontal)
 }
@@ -1394,15 +1482,18 @@ func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
 //    - visibleVertical: whether the action is visible vertically.
 //
 func (action *Action) SetVisibleVertical(visibleVertical bool) {
-	var _arg0 *C.GtkAction // out
-	var _arg1 C.gboolean   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if visibleVertical {
 		_arg1 = C.TRUE
 	}
+	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_action_set_visible_vertical(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("set_visible_vertical", args[:], nil)
+
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(visibleVertical)
 }
@@ -1411,10 +1502,13 @@ func (action *Action) SetVisibleVertical(visibleVertical bool) {
 //
 // Deprecated: Use g_simple_action_set_enabled() to enable the Action instead.
 func (action *Action) UnblockActivate() {
-	var _arg0 *C.GtkAction // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_action_unblock_activate(_arg0)
+	girepository.MustFind("Gtk", "Action").InvokeMethod("unblock_activate", args[:], nil)
+
 	runtime.KeepAlive(action)
 }

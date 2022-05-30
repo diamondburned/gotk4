@@ -7,22 +7,23 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceIface_get_info(GDBusInterface*);
 // extern GDBusObject* _gotk4_gio2_DBusInterfaceIface_dup_object(GDBusInterface*);
 // extern void _gotk4_gio2_DBusInterfaceIface_set_object(GDBusInterface*, GDBusObject*);
 import "C"
 
 // glib.Type values for gdbusinterface.go.
-var GTypeDBusInterface = externglib.Type(C.g_dbus_interface_get_type())
+var GTypeDBusInterface = coreglib.Type(C.g_dbus_interface_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDBusInterface, F: marshalDBusInterface},
 	})
 }
@@ -63,16 +64,16 @@ type DBusInterfaceOverrider interface {
 // underlying type by calling Cast().
 type DBusInterface struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*DBusInterface)(nil)
+	_ coreglib.Objector = (*DBusInterface)(nil)
 )
 
 // DBusInterfacer describes DBusInterface's interface methods.
 type DBusInterfacer interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// GetObject gets the BusObject that interface_ belongs to, if any.
 	GetObject() *DBusObject
@@ -94,14 +95,14 @@ func ifaceInitDBusInterfacer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusInterfaceIface_dup_object
 func _gotk4_gio2_DBusInterfaceIface_dup_object(arg0 *C.GDBusInterface) (cret *C.GDBusObject) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusInterfaceOverrider)
 
 	dBusObject := iface.DupObject()
 
 	if dBusObject != nil {
-		cret = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(dBusObject).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(dBusObject).Native()))
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(dBusObject).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(dBusObject).Native()))
 	}
 
 	return cret
@@ -109,19 +110,19 @@ func _gotk4_gio2_DBusInterfaceIface_dup_object(arg0 *C.GDBusInterface) (cret *C.
 
 //export _gotk4_gio2_DBusInterfaceIface_get_info
 func _gotk4_gio2_DBusInterfaceIface_get_info(arg0 *C.GDBusInterface) (cret *C.GDBusInterfaceInfo) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusInterfaceOverrider)
 
 	dBusInterfaceInfo := iface.Info()
 
-	cret = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfo)))
+	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(dBusInterfaceInfo)))
 
 	return cret
 }
 
 //export _gotk4_gio2_DBusInterfaceIface_set_object
 func _gotk4_gio2_DBusInterfaceIface_set_object(arg0 *C.GDBusInterface, arg1 *C.GDBusObject) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusInterfaceOverrider)
 
 	var _object DBusObjector // out
@@ -130,8 +131,8 @@ func _gotk4_gio2_DBusInterfaceIface_set_object(arg0 *C.GDBusInterface, arg1 *C.G
 		{
 			objptr := unsafe.Pointer(arg1)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(DBusObjector)
 				return ok
 			})
@@ -146,14 +147,14 @@ func _gotk4_gio2_DBusInterfaceIface_set_object(arg0 *C.GDBusInterface, arg1 *C.G
 	iface.SetObject(_object)
 }
 
-func wrapDBusInterface(obj *externglib.Object) *DBusInterface {
+func wrapDBusInterface(obj *coreglib.Object) *DBusInterface {
 	return &DBusInterface{
 		Object: obj,
 	}
 }
 
 func marshalDBusInterface(p uintptr) (interface{}, error) {
-	return wrapDBusInterface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDBusInterface(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // GetObject gets the BusObject that interface_ belongs to, if any.
@@ -164,18 +165,21 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 //      with g_object_unref().
 //
 func (interface_ *DBusInterface) GetObject() *DBusObject {
-	var _arg0 *C.GDBusInterface // out
-	var _cret *C.GDBusObject    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterface)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_interface_dup_object(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 
 	var _dBusObject *DBusObject // out
 
 	if _cret != nil {
-		_dBusObject = wrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _dBusObject
@@ -189,12 +193,15 @@ func (interface_ *DBusInterface) GetObject() *DBusObject {
 //    - dBusInterfaceInfo Do not free.
 //
 func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
-	var _arg0 *C.GDBusInterface     // out
-	var _cret *C.GDBusInterfaceInfo // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**DBusInterface)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_interface_get_info(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(interface_)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
@@ -220,15 +227,16 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 //    - object (optional) or NULL.
 //
 func (interface_ *DBusInterface) SetObject(object DBusObjector) {
-	var _arg0 *C.GDBusInterface // out
-	var _arg1 *C.GDBusObject    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(externglib.InternObject(interface_).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 	if object != nil {
-		_arg1 = (*C.GDBusObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	}
+	*(**DBusInterface)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_dbus_interface_set_object(_arg0, _arg1)
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(object)
 }

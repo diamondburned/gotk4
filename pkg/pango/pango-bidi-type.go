@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -16,10 +16,10 @@ import (
 import "C"
 
 // glib.Type values for pango-bidi-type.go.
-var GTypeBidiType = externglib.Type(C.pango_bidi_type_get_type())
+var GTypeBidiType = coreglib.Type(C.pango_bidi_type_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeBidiType, F: marshalBidiType},
 	})
 }
@@ -74,7 +74,7 @@ const (
 )
 
 func marshalBidiType(p uintptr) (interface{}, error) {
-	return BidiType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return BidiType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for BidiType.

@@ -7,21 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkspinner.go.
-var GTypeSpinner = externglib.Type(C.gtk_spinner_get_type())
+var GTypeSpinner = coreglib.Type(C.gtk_spinner_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSpinner, F: marshalSpinner},
 	})
 }
@@ -59,10 +58,10 @@ func classInitSpinnerer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSpinner(obj *externglib.Object) *Spinner {
+func wrapSpinner(obj *coreglib.Object) *Spinner {
 	return &Spinner{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -77,7 +76,7 @@ func wrapSpinner(obj *externglib.Object) *Spinner {
 }
 
 func marshalSpinner(p uintptr) (interface{}, error) {
-	return wrapSpinner(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSpinner(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSpinner returns a new spinner widget. Not yet started.
@@ -87,33 +86,40 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 //    - spinner: new Spinner.
 //
 func NewSpinner() *Spinner {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_spinner_new()
+	_gret := girepository.MustFind("Gtk", "Spinner").InvokeMethod("new_Spinner", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _spinner *Spinner // out
 
-	_spinner = wrapSpinner(externglib.Take(unsafe.Pointer(_cret)))
+	_spinner = wrapSpinner(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinner
 }
 
 // Start starts the animation of the spinner.
 func (spinner *Spinner) Start() {
-	var _arg0 *C.GtkSpinner // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
+	*(**Spinner)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_spinner_start(_arg0)
+	girepository.MustFind("Gtk", "Spinner").InvokeMethod("start", args[:], nil)
+
 	runtime.KeepAlive(spinner)
 }
 
 // Stop stops the animation of the spinner.
 func (spinner *Spinner) Stop() {
-	var _arg0 *C.GtkSpinner // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(externglib.InternObject(spinner).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
+	*(**Spinner)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_spinner_stop(_arg0)
+	girepository.MustFind("Gtk", "Spinner").InvokeMethod("stop", args[:], nil)
+
 	runtime.KeepAlive(spinner)
 }

@@ -9,24 +9,23 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_ColorButtonClass_color_set(GtkColorButton*);
 // extern void _gotk4_gtk3_ColorButton_ConnectColorSet(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkcolorbutton.go.
-var GTypeColorButton = externglib.Type(C.gtk_color_button_get_type())
+var GTypeColorButton = coreglib.Type(C.gtk_color_button_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeColorButton, F: marshalColorButton},
 	})
 }
@@ -49,13 +48,13 @@ type ColorButton struct {
 	_ [0]func() // equal guard
 	Button
 
-	*externglib.Object
+	*coreglib.Object
 	ColorChooser
 }
 
 var (
-	_ externglib.Objector = (*ColorButton)(nil)
-	_ Binner              = (*ColorButton)(nil)
+	_ coreglib.Objector = (*ColorButton)(nil)
+	_ Binner            = (*ColorButton)(nil)
 )
 
 func classInitColorButtonner(gclassPtr, data C.gpointer) {
@@ -76,19 +75,19 @@ func classInitColorButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ColorButtonClass_color_set
 func _gotk4_gtk3_ColorButtonClass_color_set(arg0 *C.GtkColorButton) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ColorSet() })
 
 	iface.ColorSet()
 }
 
-func wrapColorButton(obj *externglib.Object) *ColorButton {
+func wrapColorButton(obj *coreglib.Object) *ColorButton {
 	return &ColorButton{
 		Button: Button{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -104,7 +103,7 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 			Object: obj,
 			Actionable: Actionable{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -128,14 +127,14 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 }
 
 func marshalColorButton(p uintptr) (interface{}, error) {
-	return wrapColorButton(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapColorButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ColorButton_ConnectColorSet
 func _gotk4_gtk3_ColorButton_ConnectColorSet(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -154,8 +153,8 @@ func _gotk4_gtk3_ColorButton_ConnectColorSet(arg0 C.gpointer, arg1 C.guintptr) {
 // Note that this signal is only emitted when the user changes the color. If you
 // need to react to programmatic color changes as well, use the notify::color
 // signal.
-func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(button, "color-set", false, unsafe.Pointer(C._gotk4_gtk3_ColorButton_ConnectColorSet), f)
+func (button *ColorButton) ConnectColorSet(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(button, "color-set", false, unsafe.Pointer(C._gotk4_gtk3_ColorButton_ConnectColorSet), f)
 }
 
 // NewColorButton creates a new color button.
@@ -170,13 +169,14 @@ func (button *ColorButton) ConnectColorSet(f func()) externglib.SignalHandle {
 //    - colorButton: new color button.
 //
 func NewColorButton() *ColorButton {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_color_button_new()
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
+	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -194,17 +194,21 @@ func NewColorButton() *ColorButton {
 //    - colorButton: new color button.
 //
 func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
-	var _arg1 *C.GdkColor  // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**gdk.Color)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_button_new_with_color(_arg1)
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton_with_color", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(color)
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
+	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -220,17 +224,21 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 //    - colorButton: new color button.
 //
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
-	var _arg1 *C.GdkRGBA   // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	*(**gdk.RGBA)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_button_new_with_rgba(_arg1)
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton_with_rgba", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(rgba)
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
+	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -244,12 +252,16 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 //    - guint16: integer between 0 and 65535.
 //
 func (button *ColorButton) Alpha() uint16 {
-	var _arg0 *C.GtkColorButton // out
-	var _cret C.guint16         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.guint16 // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ColorButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_button_get_alpha(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_alpha", args[:], nil)
+	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _guint16 uint16 // out
@@ -259,30 +271,6 @@ func (button *ColorButton) Alpha() uint16 {
 	return _guint16
 }
 
-// Color sets color to be the current color in the ColorButton widget.
-//
-// Deprecated: Use gtk_color_chooser_get_rgba() instead.
-//
-// The function returns the following values:
-//
-//    - color to fill in with the current color.
-//
-func (button *ColorButton) Color() *gdk.Color {
-	var _arg0 *C.GtkColorButton // out
-	var _arg1 C.GdkColor        // in
-
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
-
-	C.gtk_color_button_get_color(_arg0, &_arg1)
-	runtime.KeepAlive(button)
-
-	var _color *gdk.Color // out
-
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _color
-}
-
 // Title gets the title of the color selection dialog.
 //
 // The function returns the following values:
@@ -290,12 +278,16 @@ func (button *ColorButton) Color() *gdk.Color {
 //    - utf8: internal string, do not free the return value.
 //
 func (button *ColorButton) Title() string {
-	var _arg0 *C.GtkColorButton // out
-	var _cret *C.gchar          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ColorButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_button_get_title(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_title", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
@@ -314,12 +306,16 @@ func (button *ColorButton) Title() string {
 //    - ok: TRUE if the color sample uses alpha channel, FALSE if not.
 //
 func (button *ColorButton) UseAlpha() bool {
-	var _arg0 *C.GtkColorButton // out
-	var _cret C.gboolean        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**ColorButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_color_button_get_use_alpha(_arg0)
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_use_alpha", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
@@ -340,13 +336,16 @@ func (button *ColorButton) UseAlpha() bool {
 //    - alpha: integer between 0 and 65535.
 //
 func (button *ColorButton) SetAlpha(alpha uint16) {
-	var _arg0 *C.GtkColorButton // out
-	var _arg1 C.guint16         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	_arg1 = C.guint16(alpha)
+	*(**ColorButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_button_set_alpha(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_alpha", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(alpha)
 }
@@ -360,13 +359,16 @@ func (button *ColorButton) SetAlpha(alpha uint16) {
 //    - color to set the current color with.
 //
 func (button *ColorButton) SetColor(color *gdk.Color) {
-	var _arg0 *C.GtkColorButton // out
-	var _arg1 *C.GdkColor       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
-	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**ColorButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_button_set_color(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_color", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(color)
 }
@@ -378,14 +380,17 @@ func (button *ColorButton) SetColor(color *gdk.Color) {
 //    - title: string containing new window title.
 //
 func (button *ColorButton) SetTitle(title string) {
-	var _arg0 *C.GtkColorButton // out
-	var _arg1 *C.gchar          // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ColorButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_button_set_title(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_title", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(title)
 }
@@ -400,15 +405,18 @@ func (button *ColorButton) SetTitle(title string) {
 //    - useAlpha: TRUE if color button should use alpha channel, FALSE if not.
 //
 func (button *ColorButton) SetUseAlpha(useAlpha bool) {
-	var _arg0 *C.GtkColorButton // out
-	var _arg1 C.gboolean        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(externglib.InternObject(button).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if useAlpha {
 		_arg1 = C.TRUE
 	}
+	*(**ColorButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_color_button_set_use_alpha(_arg0, _arg1)
+	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_use_alpha", args[:], nil)
+
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useAlpha)
 }

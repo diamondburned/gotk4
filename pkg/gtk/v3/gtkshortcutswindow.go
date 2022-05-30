@@ -7,14 +7,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_ShortcutsWindowClass_close(GtkShortcutsWindow*);
 // extern void _gotk4_gtk3_ShortcutsWindowClass_search(GtkShortcutsWindow*);
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectClose(gpointer, guintptr);
@@ -22,10 +21,10 @@ import (
 import "C"
 
 // glib.Type values for gtkshortcutswindow.go.
-var GTypeShortcutsWindow = externglib.Type(C.gtk_shortcuts_window_get_type())
+var GTypeShortcutsWindow = coreglib.Type(C.gtk_shortcuts_window_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeShortcutsWindow, F: marshalShortcutsWindow},
 	})
 }
@@ -110,7 +109,7 @@ func classInitShortcutsWindower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ShortcutsWindowClass_close
 func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.GtkShortcutsWindow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
 	iface.Close()
@@ -118,19 +117,19 @@ func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.GtkShortcutsWindow) {
 
 //export _gotk4_gtk3_ShortcutsWindowClass_search
 func _gotk4_gtk3_ShortcutsWindowClass_search(arg0 *C.GtkShortcutsWindow) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Search() })
 
 	iface.Search()
 }
 
-func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
+func wrapShortcutsWindow(obj *coreglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
 		Window: Window{
 			Bin: Bin{
 				Container: Container{
 					Widget: Widget{
-						InitiallyUnowned: externglib.InitiallyUnowned{
+						InitiallyUnowned: coreglib.InitiallyUnowned{
 							Object: obj,
 						},
 						Object: obj,
@@ -148,14 +147,14 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 }
 
 func marshalShortcutsWindow(p uintptr) (interface{}, error) {
-	return wrapShortcutsWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapShortcutsWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_ShortcutsWindow_ConnectClose
 func _gotk4_gtk3_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -171,15 +170,15 @@ func _gotk4_gtk3_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) 
 // emitted when the user uses a keybinding to close the window.
 //
 // The default binding for this signal is the Escape key.
-func (self *ShortcutsWindow) ConnectClose(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "close", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectClose), f)
+func (self *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "close", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectClose), f)
 }
 
 //export _gotk4_gtk3_ShortcutsWindow_ConnectSearch
 func _gotk4_gtk3_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -195,6 +194,6 @@ func _gotk4_gtk3_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr)
 // emitted when the user uses a keybinding to start a search.
 //
 // The default binding for this signal is Control-F.
-func (self *ShortcutsWindow) ConnectSearch(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(self, "search", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectSearch), f)
+func (self *ShortcutsWindow) ConnectSearch(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "search", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectSearch), f)
 }

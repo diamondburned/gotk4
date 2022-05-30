@@ -6,21 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkimmulticontext.go.
-var GTypeIMMulticontext = externglib.Type(C.gtk_im_multicontext_get_type())
+var GTypeIMMulticontext = coreglib.Type(C.gtk_im_multicontext_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeIMMulticontext, F: marshalIMMulticontext},
 	})
 }
@@ -46,7 +45,7 @@ func classInitIMMulticontexter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
+func wrapIMMulticontext(obj *coreglib.Object) *IMMulticontext {
 	return &IMMulticontext{
 		IMContext: IMContext{
 			Object: obj,
@@ -55,7 +54,7 @@ func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 }
 
 func marshalIMMulticontext(p uintptr) (interface{}, error) {
-	return wrapIMMulticontext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapIMMulticontext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewIMMulticontext creates a new IMMulticontext.
@@ -65,13 +64,14 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 //    - imMulticontext: new IMMulticontext.
 //
 func NewIMMulticontext() *IMMulticontext {
-	var _cret *C.GtkIMContext // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_im_multicontext_new()
+	_gret := girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("new_IMMulticontext", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _imMulticontext *IMMulticontext // out
 
-	_imMulticontext = wrapIMMulticontext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_imMulticontext = wrapIMMulticontext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imMulticontext
 }
@@ -89,13 +89,16 @@ func NewIMMulticontext() *IMMulticontext {
 //    - menushell: MenuShell.
 //
 func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
-	var _arg0 *C.GtkIMMulticontext // out
-	var _arg1 *C.GtkMenuShell      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer(externglib.InternObject(menushell).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menushell).Native()))
+	*(**IMMulticontext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_im_multicontext_append_menuitems(_arg0, _arg1)
+	girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("append_menuitems", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(menushell)
 }
@@ -107,12 +110,16 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 //    - utf8: id of the currently active slave.
 //
 func (context *IMMulticontext) ContextID() string {
-	var _arg0 *C.GtkIMMulticontext // out
-	var _cret *C.char              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**IMMulticontext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
+	_gret := girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("get_context_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _utf8 string // out
@@ -132,14 +139,17 @@ func (context *IMMulticontext) ContextID() string {
 //    - contextId: id to use.
 //
 func (context *IMMulticontext) SetContextID(contextId string) {
-	var _arg0 *C.GtkIMMulticontext // out
-	var _arg1 *C.char              // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contextId)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**IMMulticontext)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
+	girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("set_context_id", args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(contextId)
 }

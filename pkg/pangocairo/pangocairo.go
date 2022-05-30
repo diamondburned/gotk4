@@ -10,7 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -19,18 +19,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
-// extern void _gotk4_pangocairo1_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
-// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for pangocairo.go.
 var (
-	GTypeFont    = externglib.Type(C.pango_cairo_font_get_type())
-	GTypeFontMap = externglib.Type(C.pango_cairo_font_map_get_type())
+	GTypeFont    = coreglib.Type(C.pango_cairo_font_get_type())
+	GTypeFontMap = coreglib.Type(C.pango_cairo_font_map_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFont, F: marshalFont},
 		{T: GTypeFontMap, F: marshalFontMap},
 	})
@@ -88,7 +86,7 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 	var _arg1 *C.PangoContext         // out
 	var _cret *C.cairo_font_options_t // in
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_cret = C.pango_cairo_context_get_font_options(_arg1)
 	runtime.KeepAlive(context)
@@ -118,7 +116,7 @@ func ContextGetResolution(context *pango.Context) float64 {
 	var _arg1 *C.PangoContext // out
 	var _cret C.double        // in
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_cret = C.pango_cairo_context_get_resolution(_arg1)
 	runtime.KeepAlive(context)
@@ -146,7 +144,7 @@ func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.cairo_font_options_t // out
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if options != nil {
 		_arg2 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
 	}
@@ -173,41 +171,12 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 	var _arg1 *C.PangoContext // out
 	var _arg2 C.double        // out
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg2 = C.double(dpi)
 
 	C.pango_cairo_context_set_resolution(_arg1, _arg2)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(dpi)
-}
-
-// ContextSetShapeRenderer sets callback function for context to use for
-// rendering attributes of type PANGO_ATTR_SHAPE.
-//
-// See PangoCairoShapeRendererFunc for details.
-//
-// The function takes the following parameters:
-//
-//    - context: PangoContext, from a pangocairo font map.
-//    - fn (optional): callback function for rendering attributes of type
-//      PANGO_ATTR_SHAPE, or NULL to disable shape rendering.
-//
-func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
-	var _arg1 *C.PangoContext               // out
-	var _arg2 C.PangoCairoShapeRendererFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	if fn != nil {
-		_arg2 = (*[0]byte)(C._gotk4_pangocairo1_ShapeRendererFunc)
-		_arg3 = C.gpointer(gbox.Assign(fn))
-		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C.pango_cairo_context_set_shape_renderer(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(fn)
 }
 
 // CreateContext creates a context object set up to match the current
@@ -240,7 +209,7 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 	var _context *pango.Context // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_context = &pango.Context{
 			Object: obj,
 		}
@@ -282,7 +251,7 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 	var _layout *pango.Layout // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_layout = &pango.Layout{
 			Object: obj,
 		}
@@ -345,7 +314,7 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	var _arg3 *C.PangoGlyphString // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
@@ -393,7 +362,7 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 	var _arg2 *C.PangoLayout // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_cairo_layout_path(_arg1, _arg2)
 	runtime.KeepAlive(cr)
@@ -487,7 +456,7 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	var _arg3 *C.PangoGlyphString // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer(externglib.InternObject(font).Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_show_glyph_string(_arg1, _arg2, _arg3)
@@ -511,7 +480,7 @@ func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg2 *C.PangoLayout // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_cairo_show_layout(_arg1, _arg2)
 	runtime.KeepAlive(cr)
@@ -556,7 +525,7 @@ func UpdateContext(cr *cairo.Context, context *pango.Context) {
 	var _arg2 *C.PangoContext // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg2 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	C.pango_cairo_update_context(_arg1, _arg2)
 	runtime.KeepAlive(cr)
@@ -577,7 +546,7 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg2 *C.PangoLayout // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	C.pango_cairo_update_layout(_arg1, _arg2)
 	runtime.KeepAlive(cr)
@@ -602,14 +571,14 @@ var (
 
 // Fonter describes Font's interface methods.
 type Fonter interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseFont() *Font
 }
 
 var _ Fonter = (*Font)(nil)
 
-func wrapFont(obj *externglib.Object) *Font {
+func wrapFont(obj *coreglib.Object) *Font {
 	return &Font{
 		Font: pango.Font{
 			Object: obj,
@@ -618,7 +587,7 @@ func wrapFont(obj *externglib.Object) *Font {
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
-	return wrapFont(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFont(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *Font) baseFont() *Font {
@@ -649,12 +618,12 @@ var (
 
 // FontMapper describes FontMap's interface methods.
 type FontMapper interface {
-	externglib.Objector
+	coreglib.Objector
 }
 
 var _ FontMapper = (*FontMap)(nil)
 
-func wrapFontMap(obj *externglib.Object) *FontMap {
+func wrapFontMap(obj *coreglib.Object) *FontMap {
 	return &FontMap{
 		FontMap: pango.FontMap{
 			Object: obj,
@@ -663,7 +632,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
-	return wrapFontMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFontMap(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Resolution gets the resolution for the fontmap.
@@ -678,7 +647,7 @@ func (fontmap *FontMap) Resolution() float64 {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.double             // in
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(externglib.InternObject(fontmap).Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
 	_cret = C.pango_cairo_font_map_get_resolution(_arg0)
 	runtime.KeepAlive(fontmap)
@@ -708,7 +677,7 @@ func (fontmap *FontMap) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
 
 	if fontmap != nil {
-		_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(externglib.InternObject(fontmap).Native()))
+		_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 	}
 
 	C.pango_cairo_font_map_set_default(_arg0)
@@ -730,7 +699,7 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _arg1 C.double             // out
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(externglib.InternObject(fontmap).Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 	_arg1 = C.double(dpi)
 
 	C.pango_cairo_font_map_set_resolution(_arg0, _arg1)
@@ -770,8 +739,8 @@ func FontMapGetDefault() pango.FontMapper {
 			panic("object of type pango.FontMapper is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(pango.FontMapper)
 			return ok
 		})
@@ -819,8 +788,8 @@ func NewFontMap() pango.FontMapper {
 			panic("object of type pango.FontMapper is nil")
 		}
 
-		object := externglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(pango.FontMapper)
 			return ok
 		})

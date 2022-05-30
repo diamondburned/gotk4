@@ -7,14 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_AdjustmentClass_changed(GtkAdjustment*);
 // extern void _gotk4_gtk3_AdjustmentClass_value_changed(GtkAdjustment*);
 // extern void _gotk4_gtk3_Adjustment_ConnectChanged(gpointer, guintptr);
@@ -22,10 +21,10 @@ import (
 import "C"
 
 // glib.Type values for gtkadjustment.go.
-var GTypeAdjustment = externglib.Type(C.gtk_adjustment_get_type())
+var GTypeAdjustment = coreglib.Type(C.gtk_adjustment_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAdjustment, F: marshalAdjustment},
 	})
 }
@@ -57,7 +56,7 @@ type AdjustmentOverrider interface {
 // to the owner of the Adjustment to control the value.
 type Adjustment struct {
 	_ [0]func() // equal guard
-	externglib.InitiallyUnowned
+	coreglib.InitiallyUnowned
 }
 
 var ()
@@ -84,7 +83,7 @@ func classInitAdjustmenter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AdjustmentClass_changed
 func _gotk4_gtk3_AdjustmentClass_changed(arg0 *C.GtkAdjustment) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
@@ -92,29 +91,29 @@ func _gotk4_gtk3_AdjustmentClass_changed(arg0 *C.GtkAdjustment) {
 
 //export _gotk4_gtk3_AdjustmentClass_value_changed
 func _gotk4_gtk3_AdjustmentClass_value_changed(arg0 *C.GtkAdjustment) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ValueChanged() })
 
 	iface.ValueChanged()
 }
 
-func wrapAdjustment(obj *externglib.Object) *Adjustment {
+func wrapAdjustment(obj *coreglib.Object) *Adjustment {
 	return &Adjustment{
-		InitiallyUnowned: externglib.InitiallyUnowned{
+		InitiallyUnowned: coreglib.InitiallyUnowned{
 			Object: obj,
 		},
 	}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
-	return wrapAdjustment(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapAdjustment(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_Adjustment_ConnectChanged
 func _gotk4_gtk3_Adjustment_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -128,15 +127,15 @@ func _gotk4_gtk3_Adjustment_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectChanged is emitted when one or more of the Adjustment properties have
 // been changed, other than the Adjustment:value property.
-func (adjustment *Adjustment) ConnectChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(adjustment, "changed", false, unsafe.Pointer(C._gotk4_gtk3_Adjustment_ConnectChanged), f)
+func (adjustment *Adjustment) ConnectChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(adjustment, "changed", false, unsafe.Pointer(C._gotk4_gtk3_Adjustment_ConnectChanged), f)
 }
 
 //export _gotk4_gtk3_Adjustment_ConnectValueChanged
 func _gotk4_gtk3_Adjustment_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -150,8 +149,8 @@ func _gotk4_gtk3_Adjustment_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr
 
 // ConnectValueChanged is emitted when the Adjustment:value property has been
 // changed.
-func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(adjustment, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_Adjustment_ConnectValueChanged), f)
+func (adjustment *Adjustment) ConnectValueChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(adjustment, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_Adjustment_ConnectValueChanged), f)
 }
 
 // NewAdjustment creates a new Adjustment.
@@ -170,22 +169,31 @@ func (adjustment *Adjustment) ConnectValueChanged(f func()) externglib.SignalHan
 //    - adjustment: new Adjustment.
 //
 func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) *Adjustment {
-	var _arg1 C.gdouble        // out
-	var _arg2 C.gdouble        // out
-	var _arg3 C.gdouble        // out
-	var _arg4 C.gdouble        // out
-	var _arg5 C.gdouble        // out
-	var _arg6 C.gdouble        // out
-	var _cret *C.GtkAdjustment // in
+	var args [6]girepository.Argument
+	var _arg0 C.gdouble // out
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
+	var _arg3 C.gdouble // out
+	var _arg4 C.gdouble // out
+	var _arg5 C.gdouble // out
+	var _cret *C.void   // in
 
-	_arg1 = C.gdouble(value)
-	_arg2 = C.gdouble(lower)
-	_arg3 = C.gdouble(upper)
-	_arg4 = C.gdouble(stepIncrement)
-	_arg5 = C.gdouble(pageIncrement)
-	_arg6 = C.gdouble(pageSize)
+	_arg0 = C.gdouble(value)
+	_arg1 = C.gdouble(lower)
+	_arg2 = C.gdouble(upper)
+	_arg3 = C.gdouble(stepIncrement)
+	_arg4 = C.gdouble(pageIncrement)
+	_arg5 = C.gdouble(pageSize)
+	*(*float64)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	_cret = C.gtk_adjustment_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("new_Adjustment", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(lower)
 	runtime.KeepAlive(upper)
@@ -195,7 +203,7 @@ func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize f
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -207,11 +215,14 @@ func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize f
 // Deprecated: GTK+ emits Adjustment::changed itself whenever any of the
 // properties (other than value) change.
 func (adjustment *Adjustment) Changed() {
-	var _arg0 *C.GtkAdjustment // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_adjustment_changed(_arg0)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("changed", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 }
 
@@ -228,15 +239,19 @@ func (adjustment *Adjustment) Changed() {
 //    - upper value.
 //
 func (adjustment *Adjustment) ClampPage(lower, upper float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
-	var _arg2 C.gdouble        // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(lower)
 	_arg2 = C.gdouble(upper)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_adjustment_clamp_page(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("clamp_page", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(lower)
 	runtime.KeepAlive(upper)
@@ -258,23 +273,31 @@ func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 //    - pageSize: new page size.
 //
 func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
-	var _arg2 C.gdouble        // out
-	var _arg3 C.gdouble        // out
-	var _arg4 C.gdouble        // out
-	var _arg5 C.gdouble        // out
-	var _arg6 C.gdouble        // out
+	var args [7]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
+	var _arg3 C.gdouble // out
+	var _arg4 C.gdouble // out
+	var _arg5 C.gdouble // out
+	var _arg6 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(value)
 	_arg2 = C.gdouble(lower)
 	_arg3 = C.gdouble(upper)
 	_arg4 = C.gdouble(stepIncrement)
 	_arg5 = C.gdouble(pageIncrement)
 	_arg6 = C.gdouble(pageSize)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+	*(*float64)(unsafe.Pointer(&args[6])) = _arg6
 
-	C.gtk_adjustment_configure(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("configure", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(lower)
@@ -291,12 +314,16 @@ func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, page
 //    - gdouble: current minimum value of the adjustment.
 //
 func (adjustment *Adjustment) Lower() float64 {
-	var _arg0 *C.GtkAdjustment // out
-	var _cret C.gdouble        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_adjustment_get_lower(_arg0)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_lower", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -313,12 +340,16 @@ func (adjustment *Adjustment) Lower() float64 {
 //    - gdouble: minimum increment of adjustment.
 //
 func (adjustment *Adjustment) MinimumIncrement() float64 {
-	var _arg0 *C.GtkAdjustment // out
-	var _cret C.gdouble        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_adjustment_get_minimum_increment(_arg0)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_minimum_increment", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -335,12 +366,16 @@ func (adjustment *Adjustment) MinimumIncrement() float64 {
 //    - gdouble: current page increment of the adjustment.
 //
 func (adjustment *Adjustment) PageIncrement() float64 {
-	var _arg0 *C.GtkAdjustment // out
-	var _cret C.gdouble        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_adjustment_get_page_increment(_arg0)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_page_increment", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -357,12 +392,16 @@ func (adjustment *Adjustment) PageIncrement() float64 {
 //    - gdouble: current page size of the adjustment.
 //
 func (adjustment *Adjustment) PageSize() float64 {
-	var _arg0 *C.GtkAdjustment // out
-	var _cret C.gdouble        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_adjustment_get_page_size(_arg0)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_page_size", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -379,12 +418,16 @@ func (adjustment *Adjustment) PageSize() float64 {
 //    - gdouble: current step increment of the adjustment.
 //
 func (adjustment *Adjustment) StepIncrement() float64 {
-	var _arg0 *C.GtkAdjustment // out
-	var _cret C.gdouble        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_adjustment_get_step_increment(_arg0)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_step_increment", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -401,12 +444,16 @@ func (adjustment *Adjustment) StepIncrement() float64 {
 //    - gdouble: current maximum value of the adjustment.
 //
 func (adjustment *Adjustment) Upper() float64 {
-	var _arg0 *C.GtkAdjustment // out
-	var _cret C.gdouble        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_adjustment_get_upper(_arg0)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_upper", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -424,12 +471,16 @@ func (adjustment *Adjustment) Upper() float64 {
 //    - gdouble: current value of the adjustment.
 //
 func (adjustment *Adjustment) Value() float64 {
-	var _arg0 *C.GtkAdjustment // out
-	var _cret C.gdouble        // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_adjustment_get_value(_arg0)
+	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_value", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(adjustment)
 
 	var _gdouble float64 // out
@@ -457,13 +508,16 @@ func (adjustment *Adjustment) Value() float64 {
 //    - lower: new minimum value.
 //
 func (adjustment *Adjustment) SetLower(lower float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(lower)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_adjustment_set_lower(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_lower", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(lower)
 }
@@ -478,13 +532,16 @@ func (adjustment *Adjustment) SetLower(lower float64) {
 //    - pageIncrement: new page increment.
 //
 func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(pageIncrement)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_adjustment_set_page_increment(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_page_increment", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(pageIncrement)
 }
@@ -500,13 +557,16 @@ func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 //    - pageSize: new page size.
 //
 func (adjustment *Adjustment) SetPageSize(pageSize float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(pageSize)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_adjustment_set_page_size(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_page_size", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(pageSize)
 }
@@ -521,13 +581,16 @@ func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 //    - stepIncrement: new step increment.
 //
 func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(stepIncrement)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_adjustment_set_step_increment(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_step_increment", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(stepIncrement)
 }
@@ -545,13 +608,16 @@ func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 //    - upper: new maximum value.
 //
 func (adjustment *Adjustment) SetUpper(upper float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(upper)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_adjustment_set_upper(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_upper", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(upper)
 }
@@ -568,13 +634,16 @@ func (adjustment *Adjustment) SetUpper(upper float64) {
 //    - value: new value.
 //
 func (adjustment *Adjustment) SetValue(value float64) {
-	var _arg0 *C.GtkAdjustment // out
-	var _arg1 C.gdouble        // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	_arg1 = C.gdouble(value)
+	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_adjustment_set_value(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_value", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)
 }
@@ -586,10 +655,13 @@ func (adjustment *Adjustment) SetValue(value float64) {
 // Deprecated: GTK+ emits Adjustment::value-changed itself whenever the value
 // changes.
 func (adjustment *Adjustment) ValueChanged() {
-	var _arg0 *C.GtkAdjustment // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(externglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_adjustment_value_changed(_arg0)
+	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("value_changed", args[:], nil)
+
 	runtime.KeepAlive(adjustment)
 }

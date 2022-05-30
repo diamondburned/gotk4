@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkwindowhandle.go.
-var GTypeWindowHandle = externglib.Type(C.gtk_window_handle_get_type())
+var GTypeWindowHandle = coreglib.Type(C.gtk_window_handle_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWindowHandle, F: marshalWindowHandle},
 	})
 }
@@ -58,10 +59,10 @@ func classInitWindowHandler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
+func wrapWindowHandle(obj *coreglib.Object) *WindowHandle {
 	return &WindowHandle{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -79,7 +80,7 @@ func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 }
 
 func marshalWindowHandle(p uintptr) (interface{}, error) {
-	return wrapWindowHandle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWindowHandle(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewWindowHandle creates a new GtkWindowHandle.
@@ -89,13 +90,14 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 //    - windowHandle: new GtkWindowHandle.
 //
 func NewWindowHandle() *WindowHandle {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_window_handle_new()
+	_gret := girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("new_WindowHandle", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _windowHandle *WindowHandle // out
 
-	_windowHandle = wrapWindowHandle(externglib.Take(unsafe.Pointer(_cret)))
+	_windowHandle = wrapWindowHandle(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowHandle
 }
@@ -107,12 +109,16 @@ func NewWindowHandle() *WindowHandle {
 //    - widget (optional): child widget of self.
 //
 func (self *WindowHandle) Child() Widgetter {
-	var _arg0 *C.GtkWindowHandle // out
-	var _cret *C.GtkWidget       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**WindowHandle)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_window_handle_get_child(_arg0)
+	_gret := girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("get_child", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -121,8 +127,8 @@ func (self *WindowHandle) Child() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -144,15 +150,18 @@ func (self *WindowHandle) Child() Widgetter {
 //    - child (optional) widget.
 //
 func (self *WindowHandle) SetChild(child Widgetter) {
-	var _arg0 *C.GtkWindowHandle // out
-	var _arg1 *C.GtkWidget       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
+	*(**WindowHandle)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_window_handle_set_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("set_child", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }

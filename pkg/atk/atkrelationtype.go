@@ -6,19 +6,20 @@ import (
 	"fmt"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for atkrelationtype.go.
-var GTypeRelationType = externglib.Type(C.atk_relation_type_get_type())
+var GTypeRelationType = coreglib.Type(C.atk_relation_type_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeRelationType, F: marshalRelationType},
 	})
 }
@@ -123,7 +124,7 @@ const (
 )
 
 func marshalRelationType(p uintptr) (interface{}, error) {
-	return RelationType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return RelationType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for RelationType.

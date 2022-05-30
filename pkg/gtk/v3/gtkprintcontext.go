@@ -7,22 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkprintcontext.go.
-var GTypePrintContext = externglib.Type(C.gtk_print_context_get_type())
+var GTypePrintContext = coreglib.Type(C.gtk_print_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePrintContext, F: marshalPrintContext},
 	})
 }
@@ -93,21 +92,21 @@ func init() {
 // Printing support was added in GTK+ 2.10.
 type PrintContext struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*PrintContext)(nil)
+	_ coreglib.Objector = (*PrintContext)(nil)
 )
 
-func wrapPrintContext(obj *externglib.Object) *PrintContext {
+func wrapPrintContext(obj *coreglib.Object) *PrintContext {
 	return &PrintContext{
 		Object: obj,
 	}
 }
 
 func marshalPrintContext(p uintptr) (interface{}, error) {
-	return wrapPrintContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPrintContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // CreatePangoContext creates a new Context that can be used with the
@@ -118,18 +117,22 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 //    - ret: new Pango context for context.
 //
 func (context *PrintContext) CreatePangoContext() *pango.Context {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret *C.PangoContext    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_create_pango_context(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("create_pango_context", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ret *pango.Context // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_ret = &pango.Context{
 			Object: obj,
 		}
@@ -146,18 +149,22 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 //    - layout: new Pango layout for context.
 //
 func (context *PrintContext) CreatePangoLayout() *pango.Layout {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret *C.PangoLayout     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_create_pango_layout(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("create_pango_layout", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _layout *pango.Layout // out
 
 	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_layout = &pango.Layout{
 			Object: obj,
 		}
@@ -174,12 +181,16 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 //    - ret: cairo context of context.
 //
 func (context *PrintContext) CairoContext() *cairo.Context {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret *C.cairo_t         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_get_cairo_context(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_cairo_context", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _ret *cairo.Context // out
@@ -187,7 +198,7 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
 	C.cairo_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
 
 	return _ret
@@ -200,12 +211,16 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 //    - gdouble: horizontal resolution of context.
 //
 func (context *PrintContext) DPIX() float64 {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret C.gdouble          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_get_dpi_x(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_x", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -222,12 +237,16 @@ func (context *PrintContext) DPIX() float64 {
 //    - gdouble: vertical resolution of context.
 //
 func (context *PrintContext) DPIY() float64 {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret C.gdouble          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_get_dpi_y(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_y", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -237,47 +256,6 @@ func (context *PrintContext) DPIY() float64 {
 	return _gdouble
 }
 
-// HardMargins obtains the hardware printer margins of the PrintContext, in
-// units.
-//
-// The function returns the following values:
-//
-//    - top hardware printer margin.
-//    - bottom hardware printer margin.
-//    - left hardware printer margin.
-//    - right hardware printer margin.
-//    - ok: TRUE if the hard margins were retrieved.
-//
-func (context *PrintContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
-	var _arg0 *C.GtkPrintContext // out
-	var _arg1 C.gdouble          // in
-	var _arg2 C.gdouble          // in
-	var _arg3 C.gdouble          // in
-	var _arg4 C.gdouble          // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-
-	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(context)
-
-	var _top float64    // out
-	var _bottom float64 // out
-	var _left float64   // out
-	var _right float64  // out
-	var _ok bool        // out
-
-	_top = float64(_arg1)
-	_bottom = float64(_arg2)
-	_left = float64(_arg3)
-	_right = float64(_arg4)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _top, _bottom, _left, _right, _ok
-}
-
 // Height obtains the height of the PrintContext, in pixels.
 //
 // The function returns the following values:
@@ -285,12 +263,16 @@ func (context *PrintContext) HardMargins() (top float64, bottom float64, left fl
 //    - gdouble: height of context.
 //
 func (context *PrintContext) Height() float64 {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret C.gdouble          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_get_height(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_height", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -308,17 +290,21 @@ func (context *PrintContext) Height() float64 {
 //    - pageSetup: page setup of context.
 //
 func (context *PrintContext) PageSetup() *PageSetup {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret *C.GtkPageSetup    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_get_page_setup(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_page_setup", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -331,12 +317,16 @@ func (context *PrintContext) PageSetup() *PageSetup {
 //    - fontMap: font map of context.
 //
 func (context *PrintContext) PangoFontmap() pango.FontMapper {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret *C.PangoFontMap    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_pango_fontmap", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _fontMap pango.FontMapper // out
@@ -347,8 +337,8 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 			panic("object of type pango.FontMapper is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(pango.FontMapper)
 			return ok
 		})
@@ -369,12 +359,16 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 //    - gdouble: width of context.
 //
 func (context *PrintContext) Width() float64 {
-	var _arg0 *C.GtkPrintContext // out
-	var _cret C.gdouble          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_print_context_get_width(_arg0)
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_width", args[:], nil)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
@@ -382,34 +376,4 @@ func (context *PrintContext) Width() float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
-}
-
-// SetCairoContext sets a new cairo context on a print context.
-//
-// This function is intended to be used when implementing an internal print
-// preview, it is not needed for printing, since GTK+ itself creates a suitable
-// cairo context in that case.
-//
-// The function takes the following parameters:
-//
-//    - cr: cairo context.
-//    - dpiX: horizontal resolution to use with cr.
-//    - dpiY: vertical resolution to use with cr.
-//
-func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float64) {
-	var _arg0 *C.GtkPrintContext // out
-	var _arg1 *C.cairo_t         // out
-	var _arg2 C.double           // out
-	var _arg3 C.double           // out
-
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(externglib.InternObject(context).Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = C.double(dpiX)
-	_arg3 = C.double(dpiY)
-
-	C.gtk_print_context_set_cairo_context(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(dpiX)
-	runtime.KeepAlive(dpiY)
 }

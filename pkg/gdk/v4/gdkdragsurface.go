@@ -3,22 +3,22 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkdragsurface.go.
-var GTypeDragSurface = externglib.Type(C.gdk_drag_surface_get_type())
+var GTypeDragSurface = coreglib.Type(C.gdk_drag_surface_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDragSurface, F: marshalDragSurface},
 	})
 }
@@ -42,10 +42,9 @@ var (
 
 // DragSurfacer describes DragSurface's interface methods.
 type DragSurfacer interface {
-	externglib.Objector
+	coreglib.Objector
 
-	// Present drag_surface.
-	Present(width, height int) bool
+	baseDragSurface() *DragSurface
 }
 
 var _ DragSurfacer = (*DragSurface)(nil)
@@ -53,7 +52,7 @@ var _ DragSurfacer = (*DragSurface)(nil)
 func ifaceInitDragSurfacer(gifacePtr, data C.gpointer) {
 }
 
-func wrapDragSurface(obj *externglib.Object) *DragSurface {
+func wrapDragSurface(obj *coreglib.Object) *DragSurface {
 	return &DragSurface{
 		Surface: Surface{
 			Object: obj,
@@ -62,40 +61,14 @@ func wrapDragSurface(obj *externglib.Object) *DragSurface {
 }
 
 func marshalDragSurface(p uintptr) (interface{}, error) {
-	return wrapDragSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDragSurface(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// Present drag_surface.
-//
-// The function takes the following parameters:
-//
-//    - width: unconstrained drag_surface width to layout.
-//    - height: unconstrained drag_surface height to layout.
-//
-// The function returns the following values:
-//
-//    - ok: FALSE if it failed to be presented, otherwise TRUE.
-//
-func (dragSurface *DragSurface) Present(width, height int) bool {
-	var _arg0 *C.GdkDragSurface // out
-	var _arg1 C.int             // out
-	var _arg2 C.int             // out
-	var _cret C.gboolean        // in
+func (v *DragSurface) baseDragSurface() *DragSurface {
+	return v
+}
 
-	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(externglib.InternObject(dragSurface).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	_cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(dragSurface)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+// BaseDragSurface returns the underlying base object.
+func BaseDragSurface(obj DragSurfacer) *DragSurface {
+	return obj.baseDragSurface()
 }

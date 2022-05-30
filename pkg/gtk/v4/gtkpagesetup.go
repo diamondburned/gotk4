@@ -8,20 +8,21 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkpagesetup.go.
-var GTypePageSetup = externglib.Type(C.gtk_page_setup_get_type())
+var GTypePageSetup = coreglib.Type(C.gtk_page_setup_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypePageSetup, F: marshalPageSetup},
 	})
 }
@@ -68,21 +69,21 @@ func init() {
 //    }.
 type PageSetup struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*PageSetup)(nil)
+	_ coreglib.Objector = (*PageSetup)(nil)
 )
 
-func wrapPageSetup(obj *externglib.Object) *PageSetup {
+func wrapPageSetup(obj *coreglib.Object) *PageSetup {
 	return &PageSetup{
 		Object: obj,
 	}
 }
 
 func marshalPageSetup(p uintptr) (interface{}, error) {
-	return wrapPageSetup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapPageSetup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewPageSetup creates a new GtkPageSetup.
@@ -92,13 +93,14 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 //    - pageSetup: new GtkPageSetup.
 //
 func NewPageSetup() *PageSetup {
-	var _cret *C.GtkPageSetup // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_page_setup_new()
+	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -117,20 +119,24 @@ func NewPageSetup() *PageSetup {
 //    - pageSetup: restored GtkPageSetup.
 //
 func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
-	var _arg1 *C.char         // out
-	var _cret *C.GtkPageSetup // in
-	var _cerr *C.GError       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_page_setup_new_from_file(_arg1, &_cerr)
+	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup_from_file", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(fileName)
 
 	var _pageSetup *PageSetup // out
 	var _goerr error          // out
 
-	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -151,17 +157,21 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 //    - pageSetup: new GtkPageSetup object.
 //
 func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
-	var _arg1 *C.GVariant     // out
-	var _cret *C.GtkPageSetup // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
+	*(**glib.Variant)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_page_setup_new_from_gvariant(_arg1)
+	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup_from_gvariant", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(variant)
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -183,25 +193,30 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 //    - pageSetup: restored GtkPageSetup.
 //
 func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetup, error) {
-	var _arg1 *C.GKeyFile     // out
-	var _arg2 *C.char         // out
-	var _cret *C.GtkPageSetup // in
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-		defer C.free(unsafe.Pointer(_arg2))
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
+	*(**glib.KeyFile)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup_from_key_file", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 
 	var _pageSetup *PageSetup // out
 	var _goerr error          // out
 
-	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -216,195 +231,23 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 //    - pageSetup: copy of other.
 //
 func (other *PageSetup) Copy() *PageSetup {
-	var _arg0 *C.GtkPageSetup // out
-	var _cret *C.GtkPageSetup // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(other).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
+	*(**PageSetup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_page_setup_copy(_arg0)
+	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("copy", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(other)
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pageSetup
-}
-
-// BottomMargin gets the bottom margin in units of unit.
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: bottom margin.
-//
-func (setup *PageSetup) BottomMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_bottom_margin(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// LeftMargin gets the left margin in units of unit.
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: left margin.
-//
-func (setup *PageSetup) LeftMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_left_margin(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// Orientation gets the page orientation of the GtkPageSetup.
-//
-// The function returns the following values:
-//
-//    - pageOrientation: page orientation.
-//
-func (setup *PageSetup) Orientation() PageOrientation {
-	var _arg0 *C.GtkPageSetup      // out
-	var _cret C.GtkPageOrientation // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-
-	_cret = C.gtk_page_setup_get_orientation(_arg0)
-	runtime.KeepAlive(setup)
-
-	var _pageOrientation PageOrientation // out
-
-	_pageOrientation = PageOrientation(_cret)
-
-	return _pageOrientation
-}
-
-// PageHeight returns the page height in units of unit.
-//
-// Note that this function takes orientation and margins into consideration. See
-// gtk.PageSetup.GetPaperHeight().
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: page height.
-//
-func (setup *PageSetup) PageHeight(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_page_height(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// PageWidth returns the page width in units of unit.
-//
-// Note that this function takes orientation and margins into consideration. See
-// gtk.PageSetup.GetPaperWidth().
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: page width.
-//
-func (setup *PageSetup) PageWidth(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_page_width(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// PaperHeight returns the paper height in units of unit.
-//
-// Note that this function takes orientation, but not margins into
-// consideration. See gtk.PageSetup.GetPageHeight().
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: paper height.
-//
-func (setup *PageSetup) PaperHeight(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_paper_height(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
 }
 
 // PaperSize gets the paper size of the GtkPageSetup.
@@ -414,12 +257,16 @@ func (setup *PageSetup) PaperHeight(unit Unit) float64 {
 //    - paperSize: paper size.
 //
 func (setup *PageSetup) PaperSize() *PaperSize {
-	var _arg0 *C.GtkPageSetup // out
-	var _cret *C.GtkPaperSize // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**PageSetup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_page_setup_get_paper_size(_arg0)
+	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("get_paper_size", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(setup)
 
 	var _paperSize *PaperSize // out
@@ -427,96 +274,6 @@ func (setup *PageSetup) PaperSize() *PaperSize {
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _paperSize
-}
-
-// PaperWidth returns the paper width in units of unit.
-//
-// Note that this function takes orientation, but not margins into
-// consideration. See gtk.PageSetup.GetPageWidth().
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: paper width.
-//
-func (setup *PageSetup) PaperWidth(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_paper_width(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// RightMargin gets the right margin in units of unit.
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: right margin.
-//
-func (setup *PageSetup) RightMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_right_margin(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// TopMargin gets the top margin in units of unit.
-//
-// The function takes the following parameters:
-//
-//    - unit for the return value.
-//
-// The function returns the following values:
-//
-//    - gdouble: top margin.
-//
-func (setup *PageSetup) TopMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.GtkUnit       // out
-	var _cret C.double        // in
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkUnit(unit)
-
-	_cret = C.gtk_page_setup_get_top_margin(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(unit)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
 }
 
 // LoadFile reads the page setup from the file file_name.
@@ -528,15 +285,18 @@ func (setup *PageSetup) TopMargin(unit Unit) float64 {
 //    - fileName: filename to read the page setup from.
 //
 func (setup *PageSetup) LoadFile(fileName string) error {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 *C.char         // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**PageSetup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_page_setup_load_file(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("load_file", args[:], nil)
+
 	runtime.KeepAlive(setup)
 	runtime.KeepAlive(fileName)
 
@@ -559,19 +319,23 @@ func (setup *PageSetup) LoadFile(fileName string) error {
 //      to use the default name “Page Setup”.
 //
 func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 *C.GKeyFile     // out
-	var _arg2 *C.char         // out
-	var _cerr *C.GError       // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
+		_arg2 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
+	*(**PageSetup)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.KeyFile)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, &_cerr)
+	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("load_key_file", args[:], nil)
+
 	runtime.KeepAlive(setup)
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
@@ -585,68 +349,6 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 	return _goerr
 }
 
-// SetBottomMargin sets the bottom margin of the GtkPageSetup.
-//
-// The function takes the following parameters:
-//
-//    - margin: new bottom margin in units of unit.
-//    - unit units for margin.
-//
-func (setup *PageSetup) SetBottomMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.double        // out
-	var _arg2 C.GtkUnit       // out
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.double(margin)
-	_arg2 = C.GtkUnit(unit)
-
-	C.gtk_page_setup_set_bottom_margin(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(margin)
-	runtime.KeepAlive(unit)
-}
-
-// SetLeftMargin sets the left margin of the GtkPageSetup.
-//
-// The function takes the following parameters:
-//
-//    - margin: new left margin in units of unit.
-//    - unit units for margin.
-//
-func (setup *PageSetup) SetLeftMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.double        // out
-	var _arg2 C.GtkUnit       // out
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.double(margin)
-	_arg2 = C.GtkUnit(unit)
-
-	C.gtk_page_setup_set_left_margin(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(margin)
-	runtime.KeepAlive(unit)
-}
-
-// SetOrientation sets the page orientation of the GtkPageSetup.
-//
-// The function takes the following parameters:
-//
-//    - orientation: PageOrientation value.
-//
-func (setup *PageSetup) SetOrientation(orientation PageOrientation) {
-	var _arg0 *C.GtkPageSetup      // out
-	var _arg1 C.GtkPageOrientation // out
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.GtkPageOrientation(orientation)
-
-	C.gtk_page_setup_set_orientation(_arg0, _arg1)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(orientation)
-}
-
 // SetPaperSize sets the paper size of the GtkPageSetup without changing the
 // margins.
 //
@@ -657,13 +359,16 @@ func (setup *PageSetup) SetOrientation(orientation PageOrientation) {
 //    - size: PaperSize.
 //
 func (setup *PageSetup) SetPaperSize(size *PaperSize) {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 *C.GtkPaperSize // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	*(**PageSetup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_page_setup_set_paper_size(_arg0, _arg1)
+	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("set_paper_size", args[:], nil)
+
 	runtime.KeepAlive(setup)
 	runtime.KeepAlive(size)
 }
@@ -676,59 +381,18 @@ func (setup *PageSetup) SetPaperSize(size *PaperSize) {
 //    - size: PaperSize.
 //
 func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 *C.GtkPaperSize // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	*(**PageSetup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_page_setup_set_paper_size_and_default_margins(_arg0, _arg1)
+	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("set_paper_size_and_default_margins", args[:], nil)
+
 	runtime.KeepAlive(setup)
 	runtime.KeepAlive(size)
-}
-
-// SetRightMargin sets the right margin of the GtkPageSetup.
-//
-// The function takes the following parameters:
-//
-//    - margin: new right margin in units of unit.
-//    - unit units for margin.
-//
-func (setup *PageSetup) SetRightMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.double        // out
-	var _arg2 C.GtkUnit       // out
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.double(margin)
-	_arg2 = C.GtkUnit(unit)
-
-	C.gtk_page_setup_set_right_margin(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(margin)
-	runtime.KeepAlive(unit)
-}
-
-// SetTopMargin sets the top margin of the GtkPageSetup.
-//
-// The function takes the following parameters:
-//
-//    - margin: new top margin in units of unit.
-//    - unit units for margin.
-//
-func (setup *PageSetup) SetTopMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 C.double        // out
-	var _arg2 C.GtkUnit       // out
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = C.double(margin)
-	_arg2 = C.GtkUnit(unit)
-
-	C.gtk_page_setup_set_top_margin(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(margin)
-	runtime.KeepAlive(unit)
 }
 
 // ToFile: this function saves the information from setup to file_name.
@@ -738,15 +402,18 @@ func (setup *PageSetup) SetTopMargin(margin float64, unit Unit) {
 //    - fileName: file to save to.
 //
 func (setup *PageSetup) ToFile(fileName string) error {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 *C.char         // out
-	var _cerr *C.GError       // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**PageSetup)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_page_setup_to_file(_arg0, _arg1, &_cerr)
+	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("to_file", args[:], nil)
+
 	runtime.KeepAlive(setup)
 	runtime.KeepAlive(fileName)
 
@@ -766,12 +433,16 @@ func (setup *PageSetup) ToFile(fileName string) error {
 //    - variant: new, floating, #GVariant.
 //
 func (setup *PageSetup) ToGVariant() *glib.Variant {
-	var _arg0 *C.GtkPageSetup // out
-	var _cret *C.GVariant     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**PageSetup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_page_setup_to_gvariant(_arg0)
+	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("to_gvariant", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(setup)
 
 	var _variant *glib.Variant // out
@@ -797,18 +468,22 @@ func (setup *PageSetup) ToGVariant() *glib.Variant {
 //      to use the default name “Page Setup”.
 //
 func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
-	var _arg0 *C.GtkPageSetup // out
-	var _arg1 *C.GKeyFile     // out
-	var _arg2 *C.char         // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(externglib.InternObject(setup).Native()))
-	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
+		_arg2 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
+	*(**PageSetup)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.KeyFile)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_page_setup_to_key_file(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("to_key_file", args[:], nil)
+
 	runtime.KeepAlive(setup)
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)

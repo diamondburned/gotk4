@@ -4,16 +4,15 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // DistributeNaturalAllocation distributes extra_space to child sizes by
@@ -36,16 +35,22 @@ import "C"
 //    - gint: remainder of extra_space after redistributing space to sizes.
 //
 func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
-	var _arg1 C.gint              // out
-	var _arg2 C.guint             // out
-	var _arg3 *C.GtkRequestedSize // out
-	var _cret C.gint              // in
+	var args [3]girepository.Argument
+	var _arg0 C.gint  // out
+	var _arg1 C.guint // out
+	var _arg2 *C.void // out
+	var _cret C.gint  // in
 
-	_arg1 = C.gint(extraSpace)
-	_arg2 = C.guint(nRequestedSizes)
-	_arg3 = (*C.GtkRequestedSize)(gextras.StructNative(unsafe.Pointer(sizes)))
+	_arg0 = C.gint(extraSpace)
+	_arg1 = C.guint(nRequestedSizes)
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(sizes)))
+	*(*int)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
+	*(**RequestedSize)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Gtk", "distribute_natural_allocation").Invoke(args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(extraSpace)
 	runtime.KeepAlive(nRequestedSizes)
 	runtime.KeepAlive(sizes)
@@ -69,25 +74,4 @@ type RequestedSize struct {
 // requestedSize is the struct that's finalized.
 type requestedSize struct {
 	native *C.GtkRequestedSize
-}
-
-// Data: client pointer.
-func (r *RequestedSize) Data() cgo.Handle {
-	var v cgo.Handle // out
-	v = (cgo.Handle)(unsafe.Pointer(r.native.data))
-	return v
-}
-
-// MinimumSize: minimum size needed for allocation in a given orientation.
-func (r *RequestedSize) MinimumSize() int {
-	var v int // out
-	v = int(r.native.minimum_size)
-	return v
-}
-
-// NaturalSize: natural size for allocation in a given orientation.
-func (r *RequestedSize) NaturalSize() int {
-	var v int // out
-	v = int(r.native.natural_size)
-	return v
 }

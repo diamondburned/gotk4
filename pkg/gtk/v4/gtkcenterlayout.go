@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcenterlayout.go.
-var GTypeCenterLayout = externglib.Type(C.gtk_center_layout_get_type())
+var GTypeCenterLayout = coreglib.Type(C.gtk_center_layout_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCenterLayout, F: marshalCenterLayout},
 	})
 }
@@ -52,7 +53,7 @@ func classInitCenterLayouter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
+func wrapCenterLayout(obj *coreglib.Object) *CenterLayout {
 	return &CenterLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -61,7 +62,7 @@ func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
 }
 
 func marshalCenterLayout(p uintptr) (interface{}, error) {
-	return wrapCenterLayout(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCenterLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCenterLayout creates a new GtkCenterLayout.
@@ -71,37 +72,16 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 //    - centerLayout: newly created GtkCenterLayout.
 //
 func NewCenterLayout() *CenterLayout {
-	var _cret *C.GtkLayoutManager // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_center_layout_new()
+	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("new_CenterLayout", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _centerLayout *CenterLayout // out
 
-	_centerLayout = wrapCenterLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_centerLayout = wrapCenterLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _centerLayout
-}
-
-// BaselinePosition returns the baseline position of the layout.
-//
-// The function returns the following values:
-//
-//    - baselinePosition: current baseline position of self.
-//
-func (self *CenterLayout) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkCenterLayout    // out
-	var _cret C.GtkBaselinePosition // in
-
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_center_layout_get_baseline_position(_arg0)
-	runtime.KeepAlive(self)
-
-	var _baselinePosition BaselinePosition // out
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
 }
 
 // CenterWidget returns the center widget of the layout.
@@ -111,12 +91,16 @@ func (self *CenterLayout) BaselinePosition() BaselinePosition {
 //    - widget (optional): current center widget of self.
 //
 func (self *CenterLayout) CenterWidget() Widgetter {
-	var _arg0 *C.GtkCenterLayout // out
-	var _cret *C.GtkWidget       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**CenterLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_center_layout_get_center_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("get_center_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -125,8 +109,8 @@ func (self *CenterLayout) CenterWidget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -148,12 +132,16 @@ func (self *CenterLayout) CenterWidget() Widgetter {
 //    - widget (optional): current end widget of self.
 //
 func (self *CenterLayout) EndWidget() Widgetter {
-	var _arg0 *C.GtkCenterLayout // out
-	var _cret *C.GtkWidget       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**CenterLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_center_layout_get_end_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("get_end_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -162,8 +150,8 @@ func (self *CenterLayout) EndWidget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -176,28 +164,6 @@ func (self *CenterLayout) EndWidget() Widgetter {
 	}
 
 	return _widget
-}
-
-// Orientation gets the current orienration of the layout manager.
-//
-// The function returns the following values:
-//
-//    - orientation: current orientation of self.
-//
-func (self *CenterLayout) Orientation() Orientation {
-	var _arg0 *C.GtkCenterLayout // out
-	var _cret C.GtkOrientation   // in
-
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_center_layout_get_orientation(_arg0)
-	runtime.KeepAlive(self)
-
-	var _orientation Orientation // out
-
-	_orientation = Orientation(_cret)
-
-	return _orientation
 }
 
 // StartWidget returns the start widget fo the layout.
@@ -207,12 +173,16 @@ func (self *CenterLayout) Orientation() Orientation {
 //    - widget (optional): current start widget of self.
 //
 func (self *CenterLayout) StartWidget() Widgetter {
-	var _arg0 *C.GtkCenterLayout // out
-	var _cret *C.GtkWidget       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**CenterLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_center_layout_get_start_widget(_arg0)
+	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("get_start_widget", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -221,8 +191,8 @@ func (self *CenterLayout) StartWidget() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -235,24 +205,6 @@ func (self *CenterLayout) StartWidget() Widgetter {
 	}
 
 	return _widget
-}
-
-// SetBaselinePosition sets the new baseline position of self.
-//
-// The function takes the following parameters:
-//
-//    - baselinePosition: new baseline position.
-//
-func (self *CenterLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
-	var _arg0 *C.GtkCenterLayout    // out
-	var _arg1 C.GtkBaselinePosition // out
-
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GtkBaselinePosition(baselinePosition)
-
-	C.gtk_center_layout_set_baseline_position(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(baselinePosition)
 }
 
 // SetCenterWidget sets the new center widget of self.
@@ -264,15 +216,18 @@ func (self *CenterLayout) SetBaselinePosition(baselinePosition BaselinePosition)
 //    - widget (optional): new center widget.
 //
 func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
-	var _arg0 *C.GtkCenterLayout // out
-	var _arg1 *C.GtkWidget       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**CenterLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("set_center_widget", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
 }
@@ -286,35 +241,20 @@ func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 //    - widget (optional): new end widget.
 //
 func (self *CenterLayout) SetEndWidget(widget Widgetter) {
-	var _arg0 *C.GtkCenterLayout // out
-	var _arg1 *C.GtkWidget       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**CenterLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("set_end_widget", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
-}
-
-// SetOrientation sets the orientation of self.
-//
-// The function takes the following parameters:
-//
-//    - orientation: new orientation.
-//
-func (self *CenterLayout) SetOrientation(orientation Orientation) {
-	var _arg0 *C.GtkCenterLayout // out
-	var _arg1 C.GtkOrientation   // out
-
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GtkOrientation(orientation)
-
-	C.gtk_center_layout_set_orientation(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(orientation)
 }
 
 // SetStartWidget sets the new start widget of self.
@@ -326,15 +266,18 @@ func (self *CenterLayout) SetOrientation(orientation Orientation) {
 //    - widget (optional): new start widget.
 //
 func (self *CenterLayout) SetStartWidget(widget Widgetter) {
-	var _arg0 *C.GtkCenterLayout // out
-	var _arg1 *C.GtkWidget       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
+	*(**CenterLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_center_layout_set_start_widget(_arg0, _arg1)
+	girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("set_start_widget", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
 }

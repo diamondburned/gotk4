@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtknumericsorter.go.
-var GTypeNumericSorter = externglib.Type(C.gtk_numeric_sorter_get_type())
+var GTypeNumericSorter = coreglib.Type(C.gtk_numeric_sorter_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeNumericSorter, F: marshalNumericSorter},
 	})
 }
@@ -36,7 +37,7 @@ type NumericSorter struct {
 }
 
 var (
-	_ externglib.Objector = (*NumericSorter)(nil)
+	_ coreglib.Objector = (*NumericSorter)(nil)
 )
 
 func classInitNumericSorterer(gclassPtr, data C.gpointer) {
@@ -47,7 +48,7 @@ func classInitNumericSorterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
+func wrapNumericSorter(obj *coreglib.Object) *NumericSorter {
 	return &NumericSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -56,7 +57,7 @@ func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
 }
 
 func marshalNumericSorter(p uintptr) (interface{}, error) {
-	return wrapNumericSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapNumericSorter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewNumericSorter creates a new numeric sorter using the given expression.
@@ -73,20 +74,24 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 //    - numericSorter: new GtkNumericSorter.
 //
 func NewNumericSorter(expression Expressioner) *NumericSorter {
-	var _arg1 *C.GtkExpression    // out
-	var _cret *C.GtkNumericSorter // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(expression).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
+	*(*Expressioner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numeric_sorter_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("new_NumericSorter", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(expression)
 
 	var _numericSorter *NumericSorter // out
 
-	_numericSorter = wrapNumericSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_numericSorter = wrapNumericSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _numericSorter
 }
@@ -99,12 +104,16 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 //    - expression (optional): GtkExpression, or NULL.
 //
 func (self *NumericSorter) Expression() Expressioner {
-	var _arg0 *C.GtkNumericSorter // out
-	var _cret *C.GtkExpression    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**NumericSorter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_numeric_sorter_get_expression(_arg0)
+	_gret := girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("get_expression", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
@@ -113,8 +122,8 @@ func (self *NumericSorter) Expression() Expressioner {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Expressioner)
 				return ok
 			})
@@ -127,28 +136,6 @@ func (self *NumericSorter) Expression() Expressioner {
 	}
 
 	return _expression
-}
-
-// SortOrder gets whether this sorter will sort smaller numbers first.
-//
-// The function returns the following values:
-//
-//    - sortType: order of the numbers.
-//
-func (self *NumericSorter) SortOrder() SortType {
-	var _arg0 *C.GtkNumericSorter // out
-	var _cret C.GtkSortType       // in
-
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
-
-	_cret = C.gtk_numeric_sorter_get_sort_order(_arg0)
-	runtime.KeepAlive(self)
-
-	var _sortType SortType // out
-
-	_sortType = SortType(_cret)
-
-	return _sortType
 }
 
 // SetExpression sets the expression that is evaluated to obtain numbers from
@@ -165,33 +152,18 @@ func (self *NumericSorter) SortOrder() SortType {
 //    - expression (optional): GtkExpression, or NULL.
 //
 func (self *NumericSorter) SetExpression(expression Expressioner) {
-	var _arg0 *C.GtkNumericSorter // out
-	var _arg1 *C.GtkExpression    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.GtkExpression)(unsafe.Pointer(externglib.InternObject(expression).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
+	*(**NumericSorter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
+	girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("set_expression", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)
-}
-
-// SetSortOrder sets whether to sort smaller numbers before larger ones.
-//
-// The function takes the following parameters:
-//
-//    - sortOrder: whether to sort smaller numbers first.
-//
-func (self *NumericSorter) SetSortOrder(sortOrder SortType) {
-	var _arg0 *C.GtkNumericSorter // out
-	var _arg1 C.GtkSortType       // out
-
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
-	_arg1 = C.GtkSortType(sortOrder)
-
-	C.gtk_numeric_sorter_set_sort_order(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(sortOrder)
 }

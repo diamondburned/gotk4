@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkcolor.go.
-var GTypeColor = externglib.Type(C.gdk_color_get_type())
+var GTypeColor = coreglib.Type(C.gdk_color_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeColor, F: marshalColor},
 	})
 }
@@ -40,7 +41,7 @@ type color struct {
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Color{&color{(*C.GdkColor)(b)}}, nil
 }
 
@@ -107,12 +108,15 @@ func (c *Color) Blue() uint16 {
 //    - ret: copy of color.
 //
 func (color *Color) Copy() *Color {
-	var _arg0 *C.GdkColor // out
-	var _cret *C.GdkColor // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**Color)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_color_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(color)
 
 	var _ret *Color // out
@@ -141,14 +145,17 @@ func (color *Color) Copy() *Color {
 //    - ok: TRUE if the two colors compare equal.
 //
 func (colora *Color) Equal(colorb *Color) bool {
-	var _arg0 *C.GdkColor // out
-	var _arg1 *C.GdkColor // out
-	var _cret C.gboolean  // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(colora)))
-	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(colorb)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(colora)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(colorb)))
+	*(**Color)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gdk_color_equal(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(colora)
 	runtime.KeepAlive(colorb)
 
@@ -170,12 +177,15 @@ func (colora *Color) Equal(colorb *Color) bool {
 //    - guint: hash function applied to color.
 //
 func (color *Color) Hash() uint {
-	var _arg0 *C.GdkColor // out
-	var _cret C.guint     // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**Color)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_color_hash(_arg0)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(color)
 
 	var _guint uint // out
@@ -198,12 +208,15 @@ func (color *Color) Hash() uint {
 //    - utf8: newly-allocated text string.
 //
 func (color *Color) String() string {
-	var _arg0 *C.GdkColor // out
-	var _cret *C.gchar    // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**Color)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_color_to_string(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(color)
 
 	var _utf8 string // out
@@ -212,47 +225,4 @@ func (color *Color) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// ColorParse parses a textual specification of a color and fill in the red,
-// green, and blue fields of a Color.
-//
-// The string can either one of a large set of standard names (taken from the
-// X11 rgb.txt file), or it can be a hexadecimal value in the form “\#rgb”
-// “\#rrggbb”, “\#rrrgggbbb” or “\#rrrrggggbbbb” where “r”, “g” and “b” are hex
-// digits of the red, green, and blue components of the color, respectively.
-// (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
-// “\#ffffffffffff”).
-//
-// Deprecated: Use RGBA.
-//
-// The function takes the following parameters:
-//
-//    - spec: string specifying the color.
-//
-// The function returns the following values:
-//
-//    - color to fill in.
-//    - ok: TRUE if the parsing succeeded.
-//
-func ColorParse(spec string) (*Color, bool) {
-	var _arg1 *C.gchar   // out
-	var _arg2 C.GdkColor // in
-	var _cret C.gboolean // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gdk_color_parse(_arg1, &_arg2)
-	runtime.KeepAlive(spec)
-
-	var _color *Color // out
-	var _ok bool      // out
-
-	_color = (*Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _color, _ok
 }

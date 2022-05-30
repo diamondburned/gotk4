@@ -7,14 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern gchar* _gotk4_gtk3_EntryBufferClass_get_text(GtkEntryBuffer*, gsize*);
 // extern guint _gotk4_gtk3_EntryBufferClass_delete_text(GtkEntryBuffer*, guint, guint);
 // extern guint _gotk4_gtk3_EntryBufferClass_get_length(GtkEntryBuffer*);
@@ -26,10 +25,10 @@ import (
 import "C"
 
 // glib.Type values for gtkentrybuffer.go.
-var GTypeEntryBuffer = externglib.Type(C.gtk_entry_buffer_get_type())
+var GTypeEntryBuffer = coreglib.Type(C.gtk_entry_buffer_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeEntryBuffer, F: marshalEntryBuffer},
 	})
 }
@@ -115,11 +114,11 @@ type EntryBufferOverrider interface {
 // application’s concept of undo/redo.
 type EntryBuffer struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*EntryBuffer)(nil)
+	_ coreglib.Objector = (*EntryBuffer)(nil)
 )
 
 func classInitEntryBufferer(gclassPtr, data C.gpointer) {
@@ -166,7 +165,7 @@ func classInitEntryBufferer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_EntryBufferClass_delete_text
 func _gotk4_gtk3_EntryBufferClass_delete_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 C.guint) (cret C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DeleteText(position, nChars uint) uint
 	})
@@ -186,7 +185,7 @@ func _gotk4_gtk3_EntryBufferClass_delete_text(arg0 *C.GtkEntryBuffer, arg1 C.gui
 
 //export _gotk4_gtk3_EntryBufferClass_deleted_text
 func _gotk4_gtk3_EntryBufferClass_deleted_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DeletedText(position, nChars uint) })
 
 	var _position uint // out
@@ -200,7 +199,7 @@ func _gotk4_gtk3_EntryBufferClass_deleted_text(arg0 *C.GtkEntryBuffer, arg1 C.gu
 
 //export _gotk4_gtk3_EntryBufferClass_get_length
 func _gotk4_gtk3_EntryBufferClass_get_length(arg0 *C.GtkEntryBuffer) (cret C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Length() uint })
 
 	guint := iface.Length()
@@ -212,7 +211,7 @@ func _gotk4_gtk3_EntryBufferClass_get_length(arg0 *C.GtkEntryBuffer) (cret C.gui
 
 //export _gotk4_gtk3_EntryBufferClass_get_text
 func _gotk4_gtk3_EntryBufferClass_get_text(arg0 *C.GtkEntryBuffer, arg1 *C.gsize) (cret *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Text(nBytes *uint) string })
 
 	var _nBytes *uint // out
@@ -221,7 +220,7 @@ func _gotk4_gtk3_EntryBufferClass_get_text(arg0 *C.GtkEntryBuffer, arg1 *C.gsize
 
 	utf8 := iface.Text(_nBytes)
 
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
 	defer C.free(unsafe.Pointer(cret))
 
 	return cret
@@ -229,7 +228,7 @@ func _gotk4_gtk3_EntryBufferClass_get_text(arg0 *C.GtkEntryBuffer, arg1 *C.gsize
 
 //export _gotk4_gtk3_EntryBufferClass_insert_text
 func _gotk4_gtk3_EntryBufferClass_insert_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 *C.gchar, arg3 C.guint) (cret C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertText(position uint, chars string, nChars uint) uint
 	})
@@ -251,7 +250,7 @@ func _gotk4_gtk3_EntryBufferClass_insert_text(arg0 *C.GtkEntryBuffer, arg1 C.gui
 
 //export _gotk4_gtk3_EntryBufferClass_inserted_text
 func _gotk4_gtk3_EntryBufferClass_inserted_text(arg0 *C.GtkEntryBuffer, arg1 C.guint, arg2 *C.gchar, arg3 C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertedText(position uint, chars string, nChars uint)
 	})
@@ -267,21 +266,21 @@ func _gotk4_gtk3_EntryBufferClass_inserted_text(arg0 *C.GtkEntryBuffer, arg1 C.g
 	iface.InsertedText(_position, _chars, _nChars)
 }
 
-func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
+func wrapEntryBuffer(obj *coreglib.Object) *EntryBuffer {
 	return &EntryBuffer{
 		Object: obj,
 	}
 }
 
 func marshalEntryBuffer(p uintptr) (interface{}, error) {
-	return wrapEntryBuffer(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapEntryBuffer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_EntryBuffer_ConnectDeletedText
 func _gotk4_gtk3_EntryBuffer_ConnectDeletedText(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
 	var f func(position, nChars uint)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -301,15 +300,15 @@ func _gotk4_gtk3_EntryBuffer_ConnectDeletedText(arg0 C.gpointer, arg1 C.guint, a
 
 // ConnectDeletedText: this signal is emitted after text is deleted from the
 // buffer.
-func (buffer *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(buffer, "deleted-text", false, unsafe.Pointer(C._gotk4_gtk3_EntryBuffer_ConnectDeletedText), f)
+func (buffer *EntryBuffer) ConnectDeletedText(f func(position, nChars uint)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(buffer, "deleted-text", false, unsafe.Pointer(C._gotk4_gtk3_EntryBuffer_ConnectDeletedText), f)
 }
 
 //export _gotk4_gtk3_EntryBuffer_ConnectInsertedText
 func _gotk4_gtk3_EntryBuffer_ConnectInsertedText(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guint, arg4 C.guintptr) {
 	var f func(position uint, chars string, nChars uint)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg4))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -331,8 +330,8 @@ func _gotk4_gtk3_EntryBuffer_ConnectInsertedText(arg0 C.gpointer, arg1 C.guint, 
 
 // ConnectInsertedText: this signal is emitted after text is inserted into the
 // buffer.
-func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(buffer, "inserted-text", false, unsafe.Pointer(C._gotk4_gtk3_EntryBuffer_ConnectInsertedText), f)
+func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars string, nChars uint)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(buffer, "inserted-text", false, unsafe.Pointer(C._gotk4_gtk3_EntryBuffer_ConnectInsertedText), f)
 }
 
 // NewEntryBuffer: create a new GtkEntryBuffer object.
@@ -349,23 +348,28 @@ func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars strin
 //    - entryBuffer: new GtkEntryBuffer object.
 //
 func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
-	var _arg1 *C.gchar          // out
-	var _arg2 C.gint            // out
-	var _cret *C.GtkEntryBuffer // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _cret *C.void // in
 
 	if initialChars != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(initialChars)))
-		defer C.free(unsafe.Pointer(_arg1))
+		_arg0 = (*C.void)(unsafe.Pointer(C.CString(initialChars)))
+		defer C.free(unsafe.Pointer(_arg0))
 	}
-	_arg2 = C.gint(nInitialChars)
+	_arg1 = C.gint(nInitialChars)
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_entry_buffer_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("new_EntryBuffer", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(initialChars)
 	runtime.KeepAlive(nInitialChars)
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = wrapEntryBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryBuffer = wrapEntryBuffer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }
@@ -389,16 +393,21 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 //    - guint: number of characters deleted.
 //
 func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 C.gint            // out
-	var _cret C.guint           // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _arg2 C.gint  // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.gint(nChars)
+	*(**EntryBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.gtk_entry_buffer_delete_text(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("delete_text", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(nChars)
@@ -418,15 +427,19 @@ func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 //    - nChars: number of characters deleted.
 //
 func (buffer *EntryBuffer) EmitDeletedText(position, nChars uint) {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 C.guint           // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _arg2 C.guint // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nChars)
+	*(**EntryBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_entry_buffer_emit_deleted_text(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("emit_deleted_text", args[:], nil)
+
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(nChars)
@@ -441,18 +454,23 @@ func (buffer *EntryBuffer) EmitDeletedText(position, nChars uint) {
 //    - nChars: number of characters inserted.
 //
 func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars uint) {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 *C.gchar          // out
-	var _arg3 C.guint           // out
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _arg2 *C.void // out
+	var _arg3 C.guint // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	_arg1 = C.guint(position)
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(chars)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint(nChars)
+	*(**EntryBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	C.gtk_entry_buffer_emit_inserted_text(_arg0, _arg1, _arg2, _arg3)
+	girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("emit_inserted_text", args[:], nil)
+
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(chars)
@@ -467,12 +485,16 @@ func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars 
 //    - gsize: byte length of the buffer.
 //
 func (buffer *EntryBuffer) Bytes() uint {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _cret C.gsize           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gsize // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**EntryBuffer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_entry_buffer_get_bytes(_arg0)
+	_gret := girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("get_bytes", args[:], nil)
+	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(buffer)
 
 	var _gsize uint // out
@@ -489,12 +511,16 @@ func (buffer *EntryBuffer) Bytes() uint {
 //    - guint: number of characters in the buffer.
 //
 func (buffer *EntryBuffer) Length() uint {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _cret C.guint           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**EntryBuffer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_entry_buffer_get_length(_arg0)
+	_gret := girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("get_length", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(buffer)
 
 	var _guint uint // out
@@ -513,12 +539,16 @@ func (buffer *EntryBuffer) Length() uint {
 //      is no maximum.
 //
 func (buffer *EntryBuffer) MaxLength() int {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _cret C.gint            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**EntryBuffer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_entry_buffer_get_max_length(_arg0)
+	_gret := girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("get_max_length", args[:], nil)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(buffer)
 
 	var _gint int // out
@@ -540,12 +570,16 @@ func (buffer *EntryBuffer) MaxLength() int {
 //      freed, modified or stored.
 //
 func (buffer *EntryBuffer) Text() string {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _cret *C.gchar          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**EntryBuffer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_entry_buffer_get_text(_arg0)
+	_gret := girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("get_text", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(buffer)
 
 	var _utf8 string // out
@@ -575,19 +609,25 @@ func (buffer *EntryBuffer) Text() string {
 //    - guint: number of characters actually inserted.
 //
 func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) uint {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 *C.gchar          // out
-	var _arg3 C.gint            // out
-	var _cret C.guint           // in
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
+	var _arg2 *C.void // out
+	var _arg3 C.gint  // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	_arg1 = C.guint(position)
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(chars)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(nChars)
+	*(**EntryBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_cret = C.gtk_entry_buffer_insert_text(_arg0, _arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("insert_text", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(chars)
@@ -611,13 +651,16 @@ func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) u
 //      clamped to the range 0-65536.
 //
 func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.gint            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	_arg1 = C.gint(maxLength)
+	*(**EntryBuffer)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_entry_buffer_set_max_length(_arg0, _arg1)
+	girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("set_max_length", args[:], nil)
+
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(maxLength)
 }
@@ -635,16 +678,20 @@ func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 //    - nChars: number of characters in text, or -1.
 //
 func (buffer *EntryBuffer) SetText(chars string, nChars int) {
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 *C.gchar          // out
-	var _arg2 C.gint            // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
 
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(externglib.InternObject(buffer).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(chars)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(nChars)
+	*(**EntryBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_entry_buffer_set_text(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "EntryBuffer").InvokeMethod("set_text", args[:], nil)
+
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(chars)
 	runtime.KeepAlive(nChars)

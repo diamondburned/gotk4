@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/wayland/gdkwayland.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkwaylanddisplay.go.
-var GTypeWaylandDisplay = externglib.Type(C.gdk_wayland_display_get_type())
+var GTypeWaylandDisplay = coreglib.Type(C.gdk_wayland_display_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWaylandDisplay, F: marshalWaylandDisplay},
 	})
 }
@@ -43,7 +44,7 @@ type WaylandDisplay struct {
 }
 
 var (
-	_ externglib.Objector = (*WaylandDisplay)(nil)
+	_ coreglib.Objector = (*WaylandDisplay)(nil)
 )
 
 func classInitWaylandDisplayer(gclassPtr, data C.gpointer) {
@@ -54,7 +55,7 @@ func classInitWaylandDisplayer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
+func wrapWaylandDisplay(obj *coreglib.Object) *WaylandDisplay {
 	return &WaylandDisplay{
 		Display: gdk.Display{
 			Object: obj,
@@ -63,7 +64,7 @@ func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
 }
 
 func marshalWaylandDisplay(p uintptr) (interface{}, error) {
-	return wrapWaylandDisplay(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandDisplay(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // StartupNotificationID gets the startup notification ID for a Wayland display,
@@ -74,12 +75,16 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 //    - utf8 (optional): startup notification ID for display, or NULL.
 //
 func (display *WaylandDisplay) StartupNotificationID() string {
-	var _arg0 *C.GdkDisplay // out
-	var _cret *C.char       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**WaylandDisplay)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
+	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("get_startup_notification_id", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
@@ -103,15 +108,19 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 //    - ok: TRUE if the global is offered by the compositor.
 //
 func (display *WaylandDisplay) QueryRegistry(global string) bool {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.char       // out
-	var _cret C.gboolean    // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(global)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(global)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**WaylandDisplay)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
+	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("query_registry", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(global)
 
@@ -122,29 +131,6 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	}
 
 	return _ok
-}
-
-// SetCursorTheme sets the cursor theme for the given display.
-//
-// The function takes the following parameters:
-//
-//    - name: new cursor theme.
-//    - size to use for cursors.
-//
-func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.char       // out
-	var _arg2 C.int         // out
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(size)
-
-	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(display)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(size)
 }
 
 // SetStartupNotificationID sets the startup notification ID for a display.
@@ -162,14 +148,17 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 //    - startupId: startup notification ID (must be valid utf8).
 //
 func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
-	var _arg0 *C.GdkDisplay // out
-	var _arg1 *C.char       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(externglib.InternObject(display).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**WaylandDisplay)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_wayland_display_set_startup_notification_id(_arg0, _arg1)
+	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_startup_notification_id", args[:], nil)
+
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(startupId)
 }

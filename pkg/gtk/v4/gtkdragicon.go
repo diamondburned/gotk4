@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkdragicon.go.
-var GTypeDragIcon = externglib.Type(C.gtk_drag_icon_get_type())
+var GTypeDragIcon = coreglib.Type(C.gtk_drag_icon_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDragIcon, F: marshalDragIcon},
 	})
 }
@@ -43,13 +44,13 @@ type DragIcon struct {
 	_ [0]func() // equal guard
 	Widget
 
-	*externglib.Object
+	*coreglib.Object
 	Root
 }
 
 var (
-	_ Widgetter           = (*DragIcon)(nil)
-	_ externglib.Objector = (*DragIcon)(nil)
+	_ Widgetter         = (*DragIcon)(nil)
+	_ coreglib.Objector = (*DragIcon)(nil)
 )
 
 func classInitDragIconner(gclassPtr, data C.gpointer) {
@@ -60,10 +61,10 @@ func classInitDragIconner(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapDragIcon(obj *externglib.Object) *DragIcon {
+func wrapDragIcon(obj *coreglib.Object) *DragIcon {
 	return &DragIcon{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -81,7 +82,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 		Root: Root{
 			NativeSurface: NativeSurface{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -101,7 +102,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 }
 
 func marshalDragIcon(p uintptr) (interface{}, error) {
-	return wrapDragIcon(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDragIcon(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // Child gets the widget currently used as drag icon.
@@ -111,12 +112,16 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 //    - widget (optional): drag icon or NULL if none.
 //
 func (self *DragIcon) Child() Widgetter {
-	var _arg0 *C.GtkDragIcon // out
-	var _cret *C.GtkWidget   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**DragIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_drag_icon_get_child(_arg0)
+	_gret := girepository.MustFind("Gtk", "DragIcon").InvokeMethod("get_child", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
@@ -125,8 +130,8 @@ func (self *DragIcon) Child() Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -148,15 +153,18 @@ func (self *DragIcon) Child() Widgetter {
 //    - child (optional): GtkWidget or NULL.
 //
 func (self *DragIcon) SetChild(child Widgetter) {
-	var _arg0 *C.GtkDragIcon // out
-	var _arg1 *C.GtkWidget   // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(child).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
+	*(**DragIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_drag_icon_set_child(_arg0, _arg1)
+	girepository.MustFind("Gtk", "DragIcon").InvokeMethod("set_child", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }
@@ -179,13 +187,17 @@ func (self *DragIcon) SetChild(child Widgetter) {
 //
 //    - widget (optional): new GtkWidget for displaying value as a drag icon.
 //
-func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
-	var _arg1 *C.GValue    // out
-	var _cret *C.GtkWidget // in
+func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**coreglib.Value)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_drag_icon_create_widget_for_value(_arg1)
+	_gret := girepository.MustFind("Gtk", "create_widget_for_value").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(value)
 
 	var _widget Widgetter // out
@@ -194,8 +206,8 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Widgetter)
 				return ok
 			})
@@ -223,12 +235,16 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 //    - widget: GtkDragIcon.
 //
 func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
-	var _arg1 *C.GdkDrag   // out
-	var _cret *C.GtkWidget // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	*(*gdk.Dragger)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
+	_gret := girepository.MustFind("Gtk", "get_for_drag").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(drag)
 
 	var _widget Widgetter // out
@@ -239,8 +255,8 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 			panic("object of type gtk.Widgetter is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Widgetter)
 			return ok
 		})
@@ -252,35 +268,4 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	}
 
 	return _widget
-}
-
-// DragIconSetFromPaintable creates a GtkDragIcon that shows paintable, and
-// associates it with the drag operation.
-//
-// The hotspot position on the paintable is aligned with the hotspot of the
-// cursor.
-//
-// The function takes the following parameters:
-//
-//    - drag: GdkDrag.
-//    - paintable: GdkPaintable to display.
-//    - hotX: x coordinate of the hotspot.
-//    - hotY: y coordinate of the hotspot.
-//
-func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, hotY int) {
-	var _arg1 *C.GdkDrag      // out
-	var _arg2 *C.GdkPaintable // out
-	var _arg3 C.int           // out
-	var _arg4 C.int           // out
-
-	_arg1 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(externglib.InternObject(paintable).Native()))
-	_arg3 = C.int(hotX)
-	_arg4 = C.int(hotY)
-
-	C.gtk_drag_icon_set_from_paintable(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(drag)
-	runtime.KeepAlive(paintable)
-	runtime.KeepAlive(hotX)
-	runtime.KeepAlive(hotY)
 }

@@ -5,20 +5,21 @@ package gdkx11
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11dnd.go.
-var GTypeX11DragContext = externglib.Type(C.gdk_x11_drag_context_get_type())
+var GTypeX11DragContext = coreglib.Type(C.gdk_x11_drag_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11DragContext, F: marshalX11DragContext},
 	})
 }
@@ -33,7 +34,7 @@ type X11DragContext struct {
 }
 
 var (
-	_ externglib.Objector = (*X11DragContext)(nil)
+	_ coreglib.Objector = (*X11DragContext)(nil)
 )
 
 func classInitX11DragContexter(gclassPtr, data C.gpointer) {
@@ -44,7 +45,7 @@ func classInitX11DragContexter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11DragContext(obj *externglib.Object) *X11DragContext {
+func wrapX11DragContext(obj *coreglib.Object) *X11DragContext {
 	return &X11DragContext{
 		DragContext: gdk.DragContext{
 			Object: obj,
@@ -53,5 +54,5 @@ func wrapX11DragContext(obj *externglib.Object) *X11DragContext {
 }
 
 func marshalX11DragContext(p uintptr) (interface{}, error) {
-	return wrapX11DragContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11DragContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

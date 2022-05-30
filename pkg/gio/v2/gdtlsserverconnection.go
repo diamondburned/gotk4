@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdtlsserverconnection.go.
-var GTypeDTLSServerConnection = externglib.Type(C.g_dtls_server_connection_get_type())
+var GTypeDTLSServerConnection = coreglib.Type(C.g_dtls_server_connection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDTLSServerConnection, F: marshalDTLSServerConnection},
 	})
 }
@@ -42,7 +43,7 @@ var ()
 
 // DTLSServerConnectioner describes DTLSServerConnection's interface methods.
 type DTLSServerConnectioner interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseDTLSServerConnection() *DTLSServerConnection
 }
@@ -52,7 +53,7 @@ var _ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
 func ifaceInitDTLSServerConnectioner(gifacePtr, data C.gpointer) {
 }
 
-func wrapDTLSServerConnection(obj *externglib.Object) *DTLSServerConnection {
+func wrapDTLSServerConnection(obj *coreglib.Object) *DTLSServerConnection {
 	return &DTLSServerConnection{
 		DTLSConnection: DTLSConnection{
 			DatagramBased: DatagramBased{
@@ -63,7 +64,7 @@ func wrapDTLSServerConnection(obj *externglib.Object) *DTLSServerConnection {
 }
 
 func marshalDTLSServerConnection(p uintptr) (interface{}, error) {
-	return wrapDTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDTLSServerConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *DTLSServerConnection) baseDTLSServerConnection() *DTLSServerConnection {
@@ -87,24 +88,29 @@ func BaseDTLSServerConnection(obj DTLSServerConnectioner) *DTLSServerConnection 
 //    - dtlsServerConnection: new ServerConnection, or NULL on error.
 //
 func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertificater) (*DTLSServerConnection, error) {
-	var _arg1 *C.GDatagramBased  // out
-	var _arg2 *C.GTlsCertificate // out
-	var _cret *C.GDatagramBased  // in
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GDatagramBased)(unsafe.Pointer(externglib.InternObject(baseSocket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseSocket).Native()))
 	if certificate != nil {
-		_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(externglib.InternObject(certificate).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 	}
+	*(*DatagramBasedder)(unsafe.Pointer(&args[0])) = _arg0
+	*(*TLSCertificater)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dtls_server_connection_new(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(certificate)
 
 	var _dtlsServerConnection *DTLSServerConnection // out
 	var _goerr error                                // out
 
-	_dtlsServerConnection = wrapDTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dtlsServerConnection = wrapDTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

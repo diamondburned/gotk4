@@ -8,25 +8,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
-// extern void _gotk4_gdk4_Drag_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
+// #include <glib.h>
 // extern void _gotk4_gdk4_Drag_ConnectDNDFinished(gpointer, guintptr);
 // extern void _gotk4_gdk4_Drag_ConnectDropPerformed(gpointer, guintptr);
 import "C"
 
 // glib.Type values for gdkdrag.go.
 var (
-	GTypeDragCancelReason = externglib.Type(C.gdk_drag_cancel_reason_get_type())
-	GTypeDrag             = externglib.Type(C.gdk_drag_get_type())
+	GTypeDragCancelReason = coreglib.Type(C.gdk_drag_cancel_reason_get_type())
+	GTypeDrag             = coreglib.Type(C.gdk_drag_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDragCancelReason, F: marshalDragCancelReason},
 		{T: GTypeDrag, F: marshalDrag},
 	})
@@ -45,7 +45,7 @@ const (
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
-	return DragCancelReason(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return DragCancelReason(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for DragCancelReason.
@@ -62,37 +62,6 @@ func (d DragCancelReason) String() string {
 	}
 }
 
-// DragActionIsUnique checks if action represents a single action or includes
-// multiple actions.
-//
-// When action is 0 - ie no action was given, TRUE is returned.
-//
-// The function takes the following parameters:
-//
-//    - action: GdkDragAction.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if exactly one action was given.
-//
-func DragActionIsUnique(action DragAction) bool {
-	var _arg1 C.GdkDragAction // out
-	var _cret C.gboolean      // in
-
-	_arg1 = C.GdkDragAction(action)
-
-	_cret = C.gdk_drag_action_is_unique(_arg1)
-	runtime.KeepAlive(action)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Drag: GdkDrag object represents the source of an ongoing DND operation.
 //
 // A GdkDrag is created when a drag is started, and stays alive for duration of
@@ -105,11 +74,11 @@ func DragActionIsUnique(action DragAction) bool {
 // section of the GTK documentation for more information.
 type Drag struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Drag)(nil)
+	_ coreglib.Objector = (*Drag)(nil)
 )
 
 // Dragger describes types inherited from class Drag.
@@ -117,20 +86,20 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Dragger interface {
-	externglib.Objector
+	coreglib.Objector
 	baseDrag() *Drag
 }
 
 var _ Dragger = (*Drag)(nil)
 
-func wrapDrag(obj *externglib.Object) *Drag {
+func wrapDrag(obj *coreglib.Object) *Drag {
 	return &Drag{
 		Object: obj,
 	}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {
-	return wrapDrag(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapDrag(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (drag *Drag) baseDrag() *Drag {
@@ -142,36 +111,11 @@ func BaseDrag(obj Dragger) *Drag {
 	return obj.baseDrag()
 }
 
-//export _gotk4_gdk4_Drag_ConnectCancel
-func _gotk4_gdk4_Drag_ConnectCancel(arg0 C.gpointer, arg1 C.GdkDragCancelReason, arg2 C.guintptr) {
-	var f func(reason DragCancelReason)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(reason DragCancelReason))
-	}
-
-	var _reason DragCancelReason // out
-
-	_reason = DragCancelReason(arg1)
-
-	f(_reason)
-}
-
-// ConnectCancel is emitted when the drag operation is cancelled.
-func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(drag, "cancel", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectCancel), f)
-}
-
 //export _gotk4_gdk4_Drag_ConnectDNDFinished
 func _gotk4_gdk4_Drag_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -187,15 +131,15 @@ func _gotk4_gdk4_Drag_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
 // all data.
 //
 // The drag object can now free all miscellaneous data.
-func (drag *Drag) ConnectDNDFinished(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(drag, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectDNDFinished), f)
+func (drag *Drag) ConnectDNDFinished(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(drag, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectDNDFinished), f)
 }
 
 //export _gotk4_gdk4_Drag_ConnectDropPerformed
 func _gotk4_gdk4_Drag_ConnectDropPerformed(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -209,8 +153,8 @@ func _gotk4_gdk4_Drag_ConnectDropPerformed(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectDropPerformed is emitted when the drop operation is performed on an
 // accepting client.
-func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(drag, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectDropPerformed), f)
+func (drag *Drag) ConnectDropPerformed(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(drag, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectDropPerformed), f)
 }
 
 // DropDone informs GDK that the drop ended.
@@ -229,39 +173,20 @@ func (drag *Drag) ConnectDropPerformed(f func()) externglib.SignalHandle {
 //    - success: whether the drag was ultimatively successful.
 //
 func (drag *Drag) DropDone(success bool) {
-	var _arg0 *C.GdkDrag // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 	if success {
 		_arg1 = C.TRUE
 	}
+	*(**Drag)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gdk_drag_drop_done(_arg0, _arg1)
+	girepository.MustFind("Gdk", "Drag").InvokeMethod("drop_done", args[:], nil)
+
 	runtime.KeepAlive(drag)
 	runtime.KeepAlive(success)
-}
-
-// Actions determines the bitmask of possible actions proposed by the source.
-//
-// The function returns the following values:
-//
-//    - dragAction: GdkDragAction flags.
-//
-func (drag *Drag) Actions() DragAction {
-	var _arg0 *C.GdkDrag      // out
-	var _cret C.GdkDragAction // in
-
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
-
-	_cret = C.gdk_drag_get_actions(_arg0)
-	runtime.KeepAlive(drag)
-
-	var _dragAction DragAction // out
-
-	_dragAction = DragAction(_cret)
-
-	return _dragAction
 }
 
 // Content returns the GdkContentProvider associated to the GdkDrag object.
@@ -271,17 +196,21 @@ func (drag *Drag) Actions() DragAction {
 //    - contentProvider: GdkContentProvider associated to drag.
 //
 func (drag *Drag) Content() *ContentProvider {
-	var _arg0 *C.GdkDrag            // out
-	var _cret *C.GdkContentProvider // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	*(**Drag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_get_content(_arg0)
+	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_content", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(drag)
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(externglib.Take(unsafe.Pointer(_cret)))
+	_contentProvider = wrapContentProvider(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -293,12 +222,16 @@ func (drag *Drag) Content() *ContentProvider {
 //    - device: GdkDevice associated to drag.
 //
 func (drag *Drag) Device() Devicer {
-	var _arg0 *C.GdkDrag   // out
-	var _cret *C.GdkDevice // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	*(**Drag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_get_device(_arg0)
+	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_device", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(drag)
 
 	var _device Devicer // out
@@ -309,8 +242,8 @@ func (drag *Drag) Device() Devicer {
 			panic("object of type gdk.Devicer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Devicer)
 			return ok
 		})
@@ -331,17 +264,21 @@ func (drag *Drag) Device() Devicer {
 //    - display: GdkDisplay.
 //
 func (drag *Drag) Display() *Display {
-	var _arg0 *C.GdkDrag    // out
-	var _cret *C.GdkDisplay // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	*(**Drag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_get_display(_arg0)
+	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_display", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(drag)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -359,12 +296,16 @@ func (drag *Drag) Display() *Display {
 //    - surface (optional): drag surface, or NULL.
 //
 func (drag *Drag) DragSurface() Surfacer {
-	var _arg0 *C.GdkDrag    // out
-	var _cret *C.GdkSurface // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	*(**Drag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_get_drag_surface(_arg0)
+	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_drag_surface", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(drag)
 
 	var _surface Surfacer // out
@@ -373,8 +314,8 @@ func (drag *Drag) DragSurface() Surfacer {
 		{
 			objptr := unsafe.Pointer(_cret)
 
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
 				_, ok := obj.(Surfacer)
 				return ok
 			})
@@ -396,12 +337,16 @@ func (drag *Drag) DragSurface() Surfacer {
 //    - contentFormats: GdkContentFormats.
 //
 func (drag *Drag) Formats() *ContentFormats {
-	var _arg0 *C.GdkDrag           // out
-	var _cret *C.GdkContentFormats // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	*(**Drag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_get_formats(_arg0)
+	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_formats", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(drag)
 
 	var _contentFormats *ContentFormats // out
@@ -418,28 +363,6 @@ func (drag *Drag) Formats() *ContentFormats {
 	return _contentFormats
 }
 
-// SelectedAction determines the action chosen by the drag destination.
-//
-// The function returns the following values:
-//
-//    - dragAction: GdkDragAction value.
-//
-func (drag *Drag) SelectedAction() DragAction {
-	var _arg0 *C.GdkDrag      // out
-	var _cret C.GdkDragAction // in
-
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
-
-	_cret = C.gdk_drag_get_selected_action(_arg0)
-	runtime.KeepAlive(drag)
-
-	var _dragAction DragAction // out
-
-	_dragAction = DragAction(_cret)
-
-	return _dragAction
-}
-
 // Surface returns the GdkSurface where the drag originates.
 //
 // The function returns the following values:
@@ -447,12 +370,16 @@ func (drag *Drag) SelectedAction() DragAction {
 //    - surface: GdkSurface where the drag originates.
 //
 func (drag *Drag) Surface() Surfacer {
-	var _arg0 *C.GdkDrag    // out
-	var _cret *C.GdkSurface // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	*(**Drag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gdk_drag_get_surface(_arg0)
+	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_surface", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(drag)
 
 	var _surface Surfacer // out
@@ -463,8 +390,8 @@ func (drag *Drag) Surface() Surfacer {
 			panic("object of type gdk.Surfacer is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Surfacer)
 			return ok
 		})
@@ -476,101 +403,4 @@ func (drag *Drag) Surface() Surfacer {
 	}
 
 	return _surface
-}
-
-// SetHotspot sets the position of the drag surface that will be kept under the
-// cursor hotspot.
-//
-// Initially, the hotspot is at the top left corner of the drag surface.
-//
-// The function takes the following parameters:
-//
-//    - hotX: x coordinate of the drag surface hotspot.
-//    - hotY: y coordinate of the drag surface hotspot.
-//
-func (drag *Drag) SetHotspot(hotX, hotY int) {
-	var _arg0 *C.GdkDrag // out
-	var _arg1 C.int      // out
-	var _arg2 C.int      // out
-
-	_arg0 = (*C.GdkDrag)(unsafe.Pointer(externglib.InternObject(drag).Native()))
-	_arg1 = C.int(hotX)
-	_arg2 = C.int(hotY)
-
-	C.gdk_drag_set_hotspot(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(drag)
-	runtime.KeepAlive(hotX)
-	runtime.KeepAlive(hotY)
-}
-
-// DragBegin starts a drag and creates a new drag context for it.
-//
-// This function is called by the drag source. After this call, you probably
-// want to set up the drag icon using the surface returned by
-// gdk.Drag.GetDragSurface().
-//
-// This function returns a reference to the gdk.Drag object, but GTK keeps its
-// own reference as well, as long as the DND operation is going on.
-//
-// Note: if actions include GDK_ACTION_MOVE, you need to listen for the
-// gdk.Drag::dnd-finished signal and delete the data at the source if
-// gdk.Drag.GetSelectedAction() returns GDK_ACTION_MOVE.
-//
-// The function takes the following parameters:
-//
-//    - surface: source surface for this drag.
-//    - device that controls this drag.
-//    - content: offered content.
-//    - actions supported by this drag.
-//    - dx: x offset to device's position where the drag nominally started.
-//    - dy: y offset to device's position where the drag nominally started.
-//
-// The function returns the following values:
-//
-//    - drag (optional): newly created gdk.Drag or NULL on error.
-//
-func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx, dy float64) Dragger {
-	var _arg1 *C.GdkSurface         // out
-	var _arg2 *C.GdkDevice          // out
-	var _arg3 *C.GdkContentProvider // out
-	var _arg4 C.GdkDragAction       // out
-	var _arg5 C.double              // out
-	var _arg6 C.double              // out
-	var _cret *C.GdkDrag            // in
-
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(externglib.InternObject(surface).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(externglib.InternObject(device).Native()))
-	_arg3 = (*C.GdkContentProvider)(unsafe.Pointer(externglib.InternObject(content).Native()))
-	_arg4 = C.GdkDragAction(actions)
-	_arg5 = C.double(dx)
-	_arg6 = C.double(dy)
-
-	_cret = C.gdk_drag_begin(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(surface)
-	runtime.KeepAlive(device)
-	runtime.KeepAlive(content)
-	runtime.KeepAlive(actions)
-	runtime.KeepAlive(dx)
-	runtime.KeepAlive(dy)
-
-	var _drag Dragger // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Dragger)
-				return ok
-			})
-			rv, ok := casted.(Dragger)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dragger")
-			}
-			_drag = rv
-		}
-	}
-
-	return _drag
 }

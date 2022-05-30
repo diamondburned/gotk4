@@ -5,20 +5,21 @@ package gdkwayland
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/wayland/gdkwayland.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkwaylandglcontext.go.
-var GTypeWaylandGLContext = externglib.Type(C.gdk_wayland_gl_context_get_type())
+var GTypeWaylandGLContext = coreglib.Type(C.gdk_wayland_gl_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWaylandGLContext, F: marshalWaylandGLContext},
 	})
 }
@@ -45,7 +46,7 @@ func classInitWaylandGLContexter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapWaylandGLContext(obj *externglib.Object) *WaylandGLContext {
+func wrapWaylandGLContext(obj *coreglib.Object) *WaylandGLContext {
 	return &WaylandGLContext{
 		GLContext: gdk.GLContext{
 			DrawContext: gdk.DrawContext{
@@ -56,5 +57,5 @@ func wrapWaylandGLContext(obj *externglib.Object) *WaylandGLContext {
 }
 
 func marshalWaylandGLContext(p uintptr) (interface{}, error) {
-	return wrapWaylandGLContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandGLContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

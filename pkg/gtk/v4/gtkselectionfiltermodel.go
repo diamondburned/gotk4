@@ -6,20 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkselectionfiltermodel.go.
-var GTypeSelectionFilterModel = externglib.Type(C.gtk_selection_filter_model_get_type())
+var GTypeSelectionFilterModel = coreglib.Type(C.gtk_selection_filter_model_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSelectionFilterModel, F: marshalSelectionFilterModel},
 	})
 }
@@ -32,13 +33,13 @@ type SelectionFilterModelOverrider interface {
 // the selection from a GtkSelectionModel.
 type SelectionFilterModel struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	gio.ListModel
 }
 
 var (
-	_ externglib.Objector = (*SelectionFilterModel)(nil)
+	_ coreglib.Objector = (*SelectionFilterModel)(nil)
 )
 
 func classInitSelectionFilterModeller(gclassPtr, data C.gpointer) {
@@ -49,7 +50,7 @@ func classInitSelectionFilterModeller(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
+func wrapSelectionFilterModel(obj *coreglib.Object) *SelectionFilterModel {
 	return &SelectionFilterModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -59,7 +60,7 @@ func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
 }
 
 func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
-	return wrapSelectionFilterModel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSelectionFilterModel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSelectionFilterModel creates a new GtkSelectionFilterModel that will
@@ -74,19 +75,23 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 //    - selectionFilterModel: new GtkSelectionFilterModel.
 //
 func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
-	var _arg1 *C.GtkSelectionModel       // out
-	var _cret *C.GtkSelectionFilterModel // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
+	*(*SelectionModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_selection_filter_model_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("new_SelectionFilterModel", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(model)
 
 	var _selectionFilterModel *SelectionFilterModel // out
 
-	_selectionFilterModel = wrapSelectionFilterModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_selectionFilterModel = wrapSelectionFilterModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _selectionFilterModel
 }
@@ -98,18 +103,22 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 //    - selectionModel (optional): model that gets filtered.
 //
 func (self *SelectionFilterModel) Model() *SelectionModel {
-	var _arg0 *C.GtkSelectionFilterModel // out
-	var _cret *C.GtkSelectionModel       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**SelectionFilterModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_selection_filter_model_get_model(_arg0)
+	_gret := girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("get_model", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _selectionModel *SelectionModel // out
 
 	if _cret != nil {
-		_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _selectionModel
@@ -126,15 +135,18 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 //    - model (optional) to be filtered.
 //
 func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
-	var _arg0 *C.GtkSelectionFilterModel // out
-	var _arg1 *C.GtkSelectionModel       // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(externglib.InternObject(model).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
+	*(**SelectionFilterModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
+	girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("set_model", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }

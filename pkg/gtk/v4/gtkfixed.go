@@ -7,20 +7,21 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkfixed.go.
-var GTypeFixed = externglib.Type(C.gtk_fixed_get_type())
+var GTypeFixed = coreglib.Type(C.gtk_fixed_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFixed, F: marshalFixed},
 	})
 }
@@ -81,10 +82,10 @@ func classInitFixedder(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapFixed(obj *externglib.Object) *Fixed {
+func wrapFixed(obj *coreglib.Object) *Fixed {
 	return &Fixed{
 		Widget: Widget{
-			InitiallyUnowned: externglib.InitiallyUnowned{
+			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
 			},
 			Object: obj,
@@ -102,7 +103,7 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 }
 
 func marshalFixed(p uintptr) (interface{}, error) {
-	return wrapFixed(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFixed(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewFixed creates a new GtkFixed.
@@ -112,51 +113,16 @@ func marshalFixed(p uintptr) (interface{}, error) {
 //    - fixed: new GtkFixed.
 //
 func NewFixed() *Fixed {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_fixed_new()
+	_gret := girepository.MustFind("Gtk", "Fixed").InvokeMethod("new_Fixed", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fixed *Fixed // out
 
-	_fixed = wrapFixed(externglib.Take(unsafe.Pointer(_cret)))
+	_fixed = wrapFixed(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fixed
-}
-
-// ChildPosition retrieves the translation transformation of the given child
-// GtkWidget in the GtkFixed.
-//
-// See also: gtk.Fixed.GetChildTransform().
-//
-// The function takes the following parameters:
-//
-//    - widget: child of fixed.
-//
-// The function returns the following values:
-//
-//    - x: horizontal position of the widget.
-//    - y: vertical position of the widget.
-//
-func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
-	var _arg0 *C.GtkFixed  // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.double     // in
-	var _arg3 C.double     // in
-
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-
-	C.gtk_fixed_get_child_position(_arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(fixed)
-	runtime.KeepAlive(widget)
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(_arg2)
-	_y = float64(_arg3)
-
-	return _x, _y
 }
 
 // ChildTransform retrieves the transformation for widget set using
@@ -172,14 +138,18 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 //      set on widget.
 //
 func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
-	var _arg0 *C.GtkFixed     // out
-	var _arg1 *C.GtkWidget    // out
-	var _cret *C.GskTransform // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "Fixed").InvokeMethod("get_child_transform", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
 
@@ -199,59 +169,6 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	return _transform
 }
 
-// Move sets a translation transformation to the given x and y coordinates to
-// the child widget of the GtkFixed.
-//
-// The function takes the following parameters:
-//
-//    - widget: child widget.
-//    - x: horizontal position to move the widget to.
-//    - y: vertical position to move the widget to.
-//
-func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
-	var _arg0 *C.GtkFixed  // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.double     // out
-	var _arg3 C.double     // out
-
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-
-	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(fixed)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-}
-
-// Put adds a widget to a GtkFixed at the given position.
-//
-// The function takes the following parameters:
-//
-//    - widget to add.
-//    - x: horizontal position to place the widget at.
-//    - y: vertical position to place the widget at.
-//
-func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
-	var _arg0 *C.GtkFixed  // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.double     // out
-	var _arg3 C.double     // out
-
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-
-	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(fixed)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-}
-
 // Remove removes a child from fixed.
 //
 // The function takes the following parameters:
@@ -259,13 +176,16 @@ func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 //    - widget: child widget to remove.
 //
 func (fixed *Fixed) Remove(widget Widgetter) {
-	var _arg0 *C.GtkFixed  // out
-	var _arg1 *C.GtkWidget // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_fixed_remove(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Fixed").InvokeMethod("remove", args[:], nil)
+
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
 }
@@ -282,17 +202,21 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 //      widget's transform.
 //
 func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform) {
-	var _arg0 *C.GtkFixed     // out
-	var _arg1 *C.GtkWidget    // out
-	var _arg2 *C.GskTransform // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(externglib.InternObject(fixed).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if transform != nil {
-		_arg2 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
+		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
 	}
+	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_fixed_set_child_transform(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Fixed").InvokeMethod("set_child_transform", args[:], nil)
+
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(transform)

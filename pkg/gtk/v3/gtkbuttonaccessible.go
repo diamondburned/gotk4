@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkbuttonaccessible.go.
-var GTypeButtonAccessible = externglib.Type(C.gtk_button_accessible_get_type())
+var GTypeButtonAccessible = coreglib.Type(C.gtk_button_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeButtonAccessible, F: marshalButtonAccessible},
 	})
 }
@@ -33,13 +32,13 @@ type ButtonAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Action
 	atk.Image
 }
 
 var (
-	_ externglib.Objector = (*ButtonAccessible)(nil)
+	_ coreglib.Objector = (*ButtonAccessible)(nil)
 )
 
 func classInitButtonAccessibler(gclassPtr, data C.gpointer) {
@@ -50,7 +49,7 @@ func classInitButtonAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapButtonAccessible(obj *externglib.Object) *ButtonAccessible {
+func wrapButtonAccessible(obj *coreglib.Object) *ButtonAccessible {
 	return &ButtonAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -75,5 +74,5 @@ func wrapButtonAccessible(obj *externglib.Object) *ButtonAccessible {
 }
 
 func marshalButtonAccessible(p uintptr) (interface{}, error) {
-	return wrapButtonAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

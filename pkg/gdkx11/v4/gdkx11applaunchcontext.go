@@ -5,21 +5,22 @@ package gdkx11
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/x11/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11applaunchcontext.go.
-var GTypeX11AppLaunchContext = externglib.Type(C.gdk_x11_app_launch_context_get_type())
+var GTypeX11AppLaunchContext = coreglib.Type(C.gdk_x11_app_launch_context_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11AppLaunchContext, F: marshalX11AppLaunchContext},
 	})
 }
@@ -34,7 +35,7 @@ type X11AppLaunchContext struct {
 }
 
 var (
-	_ externglib.Objector = (*X11AppLaunchContext)(nil)
+	_ coreglib.Objector = (*X11AppLaunchContext)(nil)
 )
 
 func classInitX11AppLaunchContexter(gclassPtr, data C.gpointer) {
@@ -45,7 +46,7 @@ func classInitX11AppLaunchContexter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11AppLaunchContext(obj *externglib.Object) *X11AppLaunchContext {
+func wrapX11AppLaunchContext(obj *coreglib.Object) *X11AppLaunchContext {
 	return &X11AppLaunchContext{
 		AppLaunchContext: gdk.AppLaunchContext{
 			AppLaunchContext: gio.AppLaunchContext{
@@ -56,5 +57,5 @@ func wrapX11AppLaunchContext(obj *externglib.Object) *X11AppLaunchContext {
 }
 
 func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
-	return wrapX11AppLaunchContext(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapX11AppLaunchContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

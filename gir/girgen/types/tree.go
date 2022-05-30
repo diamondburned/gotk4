@@ -512,7 +512,7 @@ func (tree *Tree) wrap(obj string, h ImplImporter, gen FileGenerator) string {
 			return "obj"
 		case tree.Resolved.IsExternGLib("InitiallyUnowned"):
 			h.ImportImpl(tree.Resolved)
-			return fmt.Sprintf("externglib.InitiallyUnowned{\nObject: %s,\n}", obj)
+			return fmt.Sprintf("coreglib.InitiallyUnowned{\nObject: %s,\n}", obj)
 		default:
 			tree.gen.Logln(logger.Debug, "unknown builtin wrap:", spew.Sdump(tree.Resolved))
 			return fmt.Sprintf("nil /* unknown type %s */", tree.Resolved.ImplType(true))

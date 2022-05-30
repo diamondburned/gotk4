@@ -8,40 +8,31 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
-// extern AtkLayer _gotk4_atk1_ComponentIface_get_layer(AtkComponent*);
-// extern AtkObject* _gotk4_atk1_ComponentIface_ref_accessible_at_point(AtkComponent*, gint, gint, AtkCoordType);
-// extern gboolean _gotk4_atk1_ComponentIface_contains(AtkComponent*, gint, gint, AtkCoordType);
+// #include <glib.h>
 // extern gboolean _gotk4_atk1_ComponentIface_grab_focus(AtkComponent*);
-// extern gboolean _gotk4_atk1_ComponentIface_scroll_to(AtkComponent*, AtkScrollType);
-// extern gboolean _gotk4_atk1_ComponentIface_scroll_to_point(AtkComponent*, AtkCoordType, gint, gint);
-// extern gboolean _gotk4_atk1_ComponentIface_set_extents(AtkComponent*, gint, gint, gint, gint, AtkCoordType);
-// extern gboolean _gotk4_atk1_ComponentIface_set_position(AtkComponent*, gint, gint, AtkCoordType);
 // extern gboolean _gotk4_atk1_ComponentIface_set_size(AtkComponent*, gint, gint);
 // extern gdouble _gotk4_atk1_ComponentIface_get_alpha(AtkComponent*);
 // extern gint _gotk4_atk1_ComponentIface_get_mdi_zorder(AtkComponent*);
 // extern void _gotk4_atk1_ComponentIface_bounds_changed(AtkComponent*, AtkRectangle*);
-// extern void _gotk4_atk1_ComponentIface_get_extents(AtkComponent*, gint*, gint*, gint*, gint*, AtkCoordType);
-// extern void _gotk4_atk1_ComponentIface_get_position(AtkComponent*, gint*, gint*, AtkCoordType);
-// extern void _gotk4_atk1_ComponentIface_get_size(AtkComponent*, gint*, gint*);
 // extern void _gotk4_atk1_ComponentIface_remove_focus_handler(AtkComponent*, guint);
 // extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
 import "C"
 
 // glib.Type values for atkcomponent.go.
 var (
-	GTypeScrollType = externglib.Type(C.atk_scroll_type_get_type())
-	GTypeComponent  = externglib.Type(C.atk_component_get_type())
-	GTypeRectangle  = externglib.Type(C.atk_rectangle_get_type())
+	GTypeScrollType = coreglib.Type(C.atk_scroll_type_get_type())
+	GTypeComponent  = coreglib.Type(C.atk_component_get_type())
+	GTypeRectangle  = coreglib.Type(C.atk_rectangle_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeScrollType, F: marshalScrollType},
 		{T: GTypeComponent, F: marshalComponent},
 		{T: GTypeRectangle, F: marshalRectangle},
@@ -78,7 +69,7 @@ const (
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
-	return ScrollType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ScrollType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ScrollType.
@@ -108,25 +99,6 @@ type ComponentOverrider interface {
 	// The function takes the following parameters:
 	//
 	BoundsChanged(bounds *Rectangle)
-	// Contains checks whether the specified point is within the extent of the
-	// component.
-	//
-	// Toolkit implementor note: ATK provides a default implementation for this
-	// virtual method. In general there are little reason to re-implement it.
-	//
-	// The function takes the following parameters:
-	//
-	//    - x coordinate.
-	//    - y coordinate.
-	//    - coordType specifies whether the coordinates are relative to the
-	//      screen or to the components top level window.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE or FALSE indicating whether the specified point is within
-	//      the extent of the component or not.
-	//
-	Contains(x, y int, coordType CoordType) bool
 	// Alpha returns the alpha value (i.e. the opacity) for this component, on a
 	// scale from 0 (fully transparent) to 1.0 (fully opaque).
 	//
@@ -135,31 +107,6 @@ type ComponentOverrider interface {
 	//    - gdouble: alpha value from 0 to 1.0, inclusive.
 	//
 	Alpha() float64
-	// Extents gets the rectangle which gives the extent of the component.
-	//
-	// If the extent can not be obtained (e.g. a non-embedded plug or missing
-	// support), all of x, y, width, height are set to -1.
-	//
-	// The function takes the following parameters:
-	//
-	//    - coordType specifies whether the coordinates are relative to the
-	//      screen or to the components top level window.
-	//
-	// The function returns the following values:
-	//
-	//    - x (optional) address of #gint to put x coordinate.
-	//    - y (optional) address of #gint to put y coordinate.
-	//    - width (optional) address of #gint to put width.
-	//    - height (optional) address of #gint to put height.
-	//
-	Extents(coordType CoordType) (x int, y int, width int, height int)
-	// Layer gets the layer of the component.
-	//
-	// The function returns the following values:
-	//
-	//    - layer which is the layer of the component.
-	//
-	Layer() Layer
 	// MDIZOrder gets the zorder of the component. The value G_MININT will be
 	// returned if the layer of the component is not ATK_LAYER_MDI or
 	// ATK_LAYER_WINDOW.
@@ -171,38 +118,6 @@ type ComponentOverrider interface {
 	//      container.
 	//
 	MDIZOrder() int
-	// Position gets the position of component in the form of a point specifying
-	// component's top-left corner.
-	//
-	// If the position can not be obtained (e.g. a non-embedded plug or missing
-	// support), x and y are set to -1.
-	//
-	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - coordType specifies whether the coordinates are relative to the
-	//      screen or to the components top level window.
-	//
-	// The function returns the following values:
-	//
-	//    - x (optional) address of #gint to put x coordinate position.
-	//    - y (optional) address of #gint to put y coordinate position.
-	//
-	Position(coordType CoordType) (x int, y int)
-	// Size gets the size of the component in terms of width and height.
-	//
-	// If the size can not be obtained (e.g. a non-embedded plug or missing
-	// support), width and height are set to -1.
-	//
-	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
-	//
-	// The function returns the following values:
-	//
-	//    - width (optional) address of #gint to put width of component.
-	//    - height (optional) address of #gint to put height of component.
-	//
-	Size() (width int, height int)
 	// GrabFocus grabs focus for this component.
 	//
 	// The function returns the following values:
@@ -210,21 +125,6 @@ type ComponentOverrider interface {
 	//    - ok: TRUE if successful, FALSE otherwise.
 	//
 	GrabFocus() bool
-	// RefAccessibleAtPoint gets a reference to the accessible child, if one
-	// exists, at the coordinate point specified by x and y.
-	//
-	// The function takes the following parameters:
-	//
-	//    - x coordinate.
-	//    - y coordinate.
-	//    - coordType specifies whether the coordinates are relative to the
-	//      screen or to the components top level window.
-	//
-	// The function returns the following values:
-	//
-	//    - object (optional): reference to the accessible child, if one exists.
-	//
-	RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
@@ -238,71 +138,6 @@ type ComponentOverrider interface {
 	//      component.
 	//
 	RemoveFocusHandler(handlerId uint)
-	// ScrollTo makes component visible on the screen by scrolling all necessary
-	// parents.
-	//
-	// Contrary to atk_component_set_position, this does not actually move
-	// component in its parent, this only makes the parents scroll so that the
-	// object shows up on the screen, given its current position within the
-	// parents.
-	//
-	// The function takes the following parameters:
-	//
-	//    - typ: specify where the object should be made visible.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: whether scrolling was successful.
-	//
-	ScrollTo(typ ScrollType) bool
-	// ScrollToPoint: move the top-left of component to a given position of the
-	// screen by scrolling all necessary parents.
-	//
-	// The function takes the following parameters:
-	//
-	//    - coords: specify whether coordinates are relative to the screen or to
-	//      the parent object.
-	//    - x: x-position where to scroll to.
-	//    - y: y-position where to scroll to.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: whether scrolling was successful.
-	//
-	ScrollToPoint(coords CoordType, x, y int) bool
-	// SetExtents sets the extents of component.
-	//
-	// The function takes the following parameters:
-	//
-	//    - x coordinate.
-	//    - y coordinate.
-	//    - width to set for component.
-	//    - height to set for component.
-	//    - coordType specifies whether the coordinates are relative to the
-	//      screen or to the components top level window.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE or FALSE whether the extents were set or not.
-	//
-	SetExtents(x, y, width, height int, coordType CoordType) bool
-	// SetPosition sets the position of component.
-	//
-	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
-	// this just moves component in its parent.
-	//
-	// The function takes the following parameters:
-	//
-	//    - x coordinate.
-	//    - y coordinate.
-	//    - coordType specifies whether the coordinates are relative to the
-	//      screen or to the component's top level window.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE or FALSE whether or not the position was set or not.
-	//
-	SetPosition(x, y int, coordType CoordType) bool
 	// SetSize: set the size of the component in terms of width and height.
 	//
 	// The function takes the following parameters:
@@ -332,58 +167,33 @@ type ComponentOverrider interface {
 // underlying type by calling Cast().
 type Component struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Component)(nil)
+	_ coreglib.Objector = (*Component)(nil)
 )
 
 // Componenter describes Component's interface methods.
 type Componenter interface {
-	externglib.Objector
+	coreglib.Objector
 
-	// Contains checks whether the specified point is within the extent of the
-	// component.
-	Contains(x, y int, coordType CoordType) bool
 	// Alpha returns the alpha value (i.e.
 	Alpha() float64
-	// Extents gets the rectangle which gives the extent of the component.
-	Extents(coordType CoordType) (x int, y int, width int, height int)
-	// Layer gets the layer of the component.
-	Layer() Layer
 	// MDIZOrder gets the zorder of the component.
 	MDIZOrder() int
-	// Position gets the position of component in the form of a point specifying
-	// component's top-left corner.
-	Position(coordType CoordType) (x int, y int)
-	// Size gets the size of the component in terms of width and height.
-	Size() (width int, height int)
 	// GrabFocus grabs focus for this component.
 	GrabFocus() bool
-	// RefAccessibleAtPoint gets a reference to the accessible child, if one
-	// exists, at the coordinate point specified by x and y.
-	RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
 	RemoveFocusHandler(handlerId uint)
-	// ScrollTo makes component visible on the screen by scrolling all necessary
-	// parents.
-	ScrollTo(typ ScrollType) bool
-	// ScrollToPoint: move the top-left of component to a given position of the
-	// screen by scrolling all necessary parents.
-	ScrollToPoint(coords CoordType, x, y int) bool
-	// SetExtents sets the extents of component.
-	SetExtents(x, y, width, height int, coordType CoordType) bool
-	// SetPosition sets the position of component.
-	SetPosition(x, y int, coordType CoordType) bool
 	// SetSize: set the size of the component in terms of width and height.
 	SetSize(width, height int) bool
 
 	// Bounds-changed: 'bounds-changed" signal is emitted when the bposition or
 	// size of the component changes.
-	ConnectBoundsChanged(func(arg1 *Rectangle)) externglib.SignalHandle
+	ConnectBoundsChanged(func(arg1 *Rectangle)) coreglib.SignalHandle
 }
 
 var _ Componenter = (*Component)(nil)
@@ -391,26 +201,16 @@ var _ Componenter = (*Component)(nil)
 func ifaceInitComponenter(gifacePtr, data C.gpointer) {
 	iface := (*C.AtkComponentIface)(unsafe.Pointer(gifacePtr))
 	iface.bounds_changed = (*[0]byte)(C._gotk4_atk1_ComponentIface_bounds_changed)
-	iface.contains = (*[0]byte)(C._gotk4_atk1_ComponentIface_contains)
 	iface.get_alpha = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_alpha)
-	iface.get_extents = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_extents)
-	iface.get_layer = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_layer)
 	iface.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
-	iface.get_position = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_position)
-	iface.get_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_size)
 	iface.grab_focus = (*[0]byte)(C._gotk4_atk1_ComponentIface_grab_focus)
-	iface.ref_accessible_at_point = (*[0]byte)(C._gotk4_atk1_ComponentIface_ref_accessible_at_point)
 	iface.remove_focus_handler = (*[0]byte)(C._gotk4_atk1_ComponentIface_remove_focus_handler)
-	iface.scroll_to = (*[0]byte)(C._gotk4_atk1_ComponentIface_scroll_to)
-	iface.scroll_to_point = (*[0]byte)(C._gotk4_atk1_ComponentIface_scroll_to_point)
-	iface.set_extents = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_extents)
-	iface.set_position = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_position)
 	iface.set_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_size)
 }
 
 //export _gotk4_atk1_ComponentIface_bounds_changed
 func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.AtkRectangle) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _bounds *Rectangle // out
@@ -420,31 +220,9 @@ func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.Atk
 	iface.BoundsChanged(_bounds)
 }
 
-//export _gotk4_atk1_ComponentIface_contains
-func _gotk4_atk1_ComponentIface_contains(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _x int               // out
-	var _y int               // out
-	var _coordType CoordType // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	_coordType = CoordType(arg3)
-
-	ok := iface.Contains(_x, _y, _coordType)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 //export _gotk4_atk1_ComponentIface_get_alpha
 func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	gdouble := iface.Alpha()
@@ -454,38 +232,9 @@ func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble)
 	return cret
 }
 
-//export _gotk4_atk1_ComponentIface_get_extents
-func _gotk4_atk1_ComponentIface_get_extents(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 C.AtkCoordType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _coordType CoordType // out
-
-	_coordType = CoordType(arg5)
-
-	x, y, width, height := iface.Extents(_coordType)
-
-	*arg1 = C.gint(x)
-	*arg2 = C.gint(y)
-	*arg3 = C.gint(width)
-	*arg4 = C.gint(height)
-}
-
-//export _gotk4_atk1_ComponentIface_get_layer
-func _gotk4_atk1_ComponentIface_get_layer(arg0 *C.AtkComponent) (cret C.AtkLayer) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	layer := iface.Layer()
-
-	cret = C.AtkLayer(layer)
-
-	return cret
-}
-
 //export _gotk4_atk1_ComponentIface_get_mdi_zorder
 func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	gint := iface.MDIZOrder()
@@ -495,35 +244,9 @@ func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gin
 	return cret
 }
 
-//export _gotk4_atk1_ComponentIface_get_position
-func _gotk4_atk1_ComponentIface_get_position(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _coordType CoordType // out
-
-	_coordType = CoordType(arg3)
-
-	x, y := iface.Position(_coordType)
-
-	*arg1 = C.gint(x)
-	*arg2 = C.gint(y)
-}
-
-//export _gotk4_atk1_ComponentIface_get_size
-func _gotk4_atk1_ComponentIface_get_size(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	width, height := iface.Size()
-
-	*arg1 = C.gint(width)
-	*arg2 = C.gint(height)
-}
-
 //export _gotk4_atk1_ComponentIface_grab_focus
 func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	ok := iface.GrabFocus()
@@ -535,32 +258,9 @@ func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolea
 	return cret
 }
 
-//export _gotk4_atk1_ComponentIface_ref_accessible_at_point
-func _gotk4_atk1_ComponentIface_ref_accessible_at_point(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret *C.AtkObject) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _x int               // out
-	var _y int               // out
-	var _coordType CoordType // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	_coordType = CoordType(arg3)
-
-	object := iface.RefAccessibleAtPoint(_x, _y, _coordType)
-
-	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(externglib.InternObject(object).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(object).Native()))
-	}
-
-	return cret
-}
-
 //export _gotk4_atk1_ComponentIface_remove_focus_handler
 func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 C.guint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _handlerId uint // out
@@ -570,97 +270,9 @@ func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 
 	iface.RemoveFocusHandler(_handlerId)
 }
 
-//export _gotk4_atk1_ComponentIface_scroll_to
-func _gotk4_atk1_ComponentIface_scroll_to(arg0 *C.AtkComponent, arg1 C.AtkScrollType) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _typ ScrollType // out
-
-	_typ = ScrollType(arg1)
-
-	ok := iface.ScrollTo(_typ)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ComponentIface_scroll_to_point
-func _gotk4_atk1_ComponentIface_scroll_to_point(arg0 *C.AtkComponent, arg1 C.AtkCoordType, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _coords CoordType // out
-	var _x int            // out
-	var _y int            // out
-
-	_coords = CoordType(arg1)
-	_x = int(arg2)
-	_y = int(arg3)
-
-	ok := iface.ScrollToPoint(_coords, _x, _y)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ComponentIface_set_extents
-func _gotk4_atk1_ComponentIface_set_extents(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.gint, arg5 C.AtkCoordType) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _x int               // out
-	var _y int               // out
-	var _width int           // out
-	var _height int          // out
-	var _coordType CoordType // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	_width = int(arg3)
-	_height = int(arg4)
-	_coordType = CoordType(arg5)
-
-	ok := iface.SetExtents(_x, _y, _width, _height, _coordType)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ComponentIface_set_position
-func _gotk4_atk1_ComponentIface_set_position(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ComponentOverrider)
-
-	var _x int               // out
-	var _y int               // out
-	var _coordType CoordType // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	_coordType = CoordType(arg3)
-
-	ok := iface.SetPosition(_x, _y, _coordType)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 //export _gotk4_atk1_ComponentIface_set_size
 func _gotk4_atk1_ComponentIface_set_size(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _width int  // out
@@ -678,21 +290,21 @@ func _gotk4_atk1_ComponentIface_set_size(arg0 *C.AtkComponent, arg1 C.gint, arg2
 	return cret
 }
 
-func wrapComponent(obj *externglib.Object) *Component {
+func wrapComponent(obj *coreglib.Object) *Component {
 	return &Component{
 		Object: obj,
 	}
 }
 
 func marshalComponent(p uintptr) (interface{}, error) {
-	return wrapComponent(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapComponent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_atk1_Component_ConnectBoundsChanged
 func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRectangle, arg2 C.guintptr) {
 	var f func(arg1 *Rectangle)
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg2))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -710,53 +322,8 @@ func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRect
 
 // ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
 // or size of the component changes.
-func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(component, "bounds-changed", false, unsafe.Pointer(C._gotk4_atk1_Component_ConnectBoundsChanged), f)
-}
-
-// Contains checks whether the specified point is within the extent of the
-// component.
-//
-// Toolkit implementor note: ATK provides a default implementation for this
-// virtual method. In general there are little reason to re-implement it.
-//
-// The function takes the following parameters:
-//
-//    - x coordinate.
-//    - y coordinate.
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the components top level window.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE or FALSE indicating whether the specified point is within the
-//      extent of the component or not.
-//
-func (component *Component) Contains(x, y int, coordType CoordType) bool {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // out
-	var _arg2 C.gint          // out
-	var _arg3 C.AtkCoordType  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-	_arg3 = C.AtkCoordType(coordType)
-
-	_cret = C.atk_component_contains(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(coordType)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(component, "bounds-changed", false, unsafe.Pointer(C._gotk4_atk1_Component_ConnectBoundsChanged), f)
 }
 
 // Alpha returns the alpha value (i.e. the opacity) for this component, on a
@@ -767,12 +334,15 @@ func (component *Component) Contains(x, y int, coordType CoordType) bool {
 //    - gdouble: alpha value from 0 to 1.0, inclusive.
 //
 func (component *Component) Alpha() float64 {
-	var _arg0 *C.AtkComponent // out
-	var _cret C.gdouble       // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret C.gdouble // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	*(**Component)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_component_get_alpha(_arg0)
+	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(component)
 
 	var _gdouble float64 // out
@@ -780,73 +350,6 @@ func (component *Component) Alpha() float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
-}
-
-// Extents gets the rectangle which gives the extent of the component.
-//
-// If the extent can not be obtained (e.g. a non-embedded plug or missing
-// support), all of x, y, width, height are set to -1.
-//
-// The function takes the following parameters:
-//
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the components top level window.
-//
-// The function returns the following values:
-//
-//    - x (optional) address of #gint to put x coordinate.
-//    - y (optional) address of #gint to put y coordinate.
-//    - width (optional) address of #gint to put width.
-//    - height (optional) address of #gint to put height.
-//
-func (component *Component) Extents(coordType CoordType) (x int, y int, width int, height int) {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
-	var _arg3 C.gint          // in
-	var _arg4 C.gint          // in
-	var _arg5 C.AtkCoordType  // out
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg5 = C.AtkCoordType(coordType)
-
-	C.atk_component_get_extents(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, _arg5)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(coordType)
-
-	var _x int      // out
-	var _y int      // out
-	var _width int  // out
-	var _height int // out
-
-	_x = int(_arg1)
-	_y = int(_arg2)
-	_width = int(_arg3)
-	_height = int(_arg4)
-
-	return _x, _y, _width, _height
-}
-
-// Layer gets the layer of the component.
-//
-// The function returns the following values:
-//
-//    - layer which is the layer of the component.
-//
-func (component *Component) Layer() Layer {
-	var _arg0 *C.AtkComponent // out
-	var _cret C.AtkLayer      // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-
-	_cret = C.atk_component_get_layer(_arg0)
-	runtime.KeepAlive(component)
-
-	var _layer Layer // out
-
-	_layer = Layer(_cret)
-
-	return _layer
 }
 
 // MDIZOrder gets the zorder of the component. The value G_MININT will be
@@ -859,12 +362,15 @@ func (component *Component) Layer() Layer {
 //      component is shown in relation to other components in the same container.
 //
 func (component *Component) MDIZOrder() int {
-	var _arg0 *C.AtkComponent // out
-	var _cret C.gint          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.gint  // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	*(**Component)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_component_get_mdi_zorder(_arg0)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(component)
 
 	var _gint int // out
@@ -874,77 +380,6 @@ func (component *Component) MDIZOrder() int {
 	return _gint
 }
 
-// Position gets the position of component in the form of a point specifying
-// component's top-left corner.
-//
-// If the position can not be obtained (e.g. a non-embedded plug or missing
-// support), x and y are set to -1.
-//
-// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
-//
-// The function takes the following parameters:
-//
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the components top level window.
-//
-// The function returns the following values:
-//
-//    - x (optional) address of #gint to put x coordinate position.
-//    - y (optional) address of #gint to put y coordinate position.
-//
-func (component *Component) Position(coordType CoordType) (x int, y int) {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
-	var _arg3 C.AtkCoordType  // out
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg3 = C.AtkCoordType(coordType)
-
-	C.atk_component_get_position(_arg0, &_arg1, &_arg2, _arg3)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(coordType)
-
-	var _x int // out
-	var _y int // out
-
-	_x = int(_arg1)
-	_y = int(_arg2)
-
-	return _x, _y
-}
-
-// Size gets the size of the component in terms of width and height.
-//
-// If the size can not be obtained (e.g. a non-embedded plug or missing
-// support), width and height are set to -1.
-//
-// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
-//
-// The function returns the following values:
-//
-//    - width (optional) address of #gint to put width of component.
-//    - height (optional) address of #gint to put height of component.
-//
-func (component *Component) Size() (width int, height int) {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // in
-	var _arg2 C.gint          // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-
-	C.atk_component_get_size(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(component)
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(_arg1)
-	_height = int(_arg2)
-
-	return _width, _height
-}
-
 // GrabFocus grabs focus for this component.
 //
 // The function returns the following values:
@@ -952,12 +387,15 @@ func (component *Component) Size() (width int, height int) {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (component *Component) GrabFocus() bool {
-	var _arg0 *C.AtkComponent // out
-	var _cret C.gboolean      // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	*(**Component)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.atk_component_grab_focus(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(component)
 
 	var _ok bool // out
@@ -967,47 +405,6 @@ func (component *Component) GrabFocus() bool {
 	}
 
 	return _ok
-}
-
-// RefAccessibleAtPoint gets a reference to the accessible child, if one exists,
-// at the coordinate point specified by x and y.
-//
-// The function takes the following parameters:
-//
-//    - x coordinate.
-//    - y coordinate.
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the components top level window.
-//
-// The function returns the following values:
-//
-//    - object (optional): reference to the accessible child, if one exists.
-//
-func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // out
-	var _arg2 C.gint          // out
-	var _arg3 C.AtkCoordType  // out
-	var _cret *C.AtkObject    // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-	_arg3 = C.AtkCoordType(coordType)
-
-	_cret = C.atk_component_ref_accessible_at_point(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(coordType)
-
-	var _object *ObjectClass // out
-
-	if _cret != nil {
-		_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	}
-
-	return _object
 }
 
 // RemoveFocusHandler: remove the handler specified by handler_id from the list
@@ -1022,183 +419,16 @@ func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) 
 //    - handlerId: handler id of the focus handler to be removed from component.
 //
 func (component *Component) RemoveFocusHandler(handlerId uint) {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.guint         // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.guint // out
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 	_arg1 = C.guint(handlerId)
+	*(**Component)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.atk_component_remove_focus_handler(_arg0, _arg1)
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(handlerId)
-}
-
-// ScrollTo makes component visible on the screen by scrolling all necessary
-// parents.
-//
-// Contrary to atk_component_set_position, this does not actually move component
-// in its parent, this only makes the parents scroll so that the object shows up
-// on the screen, given its current position within the parents.
-//
-// The function takes the following parameters:
-//
-//    - typ: specify where the object should be made visible.
-//
-// The function returns the following values:
-//
-//    - ok: whether scrolling was successful.
-//
-func (component *Component) ScrollTo(typ ScrollType) bool {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.AtkScrollType // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg1 = C.AtkScrollType(typ)
-
-	_cret = C.atk_component_scroll_to(_arg0, _arg1)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(typ)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ScrollToPoint: move the top-left of component to a given position of the
-// screen by scrolling all necessary parents.
-//
-// The function takes the following parameters:
-//
-//    - coords: specify whether coordinates are relative to the screen or to the
-//      parent object.
-//    - x: x-position where to scroll to.
-//    - y: y-position where to scroll to.
-//
-// The function returns the following values:
-//
-//    - ok: whether scrolling was successful.
-//
-func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.AtkCoordType  // out
-	var _arg2 C.gint          // out
-	var _arg3 C.gint          // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg1 = C.AtkCoordType(coords)
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
-
-	_cret = C.atk_component_scroll_to_point(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(coords)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetExtents sets the extents of component.
-//
-// The function takes the following parameters:
-//
-//    - x coordinate.
-//    - y coordinate.
-//    - width to set for component.
-//    - height to set for component.
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the components top level window.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE or FALSE whether the extents were set or not.
-//
-func (component *Component) SetExtents(x, y, width, height int, coordType CoordType) bool {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // out
-	var _arg2 C.gint          // out
-	var _arg3 C.gint          // out
-	var _arg4 C.gint          // out
-	var _arg5 C.AtkCoordType  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-	_arg3 = C.gint(width)
-	_arg4 = C.gint(height)
-	_arg5 = C.AtkCoordType(coordType)
-
-	_cret = C.atk_component_set_extents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(coordType)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetPosition sets the position of component.
-//
-// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
-// this just moves component in its parent.
-//
-// The function takes the following parameters:
-//
-//    - x coordinate.
-//    - y coordinate.
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the component's top level window.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE or FALSE whether or not the position was set or not.
-//
-func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // out
-	var _arg2 C.gint          // out
-	var _arg3 C.AtkCoordType  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-	_arg3 = C.AtkCoordType(coordType)
-
-	_cret = C.atk_component_set_position(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(component)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(coordType)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SetSize: set the size of the component in terms of width and height.
@@ -1213,16 +443,20 @@ func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 //    - ok: TRUE or FALSE whether the size was set or not.
 //
 func (component *Component) SetSize(width, height int) bool {
-	var _arg0 *C.AtkComponent // out
-	var _arg1 C.gint          // out
-	var _arg2 C.gint          // out
-	var _cret C.gboolean      // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.AtkComponent)(unsafe.Pointer(externglib.InternObject(component).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
+	*(**Component)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.atk_component_set_size(_arg0, _arg1, _arg2)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -1250,7 +484,7 @@ type rectangle struct {
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Rectangle{&rectangle{(*C.AtkRectangle)(b)}}, nil
 }
 

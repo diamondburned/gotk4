@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gcharsetconverter.go.
-var GTypeCharsetConverter = externglib.Type(C.g_charset_converter_get_type())
+var GTypeCharsetConverter = coreglib.Type(C.g_charset_converter_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCharsetConverter, F: marshalCharsetConverter},
 	})
 }
@@ -31,14 +32,14 @@ type CharsetConverterOverrider interface {
 // CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 
 	Converter
 	Initable
 }
 
 var (
-	_ externglib.Objector = (*CharsetConverter)(nil)
+	_ coreglib.Objector = (*CharsetConverter)(nil)
 )
 
 func classInitCharsetConverterer(gclassPtr, data C.gpointer) {
@@ -49,7 +50,7 @@ func classInitCharsetConverterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
+func wrapCharsetConverter(obj *coreglib.Object) *CharsetConverter {
 	return &CharsetConverter{
 		Object: obj,
 		Converter: Converter{
@@ -62,7 +63,7 @@ func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 }
 
 func marshalCharsetConverter(p uintptr) (interface{}, error) {
-	return wrapCharsetConverter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCharsetConverter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewCharsetConverter creates a new Converter.
@@ -77,24 +78,29 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 //    - charsetConverter: new Converter or NULL on error.
 //
 func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, error) {
-	var _arg1 *C.gchar             // out
-	var _arg2 *C.gchar             // out
-	var _cret *C.GCharsetConverter // in
-	var _cerr *C.GError            // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(toCharset)))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(toCharset)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fromCharset)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(fromCharset)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("new_CharsetConverter", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(toCharset)
 	runtime.KeepAlive(fromCharset)
 
 	var _charsetConverter *CharsetConverter // out
 	var _goerr error                        // out
 
-	_charsetConverter = wrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_charsetConverter = wrapCharsetConverter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -109,12 +115,16 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 //    - guint: number of fallbacks that converter has applied.
 //
 func (converter *CharsetConverter) NumFallbacks() uint {
-	var _arg0 *C.GCharsetConverter // out
-	var _cret C.guint              // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
+	*(**CharsetConverter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
+	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_num_fallbacks", args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(converter)
 
 	var _guint uint // out
@@ -131,12 +141,16 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 //    - ok: TRUE if fallbacks are used by converter.
 //
 func (converter *CharsetConverter) UseFallback() bool {
-	var _arg0 *C.GCharsetConverter // out
-	var _cret C.gboolean           // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
+	*(**CharsetConverter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_charset_converter_get_use_fallback(_arg0)
+	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_use_fallback", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(converter)
 
 	var _ok bool // out
@@ -155,15 +169,18 @@ func (converter *CharsetConverter) UseFallback() bool {
 //    - useFallback: TRUE to use fallbacks.
 //
 func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
-	var _arg0 *C.GCharsetConverter // out
-	var _arg1 C.gboolean           // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(externglib.InternObject(converter).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 	if useFallback {
 		_arg1 = C.TRUE
 	}
+	*(**CharsetConverter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_charset_converter_set_use_fallback(_arg0, _arg1)
+	girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("set_use_fallback", args[:], nil)
+
 	runtime.KeepAlive(converter)
 	runtime.KeepAlive(useFallback)
 }

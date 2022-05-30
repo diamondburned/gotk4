@@ -8,25 +8,24 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkcsssection.go.
 var (
-	GTypeCSSSectionType = externglib.Type(C.gtk_css_section_type_get_type())
-	GTypeCSSSection     = externglib.Type(C.gtk_css_section_get_type())
+	GTypeCSSSectionType = coreglib.Type(C.gtk_css_section_type_get_type())
+	GTypeCSSSection     = coreglib.Type(C.gtk_css_section_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCSSSectionType, F: marshalCSSSectionType},
 		{T: GTypeCSSSection, F: marshalCSSSection},
 	})
@@ -68,7 +67,7 @@ const (
 )
 
 func marshalCSSSectionType(p uintptr) (interface{}, error) {
-	return CSSSectionType(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return CSSSectionType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for CSSSectionType.
@@ -112,7 +111,7 @@ type cssSection struct {
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
-	b := externglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
 }
 
@@ -129,12 +128,15 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 //    - guint: line number.
 //
 func (section *CSSSection) EndLine() uint {
-	var _arg0 *C.GtkCssSection // out
-	var _cret C.guint          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_css_section_get_end_line(_arg0)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(section)
 
 	var _guint uint // out
@@ -156,12 +158,15 @@ func (section *CSSSection) EndLine() uint {
 //    - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) EndPosition() uint {
-	var _arg0 *C.GtkCssSection // out
-	var _cret C.guint          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_css_section_get_end_position(_arg0)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(section)
 
 	var _guint uint // out
@@ -181,18 +186,21 @@ func (section *CSSSection) EndPosition() uint {
 //      other data.
 //
 func (section *CSSSection) File() *gio.File {
-	var _arg0 *C.GtkCssSection // out
-	var _cret *C.GFile         // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_css_section_get_file(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(section)
 
 	var _file *gio.File // out
 
 	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -213,12 +221,15 @@ func (section *CSSSection) File() *gio.File {
 //    - cssSection (optional): parent section or NULL if none.
 //
 func (section *CSSSection) Parent() *CSSSection {
-	var _arg0 *C.GtkCssSection // out
-	var _cret *C.GtkCssSection // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_css_section_get_parent(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(section)
 
 	var _cssSection *CSSSection // out
@@ -237,28 +248,6 @@ func (section *CSSSection) Parent() *CSSSection {
 	return _cssSection
 }
 
-// SectionType gets the type of information that section describes.
-//
-// The function returns the following values:
-//
-//    - cssSectionType: type of section.
-//
-func (section *CSSSection) SectionType() CSSSectionType {
-	var _arg0 *C.GtkCssSection    // out
-	var _cret C.GtkCssSectionType // in
-
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
-
-	_cret = C.gtk_css_section_get_section_type(_arg0)
-	runtime.KeepAlive(section)
-
-	var _cssSectionType CSSSectionType // out
-
-	_cssSectionType = CSSSectionType(_cret)
-
-	return _cssSectionType
-}
-
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
 //
@@ -267,12 +256,15 @@ func (section *CSSSection) SectionType() CSSSectionType {
 //    - guint: line number.
 //
 func (section *CSSSection) StartLine() uint {
-	var _arg0 *C.GtkCssSection // out
-	var _cret C.guint          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_css_section_get_start_line(_arg0)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(section)
 
 	var _guint uint // out
@@ -290,12 +282,15 @@ func (section *CSSSection) StartLine() uint {
 //    - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) StartPosition() uint {
-	var _arg0 *C.GtkCssSection // out
-	var _cret C.guint          // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.guint // in
 
-	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_css_section_get_start_position(_arg0)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(section)
 
 	var _guint uint // out

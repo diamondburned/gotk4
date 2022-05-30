@@ -10,23 +10,21 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// #include <glib.h>
 // extern void _gotk4_gio2_SocketListenerClass_changed(GSocketListener*);
-// extern void _gotk4_gio2_SocketListenerClass_event(GSocketListener*, GSocketListenerEvent, GSocket*);
-// extern void _gotk4_gio2_SocketListener_ConnectEvent(gpointer, GSocketListenerEvent, GSocket*, guintptr);
 import "C"
 
 // glib.Type values for gsocketlistener.go.
-var GTypeSocketListener = externglib.Type(C.g_socket_listener_get_type())
+var GTypeSocketListener = coreglib.Type(C.g_socket_listener_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSocketListener, F: marshalSocketListener},
 	})
 }
@@ -34,12 +32,6 @@ func init() {
 // SocketListenerOverrider contains methods that are overridable.
 type SocketListenerOverrider interface {
 	Changed()
-	// The function takes the following parameters:
-	//
-	//    - event
-	//    - socket
-	//
-	Event(event SocketListenerEvent, socket *Socket)
 }
 
 // SocketListener is an object that keeps track of a set of server sockets and
@@ -55,11 +47,11 @@ type SocketListenerOverrider interface {
 // SocketService which are subclasses of Listener that make this even easier.
 type SocketListener struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*SocketListener)(nil)
+	_ coreglib.Objector = (*SocketListener)(nil)
 )
 
 func classInitSocketListenerer(gclassPtr, data C.gpointer) {
@@ -76,76 +68,24 @@ func classInitSocketListenerer(gclassPtr, data C.gpointer) {
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gio2_SocketListenerClass_changed)
 	}
-
-	if _, ok := goval.(interface {
-		Event(event SocketListenerEvent, socket *Socket)
-	}); ok {
-		pclass.event = (*[0]byte)(C._gotk4_gio2_SocketListenerClass_event)
-	}
 }
 
 //export _gotk4_gio2_SocketListenerClass_changed
 func _gotk4_gio2_SocketListenerClass_changed(arg0 *C.GSocketListener) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
 }
 
-//export _gotk4_gio2_SocketListenerClass_event
-func _gotk4_gio2_SocketListenerClass_event(arg0 *C.GSocketListener, arg1 C.GSocketListenerEvent, arg2 *C.GSocket) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Event(event SocketListenerEvent, socket *Socket)
-	})
-
-	var _event SocketListenerEvent // out
-	var _socket *Socket            // out
-
-	_event = SocketListenerEvent(arg1)
-	_socket = wrapSocket(externglib.Take(unsafe.Pointer(arg2)))
-
-	iface.Event(_event, _socket)
-}
-
-func wrapSocketListener(obj *externglib.Object) *SocketListener {
+func wrapSocketListener(obj *coreglib.Object) *SocketListener {
 	return &SocketListener{
 		Object: obj,
 	}
 }
 
 func marshalSocketListener(p uintptr) (interface{}, error) {
-	return wrapSocketListener(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gio2_SocketListener_ConnectEvent
-func _gotk4_gio2_SocketListener_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketListenerEvent, arg2 *C.GSocket, arg3 C.guintptr) {
-	var f func(event SocketListenerEvent, socket *Socket)
-	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(event SocketListenerEvent, socket *Socket))
-	}
-
-	var _event SocketListenerEvent // out
-	var _socket *Socket            // out
-
-	_event = SocketListenerEvent(arg1)
-	_socket = wrapSocket(externglib.Take(unsafe.Pointer(arg2)))
-
-	f(_event, _socket)
-}
-
-// ConnectEvent is emitted when listener's activity on socket changes state.
-// Note that when listener is used to listen on both IPv4 and IPv6, a separate
-// set of signals will be emitted for each, and the order they happen in is
-// undefined.
-func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, socket *Socket)) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(listener, "event", false, unsafe.Pointer(C._gotk4_gio2_SocketListener_ConnectEvent), f)
+	return wrapSocketListener(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewSocketListener creates a new Listener with no sockets to listen for. New
@@ -157,13 +97,14 @@ func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, s
 //    - socketListener: new Listener.
 //
 func NewSocketListener() *SocketListener {
-	var _cret *C.GSocketListener // in
+	var _cret *C.void // in
 
-	_cret = C.g_socket_listener_new()
+	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("new_SocketListener", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socketListener *SocketListener // out
 
-	_socketListener = wrapSocketListener(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketListener = wrapSocketListener(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketListener
 }
@@ -188,70 +129,43 @@ func NewSocketListener() *SocketListener {
 //      or NULL.
 //    - socketConnection on success, NULL on error.
 //
-func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object, *SocketConnection, error) {
-	var _arg0 *C.GSocketListener   // out
-	var _arg2 *C.GCancellable      // out
-	var _arg1 *C.GObject           // in
-	var _cret *C.GSocketConnection // in
-	var _cerr *C.GError            // in
+func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *SocketConnection, error) {
+	var args [2]girepository.Argument
+	var outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**SocketListener)(unsafe.Pointer(&args[0])) = _arg0
+	*(*context.Context)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_socket_listener_accept(_arg0, &_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept", args[:], outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
 
-	var _sourceObject *externglib.Object    // out
+	var _sourceObject *coreglib.Object      // out
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	if _arg1 != nil {
-		_sourceObject = externglib.Take(unsafe.Pointer(_arg1))
+	if _out0 != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
 	}
-	_socketConnection = wrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _sourceObject, _socketConnection, _goerr
-}
-
-// AcceptAsync: this is the asynchronous version of g_socket_listener_accept().
-//
-// When the operation is finished callback will be called. You can then call
-// g_socket_listener_accept_socket() to get the result of the operation.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//
-func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketListener    // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_socket_listener_accept_async(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(listener)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(callback)
 }
 
 // AcceptFinish finishes an async accept operation. See
@@ -266,28 +180,34 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 //    - sourceObject (optional): optional #GObject identifying this source.
 //    - socketConnection on success, NULL on error.
 //
-func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error) {
-	var _arg0 *C.GSocketListener   // out
-	var _arg1 *C.GAsyncResult      // out
-	var _arg2 *C.GObject           // in
-	var _cret *C.GSocketConnection // in
-	var _cerr *C.GError            // in
+func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Object, *SocketConnection, error) {
+	var args [2]girepository.Argument
+	var outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**SocketListener)(unsafe.Pointer(&args[1])) = _arg1
+	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_listener_accept_finish(_arg0, _arg1, &_arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_finish", args[:], outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(result)
 
-	var _sourceObject *externglib.Object    // out
+	var _sourceObject *coreglib.Object      // out
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	if _arg2 != nil {
-		_sourceObject = externglib.Take(unsafe.Pointer(_arg2))
+	if _out0 != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
 	}
-	_socketConnection = wrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -318,71 +238,43 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 //      or NULL.
 //    - socket on success, NULL on error.
 //
-func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.Object, *Socket, error) {
-	var _arg0 *C.GSocketListener // out
-	var _arg2 *C.GCancellable    // out
-	var _arg1 *C.GObject         // in
-	var _cret *C.GSocket         // in
-	var _cerr *C.GError          // in
+func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Object, *Socket, error) {
+	var args [2]girepository.Argument
+	var outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
+	*(**SocketListener)(unsafe.Pointer(&args[0])) = _arg0
+	*(*context.Context)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_socket_listener_accept_socket(_arg0, &_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket", args[:], outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
 
-	var _sourceObject *externglib.Object // out
-	var _socket *Socket                  // out
-	var _goerr error                     // out
+	var _sourceObject *coreglib.Object // out
+	var _socket *Socket                // out
+	var _goerr error                   // out
 
-	if _arg1 != nil {
-		_sourceObject = externglib.Take(unsafe.Pointer(_arg1))
+	if _out0 != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
 	}
-	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _sourceObject, _socket, _goerr
-}
-
-// AcceptSocketAsync: this is the asynchronous version of
-// g_socket_listener_accept_socket().
-//
-// When the operation is finished callback will be called. You can then call
-// g_socket_listener_accept_socket_finish() to get the result of the operation.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//
-func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketListener    // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_socket_listener_accept_socket_async(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(listener)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(callback)
 }
 
 // AcceptSocketFinish finishes an async accept operation. See
@@ -397,116 +289,39 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 //    - sourceObject (optional): optional #GObject identifying this source.
 //    - socket on success, NULL on error.
 //
-func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error) {
-	var _arg0 *C.GSocketListener // out
-	var _arg1 *C.GAsyncResult    // out
-	var _arg2 *C.GObject         // in
-	var _cret *C.GSocket         // in
-	var _cerr *C.GError          // in
+func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreglib.Object, *Socket, error) {
+	var args [2]girepository.Argument
+	var outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(externglib.InternObject(result).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(**SocketListener)(unsafe.Pointer(&args[1])) = _arg1
+	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_socket_listener_accept_socket_finish(_arg0, _arg1, &_arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket_finish", args[:], outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(result)
 
-	var _sourceObject *externglib.Object // out
-	var _socket *Socket                  // out
-	var _goerr error                     // out
+	var _sourceObject *coreglib.Object // out
+	var _socket *Socket                // out
+	var _goerr error                   // out
 
-	if _arg2 != nil {
-		_sourceObject = externglib.Take(unsafe.Pointer(_arg2))
+	if _out0 != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
 	}
-	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _sourceObject, _socket, _goerr
-}
-
-// AddAddress creates a socket of type type and protocol protocol, binds it to
-// address and adds it to the set of sockets we're accepting sockets from.
-//
-// Note that adding an IPv6 address, depending on the platform, may or may not
-// result in a listener that also accepts IPv4 connections. For more
-// deterministic behavior, see g_socket_listener_add_inet_port().
-//
-// source_object will be passed out in the various calls to accept to identify
-// this particular source, which is useful if you're listening on multiple
-// addresses and do different things depending on what address is connected to.
-//
-// If successful and effective_address is non-NULL then it will be set to the
-// address that the binding actually occurred at. This is helpful for
-// determining the port number that was used for when requesting a binding to
-// port 0 (ie: "any port"). This address, if requested, belongs to the caller
-// and must be freed.
-//
-// Call g_socket_listener_close() to stop listening on address; this will not be
-// done automatically when you drop your final reference to listener, as
-// references may be held internally.
-//
-// The function takes the following parameters:
-//
-//    - address: Address.
-//    - typ: Type.
-//    - protocol: Protocol.
-//    - sourceObject (optional): optional #GObject identifying this source.
-//
-// The function returns the following values:
-//
-//    - effectiveAddress (optional): location to store the address that was bound
-//      to, or NULL.
-//
-func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (SocketAddresser, error) {
-	var _arg0 *C.GSocketListener // out
-	var _arg1 *C.GSocketAddress  // out
-	var _arg2 C.GSocketType      // out
-	var _arg3 C.GSocketProtocol  // out
-	var _arg4 *C.GObject         // out
-	var _arg5 *C.GSocketAddress  // in
-	var _cerr *C.GError          // in
-
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
-	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(externglib.InternObject(address).Native()))
-	_arg2 = C.GSocketType(typ)
-	_arg3 = C.GSocketProtocol(protocol)
-	if sourceObject != nil {
-		_arg4 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-	}
-
-	C.g_socket_listener_add_address(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
-	runtime.KeepAlive(listener)
-	runtime.KeepAlive(address)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(protocol)
-	runtime.KeepAlive(sourceObject)
-
-	var _effectiveAddress SocketAddresser // out
-	var _goerr error                      // out
-
-	if _arg5 != nil {
-		{
-			objptr := unsafe.Pointer(_arg5)
-
-			object := externglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(SocketAddresser)
-				return ok
-			})
-			rv, ok := casted.(SocketAddresser)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddresser")
-			}
-			_effectiveAddress = rv
-		}
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _effectiveAddress, _goerr
 }
 
 // AddAnyInetPort listens for TCP connections on any available port number for
@@ -527,18 +342,22 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 //
 //    - guint16: port number, or 0 in case of failure.
 //
-func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) (uint16, error) {
-	var _arg0 *C.GSocketListener // out
-	var _arg1 *C.GObject         // out
-	var _cret C.guint16          // in
-	var _cerr *C.GError          // in
+func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (uint16, error) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _cret C.guint16 // in
+	var _cerr *C.void   // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	if sourceObject != nil {
-		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
+	*(**SocketListener)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_socket_listener_add_any_inet_port(_arg0, _arg1, &_cerr)
+	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_any_inet_port", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(sourceObject)
 
@@ -570,19 +389,23 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *externglib.Object) 
 //    - port: IP port number (non-zero).
 //    - sourceObject (optional): optional #GObject identifying this source.
 //
-func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externglib.Object) error {
-	var _arg0 *C.GSocketListener // out
-	var _arg1 C.guint16          // out
-	var _arg2 *C.GObject         // out
-	var _cerr *C.GError          // in
+func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.Object) error {
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.guint16 // out
+	var _arg2 *C.void   // out
+	var _cerr *C.void   // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	_arg1 = C.guint16(port)
 	if sourceObject != nil {
-		_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+		_arg2 = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
+	*(**SocketListener)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint16)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_socket_listener_add_inet_port(_arg0, _arg1, _arg2, &_cerr)
+	girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_inet_port", args[:], nil)
+
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(port)
 	runtime.KeepAlive(sourceObject)
@@ -613,19 +436,23 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *externgli
 //    - socket: listening #GSocket.
 //    - sourceObject (optional): optional #GObject identifying this source.
 //
-func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externglib.Object) error {
-	var _arg0 *C.GSocketListener // out
-	var _arg1 *C.GSocket         // out
-	var _arg2 *C.GObject         // out
-	var _cerr *C.GError          // in
+func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib.Object) error {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cerr *C.void // in
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
-	_arg1 = (*C.GSocket)(unsafe.Pointer(externglib.InternObject(socket).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	if sourceObject != nil {
-		_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+		_arg2 = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
+	*(**SocketListener)(unsafe.Pointer(&args[1])) = _arg1
+	*(**Socket)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.g_socket_listener_add_socket(_arg0, _arg1, _arg2, &_cerr)
+	girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_socket", args[:], nil)
+
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(sourceObject)
@@ -641,32 +468,13 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *externgl
 
 // Close closes all the sockets in the listener.
 func (listener *SocketListener) Close() {
-	var _arg0 *C.GSocketListener // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**SocketListener)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.g_socket_listener_close(_arg0)
+	girepository.MustFind("Gio", "SocketListener").InvokeMethod("close", args[:], nil)
+
 	runtime.KeepAlive(listener)
-}
-
-// SetBacklog sets the listen backlog on the sockets in the listener. This must
-// be called before adding any sockets, addresses or ports to the Listener (for
-// example, by calling g_socket_listener_add_inet_port()) to be effective.
-//
-// See g_socket_set_listen_backlog() for details.
-//
-// The function takes the following parameters:
-//
-//    - listenBacklog: integer.
-//
-func (listener *SocketListener) SetBacklog(listenBacklog int) {
-	var _arg0 *C.GSocketListener // out
-	var _arg1 C.int              // out
-
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(externglib.InternObject(listener).Native()))
-	_arg1 = C.int(listenBacklog)
-
-	C.g_socket_listener_set_backlog(_arg0, _arg1)
-	runtime.KeepAlive(listener)
-	runtime.KeepAlive(listenBacklog)
 }

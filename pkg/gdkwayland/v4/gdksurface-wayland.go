@@ -5,24 +5,25 @@ package gdkwayland
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/wayland/gdkwayland.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdksurface-wayland.go.
 var (
-	GTypeWaylandPopup    = externglib.Type(C.gdk_wayland_popup_get_type())
-	GTypeWaylandSurface  = externglib.Type(C.gdk_wayland_surface_get_type())
-	GTypeWaylandToplevel = externglib.Type(C.gdk_wayland_toplevel_get_type())
+	GTypeWaylandPopup    = coreglib.Type(C.gdk_wayland_popup_get_type())
+	GTypeWaylandSurface  = coreglib.Type(C.gdk_wayland_surface_get_type())
+	GTypeWaylandToplevel = coreglib.Type(C.gdk_wayland_toplevel_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWaylandPopup, F: marshalWaylandPopup},
 		{T: GTypeWaylandSurface, F: marshalWaylandSurface},
 		{T: GTypeWaylandToplevel, F: marshalWaylandToplevel},
@@ -34,17 +35,17 @@ type WaylandPopup struct {
 	_ [0]func() // equal guard
 	WaylandSurface
 
-	*externglib.Object
+	*coreglib.Object
 	gdk.Popup
 	gdk.Surface
 }
 
 var (
-	_ externglib.Objector = (*WaylandPopup)(nil)
-	_ gdk.Surfacer        = (*WaylandPopup)(nil)
+	_ coreglib.Objector = (*WaylandPopup)(nil)
+	_ gdk.Surfacer      = (*WaylandPopup)(nil)
 )
 
-func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
+func wrapWaylandPopup(obj *coreglib.Object) *WaylandPopup {
 	return &WaylandPopup{
 		WaylandSurface: WaylandSurface{
 			Surface: gdk.Surface{
@@ -64,7 +65,7 @@ func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 }
 
 func marshalWaylandPopup(p uintptr) (interface{}, error) {
-	return wrapWaylandPopup(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandPopup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // WaylandSurface: wayland implementation of GdkSurface.
@@ -80,7 +81,7 @@ var (
 	_ gdk.Surfacer = (*WaylandSurface)(nil)
 )
 
-func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
+func wrapWaylandSurface(obj *coreglib.Object) *WaylandSurface {
 	return &WaylandSurface{
 		Surface: gdk.Surface{
 			Object: obj,
@@ -89,7 +90,7 @@ func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
 }
 
 func marshalWaylandSurface(p uintptr) (interface{}, error) {
-	return wrapWaylandSurface(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandSurface(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // WaylandToplevel: wayland implementation of GdkToplevel.
@@ -102,17 +103,17 @@ type WaylandToplevel struct {
 	_ [0]func() // equal guard
 	WaylandSurface
 
-	*externglib.Object
+	*coreglib.Object
 	gdk.Surface
 	gdk.Toplevel
 }
 
 var (
-	_ externglib.Objector = (*WaylandToplevel)(nil)
-	_ gdk.Surfacer        = (*WaylandToplevel)(nil)
+	_ coreglib.Objector = (*WaylandToplevel)(nil)
+	_ gdk.Surfacer      = (*WaylandToplevel)(nil)
 )
 
-func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
+func wrapWaylandToplevel(obj *coreglib.Object) *WaylandToplevel {
 	return &WaylandToplevel{
 		WaylandSurface: WaylandSurface{
 			Surface: gdk.Surface{
@@ -132,5 +133,5 @@ func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 }
 
 func marshalWaylandToplevel(p uintptr) (interface{}, error) {
-	return wrapWaylandToplevel(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWaylandToplevel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

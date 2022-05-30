@@ -4,26 +4,25 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(GActionMap*, gchar*);
 // extern void _gotk4_gio2_ActionMapInterface_add_action(GActionMap*, GAction*);
 // extern void _gotk4_gio2_ActionMapInterface_remove_action(GActionMap*, gchar*);
 import "C"
 
 // glib.Type values for gactionmap.go.
-var GTypeActionMap = externglib.Type(C.g_action_map_get_type())
+var GTypeActionMap = coreglib.Type(C.g_action_map_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeActionMap, F: marshalActionMap},
 	})
 }
@@ -77,22 +76,19 @@ type ActionMapOverrider interface {
 // underlying type by calling Cast().
 type ActionMap struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*ActionMap)(nil)
+	_ coreglib.Objector = (*ActionMap)(nil)
 )
 
 // ActionMapper describes ActionMap's interface methods.
 type ActionMapper interface {
-	externglib.Objector
+	coreglib.Objector
 
 	// AddAction adds an action to the action_map.
 	AddAction(action Actioner)
-	// AddActionEntries: convenience function for creating multiple Action
-	// instances and adding them to a Map.
-	AddActionEntries(entries []ActionEntry, userData cgo.Handle)
 	// LookupAction looks up the action with the name action_name in action_map.
 	LookupAction(actionName string) *Action
 	// RemoveAction removes the named action from the action map.
@@ -110,7 +106,7 @@ func ifaceInitActionMapper(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_ActionMapInterface_add_action
 func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GAction) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
 	var _action Actioner // out
@@ -121,8 +117,8 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GActi
 			panic("object of type gio.Actioner is nil")
 		}
 
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
 			_, ok := obj.(Actioner)
 			return ok
 		})
@@ -138,7 +134,7 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GActi
 
 //export _gotk4_gio2_ActionMapInterface_lookup_action
 func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gchar) (cret *C.GAction) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
 	var _actionName string // out
@@ -148,7 +144,7 @@ func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gc
 	action := iface.LookupAction(_actionName)
 
 	if action != nil {
-		cret = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	}
 
 	return cret
@@ -156,7 +152,7 @@ func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gc
 
 //export _gotk4_gio2_ActionMapInterface_remove_action
 func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.GActionMap, arg1 *C.gchar) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
 	var _actionName string // out
@@ -166,14 +162,14 @@ func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.GActionMap, arg1 *C.gc
 	iface.RemoveAction(_actionName)
 }
 
-func wrapActionMap(obj *externglib.Object) *ActionMap {
+func wrapActionMap(obj *coreglib.Object) *ActionMap {
 	return &ActionMap{
 		Object: obj,
 	}
 }
 
 func marshalActionMap(p uintptr) (interface{}, error) {
-	return wrapActionMap(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapActionMap(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // AddAction adds an action to the action_map.
@@ -188,80 +184,16 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 //    - action: #GAction.
 //
 func (actionMap *ActionMap) AddAction(action Actioner) {
-	var _arg0 *C.GActionMap // out
-	var _arg1 *C.GAction    // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
-	_arg1 = (*C.GAction)(unsafe.Pointer(externglib.InternObject(action).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**ActionMap)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_action_map_add_action(_arg0, _arg1)
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(action)
-}
-
-// AddActionEntries: convenience function for creating multiple Action instances
-// and adding them to a Map.
-//
-// Each action is constructed as per one Entry.
-//
-//    static void
-//    activate_quit (GSimpleAction *simple,
-//                   GVariant      *parameter,
-//                   gpointer       user_data)
-//    {
-//      exit (0);
-//    }
-//
-//    static void
-//    activate_print_string (GSimpleAction *simple,
-//                           GVariant      *parameter,
-//                           gpointer       user_data)
-//    {
-//      g_print ("s\n", g_variant_get_string (parameter, NULL));
-//    }
-//
-//    static GActionGroup *
-//    create_action_group (void)
-//    {
-//      const GActionEntry entries[] = {
-//        { "quit",         activate_quit              },
-//        { "print-string", activate_print_string, "s" }
-//      };
-//      GSimpleActionGroup *group;
-//
-//      group = g_simple_action_group_new ();
-//      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
-//
-//      return G_ACTION_GROUP (group);
-//    }.
-//
-// The function takes the following parameters:
-//
-//    - entries: pointer to the first item in an array of Entry structs.
-//    - userData (optional): user data for signal connections.
-//
-func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo.Handle) {
-	var _arg0 *C.GActionMap   // out
-	var _arg1 *C.GActionEntry // out
-	var _arg2 C.gint
-	var _arg3 C.gpointer // out
-
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
-	_arg2 = (C.gint)(len(entries))
-	_arg1 = (*C.GActionEntry)(C.calloc(C.size_t(len(entries)), C.size_t(C.sizeof_GActionEntry)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		out := unsafe.Slice((*C.GActionEntry)(_arg1), len(entries))
-		for i := range entries {
-			out[i] = *(*C.GActionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
-		}
-	}
-	_arg3 = (C.gpointer)(unsafe.Pointer(userData))
-
-	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(actionMap)
-	runtime.KeepAlive(entries)
-	runtime.KeepAlive(userData)
 }
 
 // LookupAction looks up the action with the name action_name in action_map.
@@ -277,22 +209,25 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 //    - action (optional) or NULL.
 //
 func (actionMap *ActionMap) LookupAction(actionName string) *Action {
-	var _arg0 *C.GActionMap // out
-	var _arg1 *C.gchar      // out
-	var _cret *C.GAction    // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ActionMap)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)
 
 	var _action *Action // out
 
 	if _cret != nil {
-		_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
+		_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _action
@@ -307,14 +242,15 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 //    - actionName: name of the action.
 //
 func (actionMap *ActionMap) RemoveAction(actionName string) {
-	var _arg0 *C.GActionMap // out
-	var _arg1 *C.gchar      // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(externglib.InternObject(actionMap).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**ActionMap)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.g_action_map_remove_action(_arg0, _arg1)
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)
 }

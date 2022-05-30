@@ -7,13 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // DBusEscapeObjectPath: this is a language binding friendly version of
@@ -28,13 +29,17 @@ import "C"
 //    - utf8: escaped version of s. Free with g_free().
 //
 func DBusEscapeObjectPath(s string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(s)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(s)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_escape_object_path(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_escape_object_path").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(s)
 
 	var _utf8 string // out
@@ -69,16 +74,20 @@ func DBusEscapeObjectPath(s string) string {
 //    - utf8: escaped version of bytes. Free with g_free().
 //
 func DBusEscapeObjectPathBytestring(bytes []byte) string {
-	var _arg1 *C.guint8 // out
-	var _cret *C.gchar  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	{
 		var zero byte
 		bytes = append(bytes, zero)
-		_arg1 = (*C.guint8)(unsafe.Pointer(&bytes[0]))
+		_arg0 = (*C.void)(unsafe.Pointer(&bytes[0]))
 	}
+	*(*[]byte)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_escape_object_path_bytestring(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_escape_object_path_bytestring").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(bytes)
 
 	var _utf8 string // out
@@ -100,9 +109,10 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 //    - utf8: valid D-Bus GUID. Free with g_free().
 //
 func DBusGenerateGUID() string {
-	var _cret *C.gchar // in
+	var _cret *C.void // in
 
-	_cret = C.g_dbus_generate_guid()
+	_gret := girepository.MustFind("Gio", "dbus_generate_guid").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -159,15 +169,20 @@ func DBusGenerateGUID() string {
 //    - variant (never floating) of Type type holding the data from gvalue or an
 //      empty #GVariant in case of failure. Free with g_variant_unref().
 //
-func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
-	var _arg1 *C.GValue       // out
-	var _arg2 *C.GVariantType // out
-	var _cret *C.GVariant     // in
+func DBusGValueToGVariant(gvalue *coreglib.Value, typ *glib.VariantType) *glib.Variant {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg1 = (*C.GValue)(unsafe.Pointer(gvalue.Native()))
-	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
+	_arg0 = (*C.void)(unsafe.Pointer(gvalue.Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(typ)))
+	*(**coreglib.Value)(unsafe.Pointer(&args[0])) = _arg0
+	*(**glib.VariantType)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "dbus_gvalue_to_gvariant").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(gvalue)
 	runtime.KeepAlive(typ)
 
@@ -184,43 +199,6 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	return _variant
 }
 
-// DBusGVariantToGValue converts a #GVariant to a #GValue. If value is floating,
-// it is consumed.
-//
-// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
-// this function is essentially its reverse form. So, a #GVariant containing any
-// basic or string array type will be converted to a #GValue containing a basic
-// value or string array. Any other #GVariant (handle, variant, tuple, dict
-// entry) will be converted to a #GValue containing that #GVariant.
-//
-// The conversion never fails - a valid #GValue is always returned in
-// out_gvalue.
-//
-// The function takes the following parameters:
-//
-//    - value: #GVariant.
-//
-// The function returns the following values:
-//
-//    - outGvalue: return location pointing to a zero-filled (uninitialized)
-//      #GValue.
-//
-func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
-	var _arg1 *C.GVariant // out
-	var _arg2 C.GValue    // in
-
-	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-
-	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
-	runtime.KeepAlive(value)
-
-	var _outGvalue externglib.Value // out
-
-	_outGvalue = *externglib.ValueFromNative(unsafe.Pointer((&_arg2)))
-
-	return _outGvalue
-}
-
 // DBusIsGUID checks if string is a D-Bus GUID.
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
@@ -235,13 +213,17 @@ func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 //    - ok: TRUE if string is a guid, FALSE otherwise.
 //
 func DBusIsGUID(str string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_is_guid(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_is_guid").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _ok bool // out
@@ -264,13 +246,17 @@ func DBusIsGUID(str string) bool {
 //    - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsInterfaceName(str string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_is_interface_name(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_is_interface_name").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _ok bool // out
@@ -294,13 +280,17 @@ func DBusIsInterfaceName(str string) bool {
 //    - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsMemberName(str string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_is_member_name(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_is_member_name").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _ok bool // out
@@ -324,13 +314,17 @@ func DBusIsMemberName(str string) bool {
 //    - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsName(str string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_is_name(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_is_name").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _ok bool // out
@@ -353,13 +347,17 @@ func DBusIsName(str string) bool {
 //    - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsUniqueName(str string) bool {
-	var _arg1 *C.gchar   // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_is_unique_name(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_is_unique_name").Invoke(args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _ok bool // out
@@ -388,13 +386,17 @@ func DBusIsUniqueName(str string) bool {
 //      string returned from g_dbus_escape_object_path(). Free with g_free().
 //
 func DBusUnescapeObjectPath(s string) []byte {
-	var _arg1 *C.gchar  // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void   // out
 	var _cret *C.guint8 // in
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(s)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(s)))
+	defer C.free(unsafe.Pointer(_arg0))
+	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.g_dbus_unescape_object_path(_arg1)
+	_gret := girepository.MustFind("Gio", "dbus_unescape_object_path").Invoke(args[:], nil)
+	_cret = *(**C.guint8)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(s)
 
 	var _guint8s []byte // out

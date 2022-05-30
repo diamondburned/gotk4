@@ -3,24 +3,23 @@
 package gdkx11
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/x11/gdkx.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdkx11monitor.go.
-var GTypeX11Monitor = externglib.Type(C.gdk_x11_monitor_get_type())
+var GTypeX11Monitor = coreglib.Type(C.gdk_x11_monitor_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeX11Monitor, F: marshalX11Monitor},
 	})
 }
@@ -35,7 +34,7 @@ type X11Monitor struct {
 }
 
 var (
-	_ externglib.Objector = (*X11Monitor)(nil)
+	_ coreglib.Objector = (*X11Monitor)(nil)
 )
 
 func classInitX11Monitorrer(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitX11Monitorrer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
+func wrapX11Monitor(obj *coreglib.Object) *X11Monitor {
 	return &X11Monitor{
 		Monitor: gdk.Monitor{
 			Object: obj,
@@ -55,29 +54,5 @@ func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 }
 
 func marshalX11Monitor(p uintptr) (interface{}, error) {
-	return wrapX11Monitor(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Workarea retrieves the size and position of the “work area” on a monitor
-// within the display coordinate space. The returned geometry is in ”application
-// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-//
-// The function returns the following values:
-//
-//    - workarea to be filled with the monitor workarea.
-//
-func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
-	var _arg0 *C.GdkMonitor  // out
-	var _arg1 C.GdkRectangle // in
-
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(externglib.InternObject(monitor).Native()))
-
-	C.gdk_x11_monitor_get_workarea(_arg0, &_arg1)
-	runtime.KeepAlive(monitor)
-
-	var _workarea *gdk.Rectangle // out
-
-	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _workarea
+	return wrapX11Monitor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

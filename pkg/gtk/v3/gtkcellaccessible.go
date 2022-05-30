@@ -7,22 +7,21 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 // extern void _gotk4_gtk3_CellAccessibleClass_update_cache(GtkCellAccessible*, gboolean);
 import "C"
 
 // glib.Type values for gtkcellaccessible.go.
-var GTypeCellAccessible = externglib.Type(C.gtk_cell_accessible_get_type())
+var GTypeCellAccessible = coreglib.Type(C.gtk_cell_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCellAccessible, F: marshalCellAccessible},
 	})
 }
@@ -38,7 +37,7 @@ type CellAccessible struct {
 	_ [0]func() // equal guard
 	Accessible
 
-	*externglib.Object
+	*coreglib.Object
 	atk.Action
 	atk.Component
 	atk.ObjectClass
@@ -46,7 +45,7 @@ type CellAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*CellAccessible)(nil)
+	_ coreglib.Objector = (*CellAccessible)(nil)
 )
 
 func classInitCellAccessibler(gclassPtr, data C.gpointer) {
@@ -67,7 +66,7 @@ func classInitCellAccessibler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CellAccessibleClass_update_cache
 func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.GtkCellAccessible, arg1 C.gboolean) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UpdateCache(emitSignal bool) })
 
 	var _emitSignal bool // out
@@ -79,7 +78,7 @@ func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.GtkCellAccessible, arg
 	iface.UpdateCache(_emitSignal)
 }
 
-func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
+func wrapCellAccessible(obj *coreglib.Object) *CellAccessible {
 	return &CellAccessible{
 		Accessible: Accessible{
 			ObjectClass: atk.ObjectClass{
@@ -105,5 +104,5 @@ func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 }
 
 func marshalCellAccessible(p uintptr) (interface{}, error) {
-	return wrapCellAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

@@ -6,11 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
+// #include <glib.h>
 import "C"
 
 // NewDBusAuthObserver creates a new BusAuthObserver object.
@@ -20,13 +22,14 @@ import "C"
 //    - dBusAuthObserver Free with g_object_unref().
 //
 func NewDBusAuthObserver() *DBusAuthObserver {
-	var _cret *C.GDBusAuthObserver // in
+	var _cret *C.void // in
 
-	_cret = C.g_dbus_auth_observer_new()
+	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("new_DBusAuthObserver", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _dBusAuthObserver *DBusAuthObserver // out
 
-	_dBusAuthObserver = wrapDBusAuthObserver(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusAuthObserver = wrapDBusAuthObserver(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusAuthObserver
 }
@@ -43,15 +46,19 @@ func NewDBusAuthObserver() *DBusAuthObserver {
 //      if not.
 //
 func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
-	var _arg0 *C.GDBusAuthObserver // out
-	var _arg1 *C.gchar             // out
-	var _cret C.gboolean           // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mechanism)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mechanism)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**DBusAuthObserver)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_dbus_auth_observer_allow_mechanism(_arg0, _arg1)
+	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("allow_mechanism", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(observer)
 	runtime.KeepAlive(mechanism)
 
@@ -77,18 +84,23 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 //    - ok: TRUE if the peer is authorized, FALSE if not.
 //
 func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, credentials *Credentials) bool {
-	var _arg0 *C.GDBusAuthObserver // out
-	var _arg1 *C.GIOStream         // out
-	var _arg2 *C.GCredentials      // out
-	var _cret C.gboolean           // in
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GDBusAuthObserver)(unsafe.Pointer(externglib.InternObject(observer).Native()))
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(stream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	if credentials != nil {
-		_arg2 = (*C.GCredentials)(unsafe.Pointer(externglib.InternObject(credentials).Native()))
+		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 	}
+	*(**DBusAuthObserver)(unsafe.Pointer(&args[1])) = _arg1
+	*(*IOStreamer)(unsafe.Pointer(&args[2])) = _arg2
 
-	_cret = C.g_dbus_auth_observer_authorize_authenticated_peer(_arg0, _arg1, _arg2)
+	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("authorize_authenticated_peer", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(observer)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(credentials)

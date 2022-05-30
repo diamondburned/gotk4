@@ -5,19 +5,20 @@ package gtk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkfilechooserdialog.go.
-var GTypeFileChooserDialog = externglib.Type(C.gtk_file_chooser_dialog_get_type())
+var GTypeFileChooserDialog = coreglib.Type(C.gtk_file_chooser_dialog_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeFileChooserDialog, F: marshalFileChooserDialog},
 	})
 }
@@ -192,21 +193,21 @@ type FileChooserDialog struct {
 	_ [0]func() // equal guard
 	Dialog
 
-	*externglib.Object
+	*coreglib.Object
 	FileChooser
 }
 
 var (
-	_ externglib.Objector = (*FileChooserDialog)(nil)
-	_ Widgetter           = (*FileChooserDialog)(nil)
+	_ coreglib.Objector = (*FileChooserDialog)(nil)
+	_ Widgetter         = (*FileChooserDialog)(nil)
 )
 
-func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
+func wrapFileChooserDialog(obj *coreglib.Object) *FileChooserDialog {
 	return &FileChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -224,7 +225,7 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 				Root: Root{
 					NativeSurface: NativeSurface{
 						Widget: Widget{
-							InitiallyUnowned: externglib.InitiallyUnowned{
+							InitiallyUnowned: coreglib.InitiallyUnowned{
 								Object: obj,
 							},
 							Object: obj,
@@ -253,5 +254,5 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 }
 
 func marshalFileChooserDialog(p uintptr) (interface{}, error) {
-	return wrapFileChooserDialog(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapFileChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

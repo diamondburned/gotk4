@@ -7,19 +7,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gio/gio.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtlsserverconnection.go.
-var GTypeTLSServerConnection = externglib.Type(C.g_tls_server_connection_get_type())
+var GTypeTLSServerConnection = coreglib.Type(C.g_tls_server_connection_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTLSServerConnection, F: marshalTLSServerConnection},
 	})
 }
@@ -44,7 +45,7 @@ var (
 
 // TLSServerConnectioner describes TLSServerConnection's interface methods.
 type TLSServerConnectioner interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseTLSServerConnection() *TLSServerConnection
 }
@@ -54,7 +55,7 @@ var _ TLSServerConnectioner = (*TLSServerConnection)(nil)
 func ifaceInitTLSServerConnectioner(gifacePtr, data C.gpointer) {
 }
 
-func wrapTLSServerConnection(obj *externglib.Object) *TLSServerConnection {
+func wrapTLSServerConnection(obj *coreglib.Object) *TLSServerConnection {
 	return &TLSServerConnection{
 		TLSConnection: TLSConnection{
 			IOStream: IOStream{
@@ -65,7 +66,7 @@ func wrapTLSServerConnection(obj *externglib.Object) *TLSServerConnection {
 }
 
 func marshalTLSServerConnection(p uintptr) (interface{}, error) {
-	return wrapTLSServerConnection(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTLSServerConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *TLSServerConnection) baseTLSServerConnection() *TLSServerConnection {
@@ -94,24 +95,29 @@ func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 //    - tlsServerConnection: new ServerConnection, or NULL on error.
 //
 func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
-	var _arg1 *C.GIOStream       // out
-	var _arg2 *C.GTlsCertificate // out
-	var _cret *C.GIOStream       // in
-	var _cerr *C.GError          // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
+	var _cerr *C.void // in
 
-	_arg1 = (*C.GIOStream)(unsafe.Pointer(externglib.InternObject(baseIoStream).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
 	if certificate != nil {
-		_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(externglib.InternObject(certificate).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 	}
+	*(*IOStreamer)(unsafe.Pointer(&args[0])) = _arg0
+	*(*TLSCertificater)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.g_tls_server_connection_new(_arg1, _arg2, &_cerr)
+	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(certificate)
 
 	var _tlsServerConnection *TLSServerConnection // out
 	var _goerr error                              // out
 
-	_tlsServerConnection = wrapTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsServerConnection = wrapTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

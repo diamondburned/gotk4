@@ -5,19 +5,20 @@ package gdk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gdk/gdk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gdksnapshot.go.
-var GTypeSnapshot = externglib.Type(C.gdk_snapshot_get_type())
+var GTypeSnapshot = coreglib.Type(C.gdk_snapshot_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeSnapshot, F: marshalSnapshot},
 	})
 }
@@ -31,11 +32,11 @@ type SnapshotOverrider interface {
 // The subclass of GdkSnapshot used by GTK is gtk.Snapshot.
 type Snapshot struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Snapshot)(nil)
+	_ coreglib.Objector = (*Snapshot)(nil)
 )
 
 // Snapshotter describes types inherited from class Snapshot.
@@ -43,7 +44,7 @@ var (
 // To get the original type, the caller must assert this to an interface or
 // another type.
 type Snapshotter interface {
-	externglib.Objector
+	coreglib.Objector
 	baseSnapshot() *Snapshot
 }
 
@@ -57,14 +58,14 @@ func classInitSnapshotter(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapSnapshot(obj *externglib.Object) *Snapshot {
+func wrapSnapshot(obj *coreglib.Object) *Snapshot {
 	return &Snapshot{
 		Object: obj,
 	}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
-	return wrapSnapshot(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapSnapshot(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *Snapshot) baseSnapshot() *Snapshot {

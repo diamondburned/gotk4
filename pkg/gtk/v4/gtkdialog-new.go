@@ -6,11 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 // GtkWidget* _gotk4_gtk4_dialog_new2(const gchar* title, GtkWindow* parent, GtkDialogFlags flags) {
 // 	return gtk_dialog_new_with_buttons(title, parent, flags, NULL, NULL);
 // }
@@ -27,10 +29,10 @@ func NewDialogWithFlags(title string, parent *Window, flags DialogFlags) *Dialog
 
 	w := C._gotk4_gtk4_dialog_new2(
 		(*C.gchar)(unsafe.Pointer(ctitle)),
-		(*C.GtkWindow)(unsafe.Pointer(externglib.InternObject(parent).Native())),
+		(*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native())),
 		(C.GtkDialogFlags)(flags),
 	)
 	runtime.KeepAlive(parent)
 
-	return wrapDialog(externglib.Take(unsafe.Pointer(w)))
+	return wrapDialog(coreglib.Take(unsafe.Pointer(w)))
 }

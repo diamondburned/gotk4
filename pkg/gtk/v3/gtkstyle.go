@@ -7,46 +7,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
-// extern GdkPixbuf* _gotk4_gtk3_StyleClass_render_icon(GtkStyle*, GtkIconSource*, GtkTextDirection, GtkStateType, GtkIconSize, GtkWidget*, gchar*);
+// #include <glib.h>
 // extern void _gotk4_gtk3_StyleClass_copy(GtkStyle*, GtkStyle*);
-// extern void _gotk4_gtk3_StyleClass_draw_arrow(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, GtkArrowType, gboolean, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_box(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_box_gap(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint, GtkPositionType, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_check(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_diamond(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_expander(GtkStyle*, cairo_t*, GtkStateType, GtkWidget*, gchar*, gint, gint, GtkExpanderStyle);
-// extern void _gotk4_gtk3_StyleClass_draw_extension(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint, GtkPositionType);
-// extern void _gotk4_gtk3_StyleClass_draw_flat_box(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_focus(GtkStyle*, cairo_t*, GtkStateType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_handle(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint, GtkOrientation);
-// extern void _gotk4_gtk3_StyleClass_draw_hline(GtkStyle*, cairo_t*, GtkStateType, GtkWidget*, gchar*, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_layout(GtkStyle*, cairo_t*, GtkStateType, gboolean, GtkWidget*, gchar*, gint, gint, PangoLayout*);
-// extern void _gotk4_gtk3_StyleClass_draw_option(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_resize_grip(GtkStyle*, cairo_t*, GtkStateType, GtkWidget*, gchar*, GdkWindowEdge, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_shadow(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_shadow_gap(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint, GtkPositionType, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_slider(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint, GtkOrientation);
-// extern void _gotk4_gtk3_StyleClass_draw_spinner(GtkStyle*, cairo_t*, GtkStateType, GtkWidget*, gchar*, guint, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_tab(GtkStyle*, cairo_t*, GtkStateType, GtkShadowType, GtkWidget*, gchar*, gint, gint, gint, gint);
-// extern void _gotk4_gtk3_StyleClass_draw_vline(GtkStyle*, cairo_t*, GtkStateType, GtkWidget*, gchar*, gint, gint, gint);
 // extern void _gotk4_gtk3_StyleClass_init_from_rc(GtkStyle*, GtkRcStyle*);
 // extern void _gotk4_gtk3_StyleClass_realize(GtkStyle*);
-// extern void _gotk4_gtk3_StyleClass_set_background(GtkStyle*, GdkWindow*, GtkStateType);
 // extern void _gotk4_gtk3_StyleClass_unrealize(GtkStyle*);
 // extern void _gotk4_gtk3_Style_ConnectRealize(gpointer, guintptr);
 // extern void _gotk4_gtk3_Style_ConnectUnrealize(gpointer, guintptr);
@@ -54,12 +28,12 @@ import "C"
 
 // glib.Type values for gtkstyle.go.
 var (
-	GTypeExpanderStyle = externglib.Type(C.gtk_expander_style_get_type())
-	GTypeStyle         = externglib.Type(C.gtk_style_get_type())
+	GTypeExpanderStyle = coreglib.Type(C.gtk_expander_style_get_type())
+	GTypeStyle         = coreglib.Type(C.gtk_style_get_type())
 )
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeExpanderStyle, F: marshalExpanderStyle},
 		{T: GTypeStyle, F: marshalStyle},
 	})
@@ -81,7 +55,7 @@ const (
 )
 
 func marshalExpanderStyle(p uintptr) (interface{}, error) {
-	return ExpanderStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+	return ExpanderStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
 }
 
 // String returns the name in string for ExpanderStyle.
@@ -100,1204 +74,6 @@ func (e ExpanderStyle) String() string {
 	}
 }
 
-// PaintArrow draws an arrow in the given rectangle on cr using the given
-// parameters. arrow_type determines the direction of the arrow.
-//
-// Deprecated: Use gtk_render_arrow() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - arrowType: type of arrow to draw.
-//    - fill: TRUE if the arrow tip should be filled.
-//    - x origin of the rectangle to draw the arrow in.
-//    - y origin of the rectangle to draw the arrow in.
-//    - width of the rectangle to draw the arrow in.
-//    - height of the rectangle to draw the arrow in.
-//
-func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.GtkArrowType  // out
-	var _arg8 C.gboolean      // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-	var _arg11 C.gint         // out
-	var _arg12 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.GtkArrowType(arrowType)
-	if fill {
-		_arg8 = C.TRUE
-	}
-	_arg9 = C.gint(x)
-	_arg10 = C.gint(y)
-	_arg11 = C.gint(width)
-	_arg12 = C.gint(height)
-
-	C.gtk_paint_arrow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(arrowType)
-	runtime.KeepAlive(fill)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintBox draws a box on cr with the given parameters.
-//
-// Deprecated: Use gtk_render_frame() and gtk_render_background() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the box.
-//    - y origin of the box.
-//    - width of the box.
-//    - height of the box.
-//
-func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_box(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintBoxGap draws a box in cr using the given style and state and shadow
-// type, leaving a gap in one side.
-//
-// Deprecated: Use gtk_render_frame_gap() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle.
-//    - y origin of the rectangle.
-//    - width of the rectangle.
-//    - height: width of the rectangle.
-//    - gapSide: side in which to leave the gap.
-//    - gapX: starting position of the gap.
-//    - gapWidth: width of the gap.
-//
-func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int) {
-	var _arg1 *C.GtkStyle        // out
-	var _arg2 *C.cairo_t         // out
-	var _arg3 C.GtkStateType     // out
-	var _arg4 C.GtkShadowType    // out
-	var _arg5 *C.GtkWidget       // out
-	var _arg6 *C.gchar           // out
-	var _arg7 C.gint             // out
-	var _arg8 C.gint             // out
-	var _arg9 C.gint             // out
-	var _arg10 C.gint            // out
-	var _arg11 C.GtkPositionType // out
-	var _arg12 C.gint            // out
-	var _arg13 C.gint            // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-	_arg11 = C.GtkPositionType(gapSide)
-	_arg12 = C.gint(gapX)
-	_arg13 = C.gint(gapWidth)
-
-	C.gtk_paint_box_gap(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(gapSide)
-	runtime.KeepAlive(gapX)
-	runtime.KeepAlive(gapWidth)
-}
-
-// PaintCheck draws a check button indicator in the given rectangle on cr with
-// the given parameters.
-//
-// Deprecated: Use gtk_render_check() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle to draw the check in.
-//    - y origin of the rectangle to draw the check in.
-//    - width of the rectangle to draw the check in.
-//    - height of the rectangle to draw the check in.
-//
-func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_check(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintDiamond draws a diamond in the given rectangle on window using the given
-// parameters.
-//
-// Deprecated: Use cairo instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle to draw the diamond in.
-//    - y origin of the rectangle to draw the diamond in.
-//    - width of the rectangle to draw the diamond in.
-//    - height of the rectangle to draw the diamond in.
-//
-func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_diamond(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintExpander draws an expander as used in TreeView. x and y specify the
-// center the expander. The size of the expander is determined by the
-// “expander-size” style property of widget. (If widget is not specified or
-// doesn’t have an “expander-size” property, an unspecified default size will be
-// used, since the caller doesn't have sufficient information to position the
-// expander, this is likely not useful.) The expander is expander_size pixels
-// tall in the collapsed position and expander_size pixels wide in the expanded
-// position.
-//
-// Deprecated: Use gtk_render_expander() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x position to draw the expander at.
-//    - y position to draw the expander at.
-//    - expanderStyle: style to draw the expander in; determines whether the
-//      expander is collapsed, expanded, or in an intermediate state.
-//
-func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle) {
-	var _arg1 *C.GtkStyle        // out
-	var _arg2 *C.cairo_t         // out
-	var _arg3 C.GtkStateType     // out
-	var _arg4 *C.GtkWidget       // out
-	var _arg5 *C.gchar           // out
-	var _arg6 C.gint             // out
-	var _arg7 C.gint             // out
-	var _arg8 C.GtkExpanderStyle // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	if widget != nil {
-		_arg4 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_arg6 = C.gint(x)
-	_arg7 = C.gint(y)
-	_arg8 = C.GtkExpanderStyle(expanderStyle)
-
-	C.gtk_paint_expander(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(expanderStyle)
-}
-
-// PaintExtension draws an extension, i.e. a notebook tab.
-//
-// Deprecated: Use gtk_render_extension() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the extension.
-//    - y origin of the extension.
-//    - width of the extension.
-//    - height: width of the extension.
-//    - gapSide: side on to which the extension is attached.
-//
-func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType) {
-	var _arg1 *C.GtkStyle        // out
-	var _arg2 *C.cairo_t         // out
-	var _arg3 C.GtkStateType     // out
-	var _arg4 C.GtkShadowType    // out
-	var _arg5 *C.GtkWidget       // out
-	var _arg6 *C.gchar           // out
-	var _arg7 C.gint             // out
-	var _arg8 C.gint             // out
-	var _arg9 C.gint             // out
-	var _arg10 C.gint            // out
-	var _arg11 C.GtkPositionType // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-	_arg11 = C.GtkPositionType(gapSide)
-
-	C.gtk_paint_extension(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(gapSide)
-}
-
-// PaintFlatBox draws a flat box on cr with the given parameters.
-//
-// Deprecated: Use gtk_render_frame() and gtk_render_background() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the box.
-//    - y origin of the box.
-//    - width of the box.
-//    - height of the box.
-//
-func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_flat_box(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintFocus draws a focus indicator around the given rectangle on cr using the
-// given style.
-//
-// Deprecated: Use gtk_render_focus() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle around which to draw a focus indicator.
-//    - y origin of the rectangle around which to draw a focus indicator.
-//    - width of the rectangle around which to draw a focus indicator.
-//    - height of the rectangle around which to draw a focus indicator.
-//
-func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle    // out
-	var _arg2 *C.cairo_t     // out
-	var _arg3 C.GtkStateType // out
-	var _arg4 *C.GtkWidget   // out
-	var _arg5 *C.gchar       // out
-	var _arg6 C.gint         // out
-	var _arg7 C.gint         // out
-	var _arg8 C.gint         // out
-	var _arg9 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	if widget != nil {
-		_arg4 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_arg6 = C.gint(x)
-	_arg7 = C.gint(y)
-	_arg8 = C.gint(width)
-	_arg9 = C.gint(height)
-
-	C.gtk_paint_focus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintHandle draws a handle as used in HandleBox and Paned.
-//
-// Deprecated: Use gtk_render_handle() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the handle.
-//    - y origin of the handle.
-//    - width: with of the handle.
-//    - height of the handle.
-//    - orientation of the handle.
-//
-func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation) {
-	var _arg1 *C.GtkStyle       // out
-	var _arg2 *C.cairo_t        // out
-	var _arg3 C.GtkStateType    // out
-	var _arg4 C.GtkShadowType   // out
-	var _arg5 *C.GtkWidget      // out
-	var _arg6 *C.gchar          // out
-	var _arg7 C.gint            // out
-	var _arg8 C.gint            // out
-	var _arg9 C.gint            // out
-	var _arg10 C.gint           // out
-	var _arg11 C.GtkOrientation // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-	_arg11 = C.GtkOrientation(orientation)
-
-	C.gtk_paint_handle(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(orientation)
-}
-
-// PaintHline draws a horizontal line from (x1, y) to (x2, y) in cr using the
-// given style and state.
-//
-// Deprecated: Use gtk_render_line() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #caio_t.
-//    - stateType: state.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x1: starting x coordinate.
-//    - x2: ending x coordinate.
-//    - y coordinate.
-//
-func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int) {
-	var _arg1 *C.GtkStyle    // out
-	var _arg2 *C.cairo_t     // out
-	var _arg3 C.GtkStateType // out
-	var _arg4 *C.GtkWidget   // out
-	var _arg5 *C.gchar       // out
-	var _arg6 C.gint         // out
-	var _arg7 C.gint         // out
-	var _arg8 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	if widget != nil {
-		_arg4 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_arg6 = C.gint(x1)
-	_arg7 = C.gint(x2)
-	_arg8 = C.gint(y)
-
-	C.gtk_paint_hline(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x1)
-	runtime.KeepAlive(x2)
-	runtime.KeepAlive(y)
-}
-
-// PaintLayout draws a layout on cr using the given parameters.
-//
-// Deprecated: Use gtk_render_layout() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - useText: whether to use the text or foreground graphics context of style.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin.
-//    - y origin.
-//    - layout to draw.
-//
-func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout) {
-	var _arg1 *C.GtkStyle    // out
-	var _arg2 *C.cairo_t     // out
-	var _arg3 C.GtkStateType // out
-	var _arg4 C.gboolean     // out
-	var _arg5 *C.GtkWidget   // out
-	var _arg6 *C.gchar       // out
-	var _arg7 C.gint         // out
-	var _arg8 C.gint         // out
-	var _arg9 *C.PangoLayout // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	if useText {
-		_arg4 = C.TRUE
-	}
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = (*C.PangoLayout)(unsafe.Pointer(externglib.InternObject(layout).Native()))
-
-	C.gtk_paint_layout(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(useText)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(layout)
-}
-
-// PaintOption draws a radio button indicator in the given rectangle on cr with
-// the given parameters.
-//
-// Deprecated: Use gtk_render_option() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle to draw the option in.
-//    - y origin of the rectangle to draw the option in.
-//    - width of the rectangle to draw the option in.
-//    - height of the rectangle to draw the option in.
-//
-func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_option(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintResizeGrip draws a resize grip in the given rectangle on cr using the
-// given parameters.
-//
-// Deprecated: Use gtk_render_handle() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - edge in which to draw the resize grip.
-//    - x origin of the rectangle in which to draw the resize grip.
-//    - y origin of the rectangle in which to draw the resize grip.
-//    - width of the rectangle in which to draw the resize grip.
-//    - height of the rectangle in which to draw the resize grip.
-//
-func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 *C.GtkWidget    // out
-	var _arg5 *C.gchar        // out
-	var _arg6 C.GdkWindowEdge // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	if widget != nil {
-		_arg4 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_arg6 = C.GdkWindowEdge(edge)
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_resize_grip(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(edge)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintShadow draws a shadow around the given rectangle in cr using the given
-// style and state and shadow type.
-//
-// Deprecated: Use gtk_render_frame() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle.
-//    - y origin of the rectangle.
-//    - width of the rectangle.
-//    - height: width of the rectangle.
-//
-func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_shadow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintShadowGap draws a shadow around the given rectangle in cr using the
-// given style and state and shadow type, leaving a gap in one side.
-//
-// Deprecated: Use gtk_render_frame_gap() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle.
-//    - y origin of the rectangle.
-//    - width of the rectangle.
-//    - height: width of the rectangle.
-//    - gapSide: side in which to leave the gap.
-//    - gapX: starting position of the gap.
-//    - gapWidth: width of the gap.
-//
-func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int) {
-	var _arg1 *C.GtkStyle        // out
-	var _arg2 *C.cairo_t         // out
-	var _arg3 C.GtkStateType     // out
-	var _arg4 C.GtkShadowType    // out
-	var _arg5 *C.GtkWidget       // out
-	var _arg6 *C.gchar           // out
-	var _arg7 C.gint             // out
-	var _arg8 C.gint             // out
-	var _arg9 C.gint             // out
-	var _arg10 C.gint            // out
-	var _arg11 C.GtkPositionType // out
-	var _arg12 C.gint            // out
-	var _arg13 C.gint            // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-	_arg11 = C.GtkPositionType(gapSide)
-	_arg12 = C.gint(gapX)
-	_arg13 = C.gint(gapWidth)
-
-	C.gtk_paint_shadow_gap(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(gapSide)
-	runtime.KeepAlive(gapX)
-	runtime.KeepAlive(gapWidth)
-}
-
-// PaintSlider draws a slider in the given rectangle on cr using the given style
-// and orientation.
-//
-// Deprecated: Use gtk_render_slider() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: shadow.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle in which to draw a slider.
-//    - y origin of the rectangle in which to draw a slider.
-//    - width of the rectangle in which to draw a slider.
-//    - height of the rectangle in which to draw a slider.
-//    - orientation to be used.
-//
-func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation) {
-	var _arg1 *C.GtkStyle       // out
-	var _arg2 *C.cairo_t        // out
-	var _arg3 C.GtkStateType    // out
-	var _arg4 C.GtkShadowType   // out
-	var _arg5 *C.GtkWidget      // out
-	var _arg6 *C.gchar          // out
-	var _arg7 C.gint            // out
-	var _arg8 C.gint            // out
-	var _arg9 C.gint            // out
-	var _arg10 C.gint           // out
-	var _arg11 C.GtkOrientation // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-	_arg11 = C.GtkOrientation(orientation)
-
-	C.gtk_paint_slider(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(orientation)
-}
-
-// PaintSpinner draws a spinner on window using the given parameters.
-//
-// Deprecated: Use gtk_render_icon() and the StyleContext you are drawing
-// instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - widget (optional) (may be NULL).
-//    - detail (optional): style detail (may be NULL).
-//    - step: nth step.
-//    - x origin of the rectangle in which to draw the spinner.
-//    - y origin of the rectangle in which to draw the spinner.
-//    - width of the rectangle in which to draw the spinner.
-//    - height of the rectangle in which to draw the spinner.
-//
-func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int) {
-	var _arg1 *C.GtkStyle    // out
-	var _arg2 *C.cairo_t     // out
-	var _arg3 C.GtkStateType // out
-	var _arg4 *C.GtkWidget   // out
-	var _arg5 *C.gchar       // out
-	var _arg6 C.guint        // out
-	var _arg7 C.gint         // out
-	var _arg8 C.gint         // out
-	var _arg9 C.gint         // out
-	var _arg10 C.gint        // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	if widget != nil {
-		_arg4 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_arg6 = C.guint(step)
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_spinner(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(step)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintTab draws an option menu tab (i.e. the up and down pointing arrows) in
-// the given rectangle on cr using the given parameters.
-//
-// Deprecated: Use cairo instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - shadowType: type of shadow to draw.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - x origin of the rectangle to draw the tab in.
-//    - y origin of the rectangle to draw the tab in.
-//    - width of the rectangle to draw the tab in.
-//    - height of the rectangle to draw the tab in.
-//
-func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
-	var _arg1 *C.GtkStyle     // out
-	var _arg2 *C.cairo_t      // out
-	var _arg3 C.GtkStateType  // out
-	var _arg4 C.GtkShadowType // out
-	var _arg5 *C.GtkWidget    // out
-	var _arg6 *C.gchar        // out
-	var _arg7 C.gint          // out
-	var _arg8 C.gint          // out
-	var _arg9 C.gint          // out
-	var _arg10 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.GtkShadowType(shadowType)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-	_arg7 = C.gint(x)
-	_arg8 = C.gint(y)
-	_arg9 = C.gint(width)
-	_arg10 = C.gint(height)
-
-	C.gtk_paint_tab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(shadowType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// PaintVline draws a vertical line from (x, y1_) to (x, y2_) in cr using the
-// given style and state.
-//
-// Deprecated: Use gtk_render_line() instead.
-//
-// The function takes the following parameters:
-//
-//    - style: Style.
-//    - cr: #cairo_t.
-//    - stateType: state.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//    - y1: starting y coordinate.
-//    - y2: ending y coordinate.
-//    - x coordinate.
-//
-func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int) {
-	var _arg1 *C.GtkStyle    // out
-	var _arg2 *C.cairo_t     // out
-	var _arg3 C.GtkStateType // out
-	var _arg4 *C.GtkWidget   // out
-	var _arg5 *C.gchar       // out
-	var _arg6 C.gint         // out
-	var _arg7 C.gint         // out
-	var _arg8 C.gint         // out
-
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg3 = C.GtkStateType(stateType)
-	if widget != nil {
-		_arg4 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	_arg6 = C.gint(y1)
-	_arg7 = C.gint(y2)
-	_arg8 = C.gint(x)
-
-	C.gtk_paint_vline(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-	runtime.KeepAlive(y1)
-	runtime.KeepAlive(y2)
-	runtime.KeepAlive(x)
-}
-
 // StyleOverrider contains methods that are overridable.
 type StyleOverrider interface {
 	// The function takes the following parameters:
@@ -1305,302 +81,8 @@ type StyleOverrider interface {
 	Copy(src *Style)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - arrowType
-	//    - fill
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - gapSide
-	//    - gapX
-	//    - gapWidth
-	//
-	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - expanderStyle
-	//
-	DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - gapSide
-	//
-	DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - orientation
-	//
-	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - widget
-	//    - detail
-	//    - x1
-	//    - x2
-	//    - y
-	//
-	DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - useText
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - layout
-	//
-	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - widget
-	//    - detail
-	//    - edge
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - gapSide
-	//    - gapX
-	//    - gapWidth
-	//
-	DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - orientation
-	//
-	DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - widget
-	//    - detail
-	//    - step
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - shadowType
-	//    - widget
-	//    - detail
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	//    - cr
-	//    - stateType
-	//    - widget
-	//    - detail
-	//    - y1
-	//    - y2
-	//    - x
-	//
-	DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
-	// The function takes the following parameters:
-	//
 	InitFromRC(rcStyle *RCStyle)
 	Realize()
-	// RenderIcon renders the icon specified by source at the given size
-	// according to the given parameters and returns the result in a pixbuf.
-	//
-	// Deprecated: Use gtk_render_icon_pixbuf() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - source specifying the icon to render.
-	//    - direction: text direction.
-	//    - state: state.
-	//    - size to render the icon at (IconSize). A size of (GtkIconSize)-1
-	//      means render at the size of the source and don’t scale.
-	//    - widget (optional): widget.
-	//    - detail (optional): style detail.
-	//
-	// The function returns the following values:
-	//
-	//    - pixbuf: newly-created Pixbuf containing the rendered icon.
-	//
-	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
-	// SetBackground sets the background of window to the background color or
-	// pixmap specified by style for the given state.
-	//
-	// Deprecated: Use gtk_style_context_set_background() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//    - window: Window.
-	//    - stateType: state.
-	//
-	SetBackground(window gdk.Windower, stateType StateType)
 	Unrealize()
 }
 
@@ -1620,11 +102,11 @@ type StyleOverrider interface {
 // widgets.
 type Style struct {
 	_ [0]func() // equal guard
-	*externglib.Object
+	*coreglib.Object
 }
 
 var (
-	_ externglib.Objector = (*Style)(nil)
+	_ coreglib.Objector = (*Style)(nil)
 )
 
 func classInitStyler(gclassPtr, data C.gpointer) {
@@ -1642,144 +124,12 @@ func classInitStyler(gclassPtr, data C.gpointer) {
 		pclass.copy = (*[0]byte)(C._gotk4_gtk3_StyleClass_copy)
 	}
 
-	if _, ok := goval.(interface {
-		DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
-	}); ok {
-		pclass.draw_arrow = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_arrow)
-	}
-
-	if _, ok := goval.(interface {
-		DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_box = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_box)
-	}
-
-	if _, ok := goval.(interface {
-		DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
-	}); ok {
-		pclass.draw_box_gap = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_box_gap)
-	}
-
-	if _, ok := goval.(interface {
-		DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_check = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_check)
-	}
-
-	if _, ok := goval.(interface {
-		DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_diamond = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_diamond)
-	}
-
-	if _, ok := goval.(interface {
-		DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
-	}); ok {
-		pclass.draw_expander = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_expander)
-	}
-
-	if _, ok := goval.(interface {
-		DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
-	}); ok {
-		pclass.draw_extension = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_extension)
-	}
-
-	if _, ok := goval.(interface {
-		DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_flat_box = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_flat_box)
-	}
-
-	if _, ok := goval.(interface {
-		DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_focus = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_focus)
-	}
-
-	if _, ok := goval.(interface {
-		DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
-	}); ok {
-		pclass.draw_handle = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_handle)
-	}
-
-	if _, ok := goval.(interface {
-		DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
-	}); ok {
-		pclass.draw_hline = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_hline)
-	}
-
-	if _, ok := goval.(interface {
-		DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
-	}); ok {
-		pclass.draw_layout = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_layout)
-	}
-
-	if _, ok := goval.(interface {
-		DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_option = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_option)
-	}
-
-	if _, ok := goval.(interface {
-		DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
-	}); ok {
-		pclass.draw_resize_grip = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_resize_grip)
-	}
-
-	if _, ok := goval.(interface {
-		DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_shadow = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_shadow)
-	}
-
-	if _, ok := goval.(interface {
-		DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
-	}); ok {
-		pclass.draw_shadow_gap = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_shadow_gap)
-	}
-
-	if _, ok := goval.(interface {
-		DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
-	}); ok {
-		pclass.draw_slider = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_slider)
-	}
-
-	if _, ok := goval.(interface {
-		DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
-	}); ok {
-		pclass.draw_spinner = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_spinner)
-	}
-
-	if _, ok := goval.(interface {
-		DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	}); ok {
-		pclass.draw_tab = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_tab)
-	}
-
-	if _, ok := goval.(interface {
-		DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
-	}); ok {
-		pclass.draw_vline = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_vline)
-	}
-
 	if _, ok := goval.(interface{ InitFromRC(rcStyle *RCStyle) }); ok {
 		pclass.init_from_rc = (*[0]byte)(C._gotk4_gtk3_StyleClass_init_from_rc)
 	}
 
 	if _, ok := goval.(interface{ Realize() }); ok {
 		pclass.realize = (*[0]byte)(C._gotk4_gtk3_StyleClass_realize)
-	}
-
-	if _, ok := goval.(interface {
-		RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
-	}); ok {
-		pclass.render_icon = (*[0]byte)(C._gotk4_gtk3_StyleClass_render_icon)
-	}
-
-	if _, ok := goval.(interface {
-		SetBackground(window gdk.Windower, stateType StateType)
-	}); ok {
-		pclass.set_background = (*[0]byte)(C._gotk4_gtk3_StyleClass_set_background)
 	}
 
 	if _, ok := goval.(interface{ Unrealize() }); ok {
@@ -1789,1152 +139,59 @@ func classInitStyler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_StyleClass_copy
 func _gotk4_gtk3_StyleClass_copy(arg0 *C.GtkStyle, arg1 *C.GtkStyle) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Copy(src *Style) })
 
 	var _src *Style // out
 
-	_src = wrapStyle(externglib.Take(unsafe.Pointer(arg1)))
+	_src = wrapStyle(coreglib.Take(unsafe.Pointer(arg1)))
 
 	iface.Copy(_src)
 }
 
-//export _gotk4_gtk3_StyleClass_draw_arrow
-func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.GtkArrowType, arg7 C.gboolean, arg8 C.gint, arg9 C.gint, arg10 C.gint, arg11 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _arrowType ArrowType   // out
-	var _fill bool             // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_arrowType = ArrowType(arg6)
-	if arg7 != 0 {
-		_fill = true
-	}
-	_x = int(arg8)
-	_y = int(arg9)
-	_width = int(arg10)
-	_height = int(arg11)
-
-	iface.DrawArrow(_cr, _stateType, _shadowType, _widget, _detail, _arrowType, _fill, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_box
-func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawBox(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_box_gap
-func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType, arg11 C.gint, arg12 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-	var _gapSide PositionType  // out
-	var _gapX int              // out
-	var _gapWidth int          // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-	_gapSide = PositionType(arg10)
-	_gapX = int(arg11)
-	_gapWidth = int(arg12)
-
-	iface.DrawBoxGap(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _gapSide, _gapX, _gapWidth)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_check
-func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawCheck(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_diamond
-func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawDiamond(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_expander
-func _gotk4_gtk3_StyleClass_draw_expander(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.GtkExpanderStyle) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
-	})
-
-	var _cr *cairo.Context           // out
-	var _stateType StateType         // out
-	var _widget Widgetter            // out
-	var _detail string               // out
-	var _x int                       // out
-	var _y int                       // out
-	var _expanderStyle ExpanderStyle // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	{
-		objptr := unsafe.Pointer(arg3)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_x = int(arg5)
-	_y = int(arg6)
-	_expanderStyle = ExpanderStyle(arg7)
-
-	iface.DrawExpander(_cr, _stateType, _widget, _detail, _x, _y, _expanderStyle)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_extension
-func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-	var _gapSide PositionType  // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-	_gapSide = PositionType(arg10)
-
-	iface.DrawExtension(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _gapSide)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_flat_box
-func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawFlatBox(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_focus
-func _gotk4_gtk3_StyleClass_draw_focus(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint, arg8 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context   // out
-	var _stateType StateType // out
-	var _widget Widgetter    // out
-	var _detail string       // out
-	var _x int               // out
-	var _y int               // out
-	var _width int           // out
-	var _height int          // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	{
-		objptr := unsafe.Pointer(arg3)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_x = int(arg5)
-	_y = int(arg6)
-	_width = int(arg7)
-	_height = int(arg8)
-
-	iface.DrawFocus(_cr, _stateType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_handle
-func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkOrientation) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
-	})
-
-	var _cr *cairo.Context       // out
-	var _stateType StateType     // out
-	var _shadowType ShadowType   // out
-	var _widget Widgetter        // out
-	var _detail string           // out
-	var _x int                   // out
-	var _y int                   // out
-	var _width int               // out
-	var _height int              // out
-	var _orientation Orientation // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-	_orientation = Orientation(arg10)
-
-	iface.DrawHandle(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _orientation)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_hline
-func _gotk4_gtk3_StyleClass_draw_hline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
-	})
-
-	var _cr *cairo.Context   // out
-	var _stateType StateType // out
-	var _widget Widgetter    // out
-	var _detail string       // out
-	var _x1 int              // out
-	var _x2 int              // out
-	var _y int               // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	{
-		objptr := unsafe.Pointer(arg3)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_x1 = int(arg5)
-	_x2 = int(arg6)
-	_y = int(arg7)
-
-	iface.DrawHline(_cr, _stateType, _widget, _detail, _x1, _x2, _y)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_layout
-func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.gboolean, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 *C.PangoLayout) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
-	})
-
-	var _cr *cairo.Context    // out
-	var _stateType StateType  // out
-	var _useText bool         // out
-	var _widget Widgetter     // out
-	var _detail string        // out
-	var _x int                // out
-	var _y int                // out
-	var _layout *pango.Layout // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	if arg3 != 0 {
-		_useText = true
-	}
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	{
-		obj := externglib.Take(unsafe.Pointer(arg8))
-		_layout = &pango.Layout{
-			Object: obj,
-		}
-	}
-
-	iface.DrawLayout(_cr, _stateType, _useText, _widget, _detail, _x, _y, _layout)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_option
-func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawOption(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_resize_grip
-func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.GdkWindowEdge, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context   // out
-	var _stateType StateType // out
-	var _widget Widgetter    // out
-	var _detail string       // out
-	var _edge gdk.WindowEdge // out
-	var _x int               // out
-	var _y int               // out
-	var _width int           // out
-	var _height int          // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	{
-		objptr := unsafe.Pointer(arg3)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_edge = gdk.WindowEdge(arg5)
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawResizeGrip(_cr, _stateType, _widget, _detail, _edge, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_shadow
-func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawShadow(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_shadow_gap
-func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType, arg11 C.gint, arg12 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-	var _gapSide PositionType  // out
-	var _gapX int              // out
-	var _gapWidth int          // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-	_gapSide = PositionType(arg10)
-	_gapX = int(arg11)
-	_gapWidth = int(arg12)
-
-	iface.DrawShadowGap(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _gapSide, _gapX, _gapWidth)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_slider
-func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkOrientation) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
-	})
-
-	var _cr *cairo.Context       // out
-	var _stateType StateType     // out
-	var _shadowType ShadowType   // out
-	var _widget Widgetter        // out
-	var _detail string           // out
-	var _x int                   // out
-	var _y int                   // out
-	var _width int               // out
-	var _height int              // out
-	var _orientation Orientation // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-	_orientation = Orientation(arg10)
-
-	iface.DrawSlider(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _orientation)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_spinner
-func _gotk4_gtk3_StyleClass_draw_spinner(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.guint, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context   // out
-	var _stateType StateType // out
-	var _widget Widgetter    // out
-	var _detail string       // out
-	var _step uint           // out
-	var _x int               // out
-	var _y int               // out
-	var _width int           // out
-	var _height int          // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	{
-		objptr := unsafe.Pointer(arg3)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_step = uint(arg5)
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawSpinner(_cr, _stateType, _widget, _detail, _step, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_tab
-func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
-	})
-
-	var _cr *cairo.Context     // out
-	var _stateType StateType   // out
-	var _shadowType ShadowType // out
-	var _widget Widgetter      // out
-	var _detail string         // out
-	var _x int                 // out
-	var _y int                 // out
-	var _width int             // out
-	var _height int            // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	_shadowType = ShadowType(arg3)
-	{
-		objptr := unsafe.Pointer(arg4)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int(arg6)
-	_y = int(arg7)
-	_width = int(arg8)
-	_height = int(arg9)
-
-	iface.DrawTab(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_StyleClass_draw_vline
-func _gotk4_gtk3_StyleClass_draw_vline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
-	})
-
-	var _cr *cairo.Context   // out
-	var _stateType StateType // out
-	var _widget Widgetter    // out
-	var _detail string       // out
-	var _y1 int              // out
-	var _y2 int              // out
-	var _x int               // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_stateType = StateType(arg2)
-	{
-		objptr := unsafe.Pointer(arg3)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_y1 = int(arg5)
-	_y2 = int(arg6)
-	_x = int(arg7)
-
-	iface.DrawVline(_cr, _stateType, _widget, _detail, _y1, _y2, _x)
-}
-
 //export _gotk4_gtk3_StyleClass_init_from_rc
 func _gotk4_gtk3_StyleClass_init_from_rc(arg0 *C.GtkStyle, arg1 *C.GtkRcStyle) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InitFromRC(rcStyle *RCStyle) })
 
 	var _rcStyle *RCStyle // out
 
-	_rcStyle = wrapRCStyle(externglib.Take(unsafe.Pointer(arg1)))
+	_rcStyle = wrapRCStyle(coreglib.Take(unsafe.Pointer(arg1)))
 
 	iface.InitFromRC(_rcStyle)
 }
 
 //export _gotk4_gtk3_StyleClass_realize
 func _gotk4_gtk3_StyleClass_realize(arg0 *C.GtkStyle) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Realize() })
 
 	iface.Realize()
 }
 
-//export _gotk4_gtk3_StyleClass_render_icon
-func _gotk4_gtk3_StyleClass_render_icon(arg0 *C.GtkStyle, arg1 *C.GtkIconSource, arg2 C.GtkTextDirection, arg3 C.GtkStateType, arg4 C.GtkIconSize, arg5 *C.GtkWidget, arg6 *C.gchar) (cret *C.GdkPixbuf) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
-	})
-
-	var _source *IconSource      // out
-	var _direction TextDirection // out
-	var _state StateType         // out
-	var _size int                // out
-	var _widget Widgetter        // out
-	var _detail string           // out
-
-	_source = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_direction = TextDirection(arg2)
-	_state = StateType(arg3)
-	_size = int(arg4)
-	if arg5 != nil {
-		{
-			objptr := unsafe.Pointer(arg5)
-
-			object := externglib.Take(objptr)
-			casted := object.WalkCast(func(obj externglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-	if arg6 != nil {
-		_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg6)))
-	}
-
-	pixbuf := iface.RenderIcon(_source, _direction, _state, _size, _widget, _detail)
-
-	cret = (*C.GdkPixbuf)(unsafe.Pointer(externglib.InternObject(pixbuf).Native()))
-	C.g_object_ref(C.gpointer(externglib.InternObject(pixbuf).Native()))
-
-	return cret
-}
-
-//export _gotk4_gtk3_StyleClass_set_background
-func _gotk4_gtk3_StyleClass_set_background(arg0 *C.GtkStyle, arg1 *C.GdkWindow, arg2 C.GtkStateType) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		SetBackground(window gdk.Windower, stateType StateType)
-	})
-
-	var _window gdk.Windower // out
-	var _stateType StateType // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := externglib.Take(objptr)
-		casted := object.WalkCast(func(obj externglib.Objector) bool {
-			_, ok := obj.(gdk.Windower)
-			return ok
-		})
-		rv, ok := casted.(gdk.Windower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-		}
-		_window = rv
-	}
-	_stateType = StateType(arg2)
-
-	iface.SetBackground(_window, _stateType)
-}
-
 //export _gotk4_gtk3_StyleClass_unrealize
 func _gotk4_gtk3_StyleClass_unrealize(arg0 *C.GtkStyle) {
-	goval := externglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unrealize() })
 
 	iface.Unrealize()
 }
 
-func wrapStyle(obj *externglib.Object) *Style {
+func wrapStyle(obj *coreglib.Object) *Style {
 	return &Style{
 		Object: obj,
 	}
 }
 
 func marshalStyle(p uintptr) (interface{}, error) {
-	return wrapStyle(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapStyle(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_gtk3_Style_ConnectRealize
 func _gotk4_gtk3_Style_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -2950,15 +207,15 @@ func _gotk4_gtk3_Style_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
 // particular visual. Connecting to this signal is probably seldom useful since
 // most of the time applications and widgets only deal with styles that have
 // been already realized.
-func (style *Style) ConnectRealize(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(style, "realize", false, unsafe.Pointer(C._gotk4_gtk3_Style_ConnectRealize), f)
+func (style *Style) ConnectRealize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(style, "realize", false, unsafe.Pointer(C._gotk4_gtk3_Style_ConnectRealize), f)
 }
 
 //export _gotk4_gtk3_Style_ConnectUnrealize
 func _gotk4_gtk3_Style_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -2974,8 +231,8 @@ func _gotk4_gtk3_Style_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
 // particular visual is being cleaned up. A connection to this signal can be
 // useful if a widget wants to cache objects as object data on Style. This
 // signal provides a convenient place to free such cached objects.
-func (style *Style) ConnectUnrealize(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(style, "unrealize", false, unsafe.Pointer(C._gotk4_gtk3_Style_ConnectUnrealize), f)
+func (style *Style) ConnectUnrealize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(style, "unrealize", false, unsafe.Pointer(C._gotk4_gtk3_Style_ConnectUnrealize), f)
 }
 
 // NewStyle creates a new Style.
@@ -2987,57 +244,16 @@ func (style *Style) ConnectUnrealize(f func()) externglib.SignalHandle {
 //    - style: new Style.
 //
 func NewStyle() *Style {
-	var _cret *C.GtkStyle // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_style_new()
+	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("new_Style", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _style *Style // out
 
-	_style = wrapStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_style = wrapStyle(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _style
-}
-
-// ApplyDefaultBackground: deprecated: Use StyleContext instead.
-//
-// The function takes the following parameters:
-//
-//    - cr
-//    - window
-//    - stateType
-//    - x
-//    - y
-//    - width
-//    - height
-//
-func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windower, stateType StateType, x, y, width, height int) {
-	var _arg0 *C.GtkStyle    // out
-	var _arg1 *C.cairo_t     // out
-	var _arg2 *C.GdkWindow   // out
-	var _arg3 C.GtkStateType // out
-	var _arg4 C.gint         // out
-	var _arg5 C.gint         // out
-	var _arg6 C.gint         // out
-	var _arg7 C.gint         // out
-
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg3 = C.GtkStateType(stateType)
-	_arg4 = C.gint(x)
-	_arg5 = C.gint(y)
-	_arg6 = C.gint(width)
-	_arg7 = C.gint(height)
-
-	C.gtk_style_apply_default_background(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(cr)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(stateType)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
 }
 
 // Copy creates a copy of the passed in Style object.
@@ -3049,17 +265,21 @@ func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windowe
 //    - ret: copy of style.
 //
 func (style *Style) Copy() *Style {
-	var _arg0 *C.GtkStyle // out
-	var _cret *C.GtkStyle // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	*(**Style)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_style_copy(_arg0)
+	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("copy", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(style)
 
 	var _ret *Style // out
 
-	_ret = wrapStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = wrapStyle(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -3069,47 +289,15 @@ func (style *Style) Copy() *Style {
 //
 // Deprecated: Use StyleContext instead.
 func (style *Style) Detach() {
-	var _arg0 *C.GtkStyle // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	*(**Style)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_style_detach(_arg0)
+	girepository.MustFind("Gtk", "Style").InvokeMethod("detach", args[:], nil)
+
 	runtime.KeepAlive(style)
-}
-
-// StyleProperty queries the value of a style property corresponding to a widget
-// class is in the given style.
-//
-// The function takes the following parameters:
-//
-//    - widgetType of a descendant of Widget.
-//    - propertyName: name of the style property to get.
-//
-// The function returns the following values:
-//
-//    - value where the value of the property being queried will be stored.
-//
-func (style *Style) StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value {
-	var _arg0 *C.GtkStyle // out
-	var _arg1 C.GType     // out
-	var _arg2 *C.gchar    // out
-	var _arg3 C.GValue    // in
-
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg1 = C.GType(widgetType)
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.gtk_style_get_style_property(_arg0, _arg1, _arg2, &_arg3)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(widgetType)
-	runtime.KeepAlive(propertyName)
-
-	var _value externglib.Value // out
-
-	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg3)))
-
-	return _value
 }
 
 // HasContext returns whether style has an associated StyleContext.
@@ -3119,12 +307,16 @@ func (style *Style) StyleProperty(widgetType externglib.Type, propertyName strin
 //    - ok: TRUE if style has a StyleContext.
 //
 func (style *Style) HasContext() bool {
-	var _arg0 *C.GtkStyle // out
-	var _cret C.gboolean  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	*(**Style)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_style_has_context(_arg0)
+	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("has_context", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(style)
 
 	var _ok bool // out
@@ -3134,47 +326,6 @@ func (style *Style) HasContext() bool {
 	}
 
 	return _ok
-}
-
-// LookupColor looks up color_name in the style’s logical color mappings,
-// filling in color and returning TRUE if found, otherwise returning FALSE. Do
-// not cache the found mapping, because it depends on the Style and might change
-// when a theme switch occurs.
-//
-// Deprecated: Use gtk_style_context_lookup_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - colorName: name of the logical color to look up.
-//
-// The function returns the following values:
-//
-//    - color to fill in.
-//    - ok: TRUE if the mapping was found.
-//
-func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
-	var _arg0 *C.GtkStyle // out
-	var _arg1 *C.gchar    // out
-	var _arg2 C.GdkColor  // in
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(colorName)
-
-	var _color *gdk.Color // out
-	var _ok bool          // out
-
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _color, _ok
 }
 
 // LookupIconSet looks up stock_id in the icon factories associated with style
@@ -3191,15 +342,19 @@ func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
 //    - iconSet: icon set of stock_id.
 //
 func (style *Style) LookupIconSet(stockId string) *IconSet {
-	var _arg0 *C.GtkStyle   // out
-	var _arg1 *C.gchar      // out
-	var _cret *C.GtkIconSet // in
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
+	*(**Style)(unsafe.Pointer(&args[1])) = _arg1
 
-	_cret = C.gtk_style_lookup_icon_set(_arg0, _arg1)
+	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("lookup_icon_set", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(style)
 	runtime.KeepAlive(stockId)
 
@@ -3217,141 +372,6 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	return _iconSet
 }
 
-// RenderIcon renders the icon specified by source at the given size according
-// to the given parameters and returns the result in a pixbuf.
-//
-// Deprecated: Use gtk_render_icon_pixbuf() instead.
-//
-// The function takes the following parameters:
-//
-//    - source specifying the icon to render.
-//    - direction: text direction.
-//    - state: state.
-//    - size to render the icon at (IconSize). A size of (GtkIconSize)-1 means
-//      render at the size of the source and don’t scale.
-//    - widget (optional): widget.
-//    - detail (optional): style detail.
-//
-// The function returns the following values:
-//
-//    - pixbuf: newly-created Pixbuf containing the rendered icon.
-//
-func (style *Style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkStyle        // out
-	var _arg1 *C.GtkIconSource   // out
-	var _arg2 C.GtkTextDirection // out
-	var _arg3 C.GtkStateType     // out
-	var _arg4 C.GtkIconSize      // out
-	var _arg5 *C.GtkWidget       // out
-	var _arg6 *C.gchar           // out
-	var _cret *C.GdkPixbuf       // in
-
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg1 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg2 = C.GtkTextDirection(direction)
-	_arg3 = C.GtkStateType(state)
-	_arg4 = C.GtkIconSize(size)
-	if widget != nil {
-		_arg5 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	}
-	if detail != "" {
-		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg6))
-	}
-
-	_cret = C.gtk_style_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(direction)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(size)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(detail)
-
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
-				},
-			},
-		}
-	}
-
-	return _pixbuf
-}
-
-// SetBackground sets the background of window to the background color or pixmap
-// specified by style for the given state.
-//
-// Deprecated: Use gtk_style_context_set_background() instead.
-//
-// The function takes the following parameters:
-//
-//    - window: Window.
-//    - stateType: state.
-//
-func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {
-	var _arg0 *C.GtkStyle    // out
-	var _arg1 *C.GdkWindow   // out
-	var _arg2 C.GtkStateType // out
-
-	_arg0 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(externglib.InternObject(window).Native()))
-	_arg2 = C.GtkStateType(stateType)
-
-	C.gtk_style_set_background(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(style)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(stateType)
-}
-
-// ClassPath: same as gtk_widget_path(), but always uses the name of a widget’s
-// type, never uses a custom name set with gtk_widget_set_name().
-//
-// Deprecated: Use gtk_widget_get_path() instead.
-//
-// The function returns the following values:
-//
-//    - pathLength (optional): location to store the length of the class path, or
-//      NULL.
-//    - path (optional): location to store the class path as an allocated string,
-//      or NULL.
-//    - pathReversed (optional): location to store the reverse class path as an
-//      allocated string, or NULL.
-//
-func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // in
-	var _arg2 *C.gchar     // in
-	var _arg3 *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-
-	C.gtk_widget_class_path(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-
-	var _pathLength uint     // out
-	var _path string         // out
-	var _pathReversed string // out
-
-	_pathLength = uint(_arg1)
-	if _arg2 != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if _arg3 != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	return _pathLength, _path, _pathReversed
-}
-
 // EnsureStyle ensures that widget has a style (widget->style).
 //
 // Not a very useful function; most of the time, if you want the style, the
@@ -3360,11 +380,14 @@ func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed st
 //
 // Deprecated: Use StyleContext instead.
 func (widget *Widget) EnsureStyle() {
-	var _arg0 *C.GtkWidget // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_widget_ensure_style(_arg0)
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("ensure_style", args[:], nil)
+
 	runtime.KeepAlive(widget)
 }
 
@@ -3390,17 +413,21 @@ func (widget *Widget) EnsureStyle() {
 //      a refcount using g_object_ref().
 //
 func (widget *Widget) ModifierStyle() *RCStyle {
-	var _arg0 *C.GtkWidget  // out
-	var _cret *C.GtkRcStyle // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_widget_get_modifier_style(_arg0)
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_modifier_style", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _rcStyle *RCStyle // out
 
-	_rcStyle = wrapRCStyle(externglib.Take(unsafe.Pointer(_cret)))
+	_rcStyle = wrapRCStyle(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _rcStyle
 }
@@ -3414,17 +441,21 @@ func (widget *Widget) ModifierStyle() *RCStyle {
 //    - style widget’s Style.
 //
 func (widget *Widget) Style() *Style {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GtkStyle  // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_widget_get_style(_arg0)
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_style", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _style *Style // out
 
-	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
+	_style = wrapStyle(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _style
 }
@@ -3440,12 +471,16 @@ func (widget *Widget) Style() *Style {
 //      otherwise.
 //
 func (widget *Widget) HasRCStyle() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gboolean // in
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_widget_has_rc_style(_arg0)
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("has_rc_style", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(widget)
 
 	var _ok bool // out
@@ -3455,81 +490,6 @@ func (widget *Widget) HasRCStyle() bool {
 	}
 
 	return _ok
-}
-
-// ModifyBase sets the base color for a widget in a particular state. All other
-// style values are left untouched. The base color is the background color used
-// along with the text color (see gtk_widget_modify_text()) for widgets such as
-// Entry and TextView. See also gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > base color on their parent;
-// if you want to set the background > of a rectangular area around a label, try
-// placing the label in > a EventBox widget and setting the base color on that.
-//
-// Deprecated: Use gtk_widget_override_background_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the base color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_base().
-//
-func (widget *Widget) ModifyBase(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// ModifyBg sets the background color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > background color on their
-// parent; if you want to set the background > of a rectangular area around a
-// label, try placing the label in > a EventBox widget and setting the
-// background color on that.
-//
-// Deprecated: Use gtk_widget_override_background_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the background color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_bg().
-//
-func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
 }
 
 // ModifyCursor sets the cursor color to use in a widget, overriding the Widget
@@ -3550,52 +510,26 @@ func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
 //      gtk_widget_modify_cursor().
 //
 func (widget *Widget) ModifyCursor(primary, secondary *gdk.Color) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GdkColor  // out
-	var _arg2 *C.GdkColor  // out
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if primary != nil {
-		_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(primary)))
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(primary)))
 	}
 	if secondary != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(secondary)))
+		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(secondary)))
 	}
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+	*(**gdk.Color)(unsafe.Pointer(&args[2])) = _arg2
 
-	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("modify_cursor", args[:], nil)
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(primary)
 	runtime.KeepAlive(secondary)
-}
-
-// ModifyFg sets the foreground color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the foreground color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_fg().
-//
-func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
 }
 
 // ModifyFont sets the font to use for a widget.
@@ -3611,15 +545,18 @@ func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
 //      of previous calls to gtk_widget_modify_font().
 //
 func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
-	var _arg0 *C.GtkWidget            // out
-	var _arg1 *C.PangoFontDescription // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if fontDesc != nil {
-		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 	}
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_widget_modify_font(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("modify_font", args[:], nil)
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(fontDesc)
 }
@@ -3648,160 +585,18 @@ func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
 //    - style holding the style modifications.
 //
 func (widget *Widget) ModifyStyle(style *RCStyle) {
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 *C.GtkRcStyle // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_widget_modify_style(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("modify_style", args[:], nil)
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(style)
-}
-
-// ModifyText sets the text color for a widget in a particular state.
-//
-// All other style values are left untouched. The text color is the foreground
-// color used along with the base color (see gtk_widget_modify_base()) for
-// widgets such as Entry and TextView. See also gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the text color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_text().
-//
-func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// Path obtains the full path to widget. The path is simply the name of a widget
-// and all its parents in the container hierarchy, separated by periods. The
-// name of a widget comes from gtk_widget_get_name(). Paths are used to apply
-// styles to a widget in gtkrc configuration files. Widget names are the type of
-// the widget by default (e.g. “GtkButton”) or can be set to an
-// application-specific value with gtk_widget_set_name(). By setting the name of
-// a widget, you allow users or theme authors to apply styles to that specific
-// widget in their gtkrc file. path_reversed_p fills in the path in reverse
-// order, i.e. starting with widget’s name instead of starting with the name of
-// widget’s outermost ancestor.
-//
-// Deprecated: Use gtk_widget_get_path() instead.
-//
-// The function returns the following values:
-//
-//    - pathLength (optional): location to store length of the path, or NULL.
-//    - path (optional): location to store allocated path string, or NULL.
-//    - pathReversed (optional): location to store allocated reverse path string,
-//      or NULL.
-//
-func (widget *Widget) Path() (pathLength uint, path string, pathReversed string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // in
-	var _arg2 *C.gchar     // in
-	var _arg3 *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-
-	C.gtk_widget_path(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-
-	var _pathLength uint     // out
-	var _path string         // out
-	var _pathReversed string // out
-
-	_pathLength = uint(_arg1)
-	if _arg2 != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if _arg3 != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	return _pathLength, _path, _pathReversed
-}
-
-// RenderIcon: convenience function that uses the theme settings for widget to
-// look up stock_id and render it to a pixbuf. stock_id should be a stock icon
-// ID such as K_STOCK_OPEN or K_STOCK_OK. size should be a size such as
-// K_ICON_SIZE_MENU. detail should be a string that identifies the widget or
-// code doing the rendering, so that theme engines can special-case rendering
-// for that widget or code.
-//
-// The pixels in the returned Pixbuf are shared with the rest of the application
-// and should not be modified. The pixbuf should be freed after use with
-// g_object_unref().
-//
-// Deprecated: Use gtk_widget_render_icon_pixbuf() instead.
-//
-// The function takes the following parameters:
-//
-//    - stockId: stock ID.
-//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
-//      the size of the source and don’t scale (if there are multiple source
-//      sizes, GTK+ picks one of the available sizes).
-//    - detail (optional): render detail to pass to theme engine.
-//
-// The function returns the following values:
-//
-//    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
-//
-func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GtkIconSize // out
-	var _arg3 *C.gchar      // out
-	var _cret *C.GdkPixbuf  // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkIconSize(size)
-	if detail != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(stockId)
-	runtime.KeepAlive(size)
-	runtime.KeepAlive(detail)
-
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-
-	if _cret != nil {
-		{
-			obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-			_pixbuf = &gdkpixbuf.Pixbuf{
-				Object: obj,
-				LoadableIcon: gio.LoadableIcon{
-					Icon: gio.Icon{
-						Object: obj,
-					},
-				},
-			}
-		}
-	}
-
-	return _pixbuf
 }
 
 // ResetRCStyles: reset the styles of widget and all descendents, so when they
@@ -3812,11 +607,14 @@ func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpi
 //
 // Deprecated: Use StyleContext instead, and gtk_widget_reset_style().
 func (widget *Widget) ResetRCStyles() {
-	var _arg0 *C.GtkWidget // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_widget_reset_rc_styles(_arg0)
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("reset_rc_styles", args[:], nil)
+
 	runtime.KeepAlive(widget)
 }
 
@@ -3831,15 +629,18 @@ func (widget *Widget) ResetRCStyles() {
 //      gtk_widget_set_style() and go back to the default style.
 //
 func (widget *Widget) SetStyle(style *Style) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkStyle  // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if style != nil {
-		_arg1 = (*C.GtkStyle)(unsafe.Pointer(externglib.InternObject(style).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 	}
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_widget_set_style(_arg0, _arg1)
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_style", args[:], nil)
+
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(style)
 }
@@ -3856,11 +657,14 @@ func (widget *Widget) SetStyle(style *Style) {
 //
 // Deprecated: This step is unnecessary with StyleContext.
 func (widget *Widget) StyleAttach() {
-	var _arg0 *C.GtkWidget // out
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
 
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(externglib.InternObject(widget).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	C.gtk_widget_style_attach(_arg0)
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("style_attach", args[:], nil)
+
 	runtime.KeepAlive(widget)
 }
 
@@ -3876,13 +680,14 @@ func (widget *Widget) StyleAttach() {
 //      be modified or freed.
 //
 func WidgetGetDefaultStyle() *Style {
-	var _cret *C.GtkStyle // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_widget_get_default_style()
+	_gret := girepository.MustFind("Gtk", "get_default_style").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _style *Style // out
 
-	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
+	_style = wrapStyle(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _style
 }

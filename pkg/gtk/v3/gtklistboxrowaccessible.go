@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtklistboxrowaccessible.go.
-var GTypeListBoxRowAccessible = externglib.Type(C.gtk_list_box_row_accessible_get_type())
+var GTypeListBoxRowAccessible = coreglib.Type(C.gtk_list_box_row_accessible_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeListBoxRowAccessible, F: marshalListBoxRowAccessible},
 	})
 }
@@ -35,7 +34,7 @@ type ListBoxRowAccessible struct {
 }
 
 var (
-	_ externglib.Objector = (*ListBoxRowAccessible)(nil)
+	_ coreglib.Objector = (*ListBoxRowAccessible)(nil)
 )
 
 func classInitListBoxRowAccessibler(gclassPtr, data C.gpointer) {
@@ -46,7 +45,7 @@ func classInitListBoxRowAccessibler(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapListBoxRowAccessible(obj *externglib.Object) *ListBoxRowAccessible {
+func wrapListBoxRowAccessible(obj *coreglib.Object) *ListBoxRowAccessible {
 	return &ListBoxRowAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -64,5 +63,5 @@ func wrapListBoxRowAccessible(obj *externglib.Object) *ListBoxRowAccessible {
 }
 
 func marshalListBoxRowAccessible(p uintptr) (interface{}, error) {
-	return wrapListBoxRowAccessible(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapListBoxRowAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }

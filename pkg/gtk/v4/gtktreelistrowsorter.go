@@ -6,19 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtktreelistrowsorter.go.
-var GTypeTreeListRowSorter = externglib.Type(C.gtk_tree_list_row_sorter_get_type())
+var GTypeTreeListRowSorter = coreglib.Type(C.gtk_tree_list_row_sorter_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeTreeListRowSorter, F: marshalTreeListRowSorter},
 	})
 }
@@ -44,7 +45,7 @@ type TreeListRowSorter struct {
 }
 
 var (
-	_ externglib.Objector = (*TreeListRowSorter)(nil)
+	_ coreglib.Objector = (*TreeListRowSorter)(nil)
 )
 
 func classInitTreeListRowSorterer(gclassPtr, data C.gpointer) {
@@ -55,7 +56,7 @@ func classInitTreeListRowSorterer(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
+func wrapTreeListRowSorter(obj *coreglib.Object) *TreeListRowSorter {
 	return &TreeListRowSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -64,7 +65,7 @@ func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 }
 
 func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
-	return wrapTreeListRowSorter(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapTreeListRowSorter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewTreeListRowSorter: create a special-purpose sorter that applies the
@@ -82,20 +83,24 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 //    - treeListRowSorter: new GtkTreeListRowSorter.
 //
 func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
-	var _arg1 *C.GtkSorter            // out
-	var _cret *C.GtkTreeListRowSorter // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
 	if sorter != nil {
-		_arg1 = (*C.GtkSorter)(unsafe.Pointer(externglib.InternObject(sorter).Native()))
-		C.g_object_ref(C.gpointer(externglib.InternObject(sorter).Native()))
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(sorter).Native()))
 	}
+	*(**Sorter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_list_row_sorter_new(_arg1)
+	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("new_TreeListRowSorter", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(sorter)
 
 	var _treeListRowSorter *TreeListRowSorter // out
 
-	_treeListRowSorter = wrapTreeListRowSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_treeListRowSorter = wrapTreeListRowSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeListRowSorter
 }
@@ -107,18 +112,22 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 //    - sorter (optional) used.
 //
 func (self *TreeListRowSorter) GetSorter() *Sorter {
-	var _arg0 *C.GtkTreeListRowSorter // out
-	var _cret *C.GtkSorter            // in
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret *C.void // in
 
-	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**TreeListRowSorter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_cret = C.gtk_tree_list_row_sorter_get_sorter(_arg0)
+	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("get_sorter", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
 
 	if _cret != nil {
-		_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _sorter
@@ -134,15 +143,18 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 //    - sorter (optional) to use, or NULL.
 //
 func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
-	var _arg0 *C.GtkTreeListRowSorter // out
-	var _arg1 *C.GtkSorter            // out
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
 
-	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(externglib.InternObject(self).Native()))
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if sorter != nil {
-		_arg1 = (*C.GtkSorter)(unsafe.Pointer(externglib.InternObject(sorter).Native()))
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	}
+	*(**TreeListRowSorter)(unsafe.Pointer(&args[1])) = _arg1
 
-	C.gtk_tree_list_row_sorter_set_sorter(_arg0, _arg1)
+	girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("set_sorter", args[:], nil)
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
 }

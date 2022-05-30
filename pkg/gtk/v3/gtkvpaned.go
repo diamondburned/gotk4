@@ -6,21 +6,20 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <gtk/gtk-a11y.h>
-// #include <gtk/gtk.h>
-// #include <gtk/gtkx.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for gtkvpaned.go.
-var GTypeVPaned = externglib.Type(C.gtk_vpaned_get_type())
+var GTypeVPaned = coreglib.Type(C.gtk_vpaned_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeVPaned, F: marshalVPaned},
 	})
 }
@@ -40,8 +39,8 @@ type VPaned struct {
 }
 
 var (
-	_ Containerer         = (*VPaned)(nil)
-	_ externglib.Objector = (*VPaned)(nil)
+	_ Containerer       = (*VPaned)(nil)
+	_ coreglib.Objector = (*VPaned)(nil)
 )
 
 func classInitVPanedder(gclassPtr, data C.gpointer) {
@@ -52,12 +51,12 @@ func classInitVPanedder(gclassPtr, data C.gpointer) {
 
 }
 
-func wrapVPaned(obj *externglib.Object) *VPaned {
+func wrapVPaned(obj *coreglib.Object) *VPaned {
 	return &VPaned{
 		Paned: Paned{
 			Container: Container{
 				Widget: Widget{
-					InitiallyUnowned: externglib.InitiallyUnowned{
+					InitiallyUnowned: coreglib.InitiallyUnowned{
 						Object: obj,
 					},
 					Object: obj,
@@ -78,7 +77,7 @@ func wrapVPaned(obj *externglib.Object) *VPaned {
 }
 
 func marshalVPaned(p uintptr) (interface{}, error) {
-	return wrapVPaned(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapVPaned(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // NewVPaned: create a new VPaned
@@ -90,13 +89,14 @@ func marshalVPaned(p uintptr) (interface{}, error) {
 //    - vPaned: new VPaned.
 //
 func NewVPaned() *VPaned {
-	var _cret *C.GtkWidget // in
+	var _cret *C.void // in
 
-	_cret = C.gtk_vpaned_new()
+	_gret := girepository.MustFind("Gtk", "VPaned").InvokeMethod("new_VPaned", nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _vPaned *VPaned // out
 
-	_vPaned = wrapVPaned(externglib.Take(unsafe.Pointer(_cret)))
+	_vPaned = wrapVPaned(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vPaned
 }

@@ -5,12 +5,13 @@ package atk
 import (
 	"unsafe"
 
-	externglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <atk/atk.h>
-// #include <glib-object.h>
+// #include <glib.h>
 // extern void _gotk4_atk1_Window_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_atk1_Window_ConnectCreate(gpointer, guintptr);
 // extern void _gotk4_atk1_Window_ConnectDeactivate(gpointer, guintptr);
@@ -23,10 +24,10 @@ import (
 import "C"
 
 // glib.Type values for atkwindow.go.
-var GTypeWindow = externglib.Type(C.atk_window_get_type())
+var GTypeWindow = coreglib.Type(C.atk_window_get_type())
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeWindow, F: marshalWindow},
 	})
 }
@@ -46,12 +47,12 @@ type Window struct {
 }
 
 var (
-	_ externglib.Objector = (*Window)(nil)
+	_ coreglib.Objector = (*Window)(nil)
 )
 
 // Windower describes Window's interface methods.
 type Windower interface {
-	externglib.Objector
+	coreglib.Objector
 
 	baseWindow() *Window
 }
@@ -61,7 +62,7 @@ var _ Windower = (*Window)(nil)
 func ifaceInitWindower(gifacePtr, data C.gpointer) {
 }
 
-func wrapWindow(obj *externglib.Object) *Window {
+func wrapWindow(obj *coreglib.Object) *Window {
 	return &Window{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -70,7 +71,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
-	return wrapWindow(externglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+	return wrapWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 func (v *Window) baseWindow() *Window {
@@ -86,7 +87,7 @@ func BaseWindow(obj Windower) *Window {
 func _gotk4_atk1_Window_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -100,15 +101,15 @@ func _gotk4_atk1_Window_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectActivate: signal Window::activate is emitted when a window becomes the
 // active window of the application or session.
-func (v *Window) ConnectActivate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "activate", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectActivate), f)
+func (v *Window) ConnectActivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "activate", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectActivate), f)
 }
 
 //export _gotk4_atk1_Window_ConnectCreate
 func _gotk4_atk1_Window_ConnectCreate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -121,15 +122,15 @@ func _gotk4_atk1_Window_ConnectCreate(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectCreate: signal Window::create is emitted when a new window is created.
-func (v *Window) ConnectCreate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "create", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectCreate), f)
+func (v *Window) ConnectCreate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "create", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectCreate), f)
 }
 
 //export _gotk4_atk1_Window_ConnectDeactivate
 func _gotk4_atk1_Window_ConnectDeactivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -143,15 +144,15 @@ func _gotk4_atk1_Window_ConnectDeactivate(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectDeactivate: signal Window::deactivate is emitted when a window is no
 // longer the active window of the application or session.
-func (v *Window) ConnectDeactivate(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "deactivate", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectDeactivate), f)
+func (v *Window) ConnectDeactivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "deactivate", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectDeactivate), f)
 }
 
 //export _gotk4_atk1_Window_ConnectDestroy
 func _gotk4_atk1_Window_ConnectDestroy(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -164,15 +165,15 @@ func _gotk4_atk1_Window_ConnectDestroy(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectDestroy: signal Window::destroy is emitted when a window is destroyed.
-func (v *Window) ConnectDestroy(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "destroy", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectDestroy), f)
+func (v *Window) ConnectDestroy(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "destroy", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectDestroy), f)
 }
 
 //export _gotk4_atk1_Window_ConnectMaximize
 func _gotk4_atk1_Window_ConnectMaximize(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -186,15 +187,15 @@ func _gotk4_atk1_Window_ConnectMaximize(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectMaximize: signal Window::maximize is emitted when a window is
 // maximized.
-func (v *Window) ConnectMaximize(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "maximize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMaximize), f)
+func (v *Window) ConnectMaximize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "maximize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMaximize), f)
 }
 
 //export _gotk4_atk1_Window_ConnectMinimize
 func _gotk4_atk1_Window_ConnectMinimize(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -208,15 +209,15 @@ func _gotk4_atk1_Window_ConnectMinimize(arg0 C.gpointer, arg1 C.guintptr) {
 
 // ConnectMinimize: signal Window::minimize is emitted when a window is
 // minimized.
-func (v *Window) ConnectMinimize(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "minimize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMinimize), f)
+func (v *Window) ConnectMinimize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "minimize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMinimize), f)
 }
 
 //export _gotk4_atk1_Window_ConnectMove
 func _gotk4_atk1_Window_ConnectMove(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -229,15 +230,15 @@ func _gotk4_atk1_Window_ConnectMove(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectMove: signal Window::move is emitted when a window is moved.
-func (v *Window) ConnectMove(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "move", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMove), f)
+func (v *Window) ConnectMove(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "move", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMove), f)
 }
 
 //export _gotk4_atk1_Window_ConnectResize
 func _gotk4_atk1_Window_ConnectResize(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -250,15 +251,15 @@ func _gotk4_atk1_Window_ConnectResize(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectResize: signal Window::resize is emitted when a window is resized.
-func (v *Window) ConnectResize(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "resize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectResize), f)
+func (v *Window) ConnectResize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "resize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectResize), f)
 }
 
 //export _gotk4_atk1_Window_ConnectRestore
 func _gotk4_atk1_Window_ConnectRestore(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
-		closure := externglib.ConnectedGeneratedClosure(uintptr(arg1))
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
 			panic("given unknown closure user_data")
 		}
@@ -271,6 +272,6 @@ func _gotk4_atk1_Window_ConnectRestore(arg0 C.gpointer, arg1 C.guintptr) {
 }
 
 // ConnectRestore: signal Window::restore is emitted when a window is restored.
-func (v *Window) ConnectRestore(f func()) externglib.SignalHandle {
-	return externglib.ConnectGeneratedClosure(v, "restore", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectRestore), f)
+func (v *Window) ConnectRestore(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "restore", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectRestore), f)
 }

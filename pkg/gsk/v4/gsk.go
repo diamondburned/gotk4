@@ -5,25 +5,14 @@ package gsk
 import (
 	_ "runtime/cgo"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gtk4
-// #cgo CFLAGS: -Wno-deprecated-declarations
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <gsk/gsk.h>
+// #include <glib.h>
 import "C"
 
-// The function returns the following values:
-//
-func SerializationErrorQuark() glib.Quark {
-	var _cret C.GQuark // in
-
-	_cret = C.gsk_serialization_error_quark()
-
-	var _quark glib.Quark // out
-
-	_quark = uint32(_cret)
-
-	return _quark
+func init() {
+	girepository.Require("Gsk", "4.0")
 }

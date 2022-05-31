@@ -3,10 +3,12 @@
 package gdk
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -17,14 +19,16 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_formats(GdkContentProvider*);
-// extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_storable_formats(GdkContentProvider*);
-// extern gboolean _gotk4_gdk4_ContentProviderClass_get_value(GdkContentProvider*, GValue*, GError**);
-// extern gboolean _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(GdkContentProvider*, GAsyncResult*, GError**);
-// extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(GdkContentProvider*, GdkClipboard*);
-// extern void _gotk4_gdk4_ContentProviderClass_content_changed(GdkContentProvider*);
-// extern void _gotk4_gdk4_ContentProviderClass_detach_clipboard(GdkContentProvider*, GdkClipboard*);
+// extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_formats(void*);
+// extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_storable_formats(void*);
+// extern gboolean _gotk4_gdk4_ContentProviderClass_get_value(void*, void*, GError**);
+// extern gboolean _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(void*, void*, GError**);
+// extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(void*, void*);
+// extern void _gotk4_gdk4_ContentProviderClass_content_changed(void*);
+// extern void _gotk4_gdk4_ContentProviderClass_detach_clipboard(void*, void*);
 // extern void _gotk4_gdk4_ContentProvider_ConnectContentChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gdkcontentprovider.go.
@@ -153,7 +157,7 @@ func classInitContentProviderer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gdk4_ContentProviderClass_attach_clipboard
-func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
+func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AttachClipboard(clipboard *Clipboard) })
 
@@ -165,7 +169,7 @@ func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.GdkContentProvide
 }
 
 //export _gotk4_gdk4_ContentProviderClass_content_changed
-func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.GdkContentProvider) {
+func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ContentChanged() })
 
@@ -173,7 +177,7 @@ func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.GdkContentProvider
 }
 
 //export _gotk4_gdk4_ContentProviderClass_detach_clipboard
-func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
+func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DetachClipboard(clipboard *Clipboard) })
 
@@ -185,7 +189,7 @@ func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.GdkContentProvide
 }
 
 //export _gotk4_gdk4_ContentProviderClass_get_value
-func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1 *C.GValue, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Value(value *coreglib.Value) error
@@ -205,7 +209,7 @@ func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1
 }
 
 //export _gotk4_gdk4_ContentProviderClass_ref_formats
-func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
+func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.void) (cret *C.GdkContentFormats) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefFormats() *ContentFormats })
 
@@ -217,7 +221,7 @@ func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.GdkContentProvider) (c
 }
 
 //export _gotk4_gdk4_ContentProviderClass_ref_storable_formats
-func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
+func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.void) (cret *C.GdkContentFormats) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefStorableFormats() *ContentFormats })
 
@@ -229,7 +233,7 @@ func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentPro
 }
 
 //export _gotk4_gdk4_ContentProviderClass_write_mime_type_finish
-func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.GdkContentProvider, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		WriteMIMETypeFinish(result gio.AsyncResulter) error
@@ -298,13 +302,14 @@ func (provider *ContentProvider) ConnectContentChanged(f func()) coreglib.Signal
 
 // ContentChanged emits the ::content-changed signal.
 func (provider *ContentProvider) ContentChanged() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	*(**ContentProvider)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("content_changed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("content_changed", _args[:], nil)
 
 	runtime.KeepAlive(provider)
 }
@@ -322,16 +327,18 @@ func (provider *ContentProvider) ContentChanged() {
 //    - value: GValue to fill.
 //
 func (provider *ContentProvider) Value(value *coreglib.Value) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(value.Native()))
-	*(**ContentProvider)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("get_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("get_value", _args[:], nil)
 
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(value)
@@ -353,14 +360,15 @@ func (provider *ContentProvider) Value(value *coreglib.Value) error {
 //    - contentFormats formats of the provider.
 //
 func (provider *ContentProvider) RefFormats() *ContentFormats {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	*(**ContentProvider)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("ref_formats", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("ref_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(provider)
@@ -390,14 +398,15 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 //    - contentFormats: storable formats of the provider.
 //
 func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	*(**ContentProvider)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("ref_storable_formats", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("ref_storable_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(provider)
@@ -415,6 +424,68 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	return _contentFormats
 }
 
+// WriteMIMETypeAsync: asynchronously writes the contents of provider to stream
+// in the given mime_type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
+//
+// The given mime type does not need to be listed in the formats returned by
+// gdk.ContentProvider.RefFormats(). However, if the given GType is not
+// supported, IO_ERROR_NOT_SUPPORTED will be reported.
+//
+// The given stream will not be closed.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
+//    - mimeType: mime type to provide the data in.
+//    - stream: GOutputStream to write to.
+//    - ioPriority: i/O priority of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int32, callback gio.AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg4 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg3 C.int      // out
+	var _arg5 C.gpointer // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.gpointer)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("write_mime_type_async", _args[:], nil)
+
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // WriteMIMETypeFinish finishes an asynchronous write operation.
 //
 // See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -424,16 +495,18 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 //    - result: GAsyncResult.
 //
 func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**ContentProvider)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("write_mime_type_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("write_mime_type_finish", _args[:], nil)
 
 	runtime.KeepAlive(provider)
 	runtime.KeepAlive(result)

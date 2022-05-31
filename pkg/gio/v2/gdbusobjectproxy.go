@@ -76,7 +76,7 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 //    - dBusObjectProxy: new BusObjectProxy.
 //
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -84,10 +84,11 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("new_DBusObjectProxy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("new_DBusObjectProxy", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
@@ -107,14 +108,15 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 //    - dBusConnection Do not free, the object is owned by proxy.
 //
 func (proxy *DBusObjectProxy) Connection() *DBusConnection {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-	*(**DBusObjectProxy)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("get_connection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("get_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)

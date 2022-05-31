@@ -154,14 +154,15 @@ func NewGestureLongPress() *GestureLongPress {
 //    - gdouble: delay factor.
 //
 func (gesture *GestureLongPress) DelayFactor() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	*(**GestureLongPress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("get_delay_factor", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("get_delay_factor", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
@@ -183,15 +184,17 @@ func (gesture *GestureLongPress) DelayFactor() float64 {
 //    - delayFactor: delay factor to apply.
 //
 func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.double // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	_arg1 = C.double(delayFactor)
-	*(**GestureLongPress)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("set_delay_factor", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("set_delay_factor", _args[:], nil)
 
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(delayFactor)

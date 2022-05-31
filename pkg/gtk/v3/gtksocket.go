@@ -16,9 +16,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk3_SocketClass_plug_removed(GtkSocket*);
+// extern gboolean _gotk4_gtk3_SocketClass_plug_removed(void*);
 // extern gboolean _gotk4_gtk3_Socket_ConnectPlugRemoved(gpointer, guintptr);
-// extern void _gotk4_gtk3_SocketClass_plug_added(GtkSocket*);
+// extern void _gotk4_gtk3_SocketClass_plug_added(void*);
 // extern void _gotk4_gtk3_Socket_ConnectPlugAdded(gpointer, guintptr);
 import "C"
 
@@ -115,7 +115,7 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_SocketClass_plug_added
-func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
+func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugAdded() })
 
@@ -123,7 +123,7 @@ func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
 }
 
 //export _gotk4_gtk3_SocketClass_plug_removed
-func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.GtkSocket) (cret C.gboolean) {
+func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugRemoved() bool })
 
@@ -237,14 +237,15 @@ func NewSocket() *Socket {
 //    - window (optional) of the plug if available, or NULL.
 //
 func (socket_ *Socket) PlugWindow() gdk.Windower {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
-	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("get_plug_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("get_plug_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket_)

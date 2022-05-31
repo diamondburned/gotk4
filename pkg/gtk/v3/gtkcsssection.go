@@ -128,12 +128,13 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 //    - guint: line number.
 //
 func (section *CSSSection) EndLine() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -158,12 +159,13 @@ func (section *CSSSection) EndLine() uint32 {
 //    - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) EndPosition() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -186,12 +188,13 @@ func (section *CSSSection) EndPosition() uint32 {
 //      other data.
 //
 func (section *CSSSection) File() *gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -221,12 +224,13 @@ func (section *CSSSection) File() *gio.File {
 //    - cssSection (optional): parent section or NULL if none.
 //
 func (section *CSSSection) Parent() *CSSSection {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -256,12 +260,13 @@ func (section *CSSSection) Parent() *CSSSection {
 //    - guint: line number.
 //
 func (section *CSSSection) StartLine() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -282,12 +287,13 @@ func (section *CSSSection) StartLine() uint32 {
 //    - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) StartPosition() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 

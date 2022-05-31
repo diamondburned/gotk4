@@ -5,6 +5,7 @@ package glib
 import (
 	"fmt"
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -372,6 +373,38 @@ func (scanner *Scanner) InputText(text string, textLen uint32) {
 	runtime.KeepAlive(textLen)
 }
 
+// LookupSymbol looks up a symbol in the current scope and return its value. If
+// the symbol is not bound in the current scope, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - symbol to look up.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): value of symbol in the current scope, or NULL if
+//      symbol is not bound in the current scope.
+//
+func (scanner *Scanner) LookupSymbol(symbol string) unsafe.Pointer {
+	var _arg0 *C.GScanner // out
+	var _arg1 *C.gchar    // out
+	var _cret C.gpointer  // in
+
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(symbol)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
 // PeekNextToken parses the next token, without removing it from the input
 // stream. The token data is placed in the next_token, next_value, next_line,
 // and next_position fields of the #GScanner structure.
@@ -402,6 +435,69 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 	_tokenType = TokenType(_cret)
 
 	return _tokenType
+}
+
+// ScopeAddSymbol adds a symbol to the given scope.
+//
+// The function takes the following parameters:
+//
+//    - scopeId: scope id.
+//    - symbol to add.
+//    - value (optional) of the symbol.
+//
+func (scanner *Scanner) ScopeAddSymbol(scopeId uint32, symbol string, value unsafe.Pointer) {
+	var _arg0 *C.GScanner // out
+	var _arg1 C.guint     // out
+	var _arg2 *C.gchar    // out
+	var _arg3 C.gpointer  // out
+
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
+	_arg1 = C.guint(scopeId)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (C.gpointer)(unsafe.Pointer(value))
+
+	C.g_scanner_scope_add_symbol(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(scopeId)
+	runtime.KeepAlive(symbol)
+	runtime.KeepAlive(value)
+}
+
+// ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
+// symbol is not bound in the scope, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - scopeId: scope id.
+//    - symbol to look up.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): value of symbol in the given scope, or NULL if
+//      symbol is not bound in the given scope.
+//
+func (scanner *Scanner) ScopeLookupSymbol(scopeId uint32, symbol string) unsafe.Pointer {
+	var _arg0 *C.GScanner // out
+	var _arg1 C.guint     // out
+	var _arg2 *C.gchar    // out
+	var _cret C.gpointer  // in
+
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
+	_arg1 = C.guint(scopeId)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(scopeId)
+	runtime.KeepAlive(symbol)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
 }
 
 // ScopeRemoveSymbol removes a symbol from a scope.

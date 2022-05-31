@@ -68,14 +68,15 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 //    - fileInfo (optional) or NULL.
 //
 func (compressor *ZlibCompressor) FileInfo() *FileInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(compressor).Native()))
-	*(**ZlibCompressor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ZlibCompressor").InvokeMethod("get_file_info", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ZlibCompressor").InvokeMethod("get_file_info", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(compressor)
@@ -103,7 +104,7 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 //    - fileInfo (optional): Info.
 //
 func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -111,9 +112,11 @@ func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	if fileInfo != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
 	}
-	*(**ZlibCompressor)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "ZlibCompressor").InvokeMethod("set_file_info", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "ZlibCompressor").InvokeMethod("set_file_info", _args[:], nil)
 
 	runtime.KeepAlive(compressor)
 	runtime.KeepAlive(fileInfo)

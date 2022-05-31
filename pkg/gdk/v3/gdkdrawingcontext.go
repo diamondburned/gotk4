@@ -79,14 +79,15 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 //      context is owned by the DrawingContext and should not be destroyed.
 //
 func (context *DrawingContext) CairoContext() *cairo.Context {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_cairo_context", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_cairo_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -109,14 +110,15 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 //    - region (optional): cairo region.
 //
 func (context *DrawingContext) Clip() *cairo.Region {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_clip", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_clip", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -143,14 +145,15 @@ func (context *DrawingContext) Clip() *cairo.Region {
 //    - window: Window.
 //
 func (context *DrawingContext) Window() Windower {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -185,14 +188,15 @@ func (context *DrawingContext) Window() Windower {
 //    - ok: TRUE if the context is valid.
 //
 func (context *DrawingContext) IsValid() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawingContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("is_valid", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("is_valid", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)

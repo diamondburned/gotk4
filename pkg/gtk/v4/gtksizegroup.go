@@ -128,15 +128,17 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 //    - widget: GtkWidget to add.
 //
 func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**SizeGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("add_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("add_widget", _args[:], nil)
 
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(widget)
@@ -150,14 +152,15 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 //      modified.
 //
 func (sizeGroup *SizeGroup) Widgets() []Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-	*(**SizeGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("get_widgets", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("get_widgets", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sizeGroup)
@@ -198,15 +201,17 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 //    - widget: GtkWidget to remove.
 //
 func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**SizeGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("remove_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("remove_widget", _args[:], nil)
 
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(widget)

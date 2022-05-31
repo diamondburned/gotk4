@@ -101,15 +101,17 @@ func BaseDrawContext(obj DrawContexter) *DrawContext {
 //    - region: minimum region that should be drawn.
 //
 func (context *DrawContext) BeginFrame(region *cairo.Region) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(region.Native()))
-	*(**DrawContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gdk", "DrawContext").InvokeMethod("begin_frame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "DrawContext").InvokeMethod("begin_frame", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(region)
@@ -125,13 +127,14 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 // before returning; it is not recommended to call glFlush() explicitly before
 // calling this function.
 func (context *DrawContext) EndFrame() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "DrawContext").InvokeMethod("end_frame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "DrawContext").InvokeMethod("end_frame", _args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -143,14 +146,15 @@ func (context *DrawContext) EndFrame() {
 //    - display (optional): GdkDisplay or NULL.
 //
 func (context *DrawContext) Display() *Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -178,14 +182,15 @@ func (context *DrawContext) Display() *Display {
 //    - region (optional): cairo region or NULL if not drawing a frame.
 //
 func (context *DrawContext) FrameRegion() *cairo.Region {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_frame_region", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_frame_region", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -213,14 +218,15 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 //    - surface (optional) or NULL.
 //
 func (context *DrawContext) Surface() Surfacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -260,14 +266,15 @@ func (context *DrawContext) Surface() Surfacer {
 //      gdk.DrawContext.EndFrame() calls.
 //
 func (context *DrawContext) IsInFrame() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**DrawContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("is_in_frame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DrawContext").InvokeMethod("is_in_frame", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)

@@ -104,7 +104,7 @@ func (k KeyEventType) String() string {
 type KeySnoopFunc func(event *KeyEventStruct) (gint int32)
 
 //export _gotk4_atk1_KeySnoopFunc
-func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret C.gint) {
+func _gotk4_atk1_KeySnoopFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gint) {
 	var fn KeySnoopFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -138,13 +138,14 @@ func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret 
 //    - object: Object.
 //
 func FocusTrackerNotify(object *ObjectClass) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	*(**ObjectClass)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "focus_tracker_notify").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "focus_tracker_notify").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(object)
 }
@@ -260,13 +261,14 @@ func GetVersion() string {
 //    - trackerId: id of the focus tracker to remove.
 //
 func RemoveFocusTracker(trackerId uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(trackerId)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "remove_focus_tracker").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "remove_focus_tracker").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(trackerId)
 }
@@ -288,13 +290,14 @@ func RemoveFocusTracker(trackerId uint32) {
 //    - listenerId: id of the event listener to remove.
 //
 func RemoveGlobalEventListener(listenerId uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(listenerId)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "remove_global_event_listener").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "remove_global_event_listener").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(listenerId)
 }
@@ -309,13 +312,14 @@ func RemoveGlobalEventListener(listenerId uint32) {
 //    - listenerId: id of the event listener to remove.
 //
 func RemoveKeyEventListener(listenerId uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(listenerId)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "remove_key_event_listener").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "remove_key_event_listener").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(listenerId)
 }

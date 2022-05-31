@@ -15,9 +15,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(GtkAccessible*);
-// extern void _gotk4_gtk3_AccessibleClass_widget_set(GtkAccessible*);
-// extern void _gotk4_gtk3_AccessibleClass_widget_unset(GtkAccessible*);
+// extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(void*);
+// extern void _gotk4_gtk3_AccessibleClass_widget_set(void*);
+// extern void _gotk4_gtk3_AccessibleClass_widget_unset(void*);
 import "C"
 
 // glib.Type values for gtkaccessible.go.
@@ -83,7 +83,7 @@ func classInitAccessibler(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_AccessibleClass_connect_widget_destroyed
-func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible) {
+func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectWidgetDestroyed() })
 
@@ -91,7 +91,7 @@ func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible)
 }
 
 //export _gotk4_gtk3_AccessibleClass_widget_set
-func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
+func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetSet() })
 
@@ -99,7 +99,7 @@ func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
 }
 
 //export _gotk4_gtk3_AccessibleClass_widget_unset
-func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.GtkAccessible) {
+func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetUnset() })
 
@@ -123,13 +123,14 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 func (accessible *Accessible) ConnectWidgetDestroyed() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(**Accessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Accessible").InvokeMethod("connect_widget_destroyed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Accessible").InvokeMethod("connect_widget_destroyed", _args[:], nil)
 
 	runtime.KeepAlive(accessible)
 }
@@ -143,14 +144,15 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 //      or NULL.
 //
 func (accessible *Accessible) Widget() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(**Accessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Accessible").InvokeMethod("get_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Accessible").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accessible)
@@ -188,7 +190,7 @@ func (accessible *Accessible) Widget() Widgetter {
 //    - widget (optional) or NULL to unset.
 //
 func (accessible *Accessible) SetWidget(widget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -196,9 +198,11 @@ func (accessible *Accessible) SetWidget(widget Widgetter) {
 	if widget != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
-	*(**Accessible)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Accessible").InvokeMethod("set_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Accessible").InvokeMethod("set_widget", _args[:], nil)
 
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(widget)

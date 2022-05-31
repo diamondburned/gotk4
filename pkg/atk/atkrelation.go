@@ -66,15 +66,17 @@ func marshalRelation(p uintptr) (interface{}, error) {
 //    - target: Object.
 //
 func (relation *Relation) AddTarget(target *ObjectClass) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-	*(**Relation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Atk", "Relation").InvokeMethod("add_target", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Atk", "Relation").InvokeMethod("add_target", _args[:], nil)
 
 	runtime.KeepAlive(relation)
 	runtime.KeepAlive(target)
@@ -92,16 +94,18 @@ func (relation *Relation) AddTarget(target *ObjectClass) {
 //    - ok: TRUE if the removal is successful.
 //
 func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-	*(**Relation)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "Relation").InvokeMethod("remove_target", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "Relation").InvokeMethod("remove_target", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(relation)

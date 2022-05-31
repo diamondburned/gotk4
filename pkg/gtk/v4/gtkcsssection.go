@@ -48,7 +48,7 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 
 // NewCSSSection constructs a struct CSSSection.
 func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSection {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -59,9 +59,10 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	}
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-	*(*gio.Filer)(unsafe.Pointer(&args[0])) = _arg0
-	*(**CSSLocation)(unsafe.Pointer(&args[1])) = _arg1
-	*(**CSSLocation)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -89,12 +90,13 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 //    - cssLocation: end location of this section.
 //
 func (section *CSSSection) EndLocation() *CSSLocation {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -117,12 +119,13 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 //    - file: GFile from which the section was parsed.
 //
 func (section *CSSSection) File() *gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -153,12 +156,13 @@ func (section *CSSSection) File() *gio.File {
 //    - cssSection (optional): parent section.
 //
 func (section *CSSSection) Parent() *CSSSection {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -188,12 +192,13 @@ func (section *CSSSection) Parent() *CSSSection {
 //    - cssLocation: start location of this section.
 //
 func (section *CSSSection) StartLocation() *CSSLocation {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -214,12 +219,13 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 //    - utf8: new string.
 //
 func (section *CSSSection) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-	*(**CSSSection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

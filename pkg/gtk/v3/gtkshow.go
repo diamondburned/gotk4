@@ -34,7 +34,7 @@ import "C"
 //    - timestamp to prevent focus stealing.
 //
 func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _arg2 C.guint32 // out
@@ -46,11 +46,12 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint32(timestamp)
-	*(**gdk.Screen)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "show_uri").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "show_uri").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(uri)
@@ -90,7 +91,7 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 //    - timestamp to prevent focus stealing.
 //
 func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _arg2 C.guint32 // out
@@ -102,11 +103,12 @@ func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint32(timestamp)
-	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "show_uri_on_window").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "show_uri_on_window").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(uri)

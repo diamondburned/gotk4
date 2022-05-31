@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -93,8 +94,8 @@ func _gotk4_gtk4_GestureDrag_ConnectDragBegin(arg0 C.gpointer, arg1 C.gdouble, a
 }
 
 // ConnectDragBegin is emitted whenever dragging starts.
-func (v *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(v, "drag-begin", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragBegin), f)
+func (gesture *GestureDrag) ConnectDragBegin(f func(startX, startY float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "drag-begin", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragBegin), f)
 }
 
 //export _gotk4_gtk4_GestureDrag_ConnectDragEnd
@@ -120,8 +121,8 @@ func _gotk4_gtk4_GestureDrag_ConnectDragEnd(arg0 C.gpointer, arg1 C.gdouble, arg
 }
 
 // ConnectDragEnd is emitted whenever the dragging is finished.
-func (v *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(v, "drag-end", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragEnd), f)
+func (gesture *GestureDrag) ConnectDragEnd(f func(offsetX, offsetY float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "drag-end", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragEnd), f)
 }
 
 //export _gotk4_gtk4_GestureDrag_ConnectDragUpdate
@@ -147,8 +148,8 @@ func _gotk4_gtk4_GestureDrag_ConnectDragUpdate(arg0 C.gpointer, arg1 C.gdouble, 
 }
 
 // ConnectDragUpdate is emitted whenever the dragging point moves.
-func (v *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(v, "drag-update", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragUpdate), f)
+func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "drag-update", false, unsafe.Pointer(C._gotk4_gtk4_GestureDrag_ConnectDragUpdate), f)
 }
 
 // NewGestureDrag returns a newly created GtkGesture that recognizes drags.
@@ -168,4 +169,99 @@ func NewGestureDrag() *GestureDrag {
 	_gestureDrag = wrapGestureDrag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureDrag
+}
+
+// Offset gets the offset from the start point.
+//
+// If the gesture is active, this function returns TRUE and fills in x and y
+// with the coordinates of the current point, as an offset to the starting drag
+// point.
+//
+// The function returns the following values:
+//
+//    - x (optional): x offset for the current point.
+//    - y (optional): y offset for the current point.
+//    - ok: TRUE if the gesture is active.
+//
+func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_offset", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(gesture)
+
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_x = *(*float64)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_y = *(*float64)(unsafe.Pointer(_out1))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _x, _y, _ok
+}
+
+// StartPoint gets the point where the drag started.
+//
+// If the gesture is active, this function returns TRUE and fills in x and y
+// with the drag start coordinates, in surface-relative coordinates.
+//
+// The function returns the following values:
+//
+//    - x (optional): x coordinate for the drag start point.
+//    - y (optional): y coordinate for the drag start point.
+//    - ok: TRUE if the gesture is active.
+//
+func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_start_point", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(gesture)
+
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_x = *(*float64)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_y = *(*float64)(unsafe.Pointer(_out1))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _x, _y, _ok
 }

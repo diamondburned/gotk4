@@ -14,9 +14,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GtkSizeGroup* _gotk4_gtk3_ToolShellIface_get_text_size_group(GtkToolShell*);
-// extern gfloat _gotk4_gtk3_ToolShellIface_get_text_alignment(GtkToolShell*);
-// extern void _gotk4_gtk3_ToolShellIface_rebuild_menu(GtkToolShell*);
+// extern GtkSizeGroup* _gotk4_gtk3_ToolShellIface_get_text_size_group(void*);
+// extern gfloat _gotk4_gtk3_ToolShellIface_get_text_alignment(void*);
+// extern void _gotk4_gtk3_ToolShellIface_rebuild_menu(void*);
 import "C"
 
 // glib.Type values for gtktoolshell.go.
@@ -95,7 +95,7 @@ func ifaceInitToolSheller(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_ToolShellIface_get_text_alignment
-func _gotk4_gtk3_ToolShellIface_get_text_alignment(arg0 *C.GtkToolShell) (cret C.gfloat) {
+func _gotk4_gtk3_ToolShellIface_get_text_alignment(arg0 *C.void) (cret C.gfloat) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
@@ -107,7 +107,7 @@ func _gotk4_gtk3_ToolShellIface_get_text_alignment(arg0 *C.GtkToolShell) (cret C
 }
 
 //export _gotk4_gtk3_ToolShellIface_get_text_size_group
-func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.GtkToolShell) (cret *C.GtkSizeGroup) {
+func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.void) (cret *C.GtkSizeGroup) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
@@ -119,7 +119,7 @@ func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.GtkToolShell) (cret 
 }
 
 //export _gotk4_gtk3_ToolShellIface_rebuild_menu
-func _gotk4_gtk3_ToolShellIface_rebuild_menu(arg0 *C.GtkToolShell) {
+func _gotk4_gtk3_ToolShellIface_rebuild_menu(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
@@ -156,12 +156,13 @@ func marshalToolShell(p uintptr) (interface{}, error) {
 //    - gfloat: current text alignment of shell.
 //
 func (shell *ToolShell) TextAlignment() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gfloat // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
-	*(**ToolShell)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
 
@@ -183,12 +184,13 @@ func (shell *ToolShell) TextAlignment() float32 {
 //    - sizeGroup: current text size group of shell.
 //
 func (shell *ToolShell) TextSizeGroup() *SizeGroup {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
-	*(**ToolShell)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -208,11 +210,12 @@ func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_rebuild_menu() instead.
 func (shell *ToolShell) RebuildMenu() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
-	*(**ToolShell)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(shell)
 }

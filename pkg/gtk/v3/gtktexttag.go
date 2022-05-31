@@ -16,7 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk3_TextTagClass_event(GtkTextTag*, GObject*, GdkEvent*, GtkTextIter*);
+// extern gboolean _gotk4_gtk3_TextTagClass_event(void*, void*, void*, void*);
 import "C"
 
 // glib.Type values for gtktexttag.go.
@@ -87,7 +87,7 @@ func classInitTextTagger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_TextTagClass_event
-func _gotk4_gtk3_TextTagClass_event(arg0 *C.GtkTextTag, arg1 *C.GObject, arg2 *C.GdkEvent, arg3 *C.GtkTextIter) (cret C.gboolean) {
+func _gotk4_gtk3_TextTagClass_event(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
@@ -136,7 +136,7 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 //    - textTag: new TextTag.
 //
 func NewTextTag(name string) *TextTag {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -144,9 +144,10 @@ func NewTextTag(name string) *TextTag {
 		_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg0))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("new_TextTag", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("new_TextTag", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -169,7 +170,7 @@ func NewTextTag(name string) *TextTag {
 //    - sizeChanged: whether the change affects the TextView layout.
 //
 func (tag *TextTag) Changed(sizeChanged bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -177,9 +178,11 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 	if sizeChanged {
 		_arg1 = C.TRUE
 	}
-	*(**TextTag)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "TextTag").InvokeMethod("changed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextTag").InvokeMethod("changed", _args[:], nil)
 
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(sizeChanged)
@@ -198,7 +201,7 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 //    - ok: result of signal emission (whether the event was handled).
 //
 func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -209,11 +212,13 @@ func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *
 	_arg1 = (*C.void)(unsafe.Pointer(eventObject.Native()))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	*(**TextTag)(unsafe.Pointer(&args[1])) = _arg1
-	*(**coreglib.Object)(unsafe.Pointer(&args[2])) = _arg2
-	*(**gdk.Event)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("event", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("event", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tag)
@@ -237,14 +242,15 @@ func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *
 //    - gint tag’s priority.
 //
 func (tag *TextTag) Priority() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	*(**TextTag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("get_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("get_priority", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tag)
@@ -272,15 +278,17 @@ func (tag *TextTag) Priority() int32 {
 //    - priority: new priority.
 //
 func (tag *TextTag) SetPriority(priority int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	_arg1 = C.gint(priority)
-	*(**TextTag)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "TextTag").InvokeMethod("set_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextTag").InvokeMethod("set_priority", _args[:], nil)
 
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)

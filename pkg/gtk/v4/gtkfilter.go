@@ -4,8 +4,10 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -13,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern gboolean _gotk4_gtk4_FilterClass_match(void*, gpointer);
 import "C"
 
 // glib.Type values for gtkfilter.go.
@@ -108,6 +111,18 @@ func (f FilterMatch) String() string {
 
 // FilterOverrider contains methods that are overridable.
 type FilterOverrider interface {
+	// Match checks if the given item is matched by the filter or not.
+	//
+	// The function takes the following parameters:
+	//
+	//    - item (optional) to check.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the filter matches the item and a filter model should
+	//      keep it, FALSE if not.
+	//
+	Match(item *coreglib.Object) bool
 }
 
 // Filter: GtkFilter object describes the filtering to be performed by a
@@ -143,6 +158,36 @@ func classInitFilterer(gclassPtr, data C.gpointer) {
 	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GtkFilterClass)(unsafe.Pointer(gclassPtr))
+	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
+	// pclass := (*C.GtkFilterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+
+	if _, ok := goval.(interface {
+		Match(item *coreglib.Object) bool
+	}); ok {
+		pclass.match = (*[0]byte)(C._gotk4_gtk4_FilterClass_match)
+	}
+}
+
+//export _gotk4_gtk4_FilterClass_match
+func _gotk4_gtk4_FilterClass_match(arg0 *C.void, arg1 C.gpointer) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Match(item *coreglib.Object) bool
+	})
+
+	var _item *coreglib.Object // out
+
+	_item = coreglib.Take(unsafe.Pointer(arg1))
+
+	ok := iface.Match(_item)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 func wrapFilter(obj *coreglib.Object) *Filter {
@@ -153,4 +198,42 @@ func wrapFilter(obj *coreglib.Object) *Filter {
 
 func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Match checks if the given item is matched by the filter or not.
+//
+// The function takes the following parameters:
+//
+//    - item to check.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the filter matches the item and a filter model should keep
+//      it, FALSE if not.
+//
+func (self *Filter) Match(item *coreglib.Object) bool {
+	var _args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Filter").InvokeMethod("match", _args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(item)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

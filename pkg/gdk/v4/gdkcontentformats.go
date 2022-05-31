@@ -40,15 +40,16 @@ func init() {
 //      string wasn't a valid mime type.
 //
 func InternMIMEType(str string) string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "intern_mime_type").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "intern_mime_type").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -105,13 +106,15 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 //    - formats to add.
 //
 func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-	*(**ContentFormatsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(formats)
@@ -124,14 +127,16 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 //    - mimeType: mime type.
 //
 func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ContentFormatsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(mimeType)
@@ -151,12 +156,13 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 //      added to builder.
 //
 func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
-	*(**ContentFormatsBuilder)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

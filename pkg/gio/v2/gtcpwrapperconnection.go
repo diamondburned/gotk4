@@ -78,17 +78,18 @@ func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 //    - tcpWrapperConnection: new Connection.
 //
 func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrapperConnection {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
-	*(*IOStreamer)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("new_TcpWrapperConnection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("new_TcpWrapperConnection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIoStream)
@@ -108,14 +109,15 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 //    - ioStream conn's base OStream.
 //
 func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**TCPWrapperConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("get_base_io_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("get_base_io_stream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)

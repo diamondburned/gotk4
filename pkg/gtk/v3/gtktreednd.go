@@ -14,11 +14,11 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk3_TreeDragDestIface_drag_data_received(GtkTreeDragDest*, GtkTreePath*, GtkSelectionData*);
-// extern gboolean _gotk4_gtk3_TreeDragDestIface_row_drop_possible(GtkTreeDragDest*, GtkTreePath*, GtkSelectionData*);
-// extern gboolean _gotk4_gtk3_TreeDragSourceIface_drag_data_delete(GtkTreeDragSource*, GtkTreePath*);
-// extern gboolean _gotk4_gtk3_TreeDragSourceIface_drag_data_get(GtkTreeDragSource*, GtkTreePath*, GtkSelectionData*);
-// extern gboolean _gotk4_gtk3_TreeDragSourceIface_row_draggable(GtkTreeDragSource*, GtkTreePath*);
+// extern gboolean _gotk4_gtk3_TreeDragDestIface_drag_data_received(void*, void*, void*);
+// extern gboolean _gotk4_gtk3_TreeDragDestIface_row_drop_possible(void*, void*, void*);
+// extern gboolean _gotk4_gtk3_TreeDragSourceIface_drag_data_delete(void*, void*);
+// extern gboolean _gotk4_gtk3_TreeDragSourceIface_drag_data_get(void*, void*, void*);
+// extern gboolean _gotk4_gtk3_TreeDragSourceIface_row_draggable(void*, void*);
 import "C"
 
 // glib.Type values for gtktreednd.go.
@@ -55,17 +55,18 @@ func init() {
 //      otherwise valid.
 //
 func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bool) {
-	var args [1]girepository.Argument
-	var outs [2]girepository.Argument
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _out0 *C.void    // in
 	var _out1 *C.void    // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "tree_get_row_drag_data").Invoke(args[:], outs[:])
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "tree_get_row_drag_data").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
@@ -73,8 +74,8 @@ func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bo
 	var _treeModel *TreeModel // out
 	var _path *TreePath       // out
 	var _ok bool              // out
-	_out0 = *(**TreeModel)(unsafe.Pointer(&outs[0]))
-	_out1 = *(**TreePath)(unsafe.Pointer(&outs[1]))
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	if _out0 != nil {
 		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_out0)))
@@ -110,7 +111,7 @@ func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bo
 //      set a tree row.
 //
 func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, path *TreePath) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -119,11 +120,12 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, pa
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
-	*(*TreeModeller)(unsafe.Pointer(&args[1])) = _arg1
-	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "tree_set_row_drag_data").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "tree_set_row_drag_data").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
@@ -209,7 +211,7 @@ func ifaceInitTreeDragDester(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_TreeDragDestIface_drag_data_received
-func _gotk4_gtk3_TreeDragDestIface_drag_data_received(arg0 *C.GtkTreeDragDest, arg1 *C.GtkTreePath, arg2 *C.GtkSelectionData) (cret C.gboolean) {
+func _gotk4_gtk3_TreeDragDestIface_drag_data_received(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragDestOverrider)
 
@@ -229,7 +231,7 @@ func _gotk4_gtk3_TreeDragDestIface_drag_data_received(arg0 *C.GtkTreeDragDest, a
 }
 
 //export _gotk4_gtk3_TreeDragDestIface_row_drop_possible
-func _gotk4_gtk3_TreeDragDestIface_row_drop_possible(arg0 *C.GtkTreeDragDest, arg1 *C.GtkTreePath, arg2 *C.GtkSelectionData) (cret C.gboolean) {
+func _gotk4_gtk3_TreeDragDestIface_row_drop_possible(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragDestOverrider)
 
@@ -274,7 +276,7 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 //    - ok: whether a new row was created before position dest.
 //
 func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -283,8 +285,10 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *Se
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**TreeDragDest)(unsafe.Pointer(&args[1])) = _arg1
-	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -317,7 +321,7 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *Se
 //    - ok: TRUE if a drop is possible before dest_path.
 //
 func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -326,8 +330,10 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, selectionData 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(destPath)))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**TreeDragDest)(unsafe.Pointer(&args[1])) = _arg1
-	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -427,7 +433,7 @@ func ifaceInitTreeDragSourcer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_TreeDragSourceIface_drag_data_delete
-func _gotk4_gtk3_TreeDragSourceIface_drag_data_delete(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath) (cret C.gboolean) {
+func _gotk4_gtk3_TreeDragSourceIface_drag_data_delete(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragSourceOverrider)
 
@@ -445,7 +451,7 @@ func _gotk4_gtk3_TreeDragSourceIface_drag_data_delete(arg0 *C.GtkTreeDragSource,
 }
 
 //export _gotk4_gtk3_TreeDragSourceIface_drag_data_get
-func _gotk4_gtk3_TreeDragSourceIface_drag_data_get(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath, arg2 *C.GtkSelectionData) (cret C.gboolean) {
+func _gotk4_gtk3_TreeDragSourceIface_drag_data_get(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragSourceOverrider)
 
@@ -465,7 +471,7 @@ func _gotk4_gtk3_TreeDragSourceIface_drag_data_get(arg0 *C.GtkTreeDragSource, ar
 }
 
 //export _gotk4_gtk3_TreeDragSourceIface_row_draggable
-func _gotk4_gtk3_TreeDragSourceIface_row_draggable(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath) (cret C.gboolean) {
+func _gotk4_gtk3_TreeDragSourceIface_row_draggable(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragSourceOverrider)
 
@@ -506,14 +512,16 @@ func marshalTreeDragSource(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the row was successfully deleted.
 //
 func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**TreeDragSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -544,7 +552,7 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 //    - ok: TRUE if data of the required type was provided.
 //
 func (dragSource *TreeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -553,8 +561,10 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath, selectionData *Sel
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**TreeDragSource)(unsafe.Pointer(&args[1])) = _arg1
-	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -584,14 +594,16 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath, selectionData *Sel
 //    - ok: TRUE if the row can be dragged.
 //
 func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**TreeDragSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

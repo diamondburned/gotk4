@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern void _gotk4_gdk4_Device_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gdk4_Device_ConnectToolChanged(gpointer, GdkDeviceTool*, guintptr);
+// extern void _gotk4_gdk4_Device_ConnectToolChanged(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gdkdevice.go.
@@ -153,7 +153,7 @@ func (device *Device) ConnectChanged(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gdk4_Device_ConnectToolChanged
-func _gotk4_gdk4_Device_ConnectToolChanged(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
+func _gotk4_gdk4_Device_ConnectToolChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(tool *DeviceTool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -188,14 +188,15 @@ func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) coreglib.Sign
 //    - ok: TRUE if Caps Lock is on for device.
 //
 func (device *Device) CapsLockState() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_caps_lock_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_caps_lock_state", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -216,14 +217,15 @@ func (device *Device) CapsLockState() bool {
 //    - deviceTool: GdkDeviceTool, or NULL.
 //
 func (device *Device) DeviceTool() *DeviceTool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_device_tool", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_device_tool", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -242,14 +244,15 @@ func (device *Device) DeviceTool() *DeviceTool {
 //    - display: GdkDisplay.
 //
 func (device *Device) Display() *Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -270,14 +273,15 @@ func (device *Device) Display() *Display {
 //    - ok: TRUE if the pointer follows device motion.
 //
 func (device *Device) HasCursor() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_has_cursor", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_has_cursor", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -298,14 +302,15 @@ func (device *Device) HasCursor() bool {
 //    - utf8: name.
 //
 func (device *Device) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -327,14 +332,15 @@ func (device *Device) Name() string {
 //    - ok: TRUE if Num Lock is on for device.
 //
 func (device *Device) NumLockState() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_num_lock_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_num_lock_state", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -355,14 +361,15 @@ func (device *Device) NumLockState() bool {
 //    - guint: number of touch points.
 //
 func (device *Device) NumTouches() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_num_touches", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_num_touches", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -384,14 +391,15 @@ func (device *Device) NumTouches() uint32 {
 //    - utf8 (optional): product ID, or NULL.
 //
 func (device *Device) ProductID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_product_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_product_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -415,14 +423,15 @@ func (device *Device) ProductID() string {
 //    - ok: TRUE if Scroll Lock is on for device.
 //
 func (device *Device) ScrollLockState() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_scroll_lock_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_scroll_lock_state", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -443,14 +452,15 @@ func (device *Device) ScrollLockState() bool {
 //    - seat: GdkSeat.
 //
 func (device *Device) Seat() Seater {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_seat", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_seat", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -478,6 +488,69 @@ func (device *Device) Seat() Seater {
 	return _seat
 }
 
+// SurfaceAtPosition obtains the surface underneath device, returning the
+// location of the device in win_x and win_y
+//
+// Returns NULL if the surface tree under device is not known to GDK (for
+// example, belongs to another application).
+//
+// The function returns the following values:
+//
+//    - winX (optional): return location for the X coordinate of the device
+//      location, relative to the surface origin, or NULL.
+//    - winY (optional): return location for the Y coordinate of the device
+//      location, relative to the surface origin, or NULL.
+//    - surface (optional): GdkSurface under the device position, or NULL.
+//
+func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface Surfacer) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_surface_at_position", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(device)
+
+	var _winX float64     // out
+	var _winY float64     // out
+	var _surface Surfacer // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_winX = *(*float64)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_winY = *(*float64)(unsafe.Pointer(_out1))
+	}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Surfacer)
+				return ok
+			})
+			rv, ok := casted.(Surfacer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+			}
+			_surface = rv
+		}
+	}
+
+	return _winX, _winY, _surface
+}
+
 // Timestamp returns the timestamp of the last activity for this device.
 //
 // In practice, this means the timestamp of the last event that was received
@@ -489,14 +562,15 @@ func (device *Device) Seat() Seater {
 //    - guint32: timestamp of the last activity for this device.
 //
 func (device *Device) Timestamp() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_timestamp", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_timestamp", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -538,14 +612,15 @@ func (device *Device) Timestamp() uint32 {
 //    - utf8 (optional): vendor ID, or NULL.
 //
 func (device *Device) VendorID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_vendor_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_vendor_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
@@ -569,14 +644,15 @@ func (device *Device) VendorID() string {
 //    - ok: TRUE if there are layouts with both directions, FALSE otherwise.
 //
 func (device *Device) HasBidiLayouts() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**Device)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("has_bidi_layouts", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("has_bidi_layouts", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)

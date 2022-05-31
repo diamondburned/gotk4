@@ -92,14 +92,15 @@ func NewTextChildAnchor() *TextChildAnchor {
 //    - ok: TRUE if the child anchor has been deleted from its buffer.
 //
 func (anchor *TextChildAnchor) Deleted() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-	*(**TextChildAnchor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_deleted", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_deleted", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(anchor)
@@ -121,14 +122,15 @@ func (anchor *TextChildAnchor) Deleted() bool {
 //    - list of widgets anchored at anchor.
 //
 func (anchor *TextChildAnchor) Widgets() []Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-	*(**TextChildAnchor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_widgets", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_widgets", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(anchor)

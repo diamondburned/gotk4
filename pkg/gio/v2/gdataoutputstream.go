@@ -80,14 +80,15 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 //    - dataOutputStream: OutputStream.
 //
 func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
-	*(*OutputStreamer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("new_DataOutputStream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("new_DataOutputStream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
@@ -107,7 +108,7 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 //    - data: #guchar.
 //
 func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg2 *C.void  // out
 	var _arg1 C.guchar // out
@@ -120,10 +121,12 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.guchar(data)
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_byte", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guchar)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_byte", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -146,7 +149,7 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 //    - data: #gint16.
 //
 func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg2 *C.void  // out
 	var _arg1 C.gint16 // out
@@ -159,10 +162,12 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gint16(data)
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int16", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint16)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int16", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -185,7 +190,7 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 //    - data: #gint32.
 //
 func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg2 *C.void  // out
 	var _arg1 C.gint32 // out
@@ -198,10 +203,12 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gint32(data)
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int32", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint32)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int32", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -224,7 +231,7 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 //    - data: #gint64.
 //
 func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg2 *C.void  // out
 	var _arg1 C.gint64 // out
@@ -237,10 +244,12 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gint64(data)
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint64)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int64", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -263,7 +272,7 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 //    - str: string.
 //
 func (stream *DataOutputStream) PutString(ctx context.Context, str string) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg2 *C.void // out
 	var _arg1 *C.void // out
@@ -277,10 +286,12 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 	}
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_string", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -303,7 +314,7 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 //    - data: #guint16.
 //
 func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg2 *C.void   // out
 	var _arg1 C.guint16 // out
@@ -316,10 +327,12 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.guint16(data)
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint16", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint16", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -342,7 +355,7 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 //    - data: #guint32.
 //
 func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg2 *C.void   // out
 	var _arg1 C.guint32 // out
@@ -355,10 +368,12 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.guint32(data)
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint32", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint32", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -381,7 +396,7 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 //    - data: #guint64.
 //
 func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg2 *C.void   // out
 	var _arg1 C.guint64 // out
@@ -394,10 +409,12 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.guint64(data)
-	*(**DataOutputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint64)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint64", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)

@@ -13,42 +13,42 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern AtkObject* _gotk4_atk1_TableIface_get_caption(AtkTable*);
-// extern AtkObject* _gotk4_atk1_TableIface_get_column_header(AtkTable*, gint);
-// extern AtkObject* _gotk4_atk1_TableIface_get_row_header(AtkTable*, gint);
-// extern AtkObject* _gotk4_atk1_TableIface_get_summary(AtkTable*);
-// extern AtkObject* _gotk4_atk1_TableIface_ref_at(AtkTable*, gint, gint);
-// extern gboolean _gotk4_atk1_TableIface_add_column_selection(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_add_row_selection(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_is_column_selected(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_is_row_selected(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_is_selected(AtkTable*, gint, gint);
-// extern gboolean _gotk4_atk1_TableIface_remove_column_selection(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_remove_row_selection(AtkTable*, gint);
-// extern gchar* _gotk4_atk1_TableIface_get_column_description(AtkTable*, gint);
-// extern gchar* _gotk4_atk1_TableIface_get_row_description(AtkTable*, gint);
-// extern gint _gotk4_atk1_TableIface_get_column_at_index(AtkTable*, gint);
-// extern gint _gotk4_atk1_TableIface_get_column_extent_at(AtkTable*, gint, gint);
-// extern gint _gotk4_atk1_TableIface_get_index_at(AtkTable*, gint, gint);
-// extern gint _gotk4_atk1_TableIface_get_n_columns(AtkTable*);
-// extern gint _gotk4_atk1_TableIface_get_n_rows(AtkTable*);
-// extern gint _gotk4_atk1_TableIface_get_row_at_index(AtkTable*, gint);
-// extern gint _gotk4_atk1_TableIface_get_row_extent_at(AtkTable*, gint, gint);
-// extern gint _gotk4_atk1_TableIface_get_selected_columns(AtkTable*, gint**);
-// extern gint _gotk4_atk1_TableIface_get_selected_rows(AtkTable*, gint**);
-// extern void _gotk4_atk1_TableIface_column_deleted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_column_inserted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_column_reordered(AtkTable*);
-// extern void _gotk4_atk1_TableIface_model_changed(AtkTable*);
-// extern void _gotk4_atk1_TableIface_row_deleted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_row_inserted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_row_reordered(AtkTable*);
-// extern void _gotk4_atk1_TableIface_set_caption(AtkTable*, AtkObject*);
-// extern void _gotk4_atk1_TableIface_set_column_description(AtkTable*, gint, gchar*);
-// extern void _gotk4_atk1_TableIface_set_column_header(AtkTable*, gint, AtkObject*);
-// extern void _gotk4_atk1_TableIface_set_row_description(AtkTable*, gint, gchar*);
-// extern void _gotk4_atk1_TableIface_set_row_header(AtkTable*, gint, AtkObject*);
-// extern void _gotk4_atk1_TableIface_set_summary(AtkTable*, AtkObject*);
+// extern AtkObject* _gotk4_atk1_TableIface_get_caption(void*);
+// extern AtkObject* _gotk4_atk1_TableIface_get_column_header(void*, gint);
+// extern AtkObject* _gotk4_atk1_TableIface_get_row_header(void*, gint);
+// extern AtkObject* _gotk4_atk1_TableIface_get_summary(void*);
+// extern AtkObject* _gotk4_atk1_TableIface_ref_at(void*, gint, gint);
+// extern gboolean _gotk4_atk1_TableIface_add_column_selection(void*, gint);
+// extern gboolean _gotk4_atk1_TableIface_add_row_selection(void*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_column_selected(void*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_row_selected(void*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_selected(void*, gint, gint);
+// extern gboolean _gotk4_atk1_TableIface_remove_column_selection(void*, gint);
+// extern gboolean _gotk4_atk1_TableIface_remove_row_selection(void*, gint);
+// extern gchar* _gotk4_atk1_TableIface_get_column_description(void*, gint);
+// extern gchar* _gotk4_atk1_TableIface_get_row_description(void*, gint);
+// extern gint _gotk4_atk1_TableIface_get_column_at_index(void*, gint);
+// extern gint _gotk4_atk1_TableIface_get_column_extent_at(void*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_index_at(void*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_n_columns(void*);
+// extern gint _gotk4_atk1_TableIface_get_n_rows(void*);
+// extern gint _gotk4_atk1_TableIface_get_row_at_index(void*, gint);
+// extern gint _gotk4_atk1_TableIface_get_row_extent_at(void*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_selected_columns(void*, void**);
+// extern gint _gotk4_atk1_TableIface_get_selected_rows(void*, void**);
+// extern void _gotk4_atk1_TableIface_column_deleted(void*, gint, gint);
+// extern void _gotk4_atk1_TableIface_column_inserted(void*, gint, gint);
+// extern void _gotk4_atk1_TableIface_column_reordered(void*);
+// extern void _gotk4_atk1_TableIface_model_changed(void*);
+// extern void _gotk4_atk1_TableIface_row_deleted(void*, gint, gint);
+// extern void _gotk4_atk1_TableIface_row_inserted(void*, gint, gint);
+// extern void _gotk4_atk1_TableIface_row_reordered(void*);
+// extern void _gotk4_atk1_TableIface_set_caption(void*, void*);
+// extern void _gotk4_atk1_TableIface_set_column_description(void*, gint, void*);
+// extern void _gotk4_atk1_TableIface_set_column_header(void*, gint, void*);
+// extern void _gotk4_atk1_TableIface_set_row_description(void*, gint, void*);
+// extern void _gotk4_atk1_TableIface_set_row_header(void*, gint, void*);
+// extern void _gotk4_atk1_TableIface_set_summary(void*, void*);
 // extern void _gotk4_atk1_Table_ConnectColumnDeleted(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Table_ConnectColumnInserted(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Table_ConnectColumnReordered(gpointer, guintptr);
@@ -615,7 +615,7 @@ func ifaceInitTabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_TableIface_add_column_selection
-func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -633,7 +633,7 @@ func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.AtkTable, arg1 C.gint) 
 }
 
 //export _gotk4_atk1_TableIface_add_row_selection
-func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -651,7 +651,7 @@ func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cr
 }
 
 //export _gotk4_atk1_TableIface_column_deleted
-func _gotk4_atk1_TableIface_column_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_TableIface_column_deleted(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -665,7 +665,7 @@ func _gotk4_atk1_TableIface_column_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C
 }
 
 //export _gotk4_atk1_TableIface_column_inserted
-func _gotk4_atk1_TableIface_column_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_TableIface_column_inserted(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -679,7 +679,7 @@ func _gotk4_atk1_TableIface_column_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 
 }
 
 //export _gotk4_atk1_TableIface_column_reordered
-func _gotk4_atk1_TableIface_column_reordered(arg0 *C.AtkTable) {
+func _gotk4_atk1_TableIface_column_reordered(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -687,7 +687,7 @@ func _gotk4_atk1_TableIface_column_reordered(arg0 *C.AtkTable) {
 }
 
 //export _gotk4_atk1_TableIface_get_caption
-func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_caption(arg0 *C.void) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -701,7 +701,7 @@ func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
 }
 
 //export _gotk4_atk1_TableIface_get_column_at_index
-func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.void, arg1 C.gint) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -717,7 +717,7 @@ func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.AtkTable, arg1 C.gint) (
 }
 
 //export _gotk4_atk1_TableIface_get_column_description
-func _gotk4_atk1_TableIface_get_column_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TableIface_get_column_description(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -734,7 +734,7 @@ func _gotk4_atk1_TableIface_get_column_description(arg0 *C.AtkTable, arg1 C.gint
 }
 
 //export _gotk4_atk1_TableIface_get_column_extent_at
-func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -752,7 +752,7 @@ func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.AtkTable, arg1 C.gint, 
 }
 
 //export _gotk4_atk1_TableIface_get_column_header
-func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_column_header(arg0 *C.void, arg1 C.gint) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -770,7 +770,7 @@ func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cr
 }
 
 //export _gotk4_atk1_TableIface_get_index_at
-func _gotk4_atk1_TableIface_get_index_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_index_at(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -788,7 +788,7 @@ func _gotk4_atk1_TableIface_get_index_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.g
 }
 
 //export _gotk4_atk1_TableIface_get_n_columns
-func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.AtkTable) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -800,7 +800,7 @@ func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.AtkTable) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TableIface_get_n_rows
-func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.AtkTable) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -812,7 +812,7 @@ func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.AtkTable) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TableIface_get_row_at_index
-func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.void, arg1 C.gint) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -828,7 +828,7 @@ func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.AtkTable, arg1 C.gint) (cre
 }
 
 //export _gotk4_atk1_TableIface_get_row_description
-func _gotk4_atk1_TableIface_get_row_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TableIface_get_row_description(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -847,7 +847,7 @@ func _gotk4_atk1_TableIface_get_row_description(arg0 *C.AtkTable, arg1 C.gint) (
 }
 
 //export _gotk4_atk1_TableIface_get_row_extent_at
-func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -865,7 +865,7 @@ func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg
 }
 
 //export _gotk4_atk1_TableIface_get_row_header
-func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_row_header(arg0 *C.void, arg1 C.gint) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -883,7 +883,7 @@ func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret 
 }
 
 //export _gotk4_atk1_TableIface_get_selected_columns
-func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.void, arg1 **C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -899,7 +899,7 @@ func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.AtkTable, arg1 **C.gint
 }
 
 //export _gotk4_atk1_TableIface_get_selected_rows
-func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
+func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.void, arg1 **C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -915,7 +915,7 @@ func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.AtkTable, arg1 **C.gint) (
 }
 
 //export _gotk4_atk1_TableIface_get_summary
-func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_summary(arg0 *C.void) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -928,7 +928,7 @@ func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
 }
 
 //export _gotk4_atk1_TableIface_is_column_selected
-func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -946,7 +946,7 @@ func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.AtkTable, arg1 C.gint) (c
 }
 
 //export _gotk4_atk1_TableIface_is_row_selected
-func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -964,7 +964,7 @@ func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.AtkTable, arg1 C.gint) (cret
 }
 
 //export _gotk4_atk1_TableIface_is_selected
-func _gotk4_atk1_TableIface_is_selected(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableIface_is_selected(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -984,7 +984,7 @@ func _gotk4_atk1_TableIface_is_selected(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gi
 }
 
 //export _gotk4_atk1_TableIface_model_changed
-func _gotk4_atk1_TableIface_model_changed(arg0 *C.AtkTable) {
+func _gotk4_atk1_TableIface_model_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -992,7 +992,7 @@ func _gotk4_atk1_TableIface_model_changed(arg0 *C.AtkTable) {
 }
 
 //export _gotk4_atk1_TableIface_ref_at
-func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_ref_at(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1011,7 +1011,7 @@ func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (
 }
 
 //export _gotk4_atk1_TableIface_remove_column_selection
-func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1029,7 +1029,7 @@ func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.AtkTable, arg1 C.gin
 }
 
 //export _gotk4_atk1_TableIface_remove_row_selection
-func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1047,7 +1047,7 @@ func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.AtkTable, arg1 C.gint) 
 }
 
 //export _gotk4_atk1_TableIface_row_deleted
-func _gotk4_atk1_TableIface_row_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_TableIface_row_deleted(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1061,7 +1061,7 @@ func _gotk4_atk1_TableIface_row_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gi
 }
 
 //export _gotk4_atk1_TableIface_row_inserted
-func _gotk4_atk1_TableIface_row_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_TableIface_row_inserted(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1075,7 +1075,7 @@ func _gotk4_atk1_TableIface_row_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.g
 }
 
 //export _gotk4_atk1_TableIface_row_reordered
-func _gotk4_atk1_TableIface_row_reordered(arg0 *C.AtkTable) {
+func _gotk4_atk1_TableIface_row_reordered(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1083,7 +1083,7 @@ func _gotk4_atk1_TableIface_row_reordered(arg0 *C.AtkTable) {
 }
 
 //export _gotk4_atk1_TableIface_set_caption
-func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
+func _gotk4_atk1_TableIface_set_caption(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1095,7 +1095,7 @@ func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
 }
 
 //export _gotk4_atk1_TableIface_set_column_description
-func _gotk4_atk1_TableIface_set_column_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
+func _gotk4_atk1_TableIface_set_column_description(arg0 *C.void, arg1 C.gint, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1109,7 +1109,7 @@ func _gotk4_atk1_TableIface_set_column_description(arg0 *C.AtkTable, arg1 C.gint
 }
 
 //export _gotk4_atk1_TableIface_set_column_header
-func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
+func _gotk4_atk1_TableIface_set_column_header(arg0 *C.void, arg1 C.gint, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1123,7 +1123,7 @@ func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg
 }
 
 //export _gotk4_atk1_TableIface_set_row_description
-func _gotk4_atk1_TableIface_set_row_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
+func _gotk4_atk1_TableIface_set_row_description(arg0 *C.void, arg1 C.gint, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1137,7 +1137,7 @@ func _gotk4_atk1_TableIface_set_row_description(arg0 *C.AtkTable, arg1 C.gint, a
 }
 
 //export _gotk4_atk1_TableIface_set_row_header
-func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
+func _gotk4_atk1_TableIface_set_row_header(arg0 *C.void, arg1 C.gint, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1151,7 +1151,7 @@ func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *
 }
 
 //export _gotk4_atk1_TableIface_set_summary
-func _gotk4_atk1_TableIface_set_summary(arg0 *C.AtkTable, arg1 *C.AtkObject) {
+func _gotk4_atk1_TableIface_set_summary(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1363,14 +1363,16 @@ func (table *Table) ConnectRowReordered(f func()) coreglib.SignalHandle {
 //      selection, or 0 if value does not implement this interface.
 //
 func (table *Table) AddColumnSelection(column int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1398,14 +1400,16 @@ func (table *Table) AddColumnSelection(column int32) bool {
 //      0 if value does not implement this interface.
 //
 func (table *Table) AddRowSelection(row int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1429,12 +1433,13 @@ func (table *Table) AddRowSelection(row int32) bool {
 //      value does not implement this interface.
 //
 func (table *Table) Caption() *ObjectClass {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**Table)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1463,14 +1468,16 @@ func (table *Table) Caption() *ObjectClass {
 //      does not implement this method.
 //
 func (table *Table) ColumnAtIndex(index_ int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(index_)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1497,14 +1504,16 @@ func (table *Table) ColumnAtIndex(index_ int32) int32 {
 //      not implement this interface.
 //
 func (table *Table) ColumnDescription(column int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1532,7 +1541,7 @@ func (table *Table) ColumnDescription(column int32) string {
 //      does not implement this interface.
 //
 func (table *Table) ColumnExtentAt(row, column int32) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -1541,8 +1550,10 @@ func (table *Table) ColumnExtentAt(row, column int32) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1570,14 +1581,16 @@ func (table *Table) ColumnExtentAt(row, column int32) int32 {
 //      or NULL if value does not implement this interface.
 //
 func (table *Table) ColumnHeader(column int32) *ObjectClass {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1610,7 +1623,7 @@ func (table *Table) ColumnHeader(column int32) *ObjectClass {
 //      does not implement this interface.
 //
 func (table *Table) IndexAt(row, column int32) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -1619,8 +1632,10 @@ func (table *Table) IndexAt(row, column int32) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1643,12 +1658,13 @@ func (table *Table) IndexAt(row, column int32) int32 {
 //      this interface.
 //
 func (table *Table) NColumns() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**Table)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1669,12 +1685,13 @@ func (table *Table) NColumns() int32 {
 //      this interface.
 //
 func (table *Table) NRows() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**Table)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1701,14 +1718,16 @@ func (table *Table) NRows() int32 {
 //      not implement this method.
 //
 func (table *Table) RowAtIndex(index_ int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(index_)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1734,14 +1753,16 @@ func (table *Table) RowAtIndex(index_ int32) int32 {
 //      value does not implement this interface.
 //
 func (table *Table) RowDescription(row int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1771,7 +1792,7 @@ func (table *Table) RowDescription(row int32) string {
 //      does not implement this interface.
 //
 func (table *Table) RowExtentAt(row, column int32) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -1780,8 +1801,10 @@ func (table *Table) RowExtentAt(row, column int32) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1808,14 +1831,16 @@ func (table *Table) RowExtentAt(row, column int32) int32 {
 //      NULL if value does not implement this interface.
 //
 func (table *Table) RowHeader(row int32) *ObjectClass {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1845,14 +1870,16 @@ func (table *Table) RowHeader(row int32) *ObjectClass {
 //      implement this interface.
 //
 func (table *Table) SelectedColumns(selected **int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 **C.void // out
 	var _cret C.gint   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = (**C.void)(unsafe.Pointer(selected))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1879,14 +1906,16 @@ func (table *Table) SelectedColumns(selected **int32) int32 {
 //      implement this interface.
 //
 func (table *Table) SelectedRows(selected **int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 **C.void // out
 	var _cret C.gint   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = (**C.void)(unsafe.Pointer(selected))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1908,12 +1937,13 @@ func (table *Table) SelectedRows(selected **int32) int32 {
 //      zero if value does not implement this interface.
 //
 func (table *Table) Summary() *ObjectClass {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**Table)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1939,14 +1969,16 @@ func (table *Table) Summary() *ObjectClass {
 //      not implement this interface.
 //
 func (table *Table) IsColumnSelected(column int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1975,14 +2007,16 @@ func (table *Table) IsColumnSelected(column int32) bool {
 //      implement this interface.
 //
 func (table *Table) IsRowSelected(row int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2012,7 +2046,7 @@ func (table *Table) IsRowSelected(row int32) bool {
 //      implement this interface.
 //
 func (table *Table) IsSelected(row, column int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -2021,8 +2055,10 @@ func (table *Table) IsSelected(row, column int32) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2052,7 +2088,7 @@ func (table *Table) IsSelected(row, column int32) bool {
 //    - object representing the referred to accessible.
 //
 func (table *Table) RefAt(row, column int32) *ObjectClass {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -2061,8 +2097,10 @@ func (table *Table) RefAt(row, column int32) *ObjectClass {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2089,14 +2127,16 @@ func (table *Table) RefAt(row, column int32) *ObjectClass {
 //      selection, or 0 if value does not implement this interface.
 //
 func (table *Table) RemoveColumnSelection(column int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2124,14 +2164,16 @@ func (table *Table) RemoveColumnSelection(column int32) bool {
 //      selection, or 0 if value does not implement this interface.
 //
 func (table *Table) RemoveRowSelection(row int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2154,13 +2196,15 @@ func (table *Table) RemoveRowSelection(row int32) bool {
 //    - caption representing the caption to set for table.
 //
 func (table *Table) SetCaption(caption *ObjectClass) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(caption).Native()))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(caption)
@@ -2176,7 +2220,7 @@ func (table *Table) SetCaption(caption *ObjectClass) {
 //      column of the table.
 //
 func (table *Table) SetColumnDescription(column int32, description string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -2185,8 +2229,10 @@ func (table *Table) SetColumnDescription(column int32, description string) {
 	_arg1 = C.gint(column)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -2201,7 +2247,7 @@ func (table *Table) SetColumnDescription(column int32, description string) {
 //    - header: Table.
 //
 func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -2209,8 +2255,10 @@ func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(column)
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -2226,7 +2274,7 @@ func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
 //      row of table.
 //
 func (table *Table) SetRowDescription(row int32, description string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -2235,8 +2283,10 @@ func (table *Table) SetRowDescription(row int32, description string) {
 	_arg1 = C.gint(row)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -2251,7 +2301,7 @@ func (table *Table) SetRowDescription(row int32, description string) {
 //    - header: Table.
 //
 func (table *Table) SetRowHeader(row int32, header *ObjectClass) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -2259,8 +2309,10 @@ func (table *Table) SetRowHeader(row int32, header *ObjectClass) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.gint(row)
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -2274,13 +2326,15 @@ func (table *Table) SetRowHeader(row int32, header *ObjectClass) {
 //    - accessible representing the summary description to set for table.
 //
 func (table *Table) SetSummary(accessible *ObjectClass) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(accessible)

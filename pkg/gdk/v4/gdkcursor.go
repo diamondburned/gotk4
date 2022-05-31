@@ -113,7 +113,7 @@ func marshalCursor(p uintptr) (interface{}, error) {
 //      given name.
 //
 func NewCursorFromName(name string, fallback *Cursor) *Cursor {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -123,10 +123,11 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	if fallback != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Cursor)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -156,7 +157,7 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 //    - cursor: new GdkCursor.
 //
 func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *Cursor) *Cursor {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -169,12 +170,13 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *
 	if fallback != nil {
 		_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
-	*(*Texturer)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(**Cursor)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_texture", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_texture", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(texture)
@@ -203,14 +205,15 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *
 //      as fallback.
 //
 func (cursor *Cursor) Fallback() *Cursor {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_fallback", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_fallback", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
@@ -237,14 +240,15 @@ func (cursor *Cursor) Fallback() *Cursor {
 //    - gint: horizontal offset of the hotspot or 0 for named cursors.
 //
 func (cursor *Cursor) HotspotX() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_x", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_x", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
@@ -269,14 +273,15 @@ func (cursor *Cursor) HotspotX() int32 {
 //    - gint: vertical offset of the hotspot or 0 for named cursors.
 //
 func (cursor *Cursor) HotspotY() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_y", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_y", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
@@ -297,14 +302,15 @@ func (cursor *Cursor) HotspotY() int32 {
 //    - utf8 (optional): name of the cursor or NULL if it is not a named cursor.
 //
 func (cursor *Cursor) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
@@ -327,14 +333,15 @@ func (cursor *Cursor) Name() string {
 //    - texture (optional) for cursor or NULL if it is a named cursor.
 //
 func (cursor *Cursor) Texture() Texturer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_texture", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_texture", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)

@@ -134,7 +134,7 @@ func NewFixed() *Fixed {
 //    - y: vertical position to move the widget to.
 //
 func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -144,11 +144,13 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
-	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Fixed").InvokeMethod("move", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Fixed").InvokeMethod("move", _args[:], nil)
 
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
@@ -165,7 +167,7 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
 //    - y: vertical position to place the widget at.
 //
 func (fixed *Fixed) Put(widget Widgetter, x, y int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -175,11 +177,13 @@ func (fixed *Fixed) Put(widget Widgetter, x, y int32) {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
-	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Fixed").InvokeMethod("put", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Fixed").InvokeMethod("put", _args[:], nil)
 
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)

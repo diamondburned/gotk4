@@ -51,7 +51,7 @@ func NewDBusMessage() *DBusMessage {
 //    - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessage {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -70,12 +70,13 @@ func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessag
 	}
 	_arg3 = (*C.void)(unsafe.Pointer(C.CString(method)))
 	defer C.free(unsafe.Pointer(_arg3))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_DBusMessage_method_call", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_DBusMessage_method_call", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -103,7 +104,7 @@ func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessag
 //    - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -115,11 +116,12 @@ func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(signal)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_DBusMessage_signal", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_DBusMessage_signal", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
@@ -145,15 +147,16 @@ func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 //      g_object_unref().
 //
 func (message *DBusMessage) Copy() (*DBusMessage, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("copy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("copy", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -177,14 +180,15 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 //      message is not a string.
 //
 func (message *DBusMessage) Arg0() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_arg0", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_arg0", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -206,14 +210,15 @@ func (message *DBusMessage) Arg0() string {
 //      by message.
 //
 func (message *DBusMessage) Body() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_body", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_body", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -242,14 +247,15 @@ func (message *DBusMessage) Body() *glib.Variant {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Destination() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_destination", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_destination", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -271,14 +277,15 @@ func (message *DBusMessage) Destination() string {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) ErrorName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_error_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_error_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -301,14 +308,15 @@ func (message *DBusMessage) ErrorName() string {
 //      g_free().
 //
 func (message *DBusMessage) HeaderFields() []byte {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret *C.guchar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_header_fields", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_header_fields", _args[:], nil)
 	_cret = *(**C.guchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -340,14 +348,15 @@ func (message *DBusMessage) HeaderFields() []byte {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Interface() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_interface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_interface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -370,14 +379,15 @@ func (message *DBusMessage) Interface() string {
 //    - ok: TRUE if message is locked, FALSE otherwise.
 //
 func (message *DBusMessage) Locked() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_locked", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_locked", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -399,14 +409,15 @@ func (message *DBusMessage) Locked() bool {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Member() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_member", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_member", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -428,14 +439,15 @@ func (message *DBusMessage) Member() string {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Path() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -457,14 +469,15 @@ func (message *DBusMessage) Path() string {
 //    - guint32: value.
 //
 func (message *DBusMessage) ReplySerial() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_reply_serial", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_reply_serial", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -484,14 +497,15 @@ func (message *DBusMessage) ReplySerial() uint32 {
 //    - utf8 (optional): value.
 //
 func (message *DBusMessage) Sender() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_sender", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_sender", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -512,14 +526,15 @@ func (message *DBusMessage) Sender() string {
 //    - guint32: #guint32.
 //
 func (message *DBusMessage) Serial() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_serial", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_serial", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -539,14 +554,15 @@ func (message *DBusMessage) Serial() uint32 {
 //    - utf8: value.
 //
 func (message *DBusMessage) Signature() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_signature", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("get_signature", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -560,13 +576,14 @@ func (message *DBusMessage) Signature() string {
 
 // Lock: if message is locked, does nothing. Otherwise locks the message.
 func (message *DBusMessage) Lock() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("lock", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("lock", _args[:], nil)
 
 	runtime.KeepAlive(message)
 }
@@ -584,7 +601,7 @@ func (message *DBusMessage) Lock() {
 //    - dBusMessage Free with g_object_unref().
 //
 func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMessage string) *DBusMessage {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -595,10 +612,12 @@ func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMess
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(errorMessage)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_method_error_literal", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_method_error_literal", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(methodCallMessage)
@@ -620,14 +639,15 @@ func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMess
 //    - dBusMessage Free with g_object_unref().
 //
 func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(methodCallMessage).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_method_reply", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("new_method_reply", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(methodCallMessage)
@@ -680,16 +700,18 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //    - utf8: string that should be freed with g_free().
 //
 func (message *DBusMessage) Print(indent uint32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	_arg1 = C.guint(indent)
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("print", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DBusMessage").InvokeMethod("print", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -714,15 +736,17 @@ func (message *DBusMessage) Print(indent uint32) string {
 //    - body: either NULL or a #GVariant that is a tuple.
 //
 func (message *DBusMessage) SetBody(body *glib.Variant) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(body)))
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_body", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_body", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(body)
@@ -736,7 +760,7 @@ func (message *DBusMessage) SetBody(body *glib.Variant) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetDestination(value string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -745,9 +769,11 @@ func (message *DBusMessage) SetDestination(value string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_destination", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_destination", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -761,7 +787,7 @@ func (message *DBusMessage) SetDestination(value string) {
 //    - value to set.
 //
 func (message *DBusMessage) SetErrorName(value string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -770,9 +796,11 @@ func (message *DBusMessage) SetErrorName(value string) {
 	}
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_error_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_error_name", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -786,7 +814,7 @@ func (message *DBusMessage) SetErrorName(value string) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetInterface(value string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -795,9 +823,11 @@ func (message *DBusMessage) SetInterface(value string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_interface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_interface", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -811,7 +841,7 @@ func (message *DBusMessage) SetInterface(value string) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetMember(value string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -820,9 +850,11 @@ func (message *DBusMessage) SetMember(value string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_member", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_member", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -836,7 +868,7 @@ func (message *DBusMessage) SetMember(value string) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetPath(value string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -845,9 +877,11 @@ func (message *DBusMessage) SetPath(value string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_path", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -861,15 +895,17 @@ func (message *DBusMessage) SetPath(value string) {
 //    - value to set.
 //
 func (message *DBusMessage) SetReplySerial(value uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint32 // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	_arg1 = C.guint32(value)
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_reply_serial", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_reply_serial", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -883,7 +919,7 @@ func (message *DBusMessage) SetReplySerial(value uint32) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetSender(value string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -892,9 +928,11 @@ func (message *DBusMessage) SetSender(value string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_sender", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_sender", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -907,15 +945,17 @@ func (message *DBusMessage) SetSender(value string) {
 //    - serial: #guint32.
 //
 func (message *DBusMessage) SetSerial(serial uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint32 // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	_arg1 = C.guint32(serial)
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_serial", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_serial", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(serial)
@@ -929,7 +969,7 @@ func (message *DBusMessage) SetSerial(serial uint32) {
 //    - value (optional) to set.
 //
 func (message *DBusMessage) SetSignature(value string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -938,9 +978,11 @@ func (message *DBusMessage) SetSignature(value string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**DBusMessage)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_signature", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("set_signature", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(value)
@@ -954,14 +996,15 @@ func (message *DBusMessage) SetSignature(value string) {
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of message as well as the
 // first string item in message's body.
 func (message *DBusMessage) ToGError() error {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**DBusMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("to_gerror", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "DBusMessage").InvokeMethod("to_gerror", _args[:], nil)
 
 	runtime.KeepAlive(message)
 
@@ -988,7 +1031,7 @@ func (message *DBusMessage) ToGError() error {
 //      size).
 //
 func DBusMessageBytesNeeded(blob []byte) (int, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gsize
 	var _cret C.gssize // in
@@ -998,16 +1041,17 @@ func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	if len(blob) > 0 {
 		_arg0 = (*C.void)(unsafe.Pointer(&blob[0]))
 	}
-	*(*[]byte)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "bytes_needed").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "bytes_needed").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(blob)
 
 	var _gssize int  // out
 	var _goerr error // out
-	_out1 = *(*int)(unsafe.Pointer(&outs[1]))
+	_out1 = *(*C.gssize)(unsafe.Pointer(&_outs[1]))
 
 	_gssize = int(_cret)
 	if _cerr != nil {

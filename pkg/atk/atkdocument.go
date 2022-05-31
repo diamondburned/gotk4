@@ -4,6 +4,7 @@ package atk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -13,9 +14,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gchar* _gotk4_atk1_DocumentIface_get_document_type(AtkDocument*);
-// extern gint _gotk4_atk1_DocumentIface_get_current_page_number(AtkDocument*);
-// extern gint _gotk4_atk1_DocumentIface_get_page_count(AtkDocument*);
+// extern gchar* _gotk4_atk1_DocumentIface_get_document_type(void*);
+// extern gint _gotk4_atk1_DocumentIface_get_current_page_number(void*);
+// extern gint _gotk4_atk1_DocumentIface_get_page_count(void*);
+// extern gpointer _gotk4_atk1_DocumentIface_get_document(void*);
 // extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
@@ -58,6 +60,8 @@ type Documenter interface {
 	AttributeValue(attributeName string) string
 	// CurrentPageNumber retrieves the current page number inside document.
 	CurrentPageNumber() int32
+	// Document gets a gpointer that points to an instance of the DOM.
+	Document() unsafe.Pointer
 	// DocumentType gets a string indicating the document type.
 	DocumentType() string
 	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
@@ -213,7 +217,7 @@ func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
 //      specified for this document.
 //
 func (document *Document) AttributeValue(attributeName string) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -221,7 +225,9 @@ func (document *Document) AttributeValue(attributeName string) string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attributeName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Document)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -245,12 +251,13 @@ func (document *Document) AttributeValue(attributeName string) string {
 //      know by the implementor, or irrelevant.
 //
 func (document *Document) CurrentPageNumber() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -263,6 +270,37 @@ func (document *Document) CurrentPageNumber() int32 {
 	return _gint
 }
 
+// Document gets a gpointer that points to an instance of the DOM. It is up to
+// the caller to check atk_document_get_type to determine how to cast this
+// pointer.
+//
+// Deprecated: Since 2.12. document is already a representation of the document.
+// Use it directly, or one of its children, as an instance of the DOM.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional) that points to an instance of the DOM.
+//
+func (document *Document) Document() unsafe.Pointer {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(document)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
 // DocumentType gets a string indicating the document type.
 //
 // Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask for
@@ -273,12 +311,13 @@ func (document *Document) CurrentPageNumber() int32 {
 //    - utf8: string indicating the document type.
 //
 func (document *Document) DocumentType() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -305,12 +344,13 @@ func (document *Document) DocumentType() string {
 //      specify a locale.
 //
 func (document *Document) Locale() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -331,12 +371,13 @@ func (document *Document) Locale() string {
 //      the implementor or irrelevant.
 //
 func (document *Document) PageCount() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**Document)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -365,7 +406,7 @@ func (document *Document) PageCount() int32 {
 //      allow the attribute to be modified.
 //
 func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -376,8 +417,10 @@ func (document *Document) SetAttributeValue(attributeName, attributeValue string
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attributeValue)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Document)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

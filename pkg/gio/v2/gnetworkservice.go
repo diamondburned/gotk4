@@ -82,7 +82,7 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 //    - networkService: new Service.
 //
 func NewNetworkService(service, protocol, domain string) *NetworkService {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -94,11 +94,12 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("new_NetworkService", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("new_NetworkService", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(service)
@@ -120,14 +121,15 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 //    - utf8 srv's domain name.
 //
 func (srv *NetworkService) Domain() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-	*(**NetworkService)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_domain", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_domain", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
@@ -146,14 +148,15 @@ func (srv *NetworkService) Domain() string {
 //    - utf8 srv's protocol name.
 //
 func (srv *NetworkService) Protocol() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-	*(**NetworkService)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_protocol", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_protocol", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
@@ -173,14 +176,15 @@ func (srv *NetworkService) Protocol() string {
 //    - utf8 srv's scheme name.
 //
 func (srv *NetworkService) Scheme() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-	*(**NetworkService)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_scheme", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_scheme", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
@@ -199,14 +203,15 @@ func (srv *NetworkService) Scheme() string {
 //    - utf8 srv's service name.
 //
 func (srv *NetworkService) Service() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-	*(**NetworkService)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_service", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_service", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
@@ -226,16 +231,18 @@ func (srv *NetworkService) Service() string {
 //    - scheme: URI scheme.
 //
 func (srv *NetworkService) SetScheme(scheme string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(scheme)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**NetworkService)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "NetworkService").InvokeMethod("set_scheme", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "NetworkService").InvokeMethod("set_scheme", _args[:], nil)
 
 	runtime.KeepAlive(srv)
 	runtime.KeepAlive(scheme)

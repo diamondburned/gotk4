@@ -17,7 +17,7 @@ import (
 // extern void _gotk4_gtk4_GestureClick_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureClick_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureClick_ConnectStopped(gpointer, guintptr);
-// extern void _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(gpointer, gdouble, gdouble, guint, GdkEventSequence*, guintptr);
+// extern void _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(gpointer, gdouble, gdouble, guint, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkgestureclick.go.
@@ -157,7 +157,7 @@ func (v *GestureClick) ConnectStopped(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk4_GestureClick_ConnectUnpairedRelease
-func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guint, arg4 *C.GdkEventSequence, arg5 C.guintptr) {
+func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guint, arg4 *C.void, arg5 C.guintptr) {
 	var f func(x, y float64, button uint32, sequence *gdk.EventSequence)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))

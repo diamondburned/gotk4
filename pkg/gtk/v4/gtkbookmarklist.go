@@ -80,7 +80,7 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 //    - bookmarkList: new GtkBookmarkList.
 //
 func NewBookmarkList(filename, attributes string) *BookmarkList {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -93,10 +93,11 @@ func NewBookmarkList(filename, attributes string) *BookmarkList {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(attributes)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("new_BookmarkList", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("new_BookmarkList", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
@@ -116,14 +117,15 @@ func NewBookmarkList(filename, attributes string) *BookmarkList {
 //    - utf8 (optional): queried attributes.
 //
 func (self *BookmarkList) Attributes() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_attributes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_attributes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -144,14 +146,15 @@ func (self *BookmarkList) Attributes() string {
 //    - utf8: filename of the .xbel file.
 //
 func (self *BookmarkList) Filename() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_filename", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_filename", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -170,14 +173,15 @@ func (self *BookmarkList) Filename() string {
 //    - gint: IO priority.
 //
 func (self *BookmarkList) IOPriority() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_io_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_io_priority", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -199,14 +203,15 @@ func (self *BookmarkList) IOPriority() int32 {
 //    - ok: TRUE if self is loading.
 //
 func (self *BookmarkList) IsLoading() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("is_loading", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("is_loading", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -231,7 +236,7 @@ func (self *BookmarkList) IsLoading() bool {
 //    - attributes (optional) to enumerate.
 //
 func (self *BookmarkList) SetAttributes(attributes string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -240,9 +245,11 @@ func (self *BookmarkList) SetAttributes(attributes string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(attributes)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**BookmarkList)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("set_attributes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("set_attributes", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(attributes)
@@ -257,15 +264,17 @@ func (self *BookmarkList) SetAttributes(attributes string) {
 //    - ioPriority: IO priority to use.
 //
 func (self *BookmarkList) SetIOPriority(ioPriority int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.int(ioPriority)
-	*(**BookmarkList)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("set_io_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("set_io_priority", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ioPriority)

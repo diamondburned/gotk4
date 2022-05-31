@@ -5,6 +5,7 @@ package glib
 import (
 	"fmt"
 	"runtime"
+	"runtime/cgo"
 	"strings"
 	"unsafe"
 
@@ -127,6 +128,75 @@ type Node struct {
 // node is the struct that's finalized.
 type node struct {
 	native *C.GNode
+}
+
+// Data contains the actual data of the node.
+func (n *Node) Data() unsafe.Pointer {
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(n.native.data))
+	return v
+}
+
+// Next points to the node's next sibling (a sibling is another #GNode with the
+// same parent).
+func (n *Node) Next() *Node {
+	var v *Node // out
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.next)))
+	return v
+}
+
+// Prev points to the node's previous sibling.
+func (n *Node) Prev() *Node {
+	var v *Node // out
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.prev)))
+	return v
+}
+
+// Parent points to the parent of the #GNode, or is NULL if the #GNode is the
+// root of the tree.
+func (n *Node) Parent() *Node {
+	var v *Node // out
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.parent)))
+	return v
+}
+
+// Children points to the first child of the #GNode. The other children are
+// accessed by using the next pointer of each child.
+func (n *Node) Children() *Node {
+	var v *Node // out
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.children)))
+	return v
+}
+
+// ChildIndex gets the position of the first child of a #GNode which contains
+// the given data.
+//
+// The function takes the following parameters:
+//
+//    - data (optional) to find.
+//
+// The function returns the following values:
+//
+//    - gint: index of the child of node which contains data, or -1 if the data
+//      is not found.
+//
+func (node *Node) ChildIndex(data unsafe.Pointer) int32 {
+	var _arg0 *C.GNode   // out
+	var _arg1 C.gpointer // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
+
+	_cret = C.g_node_child_index(_arg0, _arg1)
+	runtime.KeepAlive(node)
+	runtime.KeepAlive(data)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // ChildPosition gets the position of a #GNode with respect to its siblings.

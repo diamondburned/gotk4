@@ -26,19 +26,21 @@ import "C"
 //    - group: option group.
 //
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
-	*(**glib.OptionGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "add_option_entries_libgtk_only").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "add_option_entries_libgtk_only").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(group)
 }
 
 // Beep emits a short beep on the default display.
 func Beep() {
+
 	girepository.MustFind("Gdk", "beep").Invoke(nil, nil)
 }
 
@@ -51,6 +53,7 @@ func Beep() {
 // such Xlib code deals with input devices in any way and doesn’t observe the
 // presence of XInput 2.
 func DisableMultidevice() {
+
 	girepository.MustFind("Gdk", "disable_multidevice").Invoke(nil, nil)
 }
 
@@ -85,6 +88,7 @@ func ErrorTrapPop() int32 {
 // arrives later asynchronously that was triggered while the trap was pushed,
 // that error will be ignored.
 func ErrorTrapPopIgnored() {
+
 	girepository.MustFind("Gdk", "error_trap_pop_ignored").Invoke(nil, nil)
 }
 
@@ -114,12 +118,14 @@ func ErrorTrapPopIgnored() {
 //       // ... Handle the error here ...
 //     }.
 func ErrorTrapPush() {
+
 	girepository.MustFind("Gdk", "error_trap_push").Invoke(nil, nil)
 }
 
 // Flush flushes the output buffers of all display connections and waits until
 // all requests have been processed. This is rarely needed by applications.
 func Flush() {
+
 	girepository.MustFind("Gdk", "flush").Invoke(nil, nil)
 }
 
@@ -202,13 +208,14 @@ func GetProgramClass() string {
 //      available.
 //
 func KeyboardUngrab(time_ uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint32 // out
 
 	_arg0 = C.guint32(time_)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "keyboard_ungrab").Invoke(args[:], nil)
+	*(*C.guint32)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "keyboard_ungrab").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(time_)
 }
@@ -221,6 +228,7 @@ func KeyboardUngrab(time_ uint32) {
 // unless gtk_window_set_auto_startup_notification() is called to disable that
 // feature.
 func NotifyStartupComplete() {
+
 	girepository.MustFind("Gdk", "notify_startup_complete").Invoke(nil, nil)
 }
 
@@ -237,14 +245,15 @@ func NotifyStartupComplete() {
 //      process should be completed.
 //
 func NotifyStartupCompleteWithID(startupId string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "notify_startup_complete_with_id").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "notify_startup_complete_with_id").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(startupId)
 }
@@ -287,13 +296,14 @@ func PointerIsGrabbed() bool {
 //      available.
 //
 func PointerUngrab(time_ uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint32 // out
 
 	_arg0 = C.guint32(time_)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "pointer_ungrab").Invoke(args[:], nil)
+	*(*C.guint32)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "pointer_ungrab").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(time_)
 }
@@ -303,6 +313,7 @@ func PointerUngrab(time_ uint32) {
 //
 // Deprecated: This symbol was never meant to be used outside of GTK+.
 func PreParseLibgtkOnly() {
+
 	girepository.MustFind("Gdk", "pre_parse_libgtk_only").Invoke(nil, nil)
 }
 
@@ -335,14 +346,15 @@ func PreParseLibgtkOnly() {
 //    - backends: comma-separated list of backends.
 //
 func SetAllowedBackends(backends string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(backends)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "set_allowed_backends").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "set_allowed_backends").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(backends)
 }
@@ -357,13 +369,14 @@ func SetAllowedBackends(backends string) {
 //    - msec: double click time in milliseconds (thousandths of a second).
 //
 func SetDoubleClickTime(msec uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(msec)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "set_double_click_time").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "set_double_click_time").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(msec)
 }
@@ -380,14 +393,15 @@ func SetDoubleClickTime(msec uint32) {
 //    - programClass: string.
 //
 func SetProgramClass(programClass string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(programClass)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "set_program_class").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "set_program_class").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(programClass)
 }

@@ -244,10 +244,11 @@ func (typ *Resolved) CanNil() bool {
 	return typ.Ptr > 0
 }
 
-// Underlying returns itself OR the alias' resolved type iff there's one.
+// Underlying returns itself OR the alias' resolved type if there's one. It runs
+// until the final type is resolved.
 func (typ *Resolved) Underlying() *Resolved {
-	if typ.Aliased != nil {
-		return typ.Aliased
+	for typ.Aliased != nil {
+		typ = typ.Aliased
 	}
 	return typ
 }
@@ -411,8 +412,16 @@ func (typ *Resolved) CanCast(gen FileGenerator) bool {
 }
 
 // IsBuiltin is a convenient function to compare the builtin type.
-func (typ *Resolved) IsBuiltin(builtin string) bool {
-	return typ.Builtin != nil && *typ.Builtin == builtin
+func (typ *Resolved) IsBuiltin(builtins ...string) bool {
+	if typ.Builtin == nil {
+		return false
+	}
+	for _, b := range builtins {
+		if b == *typ.Builtin {
+			return true
+		}
+	}
+	return false
 }
 
 // HasImport returns true if the ResolvedType has an import.
@@ -643,7 +652,7 @@ func (typ *Resolved) WrapName(needsNamespace bool) string {
 
 // ImportPubl adds the import for the public type of the Resolved type into the
 // file header.
-func (typ *Resolved) ImportPubl(h *file.Header) {
+func (typ *Resolved) ImportPubl(gen FileGenerator, h *file.Header) {
 	if typ == nil {
 		return
 	}
@@ -657,14 +666,14 @@ func (typ *Resolved) ImportPubl(h *file.Header) {
 	if typ.Extern != nil {
 		callback, ok := typ.Extern.Type.(*gir.Callback)
 		if ok {
-			AddCallbackHeader(h, typ.Extern.NamespaceFindResult, callback)
+			AddCallbackHeader(gen, h, callback)
 		}
 	}
 }
 
 // ImportImpl adds the import for the implementing type of the Resolved type
 // into the file header.
-func (typ *Resolved) ImportImpl(h *file.Header) {
+func (typ *Resolved) ImportImpl(gen FileGenerator, h *file.Header) {
 	if typ == nil {
 		return
 	}
@@ -674,7 +683,7 @@ func (typ *Resolved) ImportImpl(h *file.Header) {
 	if typ.Extern != nil {
 		callback, ok := typ.Extern.Type.(*gir.Callback)
 		if ok {
-			AddCallbackHeader(h, typ.Extern.NamespaceFindResult, callback)
+			AddCallbackHeader(gen, h, callback)
 		}
 	}
 }
@@ -682,6 +691,32 @@ func (typ *Resolved) ImportImpl(h *file.Header) {
 // CGoType returns the CGo type. Its pointer count does not follow Ptr.
 func (typ *Resolved) CGoType() string {
 	return CGoTypeFromC(typ.CType)
+}
+
+// AsPrimitiveCType resolves Resolved's CType to a primitive type if possible.
+// This is different to IsPrimitive in that all types are coerced into primitive
+// types such as gpointer, and types that cannot be coerced will return an empty
+// string.
+func (typ *Resolved) AsPrimitiveCType(gen FileGenerator) string {
+	if typ == nil {
+		return ""
+	}
+
+	typ = typ.Underlying()
+
+	if typ.Extern != nil && typ.Ptr == 0 {
+		switch typ.Extern.Type.(type) {
+		case *gir.Record, *gir.Alias:
+			// Unknown whether or not we have pointers.
+		default:
+			if typ.HasPointer(nil) {
+				return "gpointer"
+			}
+		}
+	}
+
+	prim := CTypeToPrimitive(typ.CType)
+	return prim
 }
 
 // UnsupportedCTypes is the list of unsupported C types, either because it is
@@ -777,6 +812,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	// Treat actual gpointer types as the pseudo cgo.Handle type. Check both GIR
 	// and C type to avoid masked gpointer types that aren't actually arbitrary.
 	if typ.Name == "gpointer" && IsGpointer(typ.CType) {
+		// return builtinType("runtime/cgo", "Handle", typ)
 		return builtinType("unsafe", "Pointer", typ)
 	}
 

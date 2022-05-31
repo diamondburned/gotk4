@@ -127,7 +127,7 @@ func NewGrid() *Grid {
 //    - height: number of rows that child will span.
 //
 func (grid *Grid) Attach(child Widgetter, left, top, width, height int32) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -141,13 +141,15 @@ func (grid *Grid) Attach(child Widgetter, left, top, width, height int32) {
 	_arg3 = C.gint(top)
 	_arg4 = C.gint(width)
 	_arg5 = C.gint(height)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
-	*(*int32)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("attach", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.gint)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("attach", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(child)
@@ -164,14 +166,15 @@ func (grid *Grid) Attach(child Widgetter, left, top, width, height int32) {
 //    - gint: row index defining the global baseline.
 //
 func (grid *Grid) BaselineRow() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(**Grid)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_baseline_row", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_baseline_row", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(grid)
@@ -196,7 +199,7 @@ func (grid *Grid) BaselineRow() int32 {
 //    - widget (optional): child at the given position, or NULL.
 //
 func (grid *Grid) ChildAt(left, top int32) Widgetter {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -205,10 +208,12 @@ func (grid *Grid) ChildAt(left, top int32) Widgetter {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.gint(left)
 	_arg2 = C.gint(top)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_child_at", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_child_at", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(grid)
@@ -244,14 +249,15 @@ func (grid *Grid) ChildAt(left, top int32) Widgetter {
 //    - ok: whether all columns of grid have the same width.
 //
 func (grid *Grid) ColumnHomogeneous() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(**Grid)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_column_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_column_homogeneous", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(grid)
@@ -272,14 +278,15 @@ func (grid *Grid) ColumnHomogeneous() bool {
 //    - guint: column spacing of grid.
 //
 func (grid *Grid) ColumnSpacing() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(**Grid)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_column_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_column_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(grid)
@@ -298,14 +305,15 @@ func (grid *Grid) ColumnSpacing() uint32 {
 //    - ok: whether all rows of grid have the same height.
 //
 func (grid *Grid) RowHomogeneous() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(**Grid)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_row_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_row_homogeneous", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(grid)
@@ -326,14 +334,15 @@ func (grid *Grid) RowHomogeneous() bool {
 //    - guint: row spacing of grid.
 //
 func (grid *Grid) RowSpacing() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(**Grid)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_row_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_row_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(grid)
@@ -356,15 +365,17 @@ func (grid *Grid) RowSpacing() uint32 {
 //    - position to insert the column at.
 //
 func (grid *Grid) InsertColumn(position int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.gint(position)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("insert_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("insert_column", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(position)
@@ -380,15 +391,17 @@ func (grid *Grid) InsertColumn(position int32) {
 //    - position to insert the row at.
 //
 func (grid *Grid) InsertRow(position int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.gint(position)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("insert_row", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("insert_row", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(position)
@@ -405,15 +418,17 @@ func (grid *Grid) InsertRow(position int32) {
 //    - position of the column to remove.
 //
 func (grid *Grid) RemoveColumn(position int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.gint(position)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("remove_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("remove_column", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(position)
@@ -430,15 +445,17 @@ func (grid *Grid) RemoveColumn(position int32) {
 //    - position of the row to remove.
 //
 func (grid *Grid) RemoveRow(position int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.gint(position)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("remove_row", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("remove_row", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(position)
@@ -453,15 +470,17 @@ func (grid *Grid) RemoveRow(position int32) {
 //    - row index.
 //
 func (grid *Grid) SetBaselineRow(row int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.gint(row)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_baseline_row", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_baseline_row", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(row)
@@ -475,7 +494,7 @@ func (grid *Grid) SetBaselineRow(row int32) {
 //    - homogeneous: TRUE to make columns homogeneous.
 //
 func (grid *Grid) SetColumnHomogeneous(homogeneous bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -483,9 +502,11 @@ func (grid *Grid) SetColumnHomogeneous(homogeneous bool) {
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_column_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_column_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(homogeneous)
@@ -498,15 +519,17 @@ func (grid *Grid) SetColumnHomogeneous(homogeneous bool) {
 //    - spacing: amount of space to insert between columns.
 //
 func (grid *Grid) SetColumnSpacing(spacing uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.guint(spacing)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_column_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_column_spacing", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(spacing)
@@ -519,7 +542,7 @@ func (grid *Grid) SetColumnSpacing(spacing uint32) {
 //    - homogeneous: TRUE to make rows homogeneous.
 //
 func (grid *Grid) SetRowHomogeneous(homogeneous bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -527,9 +550,11 @@ func (grid *Grid) SetRowHomogeneous(homogeneous bool) {
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_row_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_row_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(homogeneous)
@@ -542,15 +567,17 @@ func (grid *Grid) SetRowHomogeneous(homogeneous bool) {
 //    - spacing: amount of space to insert between rows.
 //
 func (grid *Grid) SetRowSpacing(spacing uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	_arg1 = C.guint(spacing)
-	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_row_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_row_spacing", _args[:], nil)
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(spacing)

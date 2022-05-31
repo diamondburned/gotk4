@@ -16,7 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_InitableIface_init(GInitable*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_InitableIface_init(void*, void*, GError**);
 import "C"
 
 // glib.Type values for ginitable.go.
@@ -126,7 +126,7 @@ func ifaceInitInitabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_InitableIface_init
-func _gotk4_gio2_InitableIface_init(arg0 *C.GInitable, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_InitableIface_init(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(InitableOverrider)
 
@@ -198,7 +198,7 @@ func marshalInitable(p uintptr) (interface{}, error) {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (initable *Initable) Init(ctx context.Context) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -209,7 +209,9 @@ func (initable *Initable) Init(ctx context.Context) error {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**Initable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(ctx)

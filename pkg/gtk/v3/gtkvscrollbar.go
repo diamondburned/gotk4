@@ -95,16 +95,17 @@ func marshalVScrollbar(p uintptr) (interface{}, error) {
 //    - vScrollbar: new VScrollbar.
 //
 func NewVScrollbar(adjustment *Adjustment) *VScrollbar {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if adjustment != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "VScrollbar").InvokeMethod("new_VScrollbar", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "VScrollbar").InvokeMethod("new_VScrollbar", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)

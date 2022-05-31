@@ -119,14 +119,15 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 //    - ok: TRUE if item is drawn as a line, or just blank.
 //
 func (item *SeparatorToolItem) Draw() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
-	*(**SeparatorToolItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("get_draw", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("get_draw", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(item)
@@ -149,7 +150,7 @@ func (item *SeparatorToolItem) Draw() bool {
 //    - draw: whether item is drawn as a vertical line.
 //
 func (item *SeparatorToolItem) SetDraw(draw bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -157,9 +158,11 @@ func (item *SeparatorToolItem) SetDraw(draw bool) {
 	if draw {
 		_arg1 = C.TRUE
 	}
-	*(**SeparatorToolItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("set_draw", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("set_draw", _args[:], nil)
 
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(draw)

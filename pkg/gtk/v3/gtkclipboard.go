@@ -18,7 +18,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_Clipboard_ConnectOwnerChange(gpointer, GdkEventOwnerChange*, guintptr);
+// extern void _gotk4_gtk3_ClipboardImageReceivedFunc(void*, void*, gpointer);
+// extern void _gotk4_gtk3_ClipboardTextReceivedFunc(void*, void*, gpointer);
+// extern void _gotk4_gtk3_ClipboardURIReceivedFunc(void*, void**, gpointer);
+// extern void _gotk4_gtk3_Clipboard_ConnectOwnerChange(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkclipboard.go.
@@ -35,7 +38,7 @@ func init() {
 type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf)
 
 //export _gotk4_gtk3_ClipboardImageReceivedFunc
-func _gotk4_gtk3_ClipboardImageReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.GdkPixbuf, arg3 C.gpointer) {
+func _gotk4_gtk3_ClipboardImageReceivedFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
 	var fn ClipboardImageReceivedFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -69,7 +72,7 @@ func _gotk4_gtk3_ClipboardImageReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.GdkPix
 type ClipboardReceivedFunc func(clipboard *Clipboard, selectionData *SelectionData)
 
 //export _gotk4_gtk3_ClipboardReceivedFunc
-func _gotk4_gtk3_ClipboardReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.GtkSelectionData, arg3 C.gpointer) {
+func _gotk4_gtk3_ClipboardReceivedFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
 	var fn ClipboardReceivedFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -93,7 +96,7 @@ func _gotk4_gtk3_ClipboardReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.GtkSelectio
 type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string)
 
 //export _gotk4_gtk3_ClipboardTextReceivedFunc
-func _gotk4_gtk3_ClipboardTextReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.gchar, arg3 C.gpointer) {
+func _gotk4_gtk3_ClipboardTextReceivedFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
 	var fn ClipboardTextReceivedFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -119,7 +122,7 @@ func _gotk4_gtk3_ClipboardTextReceivedFunc(arg1 *C.GtkClipboard, arg2 *C.gchar, 
 type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string)
 
 //export _gotk4_gtk3_ClipboardURIReceivedFunc
-func _gotk4_gtk3_ClipboardURIReceivedFunc(arg1 *C.GtkClipboard, arg2 **C.gchar, arg3 C.gpointer) {
+func _gotk4_gtk3_ClipboardURIReceivedFunc(arg1 *C.void, arg2 **C.void, arg3 C.gpointer) {
 	var fn ClipboardURIReceivedFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -220,7 +223,7 @@ func marshalClipboard(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_Clipboard_ConnectOwnerChange
-func _gotk4_gtk3_Clipboard_ConnectOwnerChange(arg0 C.gpointer, arg1 *C.GdkEventOwnerChange, arg2 C.guintptr) {
+func _gotk4_gtk3_Clipboard_ConnectOwnerChange(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(event *gdk.EventOwnerChange)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -251,13 +254,14 @@ func (clipboard *Clipboard) ConnectOwnerChange(f func(event *gdk.EventOwnerChang
 // gtk_clipboard_set_with_data(), and when the clear_func you supplied is
 // called. Otherwise, the clipboard may be owned by someone else.
 func (clipboard *Clipboard) Clear() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("clear", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("clear", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 }
@@ -269,14 +273,15 @@ func (clipboard *Clipboard) Clear() {
 //    - display associated with clipboard.
 //
 func (clipboard *Clipboard) Display() *gdk.Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -303,14 +308,15 @@ func (clipboard *Clipboard) Display() *gdk.Display {
 //    - object (optional): owner of the clipboard, if any; otherwise NULL.
 //
 func (clipboard *Clipboard) Owner() *coreglib.Object {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("get_owner", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("get_owner", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -324,6 +330,104 @@ func (clipboard *Clipboard) Owner() *coreglib.Object {
 	return _object
 }
 
+// RequestImage requests the contents of the clipboard as image. When the image
+// is later received, it will be converted to a Pixbuf, and callback will be
+// called.
+//
+// The pixbuf parameter to callback will contain the resulting Pixbuf if the
+// request succeeded, or NULL if it failed. This could happen for various
+// reasons, in particular if the clipboard was empty or if the contents of the
+// clipboard could not be converted into an image.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the image is received, or the retrieval
+//      fails. (It will always be called one way or the other.).
+//
+func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardImageReceivedFunc)
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("request_image", _args[:], nil)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(callback)
+}
+
+// RequestText requests the contents of the clipboard as text. When the text is
+// later received, it will be converted to UTF-8 if necessary, and callback will
+// be called.
+//
+// The text parameter to callback will contain the resulting text if the request
+// succeeded, or NULL if it failed. This could happen for various reasons, in
+// particular if the clipboard was empty or if the contents of the clipboard
+// could not be converted into text form.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the text is received, or the retrieval
+//      fails. (It will always be called one way or the other.).
+//
+func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardTextReceivedFunc)
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("request_text", _args[:], nil)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(callback)
+}
+
+// RequestURIs requests the contents of the clipboard as URIs. When the URIs are
+// later received callback will be called.
+//
+// The uris parameter to callback will contain the resulting array of URIs if
+// the request succeeded, or NULL if it failed. This could happen for various
+// reasons, in particular if the clipboard was empty or if the contents of the
+// clipboard could not be converted into URI form.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the URIs are received, or the retrieval
+//      fails. (It will always be called one way or the other.).
+//
+func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardURIReceivedFunc)
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("request_uris", _args[:], nil)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(callback)
+}
+
 // SetImage sets the contents of the clipboard to the given Pixbuf. GTK+ will
 // take responsibility for responding for requests for the image, and for
 // converting the image into the requested format.
@@ -333,15 +437,17 @@ func (clipboard *Clipboard) Owner() *coreglib.Object {
 //    - pixbuf: Pixbuf.
 //
 func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("set_image", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("set_image", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(pixbuf)
@@ -358,7 +464,7 @@ func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 //      determined with strlen().
 //
 func (clipboard *Clipboard) SetText(text string, len int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -367,10 +473,12 @@ func (clipboard *Clipboard) SetText(text string, len int32) {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
-	*(**Clipboard)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("set_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("set_text", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(text)
@@ -380,13 +488,14 @@ func (clipboard *Clipboard) SetText(text string, len int32) {
 // Store stores the current clipboard data somewhere so that it will stay around
 // after the application has quit.
 func (clipboard *Clipboard) Store() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("store", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Clipboard").InvokeMethod("store", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 }
@@ -404,14 +513,15 @@ func (clipboard *Clipboard) Store() {
 //      an image.).
 //
 func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_for_image", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_for_image", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -448,14 +558,15 @@ func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 //      if the contents of the clipboard could not be converted into text form.).
 //
 func (clipboard *Clipboard) WaitForText() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_for_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_for_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -483,14 +594,15 @@ func (clipboard *Clipboard) WaitForText() string {
 //      could not be converted into URI form.).
 //
 func (clipboard *Clipboard) WaitForURIs() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_for_uris", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_for_uris", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -532,14 +644,15 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 //    - ok: TRUE is there is an image available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsImageAvailable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_image_available", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_image_available", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -572,16 +685,18 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 //    - ok: TRUE is there is rich text available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_rich_text_available", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_rich_text_available", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -609,14 +724,15 @@ func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 //    - ok: TRUE is there is text available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsTextAvailable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_text_available", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_text_available", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -644,14 +760,15 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 //    - ok: TRUE is there is an URI list available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**Clipboard)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_uris_available", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Clipboard").InvokeMethod("wait_is_uris_available", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
@@ -677,14 +794,15 @@ func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 //    - clipboard: default clipboard object.
 //
 func ClipboardGetDefault(display *gdk.Display) *Clipboard {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**gdk.Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "get_default").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "get_default").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)

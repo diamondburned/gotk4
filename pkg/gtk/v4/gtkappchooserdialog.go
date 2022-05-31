@@ -126,14 +126,15 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 //      which case a default text is displayed.
 //
 func (self *AppChooserDialog) Heading() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**AppChooserDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("get_heading", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("get_heading", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -154,14 +155,15 @@ func (self *AppChooserDialog) Heading() string {
 //    - widget: GtkAppChooserWidget of self.
 //
 func (self *AppChooserDialog) Widget() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**AppChooserDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("get_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -198,16 +200,18 @@ func (self *AppChooserDialog) Widget() Widgetter {
 //    - heading: string containing Pango markup.
 //
 func (self *AppChooserDialog) SetHeading(heading string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppChooserDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("set_heading", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("set_heading", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(heading)

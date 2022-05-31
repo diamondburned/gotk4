@@ -115,14 +115,15 @@ func NewCellAreaBox() *CellAreaBox {
 //    - gint: space added between cell renderers in box.
 //
 func (box *CellAreaBox) Spacing() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(**CellAreaBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("get_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("get_spacing", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
@@ -148,7 +149,7 @@ func (box *CellAreaBox) Spacing() int32 {
 //    - fixed: whether renderer should have the same size in all rows.
 //
 func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bool) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -166,12 +167,14 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bo
 	if fixed {
 		_arg4 = C.TRUE
 	}
-	*(**CellAreaBox)(unsafe.Pointer(&args[1])) = _arg1
-	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
-	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
-	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_end", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_end", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(renderer)
@@ -194,7 +197,7 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bo
 //    - fixed: whether renderer should have the same size in all rows.
 //
 func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed bool) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -212,12 +215,14 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed 
 	if fixed {
 		_arg4 = C.TRUE
 	}
-	*(**CellAreaBox)(unsafe.Pointer(&args[1])) = _arg1
-	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
-	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
-	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_start", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(renderer)
@@ -233,15 +238,17 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed 
 //    - spacing: space to add between CellRenderers.
 //
 func (box *CellAreaBox) SetSpacing(spacing int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	_arg1 = C.gint(spacing)
-	*(**CellAreaBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("set_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("set_spacing", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)

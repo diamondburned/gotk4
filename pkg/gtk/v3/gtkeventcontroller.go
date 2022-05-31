@@ -87,14 +87,15 @@ func BaseEventController(obj EventControllerer) *EventController {
 //    - widget: Widget.
 //
 func (controller *EventController) Widget() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -135,16 +136,18 @@ func (controller *EventController) Widget() Widgetter {
 //      action.
 //
 func (controller *EventController) HandleEvent(event *gdk.Event) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-	*(**EventController)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("handle_event", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("handle_event", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -163,13 +166,14 @@ func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 // controller did through EventController::handle-event will be dropped at this
 // point.
 func (controller *EventController) Reset() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "EventController").InvokeMethod("reset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "EventController").InvokeMethod("reset", _args[:], nil)
 
 	runtime.KeepAlive(controller)
 }

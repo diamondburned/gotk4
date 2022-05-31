@@ -98,14 +98,15 @@ func NewSpinner() *Spinner {
 //    - ok: TRUE if the spinner is active.
 //
 func (spinner *Spinner) Spinning() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-	*(**Spinner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Spinner").InvokeMethod("get_spinning", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Spinner").InvokeMethod("get_spinning", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinner)
@@ -126,7 +127,7 @@ func (spinner *Spinner) Spinning() bool {
 //    - spinning: whether the spinner should be spinning.
 //
 func (spinner *Spinner) SetSpinning(spinning bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -134,9 +135,11 @@ func (spinner *Spinner) SetSpinning(spinning bool) {
 	if spinning {
 		_arg1 = C.TRUE
 	}
-	*(**Spinner)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Spinner").InvokeMethod("set_spinning", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Spinner").InvokeMethod("set_spinning", _args[:], nil)
 
 	runtime.KeepAlive(spinner)
 	runtime.KeepAlive(spinning)
@@ -144,26 +147,28 @@ func (spinner *Spinner) SetSpinning(spinning bool) {
 
 // Start starts the animation of the spinner.
 func (spinner *Spinner) Start() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-	*(**Spinner)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Spinner").InvokeMethod("start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Spinner").InvokeMethod("start", _args[:], nil)
 
 	runtime.KeepAlive(spinner)
 }
 
 // Stop stops the animation of the spinner.
 func (spinner *Spinner) Stop() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-	*(**Spinner)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Spinner").InvokeMethod("stop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Spinner").InvokeMethod("stop", _args[:], nil)
 
 	runtime.KeepAlive(spinner)
 }

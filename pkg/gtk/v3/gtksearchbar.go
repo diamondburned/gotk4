@@ -127,15 +127,17 @@ func NewSearchBar() *SearchBar {
 //    - entry: Entry.
 //
 func (bar *SearchBar) ConnectEntry(entry *Entry) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("connect_entry", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("connect_entry", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(entry)
@@ -148,14 +150,15 @@ func (bar *SearchBar) ConnectEntry(entry *Entry) {
 //    - ok: whether search mode is toggled on.
 //
 func (bar *SearchBar) SearchMode() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**SearchBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_search_mode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_search_mode", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -176,14 +179,15 @@ func (bar *SearchBar) SearchMode() bool {
 //    - ok: whether the close button is shown.
 //
 func (bar *SearchBar) ShowCloseButton() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**SearchBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_show_close_button", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_show_close_button", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -244,16 +248,18 @@ func (bar *SearchBar) ShowCloseButton() bool {
 //      GDK_EVENT_PROPAGATE otherwise.
 //
 func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("handle_event", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("handle_event", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -275,7 +281,7 @@ func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
 //    - searchMode: new state of the search mode.
 //
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -283,9 +289,11 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	if searchMode {
 		_arg1 = C.TRUE
 	}
-	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_search_mode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_search_mode", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(searchMode)
@@ -300,7 +308,7 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 //    - visible: whether the close button will be shown or not.
 //
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -308,9 +316,11 @@ func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	if visible {
 		_arg1 = C.TRUE
 	}
-	*(**SearchBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_show_close_button", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_show_close_button", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(visible)

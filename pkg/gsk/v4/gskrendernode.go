@@ -21,6 +21,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gsk4_ParseErrorFunc(void*, void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gskrendernode.go.
@@ -37,7 +38,7 @@ func init() {
 type ParseErrorFunc func(start, end *ParseLocation, err error)
 
 //export _gotk4_gsk4_ParseErrorFunc
-func _gotk4_gsk4_ParseErrorFunc(arg1 *C.GskParseLocation, arg2 *C.GskParseLocation, arg3 *C.GError, arg4 C.gpointer) {
+func _gotk4_gsk4_ParseErrorFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) {
 	var fn ParseErrorFunc
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -65,14 +66,15 @@ func _gotk4_gsk4_ParseErrorFunc(arg1 *C.GskParseLocation, arg2 *C.GskParseLocati
 //    - renderNode: bottom child node.
 //
 func (node *BlendNode) BottomChild() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**BlendNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "BlendNode").InvokeMethod("get_bottom_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BlendNode").InvokeMethod("get_bottom_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -107,14 +109,15 @@ func (node *BlendNode) BottomChild() RenderNoder {
 //    - renderNode: top child node.
 //
 func (node *BlendNode) TopChild() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**BlendNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "BlendNode").InvokeMethod("get_top_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BlendNode").InvokeMethod("get_top_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -154,17 +157,18 @@ func (node *BlendNode) TopChild() RenderNoder {
 //    - blurNode: new GskRenderNode.
 //
 func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = C.float(radius)
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(*float32)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("new_BlurNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("new_BlurNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -184,14 +188,15 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 //    - renderNode: blurred child node.
 //
 func (node *BlurNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**BlurNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -226,14 +231,15 @@ func (node *BlurNode) Child() RenderNoder {
 //    - gfloat: blur radius.
 //
 func (node *BlurNode) Radius() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**BlurNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("get_radius", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("get_radius", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -253,14 +259,15 @@ func (node *BlurNode) Radius() float32 {
 //      of the border.
 //
 func (node *BorderNode) Colors() *gdk.RGBA {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**BorderNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "BorderNode").InvokeMethod("get_colors", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BorderNode").InvokeMethod("get_colors", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -279,14 +286,15 @@ func (node *BorderNode) Colors() *gdk.RGBA {
 //    - roundedRect: outline of the border.
 //
 func (node *BorderNode) Outline() *RoundedRect {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**BorderNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "BorderNode").InvokeMethod("get_outline", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BorderNode").InvokeMethod("get_outline", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -306,14 +314,15 @@ func (node *BorderNode) Outline() *RoundedRect {
 //      width of the border, respectively.
 //
 func (node *BorderNode) Widths() [4]float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret *C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**BorderNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "BorderNode").InvokeMethod("get_widths", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BorderNode").InvokeMethod("get_widths", _args[:], nil)
 	_cret = *(**C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -339,14 +348,15 @@ func (node *BorderNode) Widths() [4]float32 {
 //    - cairoNode: new GskRenderNode.
 //
 func NewCairoNode(bounds *graphene.Rect) *CairoNode {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-	*(**graphene.Rect)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "CairoNode").InvokeMethod("new_CairoNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "CairoNode").InvokeMethod("new_CairoNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bounds)
@@ -370,14 +380,15 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 //      drawing.
 //
 func (node *CairoNode) DrawContext() *cairo.Context {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**CairoNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "CairoNode").InvokeMethod("get_draw_context", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "CairoNode").InvokeMethod("get_draw_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -399,14 +410,15 @@ func (node *CairoNode) DrawContext() *cairo.Context {
 //    - surface: cairo surface.
 //
 func (node *CairoNode) Surface() *cairo.Surface {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**CairoNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "CairoNode").InvokeMethod("get_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "CairoNode").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -435,17 +447,18 @@ func (node *CairoNode) Surface() *cairo.Surface {
 //    - clipNode: new GskRenderNode.
 //
 func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(clip)))
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(**graphene.Rect)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "ClipNode").InvokeMethod("new_ClipNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "ClipNode").InvokeMethod("new_ClipNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -465,14 +478,15 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 //    - renderNode: child that is getting clipped.
 //
 func (node *ClipNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ClipNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ClipNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ClipNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -507,14 +521,15 @@ func (node *ClipNode) Child() RenderNoder {
 //    - rect: clip rectangle.
 //
 func (node *ClipNode) Clip() *graphene.Rect {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ClipNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ClipNode").InvokeMethod("get_clip", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ClipNode").InvokeMethod("get_clip", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -546,7 +561,7 @@ func (node *ClipNode) Clip() *graphene.Rect {
 //    - colorMatrixNode: new GskRenderNode.
 //
 func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) *ColorMatrixNode {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -555,11 +570,12 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(colorOffset)))
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(**graphene.Matrix)(unsafe.Pointer(&args[1])) = _arg1
-	*(**graphene.Vec4)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("new_ColorMatrixNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("new_ColorMatrixNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -581,14 +597,15 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 //    - renderNode: child that is getting its colors modified.
 //
 func (node *ColorMatrixNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ColorMatrixNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -623,14 +640,15 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 //    - matrix: 4x4 color matrix.
 //
 func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ColorMatrixNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("get_color_matrix", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("get_color_matrix", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -649,14 +667,15 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 //    - vec4: color vector.
 //
 func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ColorMatrixNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("get_color_offset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ColorMatrixNode").InvokeMethod("get_color_offset", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -681,17 +700,18 @@ func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 //    - colorNode: new GskRenderNode.
 //
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-	*(**gdk.RGBA)(unsafe.Pointer(&args[0])) = _arg0
-	*(**graphene.Rect)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "ColorNode").InvokeMethod("new_ColorNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "ColorNode").InvokeMethod("new_ColorNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
@@ -711,14 +731,15 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 //    - rgbA: color of the node.
 //
 func (node *ColorNode) Color() *gdk.RGBA {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ColorNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ColorNode").InvokeMethod("get_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ColorNode").InvokeMethod("get_color", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -743,14 +764,15 @@ func (node *ColorNode) Color() *gdk.RGBA {
 //    - gfloat: angle for the gradient.
 //
 func (node *ConicGradientNode) Angle() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ConicGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_angle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_angle", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -769,14 +791,15 @@ func (node *ConicGradientNode) Angle() float32 {
 //    - point: center point for the gradient.
 //
 func (node *ConicGradientNode) Center() *graphene.Point {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ConicGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_center", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_center", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -795,14 +818,15 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 //    - gsize: number of color stops.
 //
 func (node *ConicGradientNode) NColorStops() uint {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gsize // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ConicGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_n_color_stops", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_n_color_stops", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -821,14 +845,15 @@ func (node *ConicGradientNode) NColorStops() uint {
 //    - gfloat: rotation for the gradient.
 //
 func (node *ConicGradientNode) Rotation() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ConicGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_rotation", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_rotation", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -854,7 +879,7 @@ func (node *ConicGradientNode) Rotation() float32 {
 //    - containerNode: new GskRenderNode.
 //
 func NewContainerNode(children []RenderNoder) *ContainerNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 **C.void // out
 	var _arg1 C.guint
 	var _cret *C.void // in
@@ -868,15 +893,16 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 			out[i] = (*C.void)(unsafe.Pointer(coreglib.InternObject(children[i]).Native()))
 		}
 	}
-	*(*[]RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ContainerNode").InvokeMethod("new_ContainerNode", args[:], nil)
+	*(***C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ContainerNode").InvokeMethod("new_ContainerNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(children)
 
 	var _containerNode *ContainerNode // out
-	_out1 = *(**ContainerNode)(unsafe.Pointer(&outs[1]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_containerNode = wrapContainerNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -894,16 +920,18 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 //    - renderNode: idx'th child of container.
 //
 func (node *ContainerNode) Child(idx uint32) RenderNoder {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
 	_arg1 = C.guint(idx)
-	*(**ContainerNode)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "ContainerNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "ContainerNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -939,14 +967,15 @@ func (node *ContainerNode) Child(idx uint32) RenderNoder {
 //    - guint: number of children of the GskRenderNode.
 //
 func (node *ContainerNode) NChildren() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ContainerNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ContainerNode").InvokeMethod("get_n_children", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ContainerNode").InvokeMethod("get_n_children", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -973,7 +1002,7 @@ func (node *ContainerNode) NChildren() uint32 {
 //    - crossFadeNode: new GskRenderNode.
 //
 func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.float // out
@@ -982,11 +1011,12 @@ func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(start).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(end).Native()))
 	_arg2 = C.float(progress)
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(*RenderNoder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("new_CrossFadeNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("new_CrossFadeNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
@@ -1007,14 +1037,15 @@ func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 //    - renderNode: GskRenderNode.
 //
 func (node *CrossFadeNode) EndChild() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**CrossFadeNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("get_end_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("get_end_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1049,14 +1080,15 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 //    - gfloat progress value, between 0 and 1.
 //
 func (node *CrossFadeNode) Progress() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**CrossFadeNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("get_progress", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("get_progress", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1076,14 +1108,15 @@ func (node *CrossFadeNode) Progress() float32 {
 //    - renderNode: GskRenderNode.
 //
 func (node *CrossFadeNode) StartChild() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**CrossFadeNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("get_start_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("get_start_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1126,17 +1159,18 @@ func (node *CrossFadeNode) StartChild() RenderNoder {
 //    - debugNode: new GskRenderNode.
 //
 func NewDebugNode(child RenderNoder, message string) *DebugNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(message)))
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "DebugNode").InvokeMethod("new_DebugNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "DebugNode").InvokeMethod("new_DebugNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -1156,14 +1190,15 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 //    - renderNode: child GskRenderNode.
 //
 func (node *DebugNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**DebugNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "DebugNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "DebugNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1198,14 +1233,15 @@ func (node *DebugNode) Child() RenderNoder {
 //    - utf8: debug message.
 //
 func (node *DebugNode) Message() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**DebugNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "DebugNode").InvokeMethod("get_message", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "DebugNode").InvokeMethod("get_message", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1248,7 +1284,7 @@ func (node *DebugNode) Message() string {
 //    - glShaderNode: new GskRenderNode.
 //
 func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNoder) *GLShaderNode {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 *C.void  // out
@@ -1268,12 +1304,13 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 			out[i] = (*C.void)(unsafe.Pointer(coreglib.InternObject(children[i]).Native()))
 		}
 	}
-	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
-	*(**graphene.Rect)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
-	*(*[]RenderNoder)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("new_GLShaderNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(***C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("new_GLShaderNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -1282,7 +1319,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 	runtime.KeepAlive(children)
 
 	var _glShaderNode *GLShaderNode // out
-	_out4 = *(**GLShaderNode)(unsafe.Pointer(&outs[4]))
+	_out4 = *(**C.void)(unsafe.Pointer(&_outs[4]))
 
 	_glShaderNode = wrapGLShaderNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -1296,14 +1333,15 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 //    - bytes with the uniform arguments.
 //
 func (node *GLShaderNode) Args() *glib.Bytes {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**GLShaderNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_args", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_args", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1333,16 +1371,18 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 //    - renderNode: idx'th child of node.
 //
 func (node *GLShaderNode) Child(idx uint32) RenderNoder {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
 	_arg1 = C.guint(idx)
-	*(**GLShaderNode)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1378,14 +1418,15 @@ func (node *GLShaderNode) Child(idx uint32) RenderNoder {
 //    - guint: number of children.
 //
 func (node *GLShaderNode) NChildren() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**GLShaderNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_n_children", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_n_children", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1404,14 +1445,15 @@ func (node *GLShaderNode) NChildren() uint32 {
 //    - glShader: GLShader shader.
 //
 func (node *GLShaderNode) Shader() *GLShader {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**GLShaderNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_shader", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShaderNode").InvokeMethod("get_shader", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1440,7 +1482,7 @@ func (node *GLShaderNode) Shader() *GLShader {
 //    - insetShadowNode: new GskRenderNode.
 //
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *InsetShadowNode {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.float // out
@@ -1455,14 +1497,15 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, b
 	_arg3 = C.float(dy)
 	_arg4 = C.float(spread)
 	_arg5 = C.float(blurRadius)
-	*(**RoundedRect)(unsafe.Pointer(&args[0])) = _arg0
-	*(**gdk.RGBA)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float32)(unsafe.Pointer(&args[5])) = _arg5
 
-	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("new_InsetShadowNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.float)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.float)(unsafe.Pointer(&_args[5])) = _arg5
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("new_InsetShadowNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(outline)
@@ -1486,14 +1529,15 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, b
 //    - gfloat: blur radius, in pixels.
 //
 func (node *InsetShadowNode) BlurRadius() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_blur_radius", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_blur_radius", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1512,14 +1556,15 @@ func (node *InsetShadowNode) BlurRadius() float32 {
 //    - rgbA: color of the shadow.
 //
 func (node *InsetShadowNode) Color() *gdk.RGBA {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_color", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1538,14 +1583,15 @@ func (node *InsetShadowNode) Color() *gdk.RGBA {
 //    - gfloat: offset, in pixels.
 //
 func (node *InsetShadowNode) Dx() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_dx", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_dx", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1564,14 +1610,15 @@ func (node *InsetShadowNode) Dx() float32 {
 //    - gfloat: offset, in pixels.
 //
 func (node *InsetShadowNode) Dy() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_dy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_dy", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1590,14 +1637,15 @@ func (node *InsetShadowNode) Dy() float32 {
 //    - roundedRect: rounded rectangle.
 //
 func (node *InsetShadowNode) Outline() *RoundedRect {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_outline", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_outline", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1616,14 +1664,15 @@ func (node *InsetShadowNode) Outline() *RoundedRect {
 //    - gfloat: size of the shadow, in pixels.
 //
 func (node *InsetShadowNode) Spread() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_spread", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_spread", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1642,14 +1691,15 @@ func (node *InsetShadowNode) Spread() float32 {
 //    - point: final point.
 //
 func (node *LinearGradientNode) End() *graphene.Point {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**LinearGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "LinearGradientNode").InvokeMethod("get_end", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "LinearGradientNode").InvokeMethod("get_end", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1668,14 +1718,15 @@ func (node *LinearGradientNode) End() *graphene.Point {
 //    - gsize: number of color stops.
 //
 func (node *LinearGradientNode) NColorStops() uint {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gsize // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**LinearGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "LinearGradientNode").InvokeMethod("get_n_color_stops", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "LinearGradientNode").InvokeMethod("get_n_color_stops", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1694,14 +1745,15 @@ func (node *LinearGradientNode) NColorStops() uint {
 //    - point: initial point.
 //
 func (node *LinearGradientNode) Start() *graphene.Point {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**LinearGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "LinearGradientNode").InvokeMethod("get_start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "LinearGradientNode").InvokeMethod("get_start", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1726,17 +1778,18 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 //    - opacityNode: new GskRenderNode.
 //
 func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = C.float(opacity)
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(*float32)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("new_OpacityNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("new_OpacityNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -1756,14 +1809,15 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 //    - renderNode: child that is getting opacityed.
 //
 func (node *OpacityNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OpacityNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1798,14 +1852,15 @@ func (node *OpacityNode) Child() RenderNoder {
 //    - gfloat: opacity factor.
 //
 func (node *OpacityNode) Opacity() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OpacityNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("get_opacity", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("get_opacity", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1834,7 +1889,7 @@ func (node *OpacityNode) Opacity() float32 {
 //    - outsetShadowNode: new GskRenderNode.
 //
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *OutsetShadowNode {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.float // out
@@ -1849,14 +1904,15 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, 
 	_arg3 = C.float(dy)
 	_arg4 = C.float(spread)
 	_arg5 = C.float(blurRadius)
-	*(**RoundedRect)(unsafe.Pointer(&args[0])) = _arg0
-	*(**gdk.RGBA)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float32)(unsafe.Pointer(&args[5])) = _arg5
 
-	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("new_OutsetShadowNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.float)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.float)(unsafe.Pointer(&_args[5])) = _arg5
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("new_OutsetShadowNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(outline)
@@ -1880,14 +1936,15 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, 
 //    - gfloat: blur radius, in pixels.
 //
 func (node *OutsetShadowNode) BlurRadius() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_blur_radius", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_blur_radius", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1906,14 +1963,15 @@ func (node *OutsetShadowNode) BlurRadius() float32 {
 //    - rgbA: color.
 //
 func (node *OutsetShadowNode) Color() *gdk.RGBA {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_color", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1932,14 +1990,15 @@ func (node *OutsetShadowNode) Color() *gdk.RGBA {
 //    - gfloat: offset, in pixels.
 //
 func (node *OutsetShadowNode) Dx() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_dx", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_dx", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1958,14 +2017,15 @@ func (node *OutsetShadowNode) Dx() float32 {
 //    - gfloat: offset, in pixels.
 //
 func (node *OutsetShadowNode) Dy() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_dy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_dy", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -1984,14 +2044,15 @@ func (node *OutsetShadowNode) Dy() float32 {
 //    - roundedRect: rounded rectangle.
 //
 func (node *OutsetShadowNode) Outline() *RoundedRect {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_outline", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_outline", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2010,14 +2071,15 @@ func (node *OutsetShadowNode) Outline() *RoundedRect {
 //    - gfloat: size of the shadow, in pixels.
 //
 func (node *OutsetShadowNode) Spread() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_spread", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_spread", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2036,14 +2098,15 @@ func (node *OutsetShadowNode) Spread() float32 {
 //    - point: center point for the gradient.
 //
 func (node *RadialGradientNode) Center() *graphene.Point {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_center", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_center", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2062,14 +2125,15 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 //    - gfloat: end value for the gradient.
 //
 func (node *RadialGradientNode) End() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_end", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_end", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2088,14 +2152,15 @@ func (node *RadialGradientNode) End() float32 {
 //    - gfloat: horizontal radius for the gradient.
 //
 func (node *RadialGradientNode) Hradius() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_hradius", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_hradius", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2114,14 +2179,15 @@ func (node *RadialGradientNode) Hradius() float32 {
 //    - gsize: number of color stops.
 //
 func (node *RadialGradientNode) NColorStops() uint {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gsize // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_n_color_stops", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_n_color_stops", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2140,14 +2206,15 @@ func (node *RadialGradientNode) NColorStops() uint {
 //    - gfloat: start value for the gradient.
 //
 func (node *RadialGradientNode) Start() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_start", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2166,14 +2233,15 @@ func (node *RadialGradientNode) Start() float32 {
 //    - gfloat: vertical radius for the gradient.
 //
 func (node *RadialGradientNode) Vradius() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.float // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_vradius", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_vradius", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2251,18 +2319,50 @@ func BaseRenderNode(obj RenderNoder) *RenderNode {
 //    - cr: cairo context to draw to.
 //
 func (node *RenderNode) Draw(cr *cairo.Context) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(**RenderNode)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gsk", "RenderNode").InvokeMethod("draw", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gsk", "RenderNode").InvokeMethod("draw", _args[:], nil)
 
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(cr)
+}
+
+// Bounds retrieves the boundaries of the node.
+//
+// The node will not draw outside of its boundaries.
+//
+// The function returns the following values:
+//
+//    - bounds: return location for the boundaries.
+//
+func (node *RenderNode) Bounds() *graphene.Rect {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gsk", "RenderNode").InvokeMethod("get_bounds", _args[:], _outs[:])
+
+	runtime.KeepAlive(node)
+
+	var _bounds *graphene.Rect // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _bounds
 }
 
 // Serialize serializes the node for later deserialization via
@@ -2280,14 +2380,15 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 //    - bytes representing the node.
 //
 func (node *RenderNode) Serialize() *glib.Bytes {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RenderNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RenderNode").InvokeMethod("serialize", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RenderNode").InvokeMethod("serialize", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2318,7 +2419,7 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 //    - filename: file to save it to.
 //
 func (node *RenderNode) WriteToFile(filename string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -2326,9 +2427,11 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**RenderNode)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gsk", "RenderNode").InvokeMethod("write_to_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gsk", "RenderNode").InvokeMethod("write_to_file", _args[:], nil)
 
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(filename)
@@ -2340,6 +2443,66 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	}
 
 	return _goerr
+}
+
+// RenderNodeDeserialize loads data previously created via
+// gsk_render_node_serialize().
+//
+// For a discussion of the supported format, see that function.
+//
+// The function takes the following parameters:
+//
+//    - bytes containing the data.
+//    - errorFunc (optional): callback on parsing errors or NULL.
+//
+// The function returns the following values:
+//
+//    - renderNode (optional): new GskRenderNode or NULL on error.
+//
+func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNoder {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	if errorFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gsk4_ParseErrorFunc)
+		_arg2 = C.gpointer(gbox.Assign(errorFunc))
+		defer gbox.Delete(uintptr(_arg2))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "deserialize").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(bytes)
+	runtime.KeepAlive(errorFunc)
+
+	var _renderNode RenderNoder // out
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(RenderNoder)
+				return ok
+			})
+			rv, ok := casted.(RenderNoder)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+			}
+			_renderNode = rv
+		}
+	}
+
+	return _renderNode
 }
 
 // NewRepeatNode creates a GskRenderNode that will repeat the drawing of child
@@ -2357,7 +2520,7 @@ func (node *RenderNode) WriteToFile(filename string) error {
 //    - repeatNode: new GskRenderNode.
 //
 func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphene.Rect) *RepeatNode {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -2368,11 +2531,12 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 	if childBounds != nil {
 		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(childBounds)))
 	}
-	*(**graphene.Rect)(unsafe.Pointer(&args[0])) = _arg0
-	*(*RenderNoder)(unsafe.Pointer(&args[1])) = _arg1
-	*(**graphene.Rect)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "RepeatNode").InvokeMethod("new_RepeatNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "RepeatNode").InvokeMethod("new_RepeatNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bounds)
@@ -2393,14 +2557,15 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 //    - renderNode: GskRenderNode.
 //
 func (node *RepeatNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RepeatNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RepeatNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RepeatNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2435,14 +2600,15 @@ func (node *RepeatNode) Child() RenderNoder {
 //    - rect: bounding rectangle.
 //
 func (node *RepeatNode) ChildBounds() *graphene.Rect {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RepeatNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RepeatNode").InvokeMethod("get_child_bounds", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RepeatNode").InvokeMethod("get_child_bounds", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2467,17 +2633,18 @@ func (node *RepeatNode) ChildBounds() *graphene.Rect {
 //    - roundedClipNode: new GskRenderNode.
 //
 func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(clip)))
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "RoundedClipNode").InvokeMethod("new_RoundedClipNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "RoundedClipNode").InvokeMethod("new_RoundedClipNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -2497,14 +2664,15 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 //    - renderNode: child that is getting clipped.
 //
 func (node *RoundedClipNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RoundedClipNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RoundedClipNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RoundedClipNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2539,14 +2707,15 @@ func (node *RoundedClipNode) Child() RenderNoder {
 //    - roundedRect: rounded rectangle.
 //
 func (node *RoundedClipNode) Clip() *RoundedRect {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**RoundedClipNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "RoundedClipNode").InvokeMethod("get_clip", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RoundedClipNode").InvokeMethod("get_clip", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2565,14 +2734,15 @@ func (node *RoundedClipNode) Clip() *RoundedRect {
 //    - renderNode: child render node.
 //
 func (node *ShadowNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ShadowNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ShadowNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2607,14 +2777,15 @@ func (node *ShadowNode) Child() RenderNoder {
 //    - gsize: number of shadows.
 //
 func (node *ShadowNode) NShadows() uint {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gsize // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**ShadowNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "ShadowNode").InvokeMethod("get_n_shadows", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ShadowNode").InvokeMethod("get_n_shadows", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2637,16 +2808,18 @@ func (node *ShadowNode) NShadows() uint {
 //    - shadow data.
 //
 func (node *ShadowNode) Shadow(i uint) *Shadow {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gsize // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
 	_arg1 = C.gsize(i)
-	*(**ShadowNode)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "ShadowNode").InvokeMethod("get_shadow", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gsize)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "ShadowNode").InvokeMethod("get_shadow", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2675,7 +2848,7 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 //    - textNode (optional): new GskRenderNode.
 //
 func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) *TextNode {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -2686,12 +2859,13 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(offset)))
-	*(*pango.Fonter)(unsafe.Pointer(&args[0])) = _arg0
-	*(**pango.GlyphString)(unsafe.Pointer(&args[1])) = _arg1
-	*(**gdk.RGBA)(unsafe.Pointer(&args[2])) = _arg2
-	*(**graphene.Point)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("new_TextNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("new_TextNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
@@ -2715,14 +2889,15 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 //    - rgbA: text color.
 //
 func (node *TextNode) Color() *gdk.RGBA {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TextNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_color", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2741,14 +2916,15 @@ func (node *TextNode) Color() *gdk.RGBA {
 //    - font: font.
 //
 func (node *TextNode) Font() pango.Fonter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TextNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_font", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_font", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2783,14 +2959,15 @@ func (node *TextNode) Font() pango.Fonter {
 //    - guint: number of glyphs.
 //
 func (node *TextNode) NumGlyphs() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TextNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_num_glyphs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_num_glyphs", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2809,14 +2986,15 @@ func (node *TextNode) NumGlyphs() uint32 {
 //    - point with the horizontal and vertical offsets.
 //
 func (node *TextNode) Offset() *graphene.Point {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TextNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_offset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("get_offset", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2835,14 +3013,15 @@ func (node *TextNode) Offset() *graphene.Point {
 //    - ok: TRUE if the text node has color glyphs.
 //
 func (node *TextNode) HasColorGlyphs() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TextNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("has_color_glyphs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TextNode").InvokeMethod("has_color_glyphs", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2869,17 +3048,18 @@ func (node *TextNode) HasColorGlyphs() bool {
 //    - textureNode: new GskRenderNode.
 //
 func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-	*(*gdk.Texturer)(unsafe.Pointer(&args[0])) = _arg0
-	*(**graphene.Rect)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "TextureNode").InvokeMethod("new_TextureNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "TextureNode").InvokeMethod("new_TextureNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(texture)
@@ -2899,14 +3079,15 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 //    - texture: GdkTexture.
 //
 func (node *TextureNode) Texture() gdk.Texturer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TextureNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TextureNode").InvokeMethod("get_texture", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TextureNode").InvokeMethod("get_texture", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -2947,17 +3128,18 @@ func (node *TextureNode) Texture() gdk.Texturer {
 //    - transformNode: new GskRenderNode.
 //
 func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
-	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "TransformNode").InvokeMethod("new_TransformNode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "TransformNode").InvokeMethod("new_TransformNode", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -2977,14 +3159,15 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 //    - renderNode: child that is getting transformed.
 //
 func (node *TransformNode) Child() RenderNoder {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TransformNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TransformNode").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TransformNode").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
@@ -3019,14 +3202,15 @@ func (node *TransformNode) Child() RenderNoder {
 //    - transform: GskTransform.
 //
 func (node *TransformNode) Transform() *Transform {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**TransformNode)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "TransformNode").InvokeMethod("get_transform", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "TransformNode").InvokeMethod("get_transform", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)

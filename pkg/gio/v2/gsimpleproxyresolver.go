@@ -79,16 +79,18 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 //    - defaultProxy: default proxy to use.
 //
 func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(defaultProxy)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**SimpleProxyResolver)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_default_proxy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_default_proxy", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(defaultProxy)
@@ -108,7 +110,7 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 //    - proxy to use for uri_scheme.
 //
 func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -118,10 +120,12 @@ func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(proxy)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**SimpleProxyResolver)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_uri_proxy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_uri_proxy", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(uriScheme)

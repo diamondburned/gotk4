@@ -18,13 +18,15 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern PangoFontFace* _gotk4_gtk4_FontChooserIface_get_font_face(GtkFontChooser*);
-// extern PangoFontFamily* _gotk4_gtk4_FontChooserIface_get_font_family(GtkFontChooser*);
-// extern PangoFontMap* _gotk4_gtk4_FontChooserIface_get_font_map(GtkFontChooser*);
-// extern int _gotk4_gtk4_FontChooserIface_get_font_size(GtkFontChooser*);
-// extern void _gotk4_gtk4_FontChooserIface_font_activated(GtkFontChooser*, char*);
-// extern void _gotk4_gtk4_FontChooserIface_set_font_map(GtkFontChooser*, PangoFontMap*);
-// extern void _gotk4_gtk4_FontChooser_ConnectFontActivated(gpointer, gchar*, guintptr);
+// extern PangoFontFace* _gotk4_gtk4_FontChooserIface_get_font_face(void*);
+// extern PangoFontFamily* _gotk4_gtk4_FontChooserIface_get_font_family(void*);
+// extern PangoFontMap* _gotk4_gtk4_FontChooserIface_get_font_map(void*);
+// extern gboolean _gotk4_gtk4_FontFilterFunc(void*, void*, gpointer);
+// extern int _gotk4_gtk4_FontChooserIface_get_font_size(void*);
+// extern void _gotk4_gtk4_FontChooserIface_font_activated(void*, void*);
+// extern void _gotk4_gtk4_FontChooserIface_set_font_map(void*, void*);
+// extern void _gotk4_gtk4_FontChooser_ConnectFontActivated(gpointer, void*, guintptr);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtkfontchooser.go.
@@ -111,7 +113,7 @@ func (f FontChooserLevel) Has(other FontChooserLevel) bool {
 type FontFilterFunc func(family pango.FontFamilier, face pango.FontFacer) (ok bool)
 
 //export _gotk4_gtk4_FontFilterFunc
-func _gotk4_gtk4_FontFilterFunc(arg1 *C.PangoFontFamily, arg2 *C.PangoFontFace, arg3 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk4_FontFilterFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
 	var fn FontFilterFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -168,83 +170,6 @@ func _gotk4_gtk4_FontFilterFunc(arg1 *C.PangoFontFamily, arg2 *C.PangoFontFace, 
 	return cret
 }
 
-// FontChooserOverrider contains methods that are overridable.
-type FontChooserOverrider interface {
-	// The function takes the following parameters:
-	//
-	FontActivated(fontname string)
-	// FontFace gets the PangoFontFace representing the selected font group
-	// details (i.e. family, slant, weight, width, etc).
-	//
-	// If the selected font is not installed, returns NULL.
-	//
-	// The function returns the following values:
-	//
-	//    - fontFace (optional): PangoFontFace representing the selected font
-	//      group details, or NULL. The returned object is owned by fontchooser
-	//      and must not be modified or freed.
-	//
-	FontFace() pango.FontFacer
-	// FontFamily gets the PangoFontFamily representing the selected font
-	// family.
-	//
-	// Font families are a collection of font faces.
-	//
-	// If the selected font is not installed, returns NULL.
-	//
-	// The function returns the following values:
-	//
-	//    - fontFamily (optional): PangoFontFamily representing the selected font
-	//      family, or NULL. The returned object is owned by fontchooser and must
-	//      not be modified or freed.
-	//
-	FontFamily() pango.FontFamilier
-	// FontMap gets the custom font map of this font chooser widget, or NULL if
-	// it does not have one.
-	//
-	// The function returns the following values:
-	//
-	//    - fontMap (optional): PangoFontMap, or NULL.
-	//
-	FontMap() pango.FontMapper
-	// FontSize: selected font size.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: n integer representing the selected font size, or -1 if no font
-	//      size is selected.
-	//
-	FontSize() int32
-	// SetFontMap sets a custom font map to use for this font chooser widget.
-	//
-	// A custom font map can be used to present application-specific fonts
-	// instead of or in addition to the normal system fonts.
-	//
-	//    FcConfig *config;
-	//    PangoFontMap *fontmap;
-	//
-	//    config = FcInitLoadConfigAndFonts ();
-	//    FcConfigAppFontAddFile (config, my_app_font_file);
-	//
-	//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
-	//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
-	//
-	//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
-	//
-	//
-	// Note that other GTK widgets will only be able to use the
-	// application-specific font if it is present in the font map they use:
-	//
-	//    context = gtk_widget_get_pango_context (label);
-	//    pango_context_set_font_map (context, fontmap);.
-	//
-	// The function takes the following parameters:
-	//
-	//    - fontmap (optional): PangoFontMap.
-	//
-	SetFontMap(fontmap pango.FontMapper)
-}
-
 // FontChooser: GtkFontChooser is an interface that can be implemented by
 // widgets for choosing fonts.
 //
@@ -289,6 +214,9 @@ type FontChooserer interface {
 	PreviewText() string
 	// ShowPreviewEntry returns whether the preview entry is shown or not.
 	ShowPreviewEntry() bool
+	// SetFilterFunc adds a filter function that decides which fonts to display
+	// in the font chooser.
+	SetFilterFunc(filter FontFilterFunc)
 	// SetFont sets the currently-selected font.
 	SetFont(fontname string)
 	// SetFontDesc sets the currently-selected font from font_desc.
@@ -308,110 +236,6 @@ type FontChooserer interface {
 
 var _ FontChooserer = (*FontChooser)(nil)
 
-func ifaceInitFontChooserer(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkFontChooserIface)(unsafe.Pointer(gifacePtr))
-	iface.font_activated = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_font_activated)
-	iface.get_font_face = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_face)
-	iface.get_font_family = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_family)
-	iface.get_font_map = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_map)
-	iface.get_font_size = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_size)
-	iface.set_font_map = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_set_font_map)
-}
-
-//export _gotk4_gtk4_FontChooserIface_font_activated
-func _gotk4_gtk4_FontChooserIface_font_activated(arg0 *C.GtkFontChooser, arg1 *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FontChooserOverrider)
-
-	var _fontname string // out
-
-	_fontname = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.FontActivated(_fontname)
-}
-
-//export _gotk4_gtk4_FontChooserIface_get_font_face
-func _gotk4_gtk4_FontChooserIface_get_font_face(arg0 *C.GtkFontChooser) (cret *C.PangoFontFace) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FontChooserOverrider)
-
-	fontFace := iface.FontFace()
-
-	if fontFace != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontFace).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_FontChooserIface_get_font_family
-func _gotk4_gtk4_FontChooserIface_get_font_family(arg0 *C.GtkFontChooser) (cret *C.PangoFontFamily) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FontChooserOverrider)
-
-	fontFamily := iface.FontFamily()
-
-	if fontFamily != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontFamily).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_FontChooserIface_get_font_map
-func _gotk4_gtk4_FontChooserIface_get_font_map(arg0 *C.GtkFontChooser) (cret *C.PangoFontMap) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FontChooserOverrider)
-
-	fontMap := iface.FontMap()
-
-	if fontMap != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontMap).Native()))
-		C.g_object_ref(C.gpointer(coreglib.InternObject(fontMap).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_FontChooserIface_get_font_size
-func _gotk4_gtk4_FontChooserIface_get_font_size(arg0 *C.GtkFontChooser) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FontChooserOverrider)
-
-	gint := iface.FontSize()
-
-	cret = C.int(gint)
-
-	return cret
-}
-
-//export _gotk4_gtk4_FontChooserIface_set_font_map
-func _gotk4_gtk4_FontChooserIface_set_font_map(arg0 *C.GtkFontChooser, arg1 *C.PangoFontMap) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(FontChooserOverrider)
-
-	var _fontmap pango.FontMapper // out
-
-	if arg1 != nil {
-		{
-			objptr := unsafe.Pointer(arg1)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(pango.FontMapper)
-				return ok
-			})
-			rv, ok := casted.(pango.FontMapper)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
-			}
-			_fontmap = rv
-		}
-	}
-
-	iface.SetFontMap(_fontmap)
-}
-
 func wrapFontChooser(obj *coreglib.Object) *FontChooser {
 	return &FontChooser{
 		Object: obj,
@@ -423,7 +247,7 @@ func marshalFontChooser(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_FontChooser_ConnectFontActivated
-func _gotk4_gtk4_FontChooser_ConnectFontActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk4_FontChooser_ConnectFontActivated(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(fontname string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -467,12 +291,13 @@ func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) co
 //      font is selected. You must free this string with g_free().
 //
 func (fontchooser *FontChooser) Font() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -504,12 +329,13 @@ func (fontchooser *FontChooser) Font() string {
 //      NULL if no font is selected.
 //
 func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -542,12 +368,13 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 //      not be modified or freed.
 //
 func (fontchooser *FontChooser) FontFace() pango.FontFacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -588,12 +415,13 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 //      be modified or freed.
 //
 func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -628,12 +456,13 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 //    - utf8: currently selected font features.
 //
 func (fontchooser *FontChooser) FontFeatures() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -655,12 +484,13 @@ func (fontchooser *FontChooser) FontFeatures() string {
 //    - fontMap (optional): PangoFontMap, or NULL.
 //
 func (fontchooser *FontChooser) FontMap() pango.FontMapper {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -696,12 +526,13 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 //      size is selected.
 //
 func (fontchooser *FontChooser) FontSize() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -721,12 +552,13 @@ func (fontchooser *FontChooser) FontSize() int32 {
 //    - utf8: currently selected language.
 //
 func (fontchooser *FontChooser) Language() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -747,12 +579,13 @@ func (fontchooser *FontChooser) Language() string {
 //    - utf8: text displayed in the preview area.
 //
 func (fontchooser *FontChooser) PreviewText() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -773,12 +606,13 @@ func (fontchooser *FontChooser) PreviewText() string {
 //    - ok: TRUE if the preview entry is shown or FALSE if it is hidden.
 //
 func (fontchooser *FontChooser) ShowPreviewEntry() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -793,6 +627,34 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 	return _ok
 }
 
+// SetFilterFunc adds a filter function that decides which fonts to display in
+// the font chooser.
+//
+// The function takes the following parameters:
+//
+//    - filter (optional): GtkFontFilterFunc, or NULL.
+//
+func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
+	var _args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	if filter != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_FontFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filter))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(filter)
+}
+
 // SetFont sets the currently-selected font.
 //
 // The function takes the following parameters:
@@ -800,14 +662,16 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 //    - fontname: font name like “Helvetica 12” or “Times Bold 18”.
 //
 func (fontchooser *FontChooser) SetFont(fontname string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fontname)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FontChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(fontname)
@@ -820,13 +684,15 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 //    - fontDesc: PangoFontDescription.
 //
 func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(fontDesc)))
-	*(**FontChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(fontDesc)
@@ -860,7 +726,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //    - fontmap (optional): PangoFontMap.
 //
 func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -868,7 +734,9 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	if fontmap != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 	}
-	*(**FontChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(fontmap)
@@ -881,14 +749,16 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 //    - language: language.
 //
 func (fontchooser *FontChooser) SetLanguage(language string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(language)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FontChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(language)
@@ -903,14 +773,16 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 //    - text to display in the preview area.
 //
 func (fontchooser *FontChooser) SetPreviewText(text string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FontChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(text)
@@ -923,7 +795,7 @@ func (fontchooser *FontChooser) SetPreviewText(text string) {
 //    - showPreviewEntry: whether to show the editable preview entry or not.
 //
 func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -931,7 +803,9 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	if showPreviewEntry {
 		_arg1 = C.TRUE
 	}
-	*(**FontChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(showPreviewEntry)

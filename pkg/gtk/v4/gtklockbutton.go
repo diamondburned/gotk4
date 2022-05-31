@@ -125,16 +125,17 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 //    - lockButton: new GtkLockButton.
 //
 func NewLockButton(permission gio.Permissioner) *LockButton {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if permission != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
-	*(*gio.Permissioner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("new_LockButton", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("new_LockButton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(permission)
@@ -153,14 +154,15 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 //    - permission: GPermission of button.
 //
 func (button *LockButton) Permission() gio.Permissioner {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**LockButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("get_permission", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("get_permission", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
@@ -195,7 +197,7 @@ func (button *LockButton) Permission() gio.Permissioner {
 //    - permission (optional): GPermission object, or NULL.
 //
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -203,9 +205,11 @@ func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	if permission != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
-	*(**LockButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "LockButton").InvokeMethod("set_permission", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "LockButton").InvokeMethod("set_permission", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(permission)

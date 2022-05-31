@@ -148,14 +148,15 @@ func NewColorButton() *ColorButton {
 //    - colorButton: new color button.
 //
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**gdk.RGBA)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton_with_rgba", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton_with_rgba", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
@@ -174,14 +175,15 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 //    - ok: TRUE if the dialog is modal.
 //
 func (button *ColorButton) Modal() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**ColorButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_modal", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_modal", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
@@ -202,14 +204,15 @@ func (button *ColorButton) Modal() bool {
 //    - utf8: internal string, do not free the return value.
 //
 func (button *ColorButton) Title() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**ColorButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_title", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
@@ -228,7 +231,7 @@ func (button *ColorButton) Title() string {
 //    - modal: TRUE to make the dialog modal.
 //
 func (button *ColorButton) SetModal(modal bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -236,9 +239,11 @@ func (button *ColorButton) SetModal(modal bool) {
 	if modal {
 		_arg1 = C.TRUE
 	}
-	*(**ColorButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_modal", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_modal", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(modal)
@@ -251,16 +256,18 @@ func (button *ColorButton) SetModal(modal bool) {
 //    - title: string containing new window title.
 //
 func (button *ColorButton) SetTitle(title string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ColorButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(title)

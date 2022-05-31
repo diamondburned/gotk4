@@ -17,16 +17,17 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GtkWidgetPath* _gotk4_gtk3_ContainerClass_get_path_for_child(GtkContainer*, GtkWidget*);
-// extern gchar* _gotk4_gtk3_ContainerClass_composite_name(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_ContainerClass_add(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_ContainerClass_check_resize(GtkContainer*);
-// extern void _gotk4_gtk3_ContainerClass_remove(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_ContainerClass_set_focus_child(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_Container_ConnectAdd(gpointer, GtkWidget*, guintptr);
+// extern GtkWidgetPath* _gotk4_gtk3_ContainerClass_get_path_for_child(void*, void*);
+// extern gchar* _gotk4_gtk3_ContainerClass_composite_name(void*, void*);
+// extern void _gotk4_gtk3_Callback(void*, gpointer);
+// extern void _gotk4_gtk3_ContainerClass_add(void*, void*);
+// extern void _gotk4_gtk3_ContainerClass_check_resize(void*);
+// extern void _gotk4_gtk3_ContainerClass_remove(void*, void*);
+// extern void _gotk4_gtk3_ContainerClass_set_focus_child(void*, void*);
+// extern void _gotk4_gtk3_Container_ConnectAdd(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_Container_ConnectCheckResize(gpointer, guintptr);
-// extern void _gotk4_gtk3_Container_ConnectRemove(gpointer, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_Container_ConnectSetFocusChild(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectRemove(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectSetFocusChild(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkcontainer.go.
@@ -338,7 +339,7 @@ func classInitContainerer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_ContainerClass_add
-func _gotk4_gtk3_ContainerClass_add(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
+func _gotk4_gtk3_ContainerClass_add(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Add(widget Widgetter) })
 
@@ -366,7 +367,7 @@ func _gotk4_gtk3_ContainerClass_add(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
 }
 
 //export _gotk4_gtk3_ContainerClass_check_resize
-func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.GtkContainer) {
+func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CheckResize() })
 
@@ -374,7 +375,7 @@ func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.GtkContainer) {
 }
 
 //export _gotk4_gtk3_ContainerClass_composite_name
-func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.gchar) {
+func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.void, arg1 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CompositeName(child Widgetter) string })
 
@@ -406,7 +407,7 @@ func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.GtkContainer, arg1 *C.Gtk
 }
 
 //export _gotk4_gtk3_ContainerClass_get_path_for_child
-func _gotk4_gtk3_ContainerClass_get_path_for_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.GtkWidgetPath) {
+func _gotk4_gtk3_ContainerClass_get_path_for_child(arg0 *C.void, arg1 *C.void) (cret *C.GtkWidgetPath) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PathForChild(child Widgetter) *WidgetPath
@@ -440,7 +441,7 @@ func _gotk4_gtk3_ContainerClass_get_path_for_child(arg0 *C.GtkContainer, arg1 *C
 }
 
 //export _gotk4_gtk3_ContainerClass_remove
-func _gotk4_gtk3_ContainerClass_remove(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
+func _gotk4_gtk3_ContainerClass_remove(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Remove(widget Widgetter) })
 
@@ -468,7 +469,7 @@ func _gotk4_gtk3_ContainerClass_remove(arg0 *C.GtkContainer, arg1 *C.GtkWidget) 
 }
 
 //export _gotk4_gtk3_ContainerClass_set_focus_child
-func _gotk4_gtk3_ContainerClass_set_focus_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
+func _gotk4_gtk3_ContainerClass_set_focus_child(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetFocusChild(child Widgetter) })
 
@@ -525,7 +526,7 @@ func BaseContainer(obj Containerer) *Container {
 }
 
 //export _gotk4_gtk3_Container_ConnectAdd
-func _gotk4_gtk3_Container_ConnectAdd(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+func _gotk4_gtk3_Container_ConnectAdd(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(object Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -585,7 +586,7 @@ func (container *Container) ConnectCheckResize(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_Container_ConnectRemove
-func _gotk4_gtk3_Container_ConnectRemove(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+func _gotk4_gtk3_Container_ConnectRemove(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(object Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -625,7 +626,7 @@ func (container *Container) ConnectRemove(f func(object Widgetter)) coreglib.Sig
 }
 
 //export _gotk4_gtk3_Container_ConnectSetFocusChild
-func _gotk4_gtk3_Container_ConnectSetFocusChild(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+func _gotk4_gtk3_Container_ConnectSetFocusChild(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(object Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -680,28 +681,31 @@ func (container *Container) ConnectSetFocusChild(f func(object Widgetter)) coreg
 //    - widget to be placed inside container.
 //
 func (container *Container) Add(widget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("add", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("add", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(widget)
 }
 
 func (container *Container) CheckResize() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("check_resize", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("check_resize", _args[:], nil)
 
 	runtime.KeepAlive(container)
 }
@@ -715,7 +719,7 @@ func (container *Container) CheckResize() {
 //    - value: location to return the value.
 //
 func (container *Container) ChildGetProperty(child Widgetter, propertyName string, value *coreglib.Value) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -726,11 +730,13 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("child_get_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("child_get_property", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
@@ -752,7 +758,7 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 //      container.
 //
 func (container *Container) ChildNotify(child Widgetter, childProperty string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -761,10 +767,12 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(childProperty)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("child_notify", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("child_notify", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
@@ -780,7 +788,7 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 //    - value to set the property to.
 //
 func (container *Container) ChildSetProperty(child Widgetter, propertyName string, value *coreglib.Value) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -791,16 +799,85 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("child_set_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("child_set_property", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(propertyName)
 	runtime.KeepAlive(value)
+}
+
+// Forall invokes callback on each direct child of container, including children
+// that are considered “internal” (implementation details of the container).
+// “Internal” children generally weren’t added by the user of the container, but
+// were added by the container implementation itself.
+//
+// Most applications should use gtk_container_foreach(), rather than
+// gtk_container_forall().
+//
+// The function takes the following parameters:
+//
+//    - callback: callback.
+//
+func (container *Container) Forall(callback Callback) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_Callback)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg2))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("forall", _args[:], nil)
+
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(callback)
+}
+
+// ForEach invokes callback on each non-internal child of container. See
+// gtk_container_forall() for details on what constitutes an “internal” child.
+// For all practical purposes, this function should iterate over precisely those
+// child widgets that were added to the container by the application with
+// explicit add() calls.
+//
+// It is permissible to remove the child from the callback handler.
+//
+// Most applications should use gtk_container_foreach(), rather than
+// gtk_container_forall().
+//
+// The function takes the following parameters:
+//
+//    - callback: callback.
+//
+func (container *Container) ForEach(callback Callback) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_Callback)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg2))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("foreach", _args[:], nil)
+
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(callback)
 }
 
 // BorderWidth retrieves the border width of the container. See
@@ -811,14 +888,15 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 //    - guint: current border width.
 //
 func (container *Container) BorderWidth() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_border_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_border_width", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
@@ -838,14 +916,15 @@ func (container *Container) BorderWidth() uint32 {
 //    - list: newly-allocated list of the container’s non-internal children.
 //
 func (container *Container) Children() []Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_children", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_children", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
@@ -896,22 +975,24 @@ func (container *Container) Children() []Widgetter {
 //    - ok: TRUE if the focus chain of the container has been set explicitly.
 //
 func (container *Container) FocusChain() ([]Widgetter, bool) {
-	var args [1]girepository.Argument
-	var outs [1]girepository.Argument
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _out0 *C.void    // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_chain", args[:], outs[:])
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_chain", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
 
 	var _focusableWidgets []Widgetter // out
 	var _ok bool                      // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
 	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_out0)))
 	gextras.MoveList(unsafe.Pointer(_out0), true, func(v unsafe.Pointer) {
@@ -953,14 +1034,15 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 //      container when the container is focused, or NULL if none is set.
 //
 func (container *Container) FocusChild() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
@@ -996,14 +1078,15 @@ func (container *Container) FocusChild() Widgetter {
 //      been set.
 //
 func (container *Container) FocusHAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_hadjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
@@ -1026,14 +1109,15 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 //      been set.
 //
 func (container *Container) FocusVAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_vadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_focus_vadjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
@@ -1059,16 +1143,18 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 //    - widgetPath: newly created WidgetPath.
 //
 func (container *Container) PathForChild(child Widgetter) *WidgetPath {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_path_for_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Container").InvokeMethod("get_path_for_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
@@ -1111,7 +1197,7 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 //      cairo_restore() before calling this function.
 //
 func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1119,10 +1205,12 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("propagate_draw", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("propagate_draw", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
@@ -1143,15 +1231,17 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 //    - widget: current child of container.
 //
 func (container *Container) Remove(widget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("remove", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(widget)
@@ -1159,13 +1249,14 @@ func (container *Container) Remove(widget Widgetter) {
 
 // ResizeChildren: deprecated: since version 3.10.
 func (container *Container) ResizeChildren() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("resize_children", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("resize_children", _args[:], nil)
 
 	runtime.KeepAlive(container)
 }
@@ -1185,15 +1276,17 @@ func (container *Container) ResizeChildren() {
 //      values are in the range 0-65535 pixels.
 //
 func (container *Container) SetBorderWidth(borderWidth uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = C.guint(borderWidth)
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("set_border_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("set_border_width", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(borderWidth)
@@ -1216,7 +1309,7 @@ func (container *Container) SetBorderWidth(borderWidth uint32) {
 //    - focusableWidgets: the new focus chain.
 //
 func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1228,9 +1321,11 @@ func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_chain", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_chain", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(focusableWidgets)
@@ -1251,7 +1346,7 @@ func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 //    - child (optional) or NULL.
 //
 func (container *Container) SetFocusChild(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1259,9 +1354,11 @@ func (container *Container) SetFocusChild(child Widgetter) {
 	if child != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_child", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
@@ -1283,15 +1380,17 @@ func (container *Container) SetFocusChild(child Widgetter) {
 //      descendents of container.
 //
 func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_hadjustment", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(adjustment)
@@ -1313,15 +1412,17 @@ func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 //      descendents of container.
 //
 func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_vadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("set_focus_vadjustment", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(adjustment)
@@ -1340,7 +1441,7 @@ func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
 //    - needsRedraws: new value for the container’s reallocate_redraws flag.
 //
 func (container *Container) SetReallocateRedraws(needsRedraws bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1348,9 +1449,11 @@ func (container *Container) SetReallocateRedraws(needsRedraws bool) {
 	if needsRedraws {
 		_arg1 = C.TRUE
 	}
-	*(**Container)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("set_reallocate_redraws", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("set_reallocate_redraws", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(needsRedraws)
@@ -1362,13 +1465,14 @@ func (container *Container) SetReallocateRedraws(needsRedraws bool) {
 // Deprecated: For overriding focus behavior, use the GtkWidgetClass::focus
 // signal.
 func (container *Container) UnsetFocusChain() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**Container)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Container").InvokeMethod("unset_focus_chain", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Container").InvokeMethod("unset_focus_chain", _args[:], nil)
 
 	runtime.KeepAlive(container)
 }

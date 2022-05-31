@@ -41,7 +41,7 @@ import "C"
 //    - dBusActionGroup: BusActionGroup.
 //
 func DBusActionGroupGet(connection *DBusConnection, busName, objectPath string) *DBusActionGroup {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -54,11 +54,12 @@ func DBusActionGroupGet(connection *DBusConnection, busName, objectPath string) 
 	}
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**DBusConnection)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "get").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "get").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)

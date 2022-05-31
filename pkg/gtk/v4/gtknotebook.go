@@ -15,13 +15,13 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GtkNotebook* _gotk4_gtk4_Notebook_ConnectCreateWindow(gpointer, GtkWidget*, guintptr);
+// extern GtkNotebook* _gotk4_gtk4_Notebook_ConnectCreateWindow(gpointer, void*, guintptr);
 // extern gboolean _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(gpointer, gint, guintptr);
 // extern gboolean _gotk4_gtk4_Notebook_ConnectSelectPage(gpointer, gboolean, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectPageAdded(gpointer, GtkWidget*, guint, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectPageRemoved(gpointer, GtkWidget*, guint, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectPageReordered(gpointer, GtkWidget*, guint, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectSwitchPage(gpointer, GtkWidget*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectPageAdded(gpointer, void*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectPageRemoved(gpointer, void*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectPageReordered(gpointer, void*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectSwitchPage(gpointer, void*, guint, guintptr);
 import "C"
 
 // glib.Type values for gtknotebook.go.
@@ -219,7 +219,7 @@ func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int32) (ok bool
 }
 
 //export _gotk4_gtk4_Notebook_ConnectCreateWindow
-func _gotk4_gtk4_Notebook_ConnectCreateWindow(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) (cret *C.GtkNotebook) {
+func _gotk4_gtk4_Notebook_ConnectCreateWindow(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret *C.GtkNotebook) {
 	var f func(page Widgetter) (notebook *Notebook)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -270,7 +270,7 @@ func (notebook *Notebook) ConnectCreateWindow(f func(page Widgetter) (notebook *
 }
 
 //export _gotk4_gtk4_Notebook_ConnectPageAdded
-func _gotk4_gtk4_Notebook_ConnectPageAdded(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
+func _gotk4_gtk4_Notebook_ConnectPageAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guint, arg3 C.guintptr) {
 	var f func(child Widgetter, pageNum uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -314,7 +314,7 @@ func (notebook *Notebook) ConnectPageAdded(f func(child Widgetter, pageNum uint3
 }
 
 //export _gotk4_gtk4_Notebook_ConnectPageRemoved
-func _gotk4_gtk4_Notebook_ConnectPageRemoved(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
+func _gotk4_gtk4_Notebook_ConnectPageRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guint, arg3 C.guintptr) {
 	var f func(child Widgetter, pageNum uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -358,7 +358,7 @@ func (notebook *Notebook) ConnectPageRemoved(f func(child Widgetter, pageNum uin
 }
 
 //export _gotk4_gtk4_Notebook_ConnectPageReordered
-func _gotk4_gtk4_Notebook_ConnectPageReordered(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
+func _gotk4_gtk4_Notebook_ConnectPageReordered(arg0 C.gpointer, arg1 *C.void, arg2 C.guint, arg3 C.guintptr) {
 	var f func(child Widgetter, pageNum uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -434,7 +434,7 @@ func (notebook *Notebook) ConnectSelectPage(f func(object bool) (ok bool)) coreg
 }
 
 //export _gotk4_gtk4_Notebook_ConnectSwitchPage
-func _gotk4_gtk4_Notebook_ConnectSwitchPage(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
+func _gotk4_gtk4_Notebook_ConnectSwitchPage(arg0 C.gpointer, arg1 *C.void, arg2 C.guint, arg3 C.guintptr) {
 	var f func(page Widgetter, pageNum uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -510,7 +510,7 @@ func NewNotebook() *Notebook {
 //      if function fails.
 //
 func (notebook *Notebook) AppendPage(child, tabLabel Widgetter) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -521,10 +521,12 @@ func (notebook *Notebook) AppendPage(child, tabLabel Widgetter) int32 {
 	if tabLabel != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tabLabel).Native()))
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("append_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("append_page", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -558,7 +560,7 @@ func (notebook *Notebook) AppendPage(child, tabLabel Widgetter) int32 {
 //      if function fails.
 //
 func (notebook *Notebook) AppendPageMenu(child, tabLabel, menuLabel Widgetter) int32 {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -573,11 +575,13 @@ func (notebook *Notebook) AppendPageMenu(child, tabLabel, menuLabel Widgetter) i
 	if menuLabel != nil {
 		_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuLabel).Native()))
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*Widgetter)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("append_page_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("append_page_menu", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -603,15 +607,17 @@ func (notebook *Notebook) AppendPageMenu(child, tabLabel, menuLabel Widgetter) i
 //    - child: child.
 //
 func (notebook *Notebook) DetachTab(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("detach_tab", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("detach_tab", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -625,14 +631,15 @@ func (notebook *Notebook) DetachTab(child Widgetter) {
 //      notebook has no pages, then -1 will be returned.
 //
 func (notebook *Notebook) CurrentPage() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_current_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_current_page", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -651,14 +658,15 @@ func (notebook *Notebook) CurrentPage() int32 {
 //    - utf8 (optional): group name, or NULL if none is set.
 //
 func (notebook *Notebook) GroupName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_group_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_group_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -684,16 +692,18 @@ func (notebook *Notebook) GroupName() string {
 //      a menu label other than the default (the tab label).
 //
 func (notebook *Notebook) MenuLabel(child Widgetter) Widgetter {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_menu_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_menu_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -736,16 +746,18 @@ func (notebook *Notebook) MenuLabel(child Widgetter) Widgetter {
 //      be freed.
 //
 func (notebook *Notebook) MenuLabelText(child Widgetter) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_menu_label_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_menu_label_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -767,14 +779,15 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 //    - gint: number of pages in the notebook.
 //
 func (notebook *Notebook) NPages() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_n_pages", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_n_pages", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -797,16 +810,18 @@ func (notebook *Notebook) NPages() int32 {
 //    - widget (optional): child widget, or NULL if page_num is out of bounds.
 //
 func (notebook *Notebook) NthPage(pageNum int32) Widgetter {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = C.int(pageNum)
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_nth_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_nth_page", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -845,16 +860,18 @@ func (notebook *Notebook) NthPage(pageNum int32) Widgetter {
 //    - notebookPage: GtkNotebookPage for child.
 //
 func (notebook *Notebook) Page(child Widgetter) *NotebookPage {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_page", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -877,14 +894,15 @@ func (notebook *Notebook) Page(child Widgetter) *NotebookPage {
 //    - listModel: a GListModel for the notebook's children.
 //
 func (notebook *Notebook) Pages() *gio.ListModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_pages", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_pages", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -908,14 +926,15 @@ func (notebook *Notebook) Pages() *gio.ListModel {
 //    - ok: TRUE if arrows for scrolling are present.
 //
 func (notebook *Notebook) Scrollable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_scrollable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_scrollable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -936,14 +955,15 @@ func (notebook *Notebook) Scrollable() bool {
 //    - ok: TRUE if the bevel is drawn.
 //
 func (notebook *Notebook) ShowBorder() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_show_border", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_show_border", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -964,14 +984,15 @@ func (notebook *Notebook) ShowBorder() bool {
 //    - ok: TRUE if the tabs are shown.
 //
 func (notebook *Notebook) ShowTabs() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_show_tabs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_show_tabs", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -996,16 +1017,18 @@ func (notebook *Notebook) ShowTabs() bool {
 //    - ok: TRUE if the tab is detachable.
 //
 func (notebook *Notebook) TabDetachable(child Widgetter) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_detachable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_detachable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1034,16 +1057,18 @@ func (notebook *Notebook) TabDetachable(child Widgetter) bool {
 //    - widget (optional): tab label.
 //
 func (notebook *Notebook) TabLabel(child Widgetter) Widgetter {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1084,16 +1109,18 @@ func (notebook *Notebook) TabLabel(child Widgetter) Widgetter {
 //      not a GtkLabel. The string is owned by the widget and must not be freed.
 //
 func (notebook *Notebook) TabLabelText(child Widgetter) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_label_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_label_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1120,16 +1147,18 @@ func (notebook *Notebook) TabLabelText(child Widgetter) string {
 //    - ok: TRUE if the tab is reorderable.
 //
 func (notebook *Notebook) TabReorderable(child Widgetter) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_reorderable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("get_tab_reorderable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1160,7 +1189,7 @@ func (notebook *Notebook) TabReorderable(child Widgetter) bool {
 //      if function fails.
 //
 func (notebook *Notebook) InsertPage(child, tabLabel Widgetter, position int32) int32 {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1173,11 +1202,13 @@ func (notebook *Notebook) InsertPage(child, tabLabel Widgetter, position int32) 
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tabLabel).Native()))
 	}
 	_arg3 = C.int(position)
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*Widgetter)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("insert_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("insert_page", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1213,7 +1244,7 @@ func (notebook *Notebook) InsertPage(child, tabLabel Widgetter, position int32) 
 //    - gint: index (starting from 0) of the inserted page in the notebook.
 //
 func (notebook *Notebook) InsertPageMenu(child, tabLabel, menuLabel Widgetter, position int32) int32 {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1230,12 +1261,14 @@ func (notebook *Notebook) InsertPageMenu(child, tabLabel, menuLabel Widgetter, p
 		_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuLabel).Native()))
 	}
 	_arg4 = C.int(position)
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*Widgetter)(unsafe.Pointer(&args[3])) = _arg3
-	*(*Widgetter)(unsafe.Pointer(&args[4])) = _arg4
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("insert_page_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("insert_page_menu", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1255,13 +1288,14 @@ func (notebook *Notebook) InsertPageMenu(child, tabLabel, menuLabel Widgetter, p
 //
 // Nothing happens if the current page is the last page.
 func (notebook *Notebook) NextPage() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("next_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("next_page", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 }
@@ -1278,16 +1312,18 @@ func (notebook *Notebook) NextPage() {
 //      notebook.
 //
 func (notebook *Notebook) PageNum(child Widgetter) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("page_num", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("page_num", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1302,13 +1338,14 @@ func (notebook *Notebook) PageNum(child Widgetter) int32 {
 
 // PopupDisable disables the popup menu.
 func (notebook *Notebook) PopupDisable() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("popup_disable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("popup_disable", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 }
@@ -1318,13 +1355,14 @@ func (notebook *Notebook) PopupDisable() {
 // If the user clicks with the right mouse button on the tab labels, a menu with
 // all the pages will be popped up.
 func (notebook *Notebook) PopupEnable() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("popup_enable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("popup_enable", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 }
@@ -1343,7 +1381,7 @@ func (notebook *Notebook) PopupEnable() {
 //      -1 if function fails.
 //
 func (notebook *Notebook) PrependPage(child, tabLabel Widgetter) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1354,10 +1392,12 @@ func (notebook *Notebook) PrependPage(child, tabLabel Widgetter) int32 {
 	if tabLabel != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tabLabel).Native()))
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("prepend_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("prepend_page", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1391,7 +1431,7 @@ func (notebook *Notebook) PrependPage(child, tabLabel Widgetter) int32 {
 //      -1 if function fails.
 //
 func (notebook *Notebook) PrependPageMenu(child, tabLabel, menuLabel Widgetter) int32 {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1406,11 +1446,13 @@ func (notebook *Notebook) PrependPageMenu(child, tabLabel, menuLabel Widgetter) 
 	if menuLabel != nil {
 		_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuLabel).Native()))
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*Widgetter)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("prepend_page_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "Notebook").InvokeMethod("prepend_page_menu", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
@@ -1429,13 +1471,14 @@ func (notebook *Notebook) PrependPageMenu(child, tabLabel, menuLabel Widgetter) 
 //
 // Nothing happens if the current page is the first page.
 func (notebook *Notebook) PrevPage() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**Notebook)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("prev_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("prev_page", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 }
@@ -1448,15 +1491,17 @@ func (notebook *Notebook) PrevPage() {
 //      will be removed.
 //
 func (notebook *Notebook) RemovePage(pageNum int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = C.int(pageNum)
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("remove_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("remove_page", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(pageNum)
@@ -1474,7 +1519,7 @@ func (notebook *Notebook) RemovePage(pageNum int32) {
 //    - position: new position, or -1 to move to the end.
 //
 func (notebook *Notebook) ReorderChild(child Widgetter, position int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -1482,10 +1527,12 @@ func (notebook *Notebook) ReorderChild(child Widgetter, position int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.int(position)
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("reorder_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("reorder_child", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -1505,15 +1552,17 @@ func (notebook *Notebook) ReorderChild(child Widgetter, position int32) {
 //      notebook, nothing will be done.
 //
 func (notebook *Notebook) SetCurrentPage(pageNum int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	_arg1 = C.int(pageNum)
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_current_page", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_current_page", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(pageNum)
@@ -1530,7 +1579,7 @@ func (notebook *Notebook) SetCurrentPage(pageNum int32) {
 //    - groupName (optional): name of the notebook group, or NULL to unset it.
 //
 func (notebook *Notebook) SetGroupName(groupName string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1539,9 +1588,11 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_group_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_group_name", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(groupName)
@@ -1555,7 +1606,7 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 //    - menuLabel (optional): menu label, or NULL for default.
 //
 func (notebook *Notebook) SetMenuLabel(child, menuLabel Widgetter) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1565,10 +1616,12 @@ func (notebook *Notebook) SetMenuLabel(child, menuLabel Widgetter) {
 	if menuLabel != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuLabel).Native()))
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_menu_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_menu_label", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -1583,7 +1636,7 @@ func (notebook *Notebook) SetMenuLabel(child, menuLabel Widgetter) {
 //    - menuText: label text.
 //
 func (notebook *Notebook) SetMenuLabelText(child Widgetter, menuText string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1592,10 +1645,12 @@ func (notebook *Notebook) SetMenuLabelText(child Widgetter, menuText string) {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(menuText)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_menu_label_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_menu_label_text", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -1610,7 +1665,7 @@ func (notebook *Notebook) SetMenuLabelText(child Widgetter, menuText string) {
 //    - scrollable: TRUE if scroll arrows should be added.
 //
 func (notebook *Notebook) SetScrollable(scrollable bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1618,9 +1673,11 @@ func (notebook *Notebook) SetScrollable(scrollable bool) {
 	if scrollable {
 		_arg1 = C.TRUE
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_scrollable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_scrollable", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(scrollable)
@@ -1635,7 +1692,7 @@ func (notebook *Notebook) SetScrollable(scrollable bool) {
 //    - showBorder: TRUE if a bevel should be drawn around the notebook.
 //
 func (notebook *Notebook) SetShowBorder(showBorder bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1643,9 +1700,11 @@ func (notebook *Notebook) SetShowBorder(showBorder bool) {
 	if showBorder {
 		_arg1 = C.TRUE
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_show_border", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_show_border", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(showBorder)
@@ -1658,7 +1717,7 @@ func (notebook *Notebook) SetShowBorder(showBorder bool) {
 //    - showTabs: TRUE if the tabs should be shown.
 //
 func (notebook *Notebook) SetShowTabs(showTabs bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1666,9 +1725,11 @@ func (notebook *Notebook) SetShowTabs(showTabs bool) {
 	if showTabs {
 		_arg1 = C.TRUE
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_show_tabs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_show_tabs", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(showTabs)
@@ -1722,7 +1783,7 @@ func (notebook *Notebook) SetShowTabs(showTabs bool) {
 //    - detachable: whether the tab is detachable or not.
 //
 func (notebook *Notebook) SetTabDetachable(child Widgetter, detachable bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -1732,10 +1793,12 @@ func (notebook *Notebook) SetTabDetachable(child Widgetter, detachable bool) {
 	if detachable {
 		_arg2 = C.TRUE
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_detachable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_detachable", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -1754,7 +1817,7 @@ func (notebook *Notebook) SetTabDetachable(child Widgetter, detachable bool) {
 //      label.
 //
 func (notebook *Notebook) SetTabLabel(child, tabLabel Widgetter) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1764,10 +1827,12 @@ func (notebook *Notebook) SetTabLabel(child, tabLabel Widgetter) {
 	if tabLabel != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tabLabel).Native()))
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_label", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -1783,7 +1848,7 @@ func (notebook *Notebook) SetTabLabel(child, tabLabel Widgetter) {
 //    - tabText: label text.
 //
 func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1792,10 +1857,12 @@ func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(tabText)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_label_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_label_text", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -1811,7 +1878,7 @@ func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
 //    - reorderable: whether the tab is reorderable or not.
 //
 func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -1821,10 +1888,12 @@ func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
 	if reorderable {
 		_arg2 = C.TRUE
 	}
-	*(**Notebook)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_reorderable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Notebook").InvokeMethod("set_tab_reorderable", _args[:], nil)
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -1858,14 +1927,15 @@ func marshalNotebookPage(p uintptr) (interface{}, error) {
 //    - widget: child to which page belongs.
 //
 func (page *NotebookPage) Child() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
-	*(**NotebookPage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "NotebookPage").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "NotebookPage").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(page)

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -15,18 +16,19 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gchar* _gotk4_gtk3_MenuItemClass_get_label(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_activate(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_activate_item(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_deselect(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_select(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_set_label(GtkMenuItem*, gchar*);
-// extern void _gotk4_gtk3_MenuItemClass_toggle_size_allocate(GtkMenuItem*, gint);
+// extern gchar* _gotk4_gtk3_MenuItemClass_get_label(void*);
+// extern void _gotk4_gtk3_MenuItemClass_activate(void*);
+// extern void _gotk4_gtk3_MenuItemClass_activate_item(void*);
+// extern void _gotk4_gtk3_MenuItemClass_deselect(void*);
+// extern void _gotk4_gtk3_MenuItemClass_select(void*);
+// extern void _gotk4_gtk3_MenuItemClass_set_label(void*, void*);
+// extern void _gotk4_gtk3_MenuItemClass_toggle_size_allocate(void*, gint);
 // extern void _gotk4_gtk3_MenuItem_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectActivateItem(gpointer, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectDeselect(gpointer, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectSelect(gpointer, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(gpointer, gint, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(gpointer, gpointer, guintptr);
 import "C"
 
 // glib.Type values for gtkmenuitem.go.
@@ -147,7 +149,7 @@ func classInitMenuItemmer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_activate
-func _gotk4_gtk3_MenuItemClass_activate(arg0 *C.GtkMenuItem) {
+func _gotk4_gtk3_MenuItemClass_activate(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
@@ -155,7 +157,7 @@ func _gotk4_gtk3_MenuItemClass_activate(arg0 *C.GtkMenuItem) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_activate_item
-func _gotk4_gtk3_MenuItemClass_activate_item(arg0 *C.GtkMenuItem) {
+func _gotk4_gtk3_MenuItemClass_activate_item(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateItem() })
 
@@ -163,7 +165,7 @@ func _gotk4_gtk3_MenuItemClass_activate_item(arg0 *C.GtkMenuItem) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_deselect
-func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.GtkMenuItem) {
+func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Deselect() })
 
@@ -171,7 +173,7 @@ func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.GtkMenuItem) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_get_label
-func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.GtkMenuItem) (cret *C.gchar) {
+func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Label() string })
 
@@ -184,7 +186,7 @@ func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.GtkMenuItem) (cret *C.gchar) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_select
-func _gotk4_gtk3_MenuItemClass_select(arg0 *C.GtkMenuItem) {
+func _gotk4_gtk3_MenuItemClass_select(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Select() })
 
@@ -192,7 +194,7 @@ func _gotk4_gtk3_MenuItemClass_select(arg0 *C.GtkMenuItem) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_set_label
-func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.GtkMenuItem, arg1 *C.gchar) {
+func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetLabel(label string) })
 
@@ -204,7 +206,7 @@ func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.GtkMenuItem, arg1 *C.gchar) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_toggle_size_allocate
-func _gotk4_gtk3_MenuItemClass_toggle_size_allocate(arg0 *C.GtkMenuItem, arg1 C.gint) {
+func _gotk4_gtk3_MenuItemClass_toggle_size_allocate(arg0 *C.void, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleSizeAllocate(allocation int32) })
 
@@ -366,6 +368,30 @@ func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int32)) coregl
 	return coreglib.ConnectGeneratedClosure(menuItem, "toggle-size-allocate", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate), f)
 }
 
+//export _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest
+func _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(arg0 C.gpointer, arg1 C.gpointer, arg2 C.guintptr) {
+	var f func(object unsafe.Pointer)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object unsafe.Pointer))
+	}
+
+	var _object unsafe.Pointer // out
+
+	_object = (unsafe.Pointer)(unsafe.Pointer(arg1))
+
+	f(_object)
+}
+
+func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object unsafe.Pointer)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(menuItem, "toggle-size-request", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectToggleSizeRequest), f)
+}
+
 // NewMenuItem creates a new MenuItem.
 //
 // The function returns the following values:
@@ -396,15 +422,16 @@ func NewMenuItem() *MenuItem {
 //    - menuItem: newly created MenuItem.
 //
 func NewMenuItemWithLabel(label string) *MenuItem {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("new_MenuItem_with_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("new_MenuItem_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
@@ -431,15 +458,16 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 //    - menuItem: new MenuItem.
 //
 func NewMenuItemWithMnemonic(label string) *MenuItem {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("new_MenuItem_with_mnemonic", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("new_MenuItem_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
@@ -453,26 +481,28 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 
 // Activate emits the MenuItem::activate signal on the given item.
 func (menuItem *MenuItem) Activate() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("activate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("activate", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 }
 
 // Deselect emits the MenuItem::deselect signal on the given item.
 func (menuItem *MenuItem) Deselect() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("deselect", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("deselect", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 }
@@ -488,14 +518,15 @@ func (menuItem *MenuItem) Deselect() {
 //      functionality, or NULL if not set.
 //
 func (menuItem *MenuItem) AccelPath() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_accel_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_accel_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
@@ -517,14 +548,15 @@ func (menuItem *MenuItem) AccelPath() string {
 //      the label, and must not be modified.
 //
 func (menuItem *MenuItem) Label() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
@@ -544,14 +576,15 @@ func (menuItem *MenuItem) Label() string {
 //    - ok: TRUE if menu_item always reserves space for the submenu indicator.
 //
 func (menuItem *MenuItem) ReserveIndicator() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_reserve_indicator", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_reserve_indicator", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
@@ -576,14 +609,15 @@ func (menuItem *MenuItem) ReserveIndicator() bool {
 //      bar.
 //
 func (menuItem *MenuItem) RightJustified() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_right_justified", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_right_justified", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
@@ -605,14 +639,15 @@ func (menuItem *MenuItem) RightJustified() bool {
 //    - widget (optional): submenu for this menu item, or NULL if none.
 //
 func (menuItem *MenuItem) Submenu() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_submenu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_submenu", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
@@ -648,14 +683,15 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 //      accelerator key.
 //
 func (menuItem *MenuItem) UseUnderline() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_use_underline", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_use_underline", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
@@ -671,13 +707,14 @@ func (menuItem *MenuItem) UseUnderline() bool {
 
 // Select emits the MenuItem::select signal on the given item.
 func (menuItem *MenuItem) Select() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**MenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("select", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("select", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 }
@@ -707,7 +744,7 @@ func (menuItem *MenuItem) Select() {
 //      functionality, or NULL to unset the current path.
 //
 func (menuItem *MenuItem) SetAccelPath(accelPath string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -716,9 +753,11 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**MenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_accel_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_accel_path", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(accelPath)
@@ -731,16 +770,18 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 //    - label: text you want to set.
 //
 func (menuItem *MenuItem) SetLabel(label string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**MenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_label", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(label)
@@ -756,7 +797,7 @@ func (menuItem *MenuItem) SetLabel(label string) {
 //    - reserve: new value.
 //
 func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -764,9 +805,11 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 	if reserve {
 		_arg1 = C.TRUE
 	}
-	*(**MenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_reserve_indicator", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_reserve_indicator", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(reserve)
@@ -787,7 +830,7 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 //      added to a menu bar.
 //
 func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -795,9 +838,11 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 	if rightJustified {
 		_arg1 = C.TRUE
 	}
-	*(**MenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_right_justified", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_right_justified", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(rightJustified)
@@ -811,7 +856,7 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 //    - submenu (optional): submenu, or NULL.
 //
 func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -819,9 +864,11 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	if submenu != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 	}
-	*(**MenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_submenu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_submenu", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(submenu)
@@ -835,7 +882,7 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 //    - setting: TRUE if underlines in the text indicate mnemonics.
 //
 func (menuItem *MenuItem) SetUseUnderline(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -843,9 +890,11 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**MenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_use_underline", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_use_underline", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(setting)
@@ -859,15 +908,17 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 //    - allocation to use as signal data.
 //
 func (menuItem *MenuItem) ToggleSizeAllocate(allocation int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	_arg1 = C.gint(allocation)
-	*(**MenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("toggle_size_allocate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("toggle_size_allocate", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(allocation)

@@ -3,8 +3,10 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -55,4 +57,34 @@ func wrapX11Monitor(obj *coreglib.Object) *X11Monitor {
 
 func marshalX11Monitor(p uintptr) (interface{}, error) {
 	return wrapX11Monitor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Workarea retrieves the size and position of the “work area” on a monitor
+// within the display coordinate space. The returned geometry is in ”application
+// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
+//
+// The function returns the following values:
+//
+//    - workarea to be filled with the monitor workarea.
+//
+func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "X11Monitor").InvokeMethod("get_workarea", _args[:], _outs[:])
+
+	runtime.KeepAlive(monitor)
+
+	var _workarea *gdk.Rectangle // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _workarea
 }

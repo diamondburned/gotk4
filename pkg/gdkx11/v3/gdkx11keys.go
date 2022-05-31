@@ -71,16 +71,18 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 //    - gint: index of the active keyboard group for the event.
 //
 func (keymap *X11Keymap) GroupForState(state uint32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
 	_arg1 = C.guint(state)
-	*(**X11Keymap)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("get_group_for_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("get_group_for_state", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
@@ -108,16 +110,18 @@ func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 //    - ok: TRUE if the hardware keycode is a modifier key.
 //
 func (keymap *X11Keymap) KeyIsModifier(keycode uint32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
 	_arg1 = C.guint(keycode)
-	*(**X11Keymap)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("key_is_modifier", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("key_is_modifier", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)

@@ -13,7 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_CellRendererToggle_ConnectToggled(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_CellRendererToggle_ConnectToggled(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkcellrenderertoggle.go.
@@ -54,7 +54,7 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_CellRendererToggle_ConnectToggled
-func _gotk4_gtk4_CellRendererToggle_ConnectToggled(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk4_CellRendererToggle_ConnectToggled(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -114,14 +114,15 @@ func NewCellRendererToggle() *CellRendererToggle {
 //    - ok: TRUE if the cell renderer is activatable.
 //
 func (toggle *CellRendererToggle) Activatable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggle).Native()))
-	*(**CellRendererToggle)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("get_activatable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("get_activatable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toggle)
@@ -143,14 +144,15 @@ func (toggle *CellRendererToggle) Activatable() bool {
 //    - ok: TRUE if the cell renderer is active.
 //
 func (toggle *CellRendererToggle) Active() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggle).Native()))
-	*(**CellRendererToggle)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("get_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("get_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toggle)
@@ -171,14 +173,15 @@ func (toggle *CellRendererToggle) Active() bool {
 //    - ok: TRUE if we’re rendering radio toggles rather than checkboxes.
 //
 func (toggle *CellRendererToggle) Radio() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggle).Native()))
-	*(**CellRendererToggle)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("get_radio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("get_radio", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toggle)
@@ -199,7 +202,7 @@ func (toggle *CellRendererToggle) Radio() bool {
 //    - setting: value to set.
 //
 func (toggle *CellRendererToggle) SetActivatable(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -207,9 +210,11 @@ func (toggle *CellRendererToggle) SetActivatable(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**CellRendererToggle)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("set_activatable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("set_activatable", _args[:], nil)
 
 	runtime.KeepAlive(toggle)
 	runtime.KeepAlive(setting)
@@ -222,7 +227,7 @@ func (toggle *CellRendererToggle) SetActivatable(setting bool) {
 //    - setting: value to set.
 //
 func (toggle *CellRendererToggle) SetActive(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -230,9 +235,11 @@ func (toggle *CellRendererToggle) SetActive(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**CellRendererToggle)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("set_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(toggle)
 	runtime.KeepAlive(setting)
@@ -250,7 +257,7 @@ func (toggle *CellRendererToggle) SetActive(setting bool) {
 //    - radio: TRUE to make the toggle look like a radio button.
 //
 func (toggle *CellRendererToggle) SetRadio(radio bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -258,9 +265,11 @@ func (toggle *CellRendererToggle) SetRadio(radio bool) {
 	if radio {
 		_arg1 = C.TRUE
 	}
-	*(**CellRendererToggle)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("set_radio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellRendererToggle").InvokeMethod("set_radio", _args[:], nil)
 
 	runtime.KeepAlive(toggle)
 	runtime.KeepAlive(radio)

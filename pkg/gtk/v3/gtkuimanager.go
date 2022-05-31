@@ -18,20 +18,20 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GtkAction* _gotk4_gtk3_UIManagerClass_get_action(GtkUIManager*, gchar*);
-// extern GtkWidget* _gotk4_gtk3_UIManagerClass_get_widget(GtkUIManager*, gchar*);
-// extern void _gotk4_gtk3_UIManagerClass_actions_changed(GtkUIManager*);
-// extern void _gotk4_gtk3_UIManagerClass_add_widget(GtkUIManager*, GtkWidget*);
-// extern void _gotk4_gtk3_UIManagerClass_connect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
-// extern void _gotk4_gtk3_UIManagerClass_disconnect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
-// extern void _gotk4_gtk3_UIManagerClass_post_activate(GtkUIManager*, GtkAction*);
-// extern void _gotk4_gtk3_UIManagerClass_pre_activate(GtkUIManager*, GtkAction*);
+// extern GtkAction* _gotk4_gtk3_UIManagerClass_get_action(void*, void*);
+// extern GtkWidget* _gotk4_gtk3_UIManagerClass_get_widget(void*, void*);
+// extern void _gotk4_gtk3_UIManagerClass_actions_changed(void*);
+// extern void _gotk4_gtk3_UIManagerClass_add_widget(void*, void*);
+// extern void _gotk4_gtk3_UIManagerClass_connect_proxy(void*, void*, void*);
+// extern void _gotk4_gtk3_UIManagerClass_disconnect_proxy(void*, void*, void*);
+// extern void _gotk4_gtk3_UIManagerClass_post_activate(void*, void*);
+// extern void _gotk4_gtk3_UIManagerClass_pre_activate(void*, void*);
 // extern void _gotk4_gtk3_UIManager_ConnectActionsChanged(gpointer, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectAddWidget(gpointer, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectConnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectDisconnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectPostActivate(gpointer, GtkAction*, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectPreActivate(gpointer, GtkAction*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectAddWidget(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectConnectProxy(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectDisconnectProxy(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectPostActivate(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectPreActivate(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkuimanager.go.
@@ -480,7 +480,7 @@ func classInitUIManagerer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_UIManagerClass_actions_changed
-func _gotk4_gtk3_UIManagerClass_actions_changed(arg0 *C.GtkUIManager) {
+func _gotk4_gtk3_UIManagerClass_actions_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActionsChanged() })
 
@@ -488,7 +488,7 @@ func _gotk4_gtk3_UIManagerClass_actions_changed(arg0 *C.GtkUIManager) {
 }
 
 //export _gotk4_gtk3_UIManagerClass_add_widget
-func _gotk4_gtk3_UIManagerClass_add_widget(arg0 *C.GtkUIManager, arg1 *C.GtkWidget) {
+func _gotk4_gtk3_UIManagerClass_add_widget(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AddWidget(widget Widgetter) })
 
@@ -516,7 +516,7 @@ func _gotk4_gtk3_UIManagerClass_add_widget(arg0 *C.GtkUIManager, arg1 *C.GtkWidg
 }
 
 //export _gotk4_gtk3_UIManagerClass_connect_proxy
-func _gotk4_gtk3_UIManagerClass_connect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
+func _gotk4_gtk3_UIManagerClass_connect_proxy(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ConnectProxy(action *Action, proxy Widgetter)
@@ -548,7 +548,7 @@ func _gotk4_gtk3_UIManagerClass_connect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkA
 }
 
 //export _gotk4_gtk3_UIManagerClass_disconnect_proxy
-func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
+func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DisconnectProxy(action *Action, proxy Widgetter)
@@ -580,7 +580,7 @@ func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.GtkUIManager, arg1 *C.G
 }
 
 //export _gotk4_gtk3_UIManagerClass_get_action
-func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkAction) {
+func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.void, arg1 *C.void) (cret *C.GtkAction) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Action(path string) *Action })
 
@@ -596,7 +596,7 @@ func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.GtkUIManager, arg1 *C.gchar) 
 }
 
 //export _gotk4_gtk3_UIManagerClass_get_widget
-func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkWidget) {
+func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.void, arg1 *C.void) (cret *C.GtkWidget) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Widget(path string) Widgetter })
 
@@ -612,7 +612,7 @@ func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.GtkUIManager, arg1 *C.gchar) 
 }
 
 //export _gotk4_gtk3_UIManagerClass_post_activate
-func _gotk4_gtk3_UIManagerClass_post_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
+func _gotk4_gtk3_UIManagerClass_post_activate(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PostActivate(action *Action) })
 
@@ -624,7 +624,7 @@ func _gotk4_gtk3_UIManagerClass_post_activate(arg0 *C.GtkUIManager, arg1 *C.GtkA
 }
 
 //export _gotk4_gtk3_UIManagerClass_pre_activate
-func _gotk4_gtk3_UIManagerClass_pre_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
+func _gotk4_gtk3_UIManagerClass_pre_activate(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreActivate(action *Action) })
 
@@ -670,7 +670,7 @@ func (manager *UIManager) ConnectActionsChanged(f func()) coreglib.SignalHandle 
 }
 
 //export _gotk4_gtk3_UIManager_ConnectAddWidget
-func _gotk4_gtk3_UIManager_ConnectAddWidget(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+func _gotk4_gtk3_UIManager_ConnectAddWidget(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(widget Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -713,7 +713,7 @@ func (manager *UIManager) ConnectAddWidget(f func(widget Widgetter)) coreglib.Si
 }
 
 //export _gotk4_gtk3_UIManager_ConnectConnectProxy
-func _gotk4_gtk3_UIManager_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
+func _gotk4_gtk3_UIManager_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(action *Action, proxy Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -760,7 +760,7 @@ func (manager *UIManager) ConnectConnectProxy(f func(action *Action, proxy Widge
 }
 
 //export _gotk4_gtk3_UIManager_ConnectDisconnectProxy
-func _gotk4_gtk3_UIManager_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
+func _gotk4_gtk3_UIManager_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(action *Action, proxy Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -804,7 +804,7 @@ func (manager *UIManager) ConnectDisconnectProxy(f func(action *Action, proxy Wi
 }
 
 //export _gotk4_gtk3_UIManager_ConnectPostActivate
-func _gotk4_gtk3_UIManager_ConnectPostActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
+func _gotk4_gtk3_UIManager_ConnectPostActivate(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(action *Action)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -832,7 +832,7 @@ func (manager *UIManager) ConnectPostActivate(f func(action *Action)) coreglib.S
 }
 
 //export _gotk4_gtk3_UIManager_ConnectPreActivate
-func _gotk4_gtk3_UIManager_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
+func _gotk4_gtk3_UIManager_ConnectPreActivate(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(action *Action)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -896,7 +896,7 @@ func NewUIManager() *UIManager {
 //      value is 0.
 //
 func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.guint // in
@@ -905,9 +905,11 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -940,7 +942,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 //      value is 0.
 //
 func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.guint // in
@@ -949,9 +951,11 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_resource", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -986,7 +990,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 //      value is 0.
 //
 func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, error) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.gssize // out
@@ -997,10 +1001,12 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buffer)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gssize)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1035,13 +1041,14 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 //
 // Deprecated: since version 3.10.
 func (manager *UIManager) EnsureUpdate() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**UIManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("ensure_update", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "UIManager").InvokeMethod("ensure_update", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 }
@@ -1055,14 +1062,15 @@ func (manager *UIManager) EnsureUpdate() {
 //    - accelGroup: AccelGroup.
 //
 func (manager *UIManager) AccelGroup() *AccelGroup {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**UIManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_accel_group", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_accel_group", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1089,7 +1097,7 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 //      widget was found.
 //
 func (manager *UIManager) Action(path string) *Action {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1097,9 +1105,11 @@ func (manager *UIManager) Action(path string) *Action {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1122,14 +1132,15 @@ func (manager *UIManager) Action(path string) *Action {
 //      modified.
 //
 func (manager *UIManager) ActionGroups() []*ActionGroup {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**UIManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action_groups", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action_groups", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1158,14 +1169,15 @@ func (manager *UIManager) ActionGroups() []*ActionGroup {
 //    - ok: whether tearoff menu items are added.
 //
 func (manager *UIManager) AddTearoffs() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**UIManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_add_tearoffs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_add_tearoffs", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1189,14 +1201,15 @@ func (manager *UIManager) AddTearoffs() bool {
 //      merged UI.
 //
 func (manager *UIManager) Ui() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**UIManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_ui", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_ui", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1234,7 +1247,7 @@ func (manager *UIManager) Ui() string {
 //    - widget found by following the path, or NULL if no widget was found.
 //
 func (manager *UIManager) Widget(path string) Widgetter {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1242,9 +1255,11 @@ func (manager *UIManager) Widget(path string) Widgetter {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1288,7 +1303,7 @@ func (manager *UIManager) Widget(path string) Widgetter {
 //    - pos: position at which the group will be inserted.
 //
 func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -1296,10 +1311,12 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32)
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg2 = C.gint(pos)
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
-	*(**ActionGroup)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("insert_action_group", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "UIManager").InvokeMethod("insert_action_group", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(actionGroup)
@@ -1316,14 +1333,15 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32)
 //    - guint: unused merge id.
 //
 func (manager *UIManager) NewMergeID() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**UIManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("new_merge_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("new_merge_id", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -1345,15 +1363,17 @@ func (manager *UIManager) NewMergeID() uint32 {
 //    - actionGroup: action group to be removed.
 //
 func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_action_group", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_action_group", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(actionGroup)
@@ -1368,15 +1388,17 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 //    - mergeId: merge id as returned by gtk_ui_manager_add_ui_from_string().
 //
 func (manager *UIManager) RemoveUi(mergeId uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = C.guint(mergeId)
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_ui", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_ui", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(mergeId)
@@ -1396,7 +1418,7 @@ func (manager *UIManager) RemoveUi(mergeId uint32) {
 //    - addTearoffs: whether tearoff menu items are added.
 //
 func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1404,9 +1426,11 @@ func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	if addTearoffs {
 		_arg1 = C.TRUE
 	}
-	*(**UIManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("set_add_tearoffs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "UIManager").InvokeMethod("set_add_tearoffs", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(addTearoffs)

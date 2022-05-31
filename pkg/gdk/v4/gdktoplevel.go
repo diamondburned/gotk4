@@ -314,7 +314,7 @@ func marshalToplevel(p uintptr) (interface{}, error) {
 //    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
 //
 func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, timestamp uint32) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _arg2 C.int     // out
@@ -328,11 +328,13 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, 
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
 	_arg5 = C.guint32(timestamp)
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Devicer)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.guint32)(unsafe.Pointer(&_args[5])) = _arg5
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(device)
@@ -352,13 +354,15 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, 
 //    - timestamp of the event triggering the surface focus.
 //
 func (toplevel *Toplevel) Focus(timestamp uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint32 // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	_arg1 = C.guint32(timestamp)
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(timestamp)
@@ -391,7 +395,7 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 //      NULL if none is available.
 //
 func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -399,7 +403,9 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	if event != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 	}
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(event)
@@ -414,12 +420,13 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 //    - ok: TRUE if the surface was lowered.
 //
 func (toplevel *Toplevel) Lower() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**Toplevel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -443,12 +450,13 @@ func (toplevel *Toplevel) Lower() bool {
 //    - ok: TRUE if the surface was minimized.
 //
 func (toplevel *Toplevel) Minimize() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**Toplevel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -479,13 +487,15 @@ func (toplevel *Toplevel) Minimize() bool {
 //    - layout: GdkToplevelLayout object used to layout.
 //
 func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(layout)
@@ -496,11 +506,12 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 //
 // This undoes the effect of gdk.Toplevel.InhibitSystemShortcuts().
 func (toplevel *Toplevel) RestoreSystemShortcuts() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**Toplevel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(toplevel)
 }
@@ -516,7 +527,7 @@ func (toplevel *Toplevel) RestoreSystemShortcuts() {
 //    - decorated: TRUE to request decorations.
 //
 func (toplevel *Toplevel) SetDecorated(decorated bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -524,7 +535,9 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 	if decorated {
 		_arg1 = C.TRUE
 	}
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(decorated)
@@ -540,7 +553,7 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 //    - deletable: TRUE to request a delete button.
 //
 func (toplevel *Toplevel) SetDeletable(deletable bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -548,7 +561,9 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	if deletable {
 		_arg1 = C.TRUE
 	}
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(deletable)
@@ -568,7 +583,7 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 //    - surfaces: A list of textures to use as icon, of different sizes.
 //
 func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -580,7 +595,9 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg1)
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(surfaces)
@@ -600,7 +617,7 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 //    - modal: TRUE if the surface is modal, FALSE otherwise.
 //
 func (toplevel *Toplevel) SetModal(modal bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -608,7 +625,9 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 	if modal {
 		_arg1 = C.TRUE
 	}
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(modal)
@@ -624,14 +643,16 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 //    - startupId: string with startup-notification identifier.
 //
 func (toplevel *Toplevel) SetStartupID(startupId string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(startupId)
@@ -646,14 +667,16 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 //    - title of surface.
 //
 func (toplevel *Toplevel) SetTitle(title string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(title)
@@ -672,13 +695,15 @@ func (toplevel *Toplevel) SetTitle(title string) {
 //    - parent: another toplevel GdkSurface.
 //
 func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(parent)
@@ -700,14 +725,16 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 //    - ok: TRUE if the window menu was shown and FALSE otherwise.
 //
 func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -731,12 +758,13 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 //    - ok: TRUE if the desktop environment supports tiled window states.
 //
 func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**Toplevel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

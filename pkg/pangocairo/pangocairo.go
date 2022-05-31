@@ -19,6 +19,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
+// extern void _gotk4_pangocairo1_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for pangocairo.go.
@@ -177,6 +179,35 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 	C.pango_cairo_context_set_resolution(_arg1, _arg2)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(dpi)
+}
+
+// ContextSetShapeRenderer sets callback function for context to use for
+// rendering attributes of type PANGO_ATTR_SHAPE.
+//
+// See PangoCairoShapeRendererFunc for details.
+//
+// The function takes the following parameters:
+//
+//    - context: PangoContext, from a pangocairo font map.
+//    - fn (optional): callback function for rendering attributes of type
+//      PANGO_ATTR_SHAPE, or NULL to disable shape rendering.
+//
+func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
+	var _arg1 *C.PangoContext               // out
+	var _arg2 C.PangoCairoShapeRendererFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	if fn != nil {
+		_arg2 = (*[0]byte)(C._gotk4_pangocairo1_ShapeRendererFunc)
+		_arg3 = C.gpointer(gbox.Assign(fn))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.pango_cairo_context_set_shape_renderer(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(fn)
 }
 
 // CreateContext creates a context object set up to match the current

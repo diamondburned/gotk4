@@ -99,14 +99,15 @@ func NewStackSidebar() *StackSidebar {
 //      explicitly.
 //
 func (self *StackSidebar) Stack() *Stack {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**StackSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("get_stack", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("get_stack", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -130,15 +131,17 @@ func (self *StackSidebar) Stack() *Stack {
 //    - stack: GtkStack.
 //
 func (self *StackSidebar) SetStack(stack *Stack) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**StackSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("set_stack", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("set_stack", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(stack)

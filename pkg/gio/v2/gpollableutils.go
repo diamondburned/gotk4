@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -32,17 +34,74 @@ import "C"
 //    - source: new #GSource.
 //
 func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(pollableStream.Native()))
-	*(**coreglib.Object)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "pollable_source_new").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "pollable_source_new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pollableStream)
+
+	var _source *glib.Source // out
+
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_source)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_source_unref((*C.GSource)(intern.C))
+		},
+	)
+
+	return _source
+}
+
+// PollableSourceNewFull: utility method for InputStream and OutputStream
+// implementations. Creates a new #GSource, as with g_pollable_source_new(), but
+// also attaching child_source (with a dummy callback), and cancellable, if they
+// are non-NULL.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable to attach.
+//    - pollableStream: stream associated with the new source.
+//    - childSource (optional): optional child source to attach.
+//
+// The function returns the following values:
+//
+//    - source: new #GSource.
+//
+func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object, childSource *glib.Source) *glib.Source {
+	var _args [3]girepository.Argument
+	var _arg2 *C.void    // out
+	var _arg0 C.gpointer // out
+	var _arg1 *C.void    // out
+	var _cret *C.void    // in
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg0 = C.gpointer(unsafe.Pointer(pollableStream.Native()))
+	if childSource != nil {
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(childSource)))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "pollable_source_new_full").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(pollableStream)
+	runtime.KeepAlive(childSource)
 
 	var _source *glib.Source // out
 

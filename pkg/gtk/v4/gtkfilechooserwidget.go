@@ -15,7 +15,7 @@ import (
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectDesktopFolder(gpointer, guintptr);
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectDownFolder(gpointer, guintptr);
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectHomeFolder(gpointer, guintptr);
-// extern void _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup(gpointer, void*, guintptr);
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectLocationPopupOnPaste(gpointer, guintptr);
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectLocationTogglePopup(gpointer, guintptr);
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectPlacesShortcut(gpointer, guintptr);
@@ -173,7 +173,7 @@ func (v *FileChooserWidget) ConnectHomeFolder(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup
-func _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk4_FileChooserWidget_ConnectLocationPopup(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

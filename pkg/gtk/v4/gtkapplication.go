@@ -18,11 +18,11 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_ApplicationClass_window_added(GtkApplication*, GtkWindow*);
-// extern void _gotk4_gtk4_ApplicationClass_window_removed(GtkApplication*, GtkWindow*);
+// extern void _gotk4_gtk4_ApplicationClass_window_added(void*, void*);
+// extern void _gotk4_gtk4_ApplicationClass_window_removed(void*, void*);
 // extern void _gotk4_gtk4_Application_ConnectQueryEnd(gpointer, guintptr);
-// extern void _gotk4_gtk4_Application_ConnectWindowAdded(gpointer, GtkWindow*, guintptr);
-// extern void _gotk4_gtk4_Application_ConnectWindowRemoved(gpointer, GtkWindow*, guintptr);
+// extern void _gotk4_gtk4_Application_ConnectWindowAdded(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_Application_ConnectWindowRemoved(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkapplication.go.
@@ -200,7 +200,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_ApplicationClass_window_added
-func _gotk4_gtk4_ApplicationClass_window_added(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
+func _gotk4_gtk4_ApplicationClass_window_added(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WindowAdded(window *Window) })
 
@@ -212,7 +212,7 @@ func _gotk4_gtk4_ApplicationClass_window_added(arg0 *C.GtkApplication, arg1 *C.G
 }
 
 //export _gotk4_gtk4_ApplicationClass_window_removed
-func _gotk4_gtk4_ApplicationClass_window_removed(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
+func _gotk4_gtk4_ApplicationClass_window_removed(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WindowRemoved(window *Window) })
 
@@ -269,7 +269,7 @@ func (application *Application) ConnectQueryEnd(f func()) coreglib.SignalHandle 
 }
 
 //export _gotk4_gtk4_Application_ConnectWindowAdded
-func _gotk4_gtk4_Application_ConnectWindowAdded(arg0 C.gpointer, arg1 *C.GtkWindow, arg2 C.guintptr) {
+func _gotk4_gtk4_Application_ConnectWindowAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(window *Window)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -295,7 +295,7 @@ func (application *Application) ConnectWindowAdded(f func(window *Window)) coreg
 }
 
 //export _gotk4_gtk4_Application_ConnectWindowRemoved
-func _gotk4_gtk4_Application_ConnectWindowRemoved(arg0 C.gpointer, arg1 *C.GtkWindow, arg2 C.guintptr) {
+func _gotk4_gtk4_Application_ConnectWindowRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(window *Window)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -343,15 +343,17 @@ func (application *Application) ConnectWindowRemoved(f func(window *Window)) cor
 //    - window: GtkWindow.
 //
 func (application *Application) AddWindow(window *Window) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("add_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Application").InvokeMethod("add_window", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(window)
@@ -370,7 +372,7 @@ func (application *Application) AddWindow(window *Window) {
 //    - utf8s: accelerators for detailed_action_name.
 //
 func (application *Application) AccelsForAction(detailedActionName string) []string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret **C.char // in
@@ -378,9 +380,11 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_accels_for_action", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_accels_for_action", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -434,7 +438,7 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 //    - utf8s: NULL-terminated array of actions for accel.
 //
 func (application *Application) ActionsForAccel(accel string) []string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret **C.char // in
@@ -442,9 +446,11 @@ func (application *Application) ActionsForAccel(accel string) []string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(accel)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_actions_for_accel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_actions_for_accel", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -483,14 +489,15 @@ func (application *Application) ActionsForAccel(accel string) []string {
 //    - window (optional): active window.
 //
 func (application *Application) ActiveWindow() *Window {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_active_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_active_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -519,7 +526,7 @@ func (application *Application) ActiveWindow() *Window {
 //      loaded resources.
 //
 func (application *Application) MenuByID(id string) *gio.Menu {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -527,9 +534,11 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menu_by_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menu_by_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -559,14 +568,15 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 //    - menuModel (optional): menubar for windows of application.
 //
 func (application *Application) Menubar() gio.MenuModeller {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menubar", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menubar", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -607,16 +617,18 @@ func (application *Application) Menubar() gio.MenuModeller {
 //    - window (optional) for the given id.
 //
 func (application *Application) WindowByID(id uint32) *Window {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = C.guint(id)
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_window_by_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_window_by_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -645,14 +657,15 @@ func (application *Application) WindowByID(id uint32) *Window {
 //    - list: GList of GtkWindow instances.
 //
 func (application *Application) Windows() []*Window {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_windows", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_windows", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -680,14 +693,15 @@ func (application *Application) Windows() []*Window {
 //    - utf8s: detailed action names.
 //
 func (application *Application) ListActionDescriptions() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret **C.char // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("list_action_descriptions", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("list_action_descriptions", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -726,15 +740,17 @@ func (application *Application) ListActionDescriptions() []string {
 //    - window: GtkWindow.
 //
 func (application *Application) RemoveWindow(window *Window) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("remove_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Application").InvokeMethod("remove_window", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(window)
@@ -760,7 +776,7 @@ func (application *Application) RemoveWindow(window *Window) {
 //      gtk.AcceleratorParse().
 //
 func (application *Application) SetAccelsForAction(detailedActionName string, accels []string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 **C.void // out
@@ -781,10 +797,12 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 			}
 		}
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("set_accels_for_action", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(***C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Application").InvokeMethod("set_accels_for_action", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(detailedActionName)
@@ -814,7 +832,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //    - menubar (optional): GMenuModel.
 //
 func (application *Application) SetMenubar(menubar gio.MenuModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -822,9 +840,11 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	if menubar != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menubar).Native()))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("set_menubar", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Application").InvokeMethod("set_menubar", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(menubar)
@@ -841,15 +861,17 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 //    - cookie that was returned by gtk.Application.Inhibit().
 //
 func (application *Application) Uninhibit(cookie uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = C.guint(cookie)
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("uninhibit", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Application").InvokeMethod("uninhibit", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(cookie)

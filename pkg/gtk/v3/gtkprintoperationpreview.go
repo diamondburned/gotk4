@@ -13,13 +13,13 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk3_PrintOperationPreviewIface_is_selected(GtkPrintOperationPreview*, gint);
-// extern void _gotk4_gtk3_PrintOperationPreviewIface_end_preview(GtkPrintOperationPreview*);
-// extern void _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(GtkPrintOperationPreview*, GtkPrintContext*, GtkPageSetup*);
-// extern void _gotk4_gtk3_PrintOperationPreviewIface_ready(GtkPrintOperationPreview*, GtkPrintContext*);
-// extern void _gotk4_gtk3_PrintOperationPreviewIface_render_page(GtkPrintOperationPreview*, gint);
-// extern void _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize(gpointer, GtkPrintContext*, GtkPageSetup*, guintptr);
-// extern void _gotk4_gtk3_PrintOperationPreview_ConnectReady(gpointer, GtkPrintContext*, guintptr);
+// extern gboolean _gotk4_gtk3_PrintOperationPreviewIface_is_selected(void*, gint);
+// extern void _gotk4_gtk3_PrintOperationPreviewIface_end_preview(void*);
+// extern void _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(void*, void*, void*);
+// extern void _gotk4_gtk3_PrintOperationPreviewIface_ready(void*, void*);
+// extern void _gotk4_gtk3_PrintOperationPreviewIface_render_page(void*, gint);
+// extern void _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_PrintOperationPreview_ConnectReady(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkprintoperationpreview.go.
@@ -119,7 +119,7 @@ func ifaceInitPrintOperationPreviewer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_end_preview
-func _gotk4_gtk3_PrintOperationPreviewIface_end_preview(arg0 *C.GtkPrintOperationPreview) {
+func _gotk4_gtk3_PrintOperationPreviewIface_end_preview(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
@@ -127,7 +127,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_end_preview(arg0 *C.GtkPrintOperatio
 }
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_got_page_size
-func _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext, arg2 *C.GtkPageSetup) {
+func _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
@@ -141,7 +141,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(arg0 *C.GtkPrintOperat
 }
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_is_selected
-func _gotk4_gtk3_PrintOperationPreviewIface_is_selected(arg0 *C.GtkPrintOperationPreview, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_gtk3_PrintOperationPreviewIface_is_selected(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
@@ -159,7 +159,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_is_selected(arg0 *C.GtkPrintOperatio
 }
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_ready
-func _gotk4_gtk3_PrintOperationPreviewIface_ready(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext) {
+func _gotk4_gtk3_PrintOperationPreviewIface_ready(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
@@ -171,7 +171,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_ready(arg0 *C.GtkPrintOperationPrevi
 }
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_render_page
-func _gotk4_gtk3_PrintOperationPreviewIface_render_page(arg0 *C.GtkPrintOperationPreview, arg1 C.gint) {
+func _gotk4_gtk3_PrintOperationPreviewIface_render_page(arg0 *C.void, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
@@ -193,7 +193,7 @@ func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize
-func _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 *C.GtkPageSetup, arg3 C.guintptr) {
+func _gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(context *PrintContext, pageSetup *PageSetup)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -225,7 +225,7 @@ func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context *PrintCo
 }
 
 //export _gotk4_gtk3_PrintOperationPreview_ConnectReady
-func _gotk4_gtk3_PrintOperationPreview_ConnectReady(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) {
+func _gotk4_gtk3_PrintOperationPreview_ConnectReady(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(context *PrintContext)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -256,11 +256,12 @@ func (preview *PrintOperationPreview) ConnectReady(f func(context *PrintContext)
 //
 // This function must be called to finish a custom print preview.
 func (preview *PrintOperationPreview) EndPreview() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	*(**PrintOperationPreview)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(preview)
 }
@@ -277,14 +278,16 @@ func (preview *PrintOperationPreview) EndPreview() {
 //    - ok: TRUE if the page has been selected for printing.
 //
 func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
 	_arg1 = C.gint(pageNr)
-	*(**PrintOperationPreview)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -314,13 +317,15 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
 //    - pageNr: page to render.
 //
 func (preview *PrintOperationPreview) RenderPage(pageNr int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
 	_arg1 = C.gint(pageNr)
-	*(**PrintOperationPreview)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)

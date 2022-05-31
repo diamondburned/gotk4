@@ -3,9 +3,13 @@
 package gdk
 
 import (
+	"context"
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -15,6 +19,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gdkcontentserializer.go.
@@ -26,6 +32,66 @@ func init() {
 	})
 }
 
+// ContentSerializeAsync: serialize content and write it to the given output
+// stream, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, callback will be called. You must then call
+// content_serialize_finish to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object.
+//    - stream: GOutputStream to write the serialized content to.
+//    - mimeType: mime type to serialize to.
+//    - value: content to serialize.
+//    - ioPriority: i/O priority of the operation.
+//    - callback (optional) to call when the operation is done.
+//
+func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *coreglib.Value, ioPriority int32, callback gio.AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+	var _arg4 *C.void    // out
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg3 C.int      // out
+	var _arg5 C.gpointer // out
+	var _arg6 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.void)(unsafe.Pointer(value.Native()))
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.gpointer)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gdk", "content_serialize_async").Invoke(_args[:], nil)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ContentSerializeFinish finishes a content serialization operation.
 //
 // The function takes the following parameters:
@@ -33,14 +99,15 @@ func init() {
 //    - result: GAsyncResult.
 //
 func ContentSerializeFinish(result gio.AsyncResulter) error {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(*gio.AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "content_serialize_finish").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "content_serialize_finish").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(result)
 
@@ -98,14 +165,15 @@ func marshalContentSerializer(p uintptr) (interface{}, error) {
 //    - cancellable for the current operation.
 //
 func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
-	*(**ContentSerializer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_cancellable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_cancellable", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(serializer)
@@ -129,14 +197,15 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 //    - utf8: mime type for the current operation.
 //
 func (serializer *ContentSerializer) MIMEType() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
-	*(**ContentSerializer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_mime_type", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_mime_type", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(serializer)
@@ -157,14 +226,15 @@ func (serializer *ContentSerializer) MIMEType() string {
 //    - outputStream: output stream for the current operation.
 //
 func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
-	*(**ContentSerializer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_output_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_output_stream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(serializer)
@@ -201,14 +271,15 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 //    - gint: i/O priority for the current operation.
 //
 func (serializer *ContentSerializer) Priority() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
-	*(**ContentSerializer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_priority", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(serializer)
@@ -220,6 +291,63 @@ func (serializer *ContentSerializer) Priority() int32 {
 	return _gint
 }
 
+// TaskData gets the data that was associated with the current operation.
+//
+// See gdk.ContentSerializer.SetTaskData().
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): task data for serializer.
+//
+func (serializer *ContentSerializer) TaskData() unsafe.Pointer {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_task_data", _args[:], nil)
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(serializer)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// UserData gets the user data that was passed when the serializer was
+// registered.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): user data for this serializer.
+//
+func (serializer *ContentSerializer) UserData() unsafe.Pointer {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_user_data", _args[:], nil)
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(serializer)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
 // Value gets the GValue to read the object to serialize from.
 //
 // The function returns the following values:
@@ -227,14 +355,15 @@ func (serializer *ContentSerializer) Priority() int32 {
 //    - value: GValue for the current operation.
 //
 func (serializer *ContentSerializer) Value() *coreglib.Value {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
-	*(**ContentSerializer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(serializer)
@@ -255,7 +384,7 @@ func (serializer *ContentSerializer) Value() *coreglib.Value {
 //    - err: GError.
 //
 func (serializer *ContentSerializer) ReturnError(err error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -263,9 +392,11 @@ func (serializer *ContentSerializer) ReturnError(err error) {
 	if err != nil {
 		_arg1 = (*C.void)(gerror.New(err))
 	}
-	*(**ContentSerializer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("return_error", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("return_error", _args[:], nil)
 
 	runtime.KeepAlive(serializer)
 	runtime.KeepAlive(err)
@@ -274,13 +405,14 @@ func (serializer *ContentSerializer) ReturnError(err error) {
 // ReturnSuccess: indicate that the serialization has been successfully
 // completed.
 func (serializer *ContentSerializer) ReturnSuccess() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
-	*(**ContentSerializer)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("return_success", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("return_success", _args[:], nil)
 
 	runtime.KeepAlive(serializer)
 }

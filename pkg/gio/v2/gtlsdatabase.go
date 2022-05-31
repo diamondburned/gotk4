@@ -16,10 +16,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GList* _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(GTlsDatabase*, GAsyncResult*, GError**);
-// extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(GTlsDatabase*, GAsyncResult*, GError**);
-// extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(GTlsDatabase*, GAsyncResult*, GError**);
-// extern gchar* _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(GTlsDatabase*, GTlsCertificate*);
+// extern GList* _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(void*, void*, GError**);
+// extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(void*, void*, GError**);
+// extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(void*, void*, GError**);
+// extern gchar* _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(void*, void*);
 import "C"
 
 // glib.Type values for gtlsdatabase.go.
@@ -174,7 +174,7 @@ func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_TlsDatabaseClass_create_certificate_handle
-func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate) (cret *C.gchar) {
+func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.void, arg1 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateCertificateHandle(certificate TLSCertificater) string
@@ -210,7 +210,7 @@ func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.GTlsDatabase
 }
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish
-func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
+func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error)
@@ -248,7 +248,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.G
 }
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish
-func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
+func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error)
@@ -286,7 +286,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsD
 }
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish
-func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
+func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
@@ -365,16 +365,18 @@ func BaseTLSDatabase(obj TLSDatabaser) *TLSDatabase {
 //    - utf8 (optional): newly allocated string containing the handle.
 //
 func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
-	*(**TLSDatabase)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("create_certificate_handle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("create_certificate_handle", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -407,7 +409,7 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 //      to release the certificate.
 //
 func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -415,9 +417,11 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**TLSDatabase)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("lookup_certificate_for_handle_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("lookup_certificate_for_handle_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -464,7 +468,7 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 //      g_object_unref() to release the certificate.
 //
 func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -472,9 +476,11 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**TLSDatabase)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("lookup_certificate_issuer_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("lookup_certificate_issuer_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -521,7 +527,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 //      on each certificate, and g_list_free() on the release the list.
 //
 func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -529,9 +535,11 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**TLSDatabase)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("lookup_certificates_issued_by_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "TlsDatabase").InvokeMethod("lookup_certificates_issued_by_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)

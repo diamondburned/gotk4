@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_atk1_SocketClass_embed(AtkSocket*, gchar*);
+// extern void _gotk4_atk1_SocketClass_embed(void*, void*);
 import "C"
 
 // glib.Type values for atksocket.go.
@@ -93,7 +93,7 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_SocketClass_embed
-func _gotk4_atk1_SocketClass_embed(arg0 *C.AtkSocket, arg1 *C.gchar) {
+func _gotk4_atk1_SocketClass_embed(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Embed(plugId string) })
 
@@ -153,16 +153,18 @@ func NewSocket() *Socket {
 //    - plugId: ID of an Plug.
 //
 func (obj *Socket) Embed(plugId string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(plugId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Atk", "Socket").InvokeMethod("embed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Atk", "Socket").InvokeMethod("embed", _args[:], nil)
 
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(plugId)
@@ -175,14 +177,15 @@ func (obj *Socket) Embed(plugId string) {
 //    - ok: TRUE if a plug is embedded in the socket.
 //
 func (obj *Socket) IsOccupied() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Socket").InvokeMethod("is_occupied", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Socket").InvokeMethod("is_occupied", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)

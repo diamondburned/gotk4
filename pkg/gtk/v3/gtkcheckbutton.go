@@ -16,7 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_CheckButtonClass_draw_indicator(GtkCheckButton*, cairo_t*);
+// extern void _gotk4_gtk3_CheckButtonClass_draw_indicator(void*, void*);
 import "C"
 
 // glib.Type values for gtkcheckbutton.go.
@@ -78,7 +78,7 @@ func classInitCheckButtonner(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CheckButtonClass_draw_indicator
-func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.GtkCheckButton, arg1 *C.cairo_t) {
+func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
 
@@ -171,15 +171,16 @@ func NewCheckButton() *CheckButton {
 //    - checkButton: Widget.
 //
 func NewCheckButtonWithLabel(label string) *CheckButton {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CheckButton").InvokeMethod("new_CheckButton_with_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CheckButton").InvokeMethod("new_CheckButton_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
@@ -205,15 +206,16 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 //    - checkButton: new CheckButton.
 //
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CheckButton").InvokeMethod("new_CheckButton_with_mnemonic", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CheckButton").InvokeMethod("new_CheckButton_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)

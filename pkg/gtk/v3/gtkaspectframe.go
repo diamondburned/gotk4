@@ -101,7 +101,7 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 //    - aspectFrame: new AspectFrame.
 //
 func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gfloat   // out
 	var _arg2 C.gfloat   // out
@@ -119,13 +119,14 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 	if obeyChild {
 		_arg4 = C.TRUE
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*float32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
 
-	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("new_AspectFrame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("new_AspectFrame", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
@@ -154,7 +155,7 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 //      the requistion of the child.
 //
 func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild bool) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gfloat   // out
 	var _arg2 C.gfloat   // out
@@ -168,12 +169,14 @@ func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild boo
 	if obeyChild {
 		_arg4 = C.TRUE
 	}
-	*(**AspectFrame)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
 
-	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set", _args[:], nil)
 
 	runtime.KeepAlive(aspectFrame)
 	runtime.KeepAlive(xalign)

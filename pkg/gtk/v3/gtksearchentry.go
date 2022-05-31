@@ -17,10 +17,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_SearchEntryClass_next_match(GtkSearchEntry*);
-// extern void _gotk4_gtk3_SearchEntryClass_previous_match(GtkSearchEntry*);
-// extern void _gotk4_gtk3_SearchEntryClass_search_changed(GtkSearchEntry*);
-// extern void _gotk4_gtk3_SearchEntryClass_stop_search(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntryClass_next_match(void*);
+// extern void _gotk4_gtk3_SearchEntryClass_previous_match(void*);
+// extern void _gotk4_gtk3_SearchEntryClass_search_changed(void*);
+// extern void _gotk4_gtk3_SearchEntryClass_stop_search(void*);
 // extern void _gotk4_gtk3_SearchEntry_ConnectNextMatch(gpointer, guintptr);
 // extern void _gotk4_gtk3_SearchEntry_ConnectPreviousMatch(gpointer, guintptr);
 // extern void _gotk4_gtk3_SearchEntry_ConnectSearchChanged(gpointer, guintptr);
@@ -106,7 +106,7 @@ func classInitSearchEntrier(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_SearchEntryClass_next_match
-func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
+func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NextMatch() })
 
@@ -114,7 +114,7 @@ func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
 }
 
 //export _gotk4_gtk3_SearchEntryClass_previous_match
-func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
+func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreviousMatch() })
 
@@ -122,7 +122,7 @@ func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
 }
 
 //export _gotk4_gtk3_SearchEntryClass_search_changed
-func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
+func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SearchChanged() })
 
@@ -130,7 +130,7 @@ func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
 }
 
 //export _gotk4_gtk3_SearchEntryClass_stop_search
-func _gotk4_gtk3_SearchEntryClass_stop_search(arg0 *C.GtkSearchEntry) {
+func _gotk4_gtk3_SearchEntryClass_stop_search(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StopSearch() })
 
@@ -321,16 +321,18 @@ func NewSearchEntry() *SearchEntry {
 //      or continuing, GDK_EVENT_PROPAGATE otherwise.
 //
 func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-	*(**SearchEntry)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("handle_event", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("handle_event", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)

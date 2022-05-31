@@ -34,24 +34,25 @@ import "C"
 //    - ok: TRUE if string described a valid transform.
 //
 func TransformParse(str string) (*Transform, bool) {
-	var args [1]girepository.Argument
-	var outs [1]girepository.Argument
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _out0 *C.void    // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "parse").Invoke(args[:], outs[:])
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "parse").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
 	var _outTransform *Transform // out
 	var _ok bool                 // out
-	_out0 = *(**Transform)(unsafe.Pointer(&outs[0]))
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
 	_outTransform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_out0)))
 	runtime.SetFinalizer(

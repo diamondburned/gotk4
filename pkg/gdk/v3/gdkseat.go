@@ -16,10 +16,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gdk3_Seat_ConnectDeviceAdded(gpointer, GdkDevice*, guintptr);
-// extern void _gotk4_gdk3_Seat_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
-// extern void _gotk4_gdk3_Seat_ConnectToolAdded(gpointer, GdkDeviceTool*, guintptr);
-// extern void _gotk4_gdk3_Seat_ConnectToolRemoved(gpointer, GdkDeviceTool*, guintptr);
+// extern void _gotk4_gdk3_Seat_ConnectDeviceAdded(gpointer, void*, guintptr);
+// extern void _gotk4_gdk3_Seat_ConnectDeviceRemoved(gpointer, void*, guintptr);
+// extern void _gotk4_gdk3_Seat_ConnectToolAdded(gpointer, void*, guintptr);
+// extern void _gotk4_gdk3_Seat_ConnectToolRemoved(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gdkseat.go.
@@ -108,7 +108,7 @@ func (s SeatCapabilities) Has(other SeatCapabilities) bool {
 type SeatGrabPrepareFunc func(seat Seater, window Windower)
 
 //export _gotk4_gdk3_SeatGrabPrepareFunc
-func _gotk4_gdk3_SeatGrabPrepareFunc(arg1 *C.GdkSeat, arg2 *C.GdkWindow, arg3 C.gpointer) {
+func _gotk4_gdk3_SeatGrabPrepareFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
 	var fn SeatGrabPrepareFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -200,7 +200,7 @@ func BaseSeat(obj Seater) *Seat {
 }
 
 //export _gotk4_gdk3_Seat_ConnectDeviceAdded
-func _gotk4_gdk3_Seat_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+func _gotk4_gdk3_Seat_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(device Devicer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -242,7 +242,7 @@ func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) coreglib.SignalHand
 }
 
 //export _gotk4_gdk3_Seat_ConnectDeviceRemoved
-func _gotk4_gdk3_Seat_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+func _gotk4_gdk3_Seat_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(device Devicer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -284,7 +284,7 @@ func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) coreglib.SignalHa
 }
 
 //export _gotk4_gdk3_Seat_ConnectToolAdded
-func _gotk4_gdk3_Seat_ConnectToolAdded(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
+func _gotk4_gdk3_Seat_ConnectToolAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(tool *DeviceTool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -313,7 +313,7 @@ func (seat *Seat) ConnectToolAdded(f func(tool *DeviceTool)) coreglib.SignalHand
 }
 
 //export _gotk4_gdk3_Seat_ConnectToolRemoved
-func _gotk4_gdk3_Seat_ConnectToolRemoved(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
+func _gotk4_gdk3_Seat_ConnectToolRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(tool *DeviceTool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -345,14 +345,15 @@ func (seat *Seat) ConnectToolRemoved(f func(tool *DeviceTool)) coreglib.SignalHa
 //    - display This object is owned by GTK+ and must not be freed.
 //
 func (seat *Seat) Display() *Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-	*(**Seat)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(seat)
@@ -372,14 +373,15 @@ func (seat *Seat) Display() *Display {
 //      is owned by GTK+ and must not be freed.
 //
 func (seat *Seat) Keyboard() Devicer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-	*(**Seat)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_keyboard", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_keyboard", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(seat)
@@ -414,14 +416,15 @@ func (seat *Seat) Keyboard() Devicer {
 //      is owned by GTK+ and must not be freed.
 //
 func (seat *Seat) Pointer() Devicer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-	*(**Seat)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_pointer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_pointer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(seat)
@@ -450,13 +453,14 @@ func (seat *Seat) Pointer() Devicer {
 
 // Ungrab releases a grab added through gdk_seat_grab().
 func (seat *Seat) Ungrab() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-	*(**Seat)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "Seat").InvokeMethod("ungrab", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "Seat").InvokeMethod("ungrab", _args[:], nil)
 
 	runtime.KeepAlive(seat)
 }

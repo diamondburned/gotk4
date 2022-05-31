@@ -74,7 +74,7 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 //    - numericSorter: new GtkNumericSorter.
 //
 func NewNumericSorter(expression Expressioner) *NumericSorter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -82,9 +82,10 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
-	*(*Expressioner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("new_NumericSorter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("new_NumericSorter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expression)
@@ -104,14 +105,15 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 //    - expression (optional): GtkExpression, or NULL.
 //
 func (self *NumericSorter) Expression() Expressioner {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**NumericSorter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("get_expression", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("get_expression", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -152,7 +154,7 @@ func (self *NumericSorter) Expression() Expressioner {
 //    - expression (optional): GtkExpression, or NULL.
 //
 func (self *NumericSorter) SetExpression(expression Expressioner) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -160,9 +162,11 @@ func (self *NumericSorter) SetExpression(expression Expressioner) {
 	if expression != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
-	*(**NumericSorter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("set_expression", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "NumericSorter").InvokeMethod("set_expression", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)

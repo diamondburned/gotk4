@@ -3,9 +3,12 @@
 package gdk
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -16,6 +19,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gdkdrop.go.
@@ -87,14 +92,15 @@ func BaseDrop(obj Dropper) *Drop {
 //    - device: GdkDevice performing the drop.
 //
 func (self *Drop) Device() Devicer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Drop)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_device", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_device", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -129,14 +135,15 @@ func (self *Drop) Device() Devicer {
 //    - display: GdkDisplay.
 //
 func (self *Drop) Display() *Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Drop)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -158,14 +165,15 @@ func (self *Drop) Display() *Display {
 //    - drag (optional): corresponding GdkDrag.
 //
 func (self *Drop) Drag() Dragger {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Drop)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_drag", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_drag", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -200,14 +208,15 @@ func (self *Drop) Drag() Dragger {
 //    - contentFormats: possible GdkContentFormats.
 //
 func (self *Drop) Formats() *ContentFormats {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Drop)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_formats", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -233,14 +242,15 @@ func (self *Drop) Formats() *ContentFormats {
 //    - surface: GdkSurface performing the drop.
 //
 func (self *Drop) Surface() Surfacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Drop)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -268,6 +278,66 @@ func (self *Drop) Surface() Surfacer {
 	return _surface
 }
 
+// ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
+// that complies with one of the mime types.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
+//    - mimeTypes: pointer to an array of mime types.
+//    - ioPriority: i/O priority for the read operation.
+//    - callback (optional): GAsyncReadyCallback to call when the request is
+//      satisfied.
+//
+func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback) {
+	var _args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg3 *C.void    // out
+	var _arg1 **C.void   // out
+	var _arg2 C.int      // out
+	var _arg4 C.gpointer // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	{
+		_arg1 = (**C.void)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
+			var zero *C.void
+			out[len(mimeTypes)] = zero
+			for i := range mimeTypes {
+				out[i] = (*C.void)(unsafe.Pointer(C.CString(mimeTypes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(***C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gdk", "Drop").InvokeMethod("read_async", _args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeTypes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadFinish finishes an async drop read operation.
 //
 // Note that you must not use blocking read calls on the returned stream in the
@@ -287,8 +357,8 @@ func (self *Drop) Surface() Surfacer {
 //    - inputStream (optional): GInputStream, or NULL.
 //
 func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
-	var args [2]girepository.Argument
-	var outs [1]girepository.Argument
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _out0 *C.void // in
@@ -297,10 +367,11 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**Drop)(unsafe.Pointer(&args[1])) = _arg1
-	*(*gio.AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("read_finish", args[:], outs[:])
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("read_finish", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -309,6 +380,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	var _outMimeType string            // out
 	var _inputStream gio.InputStreamer // out
 	var _goerr error                   // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
 	defer C.free(unsafe.Pointer(_out0))
@@ -348,7 +420,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 //    - value: GValue containing the result.
 //
 func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -356,9 +428,11 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, er
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**Drop)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("read_value_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "Drop").InvokeMethod("read_value_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)

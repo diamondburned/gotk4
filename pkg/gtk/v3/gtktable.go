@@ -171,7 +171,7 @@ func marshalTable(p uintptr) (interface{}, error) {
 //    - table: pointer to the newly created table widget.
 //
 func NewTable(rows, columns uint32, homogeneous bool) *Table {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 C.guint    // out
 	var _arg1 C.guint    // out
 	var _arg2 C.gboolean // out
@@ -182,11 +182,12 @@ func NewTable(rows, columns uint32, homogeneous bool) *Table {
 	if homogeneous {
 		_arg2 = C.TRUE
 	}
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*bool)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("new_Table", args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("new_Table", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rows)
@@ -219,7 +220,7 @@ func NewTable(rows, columns uint32, homogeneous bool) *Table {
 //    - bottomAttach: row number to attach the bottom of the child widget to.
 //
 func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint32) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.guint // out
@@ -233,13 +234,15 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, to
 	_arg3 = C.guint(rightAttach)
 	_arg4 = C.guint(topAttach)
 	_arg5 = C.guint(bottomAttach)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*uint32)(unsafe.Pointer(&args[4])) = _arg4
-	*(*uint32)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("attach_defaults", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.guint)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.guint)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("attach_defaults", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(widget)
@@ -263,16 +266,18 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, to
 //    - guint: column spacing.
 //
 func (table *Table) ColSpacing(column uint32) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.guint(column)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_col_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_col_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
@@ -296,14 +301,15 @@ func (table *Table) ColSpacing(column uint32) uint32 {
 //    - guint: default column spacing.
 //
 func (table *Table) DefaultColSpacing() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**Table)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_default_col_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_default_col_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
@@ -326,14 +332,15 @@ func (table *Table) DefaultColSpacing() uint32 {
 //    - guint: default row spacing.
 //
 func (table *Table) DefaultRowSpacing() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**Table)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_default_row_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_default_row_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
@@ -356,14 +363,15 @@ func (table *Table) DefaultRowSpacing() uint32 {
 //    - ok: TRUE if the cells are all constrained to the same size.
 //
 func (table *Table) Homogeneous() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**Table)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_homogeneous", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
@@ -391,16 +399,18 @@ func (table *Table) Homogeneous() bool {
 //    - guint: row spacing.
 //
 func (table *Table) RowSpacing(row uint32) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.guint(row)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_row_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_row_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
@@ -411,6 +421,45 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// Size gets the number of rows and columns in the table.
+//
+// Deprecated: Grid does not expose the number of columns and rows.
+//
+// The function returns the following values:
+//
+//    - rows (optional): return location for the number of rows, or NULL.
+//    - columns (optional): return location for the number of columns, or NULL.
+//
+func (table *Table) Size() (rows uint32, columns uint32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("get_size", _args[:], _outs[:])
+
+	runtime.KeepAlive(table)
+
+	var _rows uint32    // out
+	var _columns uint32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_rows = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_columns = *(*uint32)(unsafe.Pointer(_out1))
+	}
+
+	return _rows, _columns
 }
 
 // Resize: if you need to change a table’s size after it has been created, this
@@ -424,7 +473,7 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 //    - columns: new number of columns.
 //
 func (table *Table) Resize(rows, columns uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -432,10 +481,12 @@ func (table *Table) Resize(rows, columns uint32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.guint(rows)
 	_arg2 = C.guint(columns)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("resize", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("resize", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(rows)
@@ -455,7 +506,7 @@ func (table *Table) Resize(rows, columns uint32) {
 //    - spacing: number of pixels that the spacing should take up.
 //
 func (table *Table) SetColSpacing(column, spacing uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -463,10 +514,12 @@ func (table *Table) SetColSpacing(column, spacing uint32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.guint(column)
 	_arg2 = C.guint(spacing)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_col_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("set_col_spacing", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -483,15 +536,17 @@ func (table *Table) SetColSpacing(column, spacing uint32) {
 //      table.
 //
 func (table *Table) SetColSpacings(spacing uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.guint(spacing)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_col_spacings", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("set_col_spacings", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(spacing)
@@ -509,7 +564,7 @@ func (table *Table) SetColSpacings(spacing uint32) {
 //      to FALSE if this is not your desired behaviour.
 //
 func (table *Table) SetHomogeneous(homogeneous bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -517,9 +572,11 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("set_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(homogeneous)
@@ -538,7 +595,7 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 //    - spacing: number of pixels that the spacing should take up.
 //
 func (table *Table) SetRowSpacing(row, spacing uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -546,10 +603,12 @@ func (table *Table) SetRowSpacing(row, spacing uint32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.guint(row)
 	_arg2 = C.guint(spacing)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_row_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("set_row_spacing", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -566,15 +625,17 @@ func (table *Table) SetRowSpacing(row, spacing uint32) {
 //      table.
 //
 func (table *Table) SetRowSpacings(spacing uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	_arg1 = C.guint(spacing)
-	*(**Table)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_row_spacings", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Table").InvokeMethod("set_row_spacings", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(spacing)

@@ -108,12 +108,13 @@ func (c *Color) Blue() uint16 {
 //    - ret: copy of color.
 //
 func (color *Color) Copy() *Color {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(**Color)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -145,14 +146,16 @@ func (color *Color) Copy() *Color {
 //    - ok: TRUE if the two colors compare equal.
 //
 func (colora *Color) Equal(colorb *Color) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(colora)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(colorb)))
-	*(**Color)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -177,12 +180,13 @@ func (colora *Color) Equal(colorb *Color) bool {
 //    - guint: hash function applied to color.
 //
 func (color *Color) Hash() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(**Color)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -208,12 +212,13 @@ func (color *Color) Hash() uint32 {
 //    - utf8: newly-allocated text string.
 //
 func (color *Color) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(**Color)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -225,4 +230,54 @@ func (color *Color) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// ColorParse parses a textual specification of a color and fill in the red,
+// green, and blue fields of a Color.
+//
+// The string can either one of a large set of standard names (taken from the
+// X11 rgb.txt file), or it can be a hexadecimal value in the form “\#rgb”
+// “\#rrggbb”, “\#rrrgggbbb” or “\#rrrrggggbbbb” where “r”, “g” and “b” are hex
+// digits of the red, green, and blue components of the color, respectively.
+// (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
+// “\#ffffffffffff”).
+//
+// Deprecated: Use RGBA.
+//
+// The function takes the following parameters:
+//
+//    - spec: string specifying the color.
+//
+// The function returns the following values:
+//
+//    - color to fill in.
+//    - ok: TRUE if the parsing succeeded.
+//
+func ColorParse(spec string) (*Color, bool) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_arg0))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "parse").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(spec)
+
+	var _color *Color // out
+	var _ok bool      // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _color, _ok
 }

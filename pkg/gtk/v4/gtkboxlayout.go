@@ -85,14 +85,15 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the layout is homogeneous.
 //
 func (boxLayout *BoxLayout) Homogeneous() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(boxLayout).Native()))
-	*(**BoxLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("get_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("get_homogeneous", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(boxLayout)
@@ -113,14 +114,15 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 //    - guint: spacing of the layout.
 //
 func (boxLayout *BoxLayout) Spacing() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(boxLayout).Native()))
-	*(**BoxLayout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("get_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("get_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(boxLayout)
@@ -140,7 +142,7 @@ func (boxLayout *BoxLayout) Spacing() uint32 {
 //    - homogeneous: TRUE to set the box layout as homogeneous.
 //
 func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -148,9 +150,11 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 	if homogeneous {
 		_arg1 = C.TRUE
 	}
-	*(**BoxLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("set_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("set_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(boxLayout)
 	runtime.KeepAlive(homogeneous)
@@ -163,15 +167,17 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 //    - spacing to apply between children.
 //
 func (boxLayout *BoxLayout) SetSpacing(spacing uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(boxLayout).Native()))
 	_arg1 = C.guint(spacing)
-	*(**BoxLayout)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("set_spacing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "BoxLayout").InvokeMethod("set_spacing", _args[:], nil)
 
 	runtime.KeepAlive(boxLayout)
 	runtime.KeepAlive(spacing)

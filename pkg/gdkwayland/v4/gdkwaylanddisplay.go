@@ -75,14 +75,15 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 //    - utf8 (optional): startup notification ID for display, or NULL.
 //
 func (display *WaylandDisplay) StartupNotificationID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**WaylandDisplay)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("get_startup_notification_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("get_startup_notification_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
@@ -108,7 +109,7 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 //    - ok: TRUE if the global is offered by the compositor.
 //
 func (display *WaylandDisplay) QueryRegistry(global string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -116,9 +117,11 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(global)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**WaylandDisplay)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("query_registry", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("query_registry", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
@@ -141,7 +144,7 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 //    - size to use for cursors.
 //
 func (display *WaylandDisplay) SetCursorTheme(name string, size int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -150,10 +153,12 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int32) {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(size)
-	*(**WaylandDisplay)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_cursor_theme", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_cursor_theme", _args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(name)
@@ -175,16 +180,18 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int32) {
 //    - startupId: startup notification ID (must be valid utf8).
 //
 func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**WaylandDisplay)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_startup_notification_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_startup_notification_id", _args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(startupId)

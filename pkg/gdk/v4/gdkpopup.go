@@ -87,12 +87,13 @@ func marshalPopup(p uintptr) (interface{}, error) {
 //    - ok: TRUE if popup will autohide.
 //
 func (popup *Popup) Autohide() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-	*(**Popup)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -114,12 +115,13 @@ func (popup *Popup) Autohide() bool {
 //    - surface: parent surface.
 //
 func (popup *Popup) Parent() Surfacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-	*(**Popup)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -155,12 +157,13 @@ func (popup *Popup) Parent() Surfacer {
 //    - gint: x coordinate of popup position.
 //
 func (popup *Popup) PositionX() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-	*(**Popup)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -180,12 +183,13 @@ func (popup *Popup) PositionX() int32 {
 //    - gint: y coordinate of popup position.
 //
 func (popup *Popup) PositionY() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-	*(**Popup)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -225,7 +229,7 @@ func (popup *Popup) PositionY() int32 {
 //    - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
 func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
@@ -236,9 +240,11 @@ func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-	*(**Popup)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

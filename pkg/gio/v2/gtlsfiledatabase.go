@@ -91,16 +91,17 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 //    - tlsFileDatabase: new FileDatabase, or NULL on error.
 //
 func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(anchors)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(anchors)

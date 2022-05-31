@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -97,8 +98,8 @@ func _gotk4_gtk4_GestureSwipe_ConnectSwipe(arg0 C.gpointer, arg1 C.gdouble, arg2
 // ConnectSwipe is emitted when the recognized gesture is finished.
 //
 // Velocity and direction are a product of previously recorded events.
-func (v *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(v, "swipe", false, unsafe.Pointer(C._gotk4_gtk4_GestureSwipe_ConnectSwipe), f)
+func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "swipe", false, unsafe.Pointer(C._gotk4_gtk4_GestureSwipe_ConnectSwipe), f)
 }
 
 // NewGestureSwipe returns a newly created GtkGesture that recognizes swipes.
@@ -118,4 +119,48 @@ func NewGestureSwipe() *GestureSwipe {
 	_gestureSwipe = wrapGestureSwipe(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureSwipe
+}
+
+// Velocity gets the current velocity.
+//
+// If the gesture is recognized, this function returns TRUE and fills in
+// velocity_x and velocity_y with the recorded velocity, as per the last events
+// processed.
+//
+// The function returns the following values:
+//
+//    - velocityX: return value for the velocity in the X axis, in pixels/sec.
+//    - velocityY: return value for the velocity in the Y axis, in pixels/sec.
+//    - ok: whether velocity could be calculated.
+//
+func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureSwipe").InvokeMethod("get_velocity", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(gesture)
+
+	var _velocityX float64 // out
+	var _velocityY float64 // out
+	var _ok bool           // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_velocityX = *(*float64)(unsafe.Pointer(_out0))
+	_velocityY = *(*float64)(unsafe.Pointer(_out1))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _velocityX, _velocityY, _ok
 }

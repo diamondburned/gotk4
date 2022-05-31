@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -12,6 +14,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtkcustomfilter.go.
@@ -21,6 +25,37 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeCustomFilter, F: marshalCustomFilter},
 	})
+}
+
+// CustomFilterFunc: user function that is called to determine if the item
+// should be matched.
+//
+// If the filter matches the item, this function must return TRUE. If the item
+// should be filtered out, FALSE must be returned.
+type CustomFilterFunc func(item *coreglib.Object) (ok bool)
+
+//export _gotk4_gtk4_CustomFilterFunc
+func _gotk4_gtk4_CustomFilterFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
+	var fn CustomFilterFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(CustomFilterFunc)
+	}
+
+	var _item *coreglib.Object // out
+
+	_item = coreglib.Take(unsafe.Pointer(arg1))
+
+	ok := fn(_item)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 // CustomFilterOverrider contains methods that are overridable.
@@ -56,4 +91,84 @@ func wrapCustomFilter(obj *coreglib.Object) *CustomFilter {
 
 func marshalCustomFilter(p uintptr) (interface{}, error) {
 	return wrapCustomFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewCustomFilter creates a new filter using the given match_func to filter
+// items.
+//
+// If match_func is NULL, the filter matches all items.
+//
+// If the filter func changes its filtering behavior, gtk_filter_changed() needs
+// to be called.
+//
+// The function takes the following parameters:
+//
+//    - matchFunc (optional): function to filter items.
+//
+// The function returns the following values:
+//
+//    - customFilter: new GtkCustomFilter.
+//
+func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
+	var _args [3]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer
+	var _arg2 C.GDestroyNotify
+	var _cret *C.void // in
+
+	if matchFunc != nil {
+		_arg0 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_arg1 = C.gpointer(gbox.Assign(matchFunc))
+		_arg2 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CustomFilter").InvokeMethod("new_CustomFilter", _args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(matchFunc)
+
+	var _customFilter *CustomFilter // out
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_customFilter = wrapCustomFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _customFilter
+}
+
+// SetFilterFunc sets the function used for filtering items.
+//
+// If match_func is NULL, the filter matches all items.
+//
+// If the filter func changes its filtering behavior, gtk_filter_changed() needs
+// to be called.
+//
+// If a previous function was set, its user_destroy will be called now.
+//
+// The function takes the following parameters:
+//
+//    - matchFunc (optional): function to filter items.
+//
+func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
+	var _args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if matchFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(matchFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CustomFilter").InvokeMethod("set_filter_func", _args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(matchFunc)
 }

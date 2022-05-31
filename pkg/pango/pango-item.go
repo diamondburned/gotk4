@@ -4,6 +4,7 @@ package pango
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -48,6 +49,78 @@ type Analysis struct {
 // analysis is the struct that's finalized.
 type analysis struct {
 	native *C.PangoAnalysis
+}
+
+// ShapeEngine: unused.
+func (a *Analysis) ShapeEngine() unsafe.Pointer {
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(a.native.shape_engine))
+	return v
+}
+
+// LangEngine: unused.
+func (a *Analysis) LangEngine() unsafe.Pointer {
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(a.native.lang_engine))
+	return v
+}
+
+// Font: font for this segment.
+func (a *Analysis) Font() Fonter {
+	var v Fonter // out
+	{
+		objptr := unsafe.Pointer(a.native.font)
+		if objptr == nil {
+			panic("object of type pango.Fonter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Fonter)
+			return ok
+		})
+		rv, ok := casted.(Fonter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
+		}
+		v = rv
+	}
+	return v
+}
+
+// Level: bidirectional level for this segment.
+func (a *Analysis) Level() byte {
+	var v byte // out
+	v = byte(a.native.level)
+	return v
+}
+
+// Gravity: glyph orientation for this segment (A PangoGravity).
+func (a *Analysis) Gravity() byte {
+	var v byte // out
+	v = byte(a.native.gravity)
+	return v
+}
+
+// Flags: boolean flags for this segment (Since: 1.16).
+func (a *Analysis) Flags() byte {
+	var v byte // out
+	v = byte(a.native.flags)
+	return v
+}
+
+// Script: detected script for this segment (A PangoScript) (Since: 1.18).
+func (a *Analysis) Script() byte {
+	var v byte // out
+	v = byte(a.native.script)
+	return v
+}
+
+// Language: detected language for this segment.
+func (a *Analysis) Language() *Language {
+	var v *Language // out
+	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(a.native.language)))
+	return v
 }
 
 // Item: PangoItem structure stores information about a segment of text.

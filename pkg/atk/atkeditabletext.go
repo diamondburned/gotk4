@@ -13,12 +13,12 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_atk1_EditableTextIface_copy_text(AtkEditableText*, gint, gint);
-// extern void _gotk4_atk1_EditableTextIface_cut_text(AtkEditableText*, gint, gint);
-// extern void _gotk4_atk1_EditableTextIface_delete_text(AtkEditableText*, gint, gint);
-// extern void _gotk4_atk1_EditableTextIface_insert_text(AtkEditableText*, gchar*, gint, gint*);
-// extern void _gotk4_atk1_EditableTextIface_paste_text(AtkEditableText*, gint);
-// extern void _gotk4_atk1_EditableTextIface_set_text_contents(AtkEditableText*, gchar*);
+// extern void _gotk4_atk1_EditableTextIface_copy_text(void*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_cut_text(void*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_delete_text(void*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_insert_text(void*, void*, gint, void*);
+// extern void _gotk4_atk1_EditableTextIface_paste_text(void*, gint);
+// extern void _gotk4_atk1_EditableTextIface_set_text_contents(void*, void*);
 import "C"
 
 // glib.Type values for atkeditabletext.go.
@@ -138,7 +138,7 @@ func ifaceInitEditableTexter(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_EditableTextIface_copy_text
-func _gotk4_atk1_EditableTextIface_copy_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_EditableTextIface_copy_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -152,7 +152,7 @@ func _gotk4_atk1_EditableTextIface_copy_text(arg0 *C.AtkEditableText, arg1 C.gin
 }
 
 //export _gotk4_atk1_EditableTextIface_cut_text
-func _gotk4_atk1_EditableTextIface_cut_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_EditableTextIface_cut_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -166,7 +166,7 @@ func _gotk4_atk1_EditableTextIface_cut_text(arg0 *C.AtkEditableText, arg1 C.gint
 }
 
 //export _gotk4_atk1_EditableTextIface_delete_text
-func _gotk4_atk1_EditableTextIface_delete_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_EditableTextIface_delete_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -180,7 +180,7 @@ func _gotk4_atk1_EditableTextIface_delete_text(arg0 *C.AtkEditableText, arg1 C.g
 }
 
 //export _gotk4_atk1_EditableTextIface_insert_text
-func _gotk4_atk1_EditableTextIface_insert_text(arg0 *C.AtkEditableText, arg1 *C.gchar, arg2 C.gint, arg3 *C.gint) {
+func _gotk4_atk1_EditableTextIface_insert_text(arg0 *C.void, arg1 *C.void, arg2 C.gint, arg3 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -196,7 +196,7 @@ func _gotk4_atk1_EditableTextIface_insert_text(arg0 *C.AtkEditableText, arg1 *C.
 }
 
 //export _gotk4_atk1_EditableTextIface_paste_text
-func _gotk4_atk1_EditableTextIface_paste_text(arg0 *C.AtkEditableText, arg1 C.gint) {
+func _gotk4_atk1_EditableTextIface_paste_text(arg0 *C.void, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -208,7 +208,7 @@ func _gotk4_atk1_EditableTextIface_paste_text(arg0 *C.AtkEditableText, arg1 C.gi
 }
 
 //export _gotk4_atk1_EditableTextIface_set_text_contents
-func _gotk4_atk1_EditableTextIface_set_text_contents(arg0 *C.AtkEditableText, arg1 *C.gchar) {
+func _gotk4_atk1_EditableTextIface_set_text_contents(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -238,7 +238,7 @@ func marshalEditableText(p uintptr) (interface{}, error) {
 //    - endPos: end position.
 //
 func (text *EditableText) CopyText(startPos, endPos int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -246,8 +246,10 @@ func (text *EditableText) CopyText(startPos, endPos int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
-	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -263,7 +265,7 @@ func (text *EditableText) CopyText(startPos, endPos int32) {
 //    - endPos: end position.
 //
 func (text *EditableText) CutText(startPos, endPos int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -271,8 +273,10 @@ func (text *EditableText) CutText(startPos, endPos int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
-	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -287,7 +291,7 @@ func (text *EditableText) CutText(startPos, endPos int32) {
 //    - endPos: end position.
 //
 func (text *EditableText) DeleteText(startPos, endPos int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -295,8 +299,10 @@ func (text *EditableText) DeleteText(startPos, endPos int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
-	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -314,7 +320,7 @@ func (text *EditableText) DeleteText(startPos, endPos int32) {
 //      text.
 //
 func (text *EditableText) InsertText(str string, length int32, position *int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -325,9 +331,11 @@ func (text *EditableText) InsertText(str string, length int32, position *int32) 
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 	_arg3 = (*C.void)(unsafe.Pointer(position))
-	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)
@@ -342,13 +350,15 @@ func (text *EditableText) InsertText(str string, length int32, position *int32) 
 //    - position to paste.
 //
 func (text *EditableText) PasteText(position int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(position)
-	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(position)
@@ -361,14 +371,16 @@ func (text *EditableText) PasteText(position int32) {
 //    - str: string to set for text contents of text.
 //
 func (text *EditableText) SetTextContents(str string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)

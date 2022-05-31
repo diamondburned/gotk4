@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_FileMonitorClass_cancel(GFileMonitor*);
+// extern gboolean _gotk4_gio2_FileMonitorClass_cancel(void*);
 import "C"
 
 // glib.Type values for gfilemonitor.go.
@@ -85,7 +85,7 @@ func classInitFileMonitorrer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_FileMonitorClass_cancel
-func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean) {
+func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancel() bool })
 
@@ -124,14 +124,15 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 //    - ok always TRUE.
 //
 func (monitor *FileMonitor) Cancel() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-	*(**FileMonitor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("cancel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("cancel", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
@@ -152,14 +153,15 @@ func (monitor *FileMonitor) Cancel() bool {
 //    - ok: TRUE if monitor is canceled. FALSE otherwise.
 //
 func (monitor *FileMonitor) IsCancelled() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-	*(**FileMonitor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("is_cancelled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("is_cancelled", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
@@ -182,15 +184,17 @@ func (monitor *FileMonitor) IsCancelled() bool {
 //      for changes.
 //
 func (monitor *FileMonitor) SetRateLimit(limitMsecs int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	_arg1 = C.gint(limitMsecs)
-	*(**FileMonitor)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "FileMonitor").InvokeMethod("set_rate_limit", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "FileMonitor").InvokeMethod("set_rate_limit", _args[:], nil)
 
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(limitMsecs)

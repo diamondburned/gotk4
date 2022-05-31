@@ -32,7 +32,7 @@ import "C"
 //    - widget pointer to the newly created GtkWindow.
 //
 func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -41,10 +41,11 @@ func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(dialogText)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "test_create_simple_window").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "test_create_simple_window").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(windowTitle)
@@ -91,7 +92,7 @@ func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 //    - ret: gtkLabel widget if any is found.
 //
 func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -99,10 +100,11 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(labelPattern)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "test_find_label").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "test_find_label").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -135,6 +137,7 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 // types. This allowes to refer to any of those object types via
 // g_type_from_name() after calling this function.
 func TestRegisterAllTypes() {
+
 	girepository.MustFind("Gtk", "test_register_all_types").Invoke(nil, nil)
 }
 
@@ -155,14 +158,15 @@ func TestRegisterAllTypes() {
 //      belonging to widget.
 //
 func TestSliderGetValue(widget Widgetter) float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "test_slider_get_value").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "test_slider_get_value").Invoke(_args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -187,16 +191,17 @@ func TestSliderGetValue(widget Widgetter) float64 {
 //    - percentage: value between 0 and 100.
 //
 func TestSliderSetPerc(widget Widgetter, percentage float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.double // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg1 = C.double(percentage)
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
-	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "test_slider_set_perc").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "test_slider_set_perc").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(percentage)
@@ -220,7 +225,7 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 //      carried out successfully.
 //
 func TestSpinButtonClick(spinner *SpinButton, button uint32, upwards bool) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _arg2 C.gboolean // out
@@ -231,11 +236,12 @@ func TestSpinButtonClick(spinner *SpinButton, button uint32, upwards bool) bool 
 	if upwards {
 		_arg2 = C.TRUE
 	}
-	*(**SpinButton)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*bool)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "test_spin_button_click").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "test_spin_button_click").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinner)
@@ -265,14 +271,15 @@ func TestSpinButtonClick(spinner *SpinButton, button uint32, upwards bool) bool 
 //    - utf8: new 0-terminated C string, needs to be released with g_free().
 //
 func TestTextGet(widget Widgetter) string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "test_text_get").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "test_text_get").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -296,17 +303,18 @@ func TestTextGet(widget Widgetter) string {
 //    - str: 0-terminated C string.
 //
 func TestTextSet(widget Widgetter, str string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "test_text_set").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "test_text_set").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(str)
@@ -324,13 +332,14 @@ func TestTextSet(widget Widgetter, str string) {
 //    - widget to wait for.
 //
 func TestWidgetWaitForDraw(widget Widgetter) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "test_widget_wait_for_draw").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "test_widget_wait_for_draw").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 }

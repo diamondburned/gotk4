@@ -98,12 +98,13 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //      none is selected. Free with g_object_unref().
 //
 func (self *AppChooser) AppInfo() *gio.AppInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**AppChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -131,12 +132,13 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 //    - utf8: content type of self. Free with g_free().
 //
 func (self *AppChooser) ContentType() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**AppChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -152,11 +154,12 @@ func (self *AppChooser) ContentType() string {
 
 // Refresh reloads the list of applications.
 func (self *AppChooser) Refresh() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**AppChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(self)
 }

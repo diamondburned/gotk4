@@ -153,18 +153,37 @@ func CGoTail(gen types.FileGenerator, g *gir.CallableAttrs) (string, error) {
 	if g.Parameters != nil {
 		cgotail := pen.NewJoints(", ", len(g.Parameters.Parameters)+1)
 
-		addParam := func(ix int, param *gir.ParameterAttrs) bool {
-			anyType := types.ResolveAnyType(gen, param.AnyType)
+		var addParam func(ix int, param *gir.ParameterAttrs) bool
 
-			ctype := types.AnyTypeC(anyType)
-			if ctype == "" {
-				// probably var_args
-				return false
+		switch gen.LinkMode() {
+		case types.DynamicLinkMode:
+			addParam = func(ix int, param *gir.ParameterAttrs) bool {
+				anyType := types.ResolveAnyType(gen, param.AnyType)
+
+				ctype := types.AnyTypeC(anyType)
+				if ctype == "" {
+					// probably var_args
+					return false
+				}
+
+				cgoType := types.AnyTypeCGo(anyType)
+				cgotail.Addf("%s %s", CallbackArg(ix), cgoType)
+				return true
 			}
+		case types.RuntimeLinkMode:
+			addParam = func(ix int, param *gir.ParameterAttrs) bool {
+				anyType := types.ResolveAnyType(gen, param.AnyType)
 
-			cgotype := types.AnyTypeCGo(anyType)
-			cgotail.Addf("%s %s", CallbackArg(ix), cgotype)
-			return true
+				// Keep in sync with types.CallbackCHeader.
+				cType := types.AnyTypeCPrimitive(gen, anyType)
+				if cType == "" {
+					return false
+				}
+
+				cgoType := types.CGoTypeFromC(cType)
+				cgotail.Addf("%s %s", CallbackArg(ix), cgoType)
+				return true
+			}
 		}
 
 		if g.Parameters.InstanceParameter != nil {

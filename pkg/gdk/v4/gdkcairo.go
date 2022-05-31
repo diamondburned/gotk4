@@ -49,7 +49,7 @@ import "C"
 //    - height of the region to draw.
 //
 func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bufferScale, x, y, width, height int32) {
-	var args [9]girepository.Argument
+	var _args [9]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -69,17 +69,18 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bu
 	_arg6 = C.int(y)
 	_arg7 = C.int(width)
 	_arg8 = C.int(height)
-	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
-	*(*Surfacer)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
-	*(*int32)(unsafe.Pointer(&args[5])) = _arg5
-	*(*int32)(unsafe.Pointer(&args[6])) = _arg6
-	*(*int32)(unsafe.Pointer(&args[7])) = _arg7
-	*(*int32)(unsafe.Pointer(&args[8])) = _arg8
 
-	girepository.MustFind("Gdk", "cairo_draw_from_gl").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.int)(unsafe.Pointer(&_args[5])) = _arg5
+	*(*C.int)(unsafe.Pointer(&_args[6])) = _arg6
+	*(*C.int)(unsafe.Pointer(&_args[7])) = _arg7
+	*(*C.int)(unsafe.Pointer(&_args[8])) = _arg8
+
+	girepository.MustFind("Gdk", "cairo_draw_from_gl").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(surface)
@@ -100,16 +101,17 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bu
 //    - rectangle: Rectangle.
 //
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rectangle)))
-	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Rectangle)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gdk", "cairo_rectangle").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "cairo_rectangle").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(rectangle)
@@ -123,16 +125,17 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 //    - region: #cairo_region_t.
 //
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(region.Native()))
-	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Region)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gdk", "cairo_region").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "cairo_region").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(region)
@@ -153,14 +156,15 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //    - region: cairo_region_t; must be freed with cairo_region_destroy().
 //
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(surface.Native()))
-	*(**cairo.Surface)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "cairo_region_create_from_surface").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "cairo_region_create_from_surface").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
@@ -191,7 +195,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 //    - pixbufY: y coordinate of location to place upper left corner of pixbuf.
 //
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -201,12 +205,13 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	_arg2 = C.double(pixbufX)
 	_arg3 = C.double(pixbufY)
-	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
-	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gdk", "cairo_set_source_pixbuf").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gdk", "cairo_set_source_pixbuf").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(pixbuf)
@@ -222,16 +227,17 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 //    - rgba: RGBA.
 //
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
-	*(**RGBA)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gdk", "cairo_set_source_rgba").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "cairo_set_source_rgba").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(rgba)

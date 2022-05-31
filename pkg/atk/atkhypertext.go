@@ -13,10 +13,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(AtkHypertext*, gint);
-// extern gint _gotk4_atk1_HypertextIface_get_link_index(AtkHypertext*, gint);
-// extern gint _gotk4_atk1_HypertextIface_get_n_links(AtkHypertext*);
-// extern void _gotk4_atk1_HypertextIface_link_selected(AtkHypertext*, gint);
+// extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(void*, gint);
+// extern gint _gotk4_atk1_HypertextIface_get_link_index(void*, gint);
+// extern gint _gotk4_atk1_HypertextIface_get_n_links(void*);
+// extern void _gotk4_atk1_HypertextIface_link_selected(void*, gint);
 // extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
 import "C"
 
@@ -114,7 +114,7 @@ func ifaceInitHypertexter(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_HypertextIface_get_link
-func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cret *C.AtkHyperlink) {
+func _gotk4_atk1_HypertextIface_get_link(arg0 *C.void, arg1 C.gint) (cret *C.AtkHyperlink) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -130,7 +130,7 @@ func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cre
 }
 
 //export _gotk4_atk1_HypertextIface_get_link_index
-func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint) (cret C.gint) {
+func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.void, arg1 C.gint) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -146,7 +146,7 @@ func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint
 }
 
 //export _gotk4_atk1_HypertextIface_get_n_links
-func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) {
+func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -158,7 +158,7 @@ func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) 
 }
 
 //export _gotk4_atk1_HypertextIface_link_selected
-func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint) {
+func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.void, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -216,14 +216,16 @@ func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int32)) coreglib.Sig
 //    - hyperlink: link in this hypertext document at index link_index.
 //
 func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 	_arg1 = C.gint(linkIndex)
-	*(**Hypertext)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -250,14 +252,16 @@ func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
 //      no hyperlink associated with this character.
 //
 func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 	_arg1 = C.gint(charIndex)
-	*(**Hypertext)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -278,12 +282,13 @@ func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 //    - gint: number of links within this hypertext document.
 //
 func (hypertext *Hypertext) NLinks() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
-	*(**Hypertext)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 

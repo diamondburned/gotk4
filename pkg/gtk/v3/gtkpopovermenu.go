@@ -173,16 +173,18 @@ func NewPopoverMenu() *PopoverMenu {
 //    - name of the menu to switch to.
 //
 func (popover *PopoverMenu) OpenSubmenu(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PopoverMenu)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("open_submenu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("open_submenu", _args[:], nil)
 
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(name)

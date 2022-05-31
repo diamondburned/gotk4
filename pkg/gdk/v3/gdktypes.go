@@ -967,14 +967,16 @@ func (r *Rectangle) Height() int32 {
 //    - ok: TRUE if the rectangles are equal.
 //
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
-	*(**Rectangle)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -988,4 +990,92 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	}
 
 	return _ok
+}
+
+// Intersect calculates the intersection of two rectangles. It is allowed for
+// dest to be the same as either src1 or src2. If the rectangles do not
+// intersect, dest’s width and height is set to 0 and its x and y values are
+// undefined. If you are only interested in whether the rectangles intersect,
+// but not in the intersecting area itself, pass NULL for dest.
+//
+// The function takes the following parameters:
+//
+//    - src2: Rectangle.
+//
+// The function returns the following values:
+//
+//    - dest (optional): return location for the intersection of src1 and src2,
+//      or NULL.
+//    - ok: TRUE if the rectangles intersect.
+//
+func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(src1)
+	runtime.KeepAlive(src2)
+
+	var _dest *Rectangle // out
+	var _ok bool         // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	if _out0 != nil {
+		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _dest, _ok
+}
+
+// Union calculates the union of two rectangles. The union of rectangles src1
+// and src2 is the smallest rectangle which includes both src1 and src2 within
+// it. It is allowed for dest to be the same as either src1 or src2.
+//
+// Note that this function does not ignore 'empty' rectangles (ie. with zero
+// width or height).
+//
+// The function takes the following parameters:
+//
+//    - src2: Rectangle.
+//
+// The function returns the following values:
+//
+//    - dest: return location for the union of src1 and src2.
+//
+func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	runtime.KeepAlive(src1)
+	runtime.KeepAlive(src2)
+
+	var _dest *Rectangle // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _dest
 }

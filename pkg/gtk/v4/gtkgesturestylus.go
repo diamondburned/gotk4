@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -196,6 +197,68 @@ func NewGestureStylus() *GestureStylus {
 	return _gestureStylus
 }
 
+// Backlog returns the accumulated backlog of tracking information.
+//
+// By default, GTK will limit rate of input events. On stylus input where
+// accuracy of strokes is paramount, this function returns the accumulated
+// coordinate/timing state before the emission of the current
+// [Gtk.GestureStylus::motion] signal.
+//
+// This function may only be called within a gtk.GestureStylus::motion signal
+// handler, the state given in this signal and obtainable through
+// gtk.GestureStylus.GetAxis() express the latest (most up-to-date) state in
+// motion history.
+//
+// The backlog is provided in chronological order.
+//
+// The function returns the following values:
+//
+//    - backlog coordinates and times for the backlog events.
+//    - ok: TRUE if there is a backlog to unfold in the current state.
+//
+func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void         // out
+	var _out0 *C.GdkTimeCoord // in
+	var _out1 *C.void         // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_backlog", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(gesture)
+
+	var _backlog []gdk.TimeCoord // out
+	var _ok bool                 // out
+	_out0 = *(**C.GdkTimeCoord)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(*C.gboolean)(unsafe.Pointer(&_outs[1]))
+
+	defer C.free(unsafe.Pointer(_out0))
+	{
+		src := unsafe.Slice((**C.void)(_out0), _out1)
+		_backlog = make([]gdk.TimeCoord, _out1)
+		for i := 0; i < int(_out1); i++ {
+			_backlog[i] = *(*gdk.TimeCoord)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&_backlog[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _backlog, _ok
+}
+
 // DeviceTool returns the GdkDeviceTool currently driving input through this
 // gesture.
 //
@@ -208,14 +271,15 @@ func NewGestureStylus() *GestureStylus {
 //    - deviceTool (optional): current stylus tool.
 //
 func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	*(**GestureStylus)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_device_tool", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_device_tool", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)

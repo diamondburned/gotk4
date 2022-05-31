@@ -177,14 +177,15 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 //    - glShader: new GskGLShader.
 //
 func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(sourcecode)))
-	*(**glib.Bytes)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("new_GLShader_from_bytes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("new_GLShader_from_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sourcecode)
@@ -209,15 +210,16 @@ func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 //    - glShader: new GskGLShader.
 //
 func NewGLShaderFromResource(resourcePath string) *GLShader {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("new_GLShader_from_resource", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("new_GLShader_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resourcePath)
@@ -245,16 +247,18 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 //    - renderer: GskRenderer.
 //
 func (shader *GLShader) Compile(renderer Rendererer) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("compile", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gsk", "GLShader").InvokeMethod("compile", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(renderer)
@@ -280,7 +284,7 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 //    - gint: index of the uniform, or -1.
 //
 func (shader *GLShader) FindUniformByName(name string) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.int   // in
@@ -288,9 +292,11 @@ func (shader *GLShader) FindUniformByName(name string) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("find_uniform_by_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("find_uniform_by_name", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -317,7 +323,7 @@ func (shader *GLShader) FindUniformByName(name string) int32 {
 //    - ok: value.
 //
 func (shader *GLShader) ArgBool(args *glib.Bytes, idx int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.int      // out
@@ -326,10 +332,12 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int32) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_bool", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_bool", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -359,7 +367,7 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int32) bool {
 //    - gfloat: value.
 //
 func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int32) float32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -368,10 +376,12 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int32) float32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_float", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_float", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -399,7 +409,7 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int32) float32 {
 //    - gint32: value.
 //
 func (shader *GLShader) ArgInt(args *glib.Bytes, idx int32) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.int    // out
@@ -408,10 +418,12 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int32) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_int", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_int", _args[:], nil)
 	_cret = *(*C.gint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -439,7 +451,7 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int32) int32 {
 //    - guint32: value.
 //
 func (shader *GLShader) ArgUint(args *glib.Bytes, idx int32) uint32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _arg2 C.int     // out
@@ -448,10 +460,12 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int32) uint32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_uint", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_uint", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -476,7 +490,7 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int32) uint32 {
 //    - outValue: location to store the uniform value in.
 //
 func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int32, outValue *graphene.Vec2) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -486,11 +500,13 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int32, outValue *graphene.
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec2", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec2", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -509,7 +525,7 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int32, outValue *graphene.
 //    - outValue: location to store the uniform value in.
 //
 func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int32, outValue *graphene.Vec3) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -519,11 +535,13 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int32, outValue *graphene.
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec3", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec3", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -542,7 +560,7 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int32, outValue *graphene.
 //    - outValue: location to store set the uniform value in.
 //
 func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int32, outValue *graphene.Vec4) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -552,11 +570,13 @@ func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int32, outValue *graphene.
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	_arg2 = C.int(idx)
 	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec4", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec4", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -572,14 +592,15 @@ func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int32, outValue *graphene.
 //    - gsize: size of the data block.
 //
 func (shader *GLShader) ArgsSize() uint {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gsize // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_args_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_args_size", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -602,14 +623,15 @@ func (shader *GLShader) ArgsSize() uint {
 //    - gint: number of texture inputs required by shader.
 //
 func (shader *GLShader) NTextures() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_textures", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_textures", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -628,14 +650,15 @@ func (shader *GLShader) NTextures() int32 {
 //    - gint: number of declared uniforms.
 //
 func (shader *GLShader) NUniforms() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_uniforms", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_uniforms", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -655,14 +678,15 @@ func (shader *GLShader) NUniforms() int32 {
 //    - utf8: resource path for the shader, or NULL if none.
 //
 func (shader *GLShader) Resource() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_resource", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -681,14 +705,15 @@ func (shader *GLShader) Resource() string {
 //    - bytes: source code for the shader.
 //
 func (shader *GLShader) Source() *glib.Bytes {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_source", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_source", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -719,16 +744,18 @@ func (shader *GLShader) Source() *glib.Bytes {
 //    - utf8: name of the declared uniform.
 //
 func (shader *GLShader) UniformName(idx int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = C.int(idx)
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -753,16 +780,18 @@ func (shader *GLShader) UniformName(idx int32) string {
 //    - gint: data offset.
 //
 func (shader *GLShader) UniformOffset(idx int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg1 = C.int(idx)
-	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_offset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_offset", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
@@ -794,7 +823,7 @@ func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 
 // NewShaderArgsBuilder constructs a struct ShaderArgsBuilder.
 func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -803,8 +832,9 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 	if initialValues != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(initialValues)))
 	}
-	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
-	*(**glib.Bytes)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -834,7 +864,7 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 //    - value to set the uniform to.
 //
 func (builder *ShaderArgsBuilder) SetBool(idx int32, value bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.int      // out
 	var _arg2 C.gboolean // out
@@ -844,8 +874,10 @@ func (builder *ShaderArgsBuilder) SetBool(idx int32, value bool) {
 	if value {
 		_arg2 = C.TRUE
 	}
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -862,7 +894,7 @@ func (builder *ShaderArgsBuilder) SetBool(idx int32, value bool) {
 //    - value to set the uniform to.
 //
 func (builder *ShaderArgsBuilder) SetFloat(idx int32, value float32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.float // out
@@ -870,8 +902,10 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int32, value float32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = C.float(value)
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -888,7 +922,7 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int32, value float32) {
 //    - value to set the uniform to.
 //
 func (builder *ShaderArgsBuilder) SetInt(idx int32, value int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.int    // out
 	var _arg2 C.gint32 // out
@@ -896,8 +930,10 @@ func (builder *ShaderArgsBuilder) SetInt(idx int32, value int32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = C.gint32(value)
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint32)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -914,7 +950,7 @@ func (builder *ShaderArgsBuilder) SetInt(idx int32, value int32) {
 //    - value to set the uniform to.
 //
 func (builder *ShaderArgsBuilder) SetUint(idx int32, value uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.int     // out
 	var _arg2 C.guint32 // out
@@ -922,8 +958,10 @@ func (builder *ShaderArgsBuilder) SetUint(idx int32, value uint32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = C.guint32(value)
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -940,7 +978,7 @@ func (builder *ShaderArgsBuilder) SetUint(idx int32, value uint32) {
 //    - value to set the uniform too.
 //
 func (builder *ShaderArgsBuilder) SetVec2(idx int32, value *graphene.Vec2) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 *C.void // out
@@ -948,8 +986,10 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int32, value *graphene.Vec2) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -966,7 +1006,7 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int32, value *graphene.Vec2) {
 //    - value to set the uniform too.
 //
 func (builder *ShaderArgsBuilder) SetVec3(idx int32, value *graphene.Vec3) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 *C.void // out
@@ -974,8 +1014,10 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int32, value *graphene.Vec3) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -992,7 +1034,7 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int32, value *graphene.Vec3) {
 //    - value to set the uniform too.
 //
 func (builder *ShaderArgsBuilder) SetVec4(idx int32, value *graphene.Vec4) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 *C.void // out
@@ -1000,8 +1042,10 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int32, value *graphene.Vec4) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -1024,12 +1068,13 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int32, value *graphene.Vec4) {
 //    - bytes: newly allocated buffer with all the args added to builder.
 //
 func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
-	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

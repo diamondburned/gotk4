@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -13,6 +14,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern gchar* _gotk4_gtk3_TranslateFunc(void*, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // STOCK_ABOUT: “About” item. ! (help-about.png)
@@ -593,7 +596,7 @@ type Stock = string
 type TranslateFunc func(path string) (utf8 string)
 
 //export _gotk4_gtk3_TranslateFunc
-func _gotk4_gtk3_TranslateFunc(arg1 *C.gchar, arg2 C.gpointer) (cret *C.gchar) {
+func _gotk4_gtk3_TranslateFunc(arg1 *C.void, arg2 C.gpointer) (cret *C.gchar) {
 	var fn TranslateFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -642,6 +645,109 @@ func StockListIDs() []string {
 	})
 
 	return _sList
+}
+
+// StockLookup fills item with the registered values for stock_id, returning
+// TRUE if stock_id was known.
+//
+// Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock item name.
+//
+// The function returns the following values:
+//
+//    - item: stock item to initialize with values.
+//    - ok: TRUE if item was initialized.
+//
+func StockLookup(stockId string) (*StockItem, bool) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg0))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "stock_lookup").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stockId)
+
+	var _item *StockItem // out
+	var _ok bool         // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_item = (*StockItem)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _item, _ok
+}
+
+// StockSetTranslateFunc sets a function to be used for translating the label of
+// a stock item.
+//
+// If no function is registered for a translation domain, g_dgettext() is used.
+//
+// The function is used for all stock items whose translation_domain matches
+// domain. Note that it is possible to use strings different from the actual
+// gettext translation domain of your application for this, as long as your
+// TranslateFunc uses the correct domain when calling dgettext(). This can be
+// useful, e.g. when dealing with message contexts:
+//
+//    GtkStockItem items[] = {
+//     { MY_ITEM1, NC_("odd items", "Item 1"), 0, 0, "odd-item-domain" },
+//     { MY_ITEM2, NC_("even items", "Item 2"), 0, 0, "even-item-domain" },
+//    };
+//
+//    gchar *
+//    my_translate_func (const gchar *msgid,
+//                       gpointer     data)
+//    {
+//      gchar *msgctxt = data;
+//
+//      return (gchar*)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
+//    }
+//
+//    ...
+//
+//    gtk_stock_add (items, G_N_ELEMENTS (items));
+//    gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items");
+//    gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
+//
+// Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - domain: translation domain for which func shall be used.
+//    - fn: TranslateFunc.
+//
+func StockSetTranslateFunc(domain string, fn TranslateFunc) {
+	var _args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg0))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "stock_set_translate_func").Invoke(_args[:], nil)
+
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(fn)
 }
 
 // StockItem: deprecated: since version 3.10.

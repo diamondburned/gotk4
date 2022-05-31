@@ -15,10 +15,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_HandleBoxClass_child_attached(GtkHandleBox*, GtkWidget*);
-// extern void _gotk4_gtk3_HandleBoxClass_child_detached(GtkHandleBox*, GtkWidget*);
-// extern void _gotk4_gtk3_HandleBox_ConnectChildAttached(gpointer, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_HandleBox_ConnectChildDetached(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_HandleBoxClass_child_attached(void*, void*);
+// extern void _gotk4_gtk3_HandleBoxClass_child_detached(void*, void*);
+// extern void _gotk4_gtk3_HandleBox_ConnectChildAttached(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_HandleBox_ConnectChildDetached(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkhandlebox.go.
@@ -92,7 +92,7 @@ func classInitHandleBoxer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_HandleBoxClass_child_attached
-func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
+func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChildAttached(child Widgetter) })
 
@@ -120,7 +120,7 @@ func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.GtkHandleBox, arg1 *C.Gtk
 }
 
 //export _gotk4_gtk3_HandleBoxClass_child_detached
-func _gotk4_gtk3_HandleBoxClass_child_detached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
+func _gotk4_gtk3_HandleBoxClass_child_detached(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChildDetached(child Widgetter) })
 
@@ -173,7 +173,7 @@ func marshalHandleBox(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_HandleBox_ConnectChildAttached
-func _gotk4_gtk3_HandleBox_ConnectChildAttached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+func _gotk4_gtk3_HandleBox_ConnectChildAttached(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(widget Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -215,7 +215,7 @@ func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) coreg
 }
 
 //export _gotk4_gtk3_HandleBox_ConnectChildDetached
-func _gotk4_gtk3_HandleBox_ConnectChildDetached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+func _gotk4_gtk3_HandleBox_ConnectChildDetached(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(widget Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -286,14 +286,15 @@ func NewHandleBox() *HandleBox {
 //    - ok: TRUE if the child is currently detached, otherwise FALSE.
 //
 func (handleBox *HandleBox) ChildDetached() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(handleBox).Native()))
-	*(**HandleBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HandleBox").InvokeMethod("get_child_detached", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HandleBox").InvokeMethod("get_child_detached", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(handleBox)

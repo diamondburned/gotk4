@@ -86,14 +86,15 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 //    - guint32: current workspace, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) CurrentDesktop() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**X11Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_current_desktop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_current_desktop", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -115,14 +116,15 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 //    - guint32: number of workspaces, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) NumberOfDesktops() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**X11Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_number_of_desktops", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_number_of_desktops", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -141,14 +143,15 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 //    - gint: position of screen among the screens of its display.
 //
 func (screen *X11Screen) ScreenNumber() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**X11Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_screen_number", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_screen_number", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -169,14 +172,15 @@ func (screen *X11Screen) ScreenNumber() int32 {
 //      freed.
 //
 func (screen *X11Screen) WindowManagerName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**X11Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_window_manager_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_window_manager_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -210,7 +214,7 @@ func (screen *X11Screen) WindowManagerName() string {
 //    - ok: TRUE if the window manager supports property.
 //
 func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -218,9 +222,11 @@ func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**X11Screen)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("supports_net_wm_hint", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("supports_net_wm_hint", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)

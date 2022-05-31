@@ -5,6 +5,7 @@ package gio
 import (
 	"fmt"
 	"runtime"
+	"runtime/cgo"
 	"strings"
 	"unsafe"
 
@@ -18,12 +19,15 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_SettingsClass_change_event(GSettings*, GQuark*, gint);
+// extern gboolean _gotk4_gio2_SettingsClass_change_event(void*, void*, gint);
+// extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(void*, guint32);
+// extern gboolean _gotk4_gio2_SettingsGetMapping(void*, void*, gpointer);
+// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, void, gint, guintptr);
 // extern gboolean _gotk4_gio2_Settings_ConnectWritableChangeEvent(gpointer, guint, guintptr);
-// extern void _gotk4_gio2_SettingsClass_changed(GSettings*, gchar*);
-// extern void _gotk4_gio2_SettingsClass_writable_changed(GSettings*, gchar*);
-// extern void _gotk4_gio2_Settings_ConnectChanged(gpointer, gchar*, guintptr);
-// extern void _gotk4_gio2_Settings_ConnectWritableChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_SettingsClass_changed(void*, void*);
+// extern void _gotk4_gio2_SettingsClass_writable_changed(void*, void*);
+// extern void _gotk4_gio2_Settings_ConnectChanged(gpointer, void*, guintptr);
+// extern void _gotk4_gio2_Settings_ConnectWritableChanged(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gsettings.go.
@@ -119,7 +123,7 @@ func (s SettingsBindFlags) Has(other SettingsBindFlags) bool {
 type SettingsBindGetMapping func(value *coreglib.Value, variant *glib.Variant) (ok bool)
 
 //export _gotk4_gio2_SettingsBindGetMapping
-func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
+func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
 	var fn SettingsBindGetMapping
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -156,7 +160,7 @@ func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C
 type SettingsBindSetMapping func(value *coreglib.Value, expectedType *glib.VariantType) (variant *glib.Variant)
 
 //export _gotk4_gio2_SettingsBindSetMapping
-func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, arg3 C.gpointer) (cret *C.GVariant) {
+func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret *C.GVariant) {
 	var fn SettingsBindSetMapping
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -179,6 +183,50 @@ func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, ar
 	return cret
 }
 
+// SettingsGetMapping: type of the function that is used to convert from a value
+// stored in a #GSettings to a value that is useful to the application.
+//
+// If the value is successfully mapped, the result should be stored at result
+// and TRUE returned. If mapping fails (for example, if value is not in the
+// right format) then FALSE should be returned.
+//
+// If value is NULL then it means that the mapping function is being given a
+// "last chance" to successfully return a valid value. TRUE must be returned in
+// this case.
+type SettingsGetMapping func(value *glib.Variant) (result unsafe.Pointer, ok bool)
+
+//export _gotk4_gio2_SettingsGetMapping
+func _gotk4_gio2_SettingsGetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
+	var fn SettingsGetMapping
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SettingsGetMapping)
+	}
+
+	var _value *glib.Variant // out
+
+	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_variant_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	result, ok := fn(_value)
+
+	*arg2 = (*C.void)(unsafe.Pointer(result))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // SettingsOverrider contains methods that are overridable.
 type SettingsOverrider interface {
 	// The function takes the following parameters:
@@ -192,6 +240,11 @@ type SettingsOverrider interface {
 	// The function takes the following parameters:
 	//
 	Changed(key string)
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
+	WritableChangeEvent(key glib.Quark) bool
 	// The function takes the following parameters:
 	//
 	WritableChanged(key string)
@@ -500,13 +553,17 @@ func classInitSettingser(gclassPtr, data C.gpointer) {
 		pclass.changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_changed)
 	}
 
+	if _, ok := goval.(interface{ WritableChangeEvent(key glib.Quark) bool }); ok {
+		pclass.writable_change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_change_event)
+	}
+
 	if _, ok := goval.(interface{ WritableChanged(key string) }); ok {
 		pclass.writable_changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_changed)
 	}
 }
 
 //export _gotk4_gio2_SettingsClass_change_event
-func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, arg2 C.gint) (cret C.gboolean) {
+func _gotk4_gio2_SettingsClass_change_event(arg0 *C.void, arg1 *C.void, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChangeEvent(keys *glib.Quark, nKeys int32) bool
@@ -528,7 +585,7 @@ func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, a
 }
 
 //export _gotk4_gio2_SettingsClass_changed
-func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
+func _gotk4_gio2_SettingsClass_changed(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed(key string) })
 
@@ -539,8 +596,26 @@ func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
 	iface.Changed(_key)
 }
 
+//export _gotk4_gio2_SettingsClass_writable_change_event
+func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.void, arg1 C.guint32) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ WritableChangeEvent(key glib.Quark) bool })
+
+	var _key glib.Quark // out
+
+	_key = uint32(arg1)
+
+	ok := iface.WritableChangeEvent(_key)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_gio2_SettingsClass_writable_changed
-func _gotk4_gio2_SettingsClass_writable_changed(arg0 *C.GSettings, arg1 *C.gchar) {
+func _gotk4_gio2_SettingsClass_writable_changed(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WritableChanged(key string) })
 
@@ -561,8 +636,58 @@ func marshalSettings(p uintptr) (interface{}, error) {
 	return wrapSettings(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_Settings_ConnectChangeEvent
+func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 C.void, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(keys []glib.Quark) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(keys []glib.Quark) (ok bool))
+	}
+
+	var _keys []glib.Quark // out
+
+	{
+		src := unsafe.Slice((*C.guint32)(arg1), arg2)
+		_keys = make([]glib.Quark, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_keys[i] = uint32(src[i])
+		}
+	}
+
+	ok := f(_keys)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectChangeEvent: "change-event" signal is emitted once per change event
+// that affects this settings object. You should connect to this signal only if
+// you are interested in viewing groups of changes before they are split out
+// into multiple emissions of the "changed" signal. For most use cases it is
+// more appropriate to use the "changed" signal.
+//
+// In the event that the change event applies to one or more specified keys,
+// keys will be an array of #GQuark of length n_keys. In the event that the
+// change event applies to the #GSettings object as a whole (ie: potentially
+// every key has been changed) then keys will be NULL and n_keys will be 0.
+//
+// The default handler for this signal invokes the "changed" signal for each
+// affected key. If any other connected handler returns TRUE then this default
+// functionality will be suppressed.
+func (settings *Settings) ConnectChangeEvent(f func(keys []glib.Quark) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(settings, "change-event", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectChangeEvent), f)
+}
+
 //export _gotk4_gio2_Settings_ConnectChanged
-func _gotk4_gio2_Settings_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gio2_Settings_ConnectChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(key string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -641,7 +766,7 @@ func (settings *Settings) ConnectWritableChangeEvent(f func(key uint32) (ok bool
 }
 
 //export _gotk4_gio2_Settings_ConnectWritableChanged
-func _gotk4_gio2_Settings_ConnectWritableChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gio2_Settings_ConnectWritableChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(key string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -694,15 +819,16 @@ func (settings *Settings) ConnectWritableChanged(f func(key string)) coreglib.Si
 //    - settings: new #GSettings object.
 //
 func NewSettings(schemaId string) *Settings {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(schemaId)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("new_Settings", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("new_Settings", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schemaId)
@@ -737,7 +863,7 @@ func NewSettings(schemaId string) *Settings {
 //    - settings: new #GSettings object.
 //
 func NewSettingsWithPath(schemaId, path string) *Settings {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -746,10 +872,11 @@ func NewSettingsWithPath(schemaId, path string) *Settings {
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("new_Settings_with_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("new_Settings_with_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schemaId)
@@ -767,15 +894,72 @@ func NewSettingsWithPath(schemaId, path string) *Settings {
 // g_settings_delay(). In the normal case settings are always applied
 // immediately.
 func (settings *Settings) Apply() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Settings").InvokeMethod("apply", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Settings").InvokeMethod("apply", _args[:], nil)
 
 	runtime.KeepAlive(settings)
+}
+
+// BindWritable: create a binding between the writability of key in the settings
+// object and the property property of object. The property must be boolean;
+// "sensitive" or "visible" properties of widgets are the most likely
+// candidates.
+//
+// Writable bindings are always uni-directional; changes of the writability of
+// the setting will be propagated to the object property, not the other way.
+//
+// When the inverted argument is TRUE, the binding inverts the value as it
+// passes from the setting to the object, i.e. property will be set to TRUE if
+// the key is not writable.
+//
+// Note that the lifecycle of the binding is tied to object, and that you can
+// have only one binding per object property. If you bind the same property
+// twice on the same object, the second binding overrides the first one.
+//
+// The function takes the following parameters:
+//
+//    - key to bind.
+//    - object: #GObject.
+//    - property: name of a boolean property to bind.
+//    - inverted: whether to 'invert' the value.
+//
+func (settings *Settings) BindWritable(key string, object *coreglib.Object, property string, inverted bool) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gpointer // out
+	var _arg3 *C.void    // out
+	var _arg4 C.gboolean // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg3 = (*C.void)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg3))
+	if inverted {
+		_arg4 = C.TRUE
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gio", "Settings").InvokeMethod("bind_writable", _args[:], nil)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(inverted)
 }
 
 // CreateAction creates a #GAction corresponding to a given #GSettings key.
@@ -800,7 +984,7 @@ func (settings *Settings) Apply() {
 //    - action: new #GAction.
 //
 func (settings *Settings) CreateAction(key string) *Action {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -808,9 +992,11 @@ func (settings *Settings) CreateAction(key string) *Action {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("create_action", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("create_action", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -827,13 +1013,14 @@ func (settings *Settings) CreateAction(key string) *Action {
 // changes to settings are not immediately propagated to the backend, but kept
 // locally until g_settings_apply() is called.
 func (settings *Settings) Delay() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Settings").InvokeMethod("delay", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Settings").InvokeMethod("delay", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 }
@@ -854,7 +1041,7 @@ func (settings *Settings) Delay() {
 //    - ok: boolean.
 //
 func (settings *Settings) Boolean(key string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -862,9 +1049,11 @@ func (settings *Settings) Boolean(key string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_boolean", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_boolean", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -894,7 +1083,7 @@ func (settings *Settings) Boolean(key string) bool {
 //    - ret: 'child' settings object.
 //
 func (settings *Settings) Child(name string) *Settings {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -902,9 +1091,11 @@ func (settings *Settings) Child(name string) *Settings {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -947,7 +1138,7 @@ func (settings *Settings) Child(name string) *Settings {
 //    - variant (optional): default value.
 //
 func (settings *Settings) DefaultValue(key string) *glib.Variant {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -955,9 +1146,11 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_default_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_default_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -994,7 +1187,7 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 //    - gdouble: double.
 //
 func (settings *Settings) Double(key string) float64 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _cret C.gdouble // in
@@ -1002,9 +1195,11 @@ func (settings *Settings) Double(key string) float64 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_double", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_double", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1038,7 +1233,7 @@ func (settings *Settings) Double(key string) float64 {
 //    - gint: enum value.
 //
 func (settings *Settings) Enum(key string) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.gint  // in
@@ -1046,9 +1241,11 @@ func (settings *Settings) Enum(key string) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_enum", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_enum", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1082,7 +1279,7 @@ func (settings *Settings) Enum(key string) int32 {
 //    - guint flags value.
 //
 func (settings *Settings) Flags(key string) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.guint // in
@@ -1090,9 +1287,11 @@ func (settings *Settings) Flags(key string) uint32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_flags", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_flags", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1113,14 +1312,15 @@ func (settings *Settings) Flags(key string) uint32 {
 //    - ok: TRUE if settings has unapplied changes.
 //
 func (settings *Settings) HasUnapplied() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_has_unapplied", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_has_unapplied", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1150,7 +1350,7 @@ func (settings *Settings) HasUnapplied() bool {
 //    - gint: integer.
 //
 func (settings *Settings) Int(key string) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.gint  // in
@@ -1158,9 +1358,11 @@ func (settings *Settings) Int(key string) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_int", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_int", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1189,7 +1391,7 @@ func (settings *Settings) Int(key string) int32 {
 //    - gint64: 64-bit integer.
 //
 func (settings *Settings) Int64(key string) int64 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret C.gint64 // in
@@ -1197,9 +1399,11 @@ func (settings *Settings) Int64(key string) int64 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_int64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_int64", _args[:], nil)
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1210,6 +1414,77 @@ func (settings *Settings) Int64(key string) int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
+}
+
+// Mapped gets the value that is stored at key in settings, subject to
+// application-level validation/mapping.
+//
+// You should use this function when the application needs to perform some
+// processing on the value of the key (for example, parsing). The mapping
+// function performs that processing. If the function indicates that the
+// processing was unsuccessful (due to a parse error, for example) then the
+// mapping is tried again with another value.
+//
+// This allows a robust 'fall back to defaults' behaviour to be implemented
+// somewhat automatically.
+//
+// The first value that is tried is the user's setting for the key. If the
+// mapping function fails to map this value, other values may be tried in an
+// unspecified order (system or site defaults, translated schema default values,
+// untranslated schema default values, etc).
+//
+// If the mapping function fails for all possible values, one additional attempt
+// is made: the mapping function is called with a NULL value. If the mapping
+// function still indicates failure at this point then the application will be
+// aborted.
+//
+// The result parameter for the mapping function is pointed to a #gpointer which
+// is initially set to NULL. The same pointer is given to each invocation of
+// mapping. The final value of that #gpointer is what is returned by this
+// function. NULL is valid; it is returned just as any other value would be.
+//
+// The function takes the following parameters:
+//
+//    - key to get the value for.
+//    - mapping: function to map the value in the settings database to the value
+//      used by the application.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): result, which may be NULL.
+//
+func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) unsafe.Pointer {
+	var _args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gpointer // out
+	var _arg3 C.gpointer
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*[0]byte)(C._gotk4_gio2_SettingsGetMapping)
+	_arg3 = C.gpointer(gbox.Assign(mapping))
+	defer gbox.Delete(uintptr(_arg3))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_mapped", _args[:], nil)
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(mapping)
+
+	var _gpointer unsafe.Pointer // out
+	_out3 = *(*C.gpointer)(unsafe.Pointer(&_outs[3]))
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
 }
 
 // Range queries the range of a key.
@@ -1223,7 +1498,7 @@ func (settings *Settings) Int64(key string) int64 {
 // The function returns the following values:
 //
 func (settings *Settings) Range(key string) *glib.Variant {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1231,9 +1506,11 @@ func (settings *Settings) Range(key string) *glib.Variant {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_range", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_range", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1268,7 +1545,7 @@ func (settings *Settings) Range(key string) *glib.Variant {
 //    - utf8: newly-allocated string.
 //
 func (settings *Settings) String(key string) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1276,9 +1553,11 @@ func (settings *Settings) String(key string) string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1307,7 +1586,7 @@ func (settings *Settings) String(key string) string {
 //      that is stored at key in settings.
 //
 func (settings *Settings) Strv(key string) []string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _cret **C.gchar // in
@@ -1315,9 +1594,11 @@ func (settings *Settings) Strv(key string) []string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_strv", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_strv", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1360,7 +1641,7 @@ func (settings *Settings) Strv(key string) []string {
 //    - guint: unsigned integer.
 //
 func (settings *Settings) Uint(key string) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.guint // in
@@ -1368,9 +1649,11 @@ func (settings *Settings) Uint(key string) uint32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_uint", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_uint", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1399,7 +1682,7 @@ func (settings *Settings) Uint(key string) uint32 {
 //    - guint64: 64-bit unsigned integer.
 //
 func (settings *Settings) Uint64(key string) uint64 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _cret C.guint64 // in
@@ -1407,9 +1690,11 @@ func (settings *Settings) Uint64(key string) uint64 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_uint64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_uint64", _args[:], nil)
 	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1449,7 +1734,7 @@ func (settings *Settings) Uint64(key string) uint64 {
 //    - variant (optional) user's value, if set.
 //
 func (settings *Settings) UserValue(key string) *glib.Variant {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1457,9 +1742,11 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_user_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_user_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1494,7 +1781,7 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 //    - variant: new #GVariant.
 //
 func (settings *Settings) Value(key string) *glib.Variant {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1502,9 +1789,11 @@ func (settings *Settings) Value(key string) *glib.Variant {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1534,7 +1823,7 @@ func (settings *Settings) Value(key string) *glib.Variant {
 //    - ok: TRUE if the key name is writable.
 //
 func (settings *Settings) IsWritable(name string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -1542,9 +1831,11 @@ func (settings *Settings) IsWritable(name string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("is_writable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("is_writable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1575,14 +1866,15 @@ func (settings *Settings) IsWritable(name string) bool {
 //    - utf8s: list of the children on settings, in no defined order.
 //
 func (settings *Settings) ListChildren() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("list_children", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("list_children", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1623,14 +1915,15 @@ func (settings *Settings) ListChildren() []string {
 //    - utf8s: list of the keys on settings, in no defined order.
 //
 func (settings *Settings) ListKeys() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("list_keys", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("list_keys", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1671,7 +1964,7 @@ func (settings *Settings) ListKeys() []string {
 //    - ok: TRUE if value is valid for key.
 //
 func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -1681,10 +1974,12 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("range_check", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("range_check", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1711,16 +2006,18 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 //    - key: name of a key.
 //
 func (settings *Settings) Reset(key string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Settings").InvokeMethod("reset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Settings").InvokeMethod("reset", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
@@ -1732,13 +2029,14 @@ func (settings *Settings) Reset(key string) {
 //
 // Change notifications will be emitted for affected keys.
 func (settings *Settings) Revert() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Settings").InvokeMethod("revert", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Settings").InvokeMethod("revert", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 }
@@ -1760,7 +2058,7 @@ func (settings *Settings) Revert() {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetBoolean(key string, value bool) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -1772,10 +2070,12 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 	if value {
 		_arg2 = C.TRUE
 	}
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_boolean", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_boolean", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1808,7 +2108,7 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetDouble(key string, value float64) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gdouble  // out
@@ -1818,10 +2118,12 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(value)
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_double", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_double", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1857,7 +2159,7 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 //    - ok: TRUE, if the set succeeds.
 //
 func (settings *Settings) SetEnum(key string, value int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gint     // out
@@ -1867,10 +2169,12 @@ func (settings *Settings) SetEnum(key string, value int32) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_enum", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_enum", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1906,7 +2210,7 @@ func (settings *Settings) SetEnum(key string, value int32) bool {
 //    - ok: TRUE, if the set succeeds.
 //
 func (settings *Settings) SetFlags(key string, value uint32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.guint    // out
@@ -1916,10 +2220,12 @@ func (settings *Settings) SetFlags(key string, value uint32) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_flags", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_flags", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1952,7 +2258,7 @@ func (settings *Settings) SetFlags(key string, value uint32) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetInt(key string, value int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gint     // out
@@ -1962,10 +2268,12 @@ func (settings *Settings) SetInt(key string, value int32) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_int", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_int", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1998,7 +2306,7 @@ func (settings *Settings) SetInt(key string, value int32) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetInt64(key string, value int64) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gint64   // out
@@ -2008,10 +2316,12 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(value)
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_int64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint64)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_int64", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -2044,7 +2354,7 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetString(key, value string) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -2055,10 +2365,12 @@ func (settings *Settings) SetString(key, value string) bool {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_string", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -2092,7 +2404,7 @@ func (settings *Settings) SetString(key, value string) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetStrv(key string, value []string) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 **C.void   // out
@@ -2114,10 +2426,12 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 			}
 		}
 	}
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_strv", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(***C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_strv", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -2150,7 +2464,7 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetUint(key string, value uint32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.guint    // out
@@ -2160,10 +2474,12 @@ func (settings *Settings) SetUint(key string, value uint32) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_uint", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_uint", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -2196,7 +2512,7 @@ func (settings *Settings) SetUint(key string, value uint32) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetUint64(key string, value uint64) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.guint64  // out
@@ -2206,10 +2522,12 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(value)
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_uint64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint64)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_uint64", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -2242,7 +2560,7 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -2252,10 +2570,12 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Settings").InvokeMethod("set_value", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -2352,5 +2672,34 @@ func SettingsListSchemas() []string {
 // Since the mainloop is not running, no change notifications will be dispatched
 // during this call (but some may be queued by the time the call is done).
 func SettingsSync() {
+
 	girepository.MustFind("Gio", "sync").Invoke(nil, nil)
+}
+
+// SettingsUnbind removes an existing binding for property on object.
+//
+// Note that bindings are automatically removed when the object is finalized, so
+// it is rarely necessary to call this function.
+//
+// The function takes the following parameters:
+//
+//    - object: object.
+//    - property whose binding is removed.
+//
+func SettingsUnbind(object *coreglib.Object, property string) {
+	var _args [2]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _arg1 *C.void    // out
+
+	_arg0 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "unbind").Invoke(_args[:], nil)
+
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
 }

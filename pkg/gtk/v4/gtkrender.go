@@ -31,7 +31,7 @@ import "C"
 //    - height: rectangle height.
 //
 func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -45,14 +45,15 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_activity").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_activity").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -79,7 +80,7 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 //    - size: square side for render area.
 //
 func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -93,14 +94,15 @@ func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size flo
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
 	_arg5 = C.double(size)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_arrow").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_arrow").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -127,7 +129,7 @@ func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size flo
 //    - height: rectangle height.
 //
 func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -141,14 +143,15 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, hei
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_background").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_background").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -178,7 +181,7 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, hei
 //    - height: rectangle height.
 //
 func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -192,14 +195,15 @@ func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height f
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_check").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_check").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -227,7 +231,7 @@ func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height f
 //    - height: rectangle height.
 //
 func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -241,14 +245,15 @@ func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_expander").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_expander").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -275,7 +280,7 @@ func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 //    - height: rectangle height.
 //
 func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -289,14 +294,15 @@ func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height f
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_focus").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_focus").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -324,7 +330,7 @@ func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height f
 //    - height: rectangle height.
 //
 func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -338,14 +344,15 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height f
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_frame").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_frame").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -372,7 +379,7 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height f
 //    - height: rectangle height.
 //
 func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -386,14 +393,15 @@ func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height 
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_handle").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_handle").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -418,7 +426,7 @@ func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height 
 //    - y: y position for the texture.
 //
 func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, x, y float64) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 *C.void  // out
@@ -430,13 +438,14 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, 
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*gdk.Texturer)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
 
-	girepository.MustFind("Gtk", "render_icon").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "render_icon").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -456,7 +465,7 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, 
 //    - layout to render.
 //
 func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout *pango.Layout) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -468,13 +477,14 @@ func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout
 	_arg2 = C.double(x)
 	_arg3 = C.double(y)
 	_arg4 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(**pango.Layout)(unsafe.Pointer(&args[4])) = _arg4
 
-	girepository.MustFind("Gtk", "render_layout").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "render_layout").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -495,7 +505,7 @@ func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout
 //    - y1: y coordinate for the end of the line.
 //
 func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -509,14 +519,15 @@ func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64
 	_arg3 = C.double(y0)
 	_arg4 = C.double(x1)
 	_arg5 = C.double(y1)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_line").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_line").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -544,7 +555,7 @@ func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64
 //    - height: rectangle height.
 //
 func RenderOption(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 C.double // out
@@ -558,14 +569,15 @@ func RenderOption(context *StyleContext, cr *cairo.Context, x, y, width, height 
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
 	_arg5 = C.double(height)
-	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Context)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
-	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
 
-	girepository.MustFind("Gtk", "render_option").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "render_option").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)

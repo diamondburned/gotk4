@@ -5,6 +5,7 @@ package glib
 import (
 	"fmt"
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -640,6 +641,39 @@ func NewVariantDouble(value float64) *Variant {
 
 	_cret = C.g_variant_new_double(_arg1)
 	runtime.KeepAlive(value)
+
+	var _variant *Variant // out
+
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	return _variant
+}
+
+// NewVariantFixedArray constructs a struct Variant.
+func NewVariantFixedArray(elementType *VariantType, elements unsafe.Pointer, nElements uint, elementSize uint) *Variant {
+	var _arg1 *C.GVariantType // out
+	var _arg2 C.gconstpointer // out
+	var _arg3 C.gsize         // out
+	var _arg4 C.gsize         // out
+	var _cret *C.GVariant     // in
+
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(elementType)))
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(elements))
+	_arg3 = C.gsize(nElements)
+	_arg4 = C.gsize(elementSize)
+
+	_cret = C.g_variant_new_fixed_array(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(elementType)
+	runtime.KeepAlive(elements)
+	runtime.KeepAlive(nElements)
+	runtime.KeepAlive(elementSize)
 
 	var _variant *Variant // out
 
@@ -1652,6 +1686,49 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 	return _variant
 }
 
+// Data returns a pointer to the serialised form of a #GVariant instance. The
+// returned data may not be in fully-normalised form if read from an untrusted
+// source. The returned data must not be freed; it remains valid for as long as
+// value exists.
+//
+// If value is a fixed-sized value that was deserialised from a corrupted
+// serialised container then NULL may be returned. In this case, the proper
+// thing to do is typically to use the appropriate number of nul bytes in place
+// of value. If value is not fixed-sized then NULL is never returned.
+//
+// In the case that value is already in serialised form, this function is O(1).
+// If the value is not already in serialised form, serialisation occurs
+// implicitly and is approximately O(n) in the size of the result.
+//
+// To deserialise the data returned by this function, in addition to the
+// serialised data, you must know the type of the #GVariant, and (if the machine
+// might be different) the endianness of the machine that stored it. As a
+// result, file formats or network messages that incorporate serialised
+// #GVariants must include this information either implicitly (for instance "the
+// file always contains a G_VARIANT_TYPE_VARIANT and it is always in
+// little-endian order") or explicitly (by storing the type and/or endianness in
+// addition to the serialised data).
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): serialised form of value, or NULL.
+//
+func (value *Variant) Data() unsafe.Pointer {
+	var _arg0 *C.GVariant     // out
+	var _cret C.gconstpointer // in
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_cret = C.g_variant_get_data(_arg0)
+	runtime.KeepAlive(value)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
 // DataAsBytes returns a pointer to the serialised form of a #GVariant instance.
 // The semantics of this function are exactly the same as g_variant_get_data(),
 // except that the returned #GBytes holds a reference to the variant data.
@@ -2524,6 +2601,35 @@ func (value *Variant) RefSink() *Variant {
 	}
 
 	return _variant
+}
+
+// Store stores the serialised form of value at data. data should be large
+// enough. See g_variant_get_size().
+//
+// The stored data is in machine native byte order but may not be in
+// fully-normalised form if read from an untrusted source. See
+// g_variant_get_normal_form() for a solution.
+//
+// As with g_variant_get_data(), to be able to deserialise the serialised
+// variant successfully, its type and (if the destination machine might be
+// different) its endianness must also be available.
+//
+// This function is approximately O(n) in the size of data.
+//
+// The function takes the following parameters:
+//
+//    - data: location to store the serialised data at.
+//
+func (value *Variant) Store(data unsafe.Pointer) {
+	var _arg0 *C.GVariant // out
+	var _arg1 C.gpointer  // out
+
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
+
+	C.g_variant_store(_arg0, _arg1)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(data)
 }
 
 // VariantIsObjectPath determines if a given string is a valid D-Bus object

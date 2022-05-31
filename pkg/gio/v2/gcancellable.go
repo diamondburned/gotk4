@@ -17,7 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
+// extern void _gotk4_gio2_CancellableClass_cancelled(void*);
 // extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
 import "C"
 
@@ -63,7 +63,7 @@ func classInitCancellabler(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_CancellableClass_cancelled
-func _gotk4_gio2_CancellableClass_cancelled(arg0 *C.GCancellable) {
+func _gotk4_gio2_CancellableClass_cancelled(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancelled() })
 
@@ -188,15 +188,16 @@ func NewCancellable() *Cancellable {
 // same thread in which it is running, then the operation's ReadyCallback will
 // not be invoked until the application returns to the main loop.
 func (cancellable *Cancellable) Cancel() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Cancellable").InvokeMethod("cancel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("cancel", _args[:], nil)
 
 	runtime.KeepAlive(cancellable)
 }
@@ -218,7 +219,7 @@ func (cancellable *Cancellable) Cancel() {
 //    - handlerId: handler id of the handler to be disconnected, or 0.
 //
 func (cancellable *Cancellable) Disconnect(handlerId uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.gulong // out
 
@@ -226,9 +227,11 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
 	_arg1 = C.gulong(handlerId)
-	*(**Cancellable)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Cancellable").InvokeMethod("disconnect", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gulong)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("disconnect", _args[:], nil)
 
 	runtime.KeepAlive(cancellable)
 	runtime.KeepAlive(handlerId)
@@ -254,16 +257,17 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 //      or on errors.
 //
 func (cancellable *Cancellable) Fd() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("get_fd", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("get_fd", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cancellable)
@@ -283,16 +287,17 @@ func (cancellable *Cancellable) Fd() int32 {
 //      item is not cancelled.
 //
 func (cancellable *Cancellable) IsCancelled() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("is_cancelled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("is_cancelled", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cancellable)
@@ -309,15 +314,16 @@ func (cancellable *Cancellable) IsCancelled() bool {
 // PopCurrent pops cancellable off the cancellable stack (verifying that
 // cancellable is on the top of the stack).
 func (cancellable *Cancellable) PopCurrent() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Cancellable").InvokeMethod("pop_current", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("pop_current", _args[:], nil)
 
 	runtime.KeepAlive(cancellable)
 }
@@ -331,15 +337,16 @@ func (cancellable *Cancellable) PopCurrent() {
 // This is typically called automatically by e.g. #GFile operations, so you
 // rarely have to call this yourself.
 func (cancellable *Cancellable) PushCurrent() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Cancellable").InvokeMethod("push_current", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("push_current", _args[:], nil)
 
 	runtime.KeepAlive(cancellable)
 }
@@ -354,15 +361,16 @@ func (cancellable *Cancellable) PushCurrent() {
 // cause the application to run out of file descriptors when many #GCancellables
 // are used at the same time.
 func (cancellable *Cancellable) ReleaseFd() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Cancellable").InvokeMethod("release_fd", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("release_fd", _args[:], nil)
 
 	runtime.KeepAlive(cancellable)
 }
@@ -379,15 +387,16 @@ func (cancellable *Cancellable) ReleaseFd() {
 // operations. You should create a fresh cancellable for further async
 // operations.
 func (cancellable *Cancellable) Reset() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Cancellable").InvokeMethod("reset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("reset", _args[:], nil)
 
 	runtime.KeepAlive(cancellable)
 }
@@ -395,16 +404,17 @@ func (cancellable *Cancellable) Reset() {
 // SetErrorIfCancelled: if the cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
 func (cancellable *Cancellable) SetErrorIfCancelled() error {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cerr *C.void // in
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Cancellable").InvokeMethod("set_error_if_cancelled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Cancellable").InvokeMethod("set_error_if_cancelled", _args[:], nil)
 
 	runtime.KeepAlive(cancellable)
 
@@ -432,16 +442,17 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 //    - source: new #GSource.
 //
 func (cancellable *Cancellable) NewSource() *glib.Source {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if cancellable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("source_new", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("source_new", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cancellable)

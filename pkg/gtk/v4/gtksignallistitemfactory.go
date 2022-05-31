@@ -12,10 +12,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectBind(gpointer, GtkListItem*, guintptr);
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectSetup(gpointer, GtkListItem*, guintptr);
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(gpointer, GtkListItem*, guintptr);
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(gpointer, GtkListItem*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectBind(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectSetup(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtksignallistitemfactory.go.
@@ -101,7 +101,7 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectBind
-func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -133,7 +133,7 @@ func (v *SignalListItemFactory) ConnectBind(f func(listitem *ListItem)) coreglib
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectSetup
-func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -164,7 +164,7 @@ func (v *SignalListItemFactory) ConnectSetup(f func(listitem *ListItem)) coregli
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectTeardown
-func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -194,7 +194,7 @@ func (v *SignalListItemFactory) ConnectTeardown(f func(listitem *ListItem)) core
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectUnbind
-func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

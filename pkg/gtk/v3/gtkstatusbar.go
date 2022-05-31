@@ -15,10 +15,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_StatusbarClass_text_popped(GtkStatusbar*, guint, gchar*);
-// extern void _gotk4_gtk3_StatusbarClass_text_pushed(GtkStatusbar*, guint, gchar*);
-// extern void _gotk4_gtk3_Statusbar_ConnectTextPopped(gpointer, guint, gchar*, guintptr);
-// extern void _gotk4_gtk3_Statusbar_ConnectTextPushed(gpointer, guint, gchar*, guintptr);
+// extern void _gotk4_gtk3_StatusbarClass_text_popped(void*, guint, void*);
+// extern void _gotk4_gtk3_StatusbarClass_text_pushed(void*, guint, void*);
+// extern void _gotk4_gtk3_Statusbar_ConnectTextPopped(gpointer, guint, void*, guintptr);
+// extern void _gotk4_gtk3_Statusbar_ConnectTextPushed(gpointer, guint, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkstatusbar.go.
@@ -113,7 +113,7 @@ func classInitStatusbarrer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_StatusbarClass_text_popped
-func _gotk4_gtk3_StatusbarClass_text_popped(arg0 *C.GtkStatusbar, arg1 C.guint, arg2 *C.gchar) {
+func _gotk4_gtk3_StatusbarClass_text_popped(arg0 *C.void, arg1 C.guint, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TextPopped(contextId uint32, text string)
@@ -129,7 +129,7 @@ func _gotk4_gtk3_StatusbarClass_text_popped(arg0 *C.GtkStatusbar, arg1 C.guint, 
 }
 
 //export _gotk4_gtk3_StatusbarClass_text_pushed
-func _gotk4_gtk3_StatusbarClass_text_pushed(arg0 *C.GtkStatusbar, arg1 C.guint, arg2 *C.gchar) {
+func _gotk4_gtk3_StatusbarClass_text_pushed(arg0 *C.void, arg1 C.guint, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TextPushed(contextId uint32, text string)
@@ -174,7 +174,7 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_Statusbar_ConnectTextPopped
-func _gotk4_gtk3_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
+func _gotk4_gtk3_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2 *C.void, arg3 C.guintptr) {
 	var f func(contextId uint32, text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -202,7 +202,7 @@ func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint32, text stri
 }
 
 //export _gotk4_gtk3_Statusbar_ConnectTextPushed
-func _gotk4_gtk3_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
+func _gotk4_gtk3_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2 *C.void, arg3 C.guintptr) {
 	var f func(contextId uint32, text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -261,7 +261,7 @@ func NewStatusbar() *Statusbar {
 //    - guint: integer id.
 //
 func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.guint // in
@@ -269,9 +269,11 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contextDescription)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Statusbar)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_context_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_context_id", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusbar)
@@ -291,14 +293,15 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 //    - box: Box.
 //
 func (statusbar *Statusbar) MessageArea() *Box {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-	*(**Statusbar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_message_area", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_message_area", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusbar)
@@ -321,15 +324,17 @@ func (statusbar *Statusbar) MessageArea() *Box {
 //    - contextId: context identifier.
 //
 func (statusbar *Statusbar) Pop(contextId uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
-	*(**Statusbar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("pop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("pop", _args[:], nil)
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
@@ -348,7 +353,7 @@ func (statusbar *Statusbar) Pop(contextId uint32) {
 //    - guint: message id that can be used with gtk_statusbar_remove().
 //
 func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 *C.void // out
@@ -358,10 +363,12 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 	_arg1 = C.guint(contextId)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Statusbar)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("push", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("push", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusbar)
@@ -384,7 +391,7 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 //    - messageId: message identifier, as returned by gtk_statusbar_push().
 //
 func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -392,10 +399,12 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
 	_arg2 = C.guint(messageId)
-	*(**Statusbar)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
@@ -410,15 +419,17 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
 //    - contextId: context identifier.
 //
 func (statusbar *Statusbar) RemoveAll(contextId uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
-	*(**Statusbar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove_all", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove_all", _args[:], nil)
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)

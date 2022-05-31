@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
+// extern gchar* _gotk4_atk1_PlugClass_get_object_id(void*);
 import "C"
 
 // glib.Type values for atkplug.go.
@@ -63,7 +63,7 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_PlugClass_get_object_id
-func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
+func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ObjectID() string })
 
@@ -122,14 +122,15 @@ func NewPlug() *Plug {
 //    - utf8: unique ID for the plug.
 //
 func (plug *Plug) ID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-	*(**Plug)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("get_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("get_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
@@ -157,15 +158,17 @@ func (plug *Plug) ID() string {
 //    - child to be set as accessible child of plug.
 //
 func (plug *Plug) SetChild(child *ObjectClass) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Plug)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Atk", "Plug").InvokeMethod("set_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Atk", "Plug").InvokeMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(plug)
 	runtime.KeepAlive(child)

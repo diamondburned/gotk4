@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -16,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gdatainputstream.go.
@@ -80,14 +82,15 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 //    - dataInputStream: new InputStream.
 //
 func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
-	*(*InputStreamer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("new_DataInputStream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("new_DataInputStream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
@@ -111,7 +114,7 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 //      occurred.
 //
 func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret C.guchar // in
@@ -123,9 +126,11 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DataInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_byte", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_byte", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -158,7 +163,7 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 //      occurred.
 //
 func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret C.gint16 // in
@@ -170,9 +175,11 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DataInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int16", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int16", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -209,7 +216,7 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 //      occurred.
 //
 func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret C.gint32 // in
@@ -221,9 +228,11 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DataInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int32", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int32", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -260,7 +269,7 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 //      occurred.
 //
 func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret C.gint64 // in
@@ -272,9 +281,11 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DataInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int64", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -289,6 +300,317 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	}
 
 	return _gint64, _goerr
+}
+
+// ReadLine reads a line from the data input stream. Note that no encoding
+// checks or conversion is performed; the input is not guaranteed to be UTF-8,
+// and may in fact have embedded NUL characters.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - guint8s (optional): a NUL terminated byte array with the line that was
+//      read in (without the newlines). Set length to a #gsize to get the length
+//      of the read line. On an error, it will return NULL and error will be set.
+//      If there's no content to read, it will still return NULL, but error won't
+//      be set.
+//
+func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, error) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.char // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+
+	var _length uint    // out
+	var _guint8s []byte // out
+	var _goerr error    // out
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			var i int
+			var z C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_cret, i)
+			_guint8s = make([]byte, i)
+			for i := range src {
+				_guint8s[i] = byte(src[i])
+			}
+		}
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _guint8s, _goerr
+}
+
+// ReadLineAsync asynchronous version of g_data_input_stream_read_line(). It is
+// an error to have two outstanding calls to this function.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_data_input_stream_read_line_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gint(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// ReadLineFinish: finish an asynchronous call started by
+// g_data_input_stream_read_line_async(). Note the warning about string encoding
+// in g_data_input_stream_read_line() applies here as well.
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - guint8s (optional): a NUL-terminated byte array with the line that was
+//      read in (without the newlines). Set length to a #gsize to get the length
+//      of the read line. On an error, it will return NULL and error will be set.
+//      If there's no content to read, it will still return NULL, but error won't
+//      be set.
+//
+func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byte, error) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.char // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_finish", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
+
+	var _length uint    // out
+	var _guint8s []byte // out
+	var _goerr error    // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			var i int
+			var z C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_cret, i)
+			_guint8s = make([]byte, i)
+			for i := range src {
+				_guint8s[i] = byte(src[i])
+			}
+		}
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _guint8s, _goerr
+}
+
+// ReadLineFinishUTF8: finish an asynchronous call started by
+// g_data_input_stream_read_line_async().
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - utf8 (optional): string with the line that was read in (without the
+//      newlines). Set length to a #gsize to get the length of the read line. On
+//      an error, it will return NULL and error will be set. For UTF-8 conversion
+//      errors, the set error domain is G_CONVERT_ERROR. If there's no content to
+//      read, it will still return NULL, but error won't be set.
+//
+func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, string, error) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_finish_utf8", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
+
+	var _length uint // out
+	var _utf8 string // out
+	var _goerr error // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _utf8, _goerr
+}
+
+// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - utf8 (optional): NUL terminated UTF-8 string with the line that was read
+//      in (without the newlines). Set length to a #gsize to get the length of
+//      the read line. On an error, it will return NULL and error will be set.
+//      For UTF-8 conversion errors, the set error domain is G_CONVERT_ERROR. If
+//      there's no content to read, it will still return NULL, but error won't be
+//      set.
+//
+func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, error) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_utf8", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+
+	var _length uint // out
+	var _utf8 string // out
+	var _goerr error // out
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _utf8, _goerr
 }
 
 // ReadUint16 reads an unsigned 16-bit/2-byte value from stream.
@@ -307,7 +629,7 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 //      error occurred.
 //
 func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _cret C.guint16 // in
@@ -319,9 +641,11 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DataInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint16", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint16", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -358,7 +682,7 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 //      error occurred.
 //
 func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _cret C.guint32 // in
@@ -370,9 +694,11 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DataInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint32", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint32", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -408,7 +734,7 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 //      occurred.
 //
 func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _cret C.guint64 // in
@@ -420,9 +746,11 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DataInputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint64", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint64", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -437,4 +765,391 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	}
 
 	return _guint64, _goerr
+}
+
+// ReadUntil reads a string from the data input stream, up to the first
+// occurrence of any of the stop characters.
+//
+// Note that, in contrast to g_data_input_stream_read_until_async(), this
+// function consumes the stop character that it finds.
+//
+// Don't use this function in new code. Its functionality is inconsistent with
+// g_data_input_stream_read_until_async(). Both functions will be marked as
+// deprecated in a future release. Use g_data_input_stream_read_upto() instead,
+// but note that that function does not consume the stop character.
+//
+// Deprecated: Use g_data_input_stream_read_upto() instead, which has more
+// consistent behaviour regarding the stop character.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - utf8: string with the data that was read before encountering any of the
+//      stop characters. Set length to a #gsize to get the length of the string.
+//      This function will return NULL on an error.
+//
+func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) (uint, string, error) {
+	var _args [3]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg2 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_until", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stopChars)
+
+	var _length uint // out
+	var _utf8 string // out
+	var _goerr error // out
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _utf8, _goerr
+}
+
+// ReadUntilAsync asynchronous version of g_data_input_stream_read_until(). It
+// is an error to have two outstanding calls to this function.
+//
+// Note that, in contrast to g_data_input_stream_read_until(), this function
+// does not consume the stop character that it finds. You must read it for
+// yourself.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_data_input_stream_read_until_finish() to get the result of the operation.
+//
+// Don't use this function in new code. Its functionality is inconsistent with
+// g_data_input_stream_read_until(). Both functions will be marked as deprecated
+// in a future release. Use g_data_input_stream_read_upto_async() instead.
+//
+// Deprecated: Use g_data_input_stream_read_upto_async() instead, which has more
+// consistent behaviour regarding the stop character.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg3 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gint     // out
+	var _arg4 C.gpointer // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_until_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stopChars)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// ReadUntilFinish: finish an asynchronous call started by
+// g_data_input_stream_read_until_async().
+//
+// Deprecated: Use g_data_input_stream_read_upto_finish() instead, which has
+// more consistent behaviour regarding the stop character.
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - utf8: string with the data that was read before encountering any of the
+//      stop characters. Set length to a #gsize to get the length of the string.
+//      This function will return NULL on an error.
+//
+func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, string, error) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_until_finish", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
+
+	var _length uint // out
+	var _utf8 string // out
+	var _goerr error // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _utf8, _goerr
+}
+
+// ReadUpto reads a string from the data input stream, up to the first
+// occurrence of any of the stop characters.
+//
+// In contrast to g_data_input_stream_read_until(), this function does not
+// consume the stop character. You have to use g_data_input_stream_read_byte()
+// to get it before calling g_data_input_stream_read_upto() again.
+//
+// Note that stop_chars may contain '\0' if stop_chars_len is specified.
+//
+// The returned string will always be nul-terminated on success.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//    - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
+//      nul-terminated.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - utf8: string with the data that was read before encountering any of the
+//      stop characters. Set length to a #gsize to get the length of the string.
+//      This function will return NULL on an error.
+//
+func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, stopCharsLen int) (uint, string, error) {
+	var _args [4]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg3 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.gssize // out
+	var _out0 *C.void  // in
+	var _cret *C.void  // in
+	var _cerr *C.void  // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(stopCharsLen)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gssize)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_upto", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stopChars)
+	runtime.KeepAlive(stopCharsLen)
+
+	var _length uint // out
+	var _utf8 string // out
+	var _goerr error // out
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _utf8, _goerr
+}
+
+// ReadUptoAsync asynchronous version of g_data_input_stream_read_upto(). It is
+// an error to have two outstanding calls to this function.
+//
+// In contrast to g_data_input_stream_read_until(), this function does not
+// consume the stop character. You have to use g_data_input_stream_read_byte()
+// to get it before calling g_data_input_stream_read_upto() again.
+//
+// Note that stop_chars may contain '\0' if stop_chars_len is specified.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_data_input_stream_read_upto_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - stopChars characters to terminate the read.
+//    - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
+//      nul-terminated.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen int, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg4 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gssize   // out
+	var _arg3 C.gint     // out
+	var _arg5 C.gpointer // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(stopCharsLen)
+	_arg3 = C.gint(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gssize)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.gpointer)(unsafe.Pointer(&_args[5])) = _arg5
+
+	girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_upto_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stopChars)
+	runtime.KeepAlive(stopCharsLen)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// ReadUptoFinish: finish an asynchronous call started by
+// g_data_input_stream_read_upto_async().
+//
+// Note that this function does not consume the stop character. You have to use
+// g_data_input_stream_read_byte() to get it before calling
+// g_data_input_stream_read_upto_async() again.
+//
+// The returned string will always be nul-terminated on success.
+//
+// The function takes the following parameters:
+//
+//    - result that was provided to the callback.
+//
+// The function returns the following values:
+//
+//    - length (optional) to get the length of the data read in.
+//    - utf8: string with the data that was read before encountering any of the
+//      stop characters. Set length to a #gsize to get the length of the string.
+//      This function will return NULL on an error.
+//
+func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, string, error) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret *C.void // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_upto_finish", _args[:], _outs[:])
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
+
+	var _length uint // out
+	var _utf8 string // out
+	var _goerr error // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	if _out0 != nil {
+		_length = *(*uint)(unsafe.Pointer(_out0))
+	}
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _length, _utf8, _goerr
 }

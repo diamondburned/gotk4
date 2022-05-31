@@ -245,16 +245,18 @@ func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
 //    - filter: new filter to use.
 //
 func (self *MultiFilter) Append(filter *Filter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(filter).Native()))
-	*(**MultiFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("append", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filter)
@@ -271,15 +273,17 @@ func (self *MultiFilter) Append(filter *Filter) {
 //    - position of filter to remove.
 //
 func (self *MultiFilter) Remove(position uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.guint(position)
-	*(**MultiFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("remove", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)

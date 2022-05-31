@@ -40,7 +40,7 @@ import "C"
 //      NULL on error.
 //
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -53,13 +53,14 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 	_arg2 = C.int(srcY)
 	_arg3 = C.int(width)
 	_arg4 = C.int(height)
-	*(**cairo.Surface)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_surface").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_surface").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
@@ -101,14 +102,15 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 //    - pixbuf (optional): new Pixbuf or NULL in case of an error.
 //
 func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	*(*Texturer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_texture").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_texture").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(texture)

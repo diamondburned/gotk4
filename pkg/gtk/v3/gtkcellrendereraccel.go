@@ -14,8 +14,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_CellRendererAccelClass_accel_cleared(GtkCellRendererAccel*, gchar*);
-// extern void _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellRendererAccelClass_accel_cleared(void*, void*);
+// extern void _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkcellrendereraccel.go.
@@ -98,7 +98,7 @@ func classInitCellRendererAcceller(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CellRendererAccelClass_accel_cleared
-func _gotk4_gtk3_CellRendererAccelClass_accel_cleared(arg0 *C.GtkCellRendererAccel, arg1 *C.gchar) {
+func _gotk4_gtk3_CellRendererAccelClass_accel_cleared(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AccelCleared(pathString string) })
 
@@ -126,7 +126,7 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared
-func _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(pathString string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

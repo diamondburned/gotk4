@@ -15,10 +15,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GVariant* _gotk4_gtk4_ActionableInterface_get_action_target_value(GtkActionable*);
-// extern char* _gotk4_gtk4_ActionableInterface_get_action_name(GtkActionable*);
-// extern void _gotk4_gtk4_ActionableInterface_set_action_name(GtkActionable*, char*);
-// extern void _gotk4_gtk4_ActionableInterface_set_action_target_value(GtkActionable*, GVariant*);
+// extern GVariant* _gotk4_gtk4_ActionableInterface_get_action_target_value(void*);
+// extern char* _gotk4_gtk4_ActionableInterface_get_action_name(void*);
+// extern void _gotk4_gtk4_ActionableInterface_set_action_name(void*, void*);
+// extern void _gotk4_gtk4_ActionableInterface_set_action_target_value(void*, void*);
 import "C"
 
 // glib.Type values for gtkactionable.go.
@@ -144,7 +144,7 @@ func ifaceInitActionabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_ActionableInterface_get_action_name
-func _gotk4_gtk4_ActionableInterface_get_action_name(arg0 *C.GtkActionable) (cret *C.char) {
+func _gotk4_gtk4_ActionableInterface_get_action_name(arg0 *C.void) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -159,7 +159,7 @@ func _gotk4_gtk4_ActionableInterface_get_action_name(arg0 *C.GtkActionable) (cre
 }
 
 //export _gotk4_gtk4_ActionableInterface_get_action_target_value
-func _gotk4_gtk4_ActionableInterface_get_action_target_value(arg0 *C.GtkActionable) (cret *C.GVariant) {
+func _gotk4_gtk4_ActionableInterface_get_action_target_value(arg0 *C.void) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -173,7 +173,7 @@ func _gotk4_gtk4_ActionableInterface_get_action_target_value(arg0 *C.GtkActionab
 }
 
 //export _gotk4_gtk4_ActionableInterface_set_action_name
-func _gotk4_gtk4_ActionableInterface_set_action_name(arg0 *C.GtkActionable, arg1 *C.char) {
+func _gotk4_gtk4_ActionableInterface_set_action_name(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -187,7 +187,7 @@ func _gotk4_gtk4_ActionableInterface_set_action_name(arg0 *C.GtkActionable, arg1
 }
 
 //export _gotk4_gtk4_ActionableInterface_set_action_target_value
-func _gotk4_gtk4_ActionableInterface_set_action_target_value(arg0 *C.GtkActionable, arg1 *C.GVariant) {
+func _gotk4_gtk4_ActionableInterface_set_action_target_value(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -238,12 +238,13 @@ func marshalActionable(p uintptr) (interface{}, error) {
 //    - utf8 (optional): action name, or NULL if none is set.
 //
 func (actionable *Actionable) ActionName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-	*(**Actionable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -265,12 +266,13 @@ func (actionable *Actionable) ActionName() string {
 //    - variant (optional): current target value.
 //
 func (actionable *Actionable) ActionTargetValue() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-	*(**Actionable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -310,7 +312,7 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 //    - actionName (optional): action name, or NULL.
 //
 func (actionable *Actionable) SetActionName(actionName string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -319,7 +321,9 @@ func (actionable *Actionable) SetActionName(actionName string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Actionable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(actionName)
@@ -348,7 +352,7 @@ func (actionable *Actionable) SetActionName(actionName string) {
 //    - targetValue (optional) to set as the target value, or NULL.
 //
 func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -356,7 +360,9 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	if targetValue != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
-	*(**Actionable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(targetValue)
@@ -373,14 +379,16 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 //    - detailedActionName: detailed action name.
 //
 func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Actionable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(detailedActionName)

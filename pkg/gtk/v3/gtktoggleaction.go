@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_ToggleActionClass_toggled(GtkToggleAction*);
+// extern void _gotk4_gtk3_ToggleActionClass_toggled(void*);
 // extern void _gotk4_gtk3_ToggleAction_ConnectToggled(gpointer, guintptr);
 import "C"
 
@@ -63,7 +63,7 @@ func classInitToggleActioner(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_ToggleActionClass_toggled
-func _gotk4_gtk3_ToggleActionClass_toggled(arg0 *C.GtkToggleAction) {
+func _gotk4_gtk3_ToggleActionClass_toggled(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
@@ -126,7 +126,7 @@ func (action *ToggleAction) ConnectToggled(f func()) coreglib.SignalHandle {
 //    - toggleAction: new ToggleAction.
 //
 func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -147,12 +147,13 @@ func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 		_arg3 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 		defer C.free(unsafe.Pointer(_arg3))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("new_ToggleAction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("new_ToggleAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -176,14 +177,15 @@ func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 //    - ok: checked state of the toggle action.
 //
 func (action *ToggleAction) Active() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**ToggleAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
@@ -207,14 +209,15 @@ func (action *ToggleAction) Active() bool {
 //    - ok: whether the action should have proxies like a radio action.
 //
 func (action *ToggleAction) DrawAsRadio() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**ToggleAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_draw_as_radio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_draw_as_radio", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
@@ -237,7 +240,7 @@ func (action *ToggleAction) DrawAsRadio() bool {
 //    - isActive: whether the action should be checked or not.
 //
 func (action *ToggleAction) SetActive(isActive bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -245,9 +248,11 @@ func (action *ToggleAction) SetActive(isActive bool) {
 	if isActive {
 		_arg1 = C.TRUE
 	}
-	*(**ToggleAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(isActive)
@@ -263,7 +268,7 @@ func (action *ToggleAction) SetActive(isActive bool) {
 //    - drawAsRadio: whether the action should have proxies like a radio action.
 //
 func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -271,9 +276,11 @@ func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	if drawAsRadio {
 		_arg1 = C.TRUE
 	}
-	*(**ToggleAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_draw_as_radio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_draw_as_radio", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(drawAsRadio)
@@ -283,13 +290,14 @@ func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 //
 // Deprecated: since version 3.10.
 func (action *ToggleAction) Toggled() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**ToggleAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("toggled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("toggled", _args[:], nil)
 
 	runtime.KeepAlive(action)
 }

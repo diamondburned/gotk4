@@ -14,8 +14,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_ShortcutsWindowClass_close(GtkShortcutsWindow*);
-// extern void _gotk4_gtk3_ShortcutsWindowClass_search(GtkShortcutsWindow*);
+// extern void _gotk4_gtk3_ShortcutsWindowClass_close(void*);
+// extern void _gotk4_gtk3_ShortcutsWindowClass_search(void*);
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 import "C"
@@ -108,7 +108,7 @@ func classInitShortcutsWindower(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_ShortcutsWindowClass_close
-func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.GtkShortcutsWindow) {
+func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
@@ -116,7 +116,7 @@ func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.GtkShortcutsWindow) {
 }
 
 //export _gotk4_gtk3_ShortcutsWindowClass_search
-func _gotk4_gtk3_ShortcutsWindowClass_search(arg0 *C.GtkShortcutsWindow) {
+func _gotk4_gtk3_ShortcutsWindowClass_search(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Search() })
 

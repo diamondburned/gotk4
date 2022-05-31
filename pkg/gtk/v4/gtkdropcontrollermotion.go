@@ -172,14 +172,15 @@ func NewDropControllerMotion() *DropControllerMotion {
 //    - ok: TRUE if a dragging pointer is within self or one of its children.
 //
 func (self *DropControllerMotion) ContainsPointer() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropControllerMotion)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("contains_pointer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("contains_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -201,14 +202,15 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 //    - drop (optional): GdkDrop currently happening within self or NULL if none.
 //
 func (self *DropControllerMotion) Drop() gdk.Dropper {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropControllerMotion)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("get_drop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("get_drop", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -244,14 +246,15 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 //      children.
 //
 func (self *DropControllerMotion) IsPointer() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropControllerMotion)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("is_pointer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("is_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)

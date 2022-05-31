@@ -13,9 +13,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceAdded(gpointer, GdkDevice*, guintptr);
-// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceChanged(gpointer, GdkDevice*, guintptr);
-// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
+// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceAdded(gpointer, void*, guintptr);
+// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceChanged(gpointer, void*, guintptr);
+// extern void _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gdkdevicemanager.go.
@@ -171,7 +171,7 @@ func BaseDeviceManager(obj DeviceManagerer) *DeviceManager {
 }
 
 //export _gotk4_gdk3_DeviceManager_ConnectDeviceAdded
-func _gotk4_gdk3_DeviceManager_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+func _gotk4_gdk3_DeviceManager_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(device Devicer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -213,7 +213,7 @@ func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) c
 }
 
 //export _gotk4_gdk3_DeviceManager_ConnectDeviceChanged
-func _gotk4_gdk3_DeviceManager_ConnectDeviceChanged(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+func _gotk4_gdk3_DeviceManager_ConnectDeviceChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(device Devicer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -262,7 +262,7 @@ func (deviceManager *DeviceManager) ConnectDeviceChanged(f func(device Devicer))
 }
 
 //export _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved
-func _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
+func _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(device Devicer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -319,14 +319,15 @@ func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer))
 //      or unreferenced.
 //
 func (deviceManager *DeviceManager) ClientPointer() Devicer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
-	*(**DeviceManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_client_pointer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_client_pointer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deviceManager)
@@ -362,14 +363,15 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 //      This memory is owned by GDK and must not be freed or unreferenced.
 //
 func (deviceManager *DeviceManager) Display() *Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
-	*(**DeviceManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deviceManager)

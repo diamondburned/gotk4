@@ -141,16 +141,18 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the child is not subject to homogenous sizing.
 //
 func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_non_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_non_homogeneous", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -177,16 +179,18 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 //    - ok: whether child should appear in a secondary group of children.
 //
 func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_secondary", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_secondary", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -210,7 +214,7 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 //    - nonHomogeneous: new value.
 //
 func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -220,10 +224,12 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 	if nonHomogeneous {
 		_arg2 = C.TRUE
 	}
-	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_non_homogeneous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_non_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
@@ -249,7 +255,7 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 //      button box.
 //
 func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -259,10 +265,12 @@ func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 	if isSecondary {
 		_arg2 = C.TRUE
 	}
-	*(**ButtonBox)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_secondary", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_secondary", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)

@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -35,6 +36,21 @@ func init() {
 
 func init() {
 	girepository.Require("Gdk", "3.0")
+}
+
+// The function returns the following values:
+//
+func GLErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gdk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
 }
 
 type Status C.gint

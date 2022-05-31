@@ -18,11 +18,13 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern gboolean _gotk4_gtk3_ComboBox_ConnectPopdown(gpointer, guintptr);
-// extern gchar* _gotk4_gtk3_ComboBoxClass_format_entry_text(GtkComboBox*, gchar*);
-// extern gchar* _gotk4_gtk3_ComboBox_ConnectFormatEntryText(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk3_ComboBoxClass_changed(GtkComboBox*);
+// extern gboolean _gotk4_gtk3_TreeViewRowSeparatorFunc(void*, void*, gpointer);
+// extern gchar* _gotk4_gtk3_ComboBoxClass_format_entry_text(void*, void*);
+// extern gchar* _gotk4_gtk3_ComboBox_ConnectFormatEntryText(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_ComboBoxClass_changed(void*);
 // extern void _gotk4_gtk3_ComboBox_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_ComboBox_ConnectPopup(gpointer, guintptr);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtkcombobox.go.
@@ -116,7 +118,7 @@ func classInitComboBoxer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_ComboBoxClass_changed
-func _gotk4_gtk3_ComboBoxClass_changed(arg0 *C.GtkComboBox) {
+func _gotk4_gtk3_ComboBoxClass_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
@@ -124,7 +126,7 @@ func _gotk4_gtk3_ComboBoxClass_changed(arg0 *C.GtkComboBox) {
 }
 
 //export _gotk4_gtk3_ComboBoxClass_format_entry_text
-func _gotk4_gtk3_ComboBoxClass_format_entry_text(arg0 *C.GtkComboBox, arg1 *C.gchar) (cret *C.gchar) {
+func _gotk4_gtk3_ComboBoxClass_format_entry_text(arg0 *C.void, arg1 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FormatEntryText(path string) string })
 
@@ -207,7 +209,7 @@ func (comboBox *ComboBox) ConnectChanged(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_ComboBox_ConnectFormatEntryText
-func _gotk4_gtk3_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret *C.gchar) {
+func _gotk4_gtk3_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret *C.gchar) {
 	var f func(path string) (utf8 string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -350,14 +352,15 @@ func NewComboBox() *ComboBox {
 //    - comboBox: new ComboBox.
 //
 func NewComboBoxWithArea(area CellAreaer) *ComboBox {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(*CellAreaer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_area", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_area", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
@@ -382,14 +385,15 @@ func NewComboBoxWithArea(area CellAreaer) *ComboBox {
 //    - comboBox: new ComboBox.
 //
 func NewComboBoxWithAreaAndEntry(area CellAreaer) *ComboBox {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(*CellAreaer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_area_and_entry", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_area_and_entry", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
@@ -432,14 +436,15 @@ func NewComboBoxWithEntry() *ComboBox {
 //    - comboBox: new ComboBox.
 //
 func NewComboBoxWithModel(model TreeModeller) *ComboBox {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(*TreeModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -463,14 +468,15 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 //    - comboBox: new ComboBox.
 //
 func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(*TreeModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_model_and_entry", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("new_ComboBox_with_model_and_entry", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -494,14 +500,15 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 //      there’s no active item.
 //
 func (comboBox *ComboBox) Active() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_active", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -528,14 +535,15 @@ func (comboBox *ComboBox) Active() int32 {
 //    - utf8 (optional): ID of the active row, or NULL.
 //
 func (comboBox *ComboBox) ActiveID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_active_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_active_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -549,6 +557,42 @@ func (comboBox *ComboBox) ActiveID() string {
 	return _utf8
 }
 
+// ActiveIter sets iter to point to the currently active item, if any item is
+// active. Otherwise, iter is left unchanged.
+//
+// The function returns the following values:
+//
+//    - iter: TreeIter.
+//    - ok: TRUE if iter was set, FALSE otherwise.
+//
+func (comboBox *ComboBox) ActiveIter() (*TreeIter, bool) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_active_iter", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(comboBox)
+
+	var _iter *TreeIter // out
+	var _ok bool        // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _ok
+}
+
 // AddTearoffs gets the current value of the :add-tearoffs property.
 //
 // Deprecated: since version 3.10.
@@ -558,14 +602,15 @@ func (comboBox *ComboBox) ActiveID() string {
 //    - ok: current value of the :add-tearoffs property.
 //
 func (comboBox *ComboBox) AddTearoffs() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_add_tearoffs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_add_tearoffs", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -587,14 +632,15 @@ func (comboBox *ComboBox) AddTearoffs() bool {
 //    - gint: column span column.
 //
 func (comboBox *ComboBox) ColumnSpanColumn() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_column_span_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_column_span_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -614,14 +660,15 @@ func (comboBox *ComboBox) ColumnSpanColumn() int32 {
 //    - gint: column in the data source model of combo_box.
 //
 func (comboBox *ComboBox) EntryTextColumn() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_entry_text_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_entry_text_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -643,14 +690,15 @@ func (comboBox *ComboBox) EntryTextColumn() int32 {
 //    - ok: TRUE if the combo box grabs focus when it is clicked with the mouse.
 //
 func (combo *ComboBox) FocusOnClick() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(combo).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_focus_on_click", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_focus_on_click", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(combo)
@@ -671,14 +719,15 @@ func (combo *ComboBox) FocusOnClick() bool {
 //    - ok: whether there is an entry in combo_box.
 //
 func (comboBox *ComboBox) HasEntry() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_has_entry", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_has_entry", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -700,14 +749,15 @@ func (comboBox *ComboBox) HasEntry() bool {
 //    - gint: column in the data source model of combo_box.
 //
 func (comboBox *ComboBox) IDColumn() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_id_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_id_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -726,14 +776,15 @@ func (comboBox *ComboBox) IDColumn() int32 {
 //    - treeModel which was passed during construction.
 //
 func (comboBox *ComboBox) Model() *TreeModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -756,14 +807,15 @@ func (comboBox *ComboBox) Model() *TreeModel {
 //    - object: accessible object corresponding to the combo box’s popup.
 //
 func (comboBox *ComboBox) PopupAccessible() *atk.ObjectClass {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_popup_accessible", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_popup_accessible", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -788,14 +840,15 @@ func (comboBox *ComboBox) PopupAccessible() *atk.ObjectClass {
 //    - ok: TRUE if the popup uses a fixed width.
 //
 func (comboBox *ComboBox) PopupFixedWidth() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_popup_fixed_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_popup_fixed_width", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -816,14 +869,15 @@ func (comboBox *ComboBox) PopupFixedWidth() bool {
 //    - gint: row span column.
 //
 func (comboBox *ComboBox) RowSpanColumn() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_row_span_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_row_span_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -846,14 +900,15 @@ func (comboBox *ComboBox) RowSpanColumn() int32 {
 //      which must not be freed.
 //
 func (comboBox *ComboBox) Title() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_title", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -874,14 +929,15 @@ func (comboBox *ComboBox) Title() string {
 //    - gint: wrap width.
 //
 func (comboBox *ComboBox) WrapWidth() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_wrap_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_wrap_width", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -898,13 +954,14 @@ func (comboBox *ComboBox) WrapWidth() int32 {
 // This function is mostly intended for use by accessibility technologies;
 // applications should have little use for it.
 func (comboBox *ComboBox) Popdown() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("popdown", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("popdown", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 }
@@ -916,13 +973,14 @@ func (comboBox *ComboBox) Popdown() {
 //
 // Before calling this, combo_box must be mapped, or nothing will happen.
 func (comboBox *ComboBox) Popup() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("popup", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("popup", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 }
@@ -936,15 +994,17 @@ func (comboBox *ComboBox) Popup() {
 //    - device: Device.
 //
 func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("popup_for_device", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("popup_for_device", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(device)
@@ -958,15 +1018,17 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 //      active item.
 //
 func (comboBox *ComboBox) SetActive(index_ int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = C.gint(index_)
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(index_)
@@ -989,7 +1051,7 @@ func (comboBox *ComboBox) SetActive(index_ int32) {
 //      given to unset the active row, the function always returns TRUE.
 //
 func (comboBox *ComboBox) SetActiveID(activeId string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -999,9 +1061,11 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(activeId)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_active_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_active_id", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
@@ -1024,7 +1088,7 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 //    - iter (optional) or NULL.
 //
 func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1032,9 +1096,11 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 	if iter != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_active_iter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_active_iter", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(iter)
@@ -1049,7 +1115,7 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 //    - addTearoffs: TRUE to add tearoff menu items.
 //
 func (comboBox *ComboBox) SetAddTearoffs(addTearoffs bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1057,9 +1123,11 @@ func (comboBox *ComboBox) SetAddTearoffs(addTearoffs bool) {
 	if addTearoffs {
 		_arg1 = C.TRUE
 	}
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_add_tearoffs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_add_tearoffs", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(addTearoffs)
@@ -1074,15 +1142,17 @@ func (comboBox *ComboBox) SetAddTearoffs(addTearoffs bool) {
 //    - columnSpan: column in the model passed during construction.
 //
 func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = C.gint(columnSpan)
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_column_span_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_column_span_column", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(columnSpan)
@@ -1101,15 +1171,17 @@ func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int32) {
 //      entry.
 //
 func (comboBox *ComboBox) SetEntryTextColumn(textColumn int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = C.gint(textColumn)
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_entry_text_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_entry_text_column", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(textColumn)
@@ -1128,7 +1200,7 @@ func (comboBox *ComboBox) SetEntryTextColumn(textColumn int32) {
 //      mouse.
 //
 func (combo *ComboBox) SetFocusOnClick(focusOnClick bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1136,9 +1208,11 @@ func (combo *ComboBox) SetFocusOnClick(focusOnClick bool) {
 	if focusOnClick {
 		_arg1 = C.TRUE
 	}
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_focus_on_click", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_focus_on_click", _args[:], nil)
 
 	runtime.KeepAlive(combo)
 	runtime.KeepAlive(focusOnClick)
@@ -1153,15 +1227,17 @@ func (combo *ComboBox) SetFocusOnClick(focusOnClick bool) {
 //    - idColumn: column in model to get string IDs for values from.
 //
 func (comboBox *ComboBox) SetIDColumn(idColumn int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = C.gint(idColumn)
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_id_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_id_column", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(idColumn)
@@ -1180,7 +1256,7 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int32) {
 //    - model (optional): TreeModel.
 //
 func (comboBox *ComboBox) SetModel(model TreeModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1188,9 +1264,11 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(model)
@@ -1204,7 +1282,7 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 //    - fixed: whether to use a fixed popup width.
 //
 func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1212,12 +1290,43 @@ func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
 	if fixed {
 		_arg1 = C.TRUE
 	}
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_popup_fixed_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_popup_fixed_width", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(fixed)
+}
+
+// SetRowSeparatorFunc sets the row separator function, which is used to
+// determine whether a row should be drawn as a separator. If the row separator
+// function is NULL, no separators are drawn. This is the default value.
+//
+// The function takes the following parameters:
+//
+//    - fn: TreeViewRowSeparatorFunc.
+//
+func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
+	var _args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeViewRowSeparatorFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_row_separator_func", _args[:], nil)
+
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(fn)
 }
 
 // SetRowSpanColumn sets the column with row span information for combo_box to
@@ -1229,15 +1338,17 @@ func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
 //    - rowSpan: column in the model passed during construction.
 //
 func (comboBox *ComboBox) SetRowSpanColumn(rowSpan int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = C.gint(rowSpan)
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_row_span_column", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_row_span_column", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(rowSpan)
@@ -1252,16 +1363,18 @@ func (comboBox *ComboBox) SetRowSpanColumn(rowSpan int32) {
 //    - title for the menu in tearoff mode.
 //
 func (comboBox *ComboBox) SetTitle(title string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(title)
@@ -1276,15 +1389,17 @@ func (comboBox *ComboBox) SetTitle(title string) {
 //    - width: preferred number of columns.
 //
 func (comboBox *ComboBox) SetWrapWidth(width int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	_arg1 = C.gint(width)
-	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_wrap_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_wrap_width", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(width)

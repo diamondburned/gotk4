@@ -78,7 +78,7 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 //    - inetAddressMask: new AddressMask, or NULL on error.
 //
 func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret *C.void // in
@@ -86,10 +86,11 @@ func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, err
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
 	_arg1 = C.guint(length)
-	*(**InetAddress)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("new_InetAddressMask", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("new_InetAddressMask", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(addr)
@@ -121,16 +122,17 @@ func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, err
 //      error.
 //
 func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(maskString)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("new_InetAddressMask_from_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("new_InetAddressMask_from_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(maskString)
@@ -157,16 +159,18 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 //    - ok: whether mask and mask2 are the same mask.
 //
 func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask2).Native()))
-	*(**InetAddressMask)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("equal", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("equal", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
@@ -188,14 +192,15 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 //    - inetAddress mask's base address.
 //
 func (mask *InetAddressMask) Address() *InetAddress {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
-	*(**InetAddressMask)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("get_address", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("get_address", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
@@ -214,14 +219,15 @@ func (mask *InetAddressMask) Address() *InetAddress {
 //    - guint mask's length.
 //
 func (mask *InetAddressMask) Length() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
-	*(**InetAddressMask)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("get_length", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("get_length", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
@@ -244,16 +250,18 @@ func (mask *InetAddressMask) Length() uint32 {
 //    - ok: whether address falls within the range described by mask.
 //
 func (mask *InetAddressMask) Matches(address *InetAddress) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
-	*(**InetAddressMask)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("matches", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("matches", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
@@ -275,14 +283,15 @@ func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 //    - utf8: string corresponding to mask.
 //
 func (mask *InetAddressMask) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
-	*(**InetAddressMask)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("to_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("to_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)

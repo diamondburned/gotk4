@@ -13,9 +13,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_atk1_ImageIface_set_image_description(AtkImage*, gchar*);
-// extern gchar* _gotk4_atk1_ImageIface_get_image_description(AtkImage*);
-// extern gchar* _gotk4_atk1_ImageIface_get_image_locale(AtkImage*);
+// extern gboolean _gotk4_atk1_ImageIface_set_image_description(void*, void*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_description(void*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_locale(void*);
+// extern void _gotk4_atk1_ImageIface_get_image_size(void*, void*, void*);
 import "C"
 
 // glib.Type values for atkimage.go.
@@ -45,6 +46,21 @@ type ImageOverrider interface {
 	//      a locale.
 	//
 	ImageLocale() string
+	// ImageSize: get the width and height in pixels for the specified image.
+	// The values of width and height are returned as -1 if the values cannot be
+	// obtained (for instance, if the object is not onscreen).
+	//
+	// If the size can not be obtained (e.g. missing support), x and y are set
+	// to -1.
+	//
+	// The function returns the following values:
+	//
+	//    - width (optional): filled with the image width, or -1 if the value
+	//      cannot be obtained.
+	//    - height (optional): filled with the image height, or -1 if the value
+	//      cannot be obtained.
+	//
+	ImageSize() (width int32, height int32)
 	// SetImageDescription sets the textual description for this image.
 	//
 	// The function takes the following parameters:
@@ -89,6 +105,8 @@ type Imager interface {
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
+	// ImageSize: get the width and height in pixels for the specified image.
+	ImageSize() (width int32, height int32)
 	// SetImageDescription sets the textual description for this image.
 	SetImageDescription(description string) bool
 }
@@ -99,11 +117,12 @@ func ifaceInitImager(gifacePtr, data C.gpointer) {
 	iface := (*C.AtkImageIface)(unsafe.Pointer(gifacePtr))
 	iface.get_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_description)
 	iface.get_image_locale = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_locale)
+	iface.get_image_size = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_size)
 	iface.set_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_set_image_description)
 }
 
 //export _gotk4_atk1_ImageIface_get_image_description
-func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.AtkImage) (cret *C.gchar) {
+func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
@@ -116,7 +135,7 @@ func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.AtkImage) (cret *C.gch
 }
 
 //export _gotk4_atk1_ImageIface_get_image_locale
-func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.AtkImage) (cret *C.gchar) {
+func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
@@ -130,8 +149,19 @@ func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.AtkImage) (cret *C.gchar) {
 	return cret
 }
 
+//export _gotk4_atk1_ImageIface_get_image_size
+func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ImageOverrider)
+
+	width, height := iface.ImageSize()
+
+	*arg1 = (*C.void)(unsafe.Pointer(width))
+	*arg2 = (*C.void)(unsafe.Pointer(height))
+}
+
 //export _gotk4_atk1_ImageIface_set_image_description
-func _gotk4_atk1_ImageIface_set_image_description(arg0 *C.AtkImage, arg1 *C.gchar) (cret C.gboolean) {
+func _gotk4_atk1_ImageIface_set_image_description(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
@@ -165,12 +195,13 @@ func marshalImage(p uintptr) (interface{}, error) {
 //    - utf8: string representing the image description.
 //
 func (image *Image) ImageDescription() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	*(**Image)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -192,12 +223,13 @@ func (image *Image) ImageDescription() string {
 //      locale.
 //
 func (image *Image) ImageLocale() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	*(**Image)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -212,6 +244,48 @@ func (image *Image) ImageLocale() string {
 	return _utf8
 }
 
+// ImageSize: get the width and height in pixels for the specified image. The
+// values of width and height are returned as -1 if the values cannot be
+// obtained (for instance, if the object is not onscreen).
+//
+// If the size can not be obtained (e.g. missing support), x and y are set to
+// -1.
+//
+// The function returns the following values:
+//
+//    - width (optional): filled with the image width, or -1 if the value cannot
+//      be obtained.
+//    - height (optional): filled with the image height, or -1 if the value
+//      cannot be obtained.
+//
+func (image *Image) ImageSize() (width int32, height int32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(image)
+
+	var _width int32  // out
+	var _height int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_width = *(*int32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_height = *(*int32)(unsafe.Pointer(_out1))
+	}
+
+	return _width, _height
+}
+
 // SetImageDescription sets the textual description for this image.
 //
 // The function takes the following parameters:
@@ -223,7 +297,7 @@ func (image *Image) ImageLocale() string {
 //    - ok: boolean TRUE, or FALSE if operation could not be completed.
 //
 func (image *Image) SetImageDescription(description string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -231,7 +305,9 @@ func (image *Image) SetImageDescription(description string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Image)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

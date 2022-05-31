@@ -103,14 +103,15 @@ func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float
 //    - gestureRotate: newly created GestureRotate.
 //
 func NewGestureRotate(widget Widgetter) *GestureRotate {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("new_GestureRotate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("new_GestureRotate", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -131,14 +132,15 @@ func NewGestureRotate(widget Widgetter) *GestureRotate {
 //    - gdouble: angle delta in radians.
 //
 func (gesture *GestureRotate) AngleDelta() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	*(**GestureRotate)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("get_angle_delta", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("get_angle_delta", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)

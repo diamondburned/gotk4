@@ -3,8 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -12,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gtlsinteraction.go.
@@ -71,4 +76,59 @@ func wrapTLSInteraction(obj *coreglib.Object) *TLSInteraction {
 
 func marshalTLSInteraction(p uintptr) (interface{}, error) {
 	return wrapTLSInteraction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// AskPasswordAsync: run asynchronous interaction to ask the user for a
+// password. In general, g_tls_interaction_invoke_ask_password() should be used
+// instead of this function.
+//
+// Derived subclasses usually implement a password prompt, although they may
+// also choose to provide a password from elsewhere. The password value will be
+// filled in and then callback will be called. Alternatively the user may abort
+// this password request, which will usually abort the TLS connection.
+//
+// If the interaction is cancelled by the cancellation object, or by the user
+// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
+// G_IO_ERROR_CANCELLED error code. Certain implementations may not support
+// immediate cancellation.
+//
+// Certain implementations may not support immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable cancellation object.
+//    - password: Password object.
+//    - callback (optional) will be called when the interaction completes.
+//
+func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, password *TLSPassword, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gio", "TlsInteraction").InvokeMethod("ask_password_async", _args[:], nil)
+
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(callback)
 }

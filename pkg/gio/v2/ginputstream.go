@@ -19,11 +19,12 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_InputStreamClass_close_finish(GInputStream*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_InputStreamClass_close_fn(GInputStream*, GCancellable*, GError**);
-// extern gssize _gotk4_gio2_InputStreamClass_read_finish(GInputStream*, GAsyncResult*, GError**);
-// extern gssize _gotk4_gio2_InputStreamClass_skip(GInputStream*, gsize, GCancellable*, GError**);
-// extern gssize _gotk4_gio2_InputStreamClass_skip_finish(GInputStream*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_InputStreamClass_close_finish(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_InputStreamClass_close_fn(void*, void*, GError**);
+// extern gssize _gotk4_gio2_InputStreamClass_read_finish(void*, void*, GError**);
+// extern gssize _gotk4_gio2_InputStreamClass_skip(void*, gsize, void*, GError**);
+// extern gssize _gotk4_gio2_InputStreamClass_skip_finish(void*, void*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for ginputstream.go.
@@ -172,7 +173,7 @@ func classInitInputStreamer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_InputStreamClass_close_finish
-func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFinish(result AsyncResulter) error
@@ -208,7 +209,7 @@ func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.GInputStream, arg1 *C.GAs
 }
 
 //export _gotk4_gio2_InputStreamClass_close_fn
-func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.GInputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFn(ctx context.Context) error
@@ -230,7 +231,7 @@ func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.GInputStream, arg1 *C.GCancel
 }
 
 //export _gotk4_gio2_InputStreamClass_read_finish
-func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
+func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gssize) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ReadFinish(result AsyncResulter) (int, error)
@@ -267,7 +268,7 @@ func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.GInputStream, arg1 *C.GAsy
 }
 
 //export _gotk4_gio2_InputStreamClass_skip
-func _gotk4_gio2_InputStreamClass_skip(arg0 *C.GInputStream, arg1 C.gsize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
+func _gotk4_gio2_InputStreamClass_skip(arg0 *C.void, arg1 C.gsize, arg2 *C.void, _cerr **C.GError) (cret C.gssize) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Skip(ctx context.Context, count uint) (int, error)
@@ -292,7 +293,7 @@ func _gotk4_gio2_InputStreamClass_skip(arg0 *C.GInputStream, arg1 C.gsize, arg2 
 }
 
 //export _gotk4_gio2_InputStreamClass_skip_finish
-func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
+func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gssize) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SkipFinish(result AsyncResulter) (int, error)
@@ -349,13 +350,14 @@ func BaseInputStream(obj InputStreamer) *InputStream {
 
 // ClearPending clears the pending flag on stream.
 func (stream *InputStream) ClearPending() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("clear_pending", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("clear_pending", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 }
@@ -389,7 +391,7 @@ func (stream *InputStream) ClearPending() {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (stream *InputStream) Close(ctx context.Context) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -400,9 +402,11 @@ func (stream *InputStream) Close(ctx context.Context) error {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**InputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("close", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("close", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -416,6 +420,56 @@ func (stream *InputStream) Close(ctx context.Context) error {
 	return _goerr
 }
 
+// CloseAsync requests an asynchronous closes of the stream, releasing resources
+// related to it. When the operation is finished callback will be called. You
+// can then call g_input_stream_close_finish() to get the result of the
+// operation.
+//
+// For behaviour details see g_input_stream_close().
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional cancellable object.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("close_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CloseFinish finishes closing a stream asynchronously, started from
 // g_input_stream_close_async().
 //
@@ -424,16 +478,18 @@ func (stream *InputStream) Close(ctx context.Context) error {
 //    - result: Result.
 //
 func (stream *InputStream) CloseFinish(result AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("close_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("close_finish", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -454,14 +510,15 @@ func (stream *InputStream) CloseFinish(result AsyncResulter) error {
 //    - ok: TRUE if stream has pending actions.
 //
 func (stream *InputStream) HasPending() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("has_pending", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("has_pending", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -482,14 +539,15 @@ func (stream *InputStream) HasPending() bool {
 //    - ok: TRUE if the stream is closed.
 //
 func (stream *InputStream) IsClosed() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("is_closed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("is_closed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -501,6 +559,56 @@ func (stream *InputStream) IsClosed() bool {
 	}
 
 	return _ok
+}
+
+// ReadAllFinish finishes an asynchronous stream read operation started with
+// g_input_stream_read_all_async().
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns FALSE (and sets error) then bytes_read will
+// be set to the number of bytes that were successfully read before the error
+// was encountered. This functionality is only available from C. If you need it
+// from another language then you must write your own loop around
+// g_input_stream_read_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+// The function returns the following values:
+//
+//    - bytesRead: location to store the number of bytes that was read from the
+//      stream.
+//
+func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("read_all_finish", _args[:], _outs[:])
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
+
+	var _bytesRead uint // out
+	var _goerr error    // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_bytesRead = *(*uint)(unsafe.Pointer(_out0))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytesRead, _goerr
 }
 
 // ReadBytes: like g_input_stream_read(), this tries to read count bytes from
@@ -535,7 +643,7 @@ func (stream *InputStream) IsClosed() bool {
 //    - bytes: new #GBytes, or NULL on error.
 //
 func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Bytes, error) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg2 *C.void // out
 	var _arg1 C.gsize // out
@@ -549,10 +657,12 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gsize(count)
-	*(**InputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -576,6 +686,70 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 	return _bytes, _goerr
 }
 
+// ReadBytesAsync: request an asynchronous read of count bytes from the stream
+// into a new #GBytes. When the operation is finished callback will be called.
+// You can then call g_input_stream_read_bytes_finish() to get the result of the
+// operation.
+//
+// During an async request no other sync and async calls are allowed on stream,
+// and will result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the new #GBytes will be passed to the callback. It is not an
+// error if this is smaller than the requested size, as it can happen e.g. near
+// the end of a file, but generally we try to read as many bytes as requested.
+// Zero is returned on end of file (or if count is zero), but never otherwise.
+//
+// Any outstanding I/O request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - count: number of bytes that will be read from the stream.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg3 *C.void    // out
+	var _arg1 C.gsize    // out
+	var _arg2 C.int      // out
+	var _arg4 C.gpointer // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadBytesFinish finishes an asynchronous stream read-into-#GBytes operation.
 //
 // The function takes the following parameters:
@@ -587,7 +761,7 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 //    - bytes: newly-allocated #GBytes, or NULL on error.
 //
 func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -595,9 +769,11 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -631,7 +807,7 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 //    - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
 //
 func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret C.gssize // in
@@ -639,9 +815,11 @@ func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -661,14 +839,15 @@ func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 // SetPending sets stream to have actions pending. If the pending flag is
 // already set or stream is closed, it will return FALSE and set error.
 func (stream *InputStream) SetPending() error {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("set_pending", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("set_pending", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 
@@ -707,7 +886,7 @@ func (stream *InputStream) SetPending() error {
 //    - gssize: number of bytes skipped, or -1 on error.
 //
 func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg2 *C.void  // out
 	var _arg1 C.gsize  // out
@@ -721,10 +900,12 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.gsize(count)
-	*(**InputStream)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("skip", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("skip", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -742,6 +923,74 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	return _gssize, _goerr
 }
 
+// SkipAsync: request an asynchronous skip of count bytes from the stream. When
+// the operation is finished callback will be called. You can then call
+// g_input_stream_skip_finish() to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes skipped will be passed to the callback. It is
+// not an error if this is not the same as the requested size, as it can happen
+// e.g. near the end of a file, but generally we try to skip as many bytes as
+// requested. Zero is returned on end of file (or if count is zero), but never
+// otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one, you must override all.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - count: number of bytes that will be skipped from the stream.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg3 *C.void    // out
+	var _arg1 C.gsize    // out
+	var _arg2 C.int      // out
+	var _arg4 C.gpointer // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gio", "InputStream").InvokeMethod("skip_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // SkipFinish finishes a stream skip operation.
 //
 // The function takes the following parameters:
@@ -753,7 +1002,7 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 //    - gssize: size of the bytes skipped, or -1 on error.
 //
 func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _cret C.gssize // in
@@ -761,9 +1010,11 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**InputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("skip_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("skip_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)

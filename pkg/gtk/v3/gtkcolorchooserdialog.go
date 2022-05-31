@@ -97,7 +97,7 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 //    - colorChooserDialog: new ColorChooserDialog.
 //
 func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -109,10 +109,11 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	if parent != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "ColorChooserDialog").InvokeMethod("new_ColorChooserDialog", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "ColorChooserDialog").InvokeMethod("new_ColorChooserDialog", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(title)

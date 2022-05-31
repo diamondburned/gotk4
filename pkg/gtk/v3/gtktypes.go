@@ -12,6 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -72,12 +73,13 @@ func NewIconSet() *IconSet {
 
 // NewIconSetFromPixbuf constructs a struct IconSet.
 func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -127,13 +129,15 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 //    - source: IconSource.
 //
 func (iconSet *IconSet) AddSource(source *IconSource) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSet)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(iconSet)
 	runtime.KeepAlive(source)
@@ -148,12 +152,13 @@ func (iconSet *IconSet) AddSource(source *IconSource) {
 //    - iconSet: new IconSet identical to the first.
 //
 func (iconSet *IconSet) Copy() *IconSet {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
-	*(**IconSet)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -170,6 +175,43 @@ func (iconSet *IconSet) Copy() *IconSet {
 	)
 
 	return _iconSet
+}
+
+// Sizes obtains a list of icon sizes this icon set can render. The returned
+// array must be freed with g_free().
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - sizes: return location for array of sizes (IconSize).
+//
+func (iconSet *IconSet) Sizes() []int32 {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void        // out
+	var _out0 *C.GtkIconSize // in
+	var _out1 *C.void        // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(iconSet)
+
+	var _sizes []int32 // out
+	_out0 = *(**C.GtkIconSize)(unsafe.Pointer(&_outs[0]))
+
+	defer C.free(unsafe.Pointer(_out0))
+	{
+		src := unsafe.Slice((**C.void)(_out0), _out1)
+		_sizes = make([]int32, _out1)
+		for i := 0; i < int(_out1); i++ {
+			_sizes[i] = *(*int32)(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _sizes
 }
 
 // IconSource: instance of this type is always passed by reference.
@@ -215,12 +257,13 @@ func NewIconSource() *IconSource {
 //    - iconSource: new IconSource.
 //
 func (source *IconSource) Copy() *IconSource {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -249,12 +292,13 @@ func (source *IconSource) Copy() *IconSource {
 //    - ok: TRUE if this icon source is a base for any text direction variant.
 //
 func (source *IconSource) DirectionWildcarded() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -280,12 +324,13 @@ func (source *IconSource) DirectionWildcarded() bool {
 //    - filename: image filename. This string must not be modified or freed.
 //
 func (source *IconSource) Filename() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -309,12 +354,13 @@ func (source *IconSource) Filename() string {
 //    - utf8: icon name. This string must not be modified or freed.
 //
 func (source *IconSource) IconName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -340,12 +386,13 @@ func (source *IconSource) IconName() string {
 //    - pixbuf: source pixbuf.
 //
 func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -377,12 +424,13 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 //    - ok: TRUE if this icon source is a base for any icon size variant.
 //
 func (source *IconSource) SizeWildcarded() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -406,12 +454,13 @@ func (source *IconSource) SizeWildcarded() bool {
 //    - ok: TRUE if this icon source is a base for any widget state variant.
 //
 func (source *IconSource) StateWildcarded() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**IconSource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -442,7 +491,7 @@ func (source *IconSource) StateWildcarded() bool {
 //    - setting: TRUE to wildcard the text direction.
 //
 func (source *IconSource) SetDirectionWildcarded(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -450,7 +499,9 @@ func (source *IconSource) SetDirectionWildcarded(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**IconSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
@@ -466,14 +517,16 @@ func (source *IconSource) SetDirectionWildcarded(setting bool) {
 //    - filename: image file to use.
 //
 func (source *IconSource) SetFilename(filename string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**IconSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(filename)
@@ -489,7 +542,7 @@ func (source *IconSource) SetFilename(filename string) {
 //    - iconName (optional): name of icon to use.
 //
 func (source *IconSource) SetIconName(iconName string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -498,7 +551,9 @@ func (source *IconSource) SetIconName(iconName string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**IconSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(iconName)
@@ -514,13 +569,15 @@ func (source *IconSource) SetIconName(iconName string) {
 //    - pixbuf to use as a source.
 //
 func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	*(**IconSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(pixbuf)
@@ -545,7 +602,7 @@ func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //    - setting: TRUE to wildcard the widget state.
 //
 func (source *IconSource) SetSizeWildcarded(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -553,7 +610,9 @@ func (source *IconSource) SetSizeWildcarded(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**IconSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
@@ -579,7 +638,7 @@ func (source *IconSource) SetSizeWildcarded(setting bool) {
 //    - setting: TRUE to wildcard the widget state.
 //
 func (source *IconSource) SetStateWildcarded(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -587,7 +646,9 @@ func (source *IconSource) SetStateWildcarded(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**IconSource)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
@@ -615,12 +676,13 @@ func marshalSelectionData(p uintptr) (interface{}, error) {
 //    - selectionData: pointer to a copy of data.
 //
 func (data *SelectionData) Copy() *SelectionData {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -639,6 +701,36 @@ func (data *SelectionData) Copy() *SelectionData {
 	return _selectionData
 }
 
+// Data retrieves the raw data of the selection along with its length.
+//
+// The function returns the following values:
+//
+//    - guint8s: raw data of the selection.
+//
+func (selectionData *SelectionData) Data() []byte {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret *C.guchar // in
+	var _out0 *C.void   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(**C.guchar)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(selectionData)
+
+	var _guint8s []byte // out
+	_out0 = *(**C.guchar)(unsafe.Pointer(&_outs[0]))
+
+	_guint8s = make([]byte, _out0)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _out0))
+
+	return _guint8s
+}
+
 // Display retrieves the display of the selection.
 //
 // The function returns the following values:
@@ -646,12 +738,13 @@ func (data *SelectionData) Copy() *SelectionData {
 //    - display of the selection.
 //
 func (selectionData *SelectionData) Display() *gdk.Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -676,12 +769,13 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 //    - gint: format of the selection.
 //
 func (selectionData *SelectionData) Format() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -701,12 +795,13 @@ func (selectionData *SelectionData) Format() int32 {
 //    - gint: length of the data of the selection.
 //
 func (selectionData *SelectionData) Length() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -729,12 +824,13 @@ func (selectionData *SelectionData) Length() int32 {
 //      g_object_unref().
 //
 func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -769,12 +865,13 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 //      freed with g_free().
 //
 func (selectionData *SelectionData) Text() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -799,12 +896,13 @@ func (selectionData *SelectionData) Text() string {
 //      result is non-NULL it must be freed with g_strfreev().
 //
 func (selectionData *SelectionData) URIs() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
@@ -843,14 +941,16 @@ func (selectionData *SelectionData) URIs() []string {
 //    - ok: TRUE if the selection was successfully set, otherwise FALSE.
 //
 func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	*(**SelectionData)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -879,7 +979,7 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 //    - ok: TRUE if the selection was successfully set, otherwise FALSE.
 //
 func (selectionData *SelectionData) SetText(str string, len int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gint     // out
@@ -889,8 +989,10 @@ func (selectionData *SelectionData) SetText(str string, len int32) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
-	*(**SelectionData)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -919,7 +1021,7 @@ func (selectionData *SelectionData) SetText(str string, len int32) bool {
 //    - ok: TRUE if the selection was successfully set, otherwise FALSE.
 //
 func (selectionData *SelectionData) SetURIs(uris []string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 **C.void   // out
 	var _cret C.gboolean // in
@@ -938,7 +1040,9 @@ func (selectionData *SelectionData) SetURIs(uris []string) bool {
 			}
 		}
 	}
-	*(**SelectionData)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -968,7 +1072,7 @@ func (selectionData *SelectionData) SetURIs(uris []string) bool {
 //      for images is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
@@ -977,7 +1081,9 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 	if writable {
 		_arg1 = C.TRUE
 	}
-	*(**SelectionData)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1007,14 +1113,16 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 //      for rich text is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**SelectionData)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1039,12 +1147,13 @@ func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) b
 //      for text is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeText() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1069,12 +1178,13 @@ func (selectionData *SelectionData) TargetsIncludeText() bool {
 //      for URI lists is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeURI() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**SelectionData)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1167,14 +1277,16 @@ func NewWidgetPath() *WidgetPath {
 //    - gint: position where the data was inserted.
 //
 func (path *WidgetPath) AppendForWidget(widget Widgetter) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1208,7 +1320,7 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int32 {
 //    - gint: position where the element was inserted.
 //
 func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint32) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.guint // out
@@ -1217,8 +1329,10 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(siblings)))
 	_arg2 = C.guint(siblingIndex)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(**WidgetPath)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1240,12 +1354,13 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 //    - widgetPath: copy of path.
 //
 func (path *WidgetPath) Copy() *WidgetPath {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**WidgetPath)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1273,7 +1388,7 @@ func (path *WidgetPath) Copy() *WidgetPath {
 //    - name class name.
 //
 func (path *WidgetPath) IterAddClass(pos int32, name string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -1282,8 +1397,10 @@ func (path *WidgetPath) IterAddClass(pos int32, name string) {
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1298,13 +1415,15 @@ func (path *WidgetPath) IterAddClass(pos int32, name string) {
 //    - pos: position to modify, -1 for the path head.
 //
 func (path *WidgetPath) IterClearClasses(pos int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1320,13 +1439,15 @@ func (path *WidgetPath) IterClearClasses(pos int32) {
 //    - pos: position to modify, -1 for the path head.
 //
 func (path *WidgetPath) IterClearRegions(pos int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1344,14 +1465,16 @@ func (path *WidgetPath) IterClearRegions(pos int32) {
 //    - utf8 (optional): widget name, or NULL if none was set.
 //
 func (path *WidgetPath) IterGetName(pos int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1379,14 +1502,16 @@ func (path *WidgetPath) IterGetName(pos int32) string {
 //    - utf8 (optional): name or NULL.
 //
 func (path *WidgetPath) IterGetObjectName(pos int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1416,14 +1541,16 @@ func (path *WidgetPath) IterGetObjectName(pos int32) string {
 //    - guint: 0 or the index into the list of siblings for the element at pos.
 //
 func (path *WidgetPath) IterGetSiblingIndex(pos int32) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -1449,14 +1576,16 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int32) uint32 {
 //    - widgetPath: NULL or the list of siblings for the element at pos.
 //
 func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1490,7 +1619,7 @@ func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
 //    - ok: TRUE if the class name is defined for the widget at pos.
 //
 func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 *C.void    // out
@@ -1500,8 +1629,10 @@ func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1531,7 +1662,7 @@ func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
 //    - ok: TRUE if the widget at pos has this name.
 //
 func (path *WidgetPath) IterHasName(pos int32, name string) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 *C.void    // out
@@ -1541,8 +1672,10 @@ func (path *WidgetPath) IterHasName(pos int32, name string) bool {
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1559,6 +1692,191 @@ func (path *WidgetPath) IterHasName(pos int32, name string) bool {
 	return _ok
 }
 
+// IterHasQclass: see gtk_widget_path_iter_has_class(). This is a version that
+// operates with GQuarks.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - qname class name as a #GQuark.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget at pos has the class defined.
+//
+func (path *WidgetPath) IterHasQclass(pos int32, qname glib.Quark) bool {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg2 C.guint32  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.guint32(qname)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(qname)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IterHasQname: see gtk_widget_path_iter_has_name(). This is a version that
+// operates on #GQuarks.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - qname: widget name as a #GQuark.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the widget at pos has this name.
+//
+func (path *WidgetPath) IterHasQname(pos int32, qname glib.Quark) bool {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg2 C.guint32  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.guint32(qname)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(qname)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IterHasQregion: see gtk_widget_path_iter_has_region(). This is a version that
+// operates with GQuarks.
+//
+// Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - qname: region name as a #GQuark.
+//
+// The function returns the following values:
+//
+//    - flags: return location for the region flags.
+//    - ok: TRUE if the widget at pos has the region defined.
+//
+func (path *WidgetPath) IterHasQregion(pos int32, qname glib.Quark) (RegionFlags, bool) {
+	var _args [3]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg2 C.guint32  // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.guint32(qname)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(qname)
+
+	var _flags RegionFlags // out
+	var _ok bool           // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_flags = *(*RegionFlags)(unsafe.Pointer(_out0))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _flags, _ok
+}
+
+// IterHasRegion returns TRUE if the widget at position pos has the class name
+// defined, FALSE otherwise.
+//
+// Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to query, -1 for the path head.
+//    - name: region name.
+//
+// The function returns the following values:
+//
+//    - flags: return location for the region flags.
+//    - ok: TRUE if the class name is defined for the widget at pos.
+//
+func (path *WidgetPath) IterHasRegion(pos int32, name string) (RegionFlags, bool) {
+	var _args [3]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gint     // out
+	var _arg2 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
+
+	var _flags RegionFlags // out
+	var _ok bool           // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_flags = *(*RegionFlags)(unsafe.Pointer(_out0))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _flags, _ok
+}
+
 // IterListClasses returns a list with all the class names defined for the
 // widget at position pos in the hierarchy defined in path.
 //
@@ -1572,14 +1890,16 @@ func (path *WidgetPath) IterHasName(pos int32, name string) bool {
 //      owned by GTK+, but you should use g_slist_free() to free the list itself.
 //
 func (path *WidgetPath) IterListClasses(pos int32) []string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1614,14 +1934,16 @@ func (path *WidgetPath) IterListClasses(pos int32) []string {
 //      owned by GTK+, but you should use g_slist_free() to free the list itself.
 //
 func (path *WidgetPath) IterListRegions(pos int32) []string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1650,7 +1972,7 @@ func (path *WidgetPath) IterListRegions(pos int32) []string {
 //    - name class name.
 //
 func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -1659,8 +1981,10 @@ func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1678,7 +2002,7 @@ func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
 //    - name: region name.
 //
 func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -1687,8 +2011,10 @@ func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1704,7 +2030,7 @@ func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
 //    - name: widget name.
 //
 func (path *WidgetPath) IterSetName(pos int32, name string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -1713,8 +2039,10 @@ func (path *WidgetPath) IterSetName(pos int32, name string) {
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1732,7 +2060,7 @@ func (path *WidgetPath) IterSetName(pos int32, name string) {
 //    - name (optional): object name to set or NULL to unset.
 //
 func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -1743,8 +2071,10 @@ func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
 		_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1759,12 +2089,13 @@ func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
 //    - gint: number of elements in the path.
 //
 func (path *WidgetPath) Length() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**WidgetPath)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1789,12 +2120,13 @@ func (path *WidgetPath) Length() int32 {
 //    - utf8: new string describing path.
 //
 func (path *WidgetPath) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**WidgetPath)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -226,7 +226,7 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 
 	// Import for implementation types.
 	for _, parent := range igen.Tree.Requires {
-		parent.Resolved.ImportImpl(writer.Header())
+		parent.Resolved.ImportImpl(gen, writer.Header())
 	}
 
 	// These conditions should follow what's in the template.

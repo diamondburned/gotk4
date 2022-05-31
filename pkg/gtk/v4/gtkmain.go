@@ -32,6 +32,7 @@ const PRIORITY_RESIZE = 110
 //
 // Most programs should not need to call this function.
 func DisableSetlocale() {
+
 	girepository.MustFind("Gtk", "disable_setlocale").Invoke(nil, nil)
 }
 
@@ -77,6 +78,7 @@ func GetDefaultLanguage() *pango.Language {
 // gtk_init(), but notice that other libraries (e.g. libdbus or gvfs) might do
 // similar things.
 func Init() {
+
 	girepository.MustFind("Gtk", "init").Invoke(nil, nil)
 }
 

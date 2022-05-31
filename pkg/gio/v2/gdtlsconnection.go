@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -16,12 +17,13 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake(GDtlsConnection*, GCancellable*, GError**);
-// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake_finish(GDtlsConnection*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown(GDtlsConnection*, gboolean, gboolean, GCancellable*, GError**);
-// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown_finish(GDtlsConnection*, GAsyncResult*, GError**);
-// extern gchar* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(GDtlsConnection*);
-// extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(GDtlsConnection*, gchar**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake_finish(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown(void*, gboolean, gboolean, void*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown_finish(void*, void*, GError**);
+// extern gchar* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(void*);
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(void*, void**);
 import "C"
 
 // glib.Type values for gdtlsconnection.go.
@@ -31,111 +33,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeDTLSConnection, F: marshalDTLSConnection},
 	})
-}
-
-// DTLSConnectionOverrider contains methods that are overridable.
-type DTLSConnectionOverrider interface {
-	// NegotiatedProtocol gets the name of the application-layer protocol
-	// negotiated during the handshake.
-	//
-	// If the peer did not use the ALPN extension, or did not advertise a
-	// protocol that matched one of conn's protocols, or the TLS backend does
-	// not support ALPN, then this will be NULL. See
-	// g_dtls_connection_set_advertised_protocols().
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): negotiated protocol, or NULL.
-	//
-	NegotiatedProtocol() string
-	// Handshake attempts a TLS handshake on conn.
-	//
-	// On the client side, it is never necessary to call this method; although
-	// the connection needs to perform a handshake after connecting, Connection
-	// will handle this for you automatically when you try to send or receive
-	// data on the connection. You can call g_dtls_connection_handshake()
-	// manually if you want to know whether the initial handshake succeeded or
-	// failed (as opposed to just immediately trying to use conn to read or
-	// write, in which case, if it fails, it may not be possible to tell if it
-	// failed before or after completing the handshake), but beware that servers
-	// may reject client authentication after the handshake has completed, so a
-	// successful handshake does not indicate the connection will be usable.
-	//
-	// Likewise, on the server side, although a handshake is necessary at the
-	// beginning of the communication, you do not need to call this function
-	// explicitly unless you want clearer error reporting.
-	//
-	// Previously, calling g_dtls_connection_handshake() after the initial
-	// handshake would trigger a rehandshake; however, this usage was deprecated
-	// in GLib 2.60 because rehandshaking was removed from the TLS protocol in
-	// TLS 1.3. Since GLib 2.64, calling this function after the initial
-	// handshake will no longer do anything.
-	//
-	// Connection::accept_certificate may be emitted during the handshake.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//
-	Handshake(ctx context.Context) error
-	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
-	// g_dtls_connection_handshake() for more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	HandshakeFinish(result AsyncResulter) error
-	// SetAdvertisedProtocols sets the list of application-layer protocols to
-	// advertise that the caller is willing to speak on this connection. The
-	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-	// negotiate a compatible protocol with the peer; use
-	// g_dtls_connection_get_negotiated_protocol() to find the negotiated
-	// protocol after the handshake. Specifying NULL for the the value of
-	// protocols will disable ALPN negotiation.
-	//
-	// See IANA TLS ALPN Protocol IDs
-	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
-	// for a list of registered protocol IDs.
-	//
-	// The function takes the following parameters:
-	//
-	//    - protocols (optional): NULL-terminated array of ALPN protocol names
-	//      (eg, "http/1.1", "h2"), or NULL.
-	//
-	SetAdvertisedProtocols(protocols []string)
-	// Shutdown: shut down part or all of a DTLS connection.
-	//
-	// If shutdown_read is TRUE then the receiving side of the connection is
-	// shut down, and further reading is disallowed. Subsequent calls to
-	// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
-	//
-	// If shutdown_write is TRUE then the sending side of the connection is shut
-	// down, and further writing is disallowed. Subsequent calls to
-	// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
-	//
-	// It is allowed for both shutdown_read and shutdown_write to be TRUE — this
-	// is equivalent to calling g_dtls_connection_close().
-	//
-	// If cancellable is cancelled, the Connection may be left partially-closed
-	// and any pending untransmitted data may be lost. Call
-	// g_dtls_connection_shutdown() again to complete closing the Connection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - ctx (optional) or NULL.
-	//    - shutdownRead: TRUE to stop reception of incoming datagrams.
-	//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
-	//
-	Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error
-	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
-	// g_dtls_connection_shutdown() for more information.
-	//
-	// The function takes the following parameters:
-	//
-	//    - result: Result.
-	//
-	ShutdownFinish(result AsyncResulter) error
 }
 
 // DTLSConnection is the base DTLS connection class type, which wraps a Based
@@ -171,6 +68,8 @@ type DTLSConnectioner interface {
 
 	// Close the DTLS connection.
 	Close(ctx context.Context) error
+	// CloseAsync: asynchronously close the DTLS connection.
+	CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// CloseFinish: finish an asynchronous TLS close operation.
 	CloseFinish(result AsyncResulter) error
 	// Certificate gets conn's certificate, as set by
@@ -192,6 +91,8 @@ type DTLSConnectioner interface {
 	RequireCloseNotify() bool
 	// Handshake attempts a TLS handshake on conn.
 	Handshake(ctx context.Context) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
+	HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	HandshakeFinish(result AsyncResulter) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -211,178 +112,14 @@ type DTLSConnectioner interface {
 	SetRequireCloseNotify(requireCloseNotify bool)
 	// Shutdown: shut down part or all of a DTLS connection.
 	Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error
+	// ShutdownAsync: asynchronously shut down part or all of the DTLS
+	// connection.
+	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int32, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation.
 	ShutdownFinish(result AsyncResulter) error
 }
 
 var _ DTLSConnectioner = (*DTLSConnection)(nil)
-
-func ifaceInitDTLSConnectioner(gifacePtr, data C.gpointer) {
-	iface := (*C.GDtlsConnectionInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_negotiated_protocol = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol)
-	iface.handshake = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_handshake)
-	iface.handshake_finish = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_handshake_finish)
-	iface.set_advertised_protocols = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols)
-	iface.shutdown = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_shutdown)
-	iface.shutdown_finish = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_shutdown_finish)
-}
-
-//export _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol
-func _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(arg0 *C.GDtlsConnection) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(DTLSConnectionOverrider)
-
-	utf8 := iface.NegotiatedProtocol()
-
-	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
-		defer C.free(unsafe.Pointer(cret))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_DtlsConnectionInterface_handshake
-func _gotk4_gio2_DtlsConnectionInterface_handshake(arg0 *C.GDtlsConnection, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(DTLSConnectionOverrider)
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	_goerr := iface.Handshake(_cancellable)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_DtlsConnectionInterface_handshake_finish
-func _gotk4_gio2_DtlsConnectionInterface_handshake_finish(arg0 *C.GDtlsConnection, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(DTLSConnectionOverrider)
-
-	var _result AsyncResulter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
-			return ok
-		})
-		rv, ok := casted.(AsyncResulter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.HandshakeFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols
-func _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(arg0 *C.GDtlsConnection, arg1 **C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(DTLSConnectionOverrider)
-
-	var _protocols []string // out
-
-	if arg1 != nil {
-		{
-			var i int
-			var z *C.void
-			for p := arg1; *p != z; p = &unsafe.Slice(p, 2)[1] {
-				i++
-			}
-
-			src := unsafe.Slice(arg1, i)
-			_protocols = make([]string, i)
-			for i := range src {
-				_protocols[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			}
-		}
-	}
-
-	iface.SetAdvertisedProtocols(_protocols)
-}
-
-//export _gotk4_gio2_DtlsConnectionInterface_shutdown
-func _gotk4_gio2_DtlsConnectionInterface_shutdown(arg0 *C.GDtlsConnection, arg1 C.gboolean, arg2 C.gboolean, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(DTLSConnectionOverrider)
-
-	var _cancellable context.Context // out
-	var _shutdownRead bool           // out
-	var _shutdownWrite bool          // out
-
-	if arg3 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg3))
-	}
-	if arg1 != 0 {
-		_shutdownRead = true
-	}
-	if arg2 != 0 {
-		_shutdownWrite = true
-	}
-
-	_goerr := iface.Shutdown(_cancellable, _shutdownRead, _shutdownWrite)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_DtlsConnectionInterface_shutdown_finish
-func _gotk4_gio2_DtlsConnectionInterface_shutdown_finish(arg0 *C.GDtlsConnection, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(DTLSConnectionOverrider)
-
-	var _result AsyncResulter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
-			return ok
-		})
-		rv, ok := casted.(AsyncResulter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	_goerr := iface.ShutdownFinish(_result)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
-	}
-
-	return cret
-}
 
 func wrapDTLSConnection(obj *coreglib.Object) *DTLSConnection {
 	return &DTLSConnection{
@@ -420,7 +157,7 @@ func marshalDTLSConnection(p uintptr) (interface{}, error) {
 //    - ctx (optional) or NULL.
 //
 func (conn *DTLSConnection) Close(ctx context.Context) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -431,7 +168,9 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
@@ -445,6 +184,46 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 	return _goerr
 }
 
+// CloseAsync: asynchronously close the DTLS connection. See
+// g_dtls_connection_close() for more information.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the close operation is complete.
+//
+func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CloseFinish: finish an asynchronous TLS close operation. See
 // g_dtls_connection_close() for more information.
 //
@@ -453,14 +232,16 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 //    - result: Result.
 //
 func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)
@@ -482,12 +263,13 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 //    - tlsCertificate (optional) conn's certificate, or NULL.
 //
 func (conn *DTLSConnection) Certificate() TLSCertificater {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -523,12 +305,13 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 //    - tlsDatabase (optional): certificate database that conn uses or NULL.
 //
 func (conn *DTLSConnection) Database() TLSDatabaser {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -565,12 +348,13 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 //    - tlsInteraction (optional): interaction object.
 //
 func (conn *DTLSConnection) Interaction() *TLSInteraction {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -598,12 +382,13 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 //    - utf8 (optional): negotiated protocol, or NULL.
 //
 func (conn *DTLSConnection) NegotiatedProtocol() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -627,12 +412,13 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 //    - tlsCertificate (optional) conn's peer's certificate, or NULL.
 //
 func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -669,12 +455,13 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 //    - ok: TRUE if conn requires a proper TLS close notification.
 //
 func (conn *DTLSConnection) RequireCloseNotify() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -719,7 +506,7 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 //    - ctx (optional) or NULL.
 //
 func (conn *DTLSConnection) Handshake(ctx context.Context) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -730,7 +517,9 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
@@ -744,6 +533,46 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	return _goerr
 }
 
+// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
+// g_dtls_connection_handshake() for more information.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the handshake is complete.
+//
+func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_dtls_connection_handshake() for more information.
 //
@@ -752,14 +581,16 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 //    - result: Result.
 //
 func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)
@@ -791,7 +622,7 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 //      "http/1.1", "h2"), or NULL.
 //
 func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 **C.void // out
 
@@ -809,7 +640,9 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 			}
 		}
 	}
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(protocols)
@@ -836,13 +669,15 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 //    - certificate to use for conn.
 //
 func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(certificate)
@@ -861,7 +696,7 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 //    - database (optional): Database.
 //
 func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -869,7 +704,9 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 	if database != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(database)
@@ -887,7 +724,7 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 //    - interaction (optional) object, or NULL.
 //
 func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -895,7 +732,9 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	if interaction != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
 	}
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(interaction)
@@ -928,7 +767,7 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 //    - requireCloseNotify: whether or not to require close notification.
 //
 func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -936,7 +775,9 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	if requireCloseNotify {
 		_arg1 = C.TRUE
 	}
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(requireCloseNotify)
@@ -966,7 +807,7 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 //    - shutdownWrite: TRUE to stop sending outgoing datagrams.
 //
 func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg3 *C.void    // out
 	var _arg1 C.gboolean // out
@@ -985,9 +826,11 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 	if shutdownWrite {
 		_arg2 = C.TRUE
 	}
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
-	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
@@ -1003,6 +846,60 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 	return _goerr
 }
 
+// ShutdownAsync: asynchronously shut down part or all of the DTLS connection.
+// See g_dtls_connection_shutdown() for more information.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - shutdownRead: TRUE to stop reception of incoming datagrams.
+//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the shutdown operation is complete.
+//
+func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg4 *C.void    // out
+	var _arg1 C.gboolean // out
+	var _arg2 C.gboolean // out
+	var _arg3 C.int      // out
+	var _arg5 C.gpointer // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	if shutdownRead {
+		_arg1 = C.TRUE
+	}
+	if shutdownWrite {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.gpointer)(unsafe.Pointer(&_args[5])) = _arg5
+
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(shutdownRead)
+	runtime.KeepAlive(shutdownWrite)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 // g_dtls_connection_shutdown() for more information.
 //
@@ -1011,14 +908,16 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 //    - result: Result.
 //
 func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**DTLSConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)

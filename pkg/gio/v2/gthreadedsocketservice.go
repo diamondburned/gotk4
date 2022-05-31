@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(GThreadedSocketService*, GSocketConnection*, GObject*);
+// extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(void*, void*, void*);
 import "C"
 
 // glib.Type values for gthreadedsocketservice.go.
@@ -79,7 +79,7 @@ func classInitThreadedSocketServicer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ThreadedSocketServiceClass_run
-func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.GThreadedSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
+func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
@@ -127,14 +127,15 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 //    - threadedSocketService: new Service.
 //
 func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.int   // out
 	var _cret *C.void // in
 
 	_arg0 = C.int(maxThreads)
-	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ThreadedSocketService").InvokeMethod("new_ThreadedSocketService", args[:], nil)
+	*(*C.int)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ThreadedSocketService").InvokeMethod("new_ThreadedSocketService", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(maxThreads)

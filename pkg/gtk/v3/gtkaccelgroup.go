@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -94,14 +95,15 @@ func (a AccelFlags) Has(other AccelFlags) bool {
 //    - sList: list of all accel groups which are attached to object.
 //
 func AccelGroupsFromObject(object *coreglib.Object) []*AccelGroup {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(object.Native()))
-	*(**coreglib.Object)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "accel_groups_from_object").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "accel_groups_from_object").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(object)
@@ -117,6 +119,137 @@ func AccelGroupsFromObject(object *coreglib.Object) []*AccelGroup {
 	})
 
 	return _sList
+}
+
+// AcceleratorParse parses a string representing an accelerator. The format
+// looks like “<Control>a” or “<Shift><Alt>F1” or “<Release>z” (the last one is
+// for key release).
+//
+// The parser is fairly liberal and allows lower or upper case, and also
+// abbreviations such as “<Ctl>” and “<Ctrl>”. Key names are parsed using
+// gdk_keyval_from_name(). For character keys the name is not the symbol, but
+// the lowercase name, e.g. one would use “<Ctrl>minus” instead of “<Ctrl>-”.
+//
+// If the parse fails, accelerator_key and accelerator_mods will be set to 0
+// (zero).
+//
+// The function takes the following parameters:
+//
+//    - accelerator: string representing an accelerator.
+//
+// The function returns the following values:
+//
+//    - acceleratorKey (optional): return location for accelerator keyval, or
+//      NULL.
+//    - acceleratorMods (optional): return location for accelerator modifier
+//      mask, NULL.
+//
+func AcceleratorParse(accelerator string) (uint32, gdk.ModifierType) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
+	defer C.free(unsafe.Pointer(_arg0))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "accelerator_parse").Invoke(_args[:], _outs[:])
+
+	runtime.KeepAlive(accelerator)
+
+	var _acceleratorKey uint32            // out
+	var _acceleratorMods gdk.ModifierType // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_acceleratorKey = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(_out1))
+	}
+
+	return _acceleratorKey, _acceleratorMods
+}
+
+// AcceleratorParseWithKeycode parses a string representing an accelerator,
+// similarly to gtk_accelerator_parse() but handles keycodes as well. This is
+// only useful for system-level components, applications should use
+// gtk_accelerator_parse() instead.
+//
+// If accelerator_codes is given and the result stored in it is non-NULL, the
+// result must be freed with g_free().
+//
+// If a keycode is present in the accelerator and no accelerator_codes is given,
+// the parse will fail.
+//
+// If the parse fails, accelerator_key, accelerator_mods and accelerator_codes
+// will be set to 0 (zero).
+//
+// The function takes the following parameters:
+//
+//    - accelerator: string representing an accelerator.
+//
+// The function returns the following values:
+//
+//    - acceleratorKey (optional): return location for accelerator keyval, or
+//      NULL.
+//    - acceleratorCodes (optional): return location for accelerator keycodes, or
+//      NULL.
+//    - acceleratorMods (optional): return location for accelerator modifier
+//      mask, NULL.
+//
+func AcceleratorParseWithKeycode(accelerator string) (uint32, []uint32, gdk.ModifierType) {
+	var _args [1]girepository.Argument
+	var _outs [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _out0 *C.void  // in
+	var _out1 *C.guint // in
+	var _out2 *C.void  // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
+	defer C.free(unsafe.Pointer(_arg0))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "accelerator_parse_with_keycode").Invoke(_args[:], _outs[:])
+
+	runtime.KeepAlive(accelerator)
+
+	var _acceleratorKey uint32            // out
+	var _acceleratorCodes []uint32        // out
+	var _acceleratorMods gdk.ModifierType // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.guint)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+
+	if _out0 != nil {
+		_acceleratorKey = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		defer C.free(unsafe.Pointer(_out1))
+		{
+			var i int
+			var z *C.void
+			for p := _out1; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_out1, i)
+			_acceleratorCodes = make([]uint32, i)
+			for i := range src {
+				_acceleratorCodes[i] = *(*uint32)(unsafe.Pointer(src[i]))
+			}
+		}
+	}
+	if _out2 != nil {
+		_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(_out2))
+	}
+
+	return _acceleratorKey, _acceleratorCodes, _acceleratorMods
 }
 
 // AccelGroupOverrider contains methods that are overridable.
@@ -201,7 +334,7 @@ func NewAccelGroup() *AccelGroup {
 //    - closure to be executed upon accelerator activation.
 //
 func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure coreglib.AnyClosure) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -210,10 +343,12 @@ func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure coreglib.A
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
-	*(**AccelGroup)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("connect_by_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("connect_by_path", _args[:], nil)
 
 	runtime.KeepAlive(accelGroup)
 	runtime.KeepAlive(accelPath)
@@ -235,16 +370,18 @@ func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure coreglib.A
 //    - ok: TRUE if the closure was found and got disconnected.
 //
 func (accelGroup *AccelGroup) Disconnect(closure coreglib.AnyClosure) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	_arg1 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
-	*(**AccelGroup)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("disconnect", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("disconnect", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelGroup)
@@ -268,14 +405,15 @@ func (accelGroup *AccelGroup) Disconnect(closure coreglib.AnyClosure) bool {
 //      otherwise.
 //
 func (accelGroup *AccelGroup) IsLocked() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
-	*(**AccelGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("get_is_locked", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("get_is_locked", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelGroup)
@@ -298,26 +436,28 @@ func (accelGroup *AccelGroup) IsLocked() bool {
 // If called more than once, accel_group remains locked until
 // gtk_accel_group_unlock() has been called an equivalent number of times.
 func (accelGroup *AccelGroup) Lock() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
-	*(**AccelGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("lock", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("lock", _args[:], nil)
 
 	runtime.KeepAlive(accelGroup)
 }
 
 // Unlock undoes the last call to gtk_accel_group_lock() on this accel_group.
 func (accelGroup *AccelGroup) Unlock() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
-	*(**AccelGroup)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("unlock", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("unlock", _args[:], nil)
 
 	runtime.KeepAlive(accelGroup)
 }

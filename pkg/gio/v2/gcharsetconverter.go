@@ -78,7 +78,7 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 //    - charsetConverter: new Converter or NULL on error.
 //
 func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -88,10 +88,11 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fromCharset)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("new_CharsetConverter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("new_CharsetConverter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toCharset)
@@ -115,14 +116,15 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 //    - guint: number of fallbacks that converter has applied.
 //
 func (converter *CharsetConverter) NumFallbacks() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
-	*(**CharsetConverter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_num_fallbacks", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_num_fallbacks", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(converter)
@@ -141,14 +143,15 @@ func (converter *CharsetConverter) NumFallbacks() uint32 {
 //    - ok: TRUE if fallbacks are used by converter.
 //
 func (converter *CharsetConverter) UseFallback() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
-	*(**CharsetConverter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_use_fallback", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_use_fallback", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(converter)
@@ -169,7 +172,7 @@ func (converter *CharsetConverter) UseFallback() bool {
 //    - useFallback: TRUE to use fallbacks.
 //
 func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -177,9 +180,11 @@ func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
 	if useFallback {
 		_arg1 = C.TRUE
 	}
-	*(**CharsetConverter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("set_use_fallback", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("set_use_fallback", _args[:], nil)
 
 	runtime.KeepAlive(converter)
 	runtime.KeepAlive(useFallback)

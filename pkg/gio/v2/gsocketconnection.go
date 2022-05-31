@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -16,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gsocketconnection.go.
@@ -35,14 +37,15 @@ func init() {
 //    - socketConnection: Connection.
 //
 func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
-	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("connection_factory_create_connection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("connection_factory_create_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
@@ -110,7 +113,7 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 //    - address specifying the remote address.
 //
 func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context, address SocketAddresser) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg2 *C.void // out
 	var _arg1 *C.void // out
@@ -123,10 +126,12 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
-	*(**SocketConnection)(unsafe.Pointer(&args[1])) = _arg1
-	*(*context.Context)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "SocketConnection").InvokeMethod("connect", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "SocketConnection").InvokeMethod("connect", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
@@ -141,6 +146,53 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 	return _goerr
 }
 
+// ConnectAsync: asynchronously connect connection to the specified remote
+// address.
+//
+// This clears the #GSocket:blocking flag on connection's underlying socket if
+// it is currently set.
+//
+// Use g_socket_connection_connect_finish() to retrieve the result.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - address specifying the remote address.
+//    - callback (optional): ReadyCallback.
+//
+func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gio", "SocketConnection").InvokeMethod("connect_async", _args[:], nil)
+
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
+}
+
 // ConnectFinish gets the result of a g_socket_connection_connect_async() call.
 //
 // The function takes the following parameters:
@@ -148,16 +200,18 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 //    - result: Result.
 //
 func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**SocketConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "SocketConnection").InvokeMethod("connect_finish", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "SocketConnection").InvokeMethod("connect_finish", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(result)
@@ -179,15 +233,16 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 //      g_object_unref().
 //
 func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**SocketConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("get_local_address", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("get_local_address", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
@@ -233,15 +288,16 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 //      g_object_unref().
 //
 func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**SocketConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("get_remote_address", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("get_remote_address", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
@@ -282,14 +338,15 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 //    - socket or NULL on error.
 //
 func (connection *SocketConnection) Socket() *Socket {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**SocketConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("get_socket", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("get_socket", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
@@ -309,14 +366,15 @@ func (connection *SocketConnection) Socket() *Socket {
 //    - ok: whether connection is connected.
 //
 func (connection *SocketConnection) IsConnected() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**SocketConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("is_connected", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketConnection").InvokeMethod("is_connected", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)

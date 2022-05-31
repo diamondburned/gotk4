@@ -97,15 +97,16 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 //    - dBusObjectManagerServer object. Free with g_object_unref().
 //
 func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("new_DBusObjectManagerServer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("new_DBusObjectManagerServer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(objectPath)
@@ -133,15 +134,17 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 //    - object: BusObjectSkeleton.
 //
 func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	*(**DBusObjectManagerServer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("export", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("export", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
@@ -157,15 +160,17 @@ func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 //    - object: object.
 //
 func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleton) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	*(**DBusObjectManagerServer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("export_uniquely", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("export_uniquely", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
@@ -179,14 +184,15 @@ func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleto
 //      The returned object should be freed with g_object_unref().
 //
 func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**DBusObjectManagerServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("get_connection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("get_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -209,16 +215,18 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 //    - ok: TRUE if object is exported.
 //
 func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	*(**DBusObjectManagerServer)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("is_exported", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("is_exported", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -241,7 +249,7 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 //    - connection (optional) or NULL.
 //
 func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -249,9 +257,11 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 	if connection != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	}
-	*(**DBusObjectManagerServer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("set_connection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("set_connection", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(connection)
@@ -272,7 +282,7 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 //    - ok: TRUE if object at object_path was removed, FALSE otherwise.
 //
 func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -280,9 +290,11 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusObjectManagerServer)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("unexport", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("unexport", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)

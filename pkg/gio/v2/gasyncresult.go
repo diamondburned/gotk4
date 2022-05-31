@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -14,7 +15,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GObject* _gotk4_gio2_AsyncResultIface_get_source_object(GAsyncResult*);
+// extern GObject* _gotk4_gio2_AsyncResultIface_get_source_object(void*);
+// extern gboolean _gotk4_gio2_AsyncResultIface_is_tagged(void*, gpointer);
+// extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(void*);
 import "C"
 
 // glib.Type values for gasyncresult.go.
@@ -36,6 +39,25 @@ type AsyncResultOverrider interface {
 	//      NULL if there is none.
 	//
 	SourceObject() *coreglib.Object
+	// UserData gets the user data from a Result.
+	//
+	// The function returns the following values:
+	//
+	//    - gpointer (optional): user data for res.
+	//
+	UserData() unsafe.Pointer
+	// IsTagged checks if res has the given source_tag (generally a function
+	// pointer indicating the function res was created by).
+	//
+	// The function takes the following parameters:
+	//
+	//    - sourceTag (optional): application-defined tag.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if res has the indicated source_tag, FALSE if not.
+	//
+	IsTagged(sourceTag unsafe.Pointer) bool
 }
 
 // AsyncResult provides a base class for implementing asynchronous function
@@ -136,6 +158,11 @@ type AsyncResulter interface {
 
 	// SourceObject gets the source object from a Result.
 	SourceObject() *coreglib.Object
+	// UserData gets the user data from a Result.
+	UserData() unsafe.Pointer
+	// IsTagged checks if res has the given source_tag (generally a function
+	// pointer indicating the function res was created by).
+	IsTagged(sourceTag unsafe.Pointer) bool
 	// LegacyPropagateError: if res is a AsyncResult, this is equivalent to
 	// g_simple_async_result_propagate_error().
 	LegacyPropagateError() error
@@ -146,10 +173,12 @@ var _ AsyncResulter = (*AsyncResult)(nil)
 func ifaceInitAsyncResulter(gifacePtr, data C.gpointer) {
 	iface := (*C.GAsyncResultIface)(unsafe.Pointer(gifacePtr))
 	iface.get_source_object = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_get_source_object)
+	iface.get_user_data = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_get_user_data)
+	iface.is_tagged = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_is_tagged)
 }
 
 //export _gotk4_gio2_AsyncResultIface_get_source_object
-func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.GAsyncResult) (cret *C.GObject) {
+func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.void) (cret *C.GObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(AsyncResultOverrider)
 
@@ -158,6 +187,36 @@ func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.GAsyncResult) (cret 
 	if object != nil {
 		cret = (*C.void)(unsafe.Pointer(object.Native()))
 		C.g_object_ref(C.gpointer(object.Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_AsyncResultIface_get_user_data
+func _gotk4_gio2_AsyncResultIface_get_user_data(arg0 *C.void) (cret C.gpointer) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AsyncResultOverrider)
+
+	gpointer := iface.UserData()
+
+	cret = (C.gpointer)(unsafe.Pointer(gpointer))
+
+	return cret
+}
+
+//export _gotk4_gio2_AsyncResultIface_is_tagged
+func _gotk4_gio2_AsyncResultIface_is_tagged(arg0 *C.void, arg1 C.gpointer) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(AsyncResultOverrider)
+
+	var _sourceTag unsafe.Pointer // out
+
+	_sourceTag = (unsafe.Pointer)(unsafe.Pointer(arg1))
+
+	ok := iface.IsTagged(_sourceTag)
+
+	if ok {
+		cret = C.TRUE
 	}
 
 	return cret
@@ -181,12 +240,13 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 //      NULL if there is none.
 //
 func (res *AsyncResult) SourceObject() *coreglib.Object {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-	*(**AsyncResult)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -201,6 +261,69 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 	return _object
 }
 
+// UserData gets the user data from a Result.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): user data for res.
+//
+func (res *AsyncResult) UserData() unsafe.Pointer {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(res)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// IsTagged checks if res has the given source_tag (generally a function pointer
+// indicating the function res was created by).
+//
+// The function takes the following parameters:
+//
+//    - sourceTag (optional): application-defined tag.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if res has the indicated source_tag, FALSE if not.
+//
+func (res *AsyncResult) IsTagged(sourceTag unsafe.Pointer) bool {
+	var _args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(res)
+	runtime.KeepAlive(sourceTag)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // LegacyPropagateError: if res is a AsyncResult, this is equivalent to
 // g_simple_async_result_propagate_error(). Otherwise it returns FALSE.
 //
@@ -210,12 +333,13 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 // code; Result errors that are set by virtual methods should also be extracted
 // by virtual methods, to enable subclasses to chain up correctly.
 func (res *AsyncResult) LegacyPropagateError() error {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-	*(**AsyncResult)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(res)
 

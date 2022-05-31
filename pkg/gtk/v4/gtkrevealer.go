@@ -170,14 +170,15 @@ func NewRevealer() *Revealer {
 //    - widget (optional): child widget of revealer.
 //
 func (revealer *Revealer) Child() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-	*(**Revealer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(revealer)
@@ -214,14 +215,15 @@ func (revealer *Revealer) Child() Widgetter {
 //    - ok: TRUE if the child is fully revealed.
 //
 func (revealer *Revealer) ChildRevealed() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-	*(**Revealer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_child_revealed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_child_revealed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(revealer)
@@ -246,14 +248,15 @@ func (revealer *Revealer) ChildRevealed() bool {
 //    - ok: TRUE if the child is revealed.
 //
 func (revealer *Revealer) RevealChild() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-	*(**Revealer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_reveal_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_reveal_child", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(revealer)
@@ -275,14 +278,15 @@ func (revealer *Revealer) RevealChild() bool {
 //    - guint: transition duration.
 //
 func (revealer *Revealer) TransitionDuration() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-	*(**Revealer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_transition_duration", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_transition_duration", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(revealer)
@@ -301,7 +305,7 @@ func (revealer *Revealer) TransitionDuration() uint32 {
 //    - child (optional) widget.
 //
 func (revealer *Revealer) SetChild(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -309,9 +313,11 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 	if child != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-	*(**Revealer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(revealer)
 	runtime.KeepAlive(child)
@@ -326,7 +332,7 @@ func (revealer *Revealer) SetChild(child Widgetter) {
 //    - revealChild: TRUE to reveal the child.
 //
 func (revealer *Revealer) SetRevealChild(revealChild bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -334,9 +340,11 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	if revealChild {
 		_arg1 = C.TRUE
 	}
-	*(**Revealer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_reveal_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_reveal_child", _args[:], nil)
 
 	runtime.KeepAlive(revealer)
 	runtime.KeepAlive(revealChild)
@@ -349,15 +357,17 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 //    - duration: new duration, in milliseconds.
 //
 func (revealer *Revealer) SetTransitionDuration(duration uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 	_arg1 = C.guint(duration)
-	*(**Revealer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_transition_duration", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_transition_duration", _args[:], nil)
 
 	runtime.KeepAlive(revealer)
 	runtime.KeepAlive(duration)

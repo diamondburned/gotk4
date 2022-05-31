@@ -13,8 +13,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_SeekableIface_can_seek(GSeekable*);
-// extern gboolean _gotk4_gio2_SeekableIface_can_truncate(GSeekable*);
+// extern gboolean _gotk4_gio2_SeekableIface_can_seek(void*);
+// extern gboolean _gotk4_gio2_SeekableIface_can_truncate(void*);
 import "C"
 
 // glib.Type values for gseekable.go.
@@ -89,7 +89,7 @@ func ifaceInitSeekabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_SeekableIface_can_seek
-func _gotk4_gio2_SeekableIface_can_seek(arg0 *C.GSeekable) (cret C.gboolean) {
+func _gotk4_gio2_SeekableIface_can_seek(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SeekableOverrider)
 
@@ -103,7 +103,7 @@ func _gotk4_gio2_SeekableIface_can_seek(arg0 *C.GSeekable) (cret C.gboolean) {
 }
 
 //export _gotk4_gio2_SeekableIface_can_truncate
-func _gotk4_gio2_SeekableIface_can_truncate(arg0 *C.GSeekable) (cret C.gboolean) {
+func _gotk4_gio2_SeekableIface_can_truncate(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SeekableOverrider)
 
@@ -133,12 +133,13 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 //    - ok: TRUE if seekable can be seeked. FALSE otherwise.
 //
 func (seekable *Seekable) CanSeek() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
-	*(**Seekable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -161,12 +162,13 @@ func (seekable *Seekable) CanSeek() bool {
 //    - ok: TRUE if the stream can be truncated, FALSE otherwise.
 //
 func (seekable *Seekable) CanTruncate() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
-	*(**Seekable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

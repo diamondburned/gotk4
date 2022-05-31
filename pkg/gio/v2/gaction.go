@@ -16,14 +16,14 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GVariant* _gotk4_gio2_ActionInterface_get_state(GAction*);
-// extern GVariant* _gotk4_gio2_ActionInterface_get_state_hint(GAction*);
-// extern GVariantType* _gotk4_gio2_ActionInterface_get_parameter_type(GAction*);
-// extern GVariantType* _gotk4_gio2_ActionInterface_get_state_type(GAction*);
-// extern gboolean _gotk4_gio2_ActionInterface_get_enabled(GAction*);
-// extern gchar* _gotk4_gio2_ActionInterface_get_name(GAction*);
-// extern void _gotk4_gio2_ActionInterface_activate(GAction*, GVariant*);
-// extern void _gotk4_gio2_ActionInterface_change_state(GAction*, GVariant*);
+// extern GVariant* _gotk4_gio2_ActionInterface_get_state(void*);
+// extern GVariant* _gotk4_gio2_ActionInterface_get_state_hint(void*);
+// extern GVariantType* _gotk4_gio2_ActionInterface_get_parameter_type(void*);
+// extern GVariantType* _gotk4_gio2_ActionInterface_get_state_type(void*);
+// extern gboolean _gotk4_gio2_ActionInterface_get_enabled(void*);
+// extern gchar* _gotk4_gio2_ActionInterface_get_name(void*);
+// extern void _gotk4_gio2_ActionInterface_activate(void*, void*);
+// extern void _gotk4_gio2_ActionInterface_change_state(void*, void*);
 import "C"
 
 // glib.Type values for gaction.go.
@@ -231,7 +231,7 @@ func ifaceInitActioner(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ActionInterface_activate
-func _gotk4_gio2_ActionInterface_activate(arg0 *C.GAction, arg1 *C.GVariant) {
+func _gotk4_gio2_ActionInterface_activate(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -252,7 +252,7 @@ func _gotk4_gio2_ActionInterface_activate(arg0 *C.GAction, arg1 *C.GVariant) {
 }
 
 //export _gotk4_gio2_ActionInterface_change_state
-func _gotk4_gio2_ActionInterface_change_state(arg0 *C.GAction, arg1 *C.GVariant) {
+func _gotk4_gio2_ActionInterface_change_state(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -271,7 +271,7 @@ func _gotk4_gio2_ActionInterface_change_state(arg0 *C.GAction, arg1 *C.GVariant)
 }
 
 //export _gotk4_gio2_ActionInterface_get_enabled
-func _gotk4_gio2_ActionInterface_get_enabled(arg0 *C.GAction) (cret C.gboolean) {
+func _gotk4_gio2_ActionInterface_get_enabled(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -285,7 +285,7 @@ func _gotk4_gio2_ActionInterface_get_enabled(arg0 *C.GAction) (cret C.gboolean) 
 }
 
 //export _gotk4_gio2_ActionInterface_get_name
-func _gotk4_gio2_ActionInterface_get_name(arg0 *C.GAction) (cret *C.gchar) {
+func _gotk4_gio2_ActionInterface_get_name(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -298,7 +298,7 @@ func _gotk4_gio2_ActionInterface_get_name(arg0 *C.GAction) (cret *C.gchar) {
 }
 
 //export _gotk4_gio2_ActionInterface_get_parameter_type
-func _gotk4_gio2_ActionInterface_get_parameter_type(arg0 *C.GAction) (cret *C.GVariantType) {
+func _gotk4_gio2_ActionInterface_get_parameter_type(arg0 *C.void) (cret *C.GVariantType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -312,7 +312,7 @@ func _gotk4_gio2_ActionInterface_get_parameter_type(arg0 *C.GAction) (cret *C.GV
 }
 
 //export _gotk4_gio2_ActionInterface_get_state
-func _gotk4_gio2_ActionInterface_get_state(arg0 *C.GAction) (cret *C.GVariant) {
+func _gotk4_gio2_ActionInterface_get_state(arg0 *C.void) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -326,7 +326,7 @@ func _gotk4_gio2_ActionInterface_get_state(arg0 *C.GAction) (cret *C.GVariant) {
 }
 
 //export _gotk4_gio2_ActionInterface_get_state_hint
-func _gotk4_gio2_ActionInterface_get_state_hint(arg0 *C.GAction) (cret *C.GVariant) {
+func _gotk4_gio2_ActionInterface_get_state_hint(arg0 *C.void) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -340,7 +340,7 @@ func _gotk4_gio2_ActionInterface_get_state_hint(arg0 *C.GAction) (cret *C.GVaria
 }
 
 //export _gotk4_gio2_ActionInterface_get_state_type
-func _gotk4_gio2_ActionInterface_get_state_type(arg0 *C.GAction) (cret *C.GVariantType) {
+func _gotk4_gio2_ActionInterface_get_state_type(arg0 *C.void) (cret *C.GVariantType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -376,7 +376,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 //    - parameter (optional) to the activation.
 //
 func (action *Action) Activate(parameter *glib.Variant) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -384,7 +384,9 @@ func (action *Action) Activate(parameter *glib.Variant) {
 	if parameter != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(parameter)
@@ -406,13 +408,15 @@ func (action *Action) Activate(parameter *glib.Variant) {
 //    - value: new state.
 //
 func (action *Action) ChangeState(value *glib.Variant) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(value)
@@ -428,12 +432,13 @@ func (action *Action) ChangeState(value *glib.Variant) {
 //    - ok: whether the action is enabled.
 //
 func (action *Action) Enabled() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -455,12 +460,13 @@ func (action *Action) Enabled() bool {
 //    - utf8: name of the action.
 //
 func (action *Action) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -487,12 +493,13 @@ func (action *Action) Name() string {
 //    - variantType (optional): parameter type.
 //
 func (action *Action) ParameterType() *glib.VariantType {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -521,12 +528,13 @@ func (action *Action) ParameterType() *glib.VariantType {
 //    - variant (optional): current state of the action.
 //
 func (action *Action) State() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -570,12 +578,13 @@ func (action *Action) State() *glib.Variant {
 //    - variant (optional): state range hint.
 //
 func (action *Action) StateHint() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -613,12 +622,13 @@ func (action *Action) StateHint() *glib.Variant {
 //    - variantType (optional): state type, if the action is stateful.
 //
 func (action *Action) StateType() *glib.VariantType {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -650,15 +660,16 @@ func (action *Action) StateType() *glib.VariantType {
 //    - ok: TRUE if action_name is valid.
 //
 func ActionNameIsValid(actionName string) bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "name_is_valid").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "name_is_valid").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionName)
@@ -706,8 +717,8 @@ func ActionNameIsValid(actionName string) bool {
 //    - targetValue: target value, or NULL for no target.
 //
 func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error) {
-	var args [1]girepository.Argument
-	var outs [2]girepository.Argument
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _out0 *C.void // in
 	var _out1 *C.void // in
@@ -715,17 +726,18 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(detailedName)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "parse_detailed_name").Invoke(args[:], outs[:])
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "parse_detailed_name").Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(detailedName)
 
 	var _actionName string         // out
 	var _targetValue *glib.Variant // out
 	var _goerr error               // out
-	_out0 = *(*string)(unsafe.Pointer(&outs[0]))
-	_out1 = *(**glib.Variant)(unsafe.Pointer(&outs[1]))
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
 	defer C.free(unsafe.Pointer(_out0))
@@ -765,7 +777,7 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 //    - utf8: detailed format string.
 //
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -775,10 +787,11 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 	if targetValue != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(**glib.Variant)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "print_detailed_name").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "print_detailed_name").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionName)

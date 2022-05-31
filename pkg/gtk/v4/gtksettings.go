@@ -86,16 +86,18 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //    - name of the setting to reset.
 //
 func (settings *Settings) ResetProperty(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("reset_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("reset_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -138,14 +140,15 @@ func SettingsGetDefault() *Settings {
 //    - settings: GtkSettings object.
 //
 func SettingsGetForDisplay(display *gdk.Display) *Settings {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**gdk.Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "get_for_display").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "get_for_display").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)

@@ -91,17 +91,18 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 //    - converterInputStream: new Stream.
 //
 func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *ConverterInputStream {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
-	*(*InputStreamer)(unsafe.Pointer(&args[0])) = _arg0
-	*(*Converterer)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "ConverterInputStream").InvokeMethod("new_ConverterInputStream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "ConverterInputStream").InvokeMethod("new_ConverterInputStream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
@@ -121,14 +122,15 @@ func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *C
 //    - converter of the converter input stream.
 //
 func (converterStream *ConverterInputStream) Converter() *Converter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converterStream).Native()))
-	*(**ConverterInputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ConverterInputStream").InvokeMethod("get_converter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ConverterInputStream").InvokeMethod("get_converter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(converterStream)

@@ -16,8 +16,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(GtkCheckMenuItem*, cairo_t*);
-// extern void _gotk4_gtk3_CheckMenuItemClass_toggled(GtkCheckMenuItem*);
+// extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(void*, void*);
+// extern void _gotk4_gtk3_CheckMenuItemClass_toggled(void*);
 // extern void _gotk4_gtk3_CheckMenuItem_ConnectToggled(gpointer, guintptr);
 import "C"
 
@@ -84,7 +84,7 @@ func classInitCheckMenuItemmer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CheckMenuItemClass_draw_indicator
-func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.GtkCheckMenuItem, arg1 *C.cairo_t) {
+func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
 
@@ -100,7 +100,7 @@ func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.GtkCheckMenuItem, arg
 }
 
 //export _gotk4_gtk3_CheckMenuItemClass_toggled
-func _gotk4_gtk3_CheckMenuItemClass_toggled(arg0 *C.GtkCheckMenuItem) {
+func _gotk4_gtk3_CheckMenuItemClass_toggled(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
@@ -207,15 +207,16 @@ func NewCheckMenuItem() *CheckMenuItem {
 //    - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("new_CheckMenuItem_with_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("new_CheckMenuItem_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
@@ -240,15 +241,16 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 //    - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("new_CheckMenuItem_with_mnemonic", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("new_CheckMenuItem_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
@@ -268,14 +270,15 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 //    - ok: TRUE if the menu item is checked.
 //
 func (checkMenuItem *CheckMenuItem) Active() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
-	*(**CheckMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("get_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("get_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(checkMenuItem)
@@ -296,14 +299,15 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 //    - ok: whether check_menu_item looks like a RadioMenuItem.
 //
 func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
-	*(**CheckMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("get_draw_as_radio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("get_draw_as_radio", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(checkMenuItem)
@@ -325,14 +329,15 @@ func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 //    - ok: TRUE if inconsistent.
 //
 func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
-	*(**CheckMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("get_inconsistent", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("get_inconsistent", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(checkMenuItem)
@@ -353,7 +358,7 @@ func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 //    - isActive: boolean value indicating whether the check box is active.
 //
 func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -361,9 +366,11 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	if isActive {
 		_arg1 = C.TRUE
 	}
-	*(**CheckMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("set_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(checkMenuItem)
 	runtime.KeepAlive(isActive)
@@ -376,7 +383,7 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 //    - drawAsRadio: whether check_menu_item is drawn like a RadioMenuItem.
 //
 func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -384,9 +391,11 @@ func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	if drawAsRadio {
 		_arg1 = C.TRUE
 	}
-	*(**CheckMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("set_draw_as_radio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("set_draw_as_radio", _args[:], nil)
 
 	runtime.KeepAlive(checkMenuItem)
 	runtime.KeepAlive(drawAsRadio)
@@ -406,7 +415,7 @@ func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 //    - setting: TRUE to display an “inconsistent” third state check.
 //
 func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -414,9 +423,11 @@ func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**CheckMenuItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("set_inconsistent", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("set_inconsistent", _args[:], nil)
 
 	runtime.KeepAlive(checkMenuItem)
 	runtime.KeepAlive(setting)
@@ -424,13 +435,14 @@ func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
 
 // Toggled emits the CheckMenuItem::toggled signal.
 func (checkMenuItem *CheckMenuItem) Toggled() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
-	*(**CheckMenuItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("toggled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "CheckMenuItem").InvokeMethod("toggled", _args[:], nil)
 
 	runtime.KeepAlive(checkMenuItem)
 }

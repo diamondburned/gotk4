@@ -12,7 +12,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkemojichooser.go.
@@ -119,7 +119,7 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked
-func _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

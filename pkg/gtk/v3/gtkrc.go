@@ -12,14 +12,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern guint _gotk4_gtk3_RcStyleClass_parse(GtkRcStyle*, GtkSettings*, GScanner*);
-// extern void _gotk4_gtk3_RcStyleClass_merge(GtkRcStyle*, GtkRcStyle*);
+// extern guint _gotk4_gtk3_RcStyleClass_parse(void*, void*, void*);
+// extern void _gotk4_gtk3_RcStyleClass_merge(void*, void*);
 import "C"
 
 // glib.Type values for gtkrc.go.
@@ -368,14 +369,15 @@ func (r RCFlags) Has(other RCFlags) bool {
 //      searched in the current directory.
 //
 func RCAddDefaultFile(filename string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "rc_add_default_file").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "rc_add_default_file").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(filename)
 }
@@ -395,15 +397,16 @@ func RCAddDefaultFile(filename string) {
 //      NULL.
 //
 func RCFindModuleInPath(moduleFile string) string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(moduleFile)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "rc_find_module_in_path").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "rc_find_module_in_path").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(moduleFile)
@@ -434,7 +437,7 @@ func RCFindModuleInPath(moduleFile string) string {
 //    - filename: filename.
 //
 func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile string) string {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -444,11 +447,12 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(pixmapFile)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
-	*(**glib.Scanner)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "rc_find_pixmap_in_path").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "rc_find_pixmap_in_path").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -591,14 +595,15 @@ func RCGetModuleDir() string {
 //      you want to save this style around, you should add a reference yourself.
 //
 func RCGetStyle(widget Widgetter) *Style {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "rc_get_style").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "rc_get_style").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -643,16 +648,108 @@ func RCGetThemeDir() string {
 //      in the current directory.
 //
 func RCParse(filename string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "rc_parse").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "rc_parse").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(filename)
+}
+
+// RCParseColor parses a color in the format expected in a RC file.
+//
+// Note that theme engines should use gtk_rc_parse_color_full() in order to
+// support symbolic colors.
+//
+// Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - scanner: #GScanner.
+//
+// The function returns the following values:
+//
+//    - color: pointer to a Color in which to store the result.
+//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
+//      expected but not found.
+//
+func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint32) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _cret C.guint // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "rc_parse_color").Invoke(_args[:], _outs[:])
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scanner)
+
+	var _color *gdk.Color // out
+	var _guint uint32     // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_guint = uint32(_cret)
+
+	return _color, _guint
+}
+
+// RCParseColorFull parses a color in the format expected in a RC file. If style
+// is not NULL, it will be consulted to resolve references to symbolic colors.
+//
+// Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - scanner: #GScanner.
+//    - style (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - color: pointer to a Color in which to store the result.
+//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
+//      expected but not found.
+//
+func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint32) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+	var _cret C.guint // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+	if style != nil {
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "rc_parse_color_full").Invoke(_args[:], _outs[:])
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scanner)
+	runtime.KeepAlive(style)
+
+	var _color *gdk.Color // out
+	var _guint uint32     // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_guint = uint32(_cret)
+
+	return _color, _guint
 }
 
 // RCParsePriority parses a PathPriorityType variable from the format expected
@@ -672,17 +769,18 @@ func RCParse(filename string) {
 //      expected but not found.
 //
 func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = (*C.void)(unsafe.Pointer(priority))
-	*(**glib.Scanner)(unsafe.Pointer(&args[0])) = _arg0
-	*(**PathPriorityType)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "rc_parse_priority").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "rc_parse_priority").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scanner)
@@ -695,6 +793,47 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
 	return _guint
 }
 
+// RCParseState parses a StateType variable from the format expected in a RC
+// file.
+//
+// Deprecated: Use CssProvider instead.
+//
+// The function takes the following parameters:
+//
+//    - scanner (must be initialized for parsing an RC file).
+//
+// The function returns the following values:
+//
+//    - state: pointer to a StateType variable in which to store the result.
+//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
+//      expected but not found.
+//
+func RCParseState(scanner *glib.Scanner) (StateType, uint32) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _cret C.guint // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "rc_parse_state").Invoke(_args[:], _outs[:])
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scanner)
+
+	var _state StateType // out
+	var _guint uint32    // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_state = *(*StateType)(unsafe.Pointer(_out0))
+	_guint = uint32(_cret)
+
+	return _state, _guint
+}
+
 // RCParseString parses resource information directly from a string.
 //
 // Deprecated: Use CssProvider instead.
@@ -704,14 +843,15 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
 //    - rcString: string to parse.
 //
 func RCParseString(rcString string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(rcString)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "rc_parse_string").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "rc_parse_string").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(rcString)
 }
@@ -757,7 +897,7 @@ func RCReparseAll() bool {
 //    - ok: TRUE if the files were reread.
 //
 func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
@@ -766,10 +906,11 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 	if forceLoad {
 		_arg1 = C.TRUE
 	}
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
-	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "rc_reparse_all_for_settings").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "rc_reparse_all_for_settings").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -800,13 +941,14 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 //    - settings: Settings.
 //
 func RCResetStyles(settings *Settings) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**Settings)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "rc_reset_styles").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "rc_reset_styles").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(settings)
 }
@@ -821,7 +963,7 @@ func RCResetStyles(settings *Settings) {
 //    - filenames: a NULL-terminated list of filenames.
 //
 func RCSetDefaultFiles(filenames []string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 **C.void // out
 
 	{
@@ -837,9 +979,10 @@ func RCSetDefaultFiles(filenames []string) {
 			}
 		}
 	}
-	*(*[]string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "rc_set_default_files").Invoke(args[:], nil)
+	*(***C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "rc_set_default_files").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(filenames)
 }
@@ -894,7 +1037,7 @@ func classInitRCStyler(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_RcStyleClass_merge
-func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
+func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Merge(src *RCStyle) })
 
@@ -906,7 +1049,7 @@ func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
 }
 
 //export _gotk4_gtk3_RcStyleClass_parse
-func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.GtkRcStyle, arg1 *C.GtkSettings, arg2 *C.GScanner) (cret C.guint) {
+func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Parse(settings *Settings, scanner *glib.Scanner) uint32
@@ -967,14 +1110,15 @@ func NewRCStyle() *RCStyle {
 //    - rcStyle: resulting RcStyle.
 //
 func (orig *RCStyle) Copy() *RCStyle {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(orig).Native()))
-	*(**RCStyle)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "RcStyle").InvokeMethod("copy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "RcStyle").InvokeMethod("copy", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(orig)
@@ -996,4 +1140,25 @@ type RCProperty struct {
 // rcProperty is the struct that's finalized.
 type rcProperty struct {
 	native *C.GtkRcProperty
+}
+
+// TypeName: quark-ified type identifier.
+func (r *RCProperty) TypeName() glib.Quark {
+	var v glib.Quark // out
+	v = uint32(r.native.type_name)
+	return v
+}
+
+// PropertyName: quark-ified property identifier like “GtkScrollbar::spacing”.
+func (r *RCProperty) PropertyName() glib.Quark {
+	var v glib.Quark // out
+	v = uint32(r.native.property_name)
+	return v
+}
+
+// Origin: field similar to one found in SettingsValue.
+func (r *RCProperty) Origin() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.origin)))
+	return v
 }

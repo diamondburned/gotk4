@@ -87,14 +87,15 @@ func BaseCairoContext(obj CairoContexter) *CairoContext {
 //      GdkSurface. NULL is returned when context is not drawing.
 //
 func (self *CairoContext) CairoCreate() *cairo.Context {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**CairoContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "CairoContext").InvokeMethod("cairo_create", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "CairoContext").InvokeMethod("cairo_create", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)

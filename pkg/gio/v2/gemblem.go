@@ -76,14 +76,15 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 //    - emblem: new #GEmblem.
 //
 func NewEmblem(icon Iconner) *Emblem {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	*(*Iconner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("new_Emblem", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("new_Emblem", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
@@ -103,14 +104,15 @@ func NewEmblem(icon Iconner) *Emblem {
 //      or freed.
 //
 func (emblem *Emblem) GetIcon() *Icon {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
-	*(**Emblem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("get_icon", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("get_icon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(emblem)

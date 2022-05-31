@@ -121,14 +121,15 @@ func NewGestureZoom() *GestureZoom {
 //    - gdouble: scale delta.
 //
 func (gesture *GestureZoom) ScaleDelta() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	*(**GestureZoom)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "GestureZoom").InvokeMethod("get_scale_delta", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureZoom").InvokeMethod("get_scale_delta", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)

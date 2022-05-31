@@ -14,11 +14,12 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gio2_MountOperationClass_aborted(GMountOperation*);
-// extern void _gotk4_gio2_MountOperationClass_ask_question(GMountOperation*, char*, char**);
-// extern void _gotk4_gio2_MountOperationClass_show_unmount_progress(GMountOperation*, gchar*, gint64, gint64);
+// extern void _gotk4_gio2_MountOperationClass_aborted(void*);
+// extern void _gotk4_gio2_MountOperationClass_ask_question(void*, void*, void**);
+// extern void _gotk4_gio2_MountOperationClass_show_unmount_progress(void*, void*, gint64, gint64);
 // extern void _gotk4_gio2_MountOperation_ConnectAborted(gpointer, guintptr);
-// extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, gchar*, gint64, gint64, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectAskQuestion(gpointer, void*, void, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, void*, gint64, gint64, guintptr);
 import "C"
 
 // glib.Type values for gmountoperation.go.
@@ -108,7 +109,7 @@ func classInitMountOperationer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_MountOperationClass_aborted
-func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
+func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Aborted() })
 
@@ -116,7 +117,7 @@ func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
 }
 
 //export _gotk4_gio2_MountOperationClass_ask_question
-func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 *C.char, arg2 **C.char) {
+func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.void, arg1 *C.void, arg2 **C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AskQuestion(message string, choices []string)
@@ -144,7 +145,7 @@ func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 
 }
 
 //export _gotk4_gio2_MountOperationClass_show_unmount_progress
-func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.GMountOperation, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64) {
+func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.void, arg1 *C.void, arg2 C.gint64, arg3 C.gint64) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
@@ -196,8 +197,51 @@ func (op *MountOperation) ConnectAborted(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "aborted", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectAborted), f)
 }
 
+//export _gotk4_gio2_MountOperation_ConnectAskQuestion
+func _gotk4_gio2_MountOperation_ConnectAskQuestion(arg0 C.gpointer, arg1 *C.void, arg2 C.void, arg3 C.guintptr) {
+	var f func(message string, choices []string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(message string, choices []string))
+	}
+
+	var _message string   // out
+	var _choices []string // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	{
+		var i int
+		var z *C.void
+		for p := arg2; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(arg2, i)
+		_choices = make([]string, i)
+		for i := range src {
+			_choices[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	f(_message, _choices)
+}
+
+// ConnectAskQuestion is emitted when asking the user a question and gives a
+// list of choices for the user to choose from.
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (op *MountOperation) ConnectAskQuestion(f func(message string, choices []string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(op, "ask-question", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectAskQuestion), f)
+}
+
 //export _gotk4_gio2_MountOperation_ConnectShowUnmountProgress
-func _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64, arg4 C.guintptr) {
+func _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(arg0 C.gpointer, arg1 *C.void, arg2 C.gint64, arg3 C.gint64, arg4 C.guintptr) {
 	var f func(message string, timeLeft, bytesLeft int64)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -266,14 +310,15 @@ func NewMountOperation() *MountOperation {
 //    - ok: TRUE if mount operation is anonymous.
 //
 func (op *MountOperation) Anonymous() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_anonymous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_anonymous", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -295,14 +340,15 @@ func (op *MountOperation) Anonymous() bool {
 //      list, or 0.
 //
 func (op *MountOperation) Choice() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_choice", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_choice", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -321,14 +367,15 @@ func (op *MountOperation) Choice() int32 {
 //    - utf8 (optional): string set to the domain.
 //
 func (op *MountOperation) Domain() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_domain", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_domain", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -350,14 +397,15 @@ func (op *MountOperation) Domain() string {
 //    - ok: TRUE if mount operation is for hidden volume.
 //
 func (op *MountOperation) IsTcryptHiddenVolume() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_hidden_volume", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_hidden_volume", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -379,14 +427,15 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 //    - ok: TRUE if mount operation is for system volume.
 //
 func (op *MountOperation) IsTcryptSystemVolume() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_system_volume", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_system_volume", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -407,14 +456,15 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 //    - utf8 (optional): string containing the password within op.
 //
 func (op *MountOperation) Password() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_password", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_password", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -435,14 +485,15 @@ func (op *MountOperation) Password() string {
 //    - guint: veraCrypt PIM within op.
 //
 func (op *MountOperation) Pim() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_pim", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_pim", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -461,14 +512,15 @@ func (op *MountOperation) Pim() uint32 {
 //    - utf8 (optional): string containing the user name.
 //
 func (op *MountOperation) Username() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_username", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_username", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
@@ -490,7 +542,7 @@ func (op *MountOperation) Username() string {
 //    - anonymous: boolean value.
 //
 func (op *MountOperation) SetAnonymous(anonymous bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -498,9 +550,11 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 	if anonymous {
 		_arg1 = C.TRUE
 	}
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_anonymous", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_anonymous", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(anonymous)
@@ -513,15 +567,17 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 //    - choice: integer.
 //
 func (op *MountOperation) SetChoice(choice int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	_arg1 = C.int(choice)
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_choice", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_choice", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(choice)
@@ -534,7 +590,7 @@ func (op *MountOperation) SetChoice(choice int32) {
 //    - domain (optional) to set.
 //
 func (op *MountOperation) SetDomain(domain string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -543,9 +599,11 @@ func (op *MountOperation) SetDomain(domain string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(domain)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_domain", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_domain", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(domain)
@@ -559,7 +617,7 @@ func (op *MountOperation) SetDomain(domain string) {
 //    - hiddenVolume: boolean value.
 //
 func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -567,9 +625,11 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	if hiddenVolume {
 		_arg1 = C.TRUE
 	}
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_hidden_volume", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_hidden_volume", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(hiddenVolume)
@@ -583,7 +643,7 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 //    - systemVolume: boolean value.
 //
 func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -591,9 +651,11 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	if systemVolume {
 		_arg1 = C.TRUE
 	}
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_system_volume", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_system_volume", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(systemVolume)
@@ -606,7 +668,7 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 //    - password (optional) to set.
 //
 func (op *MountOperation) SetPassword(password string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -615,9 +677,11 @@ func (op *MountOperation) SetPassword(password string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(password)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_password", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_password", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(password)
@@ -630,15 +694,17 @@ func (op *MountOperation) SetPassword(password string) {
 //    - pim: unsigned integer.
 //
 func (op *MountOperation) SetPim(pim uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	_arg1 = C.guint(pim)
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_pim", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_pim", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(pim)
@@ -651,7 +717,7 @@ func (op *MountOperation) SetPim(pim uint32) {
 //    - username (optional): input username.
 //
 func (op *MountOperation) SetUsername(username string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -660,9 +726,11 @@ func (op *MountOperation) SetUsername(username string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(username)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_username", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_username", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(username)

@@ -40,7 +40,7 @@ import "C"
 //      NULL on error.
 //
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -53,13 +53,14 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 	_arg2 = C.gint(srcY)
 	_arg3 = C.gint(width)
 	_arg4 = C.gint(height)
-	*(**cairo.Surface)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_surface").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_surface").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
@@ -127,7 +128,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 //      NULL on error.
 //
 func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -140,13 +141,14 @@ func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int32) *gdkp
 	_arg2 = C.gint(srcY)
 	_arg3 = C.gint(width)
 	_arg4 = C.gint(height)
-	*(*Windower)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_window").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_window").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)

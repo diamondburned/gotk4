@@ -23,13 +23,14 @@ import "C"
 //      gdk_x11_display_string_to_compound_text().
 //
 func X11FreeCompoundText(ctext *byte) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(ctext))
-	*(**byte)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("GdkX11", "x11_free_compound_text").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "x11_free_compound_text").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(ctext)
 }

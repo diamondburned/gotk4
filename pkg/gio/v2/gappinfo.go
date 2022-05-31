@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -17,35 +19,36 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GAppInfo* _gotk4_gio2_AppInfoIface_dup(GAppInfo*);
-// extern GIcon* _gotk4_gio2_AppInfoIface_get_icon(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_commandline(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_description(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_display_name(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_executable(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_id(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_name(GAppInfo*);
-// extern char* _gotk4_gio2_AppLaunchContextClass_get_display(GAppLaunchContext*, GAppInfo*, GList*);
-// extern char* _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(GAppLaunchContext*, GAppInfo*, GList*);
-// extern char** _gotk4_gio2_AppInfoIface_get_supported_types(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_add_supports_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_can_delete(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_can_remove_supports_type(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_equal(GAppInfo*, GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_launch(GAppInfo*, GList*, GAppLaunchContext*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris(GAppInfo*, GList*, GAppLaunchContext*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris_finish(GAppInfo*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_remove_supports_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_extension(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_set_as_last_used_for_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_should_show(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_supports_files(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_supports_uris(GAppInfo*);
-// extern void _gotk4_gio2_AppLaunchContextClass_launch_failed(GAppLaunchContext*, char*);
-// extern void _gotk4_gio2_AppLaunchContextClass_launched(GAppLaunchContext*, GAppInfo*, GVariant*);
-// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(gpointer, gchar*, guintptr);
-// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunched(gpointer, GAppInfo*, GVariant*, guintptr);
+// extern GAppInfo* _gotk4_gio2_AppInfoIface_dup(void*);
+// extern GIcon* _gotk4_gio2_AppInfoIface_get_icon(void*);
+// extern char* _gotk4_gio2_AppInfoIface_get_commandline(void*);
+// extern char* _gotk4_gio2_AppInfoIface_get_description(void*);
+// extern char* _gotk4_gio2_AppInfoIface_get_display_name(void*);
+// extern char* _gotk4_gio2_AppInfoIface_get_executable(void*);
+// extern char* _gotk4_gio2_AppInfoIface_get_id(void*);
+// extern char* _gotk4_gio2_AppInfoIface_get_name(void*);
+// extern char* _gotk4_gio2_AppLaunchContextClass_get_display(void*, void*, void*);
+// extern char* _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(void*, void*, void*);
+// extern char** _gotk4_gio2_AppInfoIface_get_supported_types(void*);
+// extern gboolean _gotk4_gio2_AppInfoIface_add_supports_type(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_can_delete(void*);
+// extern gboolean _gotk4_gio2_AppInfoIface_can_remove_supports_type(void*);
+// extern gboolean _gotk4_gio2_AppInfoIface_equal(void*, void*);
+// extern gboolean _gotk4_gio2_AppInfoIface_launch(void*, void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris(void*, void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris_finish(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_remove_supports_type(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_extension(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_type(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_set_as_last_used_for_type(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_should_show(void*);
+// extern gboolean _gotk4_gio2_AppInfoIface_supports_files(void*);
+// extern gboolean _gotk4_gio2_AppInfoIface_supports_uris(void*);
+// extern void _gotk4_gio2_AppLaunchContextClass_launch_failed(void*, void*);
+// extern void _gotk4_gio2_AppLaunchContextClass_launched(void*, void*, void*);
+// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(gpointer, void*, guintptr);
+// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunched(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gappinfo.go.
@@ -157,6 +160,8 @@ type AppInfor interface {
 	Launch(files []Filer, context *AppLaunchContext) error
 	// LaunchURIs launches the application.
 	LaunchURIs(uris []string, context *AppLaunchContext) error
+	// LaunchURIsAsync: async version of g_app_info_launch_uris().
+	LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback)
 	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchURIsFinish(result AsyncResulter) error
 	// RemoveSupportsType removes a supported type from an application, if
@@ -202,7 +207,7 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 //    - contentType: string.
 //
 func (appinfo *AppInfo) AddSupportsType(contentType string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -210,7 +215,9 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
@@ -232,12 +239,13 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 //    - ok: TRUE if appinfo can be deleted.
 //
 func (appinfo *AppInfo) CanDelete() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -261,12 +269,13 @@ func (appinfo *AppInfo) CanDelete() bool {
 //      appinfo, FALSE if not.
 //
 func (appinfo *AppInfo) CanRemoveSupportsType() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -292,12 +301,13 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 //    - ok: TRUE if appinfo has been deleted.
 //
 func (appinfo *AppInfo) Delete() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -319,12 +329,13 @@ func (appinfo *AppInfo) Delete() bool {
 //    - appInfo: duplicate of appinfo.
 //
 func (appinfo *AppInfo) Dup() *AppInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -352,14 +363,16 @@ func (appinfo *AppInfo) Dup() *AppInfo {
 //    - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
 //
 func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo1).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo2).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -383,12 +396,13 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 //      if this information is not available.
 //
 func (appinfo *AppInfo) Commandline() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -411,12 +425,13 @@ func (appinfo *AppInfo) Commandline() string {
 //      appinfo, or NULL if none.
 //
 func (appinfo *AppInfo) Description() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -440,12 +455,13 @@ func (appinfo *AppInfo) Description() string {
 //      display name is available.
 //
 func (appinfo *AppInfo) DisplayName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -465,12 +481,13 @@ func (appinfo *AppInfo) DisplayName() string {
 //    - filename: string containing the appinfo's application binaries name.
 //
 func (appinfo *AppInfo) Executable() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -491,12 +508,13 @@ func (appinfo *AppInfo) Executable() string {
 //      default icon.
 //
 func (appinfo *AppInfo) Icon() *Icon {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -523,12 +541,13 @@ func (appinfo *AppInfo) Icon() *Icon {
 //    - utf8 (optional): string containing the application's ID.
 //
 func (appinfo *AppInfo) ID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -550,12 +569,13 @@ func (appinfo *AppInfo) ID() string {
 //    - utf8: name of the application for appinfo.
 //
 func (appinfo *AppInfo) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -579,12 +599,13 @@ func (appinfo *AppInfo) Name() string {
 //    - utf8s: a list of content types.
 //
 func (appinfo *AppInfo) SupportedTypes() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret **C.char // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
 
@@ -642,7 +663,7 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 //    - context (optional) or NULL.
 //
 func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -661,8 +682,10 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	if context != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	}
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
-	*(*[]Filer)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(files)
@@ -694,7 +717,7 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 //    - context (optional) or NULL.
 //
 func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -714,8 +737,10 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	if context != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	}
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
-	*(*[]string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(uris)
@@ -730,6 +755,66 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	return _goerr
 }
 
+// LaunchURIsAsync: async version of g_app_info_launch_uris().
+//
+// The callback is invoked immediately after the application launch, but it
+// waits for activation in case of D-Bus–activated applications and also
+// provides extended error information for sandboxed applications, see notes for
+// g_app_info_launch_default_for_uri_async().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): #GCancellable.
+//    - uris (optional) containing URIs to launch.
+//    - context (optional) or NULL.
+//    - callback (optional) to call when the request is done.
+//
+func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
+	var _args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg3 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg4 C.gpointer // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	if uris != nil {
+		for i := len(uris) - 1; i >= 0; i-- {
+			src := uris[i]
+			var dst *C.void // out
+			dst = (*C.void)(unsafe.Pointer(C.CString(src)))
+			defer C.free(unsafe.Pointer(dst))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
+	}
+	if context != nil {
+		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
+
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uris)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
+}
+
 // LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 //
 // The function takes the following parameters:
@@ -737,14 +822,16 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 //    - result: Result.
 //
 func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(result)
@@ -765,7 +852,7 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 //    - contentType: string.
 //
 func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -773,7 +860,9 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
@@ -795,7 +884,7 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 //    - extension: string containing the file extension (without the dot).
 //
 func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -803,7 +892,9 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(extension)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(extension)
@@ -825,7 +916,7 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 //    - contentType: content type.
 //
 func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -833,7 +924,9 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
@@ -857,7 +950,7 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 //    - contentType: content type.
 //
 func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -865,7 +958,9 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
@@ -887,12 +982,13 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 //    - ok: TRUE if the appinfo should be shown, FALSE otherwise.
 //
 func (appinfo *AppInfo) ShouldShow() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -914,12 +1010,13 @@ func (appinfo *AppInfo) ShouldShow() bool {
 //    - ok: TRUE if the appinfo supports files.
 //
 func (appinfo *AppInfo) SupportsFiles() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -942,12 +1039,13 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 //    - ok: TRUE if the appinfo supports URIs.
 //
 func (appinfo *AppInfo) SupportsURIs() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	*(**AppInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1006,15 +1104,16 @@ func AppInfoGetAll() []*AppInfo {
 //    - list of Infos for given content_type or NULL on error.
 //
 func AppInfoGetAllForType(contentType string) []*AppInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "get_all_for_type").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "get_all_for_type").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
@@ -1044,7 +1143,7 @@ func AppInfoGetAllForType(contentType string) []*AppInfo {
 //    - appInfo (optional) for given content_type or NULL on error.
 //
 func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _cret *C.void    // in
@@ -1054,10 +1153,11 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 	if mustSupportUris {
 		_arg1 = C.TRUE
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "get_default_for_type").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "get_default_for_type").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
@@ -1085,15 +1185,16 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 //    - appInfo (optional) for given uri_scheme or NULL on error.
 //
 func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "get_default_for_uri_scheme").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "get_default_for_uri_scheme").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(uriScheme)
@@ -1120,15 +1221,16 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 //    - list of Infos for given content_type or NULL on error.
 //
 func AppInfoGetFallbackForType(contentType string) []*AppInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "get_fallback_for_type").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "get_fallback_for_type").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
@@ -1161,15 +1263,16 @@ func AppInfoGetFallbackForType(contentType string) []*AppInfo {
 //    - list of Infos for given content_type or NULL on error.
 //
 func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "get_recommended_for_type").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "get_recommended_for_type").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
@@ -1201,7 +1304,7 @@ func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
 //    - context (optional): optional LaunchContext.
 //
 func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -1211,10 +1314,11 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	if context != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "launch_default_for_uri").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "launch_default_for_uri").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(context)
@@ -1228,6 +1332,60 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	return _goerr
 }
 
+// AppInfoLaunchDefaultForURIAsync: async version of
+// g_app_info_launch_default_for_uri().
+//
+// This version is useful if you are interested in receiving error information
+// in the case where the application is sandboxed and the portal may present an
+// application chooser dialog to the user.
+//
+// This is also useful if you want to be sure that the D-Bus–activated
+// applications are really started before termination and if you are interested
+// in receiving error information from their activation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): #GCancellable.
+//    - uri to show.
+//    - context (optional): optional LaunchContext.
+//    - callback (optional) to call when the request is done.
+//
+func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *AppLaunchContext, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg2 *C.void    // out
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg0))
+	if context != nil {
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gio", "launch_default_for_uri_async").Invoke(_args[:], nil)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
+}
+
 // AppInfoLaunchDefaultForURIFinish finishes an asynchronous
 // launch-default-for-uri operation.
 //
@@ -1236,14 +1394,15 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 //    - result: Result.
 //
 func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(*AsyncResulter)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "launch_default_for_uri_finish").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "launch_default_for_uri_finish").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(result)
 
@@ -1266,14 +1425,15 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 //    - contentType: content type.
 //
 func AppInfoResetTypeAssociations(contentType string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "reset_type_associations").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "reset_type_associations").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(contentType)
 }
@@ -1404,7 +1564,7 @@ func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_AppLaunchContextClass_get_display
-func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
+func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Display(info AppInfor, files []Filer) string
@@ -1464,7 +1624,7 @@ func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, ar
 }
 
 //export _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id
-func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
+func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		StartupNotifyID(info AppInfor, files []Filer) string
@@ -1524,7 +1684,7 @@ func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchC
 }
 
 //export _gotk4_gio2_AppLaunchContextClass_launch_failed
-func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, arg1 *C.char) {
+func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LaunchFailed(startupNotifyId string) })
 
@@ -1536,7 +1696,7 @@ func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, 
 }
 
 //export _gotk4_gio2_AppLaunchContextClass_launched
-func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
+func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Launched(info AppInfor, platformData *glib.Variant)
@@ -1585,7 +1745,7 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed
-func _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(startupNotifyId string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -1612,7 +1772,7 @@ func (context *AppLaunchContext) ConnectLaunchFailed(f func(startupNotifyId stri
 }
 
 //export _gotk4_gio2_AppLaunchContext_ConnectLaunched
-func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 *C.GVariant, arg3 C.guintptr) {
+func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(info AppInfor, platformData *glib.Variant)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1700,7 +1860,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 //    - utf8 (optional): display string for the display.
 //
 func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1715,10 +1875,12 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg2)
-	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
-	*(*AppInfor)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -1744,14 +1906,15 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 //    - filenames: the child's environment.
 //
 func (context *AppLaunchContext) Environment() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret **C.char // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**AppLaunchContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_environment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_environment", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -1795,7 +1958,7 @@ func (context *AppLaunchContext) Environment() []string {
 //      not supported.
 //
 func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) string {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1810,10 +1973,12 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_arg2)
-	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
-	*(*AppInfor)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_startup_notify_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_startup_notify_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -1840,16 +2005,18 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 //      g_app_launch_context_get_startup_notify_id().
 //
 func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupNotifyId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("launch_failed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("launch_failed", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(startupNotifyId)
@@ -1864,7 +2031,7 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 //    - value for to set the variable to.
 //
 func (context *AppLaunchContext) Setenv(variable, value string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1874,10 +2041,12 @@ func (context *AppLaunchContext) Setenv(variable, value string) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("setenv", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("setenv", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(variable)
@@ -1892,16 +2061,18 @@ func (context *AppLaunchContext) Setenv(variable, value string) {
 //    - variable: environment variable to remove.
 //
 func (context *AppLaunchContext) Unsetenv(variable string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(variable)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("unsetenv", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("unsetenv", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(variable)

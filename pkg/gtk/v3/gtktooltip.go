@@ -91,7 +91,7 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 //    - customWidget (optional) or NULL to unset the old custom widget.
 //
 func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -99,9 +99,11 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	if customWidget != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(customWidget).Native()))
 	}
-	*(**Tooltip)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_custom", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_custom", _args[:], nil)
 
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(customWidget)
@@ -115,7 +117,7 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 //    - pixbuf (optional) or NULL.
 //
 func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -123,9 +125,11 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 	if pixbuf != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
-	*(**Tooltip)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_icon", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_icon", _args[:], nil)
 
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(pixbuf)
@@ -141,7 +145,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 //      or NULL.
 //
 func (tooltip *Tooltip) SetMarkup(markup string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -150,9 +154,11 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(markup)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Tooltip)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_markup", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_markup", _args[:], nil)
 
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(markup)
@@ -166,7 +172,7 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 //    - text (optional) string or NULL.
 //
 func (tooltip *Tooltip) SetText(text string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -175,9 +181,11 @@ func (tooltip *Tooltip) SetText(text string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Tooltip)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_text", _args[:], nil)
 
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(text)
@@ -196,15 +204,17 @@ func (tooltip *Tooltip) SetText(text string) {
 //    - rect: Rectangle.
 //
 func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
-	*(**Tooltip)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_tip_area", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Tooltip").InvokeMethod("set_tip_area", _args[:], nil)
 
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(rect)
@@ -220,13 +230,14 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 //    - display: Display.
 //
 func TooltipTriggerTooltipQuery(display *gdk.Display) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**gdk.Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "trigger_tooltip_query").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "trigger_tooltip_query").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(display)
 }

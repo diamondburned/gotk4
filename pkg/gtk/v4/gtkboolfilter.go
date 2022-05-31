@@ -70,7 +70,7 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 //    - boolFilter: new GtkBoolFilter.
 //
 func NewBoolFilter(expression Expressioner) *BoolFilter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -78,9 +78,10 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
-	*(*Expressioner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("new_BoolFilter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("new_BoolFilter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expression)
@@ -100,14 +101,15 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 //    - expression (optional): GtkExpression.
 //
 func (self *BoolFilter) Expression() Expressioner {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**BoolFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_expression", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_expression", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -141,14 +143,15 @@ func (self *BoolFilter) Expression() Expressioner {
 //    - ok: TRUE if the filter inverts.
 //
 func (self *BoolFilter) Invert() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**BoolFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_invert", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_invert", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -172,7 +175,7 @@ func (self *BoolFilter) Invert() bool {
 //    - expression (optional): GtkExpression.
 //
 func (self *BoolFilter) SetExpression(expression Expressioner) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -180,9 +183,11 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 	if expression != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
-	*(**BoolFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_expression", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_expression", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)
@@ -195,7 +200,7 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 //    - invert: TRUE to invert.
 //
 func (self *BoolFilter) SetInvert(invert bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -203,9 +208,11 @@ func (self *BoolFilter) SetInvert(invert bool) {
 	if invert {
 		_arg1 = C.TRUE
 	}
-	*(**BoolFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_invert", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_invert", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(invert)

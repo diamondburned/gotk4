@@ -101,14 +101,15 @@ func NewEventBox() *EventBox {
 //    - ok: TRUE if the event box window is above the window of its child.
 //
 func (eventBox *EventBox) AboveChild() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
-	*(**EventBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_above_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_above_child", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(eventBox)
@@ -130,14 +131,15 @@ func (eventBox *EventBox) AboveChild() bool {
 //    - ok: TRUE if the event box window is visible.
 //
 func (eventBox *EventBox) VisibleWindow() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
-	*(**EventBox)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_visible_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_visible_window", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(eventBox)
@@ -164,7 +166,7 @@ func (eventBox *EventBox) VisibleWindow() bool {
 //    - aboveChild: TRUE if the event box window is above its child.
 //
 func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -172,9 +174,11 @@ func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 	if aboveChild {
 		_arg1 = C.TRUE
 	}
-	*(**EventBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_above_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_above_child", _args[:], nil)
 
 	runtime.KeepAlive(eventBox)
 	runtime.KeepAlive(aboveChild)
@@ -214,7 +218,7 @@ func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 //    - visibleWindow: TRUE to make the event box have a visible window.
 //
 func (eventBox *EventBox) SetVisibleWindow(visibleWindow bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -222,9 +226,11 @@ func (eventBox *EventBox) SetVisibleWindow(visibleWindow bool) {
 	if visibleWindow {
 		_arg1 = C.TRUE
 	}
-	*(**EventBox)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_visible_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_visible_window", _args[:], nil)
 
 	runtime.KeepAlive(eventBox)
 	runtime.KeepAlive(visibleWindow)

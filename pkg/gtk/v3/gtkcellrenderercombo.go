@@ -13,7 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_CellRendererCombo_ConnectChanged(gpointer, gchar*, GtkTreeIter*, guintptr);
+// extern void _gotk4_gtk3_CellRendererCombo_ConnectChanged(gpointer, void*, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkcellrenderercombo.go.
@@ -75,7 +75,7 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_CellRendererCombo_ConnectChanged
-func _gotk4_gtk3_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.guintptr) {
+func _gotk4_gtk3_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(pathString string, newIter *TreeIter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))

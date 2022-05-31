@@ -129,14 +129,15 @@ func (controller *EventControllerKey) ConnectIMUpdate(f func()) coreglib.SignalH
 // The function returns the following values:
 //
 func NewEventControllerKey(widget Widgetter) *EventControllerKey {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("new_EventControllerKey", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("new_EventControllerKey", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -153,16 +154,18 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 // The function returns the following values:
 //
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**EventControllerKey)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("forward", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("forward", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -180,14 +183,15 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 // The function returns the following values:
 //
 func (controller *EventControllerKey) Group() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventControllerKey)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_group", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_group", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -206,14 +210,15 @@ func (controller *EventControllerKey) Group() uint32 {
 //    - imContext: IM context.
 //
 func (controller *EventControllerKey) IMContext() IMContexter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventControllerKey)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_im_context", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_im_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -244,15 +249,17 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 // The function takes the following parameters:
 //
 func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imContext).Native()))
-	*(**EventControllerKey)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("set_im_context", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("set_im_context", _args[:], nil)
 
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(imContext)

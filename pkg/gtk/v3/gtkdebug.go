@@ -40,13 +40,14 @@ func GetDebugFlags() uint32 {
 // The function takes the following parameters:
 //
 func SetDebugFlags(flags uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(flags)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "set_debug_flags").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "set_debug_flags").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(flags)
 }

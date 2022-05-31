@@ -78,14 +78,15 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 //    - utf8 (optional): /dev/input/event* path of this device.
 //
 func (device *WaylandDevice) NodePath() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**WaylandDevice)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandDevice").InvokeMethod("get_node_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkWayland", "WaylandDevice").InvokeMethod("get_node_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)

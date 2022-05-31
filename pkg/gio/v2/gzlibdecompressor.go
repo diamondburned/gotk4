@@ -72,14 +72,15 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 //    - fileInfo (optional) or NULL.
 //
 func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(decompressor).Native()))
-	*(**ZlibDecompressor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ZlibDecompressor").InvokeMethod("get_file_info", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ZlibDecompressor").InvokeMethod("get_file_info", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(decompressor)

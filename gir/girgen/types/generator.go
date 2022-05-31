@@ -57,27 +57,53 @@ func Find(gen FileGenerator, girType string) *gir.TypeFindResult {
 
 // AddCallbackHeader is a convenient function around AddCallableHeader that
 // takes in a Callback.
-func AddCallbackHeader(h *file.Header, source *gir.NamespaceFindResult, callback *gir.Callback) {
-	AddCallableHeader(h, source, "", &callback.CallableAttrs)
+func AddCallbackHeader(gen FileGenerator, h *file.Header, callback *gir.Callback) {
+	AddCallableHeader(gen, h, "", &callback.CallableAttrs)
 }
 
 // AddCallableHeader adds an extern C function header from the callable. The
 // extern function will have the given name.
-func AddCallableHeader(h *file.Header, source *gir.NamespaceFindResult, name string, callable *gir.CallableAttrs) {
-	h.AddCallbackHeader(CallableCHeader(source, name, callable))
+func AddCallableHeader(gen FileGenerator, h *file.Header, name string, callable *gir.CallableAttrs) {
+	h.AddCallbackHeader(CallableCHeader(gen, name, callable))
 }
 
 // CallableCHeader renders the C function signature.
-func CallableCHeader(source *gir.NamespaceFindResult, name string, callable *gir.CallableAttrs) string {
+//
+// TODO: wherever this is called, we may need to heavily refactor this to also
+// resolve all arguments of the callback. The function signature may look
+// something like
+//
+//    func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string
+//
+func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string {
 	var ctail pen.Joints
 	if callable.Parameters != nil {
 		ctail = pen.NewJoints(", ", len(callable.Parameters.Parameters)+1)
 
+		var resolveAny func(gir.AnyType) string
+
+		switch gen.LinkMode() {
+		case DynamicLinkMode:
+			resolveAny = func(any gir.AnyType) string {
+				any = ResolveAnyType(gen, any)
+				return AnyTypeC(any)
+			}
+		case RuntimeLinkMode:
+			resolveAny = func(any gir.AnyType) string {
+				any = ResolveAnyType(gen, any)
+				if prim := AnyTypeCPrimitive(gen, any); prim != "" {
+					return prim
+				}
+				panic("unknown primitive " + AnyTypeC(any))
+				// return ""
+			}
+		}
+
 		if callable.Parameters.InstanceParameter != nil {
-			ctail.Add(AnyTypeC(callable.Parameters.InstanceParameter.AnyType))
+			ctail.Add(resolveAny(callable.Parameters.InstanceParameter.AnyType))
 		}
 		for _, param := range callable.Parameters.Parameters {
-			ctail.Add(AnyTypeC(param.AnyType))
+			ctail.Add(resolveAny(param.AnyType))
 		}
 		if callable.Throws {
 			ctail.Add("GError**")
@@ -90,7 +116,7 @@ func CallableCHeader(source *gir.NamespaceFindResult, name string, callable *gir
 	}
 
 	if name == "" {
-		name = file.CallableExportedName(source, callable)
+		name = file.CallableExportedName(gen.Namespace(), callable)
 	}
 
 	return fmt.Sprintf("extern %s %s(%s);", cReturn, name, ctail.Join())

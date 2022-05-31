@@ -175,14 +175,15 @@ func NewPasswordEntry() *PasswordEntry {
 //    - menuModel: (nullable): the menu model.
 //
 func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**PasswordEntry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("get_extra_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("get_extra_menu", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -218,14 +219,15 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 //    - ok: TRUE if an icon is shown.
 //
 func (entry *PasswordEntry) ShowPeekIcon() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**PasswordEntry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("get_show_peek_icon", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("get_show_peek_icon", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -247,7 +249,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 //    - model (optional): GMenuModel.
 //
 func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -255,9 +257,11 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**PasswordEntry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("set_extra_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("set_extra_menu", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(model)
@@ -273,7 +277,7 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 //    - showPeekIcon: whether to show the peek icon.
 //
 func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -281,9 +285,11 @@ func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	if showPeekIcon {
 		_arg1 = C.TRUE
 	}
-	*(**PasswordEntry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("set_show_peek_icon", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PasswordEntry").InvokeMethod("set_show_peek_icon", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(showPeekIcon)

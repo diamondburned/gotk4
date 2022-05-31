@@ -26,14 +26,15 @@ import "C"
 //    - gint: XInput2 device ID.
 //
 func X11DeviceGetID(device *X11DeviceXI2) int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**X11DeviceXI2)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "x11_device_get_id").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "x11_device_get_id").Invoke(_args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)

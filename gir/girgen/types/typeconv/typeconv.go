@@ -334,7 +334,7 @@ func (conv *Converter) convertTypeExisting(
 		return nil
 	}
 
-	result.Resolved.ImportImpl(&of.header)
+	result.Resolved.ImportImpl(conv.fgen, &of.header)
 	return &result
 }
 

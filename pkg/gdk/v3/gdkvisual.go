@@ -115,6 +115,69 @@ func ListVisuals() []*Visual {
 	return _list
 }
 
+// QueryDepths: this function returns the available bit depths for the default
+// screen. It’s equivalent to listing the visuals (gdk_list_visuals()) and then
+// looking at the depth field in each visual, removing duplicates.
+//
+// The array returned by this function should not be freed.
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+//
+// The function returns the following values:
+//
+//    - depths: return location for available depths.
+//
+func QueryDepths() []int32 {
+	var _outs [2]girepository.Argument
+	var _out0 *C.gint // in
+	var _out1 *C.void // in
+
+	girepository.MustFind("Gdk", "query_depths").Invoke(nil, _outs[:])
+
+	var _depths []int32 // out
+	_out0 = *(**C.gint)(unsafe.Pointer(&_outs[0]))
+
+	{
+		src := unsafe.Slice((**C.void)(_out0), _out1)
+		_depths = make([]int32, _out1)
+		for i := 0; i < int(_out1); i++ {
+			_depths[i] = *(*int32)(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _depths
+}
+
+// QueryVisualTypes: this function returns the available visual types for the
+// default screen. It’s equivalent to listing the visuals (gdk_list_visuals())
+// and then looking at the type field in each visual, removing duplicates.
+//
+// The array returned by this function should not be freed.
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+//
+// The function returns the following values:
+//
+//    - visualTypes: return location for the available visual types.
+//
+func QueryVisualTypes() []VisualType {
+	var _outs [2]girepository.Argument
+	var _out0 *C.GdkVisualType // in
+	var _out1 *C.void          // in
+
+	girepository.MustFind("Gdk", "query_visual_types").Invoke(nil, _outs[:])
+
+	var _visualTypes []VisualType // out
+	_out0 = *(**C.GdkVisualType)(unsafe.Pointer(&_outs[0]))
+
+	_visualTypes = make([]VisualType, _out1)
+	copy(_visualTypes, unsafe.Slice((*VisualType)(unsafe.Pointer(_out0)), _out1))
+
+	return _visualTypes
+}
+
 // Visual contains information about a particular visual.
 type Visual struct {
 	_ [0]func() // equal guard
@@ -148,14 +211,15 @@ func marshalVisual(p uintptr) (interface{}, error) {
 //    - gint: number of significant bits per color value for visual.
 //
 func (visual *Visual) BitsPerRGB() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-	*(**Visual)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_bits_per_rgb", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_bits_per_rgb", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(visual)
@@ -165,6 +229,55 @@ func (visual *Visual) BitsPerRGB() int32 {
 	_gint = int32(_cret)
 
 	return _gint
+}
+
+// BluePixelDetails obtains values that are needed to calculate blue pixel
+// values in TrueColor and DirectColor. The “mask” is the significant bits
+// within the pixel. The “shift” is the number of bits left we must shift a
+// primary for it to be in position (according to the "mask"). Finally,
+// "precision" refers to how much precision the pixel value contains for a
+// particular primary.
+//
+// The function returns the following values:
+//
+//    - mask (optional): pointer to a #guint32 to be filled in, or NULL.
+//    - shift (optional): pointer to a #gint to be filled in, or NULL.
+//    - precision (optional): pointer to a #gint to be filled in, or NULL.
+//
+func (visual *Visual) BluePixelDetails() (mask uint32, shift int32, precision int32) {
+	var _args [1]girepository.Argument
+	var _outs [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _out2 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "Visual").InvokeMethod("get_blue_pixel_details", _args[:], _outs[:])
+
+	runtime.KeepAlive(visual)
+
+	var _mask uint32     // out
+	var _shift int32     // out
+	var _precision int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+
+	if _out0 != nil {
+		_mask = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_shift = *(*int32)(unsafe.Pointer(_out1))
+	}
+	if _out2 != nil {
+		_precision = *(*int32)(unsafe.Pointer(_out2))
+	}
+
+	return _mask, _shift, _precision
 }
 
 // ColormapSize returns the size of a colormap for this visual.
@@ -179,14 +292,15 @@ func (visual *Visual) BitsPerRGB() int32 {
 //    - gint: size of a colormap that is suitable for visual.
 //
 func (visual *Visual) ColormapSize() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-	*(**Visual)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_colormap_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_colormap_size", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(visual)
@@ -205,14 +319,15 @@ func (visual *Visual) ColormapSize() int32 {
 //    - gint: bit depth of this visual.
 //
 func (visual *Visual) Depth() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-	*(**Visual)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_depth", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_depth", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(visual)
@@ -224,6 +339,103 @@ func (visual *Visual) Depth() int32 {
 	return _gint
 }
 
+// GreenPixelDetails obtains values that are needed to calculate green pixel
+// values in TrueColor and DirectColor. The “mask” is the significant bits
+// within the pixel. The “shift” is the number of bits left we must shift a
+// primary for it to be in position (according to the "mask"). Finally,
+// "precision" refers to how much precision the pixel value contains for a
+// particular primary.
+//
+// The function returns the following values:
+//
+//    - mask (optional): pointer to a #guint32 to be filled in, or NULL.
+//    - shift (optional): pointer to a #gint to be filled in, or NULL.
+//    - precision (optional): pointer to a #gint to be filled in, or NULL.
+//
+func (visual *Visual) GreenPixelDetails() (mask uint32, shift int32, precision int32) {
+	var _args [1]girepository.Argument
+	var _outs [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _out2 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "Visual").InvokeMethod("get_green_pixel_details", _args[:], _outs[:])
+
+	runtime.KeepAlive(visual)
+
+	var _mask uint32     // out
+	var _shift int32     // out
+	var _precision int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+
+	if _out0 != nil {
+		_mask = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_shift = *(*int32)(unsafe.Pointer(_out1))
+	}
+	if _out2 != nil {
+		_precision = *(*int32)(unsafe.Pointer(_out2))
+	}
+
+	return _mask, _shift, _precision
+}
+
+// RedPixelDetails obtains values that are needed to calculate red pixel values
+// in TrueColor and DirectColor. The “mask” is the significant bits within the
+// pixel. The “shift” is the number of bits left we must shift a primary for it
+// to be in position (according to the "mask"). Finally, "precision" refers to
+// how much precision the pixel value contains for a particular primary.
+//
+// The function returns the following values:
+//
+//    - mask (optional): pointer to a #guint32 to be filled in, or NULL.
+//    - shift (optional): pointer to a #gint to be filled in, or NULL.
+//    - precision (optional): pointer to a #gint to be filled in, or NULL.
+//
+func (visual *Visual) RedPixelDetails() (mask uint32, shift int32, precision int32) {
+	var _args [1]girepository.Argument
+	var _outs [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _out2 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "Visual").InvokeMethod("get_red_pixel_details", _args[:], _outs[:])
+
+	runtime.KeepAlive(visual)
+
+	var _mask uint32     // out
+	var _shift int32     // out
+	var _precision int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+
+	if _out0 != nil {
+		_mask = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_shift = *(*int32)(unsafe.Pointer(_out1))
+	}
+	if _out2 != nil {
+		_precision = *(*int32)(unsafe.Pointer(_out2))
+	}
+
+	return _mask, _shift, _precision
+}
+
 // Screen gets the screen to which this visual belongs.
 //
 // The function returns the following values:
@@ -231,14 +443,15 @@ func (visual *Visual) Depth() int32 {
 //    - screen to which this visual belongs.
 //
 func (visual *Visual) Screen() *Screen {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-	*(**Visual)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_screen", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(visual)
@@ -314,14 +527,15 @@ func VisualGetBestDepth() int32 {
 //    - visual: best visual for the given depth.
 //
 func VisualGetBestWithDepth(depth int32) *Visual {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = C.gint(depth)
-	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "get_best_with_depth").Invoke(args[:], nil)
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "get_best_with_depth").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(depth)

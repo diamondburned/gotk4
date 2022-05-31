@@ -13,9 +13,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_enumerate(GSocketConnectable*);
-// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(GSocketConnectable*);
-// extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(GSocketConnectable*);
+// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_enumerate(void*);
+// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(void*);
+// extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(void*);
 import "C"
 
 // glib.Type values for gsocketconnectable.go.
@@ -153,7 +153,7 @@ func ifaceInitSocketConnectabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_SocketConnectableIface_enumerate
-func _gotk4_gio2_SocketConnectableIface_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
+func _gotk4_gio2_SocketConnectableIface_enumerate(arg0 *C.void) (cret *C.GSocketAddressEnumerator) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SocketConnectableOverrider)
 
@@ -166,7 +166,7 @@ func _gotk4_gio2_SocketConnectableIface_enumerate(arg0 *C.GSocketConnectable) (c
 }
 
 //export _gotk4_gio2_SocketConnectableIface_proxy_enumerate
-func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
+func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.void) (cret *C.GSocketAddressEnumerator) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SocketConnectableOverrider)
 
@@ -179,7 +179,7 @@ func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.GSocketConnectab
 }
 
 //export _gotk4_gio2_SocketConnectableIface_to_string
-func _gotk4_gio2_SocketConnectableIface_to_string(arg0 *C.GSocketConnectable) (cret *C.gchar) {
+func _gotk4_gio2_SocketConnectableIface_to_string(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SocketConnectableOverrider)
 
@@ -207,12 +207,13 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 //    - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-	*(**SocketConnectable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -252,12 +253,13 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 //    - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorrer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-	*(**SocketConnectable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -299,12 +301,13 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 //    - utf8: formatted string.
 //
 func (connectable *SocketConnectable) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-	*(**SocketConnectable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -97,7 +97,7 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //    - viewport: new GtkViewport.
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -108,10 +108,11 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	if vadjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
-	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("new_Viewport", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("new_Viewport", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hadjustment)
@@ -131,14 +132,15 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 //    - widget (optional): child widget of viewport.
 //
 func (viewport *Viewport) Child() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
-	*(**Viewport)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(viewport)
@@ -173,14 +175,15 @@ func (viewport *Viewport) Child() Widgetter {
 //    - ok: TRUE if the viewport keeps the focus child scrolled to view.
 //
 func (viewport *Viewport) ScrollToFocus() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
-	*(**Viewport)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_scroll_to_focus", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_scroll_to_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(viewport)
@@ -201,7 +204,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 //    - child (optional) widget.
 //
 func (viewport *Viewport) SetChild(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -209,9 +212,11 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 	if child != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-	*(**Viewport)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(child)
@@ -225,7 +230,7 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 //    - scrollToFocus: whether to keep the focus widget scrolled to view.
 //
 func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -233,9 +238,11 @@ func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
 	if scrollToFocus {
 		_arg1 = C.TRUE
 	}
-	*(**Viewport)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_scroll_to_focus", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_scroll_to_focus", _args[:], nil)
 
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(scrollToFocus)

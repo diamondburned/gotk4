@@ -15,23 +15,23 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state(GActionGroup*, gchar*);
-// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(GActionGroup*, gchar*);
-// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(GActionGroup*, gchar*);
-// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_state_type(GActionGroup*, gchar*);
-// extern gboolean _gotk4_gio2_ActionGroupInterface_get_action_enabled(GActionGroup*, gchar*);
-// extern gboolean _gotk4_gio2_ActionGroupInterface_has_action(GActionGroup*, gchar*);
-// extern gchar** _gotk4_gio2_ActionGroupInterface_list_actions(GActionGroup*);
-// extern void _gotk4_gio2_ActionGroupInterface_action_added(GActionGroup*, gchar*);
-// extern void _gotk4_gio2_ActionGroupInterface_action_enabled_changed(GActionGroup*, gchar*, gboolean);
-// extern void _gotk4_gio2_ActionGroupInterface_action_removed(GActionGroup*, gchar*);
-// extern void _gotk4_gio2_ActionGroupInterface_action_state_changed(GActionGroup*, gchar*, GVariant*);
-// extern void _gotk4_gio2_ActionGroupInterface_activate_action(GActionGroup*, gchar*, GVariant*);
-// extern void _gotk4_gio2_ActionGroupInterface_change_action_state(GActionGroup*, gchar*, GVariant*);
-// extern void _gotk4_gio2_ActionGroup_ConnectActionAdded(gpointer, gchar*, guintptr);
-// extern void _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(gpointer, gchar*, gboolean, guintptr);
-// extern void _gotk4_gio2_ActionGroup_ConnectActionRemoved(gpointer, gchar*, guintptr);
-// extern void _gotk4_gio2_ActionGroup_ConnectActionStateChanged(gpointer, gchar*, GVariant*, guintptr);
+// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state(void*, void*);
+// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(void*, void*);
+// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(void*, void*);
+// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_state_type(void*, void*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_get_action_enabled(void*, void*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_has_action(void*, void*);
+// extern gchar** _gotk4_gio2_ActionGroupInterface_list_actions(void*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_added(void*, void*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_enabled_changed(void*, void*, gboolean);
+// extern void _gotk4_gio2_ActionGroupInterface_action_removed(void*, void*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_state_changed(void*, void*, void*);
+// extern void _gotk4_gio2_ActionGroupInterface_activate_action(void*, void*, void*);
+// extern void _gotk4_gio2_ActionGroupInterface_change_action_state(void*, void*, void*);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionAdded(gpointer, void*, guintptr);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(gpointer, void*, gboolean, guintptr);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionRemoved(gpointer, void*, guintptr);
+// extern void _gotk4_gio2_ActionGroup_ConnectActionStateChanged(gpointer, void*, void*, guintptr);
 import "C"
 
 // glib.Type values for gactiongroup.go.
@@ -41,237 +41,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeActionGroup, F: marshalActionGroup},
 	})
-}
-
-// ActionGroupOverrider contains methods that are overridable.
-type ActionGroupOverrider interface {
-	// ActionAdded emits the Group::action-added signal on action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of an action in the group.
-	//
-	ActionAdded(actionName string)
-	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-	// action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of an action in the group.
-	//    - enabled: whether or not the action is now enabled.
-	//
-	ActionEnabledChanged(actionName string, enabled bool)
-	// ActionRemoved emits the Group::action-removed signal on action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of an action in the group.
-	//
-	ActionRemoved(actionName string)
-	// ActionStateChanged emits the Group::action-state-changed signal on
-	// action_group.
-	//
-	// This function should only be called by Group implementations.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of an action in the group.
-	//    - state: new state of the named action.
-	//
-	ActionStateChanged(actionName string, state *glib.Variant)
-	// ActivateAction: activate the named action within action_group.
-	//
-	// If the action is expecting a parameter, then the correct type of
-	// parameter must be given as parameter. If the action is expecting no
-	// parameters then parameter must be NULL. See
-	// g_action_group_get_action_parameter_type().
-	//
-	// If the Group implementation supports asynchronous remote activation over
-	// D-Bus, this call may return before the relevant D-Bus traffic has been
-	// sent, or any replies have been received. In order to block on such
-	// asynchronous activation calls, g_dbus_connection_flush() should be called
-	// prior to the code, which depends on the result of the action activation.
-	// Without flushing the D-Bus connection, there is no guarantee that the
-	// action would have been activated.
-	//
-	// The following code which runs in a remote app instance, shows an example
-	// of a "quit" action being activated on the primary app instance over
-	// D-Bus. Here g_dbus_connection_flush() is called before exit(). Without
-	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
-	// the primary instance.
-	//
-	//    // call "quit" action on primary instance
-	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-	//
-	//    // make sure the action is activated now
-	//    g_dbus_connection_flush (...);
-	//
-	//    g_debug ("application has been terminated. exiting.");
-	//
-	//    exit (0);.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to activate.
-	//    - parameter (optional) parameters to the activation.
-	//
-	ActivateAction(actionName string, parameter *glib.Variant)
-	// ChangeActionState: request for the state of the named action within
-	// action_group to be changed to value.
-	//
-	// The action must be stateful and value must be of the correct type. See
-	// g_action_group_get_action_state_type().
-	//
-	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than value. See
-	// g_action_group_get_action_state_hint().
-	//
-	// If the value GVariant is floating, it is consumed.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to request the change on.
-	//    - value: new state.
-	//
-	ChangeActionState(actionName string, value *glib.Variant)
-	// ActionEnabled checks if the named action within action_group is currently
-	// enabled.
-	//
-	// An action must be enabled in order to be activated or in order to have
-	// its state changed from outside callers.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to query.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: whether or not the action is currently enabled.
-	//
-	ActionEnabled(actionName string) bool
-	// ActionParameterType queries the type of the parameter that must be given
-	// when activating the named action within action_group.
-	//
-	// When activating the action using g_action_group_activate_action(), the
-	// #GVariant given to that function must be of the type returned by this
-	// function.
-	//
-	// In the case that this function returns NULL, you must not give any
-	// #GVariant, but NULL instead.
-	//
-	// The parameter type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different parameter type.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to query.
-	//
-	// The function returns the following values:
-	//
-	//    - variantType (optional): parameter type.
-	//
-	ActionParameterType(actionName string) *glib.VariantType
-	// ActionState queries the current state of the named action within
-	// action_group.
-	//
-	// If the action is not stateful then NULL will be returned. If the action
-	// is stateful then the type of the return value is the type given by
-	// g_action_group_get_action_state_type().
-	//
-	// The return value (if non-NULL) should be freed with g_variant_unref()
-	// when it is no longer required.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to query.
-	//
-	// The function returns the following values:
-	//
-	//    - variant (optional): current state of the action.
-	//
-	ActionState(actionName string) *glib.Variant
-	// ActionStateHint requests a hint about the valid range of values for the
-	// state of the named action within action_group.
-	//
-	// If NULL is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-NULL) should be freed with g_variant_unref()
-	// when it is no longer required.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to query.
-	//
-	// The function returns the following values:
-	//
-	//    - variant (optional): state range hint.
-	//
-	ActionStateHint(actionName string) *glib.Variant
-	// ActionStateType queries the type of the state of the named action within
-	// action_group.
-	//
-	// If the action is stateful then this function returns the Type of the
-	// state. All calls to g_action_group_change_action_state() must give a
-	// #GVariant of this type and g_action_group_get_action_state() will return
-	// a #GVariant of the same type.
-	//
-	// If the action is not stateful then this function will return NULL. In
-	// that case, g_action_group_get_action_state() will return NULL and you
-	// must not call g_action_group_change_action_state().
-	//
-	// The state type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different state type.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to query.
-	//
-	// The function returns the following values:
-	//
-	//    - variantType (optional): state type, if the action is stateful.
-	//
-	ActionStateType(actionName string) *glib.VariantType
-	// HasAction checks if the named action exists within action_group.
-	//
-	// The function takes the following parameters:
-	//
-	//    - actionName: name of the action to check for.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: whether the named action exists.
-	//
-	HasAction(actionName string) bool
-	// ListActions lists the actions contained within action_group.
-	//
-	// The caller is responsible for freeing the list with g_strfreev() when it
-	// is no longer required.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8s: NULL-terminated array of the names of the actions in the
-	//      group.
-	//
-	ListActions() []string
 }
 
 // ActionGroup represents a group of actions. Actions can be used to expose
@@ -365,6 +134,9 @@ type ActionGrouper interface {
 	HasAction(actionName string) bool
 	// ListActions lists the actions contained within action_group.
 	ListActions() []string
+	// QueryAction queries all aspects of the named action within an
+	// action_group.
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 
 	// Action-added signals that a new action was just added to the group.
 	ConnectActionAdded(func(actionName string)) coreglib.SignalHandle
@@ -381,258 +153,6 @@ type ActionGrouper interface {
 
 var _ ActionGrouper = (*ActionGroup)(nil)
 
-func ifaceInitActionGrouper(gifacePtr, data C.gpointer) {
-	iface := (*C.GActionGroupInterface)(unsafe.Pointer(gifacePtr))
-	iface.action_added = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_added)
-	iface.action_enabled_changed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_enabled_changed)
-	iface.action_removed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_removed)
-	iface.action_state_changed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_state_changed)
-	iface.activate_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_activate_action)
-	iface.change_action_state = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_change_action_state)
-	iface.get_action_enabled = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_enabled)
-	iface.get_action_parameter_type = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_parameter_type)
-	iface.get_action_state = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state)
-	iface.get_action_state_hint = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state_hint)
-	iface.get_action_state_type = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state_type)
-	iface.has_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_has_action)
-	iface.list_actions = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_list_actions)
-}
-
-//export _gotk4_gio2_ActionGroupInterface_action_added
-func _gotk4_gio2_ActionGroupInterface_action_added(arg0 *C.GActionGroup, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.ActionAdded(_actionName)
-}
-
-//export _gotk4_gio2_ActionGroupInterface_action_enabled_changed
-func _gotk4_gio2_ActionGroupInterface_action_enabled_changed(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-	var _enabled bool      // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	if arg2 != 0 {
-		_enabled = true
-	}
-
-	iface.ActionEnabledChanged(_actionName, _enabled)
-}
-
-//export _gotk4_gio2_ActionGroupInterface_action_removed
-func _gotk4_gio2_ActionGroupInterface_action_removed(arg0 *C.GActionGroup, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.ActionRemoved(_actionName)
-}
-
-//export _gotk4_gio2_ActionGroupInterface_action_state_changed
-func _gotk4_gio2_ActionGroupInterface_action_state_changed(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string   // out
-	var _state *glib.Variant // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_state)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	iface.ActionStateChanged(_actionName, _state)
-}
-
-//export _gotk4_gio2_ActionGroupInterface_activate_action
-func _gotk4_gio2_ActionGroupInterface_activate_action(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string       // out
-	var _parameter *glib.Variant // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	if arg2 != nil {
-		_parameter = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-		C.g_variant_ref(arg2)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_parameter)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
-		)
-	}
-
-	iface.ActivateAction(_actionName, _parameter)
-}
-
-//export _gotk4_gio2_ActionGroupInterface_change_action_state
-func _gotk4_gio2_ActionGroupInterface_change_action_state(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string   // out
-	var _value *glib.Variant // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_value)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	iface.ChangeActionState(_actionName, _value)
-}
-
-//export _gotk4_gio2_ActionGroupInterface_get_action_enabled
-func _gotk4_gio2_ActionGroupInterface_get_action_enabled(arg0 *C.GActionGroup, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ok := iface.ActionEnabled(_actionName)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_ActionGroupInterface_get_action_parameter_type
-func _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariantType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	variantType := iface.ActionParameterType(_actionName)
-
-	if variantType != nil {
-		cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variantType)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_ActionGroupInterface_get_action_state
-func _gotk4_gio2_ActionGroupInterface_get_action_state(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	variant := iface.ActionState(_actionName)
-
-	if variant != nil {
-		cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_ActionGroupInterface_get_action_state_hint
-func _gotk4_gio2_ActionGroupInterface_get_action_state_hint(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	variant := iface.ActionStateHint(_actionName)
-
-	if variant != nil {
-		cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_ActionGroupInterface_get_action_state_type
-func _gotk4_gio2_ActionGroupInterface_get_action_state_type(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariantType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	variantType := iface.ActionStateType(_actionName)
-
-	if variantType != nil {
-		cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variantType)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_ActionGroupInterface_has_action
-func _gotk4_gio2_ActionGroupInterface_has_action(arg0 *C.GActionGroup, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ok := iface.HasAction(_actionName)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_ActionGroupInterface_list_actions
-func _gotk4_gio2_ActionGroupInterface_list_actions(arg0 *C.GActionGroup) (cret **C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(ActionGroupOverrider)
-
-	utf8s := iface.ListActions()
-
-	{
-		cret = (**C.void)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		{
-			out := unsafe.Slice(cret, len(utf8s)+1)
-			var zero *C.void
-			out[len(utf8s)] = zero
-			for i := range utf8s {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(utf8s[i])))
-			}
-		}
-	}
-
-	return cret
-}
-
 func wrapActionGroup(obj *coreglib.Object) *ActionGroup {
 	return &ActionGroup{
 		Object: obj,
@@ -644,7 +164,7 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_ActionGroup_ConnectActionAdded
-func _gotk4_gio2_ActionGroup_ConnectActionAdded(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gio2_ActionGroup_ConnectActionAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(actionName string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -670,7 +190,7 @@ func (actionGroup *ActionGroup) ConnectActionAdded(f func(actionName string)) co
 }
 
 //export _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged
-func _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gboolean, arg3 C.guintptr) {
+func _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.gboolean, arg3 C.guintptr) {
 	var f func(actionName string, enabled bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -700,7 +220,7 @@ func (actionGroup *ActionGroup) ConnectActionEnabledChanged(f func(actionName st
 }
 
 //export _gotk4_gio2_ActionGroup_ConnectActionRemoved
-func _gotk4_gio2_ActionGroup_ConnectActionRemoved(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gio2_ActionGroup_ConnectActionRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(actionName string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -727,7 +247,7 @@ func (actionGroup *ActionGroup) ConnectActionRemoved(f func(actionName string)) 
 }
 
 //export _gotk4_gio2_ActionGroup_ConnectActionStateChanged
-func _gotk4_gio2_ActionGroup_ConnectActionStateChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GVariant, arg3 C.guintptr) {
+func _gotk4_gio2_ActionGroup_ConnectActionStateChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(actionName string, value *glib.Variant)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -770,14 +290,16 @@ func (actionGroup *ActionGroup) ConnectActionStateChanged(f func(actionName stri
 //    - actionName: name of an action in the group.
 //
 func (actionGroup *ActionGroup) ActionAdded(actionName string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -794,7 +316,7 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 //    - enabled: whether or not the action is now enabled.
 //
 func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -805,8 +327,10 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 	if enabled {
 		_arg2 = C.TRUE
 	}
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -822,14 +346,16 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 //    - actionName: name of an action in the group.
 //
 func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -846,7 +372,7 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 //    - state: new state of the named action.
 //
 func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -855,8 +381,10 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(state)))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -899,7 +427,7 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 //    - parameter (optional) parameters to the activation.
 //
 func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -910,8 +438,10 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 	if parameter != nil {
 		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -936,7 +466,7 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 //    - value: new state.
 //
 func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -945,8 +475,10 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -968,7 +500,7 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 //    - ok: whether or not the action is currently enabled.
 //
 func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -976,7 +508,9 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1015,7 +549,7 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 //    - variantType (optional): parameter type.
 //
 func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.VariantType {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1023,7 +557,9 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1058,7 +594,7 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 //    - variant (optional): current state of the action.
 //
 func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1066,7 +602,9 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1115,7 +653,7 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 //    - variant (optional): state range hint.
 //
 func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1123,7 +661,9 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1170,7 +710,7 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 //    - variantType (optional): state type, if the action is stateful.
 //
 func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.VariantType {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -1178,7 +718,9 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1205,7 +747,7 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 //    - ok: whether the named action exists.
 //
 func (actionGroup *ActionGroup) HasAction(actionName string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -1213,7 +755,9 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionGroup)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1239,12 +783,13 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 //    - utf8s: NULL-terminated array of the names of the actions in the group.
 //
 func (actionGroup *ActionGroup) ListActions() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**ActionGroup)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
@@ -1269,4 +814,126 @@ func (actionGroup *ActionGroup) ListActions() []string {
 	}
 
 	return _utf8s
+}
+
+// QueryAction queries all aspects of the named action within an action_group.
+//
+// This function acquires the information available from
+// g_action_group_has_action(), g_action_group_get_action_enabled(),
+// g_action_group_get_action_parameter_type(),
+// g_action_group_get_action_state_type(),
+// g_action_group_get_action_state_hint() and g_action_group_get_action_state()
+// with a single function call.
+//
+// This provides two main benefits.
+//
+// The first is the improvement in efficiency that comes with not having to
+// perform repeated lookups of the action in order to discover different things
+// about it. The second is that implementing Group can now be done by only
+// overriding this one virtual function.
+//
+// The interface provides a default implementation of this function that calls
+// the individual functions, as required, to fetch the information. The
+// interface also provides default implementations of those functions that call
+// this function. All implementations, therefore, must override either this
+// function or all of the others.
+//
+// If the action exists, TRUE is returned and any of the requested fields (as
+// indicated by having a non-NULL reference passed in) are filled. If the action
+// doesn't exist, FALSE is returned and the fields may or may not have been
+// modified.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of an action in the group.
+//
+// The function returns the following values:
+//
+//    - enabled: if the action is presently enabled.
+//    - parameterType (optional): parameter type, or NULL if none needed.
+//    - stateType (optional): state type, or NULL if stateless.
+//    - stateHint (optional): state hint, or NULL if none.
+//    - state (optional): current state, or NULL if stateless.
+//    - ok: TRUE if the action exists, else FALSE.
+//
+func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+	var _args [2]girepository.Argument
+	var _outs [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _out2 *C.void    // in
+	var _out3 *C.void    // in
+	var _out4 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(actionGroup)
+	runtime.KeepAlive(actionName)
+
+	var _enabled bool                    // out
+	var _parameterType *glib.VariantType // out
+	var _stateType *glib.VariantType     // out
+	var _stateHint *glib.Variant         // out
+	var _state *glib.Variant             // out
+	var _ok bool                         // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+	_out4 = *(**C.void)(unsafe.Pointer(&_outs[4]))
+
+	if *_out0 != 0 {
+		_enabled = true
+	}
+	if _out1 != nil {
+		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_parameterType)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
+			},
+		)
+	}
+	if _out2 != nil {
+		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_out2)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_stateType)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
+			},
+		)
+	}
+	if _out3 != nil {
+		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_out3)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_stateHint)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+	if _out4 != nil {
+		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_out4)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_state)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _enabled, _parameterType, _stateType, _stateHint, _state, _ok
 }

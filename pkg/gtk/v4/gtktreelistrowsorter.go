@@ -83,7 +83,7 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 //    - treeListRowSorter: new GtkTreeListRowSorter.
 //
 func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -91,9 +91,10 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(sorter).Native()))
 	}
-	*(**Sorter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("new_TreeListRowSorter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("new_TreeListRowSorter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sorter)
@@ -112,14 +113,15 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 //    - sorter (optional) used.
 //
 func (self *TreeListRowSorter) GetSorter() *Sorter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**TreeListRowSorter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("get_sorter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("get_sorter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -143,7 +145,7 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 //    - sorter (optional) to use, or NULL.
 //
 func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -151,9 +153,11 @@ func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	if sorter != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	}
-	*(**TreeListRowSorter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("set_sorter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("set_sorter", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"runtime/cgo"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
@@ -23,4 +26,25 @@ type RequestedSize struct {
 // requestedSize is the struct that's finalized.
 type requestedSize struct {
 	native *C.GtkRequestedSize
+}
+
+// Data: client pointer.
+func (r *RequestedSize) Data() unsafe.Pointer {
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(r.native.data))
+	return v
+}
+
+// MinimumSize: minimum size needed for allocation in a given orientation.
+func (r *RequestedSize) MinimumSize() int32 {
+	var v int32 // out
+	v = int32(r.native.minimum_size)
+	return v
+}
+
+// NaturalSize: natural size for allocation in a given orientation.
+func (r *RequestedSize) NaturalSize() int32 {
+	var v int32 // out
+	v = int32(r.native.natural_size)
+	return v
 }

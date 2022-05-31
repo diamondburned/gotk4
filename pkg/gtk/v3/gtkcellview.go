@@ -135,17 +135,18 @@ func NewCellView() *CellView {
 //    - cellView: newly created CellView widget.
 //
 func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*CellAreaer)(unsafe.Pointer(&args[0])) = _arg0
-	*(**CellAreaContext)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_context", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
@@ -171,15 +172,16 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 //    - cellView: newly created CellView widget.
 //
 func NewCellViewWithMarkup(markup string) *CellView {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_markup", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_markup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(markup)
@@ -203,14 +205,15 @@ func NewCellViewWithMarkup(markup string) *CellView {
 //    - cellView: newly created CellView widget.
 //
 func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_pixbuf", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixbuf)
@@ -234,15 +237,16 @@ func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 //    - cellView: newly created CellView widget.
 //
 func NewCellViewWithText(text string) *CellView {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
@@ -262,14 +266,15 @@ func NewCellViewWithText(text string) *CellView {
 //    - treePath (optional): currently displayed row or NULL.
 //
 func (cellView *CellView) DisplayedRow() *TreePath {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-	*(**CellView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_displayed_row", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_displayed_row", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cellView)
@@ -297,14 +302,15 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 //    - ok: whether cell_view draws all of its cells in a sensitive state.
 //
 func (cellView *CellView) DrawSensitive() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-	*(**CellView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_draw_sensitive", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_draw_sensitive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cellView)
@@ -326,14 +332,15 @@ func (cellView *CellView) DrawSensitive() bool {
 //    - ok: whether cell_view requests space to fit the entire TreeModel.
 //
 func (cellView *CellView) FitModel() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-	*(**CellView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_fit_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_fit_model", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cellView)
@@ -354,14 +361,15 @@ func (cellView *CellView) FitModel() bool {
 //    - treeModel (optional) used or NULL.
 //
 func (cellView *CellView) Model() *TreeModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-	*(**CellView)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cellView)
@@ -375,6 +383,55 @@ func (cellView *CellView) Model() *TreeModel {
 	return _treeModel
 }
 
+// SizeOfRow sets requisition to the size needed by cell_view to display the
+// model row pointed to by path.
+//
+// Deprecated: Combo box formerly used this to calculate the sizes for
+// cellviews, now you can achieve this by either using the CellView:fit-model
+// property or by setting the currently displayed row of the CellView and using
+// gtk_widget_get_preferred_size().
+//
+// The function takes the following parameters:
+//
+//    - path: TreePath.
+//
+// The function returns the following values:
+//
+//    - requisition: return location for the size.
+//    - ok: TRUE.
+//
+func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_size_of_row", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cellView)
+	runtime.KeepAlive(path)
+
+	var _requisition *Requisition // out
+	var _ok bool                  // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _requisition, _ok
+}
+
 // SetBackgroundColor sets the background color of view.
 //
 // Deprecated: Use gtk_cell_view_set_background_rgba() instead.
@@ -384,15 +441,17 @@ func (cellView *CellView) Model() *TreeModel {
 //    - color: new background color.
 //
 func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(**CellView)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_background_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_background_color", _args[:], nil)
 
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(color)
@@ -405,15 +464,17 @@ func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 //    - rgba: new background color.
 //
 func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**CellView)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_background_rgba", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_background_rgba", _args[:], nil)
 
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(rgba)
@@ -430,7 +491,7 @@ func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 //    - path (optional) or NULL to unset.
 //
 func (cellView *CellView) SetDisplayedRow(path *TreePath) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -438,9 +499,11 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	if path != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	}
-	*(**CellView)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_displayed_row", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_displayed_row", _args[:], nil)
 
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(path)
@@ -456,7 +519,7 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 //    - drawSensitive: whether to draw all cells in a sensitive state.
 //
 func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -464,9 +527,11 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 	if drawSensitive {
 		_arg1 = C.TRUE
 	}
-	*(**CellView)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_draw_sensitive", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_draw_sensitive", _args[:], nil)
 
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(drawSensitive)
@@ -484,7 +549,7 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 //    - fitModel: whether cell_view should request space for the whole model.
 //
 func (cellView *CellView) SetFitModel(fitModel bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -492,9 +557,11 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 	if fitModel {
 		_arg1 = C.TRUE
 	}
-	*(**CellView)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_fit_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_fit_model", _args[:], nil)
 
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(fitModel)
@@ -509,7 +576,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 //    - model (optional): TreeModel.
 //
 func (cellView *CellView) SetModel(model TreeModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -517,9 +584,11 @@ func (cellView *CellView) SetModel(model TreeModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**CellView)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(model)

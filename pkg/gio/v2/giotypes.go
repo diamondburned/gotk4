@@ -5,6 +5,7 @@ package gio
 import (
 	"context"
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -45,7 +46,7 @@ func init() {
 type AsyncReadyCallback func(res AsyncResulter)
 
 //export _gotk4_gio2_AsyncReadyCallback
-func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 C.gpointer) {
+func _gotk4_gio2_AsyncReadyCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
 	var fn AsyncReadyCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -83,7 +84,7 @@ func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 
 type CancellableSourceFunc func(cancellable context.Context) (ok bool)
 
 //export _gotk4_gio2_CancellableSourceFunc
-func _gotk4_gio2_CancellableSourceFunc(arg1 *C.GCancellable, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_gio2_CancellableSourceFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
 	var fn CancellableSourceFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -169,7 +170,7 @@ func _gotk4_gio2_FileMeasureProgressCallback(arg1 C.gboolean, arg2 C.guint64, ar
 type PollableSourceFunc func(pollableStream *coreglib.Object) (ok bool)
 
 //export _gotk4_gio2_PollableSourceFunc
-func _gotk4_gio2_PollableSourceFunc(arg1 *C.GObject, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_gio2_PollableSourceFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
 	var fn PollableSourceFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -211,13 +212,14 @@ func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
 func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -253,7 +255,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 //      otherwise.
 //
 func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -261,7 +263,9 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(ns)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FileAttributeMatcher)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -285,12 +289,13 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 //      attribute exist.
 //
 func (matcher *FileAttributeMatcher) EnumerateNext() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
-	*(**FileAttributeMatcher)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -318,7 +323,7 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 //    - ok: TRUE if attribute matches matcher. FALSE otherwise.
 //
 func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -326,7 +331,9 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FileAttributeMatcher)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -354,7 +361,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 //    - ok: TRUE if the matcher only matches attribute. FALSE otherwise.
 //
 func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -362,7 +369,9 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FileAttributeMatcher)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -396,7 +405,7 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 //      attributes of matcher that are not matched by subtract.
 //
 func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -407,7 +416,9 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 	if subtract != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(subtract)))
 	}
-	*(**FileAttributeMatcher)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -440,14 +451,15 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 //      NULL if matcher was NULL.
 //
 func (matcher *FileAttributeMatcher) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if matcher != nil {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 	}
-	*(**FileAttributeMatcher)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -505,6 +517,20 @@ type inputVector struct {
 	native *C.GInputVector
 }
 
+// Buffer: pointer to a buffer where data will be written.
+func (i *InputVector) Buffer() unsafe.Pointer {
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(i.native.buffer))
+	return v
+}
+
+// Size: available size in buffer.
+func (i *InputVector) Size() uint {
+	var v uint // out
+	v = uint(i.native.size)
+	return v
+}
+
 // OutputMessage: structure used for scatter/gather data output when sending
 // multiple messages or packets in one go. You generally pass in an array of
 // Vectors and the operation will use all the buffers as if they were one
@@ -535,6 +561,20 @@ type OutputVector struct {
 // outputVector is the struct that's finalized.
 type outputVector struct {
 	native *C.GOutputVector
+}
+
+// Buffer: pointer to a buffer of data to read.
+func (o *OutputVector) Buffer() unsafe.Pointer {
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(o.native.buffer))
+	return v
+}
+
+// Size: size of buffer.
+func (o *OutputVector) Size() uint {
+	var v uint // out
+	v = uint(o.native.size)
+	return v
 }
 
 // Resource applications and libraries often contain binary or textual data that
@@ -701,13 +741,14 @@ func marshalResource(p uintptr) (interface{}, error) {
 
 // NewResourceFromData constructs a struct Resource.
 func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
-	*(**glib.Bytes)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -760,7 +801,7 @@ func marshalSrvTarget(p uintptr) (interface{}, error) {
 
 // NewSrvTarget constructs a struct SrvTarget.
 func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint16 // out
 	var _arg2 C.guint16 // out
@@ -772,10 +813,11 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	_arg1 = C.guint16(port)
 	_arg2 = C.guint16(priority)
 	_arg3 = C.guint16(weight)
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint16)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint16)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint16)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -804,12 +846,13 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 //    - srvTarget: copy of target.
 //
 func (target *SrvTarget) Copy() *SrvTarget {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-	*(**SrvTarget)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -838,12 +881,13 @@ func (target *SrvTarget) Copy() *SrvTarget {
 //    - utf8 target's hostname.
 //
 func (target *SrvTarget) Hostname() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-	*(**SrvTarget)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -863,12 +907,13 @@ func (target *SrvTarget) Hostname() string {
 //    - guint16 target's port.
 //
 func (target *SrvTarget) Port() uint16 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint16 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-	*(**SrvTarget)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 
@@ -889,12 +934,13 @@ func (target *SrvTarget) Port() uint16 {
 //    - guint16 target's priority.
 //
 func (target *SrvTarget) Priority() uint16 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint16 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-	*(**SrvTarget)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 
@@ -915,12 +961,13 @@ func (target *SrvTarget) Priority() uint16 {
 //    - guint16 target's weight.
 //
 func (target *SrvTarget) Weight() uint16 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint16 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-	*(**SrvTarget)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 

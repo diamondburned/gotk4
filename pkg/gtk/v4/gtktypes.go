@@ -78,15 +78,16 @@ func NewBitsetEmpty() *Bitset {
 
 // NewBitsetRange constructs a struct Bitset.
 func NewBitsetRange(start uint32, nItems uint32) *Bitset {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 C.guint // out
 	var _arg1 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = C.guint(start)
 	_arg1 = C.guint(nItems)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -117,14 +118,16 @@ func NewBitsetRange(start uint32, nItems uint32) *Bitset {
 //    - ok: TRUE if value was not part of self and self was changed.
 //
 func (self *Bitset) Add(value uint32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(value)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -149,7 +152,7 @@ func (self *Bitset) Add(value uint32) bool {
 //    - nItems: number of consecutive values to add.
 //
 func (self *Bitset) AddRange(start uint32, nItems uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -157,8 +160,10 @@ func (self *Bitset) AddRange(start uint32, nItems uint32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(start)
 	_arg2 = C.guint(nItems)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
@@ -174,7 +179,7 @@ func (self *Bitset) AddRange(start uint32, nItems uint32) {
 //    - last value to add.
 //
 func (self *Bitset) AddRangeClosed(first uint32, last uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -182,8 +187,10 @@ func (self *Bitset) AddRangeClosed(first uint32, last uint32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(first)
 	_arg2 = C.guint(last)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(first)
@@ -202,7 +209,7 @@ func (self *Bitset) AddRangeClosed(first uint32, last uint32) {
 //    - stride: row stride of the grid.
 //
 func (self *Bitset) AddRectangle(start uint32, width uint32, height uint32, stride uint32) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -214,10 +221,12 @@ func (self *Bitset) AddRectangle(start uint32, width uint32, height uint32, stri
 	_arg2 = C.guint(width)
 	_arg3 = C.guint(height)
 	_arg4 = C.guint(stride)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*uint32)(unsafe.Pointer(&args[4])) = _arg4
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.guint)(unsafe.Pointer(&_args[4])) = _arg4
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
@@ -237,14 +246,16 @@ func (self *Bitset) AddRectangle(start uint32, width uint32, height uint32, stri
 //    - ok: TRUE if self contains value.
 //
 func (self *Bitset) Contains(value uint32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(value)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -267,12 +278,13 @@ func (self *Bitset) Contains(value uint32) bool {
 //    - bitset: new bitset that contains the same values as self.
 //
 func (self *Bitset) Copy() *Bitset {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**Bitset)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -305,13 +317,15 @@ func (self *Bitset) Copy() *Bitset {
 //    - other: GtkBitset to compute the difference from.
 //
 func (self *Bitset) Difference(other *Bitset) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
@@ -328,14 +342,16 @@ func (self *Bitset) Difference(other *Bitset) {
 //    - ok: TRUE if self and other contain the same values.
 //
 func (self *Bitset) Equals(other *Bitset) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -360,12 +376,13 @@ func (self *Bitset) Equals(other *Bitset) bool {
 //    - guint: largest value in self.
 //
 func (self *Bitset) Maximum() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**Bitset)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -387,12 +404,13 @@ func (self *Bitset) Maximum() uint32 {
 //    - guint: smallest value in self.
 //
 func (self *Bitset) Minimum() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**Bitset)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -418,14 +436,16 @@ func (self *Bitset) Minimum() uint32 {
 //    - guint: value of the nth item in self.
 //
 func (self *Bitset) Nth(nth uint32) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(nth)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -452,12 +472,13 @@ func (self *Bitset) Nth(nth uint32) uint32 {
 //    - guint64: number of values in the set.
 //
 func (self *Bitset) Size() uint64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint64 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**Bitset)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
 
@@ -487,7 +508,7 @@ func (self *Bitset) Size() uint64 {
 //    - guint64: number of values in the set from first to last.
 //
 func (self *Bitset) SizeInRange(first uint32, last uint32) uint64 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint   // out
 	var _arg2 C.guint   // out
@@ -496,8 +517,10 @@ func (self *Bitset) SizeInRange(first uint32, last uint32) uint64 {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(first)
 	_arg2 = C.guint(last)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
 
@@ -524,13 +547,15 @@ func (self *Bitset) SizeInRange(first uint32, last uint32) uint64 {
 //    - other: GtkBitset to intersect with.
 //
 func (self *Bitset) Intersect(other *Bitset) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
@@ -543,12 +568,13 @@ func (self *Bitset) Intersect(other *Bitset) {
 //    - ok: TRUE if self is empty.
 //
 func (self *Bitset) IsEmpty() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**Bitset)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -574,14 +600,16 @@ func (self *Bitset) IsEmpty() bool {
 //    - ok: TRUE if value was part of self and self was changed.
 //
 func (self *Bitset) Remove(value uint32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(value)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -599,11 +627,12 @@ func (self *Bitset) Remove(value uint32) bool {
 
 // RemoveAll removes all values from the bitset so that it is empty again.
 func (self *Bitset) RemoveAll() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**Bitset)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(self)
 }
@@ -617,7 +646,7 @@ func (self *Bitset) RemoveAll() {
 //    - nItems: number of consecutive values to remove.
 //
 func (self *Bitset) RemoveRange(start uint32, nItems uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -625,8 +654,10 @@ func (self *Bitset) RemoveRange(start uint32, nItems uint32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(start)
 	_arg2 = C.guint(nItems)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
@@ -642,7 +673,7 @@ func (self *Bitset) RemoveRange(start uint32, nItems uint32) {
 //    - last value to remove.
 //
 func (self *Bitset) RemoveRangeClosed(first uint32, last uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -650,8 +681,10 @@ func (self *Bitset) RemoveRangeClosed(first uint32, last uint32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(first)
 	_arg2 = C.guint(last)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(first)
@@ -670,7 +703,7 @@ func (self *Bitset) RemoveRangeClosed(first uint32, last uint32) {
 //    - stride: row stride of the grid.
 //
 func (self *Bitset) RemoveRectangle(start uint32, width uint32, height uint32, stride uint32) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -682,10 +715,12 @@ func (self *Bitset) RemoveRectangle(start uint32, width uint32, height uint32, s
 	_arg2 = C.guint(width)
 	_arg3 = C.guint(height)
 	_arg4 = C.guint(stride)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*uint32)(unsafe.Pointer(&args[4])) = _arg4
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.guint)(unsafe.Pointer(&_args[4])) = _arg4
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
@@ -703,13 +738,15 @@ func (self *Bitset) RemoveRectangle(start uint32, width uint32, height uint32, s
 //    - amount to shift all values to the left.
 //
 func (self *Bitset) ShiftLeft(amount uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(amount)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(amount)
@@ -724,13 +761,15 @@ func (self *Bitset) ShiftLeft(amount uint32) {
 //    - amount to shift all values to the right.
 //
 func (self *Bitset) ShiftRight(amount uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(amount)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(amount)
@@ -754,7 +793,7 @@ func (self *Bitset) ShiftRight(amount uint32) {
 //    - added: number of values to add.
 //
 func (self *Bitset) Splice(position uint32, removed uint32, added uint32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -764,9 +803,11 @@ func (self *Bitset) Splice(position uint32, removed uint32, added uint32) {
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(removed)
 	_arg3 = C.guint(added)
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
@@ -786,13 +827,15 @@ func (self *Bitset) Splice(position uint32, removed uint32, added uint32) {
 //    - other: GtkBitset to subtract.
 //
 func (self *Bitset) Subtract(other *Bitset) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
@@ -810,13 +853,15 @@ func (self *Bitset) Subtract(other *Bitset) {
 //    - other: GtkBitset to union with.
 //
 func (self *Bitset) Union(other *Bitset) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-	*(**Bitset)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)

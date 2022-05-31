@@ -13,7 +13,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern guint _gotk4_gio2_ListModelInterface_get_n_items(GListModel*);
+// extern gpointer _gotk4_gio2_ListModelInterface_get_item(void*, guint);
+// extern guint _gotk4_gio2_ListModelInterface_get_n_items(void*);
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
 import "C"
 
@@ -28,6 +29,21 @@ func init() {
 
 // ListModelOverrider contains methods that are overridable.
 type ListModelOverrider interface {
+	// Item: get the item at position. If position is greater than the number of
+	// items in list, NULL is returned.
+	//
+	// NULL is never returned for an index that is smaller than the length of
+	// the list. See g_list_model_get_n_items().
+	//
+	// The function takes the following parameters:
+	//
+	//    - position of the item to fetch.
+	//
+	// The function returns the following values:
+	//
+	//    - object (optional) at position.
+	//
+	Item(position uint32) *coreglib.Object
 	// NItems gets the number of items in list.
 	//
 	// Depending on the model implementation, calling this function may be less
@@ -115,11 +131,29 @@ var _ ListModeller = (*ListModel)(nil)
 
 func ifaceInitListModeller(gifacePtr, data C.gpointer) {
 	iface := (*C.GListModelInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_item = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item)
 	iface.get_n_items = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_n_items)
 }
 
+//export _gotk4_gio2_ListModelInterface_get_item
+func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.void, arg1 C.guint) (cret C.gpointer) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ListModelOverrider)
+
+	var _position uint32 // out
+
+	_position = uint32(arg1)
+
+	object := iface.Item(_position)
+
+	cret = C.gpointer(unsafe.Pointer(object.Native()))
+	C.g_object_ref(C.gpointer(object.Native()))
+
+	return cret
+}
+
 //export _gotk4_gio2_ListModelInterface_get_n_items
-func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.GListModel) (cret C.guint) {
+func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.void) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
@@ -185,12 +219,13 @@ func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint3
 //    - guint: number of items in list.
 //
 func (list *ListModel) NItems() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
-	*(**ListModel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -218,14 +253,16 @@ func (list *ListModel) NItems() uint32 {
 //    - object (optional) at position.
 //
 func (list *ListModel) Item(position uint32) *coreglib.Object {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 	_arg1 = C.guint(position)
-	*(**ListModel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -267,7 +304,7 @@ func (list *ListModel) Item(position uint32) *coreglib.Object {
 //    - added: number of items added.
 //
 func (list *ListModel) ItemsChanged(position, removed, added uint32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -277,9 +314,11 @@ func (list *ListModel) ItemsChanged(position, removed, added uint32) {
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(removed)
 	_arg3 = C.guint(added)
-	*(**ListModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)

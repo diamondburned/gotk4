@@ -155,16 +155,17 @@ func NewPicture() *Picture {
 //    - picture: new GtkPicture.
 //
 func NewPictureForFile(file gio.Filer) *Picture {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if file != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
-	*(*gio.Filer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
@@ -190,7 +191,7 @@ func NewPictureForFile(file gio.Filer) *Picture {
 //    - picture: new GtkPicture.
 //
 func NewPictureForFilename(filename string) *Picture {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -198,9 +199,10 @@ func NewPictureForFilename(filename string) *Picture {
 		_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg0))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_filename", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_filename", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
@@ -226,16 +228,17 @@ func NewPictureForFilename(filename string) *Picture {
 //    - picture: new GtkPicture.
 //
 func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if paintable != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 	}
-	*(*gdk.Paintabler)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_paintable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_paintable", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paintable)
@@ -263,16 +266,17 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 //    - picture: new GtkPicture.
 //
 func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if pixbuf != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
-	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_pixbuf", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixbuf)
@@ -299,7 +303,7 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 //    - picture: new GtkPicture.
 //
 func NewPictureForResource(resourcePath string) *Picture {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -307,9 +311,10 @@ func NewPictureForResource(resourcePath string) *Picture {
 		_arg0 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg0))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_resource", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("new_Picture_for_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resourcePath)
@@ -331,14 +336,15 @@ func NewPictureForResource(resourcePath string) *Picture {
 //    - utf8 (optional): alternative textual description of self.
 //
 func (self *Picture) AlternativeText() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Picture)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_alternative_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_alternative_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -359,14 +365,15 @@ func (self *Picture) AlternativeText() string {
 //    - ok: TRUE if the picture can be made smaller than its contents.
 //
 func (self *Picture) CanShrink() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Picture)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_can_shrink", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_can_shrink", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -390,14 +397,15 @@ func (self *Picture) CanShrink() bool {
 //    - file (optional): GFile displayed by self.
 //
 func (self *Picture) File() *gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Picture)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -424,14 +432,15 @@ func (self *Picture) File() *gio.File {
 //    - ok: TRUE if the self tries to keep the contents' aspect ratio.
 //
 func (self *Picture) KeepAspectRatio() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Picture)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_keep_aspect_ratio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_keep_aspect_ratio", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -453,14 +462,15 @@ func (self *Picture) KeepAspectRatio() bool {
 //      empty.
 //
 func (self *Picture) Paintable() *gdk.Paintable {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Picture)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_paintable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Picture").InvokeMethod("get_paintable", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -493,7 +503,7 @@ func (self *Picture) Paintable() *gdk.Paintable {
 //    - alternativeText (optional): textual description of the contents.
 //
 func (self *Picture) SetAlternativeText(alternativeText string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -502,9 +512,11 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(alternativeText)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_alternative_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_alternative_text", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(alternativeText)
@@ -526,7 +538,7 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 //    - canShrink: if self can be made smaller than its contents.
 //
 func (self *Picture) SetCanShrink(canShrink bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -534,9 +546,11 @@ func (self *Picture) SetCanShrink(canShrink bool) {
 	if canShrink {
 		_arg1 = C.TRUE
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_can_shrink", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_can_shrink", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(canShrink)
@@ -551,7 +565,7 @@ func (self *Picture) SetCanShrink(canShrink bool) {
 //    - file (optional): GFile or NULL.
 //
 func (self *Picture) SetFile(file gio.Filer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -559,9 +573,11 @@ func (self *Picture) SetFile(file gio.Filer) {
 	if file != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_file", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(file)
@@ -576,7 +592,7 @@ func (self *Picture) SetFile(file gio.Filer) {
 //    - filename (optional) to play.
 //
 func (self *Picture) SetFilename(filename string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -585,9 +601,11 @@ func (self *Picture) SetFilename(filename string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_filename", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_filename", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filename)
@@ -607,7 +625,7 @@ func (self *Picture) SetFilename(filename string) {
 //    - keepAspectRatio: whether to keep aspect ratio.
 //
 func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -615,9 +633,11 @@ func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 	if keepAspectRatio {
 		_arg1 = C.TRUE
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_keep_aspect_ratio", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_keep_aspect_ratio", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(keepAspectRatio)
@@ -634,7 +654,7 @@ func (self *Picture) SetKeepAspectRatio(keepAspectRatio bool) {
 //    - paintable (optional): GdkPaintable or NULL.
 //
 func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -642,9 +662,11 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 	if paintable != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_paintable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_paintable", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(paintable)
@@ -661,7 +683,7 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 //    - pixbuf (optional): GdkPixbuf or NULL.
 //
 func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -669,9 +691,11 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	if pixbuf != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_pixbuf", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_pixbuf", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(pixbuf)
@@ -687,7 +711,7 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //    - resourcePath (optional): resource to set.
 //
 func (self *Picture) SetResource(resourcePath string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -696,9 +720,11 @@ func (self *Picture) SetResource(resourcePath string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Picture)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_resource", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Picture").InvokeMethod("set_resource", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)

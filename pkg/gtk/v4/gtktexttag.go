@@ -83,7 +83,7 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 //    - textTag: new GtkTextTag.
 //
 func NewTextTag(name string) *TextTag {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -91,9 +91,10 @@ func NewTextTag(name string) *TextTag {
 		_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg0))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("new_TextTag", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("new_TextTag", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -116,7 +117,7 @@ func NewTextTag(name string) *TextTag {
 //    - sizeChanged: whether the change affects the GtkTextView layout.
 //
 func (tag *TextTag) Changed(sizeChanged bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -124,9 +125,11 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 	if sizeChanged {
 		_arg1 = C.TRUE
 	}
-	*(**TextTag)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "TextTag").InvokeMethod("changed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextTag").InvokeMethod("changed", _args[:], nil)
 
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(sizeChanged)
@@ -139,14 +142,15 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 //    - gint tag’s priority.
 //
 func (tag *TextTag) Priority() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	*(**TextTag)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("get_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("get_priority", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tag)
@@ -177,15 +181,17 @@ func (tag *TextTag) Priority() int32 {
 //    - priority: new priority.
 //
 func (tag *TextTag) SetPriority(priority int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	_arg1 = C.int(priority)
-	*(**TextTag)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "TextTag").InvokeMethod("set_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextTag").InvokeMethod("set_priority", _args[:], nil)
 
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)

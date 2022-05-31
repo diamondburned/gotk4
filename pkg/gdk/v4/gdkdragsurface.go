@@ -78,7 +78,7 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 //    - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
 func (dragSurface *DragSurface) Present(width, height int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
@@ -87,8 +87,10 @@ func (dragSurface *DragSurface) Present(width, height int32) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSurface).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
-	*(**DragSurface)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

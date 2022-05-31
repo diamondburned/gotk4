@@ -77,15 +77,16 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 //    - themedIcon: new Icon.
 //
 func NewThemedIcon(iconname string) *ThemedIcon {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconname)
@@ -108,7 +109,7 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 //    - themedIcon: new Icon.
 //
 func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 **C.void // out
 	var _arg1 C.int
 	var _cret *C.void // in
@@ -123,15 +124,16 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-	*(*[]string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon_from_names", args[:], nil)
+	*(***C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon_from_names", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconnames)
 
 	var _themedIcon *ThemedIcon // out
-	_out1 = *(**ThemedIcon)(unsafe.Pointer(&outs[1]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_themedIcon = wrapThemedIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -162,15 +164,16 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 //    - themedIcon: new Icon.
 //
 func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon_with_default_fallbacks", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon_with_default_fallbacks", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconname)
@@ -192,16 +195,18 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 //    - iconname: name of icon to append to list of icons from within icon.
 //
 func (icon *ThemedIcon) AppendName(iconname string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ThemedIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("append_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("append_name", _args[:], nil)
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(iconname)
@@ -214,14 +219,15 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 //    - utf8s: list of icon names.
 //
 func (icon *ThemedIcon) Names() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	*(**ThemedIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("get_names", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("get_names", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
@@ -255,16 +261,18 @@ func (icon *ThemedIcon) Names() []string {
 //    - iconname: name of icon to prepend to list of icons from within icon.
 //
 func (icon *ThemedIcon) PrependName(iconname string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ThemedIcon)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("prepend_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("prepend_name", _args[:], nil)
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(iconname)

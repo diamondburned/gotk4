@@ -83,7 +83,7 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 //    - filterListModel: new GtkFilterListModel.
 //
 func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -96,10 +96,11 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(filter).Native()))
 	}
-	*(*gio.ListModeller)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Filter)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("new_FilterListModel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("new_FilterListModel", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -119,14 +120,15 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 //    - filter (optional) currently in use or NULL if the list isn't filtered.
 //
 func (self *FilterListModel) Filter() *Filter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**FilterListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_filter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_filter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -149,14 +151,15 @@ func (self *FilterListModel) Filter() *Filter {
 //    - ok: TRUE if incremental filtering is enabled.
 //
 func (self *FilterListModel) Incremental() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**FilterListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_incremental", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_incremental", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -177,14 +180,15 @@ func (self *FilterListModel) Incremental() bool {
 //    - listModel (optional): model that gets filtered.
 //
 func (self *FilterListModel) Model() *gio.ListModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**FilterListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -223,14 +227,15 @@ func (self *FilterListModel) Model() *gio.ListModel {
 //    - guint: number of items not yet filtered.
 //
 func (self *FilterListModel) Pending() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**FilterListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_pending", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_pending", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -249,7 +254,7 @@ func (self *FilterListModel) Pending() uint32 {
 //    - filter (optional) to use or NULL to not filter items.
 //
 func (self *FilterListModel) SetFilter(filter *Filter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -257,9 +262,11 @@ func (self *FilterListModel) SetFilter(filter *Filter) {
 	if filter != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	}
-	*(**FilterListModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_filter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_filter", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filter)
@@ -287,7 +294,7 @@ func (self *FilterListModel) SetFilter(filter *Filter) {
 //    - incremental: TRUE to enable incremental filtering.
 //
 func (self *FilterListModel) SetIncremental(incremental bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -295,9 +302,11 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 	if incremental {
 		_arg1 = C.TRUE
 	}
-	*(**FilterListModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_incremental", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_incremental", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(incremental)
@@ -314,7 +323,7 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 //    - model (optional) to be filtered.
 //
 func (self *FilterListModel) SetModel(model gio.ListModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -322,9 +331,11 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**FilterListModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)

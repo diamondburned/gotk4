@@ -17,6 +17,7 @@ import (
 // extern PangoFont* _gotk4_pango1_FontsetClass_get_font(PangoFontset*, guint);
 // extern PangoFontMetrics* _gotk4_pango1_FontsetClass_get_metrics(PangoFontset*);
 // extern PangoLanguage* _gotk4_pango1_FontsetClass_get_language(PangoFontset*);
+// extern gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 // glib.Type values for pango-fontset.go.
@@ -232,6 +233,30 @@ func (fontset *Fontset) baseFontset() *Fontset {
 // BaseFontset returns the underlying base object.
 func BaseFontset(obj Fontsetter) *Fontset {
 	return obj.baseFontset()
+}
+
+// ForEach iterates through all the fonts in a fontset, calling func for each
+// one.
+//
+// If func returns TRUE, that stops the iteration.
+//
+// The function takes the following parameters:
+//
+//    - fn: callback function.
+//
+func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
+	var _arg0 *C.PangoFontset           // out
+	var _arg1 C.PangoFontsetForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
+
+	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(fontset)
+	runtime.KeepAlive(fn)
 }
 
 // Font returns the font in the fontset that contains the best glyph for a

@@ -95,16 +95,17 @@ func marshalHScale(p uintptr) (interface{}, error) {
 //    - hScale: new HScale.
 //
 func NewHScale(adjustment *Adjustment) *HScale {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if adjustment != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HScale").InvokeMethod("new_HScale", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HScale").InvokeMethod("new_HScale", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
@@ -139,7 +140,7 @@ func NewHScale(adjustment *Adjustment) *HScale {
 //    - hScale: new HScale.
 //
 func NewHScaleWithRange(min, max, step float64) *HScale {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 C.gdouble // out
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
@@ -148,11 +149,12 @@ func NewHScaleWithRange(min, max, step float64) *HScale {
 	_arg0 = C.gdouble(min)
 	_arg1 = C.gdouble(max)
 	_arg2 = C.gdouble(step)
-	*(*float64)(unsafe.Pointer(&args[0])) = _arg0
-	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "HScale").InvokeMethod("new_HScale_with_range", args[:], nil)
+	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "HScale").InvokeMethod("new_HScale_with_range", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(min)

@@ -109,12 +109,13 @@ func (r *RGBA) Alpha() float32 {
 //    - rgbA: newly allocated GdkRGBA, with the same contents as rgba.
 //
 func (rgba *RGBA) Copy() *RGBA {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**RGBA)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -133,6 +134,68 @@ func (rgba *RGBA) Copy() *RGBA {
 	return _rgbA
 }
 
+// Equal compares two GdkRGBA colors.
+//
+// The function takes the following parameters:
+//
+//    - p2: another GdkRGBA.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the two colors compare equal.
+//
+func (p1 *RGBA) Equal(p2 *RGBA) bool {
+	var _args [2]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
+	var _cret C.gboolean // in
+
+	_arg0 = C.gpointer(gextras.StructNative(unsafe.Pointer(p1)))
+	_arg1 = C.gpointer(gextras.StructNative(unsafe.Pointer(p2)))
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(p1)
+	runtime.KeepAlive(p2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Hash: hash function suitable for using for a hash table that stores GdkRGBAs.
+//
+// The function returns the following values:
+//
+//    - guint: hash value for p.
+//
+func (p *RGBA) Hash() uint32 {
+	var _args [1]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _cret C.guint    // in
+
+	_arg0 = C.gpointer(gextras.StructNative(unsafe.Pointer(p)))
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(p)
+
+	var _guint uint32 // out
+
+	_guint = uint32(_cret)
+
+	return _guint
+}
+
 // IsClear checks if an rgba value is transparent.
 //
 // That is, drawing with the value would not produce any change.
@@ -142,12 +205,13 @@ func (rgba *RGBA) Copy() *RGBA {
 //    - ok: TRUE if the rgba is clear.
 //
 func (rgba *RGBA) IsClear() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**RGBA)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -172,12 +236,13 @@ func (rgba *RGBA) IsClear() bool {
 //    - ok: TRUE if the rgba is opaque.
 //
 func (rgba *RGBA) IsOpaque() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**RGBA)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -223,7 +288,7 @@ func (rgba *RGBA) IsOpaque() bool {
 //    - ok: TRUE if the parsing succeeded.
 //
 func (rgba *RGBA) Parse(spec string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -231,7 +296,9 @@ func (rgba *RGBA) Parse(spec string) bool {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**RGBA)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -265,12 +332,13 @@ func (rgba *RGBA) Parse(spec string) bool {
 //    - utf8: newly allocated text string.
 //
 func (rgba *RGBA) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**RGBA)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

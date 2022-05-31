@@ -19,25 +19,25 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(GApplication*, GDBusConnection*, gchar*, GError**);
-// extern gboolean _gotk4_gio2_ApplicationClass_name_lost(GApplication*);
+// extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(void*, void*, void*, GError**);
+// extern gboolean _gotk4_gio2_ApplicationClass_name_lost(void*);
 // extern gboolean _gotk4_gio2_Application_ConnectNameLost(gpointer, guintptr);
-// extern gint _gotk4_gio2_ApplicationClass_handle_local_options(GApplication*, GVariantDict*);
-// extern gint _gotk4_gio2_Application_ConnectCommandLine(gpointer, GApplicationCommandLine*, guintptr);
-// extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, GVariantDict*, guintptr);
-// extern int _gotk4_gio2_ApplicationClass_command_line(GApplication*, GApplicationCommandLine*);
-// extern void _gotk4_gio2_ApplicationClass_activate(GApplication*);
-// extern void _gotk4_gio2_ApplicationClass_add_platform_data(GApplication*, GVariantBuilder*);
-// extern void _gotk4_gio2_ApplicationClass_after_emit(GApplication*, GVariant*);
-// extern void _gotk4_gio2_ApplicationClass_before_emit(GApplication*, GVariant*);
-// extern void _gotk4_gio2_ApplicationClass_dbus_unregister(GApplication*, GDBusConnection*, gchar*);
-// extern void _gotk4_gio2_ApplicationClass_open(GApplication*, GFile**, gint, gchar*);
-// extern void _gotk4_gio2_ApplicationClass_quit_mainloop(GApplication*);
-// extern void _gotk4_gio2_ApplicationClass_run_mainloop(GApplication*);
-// extern void _gotk4_gio2_ApplicationClass_shutdown(GApplication*);
-// extern void _gotk4_gio2_ApplicationClass_startup(GApplication*);
+// extern gint _gotk4_gio2_ApplicationClass_handle_local_options(void*, void*);
+// extern gint _gotk4_gio2_Application_ConnectCommandLine(gpointer, void*, guintptr);
+// extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, void*, guintptr);
+// extern int _gotk4_gio2_ApplicationClass_command_line(void*, void*);
+// extern void _gotk4_gio2_ApplicationClass_activate(void*);
+// extern void _gotk4_gio2_ApplicationClass_add_platform_data(void*, void*);
+// extern void _gotk4_gio2_ApplicationClass_after_emit(void*, void*);
+// extern void _gotk4_gio2_ApplicationClass_before_emit(void*, void*);
+// extern void _gotk4_gio2_ApplicationClass_dbus_unregister(void*, void*, void*);
+// extern void _gotk4_gio2_ApplicationClass_open(void*, void**, gint, void*);
+// extern void _gotk4_gio2_ApplicationClass_quit_mainloop(void*);
+// extern void _gotk4_gio2_ApplicationClass_run_mainloop(void*);
+// extern void _gotk4_gio2_ApplicationClass_shutdown(void*);
+// extern void _gotk4_gio2_ApplicationClass_startup(void*);
 // extern void _gotk4_gio2_Application_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gio2_Application_ConnectOpen(gpointer, GFile**, gint, gchar*, guintptr);
+// extern void _gotk4_gio2_Application_ConnectOpen(gpointer, void**, gint, void*, guintptr);
 // extern void _gotk4_gio2_Application_ConnectShutdown(gpointer, guintptr);
 // extern void _gotk4_gio2_Application_ConnectStartup(gpointer, guintptr);
 import "C"
@@ -326,7 +326,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ApplicationClass_activate
-func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
+func _gotk4_gio2_ApplicationClass_activate(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
@@ -334,7 +334,7 @@ func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
 }
 
 //export _gotk4_gio2_ApplicationClass_add_platform_data
-func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *C.GVariantBuilder) {
+func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AddPlatformData(builder *glib.VariantBuilder)
@@ -355,7 +355,7 @@ func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *
 }
 
 //export _gotk4_gio2_ApplicationClass_after_emit
-func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
+func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AfterEmit(platformData *glib.Variant)
@@ -376,7 +376,7 @@ func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVari
 }
 
 //export _gotk4_gio2_ApplicationClass_before_emit
-func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
+func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		BeforeEmit(platformData *glib.Variant)
@@ -397,7 +397,7 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 }
 
 //export _gotk4_gio2_ApplicationClass_command_line
-func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GApplicationCommandLine) (cret C.int) {
+func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.void, arg1 *C.void) (cret C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CommandLine(commandLine *ApplicationCommandLine) int32
@@ -415,7 +415,7 @@ func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GAp
 }
 
 //export _gotk4_gio2_ApplicationClass_dbus_register
-func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusRegister(connection *DBusConnection, objectPath string) error
@@ -437,7 +437,7 @@ func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GD
 }
 
 //export _gotk4_gio2_ApplicationClass_dbus_unregister
-func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar) {
+func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusUnregister(connection *DBusConnection, objectPath string)
@@ -453,7 +453,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.
 }
 
 //export _gotk4_gio2_ApplicationClass_handle_local_options
-func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg1 *C.GVariantDict) (cret C.gint) {
+func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.void, arg1 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		HandleLocalOptions(options *glib.VariantDict) int32
@@ -478,7 +478,7 @@ func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg
 }
 
 //export _gotk4_gio2_ApplicationClass_name_lost
-func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboolean) {
+func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NameLost() bool })
 
@@ -492,7 +492,7 @@ func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboole
 }
 
 //export _gotk4_gio2_ApplicationClass_open
-func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar) {
+func _gotk4_gio2_ApplicationClass_open(arg0 *C.void, arg1 **C.void, arg2 C.gint, arg3 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Open(files []Filer, hint string)
@@ -530,7 +530,7 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 }
 
 //export _gotk4_gio2_ApplicationClass_quit_mainloop
-func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
+func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ QuitMainloop() })
 
@@ -538,7 +538,7 @@ func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
 }
 
 //export _gotk4_gio2_ApplicationClass_run_mainloop
-func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
+func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RunMainloop() })
 
@@ -546,7 +546,7 @@ func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
 }
 
 //export _gotk4_gio2_ApplicationClass_shutdown
-func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
+func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Shutdown() })
 
@@ -554,7 +554,7 @@ func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
 }
 
 //export _gotk4_gio2_ApplicationClass_startup
-func _gotk4_gio2_ApplicationClass_startup(arg0 *C.GApplication) {
+func _gotk4_gio2_ApplicationClass_startup(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Startup() })
 
@@ -600,7 +600,7 @@ func (application *Application) ConnectActivate(f func()) coreglib.SignalHandle 
 }
 
 //export _gotk4_gio2_Application_ConnectCommandLine
-func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplicationCommandLine, arg2 C.guintptr) (cret C.gint) {
+func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gint) {
 	var f func(commandLine *ApplicationCommandLine) (gint int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -631,7 +631,7 @@ func (application *Application) ConnectCommandLine(f func(commandLine *Applicati
 }
 
 //export _gotk4_gio2_Application_ConnectHandleLocalOptions
-func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.GVariantDict, arg2 C.guintptr) (cret C.gint) {
+func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gint) {
 	var f func(options *glib.VariantDict) (gint int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -734,7 +734,7 @@ func (application *Application) ConnectNameLost(f func() (ok bool)) coreglib.Sig
 }
 
 //export _gotk4_gio2_Application_ConnectOpen
-func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.void, arg2 C.gint, arg3 *C.void, arg4 C.guintptr) {
 	var f func(files []Filer, hint string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -834,13 +834,14 @@ func (application *Application) ConnectStartup(f func()) coreglib.SignalHandle {
 //
 // The application must be registered before calling this function.
 func (application *Application) Activate() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("activate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("activate", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -874,18 +875,53 @@ func (application *Application) Activate() {
 //    - group: Group.
 //
 func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("add_option_group", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("add_option_group", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(group)
+}
+
+// BindBusyProperty marks application as busy (see g_application_mark_busy())
+// while property on object is TRUE.
+//
+// The binding holds a reference to application while it is active, but not to
+// object. Instead, the binding is destroyed when object is finalized.
+//
+// The function takes the following parameters:
+//
+//    - object: #GObject.
+//    - property: name of a boolean property of object.
+//
+func (application *Application) BindBusyProperty(object *coreglib.Object, property string) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 *C.void    // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("bind_busy_property", _args[:], nil)
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
 }
 
 // ApplicationID gets the unique identifier for application.
@@ -895,14 +931,15 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 //    - utf8 (optional): identifier for application, owned by application.
 //
 func (application *Application) ApplicationID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_application_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_application_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -934,14 +971,15 @@ func (application *Application) ApplicationID() string {
 //    - dBusConnection (optional) or NULL.
 //
 func (application *Application) DBusConnection() *DBusConnection {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_connection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -976,14 +1014,15 @@ func (application *Application) DBusConnection() *DBusConnection {
 //    - utf8 (optional): object path, or NULL.
 //
 func (application *Application) DBusObjectPath() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_object_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_object_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -1007,14 +1046,15 @@ func (application *Application) DBusObjectPath() string {
 //    - guint: timeout, in milliseconds.
 //
 func (application *Application) InactivityTimeout() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_inactivity_timeout", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_inactivity_timeout", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -1034,14 +1074,15 @@ func (application *Application) InactivityTimeout() uint32 {
 //    - ok: TRUE if application is currently marked as busy.
 //
 func (application *Application) IsBusy() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_busy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_busy", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -1065,14 +1106,15 @@ func (application *Application) IsBusy() bool {
 //    - ok: TRUE if application is registered.
 //
 func (application *Application) IsRegistered() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_registered", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_registered", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -1101,14 +1143,15 @@ func (application *Application) IsRegistered() bool {
 //    - ok: TRUE if application is remote.
 //
 func (application *Application) IsRemote() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_remote", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_remote", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -1131,14 +1174,15 @@ func (application *Application) IsRemote() bool {
 //    - utf8 (optional): base resource path, if one is set.
 //
 func (application *Application) ResourceBasePath() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_resource_base_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_resource_base_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
@@ -1160,13 +1204,14 @@ func (application *Application) ResourceBasePath() string {
 //
 // To cancel the hold, call g_application_release().
 func (application *Application) Hold() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("hold", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("hold", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1181,13 +1226,14 @@ func (application *Application) Hold() {
 //
 // To cancel the busy indication, use g_application_unmark_busy().
 func (application *Application) MarkBusy() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("mark_busy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("mark_busy", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1213,7 +1259,7 @@ func (application *Application) MarkBusy() {
 //    - hint (or ""), but never NULL.
 //
 func (application *Application) Open(files []Filer, hint string) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 **C.void // out
 	var _arg2 C.gint
@@ -1231,11 +1277,12 @@ func (application *Application) Open(files []Filer, hint string) {
 	}
 	_arg3 = (*C.void)(unsafe.Pointer(C.CString(hint)))
 	defer C.free(unsafe.Pointer(_arg3))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
-	*(*[]Filer)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("open", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("open", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(files)
@@ -1255,13 +1302,14 @@ func (application *Application) Open(files []Filer, hint string) {
 // The result of calling g_application_run() again after it returns is
 // unspecified.
 func (application *Application) Quit() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("quit", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("quit", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1300,7 +1348,7 @@ func (application *Application) Quit() {
 //    - ctx (optional) or NULL.
 //
 func (application *Application) Register(ctx context.Context) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -1311,9 +1359,11 @@ func (application *Application) Register(ctx context.Context) error {
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("register", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("register", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(ctx)
@@ -1334,13 +1384,14 @@ func (application *Application) Register(ctx context.Context) error {
 // Never call this function except to cancel the effect of a previous call to
 // g_application_hold().
 func (application *Application) Release() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("release", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("release", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1425,7 +1476,7 @@ func (application *Application) Release() {
 //    - gint: exit status.
 //
 func (application *Application) Run(argv []string) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg2 **C.void // out
 	var _arg1 C.int
@@ -1442,16 +1493,18 @@ func (application *Application) Run(argv []string) int32 {
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
-	*(*[]string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("run", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("run", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(argv)
 
 	var _gint int32 // out
+	_out2 = *(*C.int)(unsafe.Pointer(&_outs[2]))
 
 	_gint = int32(_cret)
 
@@ -1489,7 +1542,7 @@ func (application *Application) Run(argv []string) int32 {
 //    - notification to send.
 //
 func (application *Application) SendNotification(id string, notification *Notification) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1500,10 +1553,12 @@ func (application *Application) SendNotification(id string, notification *Notifi
 		defer C.free(unsafe.Pointer(_arg1))
 	}
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("send_notification", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("send_notification", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
@@ -1523,7 +1578,7 @@ func (application *Application) SendNotification(id string, notification *Notifi
 //    - actionGroup (optional) or NULL.
 //
 func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1531,9 +1586,11 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	if actionGroup != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_action_group", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_action_group", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(actionGroup)
@@ -1552,7 +1609,7 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 //    - applicationId (optional): identifier for application.
 //
 func (application *Application) SetApplicationID(applicationId string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1561,9 +1618,11 @@ func (application *Application) SetApplicationID(applicationId string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_application_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_application_id", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(applicationId)
@@ -1575,15 +1634,16 @@ func (application *Application) SetApplicationID(applicationId string) {
 // This function does not take its own reference on application. If application
 // is destroyed then the default application will revert back to NULL.
 func (application *Application) SetDefault() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	if application != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	}
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_default", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_default", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1602,15 +1662,17 @@ func (application *Application) SetDefault() {
 //    - inactivityTimeout: timeout, in milliseconds.
 //
 func (application *Application) SetInactivityTimeout(inactivityTimeout uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = C.guint(inactivityTimeout)
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_inactivity_timeout", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_inactivity_timeout", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(inactivityTimeout)
@@ -1627,7 +1689,7 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint32) {
 //      list of options, or NULL.
 //
 func (application *Application) SetOptionContextDescription(description string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1636,9 +1698,11 @@ func (application *Application) SetOptionContextDescription(description string) 
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(description)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_description", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_description", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(description)
@@ -1658,7 +1722,7 @@ func (application *Application) SetOptionContextDescription(description string) 
 //      of --help output, after the usage summary programname [OPTION...].
 //
 func (application *Application) SetOptionContextParameterString(parameterString string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1667,9 +1731,11 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(parameterString)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_parameter_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_parameter_string", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(parameterString)
@@ -1685,7 +1751,7 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 //      of options, or NULL.
 //
 func (application *Application) SetOptionContextSummary(summary string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1694,9 +1760,11 @@ func (application *Application) SetOptionContextSummary(summary string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(summary)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_summary", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_summary", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(summary)
@@ -1739,7 +1807,7 @@ func (application *Application) SetOptionContextSummary(summary string) {
 //    - resourcePath (optional): resource path to use.
 //
 func (application *Application) SetResourceBasePath(resourcePath string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1748,12 +1816,45 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_resource_base_path", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("set_resource_base_path", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(resourcePath)
+}
+
+// UnbindBusyProperty destroys a binding between property and the busy state of
+// application that was previously created with
+// g_application_bind_busy_property().
+//
+// The function takes the following parameters:
+//
+//    - object: #GObject.
+//    - property: name of a boolean property of object.
+//
+func (application *Application) UnbindBusyProperty(object *coreglib.Object, property string) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 *C.void    // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("unbind_busy_property", _args[:], nil)
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(property)
 }
 
 // UnmarkBusy decreases the busy count of application.
@@ -1764,13 +1865,14 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 // This function must only be called to cancel the effect of a previous call to
 // g_application_mark_busy().
 func (application *Application) UnmarkBusy() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**Application)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("unmark_busy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("unmark_busy", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1793,16 +1895,18 @@ func (application *Application) UnmarkBusy() {
 //    - id of a previously sent notification.
 //
 func (application *Application) WithdrawNotification(id string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("withdraw_notification", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Application").InvokeMethod("withdraw_notification", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
@@ -1892,15 +1996,16 @@ func ApplicationGetDefault() *Application {
 //    - ok: TRUE if application_id is valid.
 //
 func ApplicationIDIsValid(applicationId string) bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "id_is_valid").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "id_is_valid").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(applicationId)

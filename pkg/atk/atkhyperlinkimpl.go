@@ -13,7 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(AtkHyperlinkImpl*);
+// extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(void*);
 import "C"
 
 // glib.Type values for atkhyperlinkimpl.go.
@@ -89,7 +89,7 @@ func ifaceInitHyperlinkImpler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_HyperlinkImplIface_get_hyperlink
-func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.AtkHyperlinkImpl) (cret *C.AtkHyperlink) {
+func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.void) (cret *C.AtkHyperlink) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HyperlinkImplOverrider)
 
@@ -119,12 +119,13 @@ func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 //      AtkObject.
 //
 func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
-	*(**HyperlinkImpl)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

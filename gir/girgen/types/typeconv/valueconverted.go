@@ -54,12 +54,12 @@ type ValueType struct {
 	NeedsNamespace bool
 }
 
-func (vt *ValueType) Import(h *file.Header, public bool) {
+func (vt *ValueType) Import(gen types.FileGenerator, h *file.Header, public bool) {
 	if vt.NeedsNamespace {
 		if public {
-			vt.Resolved.ImportPubl(h)
+			vt.Resolved.ImportPubl(gen, h)
 		} else {
-			vt.Resolved.ImportImpl(h)
+			vt.Resolved.ImportImpl(gen, h)
 		}
 	}
 }
@@ -246,6 +246,8 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 			cgoType = types.MovePtr(cgoType, "C.void")
 		} else if types.GIRIsPrimitive(cType) {
 			// cgoType OK as it is.
+		} else if prim := value.Resolved.AsPrimitiveCType(conv.fgen); prim != "" {
+			cgoType = types.MovePtr(cgoType, types.CGoTypeFromC(prim))
 		} else {
 			value.Logln(logger.Debug, "cType", cType, "is not primitive")
 			return false
@@ -452,13 +454,12 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	}
 
 	if needsImporting {
-		vType.Import(&value.header, value.IsPublic)
+		vType.Import(conv.fgen, &value.header, value.IsPublic)
 	}
 
 	if vType.Resolved.IsCallback() {
 		types.AddCallbackHeader(
-			&value.header,
-			vType.Resolved.Extern.NamespaceFindResult,
+			conv.fgen, &value.header,
 			vType.Resolved.Extern.Type.(*gir.Callback),
 		)
 	}

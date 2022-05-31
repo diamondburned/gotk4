@@ -16,9 +16,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GInputStream* _gotk4_gio2_ApplicationCommandLineClass_get_stdin(GApplicationCommandLine*);
-// extern void _gotk4_gio2_ApplicationCommandLineClass_print_literal(GApplicationCommandLine*, gchar*);
-// extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(GApplicationCommandLine*, gchar*);
+// extern GInputStream* _gotk4_gio2_ApplicationCommandLineClass_get_stdin(void*);
+// extern void _gotk4_gio2_ApplicationCommandLineClass_print_literal(void*, void*);
+// extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(void*, void*);
 import "C"
 
 // glib.Type values for gapplicationcommandline.go.
@@ -160,7 +160,7 @@ func classInitApplicationCommandLiner(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ApplicationCommandLineClass_get_stdin
-func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationCommandLine) (cret *C.GInputStream) {
+func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.void) (cret *C.GInputStream) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Stdin() InputStreamer })
 
@@ -175,7 +175,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationComma
 }
 
 //export _gotk4_gio2_ApplicationCommandLineClass_print_literal
-func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
+func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrintLiteral(message string) })
 
@@ -187,7 +187,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.GApplicationC
 }
 
 //export _gotk4_gio2_ApplicationCommandLineClass_printerr_literal
-func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
+func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrinterrLiteral(message string) })
 
@@ -224,7 +224,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 //    - file: new #GFile.
 //
 func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -232,9 +232,11 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(arg)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("create_file_for_arg", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("create_file_for_arg", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -245,6 +247,53 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
+}
+
+// Arguments gets the list of arguments that was passed on the command line.
+//
+// The strings in the array may contain non-UTF-8 data on UNIX (such as
+// filenames or arguments given in the system locale) but are always in UTF-8 on
+// Windows.
+//
+// If you wish to use the return value with Context, you must use
+// g_option_context_parse_strv().
+//
+// The return value is NULL-terminated and should be freed using g_strfreev().
+//
+// The function returns the following values:
+//
+//    - filenames: the string array containing the arguments (the argv).
+//
+func (cmdline *ApplicationCommandLine) Arguments() []string {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret **C.gchar // in
+	var _out0 *C.void   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_arguments", _args[:], _outs[:])
+	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cmdline)
+
+	var _filenames []string // out
+	_out0 = *(***C.gchar)(unsafe.Pointer(&_outs[0]))
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice((**C.void)(_cret), _out0)
+		_filenames = make([]string, _out0)
+		for i := 0; i < int(_out0); i++ {
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _filenames
 }
 
 // Cwd gets the working directory of the command line invocation. The string may
@@ -261,14 +310,15 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 //    - filename (optional): current directory, or NULL.
 //
 func (cmdline *ApplicationCommandLine) Cwd() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_cwd", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_cwd", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -303,14 +353,15 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 //    - filenames: the environment strings, or NULL if they were not sent.
 //
 func (cmdline *ApplicationCommandLine) Environ() []string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret **C.gchar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_environ", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_environ", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -342,14 +393,15 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 //    - gint: exit status.
 //
 func (cmdline *ApplicationCommandLine) ExitStatus() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_exit_status", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_exit_status", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -368,14 +420,15 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int32 {
 //    - ok: TRUE if the invocation was remote.
 //
 func (cmdline *ApplicationCommandLine) IsRemote() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_is_remote", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_is_remote", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -405,14 +458,15 @@ func (cmdline *ApplicationCommandLine) IsRemote() bool {
 //    - variantDict with the options.
 //
 func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_options_dict", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_options_dict", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -445,14 +499,15 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 //    - variant (optional): platform data, or NULL.
 //
 func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_platform_data", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_platform_data", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -487,14 +542,15 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 //    - inputStream (optional) for stdin.
 //
 func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_stdin", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_stdin", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -542,7 +598,7 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 //    - utf8 (optional): value of the variable, or NULL if unset or unsent.
 //
 func (cmdline *ApplicationCommandLine) env(name string) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -550,9 +606,11 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("getenv", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("getenv", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
@@ -592,15 +650,17 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 //    - exitStatus: exit status.
 //
 func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
 	_arg1 = C.int(exitStatus)
-	*(**ApplicationCommandLine)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("set_exit_status", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("set_exit_status", _args[:], nil)
 
 	runtime.KeepAlive(cmdline)
 	runtime.KeepAlive(exitStatus)

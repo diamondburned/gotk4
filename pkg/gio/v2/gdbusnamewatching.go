@@ -21,7 +21,7 @@ import "C"
 type BusNameAppearedCallback func(connection *DBusConnection, name, nameOwner string)
 
 //export _gotk4_gio2_BusNameAppearedCallback
-func _gotk4_gio2_BusNameAppearedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) {
+func _gotk4_gio2_BusNameAppearedCallback(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) {
 	var fn BusNameAppearedCallback
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -50,7 +50,7 @@ func _gotk4_gio2_BusNameAppearedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 type BusNameVanishedCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameVanishedCallback
-func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
+func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
 	var fn BusNameVanishedCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -83,13 +83,14 @@ func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 //    - watcherId: identifier obtained from g_bus_watch_name().
 //
 func BusUnwatchName(watcherId uint32) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(watcherId)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "bus_unwatch_name").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "bus_unwatch_name").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(watcherId)
 }

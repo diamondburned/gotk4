@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -41,6 +42,51 @@ func init() {
 
 func init() {
 	girepository.Require("Gtk", "3.0")
+}
+
+// The function returns the following values:
+//
+func BuilderErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
+}
+
+// The function returns the following values:
+//
+func CSSProviderErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
+}
+
+// The function returns the following values:
+//
+func IconThemeErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
 }
 
 type MovementStep C.gint
@@ -121,6 +167,36 @@ func (n NotebookTab) String() string {
 	default:
 		return fmt.Sprintf("NotebookTab(%d)", n)
 	}
+}
+
+// The function returns the following values:
+//
+func RecentChooserErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
+}
+
+// The function returns the following values:
+//
+func RecentManagerErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
 }
 
 type ResizeMode C.gint

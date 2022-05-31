@@ -14,8 +14,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_CellRendererTextClass_edited(GtkCellRendererText*, gchar*, gchar*);
-// extern void _gotk4_gtk3_CellRendererText_ConnectEdited(gpointer, gchar*, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellRendererTextClass_edited(void*, void*, void*);
+// extern void _gotk4_gtk3_CellRendererText_ConnectEdited(gpointer, void*, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkcellrenderertext.go.
@@ -69,7 +69,7 @@ func classInitCellRendererTexter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CellRendererTextClass_edited
-func _gotk4_gtk3_CellRendererTextClass_edited(arg0 *C.GtkCellRendererText, arg1 *C.gchar, arg2 *C.gchar) {
+func _gotk4_gtk3_CellRendererTextClass_edited(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Edited(path, newText string) })
 
@@ -97,7 +97,7 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_CellRendererText_ConnectEdited
-func _gotk4_gtk3_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
+func _gotk4_gtk3_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(path, newText string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -164,15 +164,17 @@ func NewCellRendererText() *CellRendererText {
 //      -1.
 //
 func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = C.gint(numberOfRows)
-	*(**CellRendererText)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "CellRendererText").InvokeMethod("set_fixed_height_from_font", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellRendererText").InvokeMethod("set_fixed_height_from_font", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(numberOfRows)

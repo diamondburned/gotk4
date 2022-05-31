@@ -13,9 +13,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(GActionMap*, gchar*);
-// extern void _gotk4_gio2_ActionMapInterface_add_action(GActionMap*, GAction*);
-// extern void _gotk4_gio2_ActionMapInterface_remove_action(GActionMap*, gchar*);
+// extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(void*, void*);
+// extern void _gotk4_gio2_ActionMapInterface_add_action(void*, void*);
+// extern void _gotk4_gio2_ActionMapInterface_remove_action(void*, void*);
 import "C"
 
 // glib.Type values for gactionmap.go.
@@ -105,7 +105,7 @@ func ifaceInitActionMapper(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ActionMapInterface_add_action
-func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GAction) {
+func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
@@ -133,7 +133,7 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GActi
 }
 
 //export _gotk4_gio2_ActionMapInterface_lookup_action
-func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gchar) (cret *C.GAction) {
+func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.void, arg1 *C.void) (cret *C.GAction) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
@@ -151,7 +151,7 @@ func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gc
 }
 
 //export _gotk4_gio2_ActionMapInterface_remove_action
-func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.GActionMap, arg1 *C.gchar) {
+func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
@@ -184,13 +184,15 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 //    - action: #GAction.
 //
 func (actionMap *ActionMap) AddAction(action Actioner) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**ActionMap)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(action)
@@ -209,7 +211,7 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //    - action (optional) or NULL.
 //
 func (actionMap *ActionMap) LookupAction(actionName string) *Action {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -217,7 +219,9 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionMap)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -242,14 +246,16 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 //    - actionName: name of the action.
 //
 func (actionMap *ActionMap) RemoveAction(actionName string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**ActionMap)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)

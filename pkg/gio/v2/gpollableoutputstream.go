@@ -17,9 +17,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GSource* _gotk4_gio2_PollableOutputStreamInterface_create_source(GPollableOutputStream*, GCancellable*);
-// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_can_poll(GPollableOutputStream*);
-// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_is_writable(GPollableOutputStream*);
+// extern GSource* _gotk4_gio2_PollableOutputStreamInterface_create_source(void*, void*);
+// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_can_poll(void*);
+// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_is_writable(void*);
 import "C"
 
 // glib.Type values for gpollableoutputstream.go.
@@ -120,7 +120,7 @@ func ifaceInitPollableOutputStreamer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_PollableOutputStreamInterface_can_poll
-func _gotk4_gio2_PollableOutputStreamInterface_can_poll(arg0 *C.GPollableOutputStream) (cret C.gboolean) {
+func _gotk4_gio2_PollableOutputStreamInterface_can_poll(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableOutputStreamOverrider)
 
@@ -134,7 +134,7 @@ func _gotk4_gio2_PollableOutputStreamInterface_can_poll(arg0 *C.GPollableOutputS
 }
 
 //export _gotk4_gio2_PollableOutputStreamInterface_create_source
-func _gotk4_gio2_PollableOutputStreamInterface_create_source(arg0 *C.GPollableOutputStream, arg1 *C.GCancellable) (cret *C.GSource) {
+func _gotk4_gio2_PollableOutputStreamInterface_create_source(arg0 *C.void, arg1 *C.void) (cret *C.GSource) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableOutputStreamOverrider)
 
@@ -152,7 +152,7 @@ func _gotk4_gio2_PollableOutputStreamInterface_create_source(arg0 *C.GPollableOu
 }
 
 //export _gotk4_gio2_PollableOutputStreamInterface_is_writable
-func _gotk4_gio2_PollableOutputStreamInterface_is_writable(arg0 *C.GPollableOutputStream) (cret C.gboolean) {
+func _gotk4_gio2_PollableOutputStreamInterface_is_writable(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableOutputStreamOverrider)
 
@@ -190,12 +190,13 @@ func marshalPollableOutputStream(p uintptr) (interface{}, error) {
 //    - ok: TRUE if stream is pollable, FALSE if not.
 //
 func (stream *PollableOutputStream) CanPoll() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**PollableOutputStream)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -228,7 +229,7 @@ func (stream *PollableOutputStream) CanPoll() bool {
 //    - source: new #GSource.
 //
 func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Source {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -239,7 +240,9 @@ func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Sour
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**PollableOutputStream)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -274,12 +277,13 @@ func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Sour
 //      returning TRUE, and the next attempt to write will return the error.
 //
 func (stream *PollableOutputStream) IsWritable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**PollableOutputStream)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

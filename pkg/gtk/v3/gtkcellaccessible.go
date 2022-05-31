@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_CellAccessibleClass_update_cache(GtkCellAccessible*, gboolean);
+// extern void _gotk4_gtk3_CellAccessibleClass_update_cache(void*, gboolean);
 import "C"
 
 // glib.Type values for gtkcellaccessible.go.
@@ -65,7 +65,7 @@ func classInitCellAccessibler(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CellAccessibleClass_update_cache
-func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.GtkCellAccessible, arg1 C.gboolean) {
+func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.void, arg1 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UpdateCache(emitSignal bool) })
 

@@ -79,7 +79,7 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 //    - noSelection: new GtkNoSelection.
 //
 func NewNoSelection(model gio.ListModeller) *NoSelection {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -87,9 +87,10 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
-	*(*gio.ListModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "NoSelection").InvokeMethod("new_NoSelection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "NoSelection").InvokeMethod("new_NoSelection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -108,14 +109,15 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 //    - listModel: model being wrapped.
 //
 func (self *NoSelection) Model() *gio.ListModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**NoSelection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "NoSelection").InvokeMethod("get_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "NoSelection").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -141,7 +143,7 @@ func (self *NoSelection) Model() *gio.ListModel {
 //    - model (optional): GListModel to wrap.
 //
 func (self *NoSelection) SetModel(model gio.ListModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -149,9 +151,11 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**NoSelection)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "NoSelection").InvokeMethod("set_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "NoSelection").InvokeMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)

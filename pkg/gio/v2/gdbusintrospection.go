@@ -120,7 +120,7 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 //      annotations.
 //
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 **C.void // out
 	var _arg1 *C.void  // out
 	var _cret *C.void  // in
@@ -141,10 +141,11 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 	}
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(*[]*DBusAnnotationInfo)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "lookup").Invoke(args[:], nil)
+	*(***C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "lookup").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(annotations)
@@ -373,11 +374,12 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 // Note that info cannot be modified until g_dbus_interface_info_cache_release()
 // is called.
 func (info *DBusInterfaceInfo) CacheBuild() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(info)
 }
@@ -386,11 +388,12 @@ func (info *DBusInterfaceInfo) CacheBuild() {
 // g_dbus_interface_info_cache_build() (if any) and frees the resources used by
 // the cache if the usage count drops to zero.
 func (info *DBusInterfaceInfo) CacheRelease() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(info)
 }
@@ -410,7 +413,7 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 //      by info.
 //
 func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -418,7 +421,9 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -456,7 +461,7 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 //      owned by info.
 //
 func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -464,7 +469,9 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -502,7 +509,7 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 //      by info.
 //
 func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -510,7 +517,9 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusInterfaceInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -664,14 +673,15 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
 func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(xmlData)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -804,7 +814,7 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 //      owned by info.
 //
 func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -812,7 +822,9 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusNodeInfo)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

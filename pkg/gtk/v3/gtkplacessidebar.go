@@ -20,13 +20,13 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern gint _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(gpointer, gint, guintptr);
-// extern void _gotk4_gtk3_PlacesSidebar_ConnectMount(gpointer, GMountOperation*, guintptr);
-// extern void _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(gpointer, GtkWidget*, GFile*, GVolume*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectMount(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(gpointer, void*, void*, void*, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectShowConnectToServer(gpointer, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectShowEnterLocation(gpointer, guintptr);
-// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(gpointer, gchar*, gchar*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocations(gpointer, guintptr);
-// extern void _gotk4_gtk3_PlacesSidebar_ConnectUnmount(gpointer, GMountOperation*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectUnmount(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkplacessidebar.go.
@@ -234,7 +234,7 @@ func (sidebar *PlacesSidebar) ConnectDragActionAsk(f func(actions int32) (gint i
 }
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectMount
-func _gotk4_gtk3_PlacesSidebar_ConnectMount(arg0 C.gpointer, arg1 *C.GMountOperation, arg2 C.guintptr) {
+func _gotk4_gtk3_PlacesSidebar_ConnectMount(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(mountOperation *gio.MountOperation)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -267,7 +267,7 @@ func (sidebar *PlacesSidebar) ConnectMount(f func(mountOperation *gio.MountOpera
 }
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup
-func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 *C.GFile, arg3 *C.GVolume, arg4 C.guintptr) {
+func _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.guintptr) {
 	var f func(container Widgetter, selectedItem gio.Filer, selectedVolume gio.Volumer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -415,7 +415,7 @@ func (sidebar *PlacesSidebar) ConnectShowEnterLocation(f func()) coreglib.Signal
 }
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage
-func _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
+func _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
 	var f func(primary, secondary string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -469,7 +469,7 @@ func (sidebar *PlacesSidebar) ConnectShowOtherLocations(f func()) coreglib.Signa
 }
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectUnmount
-func _gotk4_gtk3_PlacesSidebar_ConnectUnmount(arg0 C.gpointer, arg1 *C.GMountOperation, arg2 C.guintptr) {
+func _gotk4_gtk3_PlacesSidebar_ConnectUnmount(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(mountOperation *gio.MountOperation)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -539,15 +539,17 @@ func NewPlacesSidebar() *PlacesSidebar {
 //    - location to add as an application-specific shortcut.
 //
 func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(location).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("add_shortcut", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("add_shortcut", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(location)
@@ -561,14 +563,15 @@ func (sidebar *PlacesSidebar) AddShortcut(location gio.Filer) {
 //    - ok: TRUE if the sidebar will only show local files.
 //
 func (sidebar *PlacesSidebar) LocalOnly() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_local_only", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_local_only", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -598,14 +601,15 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 //      visually selected.
 //
 func (sidebar *PlacesSidebar) Location() *gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_location", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_location", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -640,16 +644,18 @@ func (sidebar *PlacesSidebar) Location() *gio.File {
 //      chooser starts them with the keyboard shortcut "Alt-1".
 //
 func (sidebar *PlacesSidebar) NthBookmark(n int32) *gio.File {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
 	_arg1 = C.gint(n)
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_nth_bookmark", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_nth_bookmark", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -680,14 +686,15 @@ func (sidebar *PlacesSidebar) NthBookmark(n int32) *gio.File {
 //    - ok: TRUE if the sidebar will display a “Connect to Server” item.
 //
 func (sidebar *PlacesSidebar) ShowConnectToServer() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_connect_to_server", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_connect_to_server", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -710,14 +717,15 @@ func (sidebar *PlacesSidebar) ShowConnectToServer() bool {
 //      folder.
 //
 func (sidebar *PlacesSidebar) ShowDesktop() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_desktop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_desktop", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -739,14 +747,15 @@ func (sidebar *PlacesSidebar) ShowDesktop() bool {
 //    - ok: TRUE if the sidebar will display an “Enter Location” item.
 //
 func (sidebar *PlacesSidebar) ShowEnterLocation() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_enter_location", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_enter_location", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -768,14 +777,15 @@ func (sidebar *PlacesSidebar) ShowEnterLocation() bool {
 //    - ok: TRUE if the sidebar will display an “Other Locations” item.
 //
 func (sidebar *PlacesSidebar) ShowOtherLocations() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_other_locations", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_other_locations", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -797,14 +807,15 @@ func (sidebar *PlacesSidebar) ShowOtherLocations() bool {
 //    - ok: TRUE if the sidebar will display a builtin shortcut for recent files.
 //
 func (sidebar *PlacesSidebar) ShowRecent() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_recent", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_recent", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -826,14 +837,15 @@ func (sidebar *PlacesSidebar) ShowRecent() bool {
 //    - ok: TRUE if the sidebar will display a Starred item.
 //
 func (sidebar *PlacesSidebar) ShowStarredLocation() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_starred_location", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_starred_location", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -855,14 +867,15 @@ func (sidebar *PlacesSidebar) ShowStarredLocation() bool {
 //    - ok: TRUE if the sidebar will display a “Trash” item.
 //
 func (sidebar *PlacesSidebar) ShowTrash() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_trash", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("get_show_trash", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -887,14 +900,15 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 //         g_slist_free_full (list, (GDestroyNotify) g_object_unref);.
 //
 func (sidebar *PlacesSidebar) ListShortcuts() []*gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("list_shortcuts", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("list_shortcuts", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sidebar)
@@ -926,15 +940,17 @@ func (sidebar *PlacesSidebar) ListShortcuts() []*gio.File {
 //    - location to remove.
 //
 func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(location).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("remove_shortcut", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("remove_shortcut", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(location)
@@ -957,7 +973,7 @@ func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 //      to perform, so hints are more accurate.
 //
 func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context *gdk.DragContext) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _arg2 *C.void    // out
@@ -967,10 +983,12 @@ func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context *gdk.D
 		_arg1 = C.TRUE
 	}
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
-	*(*bool)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_drop_targets_visible", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_drop_targets_visible", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(visible)
@@ -984,7 +1002,7 @@ func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context *gdk.D
 //    - localOnly: whether to show only local files.
 //
 func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -992,9 +1010,11 @@ func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 	if localOnly {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_local_only", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_local_only", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(localOnly)
@@ -1011,7 +1031,7 @@ func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 //    - location (optional) to select, or NULL for no current path.
 //
 func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1019,9 +1039,11 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	if location != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(location).Native()))
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_location", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_location", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(location)
@@ -1044,7 +1066,7 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 //      command.
 //
 func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1052,9 +1074,11 @@ func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
 	if showConnectToServer {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_connect_to_server", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_connect_to_server", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showConnectToServer)
@@ -1070,7 +1094,7 @@ func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
 //    - showDesktop: whether to show an item for the Desktop folder.
 //
 func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1078,9 +1102,11 @@ func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
 	if showDesktop {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_desktop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_desktop", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showDesktop)
@@ -1098,7 +1124,7 @@ func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
 //    - showEnterLocation: whether to show an item to enter a location.
 //
 func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1106,9 +1132,11 @@ func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
 	if showEnterLocation {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_enter_location", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_enter_location", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showEnterLocation)
@@ -1129,7 +1157,7 @@ func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
 //    - showOtherLocations: whether to show an item for the Other Locations view.
 //
 func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1137,9 +1165,11 @@ func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
 	if showOtherLocations {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_other_locations", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_other_locations", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showOtherLocations)
@@ -1154,7 +1184,7 @@ func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
 //    - showRecent: whether to show an item for recent files.
 //
 func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1162,9 +1192,11 @@ func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
 	if showRecent {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_recent", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_recent", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showRecent)
@@ -1178,7 +1210,7 @@ func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
 //    - showStarredLocation: whether to show an item for Starred files.
 //
 func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1186,9 +1218,11 @@ func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
 	if showStarredLocation {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_starred_location", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_starred_location", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showStarredLocation)
@@ -1202,7 +1236,7 @@ func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
 //    - showTrash: whether to show an item for the Trash location.
 //
 func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1210,9 +1244,11 @@ func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
 	if showTrash {
 		_arg1 = C.TRUE
 	}
-	*(**PlacesSidebar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_trash", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PlacesSidebar").InvokeMethod("set_show_trash", _args[:], nil)
 
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(showTrash)

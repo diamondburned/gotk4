@@ -107,14 +107,15 @@ func BaseRenderer(obj Rendererer) *Renderer {
 //    - renderer (optional): GskRenderer.
 //
 func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(*gdk.Surfacer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("new_Renderer_for_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("new_Renderer_for_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
@@ -137,14 +138,15 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 //    - surface (optional): GdkSurface.
 //
 func (renderer *Renderer) Surface() gdk.Surfacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**Renderer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("get_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(renderer)
@@ -178,14 +180,15 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 //    - ok: TRUE if the GskRenderer was realized, and FALSE otherwise.
 //
 func (renderer *Renderer) IsRealized() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**Renderer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("is_realized", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("is_realized", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(renderer)
@@ -207,16 +210,18 @@ func (renderer *Renderer) IsRealized() bool {
 //    - surface: GdkSurface renderer will be used on.
 //
 func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(**Renderer)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gsk", "Renderer").InvokeMethod("realize", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gsk", "Renderer").InvokeMethod("realize", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(surface)
@@ -248,7 +253,7 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 //      whole window.
 //
 func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -258,10 +263,12 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	if region != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(region.Native()))
 	}
-	*(**Renderer)(unsafe.Pointer(&args[1])) = _arg1
-	*(*RenderNoder)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gsk", "Renderer").InvokeMethod("render", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gsk", "Renderer").InvokeMethod("render", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(root)
@@ -287,7 +294,7 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 //    - texture: GdkTexture with the rendered contents of root.
 //
 func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -298,10 +305,12 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 	if viewport != nil {
 		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(viewport)))
 	}
-	*(**Renderer)(unsafe.Pointer(&args[1])) = _arg1
-	*(*RenderNoder)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("render_texture", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("render_texture", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(renderer)
@@ -333,13 +342,14 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 // Unrealize releases all the resources created by gsk_renderer_realize().
 func (renderer *Renderer) Unrealize() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**Renderer)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gsk", "Renderer").InvokeMethod("unrealize", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gsk", "Renderer").InvokeMethod("unrealize", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 }

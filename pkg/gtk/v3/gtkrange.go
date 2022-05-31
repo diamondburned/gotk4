@@ -11,14 +11,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_RangeClass_adjust_bounds(GtkRange*, gdouble);
-// extern void _gotk4_gtk3_RangeClass_get_range_border(GtkRange*, GtkBorder*);
-// extern void _gotk4_gtk3_RangeClass_value_changed(GtkRange*);
+// extern void _gotk4_gtk3_RangeClass_adjust_bounds(void*, gdouble);
+// extern void _gotk4_gtk3_RangeClass_get_range_border(void*, void*);
+// extern void _gotk4_gtk3_RangeClass_value_changed(void*);
 // extern void _gotk4_gtk3_Range_ConnectAdjustBounds(gpointer, gdouble, guintptr);
 // extern void _gotk4_gtk3_Range_ConnectValueChanged(gpointer, guintptr);
 import "C"
@@ -99,7 +100,7 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_RangeClass_adjust_bounds
-func _gotk4_gtk3_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.gdouble) {
+func _gotk4_gtk3_RangeClass_adjust_bounds(arg0 *C.void, arg1 C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AdjustBounds(newValue float64) })
 
@@ -111,7 +112,7 @@ func _gotk4_gtk3_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.gdouble) {
 }
 
 //export _gotk4_gtk3_RangeClass_get_range_border
-func _gotk4_gtk3_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder) {
+func _gotk4_gtk3_RangeClass_get_range_border(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RangeBorder(border_ *Border) })
 
@@ -123,7 +124,7 @@ func _gotk4_gtk3_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder
 }
 
 //export _gotk4_gtk3_RangeClass_value_changed
-func _gotk4_gtk3_RangeClass_value_changed(arg0 *C.GtkRange) {
+func _gotk4_gtk3_RangeClass_value_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ValueChanged() })
 
@@ -220,14 +221,15 @@ func (_range *Range) ConnectValueChanged(f func()) coreglib.SignalHandle {
 //    - adjustment: Adjustment.
 //
 func (_range *Range) Adjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_adjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_adjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -246,14 +248,15 @@ func (_range *Range) Adjustment() *Adjustment {
 //    - gdouble: current fill level.
 //
 func (_range *Range) FillLevel() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_fill_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_fill_level", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -272,14 +275,15 @@ func (_range *Range) FillLevel() float64 {
 //    - ok: TRUE if the range is flippable.
 //
 func (_range *Range) Flippable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_flippable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_flippable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -300,14 +304,15 @@ func (_range *Range) Flippable() bool {
 //    - ok: TRUE if the range is inverted.
 //
 func (_range *Range) Inverted() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_inverted", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_inverted", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -332,14 +337,15 @@ func (_range *Range) Inverted() bool {
 //    - gint: minimum size of the range’s slider.
 //
 func (_range *Range) MinSliderSize() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_min_slider_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_min_slider_size", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -351,6 +357,37 @@ func (_range *Range) MinSliderSize() int32 {
 	return _gint
 }
 
+// RangeRect: this function returns the area that contains the range’s trough
+// and its steppers, in widget->window coordinates.
+//
+// This function is useful mainly for Range subclasses.
+//
+// The function returns the following values:
+//
+//    - rangeRect: return location for the range rectangle.
+//
+func (_range *Range) RangeRect() *gdk.Rectangle {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("get_range_rect", _args[:], _outs[:])
+
+	runtime.KeepAlive(_range)
+
+	var _rangeRect *gdk.Rectangle // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_rangeRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _rangeRect
+}
+
 // RestrictToFillLevel gets whether the range is restricted to the fill level.
 //
 // The function returns the following values:
@@ -358,14 +395,15 @@ func (_range *Range) MinSliderSize() int32 {
 //    - ok: TRUE if range is restricted to the fill level.
 //
 func (_range *Range) RestrictToFillLevel() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_restrict_to_fill_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_restrict_to_fill_level", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -387,14 +425,15 @@ func (_range *Range) RestrictToFillLevel() bool {
 //    - gint: number of digits to round to.
 //
 func (_range *Range) RoundDigits() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_round_digits", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_round_digits", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -413,14 +452,15 @@ func (_range *Range) RoundDigits() int32 {
 //    - ok: TRUE if range shows the fill level.
 //
 func (_range *Range) ShowFillLevel() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_show_fill_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_show_fill_level", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -434,6 +474,46 @@ func (_range *Range) ShowFillLevel() bool {
 	return _ok
 }
 
+// SliderRange: this function returns sliders range along the long dimension, in
+// widget->window coordinates.
+//
+// This function is useful mainly for Range subclasses.
+//
+// The function returns the following values:
+//
+//    - sliderStart (optional): return location for the slider's start, or NULL.
+//    - sliderEnd (optional): return location for the slider's end, or NULL.
+//
+func (_range *Range) SliderRange() (sliderStart int32, sliderEnd int32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("get_slider_range", _args[:], _outs[:])
+
+	runtime.KeepAlive(_range)
+
+	var _sliderStart int32 // out
+	var _sliderEnd int32   // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_sliderStart = *(*int32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_sliderEnd = *(*int32)(unsafe.Pointer(_out1))
+	}
+
+	return _sliderStart, _sliderEnd
+}
+
 // SliderSizeFixed: this function is useful mainly for Range subclasses.
 //
 // See gtk_range_set_slider_size_fixed().
@@ -443,14 +523,15 @@ func (_range *Range) ShowFillLevel() bool {
 //    - ok: whether the range’s slider has a fixed size.
 //
 func (_range *Range) SliderSizeFixed() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_slider_size_fixed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_slider_size_fixed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -471,14 +552,15 @@ func (_range *Range) SliderSizeFixed() bool {
 //    - gdouble: current value of the range.
 //
 func (_range *Range) Value() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
@@ -503,15 +585,17 @@ func (_range *Range) Value() float64 {
 //    - adjustment: Adjustment.
 //
 func (_range *Range) SetAdjustment(adjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_adjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_adjustment", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(adjustment)
@@ -539,15 +623,17 @@ func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 //    - fillLevel: new position of the fill level indicator.
 //
 func (_range *Range) SetFillLevel(fillLevel float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(fillLevel)
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_fill_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_fill_level", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(fillLevel)
@@ -563,7 +649,7 @@ func (_range *Range) SetFillLevel(fillLevel float64) {
 //    - flippable: TRUE to make the range flippable.
 //
 func (_range *Range) SetFlippable(flippable bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -571,9 +657,11 @@ func (_range *Range) SetFlippable(flippable bool) {
 	if flippable {
 		_arg1 = C.TRUE
 	}
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_flippable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_flippable", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(flippable)
@@ -589,7 +677,7 @@ func (_range *Range) SetFlippable(flippable bool) {
 //    - page size.
 //
 func (_range *Range) SetIncrements(step, page float64) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
@@ -597,10 +685,12 @@ func (_range *Range) SetIncrements(step, page float64) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(step)
 	_arg2 = C.gdouble(page)
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_increments", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_increments", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(step)
@@ -616,7 +706,7 @@ func (_range *Range) SetIncrements(step, page float64) {
 //    - setting: TRUE to invert the range.
 //
 func (_range *Range) SetInverted(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -624,9 +714,11 @@ func (_range *Range) SetInverted(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_inverted", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_inverted", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(setting)
@@ -643,15 +735,17 @@ func (_range *Range) SetInverted(setting bool) {
 //    - minSize slider’s minimum size.
 //
 func (_range *Range) SetMinSliderSize(minSize int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gint(minSize)
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_min_slider_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_min_slider_size", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(minSize)
@@ -667,7 +761,7 @@ func (_range *Range) SetMinSliderSize(minSize int32) {
 //    - max: maximum range value.
 //
 func (_range *Range) SetRange(min, max float64) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
@@ -675,10 +769,12 @@ func (_range *Range) SetRange(min, max float64) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(min)
 	_arg2 = C.gdouble(max)
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_range", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_range", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(min)
@@ -694,7 +790,7 @@ func (_range *Range) SetRange(min, max float64) {
 //    - restrictToFillLevel: whether the fill level restricts slider movement.
 //
 func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -702,9 +798,11 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 	if restrictToFillLevel {
 		_arg1 = C.TRUE
 	}
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_restrict_to_fill_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_restrict_to_fill_level", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(restrictToFillLevel)
@@ -718,15 +816,17 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 //    - roundDigits: precision in digits, or -1.
 //
 func (_range *Range) SetRoundDigits(roundDigits int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gint(roundDigits)
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_round_digits", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_round_digits", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(roundDigits)
@@ -741,7 +841,7 @@ func (_range *Range) SetRoundDigits(roundDigits int32) {
 //    - showFillLevel: whether a fill level indicator graphics is shown.
 //
 func (_range *Range) SetShowFillLevel(showFillLevel bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -749,9 +849,11 @@ func (_range *Range) SetShowFillLevel(showFillLevel bool) {
 	if showFillLevel {
 		_arg1 = C.TRUE
 	}
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_show_fill_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_show_fill_level", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(showFillLevel)
@@ -767,7 +869,7 @@ func (_range *Range) SetShowFillLevel(showFillLevel bool) {
 //    - sizeFixed: TRUE to make the slider size constant.
 //
 func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -775,9 +877,11 @@ func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
 	if sizeFixed {
 		_arg1 = C.TRUE
 	}
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_slider_size_fixed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_slider_size_fixed", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(sizeFixed)
@@ -792,15 +896,17 @@ func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
 //    - value: new value of the range.
 //
 func (_range *Range) SetValue(value float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
 	_arg1 = C.gdouble(value)
-	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Range").InvokeMethod("set_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_value", _args[:], nil)
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(value)

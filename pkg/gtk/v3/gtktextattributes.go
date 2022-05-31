@@ -81,12 +81,13 @@ func NewTextAttributes() *TextAttributes {
 //    - textAttributes: copy of src, free with gtk_text_attributes_unref().
 //
 func (src *TextAttributes) Copy() *TextAttributes {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-	*(**TextAttributes)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -113,13 +114,15 @@ func (src *TextAttributes) Copy() *TextAttributes {
 //    - dest: another TextAttributes.
 //
 func (src *TextAttributes) CopyValues(dest *TextAttributes) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
-	*(**TextAttributes)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(dest)

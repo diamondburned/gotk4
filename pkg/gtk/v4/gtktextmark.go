@@ -106,7 +106,7 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 //    - textMark: new GtkTextMark.
 //
 func NewTextMark(name string, leftGravity bool) *TextMark {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _cret *C.void    // in
@@ -118,10 +118,11 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 	if leftGravity {
 		_arg1 = C.TRUE
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("new_TextMark", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("new_TextMark", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -143,14 +144,15 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 //    - textBuffer mark’s GtkTextBuffer.
 //
 func (mark *TextMark) Buffer() *TextBuffer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_buffer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_buffer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mark)
@@ -171,14 +173,15 @@ func (mark *TextMark) Buffer() *TextBuffer {
 //    - ok: whether the mark is deleted.
 //
 func (mark *TextMark) Deleted() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_deleted", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_deleted", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mark)
@@ -199,14 +202,15 @@ func (mark *TextMark) Deleted() bool {
 //    - ok: TRUE if the mark has left gravity, FALSE otherwise.
 //
 func (mark *TextMark) LeftGravity() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_left_gravity", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_left_gravity", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mark)
@@ -229,14 +233,15 @@ func (mark *TextMark) LeftGravity() bool {
 //    - utf8 (optional): mark name.
 //
 func (mark *TextMark) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mark)
@@ -259,14 +264,15 @@ func (mark *TextMark) Name() string {
 //    - ok: TRUE if visible.
 //
 func (mark *TextMark) Visible() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	*(**TextMark)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_visible", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextMark").InvokeMethod("get_visible", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mark)
@@ -283,7 +289,7 @@ func (mark *TextMark) Visible() bool {
 // The function takes the following parameters:
 //
 func (mark *TextMark) SetVisible(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -291,9 +297,11 @@ func (mark *TextMark) SetVisible(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**TextMark)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "TextMark").InvokeMethod("set_visible", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextMark").InvokeMethod("set_visible", _args[:], nil)
 
 	runtime.KeepAlive(mark)
 	runtime.KeepAlive(setting)

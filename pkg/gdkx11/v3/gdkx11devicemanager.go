@@ -28,17 +28,18 @@ import "C"
 //      doesn’t currently represent a device.
 //
 func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int32) *X11DeviceCore {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
 	_arg1 = C.gint(deviceId)
-	*(**X11DeviceManagerCore)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("GdkX11", "x11_device_manager_lookup").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("GdkX11", "x11_device_manager_lookup").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deviceManager)

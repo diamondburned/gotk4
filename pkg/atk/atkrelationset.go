@@ -90,15 +90,17 @@ func NewRelationSet() *RelationSet {
 //    - relation: Relation.
 //
 func (set *RelationSet) Add(relation *Relation) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
-	*(**RelationSet)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Atk", "RelationSet").InvokeMethod("add", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Atk", "RelationSet").InvokeMethod("add", _args[:], nil)
 
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relation)
@@ -111,14 +113,15 @@ func (set *RelationSet) Add(relation *Relation) {
 //    - gint: integer representing the number of relations in the set.
 //
 func (set *RelationSet) NRelations() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	*(**RelationSet)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "RelationSet").InvokeMethod("get_n_relations", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "RelationSet").InvokeMethod("get_n_relations", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -142,16 +145,18 @@ func (set *RelationSet) NRelations() int32 {
 //    - relation which is the relation at position i in the set.
 //
 func (set *RelationSet) Relation(i int32) *Relation {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	_arg1 = C.gint(i)
-	*(**RelationSet)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "RelationSet").InvokeMethod("get_relation", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "RelationSet").InvokeMethod("get_relation", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -172,15 +177,17 @@ func (set *RelationSet) Relation(i int32) *Relation {
 //    - relation: Relation.
 //
 func (set *RelationSet) Remove(relation *Relation) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
-	*(**RelationSet)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Atk", "RelationSet").InvokeMethod("remove", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Atk", "RelationSet").InvokeMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relation)

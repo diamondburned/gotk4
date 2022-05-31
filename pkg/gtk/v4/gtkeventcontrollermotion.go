@@ -170,14 +170,15 @@ func NewEventControllerMotion() *EventControllerMotion {
 //    - ok: TRUE if a pointer is within self or one of its children.
 //
 func (self *EventControllerMotion) ContainsPointer() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**EventControllerMotion)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("contains_pointer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("contains_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -198,14 +199,15 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 //    - ok: TRUE if a pointer is within self but not one of its children.
 //
 func (self *EventControllerMotion) IsPointer() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**EventControllerMotion)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("is_pointer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("is_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)

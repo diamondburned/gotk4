@@ -74,14 +74,15 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 //    - fileIcon for the given file, or NULL on error.
 //
 func NewFileIcon(file Filer) *FileIcon {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(*Filer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("new_FileIcon", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("new_FileIcon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
@@ -100,14 +101,15 @@ func NewFileIcon(file Filer) *FileIcon {
 //    - file: #GFile.
 //
 func (icon *FileIcon) File() *File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	*(**FileIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("get_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("get_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)

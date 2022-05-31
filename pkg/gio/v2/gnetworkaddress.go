@@ -87,7 +87,7 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 //    - networkAddress: new Address.
 //
 func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint16 // out
 	var _cret *C.void   // in
@@ -95,10 +95,11 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(hostname)))
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = C.guint16(port)
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("new_NetworkAddress", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("new_NetworkAddress", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hostname)
@@ -132,14 +133,15 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 //    - networkAddress: new Address.
 //
 func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint16 // out
 	var _cret *C.void   // in
 
 	_arg0 = C.guint16(port)
-	*(*uint16)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("new_NetworkAddress_loopback", args[:], nil)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("new_NetworkAddress_loopback", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(port)
@@ -159,14 +161,15 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 //    - utf8 addr's hostname.
 //
 func (addr *NetworkAddress) Hostname() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
-	*(**NetworkAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_hostname", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_hostname", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(addr)
@@ -185,14 +188,15 @@ func (addr *NetworkAddress) Hostname() string {
 //    - guint16 addr's port (which may be 0).
 //
 func (addr *NetworkAddress) Port() uint16 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint16 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
-	*(**NetworkAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_port", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_port", _args[:], nil)
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(addr)
@@ -211,14 +215,15 @@ func (addr *NetworkAddress) Port() uint16 {
 //    - utf8 (optional) addr's scheme (NULL if not built from URI).
 //
 func (addr *NetworkAddress) Scheme() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
-	*(**NetworkAddress)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_scheme", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "NetworkAddress").InvokeMethod("get_scheme", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(addr)
@@ -263,7 +268,7 @@ func (addr *NetworkAddress) Scheme() string {
 //    - networkAddress: new Address, or NULL on error.
 //
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint16 // out
 	var _cret *C.void   // in
@@ -272,10 +277,11 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(hostAndPort)))
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = C.guint16(defaultPort)
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "parse").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "parse").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hostAndPort)
@@ -308,7 +314,7 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 //    - networkAddress: new Address, or NULL on error.
 //
 func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint16 // out
 	var _cret *C.void   // in
@@ -317,10 +323,11 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = C.guint16(defaultPort)
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint16)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "parse_uri").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "parse_uri").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(uri)

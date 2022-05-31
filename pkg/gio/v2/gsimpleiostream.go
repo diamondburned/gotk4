@@ -28,17 +28,18 @@ import "C"
 //    - simpleIOStream: new IOStream instance.
 //
 func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *SimpleIOStream {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(inputStream).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(outputStream).Native()))
-	*(*InputStreamer)(unsafe.Pointer(&args[0])) = _arg0
-	*(*OutputStreamer)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "SimpleIOStream").InvokeMethod("new_SimpleIOStream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "SimpleIOStream").InvokeMethod("new_SimpleIOStream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(inputStream)

@@ -177,7 +177,7 @@ func NewIconFactory() *IconFactory {
 //    - iconSet: icon set.
 //
 func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -186,10 +186,12 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
-	*(**IconFactory)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
@@ -204,13 +206,14 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 //
 // Deprecated: Use IconTheme instead.
 func (factory *IconFactory) AddDefault() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	*(**IconFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add_default", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add_default", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 }
@@ -232,7 +235,7 @@ func (factory *IconFactory) AddDefault() {
 //    - iconSet: icon set of stock_id.
 //
 func (factory *IconFactory) Lookup(stockId string) *IconSet {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -240,9 +243,11 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**IconFactory)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "IconFactory").InvokeMethod("lookup", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "IconFactory").InvokeMethod("lookup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(factory)
@@ -268,13 +273,14 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 //
 // Deprecated: Use IconTheme instead.
 func (factory *IconFactory) RemoveDefault() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	*(**IconFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("remove_default", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("remove_default", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 }
@@ -296,15 +302,16 @@ func (factory *IconFactory) RemoveDefault() {
 //    - iconSet or NULL.
 //
 func IconFactoryLookupDefault(stockId string) *IconSet {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "lookup_default").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "lookup_default").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)

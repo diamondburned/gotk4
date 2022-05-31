@@ -36,13 +36,14 @@ import "C"
 //    - context as e.g. returned by gtk_drag_begin_with_coordinates().
 //
 func DragCancel(context *gdk.DragContext) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "drag_cancel").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "drag_cancel").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -59,7 +60,7 @@ func DragCancel(context *gdk.DragContext) {
 //    - time_: timestamp from the Widget::drag-drop signal.
 //
 func DragFinish(context *gdk.DragContext, success, del bool, time_ uint32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _arg2 C.gboolean // out
@@ -73,12 +74,13 @@ func DragFinish(context *gdk.DragContext, success, del bool, time_ uint32) {
 		_arg2 = C.TRUE
 	}
 	_arg3 = C.guint32(time_)
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
-	*(*bool)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "drag_finish").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint32)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "drag_finish").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(success)
@@ -98,14 +100,15 @@ func DragFinish(context *gdk.DragContext, success, del bool, time_ uint32) {
 //      a pointer to the source widget. Otherwise, NULL.
 //
 func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "drag_get_source_widget").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "drag_get_source_widget").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -140,13 +143,14 @@ func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
 //      side of a drag).
 //
 func DragSetIconDefault(context *gdk.DragContext) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "drag_set_icon_default").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "drag_set_icon_default").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -164,7 +168,7 @@ func DragSetIconDefault(context *gdk.DragContext) {
 //    - hotY: y offset of the hotspot within the icon.
 //
 func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -174,12 +178,13 @@ func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	_arg2 = C.gint(hotX)
 	_arg3 = C.gint(hotY)
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(*gio.Iconner)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "drag_set_icon_gicon").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "drag_set_icon_gicon").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(icon)
@@ -201,7 +206,7 @@ func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int
 //    - hotY: y offset of the hotspot within the icon.
 //
 func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -212,12 +217,13 @@ func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int32
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(hotX)
 	_arg3 = C.gint(hotY)
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "drag_set_icon_name").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "drag_set_icon_name").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(iconName)
@@ -236,7 +242,7 @@ func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int32
 //    - hotY: y offset within widget of the hotspot.
 //
 func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX, hotY int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -246,12 +252,13 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX,
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	_arg2 = C.gint(hotX)
 	_arg3 = C.gint(hotY)
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "drag_set_icon_pixbuf").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "drag_set_icon_pixbuf").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(pixbuf)
@@ -272,7 +279,7 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX,
 //    - hotY: y offset within the icon of the hotspot.
 //
 func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -283,12 +290,13 @@ func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int32
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(hotX)
 	_arg3 = C.gint(hotY)
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "drag_set_icon_stock").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "drag_set_icon_stock").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(stockId)
@@ -311,16 +319,17 @@ func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int32
 //    - surface to use as icon.
 //
 func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(surface.Native()))
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(**cairo.Surface)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "drag_set_icon_surface").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "drag_set_icon_surface").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(surface)
@@ -339,7 +348,7 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 //    - hotY: y offset within widget of the hotspot.
 //
 func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -349,12 +358,13 @@ func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY in
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg2 = C.gint(hotX)
 	_arg3 = C.gint(hotY)
-	*(**gdk.DragContext)(unsafe.Pointer(&args[0])) = _arg0
-	*(*Widgetter)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "drag_set_icon_widget").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "drag_set_icon_widget").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -379,7 +389,7 @@ func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY in
 //    - ok: TRUE if the drag threshold has been passed.
 //
 func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int32) bool {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -392,12 +402,14 @@ func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int3
 	_arg2 = C.gint(startY)
 	_arg3 = C.gint(currentX)
 	_arg4 = C.gint(currentY)
-	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
-	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_check_threshold", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_check_threshold", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -419,13 +431,14 @@ func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int3
 // the highlight, call gtk_drag_unhighlight(). GTK+ calls this automatically if
 // GTK_DEST_DEFAULT_HIGHLIGHT is set.
 func (widget *Widget) DragHighlight() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_highlight", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_highlight", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -433,13 +446,14 @@ func (widget *Widget) DragHighlight() {
 // DragUnhighlight removes a highlight set by gtk_drag_highlight() from a
 // widget.
 func (widget *Widget) DragUnhighlight() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_unhighlight", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_unhighlight", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }

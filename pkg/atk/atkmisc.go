@@ -14,8 +14,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_atk1_MiscClass_threads_enter(AtkMisc*);
-// extern void _gotk4_atk1_MiscClass_threads_leave(AtkMisc*);
+// extern void _gotk4_atk1_MiscClass_threads_enter(void*);
+// extern void _gotk4_atk1_MiscClass_threads_leave(void*);
 import "C"
 
 // glib.Type values for atkmisc.go.
@@ -81,7 +81,7 @@ func classInitMiscer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_MiscClass_threads_enter
-func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
+func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsEnter() })
 
@@ -89,7 +89,7 @@ func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
 }
 
 //export _gotk4_atk1_MiscClass_threads_leave
-func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
+func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsLeave() })
 
@@ -112,13 +112,14 @@ func marshalMisc(p uintptr) (interface{}, error) {
 //
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsEnter() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
-	*(**Misc)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_enter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_enter", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 }
@@ -134,13 +135,14 @@ func (misc *Misc) ThreadsEnter() {
 //
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsLeave() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
-	*(**Misc)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_leave", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_leave", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 }

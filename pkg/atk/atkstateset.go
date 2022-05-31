@@ -89,16 +89,18 @@ func NewStateSet() *StateSet {
 //    - stateSet: new StateSet which is the intersection of the two sets.
 //
 func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
-	*(**StateSet)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("and_sets", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("and_sets", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -113,13 +115,14 @@ func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 
 // ClearStates removes all states from the state set.
 func (set *StateSet) ClearStates() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	*(**StateSet)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "StateSet").InvokeMethod("clear_states", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "StateSet").InvokeMethod("clear_states", _args[:], nil)
 
 	runtime.KeepAlive(set)
 }
@@ -131,14 +134,15 @@ func (set *StateSet) ClearStates() {
 //    - ok: TRUE if set has no states set, otherwise FALSE.
 //
 func (set *StateSet) IsEmpty() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	*(**StateSet)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("is_empty", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("is_empty", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -164,16 +168,18 @@ func (set *StateSet) IsEmpty() bool {
 //      returning NULL is empty.
 //
 func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
-	*(**StateSet)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("or_sets", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("or_sets", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -202,16 +208,18 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 //      of the two sets.
 //
 func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
-	*(**StateSet)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("xor_sets", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("xor_sets", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)

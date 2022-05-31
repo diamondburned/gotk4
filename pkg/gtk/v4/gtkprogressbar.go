@@ -137,14 +137,15 @@ func NewProgressBar() *ProgressBar {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (pbar *ProgressBar) Fraction() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_fraction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_fraction", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pbar)
@@ -163,14 +164,15 @@ func (pbar *ProgressBar) Fraction() float64 {
 //    - ok: TRUE if the progress bar is inverted.
 //
 func (pbar *ProgressBar) Inverted() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_inverted", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_inverted", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pbar)
@@ -193,14 +195,15 @@ func (pbar *ProgressBar) Inverted() bool {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (pbar *ProgressBar) PulseStep() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_pulse_step", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_pulse_step", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pbar)
@@ -221,14 +224,15 @@ func (pbar *ProgressBar) PulseStep() float64 {
 //    - ok: TRUE if text is shown in the progress bar.
 //
 func (pbar *ProgressBar) ShowText() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_show_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_show_text", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pbar)
@@ -253,14 +257,15 @@ func (pbar *ProgressBar) ShowText() bool {
 //      should not be modified or freed.
 //
 func (pbar *ProgressBar) Text() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pbar)
@@ -282,13 +287,14 @@ func (pbar *ProgressBar) Text() string {
 // little bit (the amount of movement per pulse is determined by
 // gtk.ProgressBar.SetPulseStep()).
 func (pbar *ProgressBar) Pulse() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("pulse", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("pulse", _args[:], nil)
 
 	runtime.KeepAlive(pbar)
 }
@@ -303,15 +309,17 @@ func (pbar *ProgressBar) Pulse() {
 //    - fraction of the task that’s been completed.
 //
 func (pbar *ProgressBar) SetFraction(fraction float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.double // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 	_arg1 = C.double(fraction)
-	*(**ProgressBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_fraction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_fraction", _args[:], nil)
 
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(fraction)
@@ -327,7 +335,7 @@ func (pbar *ProgressBar) SetFraction(fraction float64) {
 //    - inverted: TRUE to invert the progress bar.
 //
 func (pbar *ProgressBar) SetInverted(inverted bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -335,9 +343,11 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 	if inverted {
 		_arg1 = C.TRUE
 	}
-	*(**ProgressBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_inverted", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_inverted", _args[:], nil)
 
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(inverted)
@@ -353,15 +363,17 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 //    - fraction between 0.0 and 1.0.
 //
 func (pbar *ProgressBar) SetPulseStep(fraction float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.double // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 	_arg1 = C.double(fraction)
-	*(**ProgressBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_pulse_step", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_pulse_step", _args[:], nil)
 
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(fraction)
@@ -381,7 +393,7 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 //    - showText: whether to show text.
 //
 func (pbar *ProgressBar) SetShowText(showText bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -389,9 +401,11 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 	if showText {
 		_arg1 = C.TRUE
 	}
-	*(**ProgressBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_show_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_show_text", _args[:], nil)
 
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(showText)
@@ -412,7 +426,7 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 //    - text (optional): UTF-8 string, or NULL.
 //
 func (pbar *ProgressBar) SetText(text string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -421,9 +435,11 @@ func (pbar *ProgressBar) SetText(text string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**ProgressBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_text", _args[:], nil)
 
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(text)

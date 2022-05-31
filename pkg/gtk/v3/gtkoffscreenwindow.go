@@ -120,14 +120,15 @@ func NewOffscreenWindow() *OffscreenWindow {
 //    - pixbuf (optional) pointer, or NULL.
 //
 func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
-	*(**OffscreenWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_pixbuf", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(offscreen)
@@ -160,14 +161,15 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 //    - surface (optional) pointer to the offscreen surface, or NULL.
 //
 func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
-	*(**OffscreenWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(offscreen)

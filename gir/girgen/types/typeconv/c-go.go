@@ -512,7 +512,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	switch {
-	case value.Resolved.IsBuiltin("cgo.Handle"):
+	case value.Resolved.IsBuiltin("cgo.Handle", "unsafe.Pointer", "uintptr"):
 		value.header.Import("runtime/cgo")
 		value.header.Import("unsafe")
 		// unsafe.Pointer is needed for pointer to pointers, so we're playing it

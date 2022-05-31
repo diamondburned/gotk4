@@ -130,14 +130,16 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 //    - gint: number of modes available in group.
 //
 func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 	_arg1 = C.int(groupIdx)
-	*(**DevicePad)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -161,12 +163,13 @@ func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 //    - gint: number of button/ring/strip groups in the pad.
 //
 func (pad *DevicePad) NGroups() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
-	*(**DevicePad)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 

@@ -171,14 +171,15 @@ func (gesture *GestureMultiPress) ConnectStopped(f func()) coreglib.SignalHandle
 //    - gestureMultiPress: newly created GestureMultiPress.
 //
 func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("new_GestureMultiPress", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("new_GestureMultiPress", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
@@ -188,6 +189,44 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	_gestureMultiPress = wrapGestureMultiPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureMultiPress
+}
+
+// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
+// function will return TRUE and fill in rect with the press area. See
+// gtk_gesture_multi_press_set_area() for more details on what the press area
+// represents.
+//
+// The function returns the following values:
+//
+//    - rect: return location for the press area.
+//    - ok: TRUE if rect was filled with the press area.
+//
+func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("get_area", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(gesture)
+
+	var _rect *gdk.Rectangle // out
+	var _ok bool             // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _rect, _ok
 }
 
 // SetArea: if rect is non-NULL, the press area will be checked to be confined
@@ -203,7 +242,7 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 //    - rect (optional): rectangle to receive coordinates on.
 //
 func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -211,9 +250,11 @@ func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	if rect != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
 	}
-	*(**GestureMultiPress)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("set_area", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("set_area", _args[:], nil)
 
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(rect)

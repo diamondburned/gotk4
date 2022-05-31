@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gtk3_PrintSettingsFunc(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gtkprintsettings.go.
@@ -78,7 +79,7 @@ const PRINT_SETTINGS_WIN32_DRIVER_VERSION = "win32-driver-version"
 type PrintSettingsFunc func(key, value string)
 
 //export _gotk4_gtk3_PrintSettingsFunc
-func _gotk4_gtk3_PrintSettingsFunc(arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
+func _gotk4_gtk3_PrintSettingsFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
 	var fn PrintSettingsFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -161,16 +162,17 @@ func NewPrintSettings() *PrintSettings {
 //    - printSettings: restored PrintSettings.
 //
 func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("new_PrintSettings_from_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("new_PrintSettings_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fileName)
@@ -198,14 +200,15 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 //    - printSettings: new PrintSettings object.
 //
 func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
-	*(**glib.Variant)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("new_PrintSettings_from_gvariant", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("new_PrintSettings_from_gvariant", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(variant)
@@ -233,7 +236,7 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 //    - printSettings: restored PrintSettings.
 //
 func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PrintSettings, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -244,10 +247,11 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**glib.KeyFile)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("new_PrintSettings_from_key_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("new_PrintSettings_from_key_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyFile)
@@ -271,14 +275,15 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 //    - printSettings: newly allocated copy of other.
 //
 func (other *PrintSettings) Copy() *PrintSettings {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("copy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("copy", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(other)
@@ -288,6 +293,32 @@ func (other *PrintSettings) Copy() *PrintSettings {
 	_printSettings = wrapPrintSettings(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printSettings
+}
+
+// ForEach calls func for each key-value pair of settings.
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call.
+//
+func (settings *PrintSettings) ForEach(fn PrintSettingsFunc) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_PrintSettingsFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("foreach", _args[:], nil)
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(fn)
 }
 
 // Get looks up the string value associated with key.
@@ -301,7 +332,7 @@ func (other *PrintSettings) Copy() *PrintSettings {
 //    - utf8: string value for key.
 //
 func (settings *PrintSettings) Get(key string) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -309,9 +340,11 @@ func (settings *PrintSettings) Get(key string) string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -338,7 +371,7 @@ func (settings *PrintSettings) Get(key string) string {
 //    - ok: TRUE, if key maps to a true value.
 //
 func (settings *PrintSettings) Bool(key string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -346,9 +379,11 @@ func (settings *PrintSettings) Bool(key string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_bool", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_bool", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -370,14 +405,15 @@ func (settings *PrintSettings) Bool(key string) bool {
 //    - ok: whether to collate the printed pages.
 //
 func (settings *PrintSettings) Collate() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_collate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_collate", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -398,14 +434,15 @@ func (settings *PrintSettings) Collate() bool {
 //    - utf8: default source.
 //
 func (settings *PrintSettings) DefaultSource() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_default_source", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_default_source", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -424,14 +461,15 @@ func (settings *PrintSettings) DefaultSource() string {
 //    - utf8: dithering that is used.
 //
 func (settings *PrintSettings) Dither() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_dither", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_dither", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -454,7 +492,7 @@ func (settings *PrintSettings) Dither() string {
 //    - gdouble: double value of key.
 //
 func (settings *PrintSettings) Double(key string) float64 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _cret C.gdouble // in
@@ -462,9 +500,11 @@ func (settings *PrintSettings) Double(key string) float64 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_double", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_double", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -493,7 +533,7 @@ func (settings *PrintSettings) Double(key string) float64 {
 //    - gdouble: floating point number associated with key.
 //
 func (settings *PrintSettings) DoubleWithDefault(key string, def float64) float64 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _arg2 C.gdouble // out
@@ -503,10 +543,12 @@ func (settings *PrintSettings) DoubleWithDefault(key string, def float64) float6
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(def)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_double_with_default", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_double_with_default", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -527,14 +569,15 @@ func (settings *PrintSettings) DoubleWithDefault(key string, def float64) float6
 //    - utf8: finishings.
 //
 func (settings *PrintSettings) Finishings() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_finishings", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_finishings", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -557,7 +600,7 @@ func (settings *PrintSettings) Finishings() string {
 //    - gint: integer value of key.
 //
 func (settings *PrintSettings) Int(key string) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.gint  // in
@@ -565,9 +608,11 @@ func (settings *PrintSettings) Int(key string) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_int", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_int", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -593,7 +638,7 @@ func (settings *PrintSettings) Int(key string) int32 {
 //    - gint: integer value of key.
 //
 func (settings *PrintSettings) IntWithDefault(key string, def int32) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -603,10 +648,12 @@ func (settings *PrintSettings) IntWithDefault(key string, def int32) int32 {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(def)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_int_with_default", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_int_with_default", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -629,14 +676,15 @@ func (settings *PrintSettings) IntWithDefault(key string, def int32) int32 {
 //    - utf8: media type.
 //
 func (settings *PrintSettings) MediaType() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_media_type", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_media_type", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -655,14 +703,15 @@ func (settings *PrintSettings) MediaType() string {
 //    - gint: number of copies to print.
 //
 func (settings *PrintSettings) NCopies() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_n_copies", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_n_copies", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -681,14 +730,15 @@ func (settings *PrintSettings) NCopies() int32 {
 //    - gint: number of pages per sheet.
 //
 func (settings *PrintSettings) NumberUp() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_number_up", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_number_up", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -707,14 +757,15 @@ func (settings *PrintSettings) NumberUp() int32 {
 //    - utf8: output bin.
 //
 func (settings *PrintSettings) OutputBin() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_output_bin", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_output_bin", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -734,14 +785,15 @@ func (settings *PrintSettings) OutputBin() string {
 //    - paperSize: paper size.
 //
 func (settings *PrintSettings) PaperSize() *PaperSize {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_paper_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_paper_size", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -767,14 +819,15 @@ func (settings *PrintSettings) PaperSize() *PaperSize {
 //    - utf8: printer name.
 //
 func (settings *PrintSettings) Printer() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_printer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_printer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -793,14 +846,15 @@ func (settings *PrintSettings) Printer() string {
 //    - gdouble: resolution in lpi (lines per inch).
 //
 func (settings *PrintSettings) PrinterLpi() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_printer_lpi", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_printer_lpi", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -819,14 +873,15 @@ func (settings *PrintSettings) PrinterLpi() float64 {
 //    - gint: resolution in dpi.
 //
 func (settings *PrintSettings) Resolution() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_resolution", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_resolution", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -845,14 +900,15 @@ func (settings *PrintSettings) Resolution() int32 {
 //    - gint: horizontal resolution in dpi.
 //
 func (settings *PrintSettings) ResolutionX() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_resolution_x", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_resolution_x", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -871,14 +927,15 @@ func (settings *PrintSettings) ResolutionX() int32 {
 //    - gint: vertical resolution in dpi.
 //
 func (settings *PrintSettings) ResolutionY() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_resolution_y", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_resolution_y", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -897,14 +954,15 @@ func (settings *PrintSettings) ResolutionY() int32 {
 //    - ok: whether to reverse the order of the printed pages.
 //
 func (settings *PrintSettings) Reverse() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_reverse", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_reverse", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -925,14 +983,15 @@ func (settings *PrintSettings) Reverse() bool {
 //    - gdouble: scale in percent.
 //
 func (settings *PrintSettings) Scale() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_scale", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_scale", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -951,14 +1010,15 @@ func (settings *PrintSettings) Scale() float64 {
 //    - ok: whether to use color.
 //
 func (settings *PrintSettings) UseColor() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_use_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("get_use_color", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -983,7 +1043,7 @@ func (settings *PrintSettings) UseColor() bool {
 //    - ok: TRUE, if key has a value.
 //
 func (settings *PrintSettings) HasKey(key string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -991,9 +1051,11 @@ func (settings *PrintSettings) HasKey(key string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("has_key", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("has_key", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1017,7 +1079,7 @@ func (settings *PrintSettings) HasKey(key string) bool {
 //    - fileName: filename to read the settings from.
 //
 func (settings *PrintSettings) LoadFile(fileName string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -1025,9 +1087,11 @@ func (settings *PrintSettings) LoadFile(fileName string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("load_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("load_file", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(fileName)
@@ -1052,7 +1116,7 @@ func (settings *PrintSettings) LoadFile(fileName string) error {
 //      default “Print Settings”.
 //
 func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1064,10 +1128,12 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 		_arg2 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.KeyFile)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("load_key_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("load_key_file", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(keyFile)
@@ -1090,7 +1156,7 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 //    - value (optional): string value, or NULL.
 //
 func (settings *PrintSettings) Set(key, value string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1102,10 +1168,12 @@ func (settings *PrintSettings) Set(key, value string) {
 		_arg2 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
@@ -1120,7 +1188,7 @@ func (settings *PrintSettings) Set(key, value string) {
 //    - value: boolean.
 //
 func (settings *PrintSettings) SetBool(key string, value bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -1131,10 +1199,12 @@ func (settings *PrintSettings) SetBool(key string, value bool) {
 	if value {
 		_arg2 = C.TRUE
 	}
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_bool", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_bool", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
@@ -1148,7 +1218,7 @@ func (settings *PrintSettings) SetBool(key string, value bool) {
 //    - collate: whether to collate the output.
 //
 func (settings *PrintSettings) SetCollate(collate bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1156,9 +1226,11 @@ func (settings *PrintSettings) SetCollate(collate bool) {
 	if collate {
 		_arg1 = C.TRUE
 	}
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_collate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_collate", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(collate)
@@ -1171,16 +1243,18 @@ func (settings *PrintSettings) SetCollate(collate bool) {
 //    - defaultSource: default source.
 //
 func (settings *PrintSettings) SetDefaultSource(defaultSource string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(defaultSource)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_default_source", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_default_source", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(defaultSource)
@@ -1193,16 +1267,18 @@ func (settings *PrintSettings) SetDefaultSource(defaultSource string) {
 //    - dither: dithering that is used.
 //
 func (settings *PrintSettings) SetDither(dither string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(dither)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_dither", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_dither", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(dither)
@@ -1216,7 +1292,7 @@ func (settings *PrintSettings) SetDither(dither string) {
 //    - value: double value.
 //
 func (settings *PrintSettings) SetDouble(key string, value float64) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _arg2 C.gdouble // out
@@ -1225,10 +1301,12 @@ func (settings *PrintSettings) SetDouble(key string, value float64) {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(value)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_double", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_double", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
@@ -1242,16 +1320,18 @@ func (settings *PrintSettings) SetDouble(key string, value float64) {
 //    - finishings: finishings.
 //
 func (settings *PrintSettings) SetFinishings(finishings string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(finishings)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_finishings", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_finishings", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(finishings)
@@ -1265,7 +1345,7 @@ func (settings *PrintSettings) SetFinishings(finishings string) {
 //    - value: integer.
 //
 func (settings *PrintSettings) SetInt(key string, value int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -1274,10 +1354,12 @@ func (settings *PrintSettings) SetInt(key string, value int32) {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_int", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_int", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
@@ -1293,16 +1375,18 @@ func (settings *PrintSettings) SetInt(key string, value int32) {
 //    - mediaType: media type.
 //
 func (settings *PrintSettings) SetMediaType(mediaType string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mediaType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_media_type", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_media_type", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(mediaType)
@@ -1315,15 +1399,17 @@ func (settings *PrintSettings) SetMediaType(mediaType string) {
 //    - numCopies: number of copies.
 //
 func (settings *PrintSettings) SetNCopies(numCopies int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = C.gint(numCopies)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_n_copies", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_n_copies", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(numCopies)
@@ -1336,15 +1422,17 @@ func (settings *PrintSettings) SetNCopies(numCopies int32) {
 //    - numberUp: number of pages per sheet.
 //
 func (settings *PrintSettings) SetNumberUp(numberUp int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = C.gint(numberUp)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_number_up", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_number_up", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(numberUp)
@@ -1357,16 +1445,18 @@ func (settings *PrintSettings) SetNumberUp(numberUp int32) {
 //    - outputBin: output bin.
 //
 func (settings *PrintSettings) SetOutputBin(outputBin string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(outputBin)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_output_bin", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_output_bin", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(outputBin)
@@ -1380,15 +1470,17 @@ func (settings *PrintSettings) SetOutputBin(outputBin string) {
 //    - paperSize: paper size.
 //
 func (settings *PrintSettings) SetPaperSize(paperSize *PaperSize) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(paperSize)))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_paper_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_paper_size", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(paperSize)
@@ -1402,16 +1494,18 @@ func (settings *PrintSettings) SetPaperSize(paperSize *PaperSize) {
 //    - printer name.
 //
 func (settings *PrintSettings) SetPrinter(printer string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(printer)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_printer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_printer", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(printer)
@@ -1424,15 +1518,17 @@ func (settings *PrintSettings) SetPrinter(printer string) {
 //    - lpi: resolution in lpi (lines per inch).
 //
 func (settings *PrintSettings) SetPrinterLpi(lpi float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = C.gdouble(lpi)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_printer_lpi", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_printer_lpi", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(lpi)
@@ -1446,15 +1542,17 @@ func (settings *PrintSettings) SetPrinterLpi(lpi float64) {
 //    - resolution in dpi.
 //
 func (settings *PrintSettings) SetResolution(resolution int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = C.gint(resolution)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_resolution", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_resolution", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(resolution)
@@ -1469,7 +1567,7 @@ func (settings *PrintSettings) SetResolution(resolution int32) {
 //    - resolutionY: vertical resolution in dpi.
 //
 func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -1477,10 +1575,12 @@ func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = C.gint(resolutionX)
 	_arg2 = C.gint(resolutionY)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_resolution_xy", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_resolution_xy", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(resolutionX)
@@ -1494,7 +1594,7 @@ func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int32) {
 //    - reverse: whether to reverse the output.
 //
 func (settings *PrintSettings) SetReverse(reverse bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1502,9 +1602,11 @@ func (settings *PrintSettings) SetReverse(reverse bool) {
 	if reverse {
 		_arg1 = C.TRUE
 	}
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_reverse", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_reverse", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(reverse)
@@ -1517,15 +1619,17 @@ func (settings *PrintSettings) SetReverse(reverse bool) {
 //    - scale in percent.
 //
 func (settings *PrintSettings) SetScale(scale float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = C.gdouble(scale)
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_scale", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_scale", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(scale)
@@ -1538,7 +1642,7 @@ func (settings *PrintSettings) SetScale(scale float64) {
 //    - useColor: whether to use color.
 //
 func (settings *PrintSettings) SetUseColor(useColor bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1546,9 +1650,11 @@ func (settings *PrintSettings) SetUseColor(useColor bool) {
 	if useColor {
 		_arg1 = C.TRUE
 	}
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_use_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_use_color", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(useColor)
@@ -1563,7 +1669,7 @@ func (settings *PrintSettings) SetUseColor(useColor bool) {
 //    - fileName: file to save to.
 //
 func (settings *PrintSettings) ToFile(fileName string) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
@@ -1571,9 +1677,11 @@ func (settings *PrintSettings) ToFile(fileName string) error {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("to_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("to_file", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(fileName)
@@ -1594,14 +1702,15 @@ func (settings *PrintSettings) ToFile(fileName string) error {
 //    - variant: new, floating, #GVariant.
 //
 func (settings *PrintSettings) ToGVariant() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**PrintSettings)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("to_gvariant", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("to_gvariant", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
@@ -1629,7 +1738,7 @@ func (settings *PrintSettings) ToGVariant() *glib.Variant {
 //      to use the default “Print Settings”.
 //
 func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -1640,10 +1749,12 @@ func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string
 		_arg2 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.KeyFile)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("to_key_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("to_key_file", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(keyFile)
@@ -1658,16 +1769,18 @@ func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string
 //    - key: key.
 //
 func (settings *PrintSettings) Unset(key string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("unset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("unset", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)

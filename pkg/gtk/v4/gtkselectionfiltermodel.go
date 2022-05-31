@@ -75,16 +75,17 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 //    - selectionFilterModel: new GtkSelectionFilterModel.
 //
 func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if model != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(*SelectionModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("new_SelectionFilterModel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("new_SelectionFilterModel", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -103,14 +104,15 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 //    - selectionModel (optional): model that gets filtered.
 //
 func (self *SelectionFilterModel) Model() *SelectionModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**SelectionFilterModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("get_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -135,7 +137,7 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 //    - model (optional) to be filtered.
 //
 func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -143,9 +145,11 @@ func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**SelectionFilterModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("set_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SelectionFilterModel").InvokeMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)

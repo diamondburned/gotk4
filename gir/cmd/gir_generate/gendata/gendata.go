@@ -738,11 +738,10 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	h.ImportCore("gbox")
 	h.CallbackDelete = true
 
-	n := nsgen.Namespace()
 	r := nsgen.Repositories()
 
-	AddCallbackHeader(h, n, r.FindFullType("GLib-2.LogFunc").Type.(*gir.Callback))
-	AddCallbackHeader(h, n, r.FindFullType("GLib-2.LogWriterFunc").Type.(*gir.Callback))
+	AddCallbackHeader(nsgen, h, r.FindFullType("GLib-2.LogFunc").Type.(*gir.Callback))
+	AddCallbackHeader(nsgen, h, r.FindFullType("GLib-2.LogWriterFunc").Type.(*gir.Callback))
 
 	p := fg.Pen()
 	// This one might be subjective, but I think most can agree that having a

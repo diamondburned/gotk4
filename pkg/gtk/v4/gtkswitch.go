@@ -203,14 +203,15 @@ func NewSwitch() *Switch {
 //    - ok: TRUE if the GtkSwitch is active, and FALSE otherwise.
 //
 func (self *Switch) Active() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Switch)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -231,14 +232,15 @@ func (self *Switch) Active() bool {
 //    - ok: underlying state.
 //
 func (self *Switch) State() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Switch)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_state", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -259,7 +261,7 @@ func (self *Switch) State() bool {
 //    - isActive: TRUE if self should be active, and FALSE otherwise.
 //
 func (self *Switch) SetActive(isActive bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -267,9 +269,11 @@ func (self *Switch) SetActive(isActive bool) {
 	if isActive {
 		_arg1 = C.TRUE
 	}
-	*(**Switch)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(isActive)
@@ -288,7 +292,7 @@ func (self *Switch) SetActive(isActive bool) {
 //    - state: new state.
 //
 func (self *Switch) SetState(state bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -296,9 +300,11 @@ func (self *Switch) SetState(state bool) {
 	if state {
 		_arg1 = C.TRUE
 	}
-	*(**Switch)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_state", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(state)

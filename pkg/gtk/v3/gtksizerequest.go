@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -35,7 +36,7 @@ import "C"
 //    - gint: remainder of extra_space after redistributing space to sizes.
 //
 func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes *RequestedSize) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 C.gint  // out
 	var _arg1 C.guint // out
 	var _arg2 *C.void // out
@@ -44,11 +45,12 @@ func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes
 	_arg0 = C.gint(extraSpace)
 	_arg1 = C.guint(nRequestedSizes)
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(sizes)))
-	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
-	*(**RequestedSize)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "distribute_natural_allocation").Invoke(args[:], nil)
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "distribute_natural_allocation").Invoke(_args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(extraSpace)
@@ -74,4 +76,25 @@ type RequestedSize struct {
 // requestedSize is the struct that's finalized.
 type requestedSize struct {
 	native *C.GtkRequestedSize
+}
+
+// Data: client pointer.
+func (r *RequestedSize) Data() unsafe.Pointer {
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(r.native.data))
+	return v
+}
+
+// MinimumSize: minimum size needed for allocation in a given orientation.
+func (r *RequestedSize) MinimumSize() int32 {
+	var v int32 // out
+	v = int32(r.native.minimum_size)
+	return v
+}
+
+// NaturalSize: natural size for allocation in a given orientation.
+func (r *RequestedSize) NaturalSize() int32 {
+	var v int32 // out
+	v = int32(r.native.natural_size)
+	return v
 }

@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(GTlsClientConnection*, GTlsClientConnection*);
+// extern void _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(void*, void*);
 import "C"
 
 // glib.Type values for gtlsclientconnection.go.
@@ -105,7 +105,7 @@ func ifaceInitTLSClientConnectioner(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_TlsClientConnectionInterface_copy_session_state
-func _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(arg0 *C.GTlsClientConnection, arg1 *C.GTlsClientConnection) {
+func _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TLSClientConnectionOverrider)
 
@@ -178,13 +178,15 @@ func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 //    - source: ClientConnection.
 //
 func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
-	*(**TLSClientConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(source)
@@ -198,12 +200,13 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 //      NULL if the expected identity is not known.
 //
 func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**TLSClientConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -228,12 +231,13 @@ func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 //    - ok: FALSE.
 //
 func (conn *TLSClientConnection) UseSSL3() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**TLSClientConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -258,13 +262,15 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 //    - identity describing the expected server identity.
 //
 func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
-	*(**TLSClientConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(identity)
@@ -287,7 +293,7 @@ func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) 
 //    - useSsl3: #gboolean, ignored.
 //
 func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -295,7 +301,9 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 	if useSsl3 {
 		_arg1 = C.TRUE
 	}
-	*(**TLSClientConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(useSsl3)
@@ -319,7 +327,7 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 //    - tlsClientConnection: new ClientConnection, or NULL on error.
 //
 func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (*TLSClientConnection, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -329,10 +337,11 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	if serverIdentity != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serverIdentity).Native()))
 	}
-	*(*IOStreamer)(unsafe.Pointer(&args[0])) = _arg0
-	*(*SocketConnectabler)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIoStream)

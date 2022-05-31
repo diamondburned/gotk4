@@ -66,12 +66,13 @@ func marshalFrameTimings(p uintptr) (interface{}, error) {
 //      filled in.
 //
 func (timings *FrameTimings) Complete() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
-	*(**FrameTimings)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -94,12 +95,13 @@ func (timings *FrameTimings) Complete() bool {
 //    - gint64: frame counter value for this frame.
 //
 func (timings *FrameTimings) FrameCounter() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
-	*(**FrameTimings)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
@@ -123,12 +125,13 @@ func (timings *FrameTimings) FrameCounter() int64 {
 //      g_get_monotonic_time().
 //
 func (timings *FrameTimings) FrameTime() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
-	*(**FrameTimings)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
@@ -161,12 +164,13 @@ func (timings *FrameTimings) FrameTime() int64 {
 //      time is available.
 //
 func (timings *FrameTimings) PredictedPresentationTime() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
-	*(**FrameTimings)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
@@ -190,12 +194,13 @@ func (timings *FrameTimings) PredictedPresentationTime() int64 {
 //      gdk.FrameTimings.GetComplete().
 //
 func (timings *FrameTimings) PresentationTime() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
-	*(**FrameTimings)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
@@ -219,12 +224,13 @@ func (timings *FrameTimings) PresentationTime() int64 {
 //      refresh interval is not available. See gdk.FrameTimings.GetComplete().
 //
 func (timings *FrameTimings) RefreshInterval() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
-	*(**FrameTimings)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 

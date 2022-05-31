@@ -20,6 +20,7 @@ import "C"
 // This allowes to refer to any of those object types via g_type_from_name()
 // after calling this function.
 func TestRegisterAllTypes() {
+
 	girepository.MustFind("Gtk", "test_register_all_types").Invoke(nil, nil)
 }
 
@@ -37,13 +38,14 @@ func TestRegisterAllTypes() {
 //    - widget to wait for.
 //
 func TestWidgetWaitForDraw(widget Widgetter) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "test_widget_wait_for_draw").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "test_widget_wait_for_draw").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 }

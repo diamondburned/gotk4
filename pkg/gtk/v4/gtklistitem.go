@@ -77,14 +77,15 @@ func marshalListItem(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the item is activatable.
 //
 func (self *ListItem) Activatable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**ListItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_activatable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_activatable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -106,14 +107,15 @@ func (self *ListItem) Activatable() bool {
 //    - widget (optional): child.
 //
 func (self *ListItem) Child() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**ListItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -140,6 +142,35 @@ func (self *ListItem) Child() Widgetter {
 	return _widget
 }
 
+// Item gets the model item that associated with self.
+//
+// If self is unbound, this function returns NULL.
+//
+// The function returns the following values:
+//
+//    - object (optional): item displayed.
+//
+func (self *ListItem) Item() *coreglib.Object {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_item", _args[:], nil)
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _object *coreglib.Object // out
+
+	_object = coreglib.Take(unsafe.Pointer(_cret))
+
+	return _object
+}
+
 // Position gets the position in the model that self currently displays.
 //
 // If self is unbound, GTK_INVALID_LIST_POSITION is returned.
@@ -149,14 +180,15 @@ func (self *ListItem) Child() Widgetter {
 //    - guint: position of this item.
 //
 func (self *ListItem) Position() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**ListItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_position", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_position", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -178,14 +210,15 @@ func (self *ListItem) Position() uint32 {
 //    - ok: TRUE if the item is selectable.
 //
 func (self *ListItem) Selectable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**ListItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_selectable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_selectable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -209,14 +242,15 @@ func (self *ListItem) Selectable() bool {
 //    - ok: TRUE if the item is selected.
 //
 func (self *ListItem) Selected() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**ListItem)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_selected", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_selected", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -244,7 +278,7 @@ func (self *ListItem) Selected() bool {
 //    - activatable: if the item should be activatable.
 //
 func (self *ListItem) SetActivatable(activatable bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -252,9 +286,11 @@ func (self *ListItem) SetActivatable(activatable bool) {
 	if activatable {
 		_arg1 = C.TRUE
 	}
-	*(**ListItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_activatable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_activatable", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(activatable)
@@ -270,7 +306,7 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //    - child (optional): list item's child or NULL to unset.
 //
 func (self *ListItem) SetChild(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -278,9 +314,11 @@ func (self *ListItem) SetChild(child Widgetter) {
 	if child != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-	*(**ListItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
@@ -303,7 +341,7 @@ func (self *ListItem) SetChild(child Widgetter) {
 //    - selectable: if the item should be selectable.
 //
 func (self *ListItem) SetSelectable(selectable bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -311,9 +349,11 @@ func (self *ListItem) SetSelectable(selectable bool) {
 	if selectable {
 		_arg1 = C.TRUE
 	}
-	*(**ListItem)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_selectable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_selectable", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(selectable)

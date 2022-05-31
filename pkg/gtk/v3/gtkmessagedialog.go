@@ -176,14 +176,15 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 //    - widget dialog’s image.
 //
 func (dialog *MessageDialog) Image() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**MessageDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("get_image", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("get_image", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -222,14 +223,15 @@ func (dialog *MessageDialog) Image() Widgetter {
 //    - widget corresponding to the “message area” in the message_dialog.
 //
 func (messageDialog *MessageDialog) MessageArea() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
-	*(**MessageDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("get_message_area", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("get_message_area", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(messageDialog)
@@ -266,15 +268,17 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 //    - image: image.
 //
 func (dialog *MessageDialog) SetImage(image Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	*(**MessageDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("set_image", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("set_image", _args[:], nil)
 
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(image)
@@ -288,16 +292,18 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 //    - str: markup string (see [Pango markup format][PangoMarkupFormat]).
 //
 func (messageDialog *MessageDialog) SetMarkup(str string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**MessageDialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("set_markup", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("set_markup", _args[:], nil)
 
 	runtime.KeepAlive(messageDialog)
 	runtime.KeepAlive(str)

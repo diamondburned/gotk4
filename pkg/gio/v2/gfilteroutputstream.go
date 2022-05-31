@@ -88,14 +88,15 @@ func BaseFilterOutputStream(obj FilterOutputStreamer) *FilterOutputStream {
 //    - outputStream: Stream.
 //
 func (stream *FilterOutputStream) BaseStream() OutputStreamer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**FilterOutputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("get_base_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("get_base_stream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -131,14 +132,15 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 //    - ok: TRUE if the base stream will be closed.
 //
 func (stream *FilterOutputStream) CloseBaseStream() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**FilterOutputStream)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("get_close_base_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("get_close_base_stream", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -160,7 +162,7 @@ func (stream *FilterOutputStream) CloseBaseStream() bool {
 //    - closeBase: TRUE to close the base stream.
 //
 func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -168,9 +170,11 @@ func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
 	if closeBase {
 		_arg1 = C.TRUE
 	}
-	*(**FilterOutputStream)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("set_close_base_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("set_close_base_stream", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(closeBase)

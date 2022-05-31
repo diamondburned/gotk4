@@ -103,12 +103,13 @@ func marshalRoot(p uintptr) (interface{}, error) {
 //    - display of root.
 //
 func (self *Root) Display() *gdk.Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Root)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -137,12 +138,13 @@ func (self *Root) Display() *gdk.Display {
 //    - widget (optional): currently focused widget, or NULL if there is none.
 //
 func (self *Root) Focus() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Root)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -184,7 +186,7 @@ func (self *Root) Focus() Widgetter {
 //      focus widget.
 //
 func (self *Root) SetFocus(focus Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -192,7 +194,9 @@ func (self *Root) SetFocus(focus Widgetter) {
 	if focus != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(focus).Native()))
 	}
-	*(**Root)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(focus)

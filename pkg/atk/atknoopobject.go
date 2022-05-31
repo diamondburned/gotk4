@@ -127,14 +127,15 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 //    - noOpObject: default (non-functioning stub) Object.
 //
 func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(obj.Native()))
-	*(**coreglib.Object)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "NoOpObject").InvokeMethod("new_NoOpObject", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "NoOpObject").InvokeMethod("new_NoOpObject", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)

@@ -45,7 +45,7 @@ func init() {
 //    - nEvents: number of event type codes to register.
 //
 func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -53,11 +53,12 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int32)
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	_arg1 = C.gint(eventBase)
 	_arg2 = C.gint(nEvents)
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("GdkX11", "x11_register_standard_event_type").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("GdkX11", "x11_register_standard_event_type").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(eventBase)
@@ -77,16 +78,17 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int32)
 //      connection was opened, or NULL to remove the property.
 //
 func X11SetSmClientID(smClientId string) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	if smClientId != "" {
 		_arg0 = (*C.void)(unsafe.Pointer(C.CString(smClientId)))
 		defer C.free(unsafe.Pointer(_arg0))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("GdkX11", "x11_set_sm_client_id").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "x11_set_sm_client_id").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(smClientId)
 }
@@ -138,14 +140,15 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 //    - gint: x error code or 0 on success.
 //
 func (display *X11Display) ErrorTrapPop() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("error_trap_pop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("error_trap_pop", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
@@ -164,13 +167,14 @@ func (display *X11Display) ErrorTrapPop() int32 {
 //
 // See gdk_error_trap_pop_ignored() for the all-displays-at-once equivalent.
 func (display *X11Display) ErrorTrapPopIgnored() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("error_trap_pop_ignored", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("error_trap_pop_ignored", _args[:], nil)
 
 	runtime.KeepAlive(display)
 }
@@ -183,13 +187,14 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 //
 // See also gdk_error_trap_push() to push a trap on all displays.
 func (display *X11Display) ErrorTrapPush() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("error_trap_push", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("error_trap_push", _args[:], nil)
 
 	runtime.KeepAlive(display)
 }
@@ -201,14 +206,15 @@ func (display *X11Display) ErrorTrapPush() {
 //    - utf8: startup notification ID for display.
 //
 func (display *X11Display) StartupNotificationID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("get_startup_notification_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("get_startup_notification_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
@@ -229,14 +235,15 @@ func (display *X11Display) StartupNotificationID() string {
 //    - guint32: timestamp of the last user interaction.
 //
 func (display *X11Display) UserTime() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("get_user_time", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("get_user_time", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
@@ -253,15 +260,56 @@ func (display *X11Display) UserTime() uint32 {
 //
 // gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
 func (display *X11Display) Grab() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("grab", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("grab", _args[:], nil)
 
 	runtime.KeepAlive(display)
+}
+
+// SetCursorTheme sets the cursor theme from which the images for cursor should
+// be taken.
+//
+// If the windowing system supports it, existing cursors created with
+// gdk_cursor_new(), gdk_cursor_new_for_display() and gdk_cursor_new_from_name()
+// are updated to reflect the theme change. Custom cursors constructed with
+// gdk_cursor_new_from_pixbuf() will have to be handled by the application (GTK+
+// applications can learn about cursor theme changes by listening for change
+// notification for the corresponding Setting).
+//
+// The function takes the following parameters:
+//
+//    - theme (optional): name of the cursor theme to use, or NULL to unset a
+//      previously set value.
+//    - size: cursor size to use, or 0 to keep the previous size.
+//
+func (display *X11Display) SetCursorTheme(theme string, size int32) {
+	var _args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gint  // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	if theme != "" {
+		_arg1 = (*C.void)(unsafe.Pointer(C.CString(theme)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	_arg2 = C.gint(size)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("set_cursor_theme", _args[:], nil)
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(theme)
+	runtime.KeepAlive(size)
 }
 
 // SetStartupNotificationID sets the startup notification ID for a display.
@@ -283,16 +331,18 @@ func (display *X11Display) Grab() {
 //    - startupId: startup notification ID (must be valid utf8).
 //
 func (display *X11Display) SetStartupNotificationID(startupId string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**X11Display)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("set_startup_notification_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("set_startup_notification_id", _args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(startupId)
@@ -311,15 +361,17 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //    - scale: new scale value.
 //
 func (display *X11Display) SetWindowScale(scale int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	_arg1 = C.gint(scale)
-	*(**X11Display)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("set_window_scale", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("set_window_scale", _args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(scale)
@@ -327,13 +379,14 @@ func (display *X11Display) SetWindowScale(scale int32) {
 
 // Ungrab display after it has been grabbed with gdk_x11_display_grab().
 func (display *X11Display) Ungrab() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("ungrab", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("ungrab", _args[:], nil)
 
 	runtime.KeepAlive(display)
 }

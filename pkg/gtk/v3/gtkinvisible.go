@@ -103,14 +103,15 @@ func NewInvisible() *Invisible {
 //    - invisible: newly created Invisible object.
 //
 func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**gdk.Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible_for_screen", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible_for_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -129,14 +130,15 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 //    - screen: associated Screen.
 //
 func (invisible *Invisible) Screen() *gdk.Screen {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
-	*(**Invisible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("get_screen", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("get_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(invisible)
@@ -160,15 +162,17 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 //    - screen: Screen.
 //
 func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**Invisible)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Invisible").InvokeMethod("set_screen", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Invisible").InvokeMethod("set_screen", _args[:], nil)
 
 	runtime.KeepAlive(invisible)
 	runtime.KeepAlive(screen)

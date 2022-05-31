@@ -17,9 +17,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GSource* _gotk4_gio2_PollableInputStreamInterface_create_source(GPollableInputStream*, GCancellable*);
-// extern gboolean _gotk4_gio2_PollableInputStreamInterface_can_poll(GPollableInputStream*);
-// extern gboolean _gotk4_gio2_PollableInputStreamInterface_is_readable(GPollableInputStream*);
+// extern GSource* _gotk4_gio2_PollableInputStreamInterface_create_source(void*, void*);
+// extern gboolean _gotk4_gio2_PollableInputStreamInterface_can_poll(void*);
+// extern gboolean _gotk4_gio2_PollableInputStreamInterface_is_readable(void*);
 import "C"
 
 // glib.Type values for gpollableinputstream.go.
@@ -120,7 +120,7 @@ func ifaceInitPollableInputStreamer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_PollableInputStreamInterface_can_poll
-func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.GPollableInputStream) (cret C.gboolean) {
+func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
@@ -134,7 +134,7 @@ func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.GPollableInputStr
 }
 
 //export _gotk4_gio2_PollableInputStreamInterface_create_source
-func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.GPollableInputStream, arg1 *C.GCancellable) (cret *C.GSource) {
+func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.void, arg1 *C.void) (cret *C.GSource) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
@@ -152,7 +152,7 @@ func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.GPollableInp
 }
 
 //export _gotk4_gio2_PollableInputStreamInterface_is_readable
-func _gotk4_gio2_PollableInputStreamInterface_is_readable(arg0 *C.GPollableInputStream) (cret C.gboolean) {
+func _gotk4_gio2_PollableInputStreamInterface_is_readable(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
@@ -190,12 +190,13 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 //    - ok: TRUE if stream is pollable, FALSE if not.
 //
 func (stream *PollableInputStream) CanPoll() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**PollableInputStream)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -228,7 +229,7 @@ func (stream *PollableInputStream) CanPoll() bool {
 //    - source: new #GSource.
 //
 func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Source {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -239,7 +240,9 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 		defer runtime.KeepAlive(cancellable)
 		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**PollableInputStream)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -274,12 +277,13 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 //      returning TRUE, and the next attempt to read will return the error.
 //
 func (stream *PollableInputStream) IsReadable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**PollableInputStream)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

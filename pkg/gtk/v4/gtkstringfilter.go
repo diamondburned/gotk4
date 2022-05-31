@@ -120,7 +120,7 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 //    - stringFilter: new GtkStringFilter.
 //
 func NewStringFilter(expression Expressioner) *StringFilter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -128,9 +128,10 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
-	*(*Expressioner)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("new_StringFilter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("new_StringFilter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expression)
@@ -150,14 +151,15 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 //    - expression (optional): GtkExpression.
 //
 func (self *StringFilter) Expression() Expressioner {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**StringFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_expression", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_expression", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -191,14 +193,15 @@ func (self *StringFilter) Expression() Expressioner {
 //    - ok: TRUE if the filter ignores case.
 //
 func (self *StringFilter) IgnoreCase() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**StringFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_ignore_case", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_ignore_case", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -219,14 +222,15 @@ func (self *StringFilter) IgnoreCase() bool {
 //    - utf8 (optional): search term.
 //
 func (self *StringFilter) Search() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**StringFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_search", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "StringFilter").InvokeMethod("get_search", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -250,7 +254,7 @@ func (self *StringFilter) Search() string {
 //    - expression (optional): GtkExpression.
 //
 func (self *StringFilter) SetExpression(expression Expressioner) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -258,9 +262,11 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 	if expression != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
-	*(**StringFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_expression", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_expression", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)
@@ -273,7 +279,7 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 //    - ignoreCase: TRUE to ignore case.
 //
 func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -281,9 +287,11 @@ func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 	if ignoreCase {
 		_arg1 = C.TRUE
 	}
-	*(**StringFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_ignore_case", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_ignore_case", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ignoreCase)
@@ -296,7 +304,7 @@ func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 //    - search (optional): string to search for or NULL to clear the search.
 //
 func (self *StringFilter) SetSearch(search string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -305,9 +313,11 @@ func (self *StringFilter) SetSearch(search string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(search)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**StringFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_search", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "StringFilter").InvokeMethod("set_search", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(search)

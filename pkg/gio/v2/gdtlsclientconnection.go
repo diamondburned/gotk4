@@ -81,12 +81,13 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 //      expected identity is not known.
 //
 func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	*(**DTLSClientConnection)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -109,13 +110,15 @@ func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 //    - identity describing the expected server identity.
 //
 func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
-	*(**DTLSClientConnection)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(identity)
@@ -135,7 +138,7 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 //    - dtlsClientConnection: new ClientConnection, or NULL on error.
 //
 func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -145,10 +148,11 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	if serverIdentity != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serverIdentity).Native()))
 	}
-	*(*DatagramBasedder)(unsafe.Pointer(&args[0])) = _arg0
-	*(*SocketConnectabler)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseSocket)

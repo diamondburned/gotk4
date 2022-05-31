@@ -131,14 +131,15 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 //    - gdouble: constant factor.
 //
 func (constraint *Constraint) Constant() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_constant", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_constant", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
@@ -158,14 +159,15 @@ func (constraint *Constraint) Constant() float64 {
 //    - gdouble: multiplication factor.
 //
 func (constraint *Constraint) Multiplier() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_multiplier", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_multiplier", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
@@ -188,14 +190,15 @@ func (constraint *Constraint) Multiplier() float64 {
 //    - constraintTarget (optional): source of the constraint.
 //
 func (constraint *Constraint) Source() *ConstraintTarget {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_source", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_source", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
@@ -216,14 +219,15 @@ func (constraint *Constraint) Source() *ConstraintTarget {
 //    - gint: strength value.
 //
 func (constraint *Constraint) Strength() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_strength", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_strength", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
@@ -246,14 +250,15 @@ func (constraint *Constraint) Strength() int32 {
 //    - constraintTarget (optional): ConstraintTarget.
 //
 func (constraint *Constraint) Target() *ConstraintTarget {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_target", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_target", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
@@ -275,14 +280,15 @@ func (constraint *Constraint) Target() *ConstraintTarget {
 //    - ok: TRUE if the constraint is attached.
 //
 func (constraint *Constraint) IsAttached() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_attached", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_attached", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
@@ -304,14 +310,15 @@ func (constraint *Constraint) IsAttached() bool {
 //    - ok: TRUE if the constraint is a constant relation.
 //
 func (constraint *Constraint) IsConstant() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_constant", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_constant", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
@@ -333,14 +340,15 @@ func (constraint *Constraint) IsConstant() bool {
 //    - ok: TRUE if the constraint is required.
 //
 func (constraint *Constraint) IsRequired() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_required", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_required", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)

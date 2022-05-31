@@ -113,16 +113,17 @@ func NewVideo() *Video {
 //    - video: new GtkVideo.
 //
 func NewVideoForFile(file gio.Filer) *Video {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if file != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
-	*(*gio.Filer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
@@ -148,7 +149,7 @@ func NewVideoForFile(file gio.Filer) *Video {
 //    - video: new GtkVideo.
 //
 func NewVideoForFilename(filename string) *Video {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -156,9 +157,10 @@ func NewVideoForFilename(filename string) *Video {
 		_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg0))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_filename", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_filename", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
@@ -181,16 +183,17 @@ func NewVideoForFilename(filename string) *Video {
 //    - video: new GtkVideo.
 //
 func NewVideoForMediaStream(stream MediaStreamer) *Video {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if stream != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	}
-	*(*MediaStreamer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_media_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_media_stream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
@@ -216,7 +219,7 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 //    - video: new GtkVideo.
 //
 func NewVideoForResource(resourcePath string) *Video {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
@@ -224,9 +227,10 @@ func NewVideoForResource(resourcePath string) *Video {
 		_arg0 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg0))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_resource", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("new_Video_for_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resourcePath)
@@ -245,14 +249,15 @@ func NewVideoForResource(resourcePath string) *Video {
 //    - ok: TRUE if streams should autoplay.
 //
 func (self *Video) Autoplay() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Video)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_autoplay", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_autoplay", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -273,14 +278,15 @@ func (self *Video) Autoplay() bool {
 //    - file (optional) played by self.
 //
 func (self *Video) File() *gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Video)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -306,14 +312,15 @@ func (self *Video) File() *gio.File {
 //    - ok: TRUE if streams should loop.
 //
 func (self *Video) Loop() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Video)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_loop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_loop", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -334,14 +341,15 @@ func (self *Video) Loop() bool {
 //    - mediaStream (optional): media stream managed by self.
 //
 func (self *Video) MediaStream() MediaStreamer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**Video)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_media_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Video").InvokeMethod("get_media_stream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -376,7 +384,7 @@ func (self *Video) MediaStream() MediaStreamer {
 //    - autoplay: whether media streams should autoplay.
 //
 func (self *Video) SetAutoplay(autoplay bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -384,9 +392,11 @@ func (self *Video) SetAutoplay(autoplay bool) {
 	if autoplay {
 		_arg1 = C.TRUE
 	}
-	*(**Video)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Video").InvokeMethod("set_autoplay", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Video").InvokeMethod("set_autoplay", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(autoplay)
@@ -399,7 +409,7 @@ func (self *Video) SetAutoplay(autoplay bool) {
 //    - file (optional) to play.
 //
 func (self *Video) SetFile(file gio.Filer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -407,9 +417,11 @@ func (self *Video) SetFile(file gio.Filer) {
 	if file != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
-	*(**Video)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Video").InvokeMethod("set_file", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Video").InvokeMethod("set_file", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(file)
@@ -424,7 +436,7 @@ func (self *Video) SetFile(file gio.Filer) {
 //    - filename (optional) to play.
 //
 func (self *Video) SetFilename(filename string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -433,9 +445,11 @@ func (self *Video) SetFilename(filename string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Video)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Video").InvokeMethod("set_filename", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Video").InvokeMethod("set_filename", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filename)
@@ -448,7 +462,7 @@ func (self *Video) SetFilename(filename string) {
 //    - loop: whether media streams should loop.
 //
 func (self *Video) SetLoop(loop bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -456,9 +470,11 @@ func (self *Video) SetLoop(loop bool) {
 	if loop {
 		_arg1 = C.TRUE
 	}
-	*(**Video)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Video").InvokeMethod("set_loop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Video").InvokeMethod("set_loop", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(loop)
@@ -476,7 +492,7 @@ func (self *Video) SetLoop(loop bool) {
 //    - stream (optional): media stream to play or NULL to unset.
 //
 func (self *Video) SetMediaStream(stream MediaStreamer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -484,9 +500,11 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 	if stream != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	}
-	*(**Video)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Video").InvokeMethod("set_media_stream", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Video").InvokeMethod("set_media_stream", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(stream)
@@ -501,7 +519,7 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 //    - resourcePath (optional): resource to set.
 //
 func (self *Video) SetResource(resourcePath string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -510,9 +528,11 @@ func (self *Video) SetResource(resourcePath string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Video)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Video").InvokeMethod("set_resource", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Video").InvokeMethod("set_resource", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)

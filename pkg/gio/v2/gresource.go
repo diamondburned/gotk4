@@ -25,13 +25,14 @@ import "C"
 //    - resource: #GResource.
 //
 func ResourcesRegister(resource *Resource) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
-	*(**Resource)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "resources_register").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "resources_register").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(resource)
 }
@@ -44,13 +45,14 @@ func ResourcesRegister(resource *Resource) {
 //    - resource: #GResource.
 //
 func ResourcesUnregister(resource *Resource) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
-	*(**Resource)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "resources_unregister").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "resources_unregister").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(resource)
 }
@@ -74,16 +76,17 @@ func ResourcesUnregister(resource *Resource) {
 //    - resource: new #GResource, or NULL on error.
 //
 func ResourceLoad(filename string) (*Resource, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "load").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "load").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
@@ -124,11 +127,12 @@ type staticResource struct {
 // [glib-compile-resources][glib-compile-resources] and is not typically used by
 // other code.
 func (staticResource *StaticResource) Fini() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
-	*(**StaticResource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(staticResource)
 }
@@ -145,12 +149,13 @@ func (staticResource *StaticResource) Fini() {
 //    - resource: #GResource.
 //
 func (staticResource *StaticResource) Resource() *Resource {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
-	*(**StaticResource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -176,11 +181,12 @@ func (staticResource *StaticResource) Resource() *Resource {
 // [glib-compile-resources][glib-compile-resources] and is not typically used by
 // other code.
 func (staticResource *StaticResource) Init() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
-	*(**StaticResource)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(staticResource)
 }

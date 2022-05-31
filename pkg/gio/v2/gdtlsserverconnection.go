@@ -88,7 +88,7 @@ func BaseDTLSServerConnection(obj DTLSServerConnectioner) *DTLSServerConnection 
 //    - dtlsServerConnection: new ServerConnection, or NULL on error.
 //
 func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertificater) (*DTLSServerConnection, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -98,10 +98,11 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	if certificate != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 	}
-	*(*DatagramBasedder)(unsafe.Pointer(&args[0])) = _arg0
-	*(*TLSCertificater)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "new").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseSocket)

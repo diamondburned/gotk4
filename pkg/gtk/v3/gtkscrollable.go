@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -13,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern gboolean _gotk4_gtk3_ScrollableInterface_get_border(void*, void*);
 import "C"
 
 // glib.Type values for gtkscrollable.go.
@@ -26,6 +28,17 @@ func init() {
 
 // ScrollableOverrider contains methods that are overridable.
 type ScrollableOverrider interface {
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable. An example for this would be treeview headers. GTK+ can
+	// use this information to display overlayed graphics, like the overshoot
+	// indication, at the right position.
+	//
+	// The function returns the following values:
+	//
+	//    - border: return location for the results.
+	//    - ok: TRUE if border has been set.
+	//
+	Border() (*Border, bool)
 }
 
 // Scrollable is an interface that is implemented by widgets with native
@@ -69,6 +82,9 @@ var (
 type Scrollabler interface {
 	coreglib.Objector
 
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable.
+	Border() (*Border, bool)
 	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
 	HAdjustment() *Adjustment
 	// VAdjustment retrieves the Adjustment used for vertical scrolling.
@@ -82,6 +98,23 @@ type Scrollabler interface {
 var _ Scrollabler = (*Scrollable)(nil)
 
 func ifaceInitScrollabler(gifacePtr, data C.gpointer) {
+	iface := (*C.GtkScrollableInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_border = (*[0]byte)(C._gotk4_gtk3_ScrollableInterface_get_border)
+}
+
+//export _gotk4_gtk3_ScrollableInterface_get_border
+func _gotk4_gtk3_ScrollableInterface_get_border(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ScrollableOverrider)
+
+	border, ok := iface.Border()
+
+	*arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(border)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 func wrapScrollable(obj *coreglib.Object) *Scrollable {
@@ -94,6 +127,43 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 	return wrapScrollable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// Border returns the size of a non-scrolling border around the outside of the
+// scrollable. An example for this would be treeview headers. GTK+ can use this
+// information to display overlayed graphics, like the overshoot indication, at
+// the right position.
+//
+// The function returns the following values:
+//
+//    - border: return location for the results.
+//    - ok: TRUE if border has been set.
+//
+func (scrollable *Scrollable) Border() (*Border, bool) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scrollable)
+
+	var _border *Border // out
+	var _ok bool        // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _border, _ok
+}
+
 // HAdjustment retrieves the Adjustment used for horizontal scrolling.
 //
 // The function returns the following values:
@@ -101,12 +171,13 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 //    - adjustment: horizontal Adjustment.
 //
 func (scrollable *Scrollable) HAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
-	*(**Scrollable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -126,12 +197,13 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 //    - adjustment: vertical Adjustment.
 //
 func (scrollable *Scrollable) VAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
-	*(**Scrollable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -151,7 +223,7 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 //    - hadjustment (optional): Adjustment.
 //
 func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -159,7 +231,9 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 	if hadjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
-	*(**Scrollable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(hadjustment)
@@ -172,7 +246,7 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 //    - vadjustment (optional): Adjustment.
 //
 func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -180,7 +254,9 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	if vadjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
-	*(**Scrollable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(vadjustment)

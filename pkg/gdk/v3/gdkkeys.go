@@ -28,6 +28,44 @@ func init() {
 	})
 }
 
+// KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
+// symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
+//
+// The function takes the following parameters:
+//
+//    - symbol: keyval.
+//
+// The function returns the following values:
+//
+//    - lower: return location for lowercase version of symbol.
+//    - upper: return location for uppercase version of symbol.
+//
+func KeyvalConvertCase(symbol uint32) (lower uint32, upper uint32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 C.guint // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = C.guint(symbol)
+
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "keyval_convert_case").Invoke(_args[:], _outs[:])
+
+	runtime.KeepAlive(symbol)
+
+	var _lower uint32 // out
+	var _upper uint32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_lower = *(*uint32)(unsafe.Pointer(_out0))
+	_upper = *(*uint32)(unsafe.Pointer(_out1))
+
+	return _lower, _upper
+}
+
 // KeyvalFromName converts a key name to a key value.
 //
 // The names are the same as those in the gdk/gdkkeysyms.h header file but
@@ -43,15 +81,16 @@ func init() {
 //      not a valid key.
 //
 func KeyvalFromName(keyvalName string) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(keyvalName)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_from_name").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_from_name").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyvalName)
@@ -75,14 +114,15 @@ func KeyvalFromName(keyvalName string) uint32 {
 //      conversion.
 //
 func KeyvalIsLower(keyval uint32) bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_is_lower").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_is_lower").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -108,14 +148,15 @@ func KeyvalIsLower(keyval uint32) bool {
 //      conversion.
 //
 func KeyvalIsUpper(keyval uint32) bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_is_upper").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_is_upper").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -144,14 +185,15 @@ func KeyvalIsUpper(keyval uint32) bool {
 //      is not a valid key. The string should not be modified.
 //
 func KeyvalName(keyval uint32) string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_name").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_name").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -177,14 +219,15 @@ func KeyvalName(keyval uint32) string {
 //      lower case or it is not subject to case conversion.
 //
 func KeyvalToLower(keyval uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 	var _cret C.guint // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_to_lower").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_to_lower").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -209,14 +252,15 @@ func KeyvalToLower(keyval uint32) uint32 {
 //      corresponding character.
 //
 func KeyvalToUnicode(keyval uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint   // out
 	var _cret C.guint32 // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_to_unicode").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_to_unicode").Invoke(_args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -240,14 +284,15 @@ func KeyvalToUnicode(keyval uint32) uint32 {
 //      upper case or it is not subject to case conversion.
 //
 func KeyvalToUpper(keyval uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 	var _cret C.guint // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_to_upper").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_to_upper").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -271,14 +316,15 @@ func KeyvalToUpper(keyval uint32) uint32 {
 //      corresponding symbol, wc | 0x01000000.
 //
 func UnicodeToKeyval(wc uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint32 // out
 	var _cret C.guint   // in
 
 	_arg0 = C.guint32(wc)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "unicode_to_keyval").Invoke(args[:], nil)
+	*(*C.guint32)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "unicode_to_keyval").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(wc)
@@ -388,14 +434,15 @@ func (keymap *Keymap) ConnectStateChanged(f func()) coreglib.SignalHandle {
 //    - ok: TRUE if Caps Lock is on.
 //
 func (keymap *Keymap) CapsLockState() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	*(**Keymap)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_caps_lock_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_caps_lock_state", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
@@ -409,6 +456,150 @@ func (keymap *Keymap) CapsLockState() bool {
 	return _ok
 }
 
+// EntriesForKeycode returns the keyvals bound to hardware_keycode. The Nth
+// KeymapKey in keys is bound to the Nth keyval in keyvals. Free the returned
+// arrays with g_free(). When a keycode is pressed by the user, the keyval from
+// this list of entries is selected by considering the effective keyboard group
+// and level. See gdk_keymap_translate_keyboard_state().
+//
+// The function takes the following parameters:
+//
+//    - hardwareKeycode: keycode.
+//
+// The function returns the following values:
+//
+//    - keys (optional): return location for array of KeymapKey, or NULL.
+//    - keyvals (optional): return location for array of keyvals, or NULL.
+//    - ok: TRUE if there were any entries.
+//
+func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint32) ([]KeymapKey, []uint32, bool) {
+	var _args [2]girepository.Argument
+	var _outs [3]girepository.Argument
+	var _arg0 *C.void         // out
+	var _arg1 C.guint         // out
+	var _out0 *C.GdkKeymapKey // in
+	var _out2 *C.void         // in
+	var _out1 *C.guint        // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
+	_arg1 = C.guint(hardwareKeycode)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_entries_for_keycode", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(keymap)
+	runtime.KeepAlive(hardwareKeycode)
+
+	var _keys []KeymapKey // out
+	var _keyvals []uint32 // out
+	var _ok bool          // out
+	_out0 = *(**C.GdkKeymapKey)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.guint)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(*C.gboolean)(unsafe.Pointer(&_outs[2]))
+
+	if _out0 != nil {
+		defer C.free(unsafe.Pointer(_out0))
+		{
+			src := unsafe.Slice((**C.void)(_out0), _out2)
+			_keys = make([]KeymapKey, _out2)
+			for i := 0; i < int(_out2); i++ {
+				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(&_keys[i])),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.free(intern.C)
+					},
+				)
+			}
+		}
+	}
+	if _out1 != nil {
+		defer C.free(unsafe.Pointer(_out1))
+		{
+			src := unsafe.Slice((**C.void)(_out1), _out2)
+			_keyvals = make([]uint32, _out2)
+			for i := 0; i < int(_out2); i++ {
+				_keyvals[i] = *(*uint32)(unsafe.Pointer(src[i]))
+			}
+		}
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keys, _keyvals, _ok
+}
+
+// EntriesForKeyval obtains a list of keycode/group/level combinations that will
+// generate keyval. Groups and levels are two kinds of keyboard mode; in
+// general, the level determines whether the top or bottom symbol on a key is
+// used, and the group determines whether the left or right symbol is used. On
+// US keyboards, the shift key changes the keyboard level, and there are no
+// groups. A group switch key might convert a keyboard between Hebrew to English
+// modes, for example. EventKey contains a group field that indicates the active
+// keyboard group. The level is computed from the modifier mask. The returned
+// array should be freed with g_free().
+//
+// The function takes the following parameters:
+//
+//    - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
+//
+// The function returns the following values:
+//
+//    - keys: return location for an array of KeymapKey.
+//    - ok: TRUE if keys were found and returned.
+//
+func (keymap *Keymap) EntriesForKeyval(keyval uint32) ([]KeymapKey, bool) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void         // out
+	var _arg1 C.guint         // out
+	var _out0 *C.GdkKeymapKey // in
+	var _out1 *C.void         // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
+	_arg1 = C.guint(keyval)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_entries_for_keyval", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(keymap)
+	runtime.KeepAlive(keyval)
+
+	var _keys []KeymapKey // out
+	var _ok bool          // out
+	_out0 = *(**C.GdkKeymapKey)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(*C.gboolean)(unsafe.Pointer(&_outs[1]))
+
+	defer C.free(unsafe.Pointer(_out0))
+	{
+		src := unsafe.Slice((**C.void)(_out0), _out1)
+		_keys = make([]KeymapKey, _out1)
+		for i := 0; i < int(_out1); i++ {
+			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(&_keys[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keys, _ok
+}
+
 // ModifierState returns the current modifier state.
 //
 // The function returns the following values:
@@ -416,14 +607,15 @@ func (keymap *Keymap) CapsLockState() bool {
 //    - guint: current modifier state.
 //
 func (keymap *Keymap) ModifierState() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	*(**Keymap)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_modifier_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_modifier_state", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
@@ -442,14 +634,15 @@ func (keymap *Keymap) ModifierState() uint32 {
 //    - ok: TRUE if Num Lock is on.
 //
 func (keymap *Keymap) NumLockState() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	*(**Keymap)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_num_lock_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_num_lock_state", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
@@ -470,14 +663,15 @@ func (keymap *Keymap) NumLockState() bool {
 //    - ok: TRUE if Scroll Lock is on.
 //
 func (keymap *Keymap) ScrollLockState() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	*(**Keymap)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_scroll_lock_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("get_scroll_lock_state", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
@@ -499,14 +693,15 @@ func (keymap *Keymap) ScrollLockState() bool {
 //    - ok: TRUE if there are layouts in both directions, FALSE otherwise.
 //
 func (keymap *Keymap) HaveBidiLayouts() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	*(**Keymap)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("have_bidi_layouts", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("have_bidi_layouts", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
@@ -534,16 +729,18 @@ func (keymap *Keymap) HaveBidiLayouts() bool {
 //    - guint: keyval, or 0 if none was mapped to the given key.
 //
 func (keymap *Keymap) LookupKey(key *KeymapKey) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-	*(**Keymap)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("lookup_key", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "Keymap").InvokeMethod("lookup_key", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
@@ -588,14 +785,15 @@ func KeymapGetDefault() *Keymap {
 //    - keymap attached to display.
 //
 func KeymapGetForDisplay(display *Display) *Keymap {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**Display)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "get_for_display").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "get_for_display").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)

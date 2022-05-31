@@ -31,14 +31,15 @@ import "C"
 //    - bytesIcon for the given bytes.
 //
 func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
-	*(**glib.Bytes)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("new_BytesIcon", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("new_BytesIcon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bytes)
@@ -57,14 +58,15 @@ func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 //    - bytes: #GBytes.
 //
 func (icon *BytesIcon) Bytes() *glib.Bytes {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	*(**BytesIcon)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("get_bytes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("get_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)

@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
+// extern void _gotk4_atk1_ObjectFactoryClass_invalidate(void*);
 import "C"
 
 // glib.Type values for atkobjectfactory.go.
@@ -65,7 +65,7 @@ func classInitObjectFactorier(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_ObjectFactoryClass_invalidate
-func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
+func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Invalidate() })
 
@@ -94,16 +94,18 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 //    - object that implements an accessibility interface on behalf of obj.
 //
 func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClass {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(obj.Native()))
-	*(**ObjectFactory)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("create_accessible", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("create_accessible", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(factory)
@@ -121,13 +123,14 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 // created that they need to be re-instantiated. Note: primarily used for
 // runtime replacement of ObjectFactorys in object registries.
 func (factory *ObjectFactory) Invalidate() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	*(**ObjectFactory)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("invalidate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("invalidate", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 }

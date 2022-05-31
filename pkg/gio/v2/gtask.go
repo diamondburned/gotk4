@@ -3,9 +3,13 @@
 package gio
 
 import (
+	"context"
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -16,6 +20,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gtask.go.
@@ -222,6 +227,70 @@ func marshalTask(p uintptr) (interface{}, error) {
 	return wrapTask(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewTask creates a #GTask acting on source_object, which will eventually be
+// used to invoke callback in the current [thread-default main
+// context][g-main-context-push-thread-default].
+//
+// Call this in the "start" method of your asynchronous method, and pass the
+// #GTask around throughout the asynchronous operation. You can use
+// g_task_set_task_data() to attach task-specific data to the object, which you
+// can retrieve later via g_task_get_task_data().
+//
+// By default, if cancellable is cancelled, then the return value of the task
+// will always be G_IO_ERROR_CANCELLED, even if the task had already completed
+// before the cancellation. This allows for simplified handling in cases where
+// cancellation may imply that other objects that the task depends on have been
+// destroyed. If you do not want this behavior, you can use
+// g_task_set_check_cancellable() to change it.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - sourceObject (optional) that owns this task, or NULL.
+//    - callback (optional): ReadyCallback.
+//
+// The function returns the following values:
+//
+//    - task: #GTask.
+//
+func NewTask(ctx context.Context, sourceObject *coreglib.Object, callback AsyncReadyCallback) *Task {
+	var _args [4]girepository.Argument
+	var _arg1 *C.void    // out
+	var _arg0 C.gpointer // out
+	var _arg2 C.gpointer // out
+	var _arg3 C.gpointer
+	var _cret *C.void // in
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg0 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("new_Task", _args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+
+	var _task *Task // out
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+
+	_task = wrapTask(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _task
+}
+
 // Cancellable gets task's #GCancellable.
 //
 // The function returns the following values:
@@ -229,14 +298,15 @@ func marshalTask(p uintptr) (interface{}, error) {
 //    - cancellable task's #GCancellable.
 //
 func (task *Task) Cancellable() *Cancellable {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_cancellable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_cancellable", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -254,14 +324,15 @@ func (task *Task) Cancellable() *Cancellable {
 // The function returns the following values:
 //
 func (task *Task) CheckCancellable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_check_cancellable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_check_cancellable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -284,14 +355,15 @@ func (task *Task) CheckCancellable() bool {
 //    - ok: TRUE if the task has completed, FALSE otherwise.
 //
 func (task *Task) Completed() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_completed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_completed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -318,14 +390,15 @@ func (task *Task) Completed() bool {
 //    - mainContext task's Context.
 //
 func (task *Task) Context() *glib.MainContext {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_context", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -351,14 +424,15 @@ func (task *Task) Context() *glib.MainContext {
 //    - utf8 (optional) task’s name, or NULL.
 //
 func (task *Task) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -379,14 +453,15 @@ func (task *Task) Name() string {
 //    - gint task's priority.
 //
 func (task *Task) Priority() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_priority", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -404,14 +479,15 @@ func (task *Task) Priority() int32 {
 // The function returns the following values:
 //
 func (task *Task) ReturnOnCancel() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_return_on_cancel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_return_on_cancel", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -425,6 +501,88 @@ func (task *Task) ReturnOnCancel() bool {
 	return _ok
 }
 
+// SourceObject gets the source object from task. Like
+// g_async_result_get_source_object(), but does not ref the object.
+//
+// The function returns the following values:
+//
+//    - object (optional) task's source object, or NULL.
+//
+func (task *Task) SourceObject() *coreglib.Object {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_source_object", _args[:], nil)
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(task)
+
+	var _object *coreglib.Object // out
+
+	_object = coreglib.Take(unsafe.Pointer(_cret))
+
+	return _object
+}
+
+// SourceTag gets task's source tag. See g_task_set_source_tag().
+//
+// The function returns the following values:
+//
+//    - gpointer (optional) task's source tag.
+//
+func (task *Task) SourceTag() unsafe.Pointer {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_source_tag", _args[:], nil)
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(task)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// TaskData gets task's task_data.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional) task's task_data.
+//
+func (task *Task) TaskData() unsafe.Pointer {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("get_task_data", _args[:], nil)
+	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(task)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
 // HadError tests if task resulted in an error.
 //
 // The function returns the following values:
@@ -432,14 +590,15 @@ func (task *Task) ReturnOnCancel() bool {
 //    - ok: TRUE if the task resulted in an error, FALSE otherwise.
 //
 func (task *Task) HadError() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("had_error", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("had_error", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -461,14 +620,15 @@ func (task *Task) HadError() bool {
 // Since this method transfers ownership of the return value (or error) to the
 // caller, you may only call it once.
 func (task *Task) PropagateBoolean() error {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("propagate_boolean", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("propagate_boolean", _args[:], nil)
 
 	runtime.KeepAlive(task)
 
@@ -494,15 +654,16 @@ func (task *Task) PropagateBoolean() error {
 //    - gssize: task result, or -1 on error.
 //
 func (task *Task) PropagateInt() (int, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gssize // in
 	var _cerr *C.void  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("propagate_int", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("propagate_int", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -518,6 +679,87 @@ func (task *Task) PropagateInt() (int, error) {
 	return _gssize, _goerr
 }
 
+// PropagatePointer gets the result of task as a pointer, and transfers
+// ownership of that value to the caller.
+//
+// If the task resulted in an error, or was cancelled, then this will instead
+// return NULL and set error.
+//
+// Since this method transfers ownership of the return value (or error) to the
+// caller, you may only call it once.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): task result, or NULL on error.
+//
+func (task *Task) PropagatePointer() (unsafe.Pointer, error) {
+	var _args [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _cret C.gpointer // in
+	var _cerr *C.void    // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("propagate_pointer", _args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(task)
+
+	var _gpointer unsafe.Pointer // out
+	var _goerr error             // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gpointer, _goerr
+}
+
+// PropagateValue gets the result of task as a #GValue, and transfers ownership
+// of that value to the caller. As with g_task_return_value(), this is a generic
+// low-level method; g_task_propagate_pointer() and the like will usually be
+// more useful for C code.
+//
+// If the task resulted in an error, or was cancelled, then this will instead
+// set error and return FALSE.
+//
+// Since this method transfers ownership of the return value (or error) to the
+// caller, you may only call it once.
+//
+// The function returns the following values:
+//
+//    - value: return location for the #GValue.
+//
+func (task *Task) PropagateValue() (coreglib.Value, error) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("propagate_value", _args[:], _outs[:])
+
+	runtime.KeepAlive(task)
+
+	var _value coreglib.Value // out
+	var _goerr error          // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(_out0))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _value, _goerr
+}
+
 // ReturnBoolean sets task's result to result and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
 //
@@ -526,7 +768,7 @@ func (task *Task) PropagateInt() (int, error) {
 //    - result result of a task function.
 //
 func (task *Task) ReturnBoolean(result bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -534,9 +776,11 @@ func (task *Task) ReturnBoolean(result bool) {
 	if result {
 		_arg1 = C.TRUE
 	}
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("return_boolean", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("return_boolean", _args[:], nil)
 
 	runtime.KeepAlive(task)
 	runtime.KeepAlive(result)
@@ -558,7 +802,7 @@ func (task *Task) ReturnBoolean(result bool) {
 //    - err result of a task function.
 //
 func (task *Task) ReturnError(err error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -566,9 +810,11 @@ func (task *Task) ReturnError(err error) {
 	if err != nil {
 		_arg1 = (*C.void)(gerror.New(err))
 	}
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("return_error", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("return_error", _args[:], nil)
 
 	runtime.KeepAlive(task)
 	runtime.KeepAlive(err)
@@ -583,14 +829,15 @@ func (task *Task) ReturnError(err error) {
 //    - ok: TRUE if task has been cancelled, FALSE if not.
 //
 func (task *Task) ReturnErrorIfCancelled() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
-	*(**Task)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("return_error_if_cancelled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("return_error_if_cancelled", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -612,15 +859,17 @@ func (task *Task) ReturnErrorIfCancelled() bool {
 //    - result: integer (#gssize) result of a task function.
 //
 func (task *Task) ReturnInt(result int) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.gssize // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
 	_arg1 = C.gssize(result)
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("return_int", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gssize)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("return_int", _args[:], nil)
 
 	runtime.KeepAlive(task)
 	runtime.KeepAlive(result)
@@ -641,7 +890,7 @@ func (task *Task) ReturnInt(result int) {
 //    - result (optional) result of a task function.
 //
 func (task *Task) ReturnValue(result *coreglib.Value) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -649,9 +898,11 @@ func (task *Task) ReturnValue(result *coreglib.Value) {
 	if result != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(result.Native()))
 	}
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("return_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("return_value", _args[:], nil)
 
 	runtime.KeepAlive(task)
 	runtime.KeepAlive(result)
@@ -677,7 +928,7 @@ func (task *Task) ReturnValue(result *coreglib.Value) {
 //      #GCancellable for you.
 //
 func (task *Task) SetCheckCancellable(checkCancellable bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -685,9 +936,11 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 	if checkCancellable {
 		_arg1 = C.TRUE
 	}
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("set_check_cancellable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("set_check_cancellable", _args[:], nil)
 
 	runtime.KeepAlive(task)
 	runtime.KeepAlive(checkCancellable)
@@ -708,7 +961,7 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 //    - name (optional): human readable name for the task, or NULL to unset it.
 //
 func (task *Task) SetName(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -717,9 +970,11 @@ func (task *Task) SetName(name string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("set_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(task)
 	runtime.KeepAlive(name)
@@ -737,15 +992,17 @@ func (task *Task) SetName(name string) {
 //    - priority: [priority][io-priority] of the request.
 //
 func (task *Task) SetPriority(priority int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
 	_arg1 = C.gint(priority)
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Task").InvokeMethod("set_priority", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("set_priority", _args[:], nil)
 
 	runtime.KeepAlive(task)
 	runtime.KeepAlive(priority)
@@ -788,7 +1045,7 @@ func (task *Task) SetPriority(priority int32) {
 //      return_on_cancel. FALSE if task has already been cancelled.
 //
 func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
@@ -797,9 +1054,11 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 	if returnOnCancel {
 		_arg1 = C.TRUE
 	}
-	*(**Task)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("set_return_on_cancel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "Task").InvokeMethod("set_return_on_cancel", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
@@ -812,4 +1071,119 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 	}
 
 	return _ok
+}
+
+// SetSourceTag sets task's source tag. You can use this to tag a task return
+// value with a particular pointer (usually a pointer to the function doing the
+// tagging) and then later check it using g_task_get_source_tag() (or
+// g_async_result_is_tagged()) in the task's "finish" function, to figure out if
+// the response came from a particular place.
+//
+// The function takes the following parameters:
+//
+//    - sourceTag (optional): opaque pointer indicating the source of this task.
+//
+func (task *Task) SetSourceTag(sourceTag unsafe.Pointer) {
+	var _args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Task").InvokeMethod("set_source_tag", _args[:], nil)
+
+	runtime.KeepAlive(task)
+	runtime.KeepAlive(sourceTag)
+}
+
+// TaskIsValid checks that result is a #GTask, and that source_object is its
+// source object (or that source_object is NULL and result has no source
+// object). This can be used in g_return_if_fail() checks.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//    - sourceObject (optional): source object expected to be associated with the
+//      task.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if result and source_object are valid, FALSE if not.
+//
+func TaskIsValid(result AsyncResulter, sourceObject *coreglib.Object) bool {
+	var _args [2]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
+	var _cret C.gboolean // in
+
+	_arg0 = C.gpointer(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "is_valid").Invoke(_args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(result)
+	runtime.KeepAlive(sourceObject)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TaskReportError creates a #GTask and then immediately calls
+// g_task_return_error() on it. Use this in the wrapper function of an
+// asynchronous method when you want to avoid even calling the virtual method.
+// You can then use g_async_result_is_tagged() in the finish method wrapper to
+// check if the result there is tagged as having been created by the wrapper
+// method, and deal with it appropriately if so.
+//
+// See also g_task_report_new_error().
+//
+// The function takes the following parameters:
+//
+//    - sourceObject (optional) that owns this task, or NULL.
+//    - callback (optional): ReadyCallback.
+//    - sourceTag (optional): opaque pointer indicating the source of this task.
+//    - err: error to report.
+//
+func TaskReportError(sourceObject *coreglib.Object, callback AsyncReadyCallback, sourceTag unsafe.Pointer, err error) {
+	var _args [5]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+	var _arg3 C.gpointer // out
+	var _arg4 *C.void    // out
+
+	_arg0 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
+	if callback != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg2 = C.gpointer(gbox.AssignOnce(callback))
+	}
+	_arg3 = (C.gpointer)(unsafe.Pointer(sourceTag))
+	if err != nil {
+		_arg4 = (*C.void)(gerror.New(err))
+	}
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gio", "report_error").Invoke(_args[:], nil)
+
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+	runtime.KeepAlive(sourceTag)
+	runtime.KeepAlive(err)
 }

@@ -13,7 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gio2_ConverterIface_reset(GConverter*);
+// extern void _gotk4_gio2_ConverterIface_reset(void*);
 import "C"
 
 // glib.Type values for gconverter.go.
@@ -67,7 +67,7 @@ func ifaceInitConverterer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ConverterIface_reset
-func _gotk4_gio2_ConverterIface_reset(arg0 *C.GConverter) {
+func _gotk4_gio2_ConverterIface_reset(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ConverterOverrider)
 
@@ -88,11 +88,12 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // was just created. If the converter has any internal state that would produce
 // output then that output is lost.
 func (converter *Converter) Reset() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
-	*(**Converter)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(converter)
 }

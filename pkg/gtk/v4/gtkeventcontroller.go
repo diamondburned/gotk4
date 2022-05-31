@@ -96,14 +96,15 @@ func BaseEventController(obj EventControllerer) *EventController {
 //    - event (optional) that is currently handled by controller.
 //
 func (controller *EventController) CurrentEvent() gdk.Eventer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_current_event", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_current_event", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -138,14 +139,15 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 //    - device (optional) of the event is currently handled by controller.
 //
 func (controller *EventController) CurrentEventDevice() gdk.Devicer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_current_event_device", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_current_event_device", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -180,14 +182,15 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 //    - guint32: timestamp of the event is currently handled by controller.
 //
 func (controller *EventController) CurrentEventTime() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_current_event_time", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_current_event_time", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -204,14 +207,15 @@ func (controller *EventController) CurrentEventTime() uint32 {
 // The function returns the following values:
 //
 func (controller *EventController) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -230,14 +234,15 @@ func (controller *EventController) Name() string {
 //    - widget: GtkWidget.
 //
 func (controller *EventController) Widget() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
@@ -267,13 +272,14 @@ func (controller *EventController) Widget() Widgetter {
 
 // Reset resets the controller to a clean state.
 func (controller *EventController) Reset() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**EventController)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "EventController").InvokeMethod("reset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "EventController").InvokeMethod("reset", _args[:], nil)
 
 	runtime.KeepAlive(controller)
 }
@@ -285,16 +291,18 @@ func (controller *EventController) Reset() {
 //    - name for controller.
 //
 func (controller *EventController) SetName(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**EventController)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "EventController").InvokeMethod("set_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "EventController").InvokeMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(name)

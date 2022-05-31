@@ -17,6 +17,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gdk3_EventFunc(void*, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gdkevents.go.
@@ -803,7 +805,7 @@ func (w WindowState) Has(other WindowState) bool {
 type EventFunc func(event *Event)
 
 //export _gotk4_gdk3_EventFunc
-func _gotk4_gdk3_EventFunc(arg1 *C.GdkEvent, arg2 C.gpointer) {
+func _gotk4_gdk3_EventFunc(arg1 *C.void, arg2 C.gpointer) {
 	var fn EventFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -822,6 +824,149 @@ func _gotk4_gdk3_EventFunc(arg1 *C.GdkEvent, arg2 C.gpointer) {
 	}
 
 	fn(_event)
+}
+
+// EventsGetAngle: if both events contain X/Y information, this function will
+// return TRUE and return in angle the relative angle from event1 to event2. The
+// rotation direction for positive angles is from the positive X axis towards
+// the positive Y axis.
+//
+// The function takes the following parameters:
+//
+//    - event1: first Event.
+//    - event2: second Event.
+//
+// The function returns the following values:
+//
+//    - angle: return location for the relative angle between both events.
+//    - ok: TRUE if the angle could be calculated.
+//
+func EventsGetAngle(event1, event2 *Event) (float64, bool) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "events_get_angle").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _angle float64 // out
+	var _ok bool       // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_angle = *(*float64)(unsafe.Pointer(_out0))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _angle, _ok
+}
+
+// EventsGetCenter: if both events contain X/Y information, the center of both
+// coordinates will be returned in x and y.
+//
+// The function takes the following parameters:
+//
+//    - event1: first Event.
+//    - event2: second Event.
+//
+// The function returns the following values:
+//
+//    - x: return location for the X coordinate of the center.
+//    - y: return location for the Y coordinate of the center.
+//    - ok: TRUE if the center could be calculated.
+//
+func EventsGetCenter(event1, event2 *Event) (x float64, y float64, ok bool) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "events_get_center").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_x = *(*float64)(unsafe.Pointer(_out0))
+	_y = *(*float64)(unsafe.Pointer(_out1))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _x, _y, _ok
+}
+
+// EventsGetDistance: if both events have X/Y information, the distance between
+// both coordinates (as in a straight line going from event1 to event2) will be
+// returned.
+//
+// The function takes the following parameters:
+//
+//    - event1: first Event.
+//    - event2: second Event.
+//
+// The function returns the following values:
+//
+//    - distance: return location for the distance.
+//    - ok: TRUE if the distance could be calculated.
+//
+func EventsGetDistance(event1, event2 *Event) (float64, bool) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "events_get_distance").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _distance float64 // out
+	var _ok bool          // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_distance = *(*float64)(unsafe.Pointer(_out0))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _distance, _ok
 }
 
 // EventsPending checks if any events are ready to be processed for any display.
@@ -875,15 +1020,16 @@ func GetShowEvents() bool {
 //    - showEvents: TRUE to output event debugging information.
 //
 func SetShowEvents(showEvents bool) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.gboolean // out
 
 	if showEvents {
 		_arg0 = C.TRUE
 	}
-	*(*bool)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "set_show_events").Invoke(args[:], nil)
+	*(*C.gboolean)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "set_show_events").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(showEvents)
 }
@@ -902,7 +1048,7 @@ func SetShowEvents(showEvents bool) {
 //      otherwise.
 //
 func SettingGet(name string, value *coreglib.Value) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -910,10 +1056,11 @@ func SettingGet(name string, value *coreglib.Value) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = (*C.void)(unsafe.Pointer(value.Native()))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(**coreglib.Value)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gdk", "setting_get").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "setting_get").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -1956,6 +2103,33 @@ func EventGet() *Event {
 	return _event
 }
 
+// EventHandlerSet sets the function to call to handle all events from GDK.
+//
+// Note that GTK+ uses this to install its own event handler, so it is usually
+// not useful for GTK+ applications. (Although an application can call this
+// function then call gtk_main_do_event() to pass events to GTK+.).
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call to handle events from GDK.
+//
+func EventHandlerSet(fn EventFunc) {
+	var _args [3]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer
+	var _arg2 C.GDestroyNotify
+
+	_arg0 = (*[0]byte)(C._gotk4_gdk3_EventFunc)
+	_arg1 = C.gpointer(gbox.Assign(fn))
+	_arg2 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "handler_set").Invoke(_args[:], nil)
+
+	runtime.KeepAlive(fn)
+}
+
 // EventPeek: if there is an event waiting in the event queue of some open
 // display, returns a copy of it. See gdk_display_peek_event().
 //
@@ -2005,13 +2179,14 @@ func EventPeek() *Event {
 //    - event: valid Event.
 //
 func EventRequestMotions(event *EventMotion) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-	*(**EventMotion)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "request_motions").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "request_motions").Invoke(_args[:], nil)
 
 	runtime.KeepAlive(event)
 }

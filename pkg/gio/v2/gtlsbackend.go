@@ -13,9 +13,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GTlsDatabase* _gotk4_gio2_TlsBackendInterface_get_default_database(GTlsBackend*);
-// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_dtls(GTlsBackend*);
-// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(GTlsBackend*);
+// extern GTlsDatabase* _gotk4_gio2_TlsBackendInterface_get_default_database(void*);
+// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_dtls(void*);
+// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(void*);
 import "C"
 
 // glib.Type values for gtlsbackend.go.
@@ -98,7 +98,7 @@ func ifaceInitTLSBackender(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_TlsBackendInterface_get_default_database
-func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.GTlsBackend) (cret *C.GTlsDatabase) {
+func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.void) (cret *C.GTlsDatabase) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TLSBackendOverrider)
 
@@ -111,7 +111,7 @@ func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.GTlsBackend) (
 }
 
 //export _gotk4_gio2_TlsBackendInterface_supports_dtls
-func _gotk4_gio2_TlsBackendInterface_supports_dtls(arg0 *C.GTlsBackend) (cret C.gboolean) {
+func _gotk4_gio2_TlsBackendInterface_supports_dtls(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TLSBackendOverrider)
 
@@ -125,7 +125,7 @@ func _gotk4_gio2_TlsBackendInterface_supports_dtls(arg0 *C.GTlsBackend) (cret C.
 }
 
 //export _gotk4_gio2_TlsBackendInterface_supports_tls
-func _gotk4_gio2_TlsBackendInterface_supports_tls(arg0 *C.GTlsBackend) (cret C.gboolean) {
+func _gotk4_gio2_TlsBackendInterface_supports_tls(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TLSBackendOverrider)
 
@@ -155,12 +155,13 @@ func marshalTLSBackend(p uintptr) (interface{}, error) {
 //    - tlsDatabase: default database, which should be unreffed when done.
 //
 func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
-	*(**TLSBackend)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -203,7 +204,7 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 //    - database (optional): Database.
 //
 func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -211,7 +212,9 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	if database != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
-	*(**TLSBackend)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(backend)
 	runtime.KeepAlive(database)
@@ -225,12 +228,13 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 //    - ok: whether DTLS is supported.
 //
 func (backend *TLSBackend) SupportsDTLS() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
-	*(**TLSBackend)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -253,12 +257,13 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 //    - ok: whether or not TLS is supported.
 //
 func (backend *TLSBackend) SupportsTLS() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
-	*(**TLSBackend)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

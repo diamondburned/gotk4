@@ -131,14 +131,15 @@ func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.SignalH
 //    - gestureLongPress: newly created GestureLongPress.
 //
 func NewGestureLongPress(widget Widgetter) *GestureLongPress {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("new_GestureLongPress", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("new_GestureLongPress", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)

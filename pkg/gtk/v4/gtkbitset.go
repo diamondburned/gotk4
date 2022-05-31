@@ -42,12 +42,13 @@ type bitsetIter struct {
 //    - guint: current value pointer to by iter.
 //
 func (iter *BitsetIter) Value() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	*(**BitsetIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -67,12 +68,13 @@ func (iter *BitsetIter) Value() uint32 {
 //    - ok: TRUE if iter points to a valid value.
 //
 func (iter *BitsetIter) IsValid() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	*(**BitsetIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -85,4 +87,234 @@ func (iter *BitsetIter) IsValid() bool {
 	}
 
 	return _ok
+}
+
+// Next moves iter to the next value in the set.
+//
+// If it was already pointing to the last value in the set, FALSE is returned
+// and iter is invalidated.
+//
+// The function returns the following values:
+//
+//    - value (optional): set to the next value.
+//    - ok: TRUE if a next value existed.
+//
+func (iter *BitsetIter) Next() (uint32, bool) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _value uint32 // out
+	var _ok bool      // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	if _out0 != nil {
+		_value = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// Previous moves iter to the previous value in the set.
+//
+// If it was already pointing to the first value in the set, FALSE is returned
+// and iter is invalidated.
+//
+// The function returns the following values:
+//
+//    - value (optional): set to the previous value.
+//    - ok: TRUE if a previous value existed.
+//
+func (iter *BitsetIter) Previous() (uint32, bool) {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _value uint32 // out
+	var _ok bool      // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	if _out0 != nil {
+		_value = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// BitsetIterInitAt initializes iter to point to target.
+//
+// If target is not found, finds the next value after it. If no value >= target
+// exists in set, this function returns FALSE.
+//
+// The function takes the following parameters:
+//
+//    - set: GtkBitset.
+//    - target value to start iterating at.
+//
+// The function returns the following values:
+//
+//    - iter: pointer to an uninitialized GtkBitsetIter.
+//    - value (optional): set to the found value in set.
+//    - ok: TRUE if a value was found.
+//
+func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _out0 *C.void    // in
+	var _arg0 *C.void    // out
+	var _arg1 C.guint    // out
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
+	_arg1 = C.guint(target)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "init_at").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(target)
+
+	var _iter *BitsetIter // out
+	var _value uint32     // out
+	var _ok bool          // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _out1 != nil {
+		_value = *(*uint32)(unsafe.Pointer(_out1))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _value, _ok
+}
+
+// BitsetIterInitFirst initializes an iterator for set and points it to the
+// first value in set.
+//
+// If set is empty, FALSE is returned and value is set to G_MAXUINT.
+//
+// The function takes the following parameters:
+//
+//    - set: GtkBitset.
+//
+// The function returns the following values:
+//
+//    - iter: pointer to an uninitialized GtkBitsetIter.
+//    - value (optional): set to the first value in set.
+//    - ok: TRUE if set isn't empty.
+//
+func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _out0 *C.void    // in
+	var _arg0 *C.void    // out
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "init_first").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(set)
+
+	var _iter *BitsetIter // out
+	var _value uint32     // out
+	var _ok bool          // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _out1 != nil {
+		_value = *(*uint32)(unsafe.Pointer(_out1))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _value, _ok
+}
+
+// BitsetIterInitLast initializes an iterator for set and points it to the last
+// value in set.
+//
+// If set is empty, FALSE is returned.
+//
+// The function takes the following parameters:
+//
+//    - set: GtkBitset.
+//
+// The function returns the following values:
+//
+//    - iter: pointer to an uninitialized GtkBitsetIter.
+//    - value (optional): set to the last value in set.
+//    - ok: TRUE if set isn't empty.
+//
+func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint32, bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _out0 *C.void    // in
+	var _arg0 *C.void    // out
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "init_last").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(set)
+
+	var _iter *BitsetIter // out
+	var _value uint32     // out
+	var _ok bool          // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if _out1 != nil {
+		_value = *(*uint32)(unsafe.Pointer(_out1))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _value, _ok
 }

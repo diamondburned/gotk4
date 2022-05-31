@@ -14,7 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_SocketServiceClass_incoming(GSocketService*, GSocketConnection*, GObject*);
+// extern gboolean _gotk4_gio2_SocketServiceClass_incoming(void*, void*, void*);
 import "C"
 
 // glib.Type values for gsocketservice.go.
@@ -88,7 +88,7 @@ func classInitSocketServicer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_SocketServiceClass_incoming
-func _gotk4_gio2_SocketServiceClass_incoming(arg0 *C.GSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
+func _gotk4_gio2_SocketServiceClass_incoming(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
@@ -155,14 +155,15 @@ func NewSocketService() *SocketService {
 //    - ok: TRUE if the service is active, FALSE otherwise.
 //
 func (service *SocketService) IsActive() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
-	*(**SocketService)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("is_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("is_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(service)
@@ -183,13 +184,14 @@ func (service *SocketService) IsActive() bool {
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
 func (service *SocketService) Start() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
-	*(**SocketService)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "SocketService").InvokeMethod("start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "SocketService").InvokeMethod("start", _args[:], nil)
 
 	runtime.KeepAlive(service)
 }
@@ -210,13 +212,14 @@ func (service *SocketService) Start() {
 // service will start accepting connections immediately when a new socket is
 // added.
 func (service *SocketService) Stop() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
-	*(**SocketService)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "SocketService").InvokeMethod("stop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "SocketService").InvokeMethod("stop", _args[:], nil)
 
 	runtime.KeepAlive(service)
 }

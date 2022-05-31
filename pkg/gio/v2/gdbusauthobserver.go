@@ -46,7 +46,7 @@ func NewDBusAuthObserver() *DBusAuthObserver {
 //      if not.
 //
 func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -54,9 +54,11 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mechanism)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**DBusAuthObserver)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("allow_mechanism", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("allow_mechanism", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(observer)
@@ -84,7 +86,7 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 //    - ok: TRUE if the peer is authorized, FALSE if not.
 //
 func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, credentials *Credentials) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -95,10 +97,12 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	if credentials != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 	}
-	*(**DBusAuthObserver)(unsafe.Pointer(&args[1])) = _arg1
-	*(*IOStreamer)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("authorize_authenticated_peer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("authorize_authenticated_peer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(observer)

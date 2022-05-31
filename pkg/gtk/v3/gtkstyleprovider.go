@@ -14,8 +14,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GtkIconFactory* _gotk4_gtk3_StyleProviderIface_get_icon_factory(GtkStyleProvider*, GtkWidgetPath*);
-// extern GtkStyleProperties* _gotk4_gtk3_StyleProviderIface_get_style(GtkStyleProvider*, GtkWidgetPath*);
+// extern GtkIconFactory* _gotk4_gtk3_StyleProviderIface_get_icon_factory(void*, void*);
+// extern GtkStyleProperties* _gotk4_gtk3_StyleProviderIface_get_style(void*, void*);
 import "C"
 
 // glib.Type values for gtkstyleprovider.go.
@@ -127,7 +127,7 @@ func ifaceInitStyleProviderer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_StyleProviderIface_get_icon_factory
-func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkIconFactory) {
+func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.void, arg1 *C.void) (cret *C.GtkIconFactory) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StyleProviderOverrider)
 
@@ -152,7 +152,7 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, a
 }
 
 //export _gotk4_gtk3_StyleProviderIface_get_style
-func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkStyleProperties) {
+func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.void, arg1 *C.void) (cret *C.GtkStyleProperties) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StyleProviderOverrider)
 
@@ -201,14 +201,16 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 //    - iconFactory (optional): icon factory to use for path, or NULL.
 //
 func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**StyleProvider)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -239,14 +241,16 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 //    - styleProperties (optional) containing the style settings affecting path.
 //
 func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**StyleProvider)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

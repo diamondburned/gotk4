@@ -38,7 +38,7 @@ import "C"
 //    - guint: ID of the export (never zero), or 0 in case of failure.
 //
 func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint32, error) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -49,10 +49,12 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("export_menu_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("export_menu_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
@@ -82,15 +84,17 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 //    - exportId: ID from g_dbus_connection_export_menu_model().
 //
 func (connection *DBusConnection) UnexportMenuModel(exportId uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	_arg1 = C.guint(exportId)
-	*(**DBusConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unexport_menu_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unexport_menu_model", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(exportId)

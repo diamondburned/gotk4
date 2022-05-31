@@ -454,6 +454,7 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 
 		if g.Parameters.InstanceParameter != nil {
 			instanceParam = true
+			argumentIndices[len(callableValues)] = nIn // 0
 
 			callableValues = append(callableValues, typeconv.NewReceiverValue(
 				strcases.SnakeToGo(false, g.Parameters.InstanceParameter.Name),
@@ -462,7 +463,6 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 				g.Parameters.InstanceParameter,
 			))
 
-			argumentIndices[0] = nIn // 0
 			nIn++
 		}
 
@@ -470,6 +470,13 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 			var in string
 			var out string
 			var dir typeconv.ConversionDirection
+
+			// TODO: figure out a more suitable way to generate names. Since we
+			// need the type name to do the unsafe casting, we might want to
+			// make Name a func() string instead.
+			//
+			// Either that, or we make a custom attribute in typeconv that
+			// forces it to generate unsafe casts for everything.
 
 			switch types.GuessParameterOutput(&param) {
 			case "in":
@@ -481,7 +488,7 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 					in = "ctx"
 				}
 
-				argumentIndices[i] = nIn
+				argumentIndices[len(callableValues)] = nIn
 				nIn++
 
 			case "out":
@@ -489,7 +496,7 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 				out = "_" + strcases.SnakeToGo(false, param.Name)
 				dir = typeconv.ConvertCToGo
 
-				argumentIndices[i] = nOut
+				argumentIndices[len(callableValues)] = nOut
 				nOut++
 
 			default:
@@ -501,12 +508,12 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 		}
 
 		if nIn > 0 {
-			g.pen.Linef(secInputDecl, "var args [%d]girepository.Argument", nIn)
-			argsName = "args[:]"
+			g.pen.Linef(secInputDecl, "var _args [%d]girepository.Argument", nIn)
+			argsName = "_args[:]"
 		}
 		if nOut > 0 {
-			g.pen.Linef(secInputDecl, "var outs [%d]girepository.Argument", nOut)
-			outsName = "outs[:]"
+			g.pen.Linef(secInputDecl, "var _outs [%d]girepository.Argument", nOut)
+			outsName = "_outs[:]"
 		}
 	}
 
@@ -597,6 +604,7 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 		}
 	}
 
+	g.pen.EmptyLine(secInputConv)
 	for i, converted := range g.Results {
 		argIx, ok := argumentIndices[i]
 		if !ok {
@@ -606,13 +614,13 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 		switch converted.Direction {
 		case typeconv.ConvertGoToC:
 			g.pen.Linef(secInputConv,
-				"*(*%[2]s)(unsafe.Pointer(&args[%[1]d])) = _arg%[1]d",
-				argIx, converted.In.Type,
+				"*(*%[2]s)(unsafe.Pointer(&_args[%[1]d])) = _arg%[1]d",
+				argIx, converted.Out.Type,
 			)
 		case typeconv.ConvertCToGo:
 			g.pen.Linef(secOutputDecl,
-				"_out%[1]d = *(*%[2]s)(unsafe.Pointer(&outs[%[1]d]))",
-				argIx, converted.Out.Type,
+				"_out%[1]d = *(*%[2]s)(unsafe.Pointer(&_outs[%[1]d]))",
+				argIx, converted.In.Type,
 			)
 		}
 	}

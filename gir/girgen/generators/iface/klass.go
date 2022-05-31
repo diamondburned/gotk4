@@ -127,7 +127,8 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 	method.C.Name = file.ExportedName(ts.ns, ts.Record.Name, field.Name)
 	method.C.Tail = cbgen.CGoTail
 	method.Header.ApplyFrom(cbgen.Header())
-	types.AddCallableHeader(&method.Header, ts.ns, method.C.Name, vmethod.CallableAttrs)
+	types.AddCallableHeader(types.OverrideNamespace(ts.igen.gen, ts.ns), &method.Header, method.C.Name, vmethod.CallableAttrs)
+	// types.AddCallableHeader(ts.igen.gen, &method.Header, method.C.Name, vmethod.CallableAttrs)
 
 	return method, true
 }

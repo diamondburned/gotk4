@@ -17,7 +17,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk3_OverlayClass_get_child_position(GtkOverlay*, GtkWidget*, GtkAllocation*);
+// extern gboolean _gotk4_gtk3_OverlayClass_get_child_position(void*, void*, void*);
+// extern gboolean _gotk4_gtk3_Overlay_ConnectGetChildPosition(gpointer, void*, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkoverlay.go.
@@ -97,7 +98,7 @@ func classInitOverlayer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_OverlayClass_get_child_position
-func _gotk4_gtk3_OverlayClass_get_child_position(arg0 *C.GtkOverlay, arg1 *C.GtkWidget, arg2 *C.GtkAllocation) (cret C.gboolean) {
+func _gotk4_gtk3_OverlayClass_get_child_position(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChildPosition(widget Widgetter, allocation *Allocation) bool
@@ -159,6 +160,63 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return wrapOverlay(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_Overlay_ConnectGetChildPosition
+func _gotk4_gtk3_Overlay_ConnectGetChildPosition(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(widget Widgetter) (allocation *gdk.Rectangle, ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(widget Widgetter) (allocation *gdk.Rectangle, ok bool))
+	}
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	allocation, ok := f(_widget)
+
+	*arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(allocation)))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectGetChildPosition signal is emitted to determine the position and size
+// of any overlay child widgets. A handler for this signal should fill
+// allocation with the desired position and size for widget, relative to the
+// 'main' child of overlay.
+//
+// The default handler for this signal uses the widget's halign and valign
+// properties to determine the position and gives the widget its natural size
+// (except that an alignment of GTK_ALIGN_FILL will cause the overlay to be
+// full-width/height). If the main child is a ScrolledWindow, the overlays are
+// placed relative to its contents.
+func (overlay *Overlay) ConnectGetChildPosition(f func(widget Widgetter) (allocation *gdk.Rectangle, ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(overlay, "get-child-position", false, unsafe.Pointer(C._gotk4_gtk3_Overlay_ConnectGetChildPosition), f)
+}
+
 // NewOverlay creates a new Overlay.
 //
 // The function returns the following values:
@@ -191,15 +249,17 @@ func NewOverlay() *Overlay {
 //    - widget to be added to the container.
 //
 func (overlay *Overlay) AddOverlay(widget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**Overlay)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("add_overlay", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Overlay").InvokeMethod("add_overlay", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
@@ -217,16 +277,18 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 //    - ok: whether the widget is a pass through child.
 //
 func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**Overlay)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Overlay").InvokeMethod("get_overlay_pass_through", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Overlay").InvokeMethod("get_overlay_pass_through", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(overlay)
@@ -256,7 +318,7 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 //      starting from 0. If negative, indicates the end of the list.
 //
 func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -264,10 +326,12 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.int(index_)
-	*(**Overlay)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("reorder_overlay", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Overlay").InvokeMethod("reorder_overlay", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(child)
@@ -283,7 +347,7 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int32) {
 //    - passThrough: whether the child should pass the input through.
 //
 func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -293,10 +357,12 @@ func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool
 	if passThrough {
 		_arg2 = C.TRUE
 	}
-	*(**Overlay)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("set_overlay_pass_through", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Overlay").InvokeMethod("set_overlay_pass_through", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)

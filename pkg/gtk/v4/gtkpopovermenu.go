@@ -264,16 +264,17 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 //    - popoverMenu: new GtkPopoverMenu.
 //
 func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if model != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(*gio.MenuModeller)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("new_PopoverMenu_from_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("new_PopoverMenu_from_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -300,7 +301,7 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 //    - ok: TRUE if id was found and the widget added.
 //
 func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -310,10 +311,12 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**PopoverMenu)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("add_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("add_child", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popover)
@@ -336,14 +339,15 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 //    - menuModel: menu model of popover.
 //
 func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-	*(**PopoverMenu)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("get_menu_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("get_menu_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popover)
@@ -383,16 +387,18 @@ func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 //    - ok: TRUE if the widget was removed.
 //
 func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**PopoverMenu)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("remove_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("remove_child", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popover)
@@ -417,7 +423,7 @@ func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 //    - model (optional): GMenuModel, or NULL.
 //
 func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -425,9 +431,11 @@ func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**PopoverMenu)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("set_menu_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("set_menu_model", _args[:], nil)
 
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(model)

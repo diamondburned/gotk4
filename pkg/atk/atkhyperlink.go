@@ -16,15 +16,15 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(AtkHyperlink*, gint);
-// extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(AtkHyperlink*);
-// extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(AtkHyperlink*);
-// extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(AtkHyperlink*, gint);
-// extern gint _gotk4_atk1_HyperlinkClass_get_end_index(AtkHyperlink*);
-// extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(AtkHyperlink*);
-// extern gint _gotk4_atk1_HyperlinkClass_get_start_index(AtkHyperlink*);
-// extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
-// extern void _gotk4_atk1_HyperlinkClass_link_activated(AtkHyperlink*);
+// extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(void*, gint);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(void*);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(void*);
+// extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(void*, gint);
+// extern gint _gotk4_atk1_HyperlinkClass_get_end_index(void*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(void*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_start_index(void*);
+// extern guint _gotk4_atk1_HyperlinkClass_link_state(void*);
+// extern void _gotk4_atk1_HyperlinkClass_link_activated(void*);
 // extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
 import "C"
 
@@ -227,7 +227,7 @@ func classInitHyperlinker(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_HyperlinkClass_get_end_index
-func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint) {
+func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ EndIndex() int32 })
 
@@ -239,7 +239,7 @@ func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint
 }
 
 //export _gotk4_atk1_HyperlinkClass_get_n_anchors
-func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint) {
+func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NAnchors() int32 })
 
@@ -251,7 +251,7 @@ func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint
 }
 
 //export _gotk4_atk1_HyperlinkClass_get_object
-func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.void, arg1 C.gint) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ GetObject(i int32) *ObjectClass })
 
@@ -267,7 +267,7 @@ func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (c
 }
 
 //export _gotk4_atk1_HyperlinkClass_get_start_index
-func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gint) {
+func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StartIndex() int32 })
 
@@ -279,7 +279,7 @@ func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gi
 }
 
 //export _gotk4_atk1_HyperlinkClass_get_uri
-func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ URI(i int32) string })
 
@@ -295,7 +295,7 @@ func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret
 }
 
 //export _gotk4_atk1_HyperlinkClass_is_selected_link
-func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.gboolean) {
+func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsSelectedLink() bool })
 
@@ -309,7 +309,7 @@ func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.g
 }
 
 //export _gotk4_atk1_HyperlinkClass_is_valid
-func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean) {
+func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsValid() bool })
 
@@ -323,7 +323,7 @@ func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean)
 }
 
 //export _gotk4_atk1_HyperlinkClass_link_activated
-func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
+func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LinkActivated() })
 
@@ -331,7 +331,7 @@ func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
 }
 
 //export _gotk4_atk1_HyperlinkClass_link_state
-func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.AtkHyperlink) (cret C.guint) {
+func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.void) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LinkState() uint32 })
 
@@ -384,14 +384,15 @@ func (link_ *Hyperlink) ConnectLinkActivated(f func()) coreglib.SignalHandle {
 //    - gint: index with the hypertext document at which this link ends.
 //
 func (link_ *Hyperlink) EndIndex() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	*(**Hyperlink)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_end_index", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_end_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
@@ -410,14 +411,15 @@ func (link_ *Hyperlink) EndIndex() int32 {
 //    - gint: number of anchors associated with this hyperlink.
 //
 func (link_ *Hyperlink) NAnchors() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	*(**Hyperlink)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_n_anchors", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_n_anchors", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
@@ -444,16 +446,18 @@ func (link_ *Hyperlink) NAnchors() int32 {
 //    - object associated with this hyperlinks i-th anchor.
 //
 func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 	_arg1 = C.gint(i)
-	*(**Hyperlink)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_object", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_object", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
@@ -474,14 +478,15 @@ func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
 //    - gint: index with the hypertext document at which this link begins.
 //
 func (link_ *Hyperlink) StartIndex() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	*(**Hyperlink)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_start_index", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_start_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
@@ -506,16 +511,18 @@ func (link_ *Hyperlink) StartIndex() int32 {
 //    - utf8: string specifying the URI.
 //
 func (link_ *Hyperlink) URI(i int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 	_arg1 = C.gint(i)
-	*(**Hyperlink)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_uri", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_uri", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
@@ -538,14 +545,15 @@ func (link_ *Hyperlink) URI(i int32) string {
 //    - ok: whether or not this link displays its content inline.
 //
 func (link_ *Hyperlink) IsInline() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	*(**Hyperlink)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_inline", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_inline", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
@@ -569,14 +577,15 @@ func (link_ *Hyperlink) IsInline() bool {
 //    - ok: true if the AtkHyperlink is selected, False otherwise.
 //
 func (link_ *Hyperlink) IsSelectedLink() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	*(**Hyperlink)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_selected_link", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_selected_link", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
@@ -599,14 +608,15 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 //    - ok: whether or not this link is still valid.
 //
 func (link_ *Hyperlink) IsValid() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	*(**Hyperlink)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_valid", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_valid", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)

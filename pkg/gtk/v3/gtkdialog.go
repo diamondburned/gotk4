@@ -18,8 +18,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_DialogClass_close(GtkDialog*);
-// extern void _gotk4_gtk3_DialogClass_response(GtkDialog*, gint);
+// extern void _gotk4_gtk3_DialogClass_close(void*);
+// extern void _gotk4_gtk3_DialogClass_response(void*, gint);
 // extern void _gotk4_gtk3_Dialog_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk3_Dialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
@@ -179,16 +179,17 @@ func (d DialogFlags) Has(other DialogFlags) bool {
 //    - ok: whether the alternative button order should be used.
 //
 func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	if screen != nil {
 		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	}
-	*(**gdk.Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "alternative_dialog_button_order").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "alternative_dialog_button_order").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -358,7 +359,7 @@ func classInitDialogger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_DialogClass_close
-func _gotk4_gtk3_DialogClass_close(arg0 *C.GtkDialog) {
+func _gotk4_gtk3_DialogClass_close(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
@@ -366,7 +367,7 @@ func _gotk4_gtk3_DialogClass_close(arg0 *C.GtkDialog) {
 }
 
 //export _gotk4_gtk3_DialogClass_response
-func _gotk4_gtk3_DialogClass_response(arg0 *C.GtkDialog, arg1 C.gint) {
+func _gotk4_gtk3_DialogClass_response(arg0 *C.void, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Response(responseId int32) })
 
@@ -491,7 +492,7 @@ func NewDialog() *Dialog {
 //    - responseId: response ID for child.
 //
 func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -499,10 +500,12 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg2 = C.gint(responseId)
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Dialog").InvokeMethod("add_action_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("add_action_widget", _args[:], nil)
 
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(child)
@@ -524,7 +527,7 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
 //    - widget widget that was added.
 //
 func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -534,10 +537,12 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(responseId)
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("add_button", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("add_button", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -577,14 +582,15 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
 //    - box: action area.
 //
 func (dialog *Dialog) ActionArea() *Box {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**Dialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_action_area", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_action_area", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -603,14 +609,15 @@ func (dialog *Dialog) ActionArea() *Box {
 //    - box: content area Box.
 //
 func (dialog *Dialog) ContentArea() *Box {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**Dialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_content_area", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_content_area", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -630,14 +637,15 @@ func (dialog *Dialog) ContentArea() *Box {
 //    - headerBar: header bar.
 //
 func (dialog *Dialog) HeaderBar() *HeaderBar {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**Dialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_header_bar", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_header_bar", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -662,16 +670,18 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 //      a response id set.
 //
 func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_response_for_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_response_for_widget", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -696,16 +706,18 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
 //    - widget (optional) button that uses the given response_id, or NULL.
 //
 func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	_arg1 = C.gint(responseId)
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_widget_for_response", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_widget_for_response", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -743,15 +755,17 @@ func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
 //    - responseId: response ID.
 //
 func (dialog *Dialog) Response(responseId int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	_arg1 = C.gint(responseId)
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Dialog").InvokeMethod("response", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("response", _args[:], nil)
 
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
@@ -805,14 +819,15 @@ func (dialog *Dialog) Response(responseId int32) {
 //    - gint: response ID.
 //
 func (dialog *Dialog) Run() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**Dialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("run", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("run", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
@@ -840,7 +855,7 @@ func (dialog *Dialog) Run() int32 {
 //    - newOrder: array of response ids of dialog’s buttons.
 //
 func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg2 *C.void // out
 	var _arg1 C.gint
@@ -855,10 +870,11 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
 			out[i] = C.gint(newOrder[i])
 		}
 	}
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
-	*(*[]int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_alternative_button_order_from_array", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_alternative_button_order_from_array", _args[:], nil)
 
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(newOrder)
@@ -873,15 +889,17 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
 //    - responseId: response ID.
 //
 func (dialog *Dialog) SetDefaultResponse(responseId int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	_arg1 = C.gint(responseId)
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_default_response", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_default_response", _args[:], nil)
 
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
@@ -897,7 +915,7 @@ func (dialog *Dialog) SetDefaultResponse(responseId int32) {
 //    - setting: TRUE for sensitive.
 //
 func (dialog *Dialog) SetResponseSensitive(responseId int32, setting bool) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gboolean // out
@@ -907,10 +925,12 @@ func (dialog *Dialog) SetResponseSensitive(responseId int32, setting bool) {
 	if setting {
 		_arg2 = C.TRUE
 	}
-	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_response_sensitive", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_response_sensitive", _args[:], nil)
 
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)

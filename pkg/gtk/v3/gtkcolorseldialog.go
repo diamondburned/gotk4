@@ -86,15 +86,16 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 //    - colorSelectionDialog: ColorSelectionDialog.
 //
 func NewColorSelectionDialog(title string) *ColorSelectionDialog {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ColorSelectionDialog").InvokeMethod("new_ColorSelectionDialog", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ColorSelectionDialog").InvokeMethod("new_ColorSelectionDialog", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(title)
@@ -113,14 +114,15 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 //    - widget: embedded ColorSelection.
 //
 func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	*(**ColorSelectionDialog)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ColorSelectionDialog").InvokeMethod("get_color_selection", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ColorSelectionDialog").InvokeMethod("get_color_selection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(colorsel)

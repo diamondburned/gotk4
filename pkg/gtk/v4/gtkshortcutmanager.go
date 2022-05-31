@@ -12,8 +12,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(GtkShortcutManager*, GtkShortcutController*);
-// extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
+// extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(void*, void*);
+// extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(void*, void*);
 import "C"
 
 // glib.Type values for gtkshortcutmanager.go.
@@ -75,7 +75,7 @@ func ifaceInitShortcutManagerer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_ShortcutManagerInterface_add_controller
-func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
+func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 
@@ -87,7 +87,7 @@ func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutMana
 }
 
 //export _gotk4_gtk4_ShortcutManagerInterface_remove_controller
-func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
+func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 

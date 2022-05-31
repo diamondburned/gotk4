@@ -127,14 +127,15 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 //    - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**RecentManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "RecentChooserWidget").InvokeMethod("new_RecentChooserWidget_for_manager", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "RecentChooserWidget").InvokeMethod("new_RecentChooserWidget_for_manager", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)

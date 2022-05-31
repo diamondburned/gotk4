@@ -206,7 +206,7 @@ func (p PixdataType) Has(other PixdataType) bool {
 //    - pixbuf: new pixbuf.
 //
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 	var _cret *C.void    // in
@@ -216,10 +216,11 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 	if copyPixels {
 		_arg1 = C.TRUE
 	}
-	*(**Pixdata)(unsafe.Pointer(&args[0])) = _arg0
-	*(*bool)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("GdkPixdata", "pixbuf_from_pixdata").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("GdkPixdata", "pixbuf_from_pixdata").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixdata)
@@ -289,7 +290,7 @@ type pixdata struct {
 //    - stream of bytes containing a serialized Pixdata structure.
 //
 func (pixdata *Pixdata) Deserialize(stream []byte) error {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg2 *C.void // out
 	var _arg1 C.guint
@@ -300,17 +301,55 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	if len(stream) > 0 {
 		_arg2 = (*C.void)(unsafe.Pointer(&stream[0]))
 	}
-	*(**Pixdata)(unsafe.Pointer(&args[1])) = _arg1
-	*(*[]byte)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(pixdata)
 	runtime.KeepAlive(stream)
 
 	var _goerr error // out
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// Serialize serializes a Pixdata structure into a byte stream. The byte stream
+// consists of a straightforward writeout of the Pixdata fields in network byte
+// order, plus the pixel_data bytes the structure points to.
+//
+// Deprecated: Use #GResource instead.
+//
+// The function returns the following values:
+//
+//    - guint8s: a newly-allocated string containing the serialized Pixdata
+//      structure.
+//
+func (pixdata *Pixdata) Serialize() []byte {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void   // out
+	var _cret *C.guint8 // in
+	var _out0 *C.void   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(**C.guint8)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(pixdata)
+
+	var _guint8s []byte // out
+	_out0 = *(**C.guint8)(unsafe.Pointer(&_outs[0]))
+
+	defer C.free(unsafe.Pointer(_cret))
+	_guint8s = make([]byte, _out0)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _out0))
+
+	return _guint8s
 }

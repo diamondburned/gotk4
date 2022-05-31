@@ -93,7 +93,7 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 //    - recentAction: newly created RecentAction.
 //
 func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -114,12 +114,13 @@ func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 		_arg3 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 		defer C.free(unsafe.Pointer(_arg3))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("new_RecentAction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("new_RecentAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -154,7 +155,7 @@ func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 //    - recentAction: newly created RecentAction.
 //
 func NewRecentActionForManager(name, label, tooltip, stockId string, manager *RecentManager) *RecentAction {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -179,13 +180,14 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 	if manager != nil {
 		_arg4 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
-	*(**RecentManager)(unsafe.Pointer(&args[4])) = _arg4
 
-	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("new_RecentAction_for_manager", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("new_RecentAction_for_manager", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -211,14 +213,15 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 //    - ok: TRUE if numbers should be shown.
 //
 func (action *RecentAction) ShowNumbers() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**RecentAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("get_show_numbers", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("get_show_numbers", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
@@ -244,7 +247,7 @@ func (action *RecentAction) ShowNumbers() bool {
 //    - showNumbers: TRUE if the shown items should be numbered.
 //
 func (action *RecentAction) SetShowNumbers(showNumbers bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -252,9 +255,11 @@ func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 	if showNumbers {
 		_arg1 = C.TRUE
 	}
-	*(**RecentAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "RecentAction").InvokeMethod("set_show_numbers", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "RecentAction").InvokeMethod("set_show_numbers", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(showNumbers)

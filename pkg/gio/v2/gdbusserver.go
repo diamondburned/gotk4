@@ -24,14 +24,15 @@ import "C"
 //    - utf8 d-Bus address string. Do not free, the string is owned by server.
 //
 func (server *DBusServer) ClientAddress() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
-	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_client_address", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_client_address", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(server)
@@ -50,14 +51,15 @@ func (server *DBusServer) ClientAddress() string {
 //    - utf8 d-Bus GUID. Do not free this string, it is owned by server.
 //
 func (server *DBusServer) GUID() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
-	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_guid", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_guid", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(server)
@@ -76,14 +78,15 @@ func (server *DBusServer) GUID() string {
 //    - ok: TRUE if server is active, FALSE otherwise.
 //
 func (server *DBusServer) IsActive() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
-	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("is_active", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("is_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(server)
@@ -99,26 +102,28 @@ func (server *DBusServer) IsActive() bool {
 
 // Start starts server.
 func (server *DBusServer) Start() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
-	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "DBusServer").InvokeMethod("start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "DBusServer").InvokeMethod("start", _args[:], nil)
 
 	runtime.KeepAlive(server)
 }
 
 // Stop stops server.
 func (server *DBusServer) Stop() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
-	*(**DBusServer)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gio", "DBusServer").InvokeMethod("stop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gio", "DBusServer").InvokeMethod("stop", _args[:], nil)
 
 	runtime.KeepAlive(server)
 }

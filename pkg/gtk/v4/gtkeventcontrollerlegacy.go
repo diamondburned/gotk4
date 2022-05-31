@@ -13,7 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk4_EventControllerLegacy_ConnectEvent(gpointer, GdkEvent*, guintptr);
+// extern gboolean _gotk4_gtk4_EventControllerLegacy_ConnectEvent(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkeventcontrollerlegacy.go.
@@ -64,7 +64,7 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_EventControllerLegacy_ConnectEvent
-func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(event gdk.Eventer) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

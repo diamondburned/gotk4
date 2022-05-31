@@ -15,7 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, GdkDrop*, guintptr);
+// extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, void*, guintptr);
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 import "C"
 
@@ -131,7 +131,7 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_DropTarget_ConnectAccept
-func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(drop gdk.Dropper) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -223,14 +223,15 @@ func (self *DropTarget) ConnectLeave(f func()) coreglib.SignalHandle {
 //    - drop (optional): current drop.
 //
 func (self *DropTarget) Drop() gdk.Dropper {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropTarget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_drop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_drop", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -266,14 +267,15 @@ func (self *DropTarget) Drop() gdk.Dropper {
 //    - contentFormats (optional): supported data formats.
 //
 func (self *DropTarget) Formats() *gdk.ContentFormats {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropTarget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_formats", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -300,14 +302,15 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 //    - ok: TRUE if drop data should be preloaded.
 //
 func (self *DropTarget) Preload() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropTarget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_preload", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_preload", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -328,14 +331,15 @@ func (self *DropTarget) Preload() bool {
 //    - value (optional): current drop data.
 //
 func (self *DropTarget) Value() *coreglib.Value {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropTarget)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -357,13 +361,14 @@ func (self *DropTarget) Value() *coreglib.Value {
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
 func (self *DropTarget) Reject() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropTarget)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("reject", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("reject", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -375,7 +380,7 @@ func (self *DropTarget) Reject() {
 //    - preload: TRUE to preload drop data.
 //
 func (self *DropTarget) SetPreload(preload bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -383,9 +388,11 @@ func (self *DropTarget) SetPreload(preload bool) {
 	if preload {
 		_arg1 = C.TRUE
 	}
-	*(**DropTarget)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("set_preload", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("set_preload", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(preload)

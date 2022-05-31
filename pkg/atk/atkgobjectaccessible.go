@@ -68,14 +68,15 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 //    - object which is the object for which obj is the accessible object.
 //
 func (obj *GObjectAccessible) Object() *coreglib.Object {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	*(**GObjectAccessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "GObjectAccessible").InvokeMethod("get_object", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "GObjectAccessible").InvokeMethod("get_object", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)
@@ -98,14 +99,15 @@ func (obj *GObjectAccessible) Object() *coreglib.Object {
 //    - object which is the accessible object for the obj.
 //
 func GObjectAccessibleForObject(obj *coreglib.Object) *ObjectClass {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(obj.Native()))
-	*(**coreglib.Object)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Atk", "for_object").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Atk", "for_object").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)

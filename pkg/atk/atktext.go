@@ -15,24 +15,25 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_atk1_TextIface_add_selection(AtkText*, gint, gint);
-// extern gboolean _gotk4_atk1_TextIface_remove_selection(AtkText*, gint);
-// extern gboolean _gotk4_atk1_TextIface_set_caret_offset(AtkText*, gint);
-// extern gboolean _gotk4_atk1_TextIface_set_selection(AtkText*, gint, gint, gint);
-// extern gchar* _gotk4_atk1_TextIface_get_text(AtkText*, gint, gint);
-// extern gint _gotk4_atk1_TextIface_get_caret_offset(AtkText*);
-// extern gint _gotk4_atk1_TextIface_get_character_count(AtkText*);
-// extern gint _gotk4_atk1_TextIface_get_n_selections(AtkText*);
-// extern gunichar _gotk4_atk1_TextIface_get_character_at_offset(AtkText*, gint);
-// extern void _gotk4_atk1_TextIface_text_attributes_changed(AtkText*);
-// extern void _gotk4_atk1_TextIface_text_caret_moved(AtkText*, gint);
-// extern void _gotk4_atk1_TextIface_text_changed(AtkText*, gint, gint);
-// extern void _gotk4_atk1_TextIface_text_selection_changed(AtkText*);
+// extern gboolean _gotk4_atk1_TextIface_add_selection(void*, gint, gint);
+// extern gboolean _gotk4_atk1_TextIface_remove_selection(void*, gint);
+// extern gboolean _gotk4_atk1_TextIface_set_caret_offset(void*, gint);
+// extern gboolean _gotk4_atk1_TextIface_set_selection(void*, gint, gint, gint);
+// extern gchar* _gotk4_atk1_TextIface_get_selection(void*, gint, void*, void*);
+// extern gchar* _gotk4_atk1_TextIface_get_text(void*, gint, gint);
+// extern gint _gotk4_atk1_TextIface_get_caret_offset(void*);
+// extern gint _gotk4_atk1_TextIface_get_character_count(void*);
+// extern gint _gotk4_atk1_TextIface_get_n_selections(void*);
+// extern gunichar _gotk4_atk1_TextIface_get_character_at_offset(void*, gint);
+// extern void _gotk4_atk1_TextIface_text_attributes_changed(void*);
+// extern void _gotk4_atk1_TextIface_text_caret_moved(void*, gint);
+// extern void _gotk4_atk1_TextIface_text_changed(void*, gint, gint);
+// extern void _gotk4_atk1_TextIface_text_selection_changed(void*);
 // extern void _gotk4_atk1_Text_ConnectTextAttributesChanged(gpointer, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextCaretMoved(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextChanged(gpointer, gint, gint, guintptr);
-// extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, gchar*, guintptr);
-// extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, gchar*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, void*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, void*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
 import "C"
 
@@ -406,6 +407,26 @@ type TextOverrider interface {
 	//    - gint: number of selected regions, or -1 in the case of failure.
 	//
 	NSelections() int32
+	// Selection gets the text from the specified selection.
+	//
+	// The function takes the following parameters:
+	//
+	//    - selectionNum: selection number. The selected regions are assigned
+	//      numbers that correspond to how far the region is from the start of
+	//      the text. The selected region closest to the beginning of the text
+	//      region is assigned the number 0, etc. Note that adding, moving or
+	//      deleting a selected region can change the numbering.
+	//
+	// The function returns the following values:
+	//
+	//    - startOffset passes back the starting character offset of the selected
+	//      region.
+	//    - endOffset passes back the ending character offset (offset immediately
+	//      past) of the selected region.
+	//    - utf8: newly allocated string containing the selected text. Use
+	//      g_free() to free the returned string.
+	//
+	Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string)
 	// Text gets the specified text.
 	//
 	// The function takes the following parameters:
@@ -538,6 +559,8 @@ type Texter interface {
 	CharacterCount() int32
 	// NSelections gets the number of selected regions.
 	NSelections() int32
+	// Selection gets the text from the specified selection.
+	Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string)
 	// Text gets the specified text.
 	Text(startOffset, endOffset int32) string
 	// RemoveSelection removes the specified selection.
@@ -577,6 +600,7 @@ func ifaceInitTexter(gifacePtr, data C.gpointer) {
 	iface.get_character_at_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_at_offset)
 	iface.get_character_count = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_count)
 	iface.get_n_selections = (*[0]byte)(C._gotk4_atk1_TextIface_get_n_selections)
+	iface.get_selection = (*[0]byte)(C._gotk4_atk1_TextIface_get_selection)
 	iface.get_text = (*[0]byte)(C._gotk4_atk1_TextIface_get_text)
 	iface.remove_selection = (*[0]byte)(C._gotk4_atk1_TextIface_remove_selection)
 	iface.set_caret_offset = (*[0]byte)(C._gotk4_atk1_TextIface_set_caret_offset)
@@ -588,7 +612,7 @@ func ifaceInitTexter(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_TextIface_add_selection
-func _gotk4_atk1_TextIface_add_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_add_selection(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -608,7 +632,7 @@ func _gotk4_atk1_TextIface_add_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gi
 }
 
 //export _gotk4_atk1_TextIface_get_caret_offset
-func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.AtkText) (cret C.gint) {
+func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -620,7 +644,7 @@ func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.AtkText) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TextIface_get_character_at_offset
-func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gunichar) {
+func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.void, arg1 C.gint) (cret C.gunichar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -636,7 +660,7 @@ func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.AtkText, arg1 C.gint)
 }
 
 //export _gotk4_atk1_TextIface_get_character_count
-func _gotk4_atk1_TextIface_get_character_count(arg0 *C.AtkText) (cret C.gint) {
+func _gotk4_atk1_TextIface_get_character_count(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -648,7 +672,7 @@ func _gotk4_atk1_TextIface_get_character_count(arg0 *C.AtkText) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TextIface_get_n_selections
-func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.AtkText) (cret C.gint) {
+func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -659,8 +683,26 @@ func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.AtkText) (cret C.gint) {
 	return cret
 }
 
+//export _gotk4_atk1_TextIface_get_selection
+func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.void, arg3 *C.void) (cret *C.gchar) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _selectionNum int32 // out
+
+	_selectionNum = int32(arg1)
+
+	startOffset, endOffset, utf8 := iface.Selection(_selectionNum)
+
+	*arg2 = (*C.void)(unsafe.Pointer(startOffset))
+	*arg3 = (*C.void)(unsafe.Pointer(endOffset))
+	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
 //export _gotk4_atk1_TextIface_get_text
-func _gotk4_atk1_TextIface_get_text(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -678,7 +720,7 @@ func _gotk4_atk1_TextIface_get_text(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (
 }
 
 //export _gotk4_atk1_TextIface_remove_selection
-func _gotk4_atk1_TextIface_remove_selection(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_remove_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -696,7 +738,7 @@ func _gotk4_atk1_TextIface_remove_selection(arg0 *C.AtkText, arg1 C.gint) (cret 
 }
 
 //export _gotk4_atk1_TextIface_set_caret_offset
-func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -714,7 +756,7 @@ func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.AtkText, arg1 C.gint) (cret 
 }
 
 //export _gotk4_atk1_TextIface_set_selection
-func _gotk4_atk1_TextIface_set_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_set_selection(arg0 *C.void, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -736,7 +778,7 @@ func _gotk4_atk1_TextIface_set_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gi
 }
 
 //export _gotk4_atk1_TextIface_text_attributes_changed
-func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.AtkText) {
+func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -744,7 +786,7 @@ func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.AtkText) {
 }
 
 //export _gotk4_atk1_TextIface_text_caret_moved
-func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.AtkText, arg1 C.gint) {
+func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.void, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -756,7 +798,7 @@ func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.AtkText, arg1 C.gint) {
 }
 
 //export _gotk4_atk1_TextIface_text_changed
-func _gotk4_atk1_TextIface_text_changed(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_TextIface_text_changed(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -770,7 +812,7 @@ func _gotk4_atk1_TextIface_text_changed(arg0 *C.AtkText, arg1 C.gint, arg2 C.gin
 }
 
 //export _gotk4_atk1_TextIface_text_selection_changed
-func _gotk4_atk1_TextIface_text_selection_changed(arg0 *C.AtkText) {
+func _gotk4_atk1_TextIface_text_selection_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -867,7 +909,7 @@ func (text *Text) ConnectTextChanged(f func(arg1, arg2 int32)) coreglib.SignalHa
 }
 
 //export _gotk4_atk1_Text_ConnectTextInsert
-func _gotk4_atk1_Text_ConnectTextInsert(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+func _gotk4_atk1_Text_ConnectTextInsert(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.void, arg4 C.guintptr) {
 	var f func(arg1, arg2 int32, arg3 string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -898,7 +940,7 @@ func (text *Text) ConnectTextInsert(f func(arg1, arg2 int32, arg3 string)) coreg
 }
 
 //export _gotk4_atk1_Text_ConnectTextRemove
-func _gotk4_atk1_Text_ConnectTextRemove(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+func _gotk4_atk1_Text_ConnectTextRemove(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.void, arg4 C.guintptr) {
 	var f func(arg1, arg2 int32, arg3 string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -962,7 +1004,7 @@ func (text *Text) ConnectTextSelectionChanged(f func()) coreglib.SignalHandle {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) AddSelection(startOffset, endOffset int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -971,8 +1013,10 @@ func (text *Text) AddSelection(startOffset, endOffset int32) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
-	*(**Text)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -997,12 +1041,13 @@ func (text *Text) AddSelection(startOffset, endOffset int32) bool {
 //      not located inside the element or in the case of any other failure.
 //
 func (text *Text) CaretOffset() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(**Text)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1026,14 +1071,16 @@ func (text *Text) CaretOffset() int32 {
 //    - gunichar: character at offset or 0 in the case of failure.
 //
 func (text *Text) CharacterAtOffset(offset int32) uint32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gunichar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
-	*(**Text)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gunichar)(unsafe.Pointer(&_gret))
 
@@ -1054,12 +1101,13 @@ func (text *Text) CharacterAtOffset(offset int32) uint32 {
 //    - gint: number of characters or -1 in case of failure.
 //
 func (text *Text) CharacterCount() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(**Text)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1079,12 +1127,13 @@ func (text *Text) CharacterCount() int32 {
 //    - gint: number of selected regions, or -1 in the case of failure.
 //
 func (text *Text) NSelections() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(**Text)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1095,6 +1144,59 @@ func (text *Text) NSelections() int32 {
 	_gint = int32(_cret)
 
 	return _gint
+}
+
+// Selection gets the text from the specified selection.
+//
+// The function takes the following parameters:
+//
+//    - selectionNum: selection number. The selected regions are assigned numbers
+//      that correspond to how far the region is from the start of the text. The
+//      selected region closest to the beginning of the text region is assigned
+//      the number 0, etc. Note that adding, moving or deleting a selected region
+//      can change the numbering.
+//
+// The function returns the following values:
+//
+//    - startOffset passes back the starting character offset of the selected
+//      region.
+//    - endOffset passes back the ending character offset (offset immediately
+//      past) of the selected region.
+//    - utf8: newly allocated string containing the selected text. Use g_free()
+//      to free the returned string.
+//
+func (text *Text) Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gint  // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(selectionNum)
+
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_startOffset = *(*int32)(unsafe.Pointer(_out0))
+	_endOffset = *(*int32)(unsafe.Pointer(_out1))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
 }
 
 // Text gets the specified text.
@@ -1111,7 +1213,7 @@ func (text *Text) NSelections() int32 {
 //      but not including end_offset. Use g_free() to free the returned string.
 //
 func (text *Text) Text(startOffset, endOffset int32) string {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -1120,8 +1222,10 @@ func (text *Text) Text(startOffset, endOffset int32) string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
-	*(**Text)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1152,14 +1256,16 @@ func (text *Text) Text(startOffset, endOffset int32) string {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) RemoveSelection(selectionNum int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(selectionNum)
-	*(**Text)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1202,14 +1308,16 @@ func (text *Text) RemoveSelection(selectionNum int32) bool {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) SetCaretOffset(offset int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	_arg1 = C.gint(offset)
-	*(**Text)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1243,7 +1351,7 @@ func (text *Text) SetCaretOffset(offset int32) bool {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) SetSelection(selectionNum, startOffset, endOffset int32) bool {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -1254,9 +1362,11 @@ func (text *Text) SetSelection(selectionNum, startOffset, endOffset int32) bool 
 	_arg1 = C.gint(selectionNum)
 	_arg2 = C.gint(startOffset)
 	_arg3 = C.gint(endOffset)
-	*(**Text)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

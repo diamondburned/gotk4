@@ -19,26 +19,26 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_EntryClass_activate(GtkEntry*);
-// extern void _gotk4_gtk3_EntryClass_backspace(GtkEntry*);
-// extern void _gotk4_gtk3_EntryClass_copy_clipboard(GtkEntry*);
-// extern void _gotk4_gtk3_EntryClass_cut_clipboard(GtkEntry*);
-// extern void _gotk4_gtk3_EntryClass_get_frame_size(GtkEntry*, gint*, gint*, gint*, gint*);
-// extern void _gotk4_gtk3_EntryClass_get_text_area_size(GtkEntry*, gint*, gint*, gint*, gint*);
-// extern void _gotk4_gtk3_EntryClass_insert_at_cursor(GtkEntry*, gchar*);
-// extern void _gotk4_gtk3_EntryClass_insert_emoji(GtkEntry*);
-// extern void _gotk4_gtk3_EntryClass_paste_clipboard(GtkEntry*);
-// extern void _gotk4_gtk3_EntryClass_populate_popup(GtkEntry*, GtkWidget*);
-// extern void _gotk4_gtk3_EntryClass_toggle_overwrite(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_activate(void*);
+// extern void _gotk4_gtk3_EntryClass_backspace(void*);
+// extern void _gotk4_gtk3_EntryClass_copy_clipboard(void*);
+// extern void _gotk4_gtk3_EntryClass_cut_clipboard(void*);
+// extern void _gotk4_gtk3_EntryClass_get_frame_size(void*, void*, void*, void*, void*);
+// extern void _gotk4_gtk3_EntryClass_get_text_area_size(void*, void*, void*, void*, void*);
+// extern void _gotk4_gtk3_EntryClass_insert_at_cursor(void*, void*);
+// extern void _gotk4_gtk3_EntryClass_insert_emoji(void*);
+// extern void _gotk4_gtk3_EntryClass_paste_clipboard(void*);
+// extern void _gotk4_gtk3_EntryClass_populate_popup(void*, void*);
+// extern void _gotk4_gtk3_EntryClass_toggle_overwrite(void*);
 // extern void _gotk4_gtk3_Entry_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectBackspace(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectCutClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk3_Entry_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectInsertAtCursor(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectInsertEmoji(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPasteClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk3_Entry_ConnectPopulatePopup(gpointer, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_Entry_ConnectPreeditChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectPopulatePopup(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectPreeditChanged(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
@@ -258,7 +258,7 @@ func classInitEntrier(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_EntryClass_activate
-func _gotk4_gtk3_EntryClass_activate(arg0 *C.GtkEntry) {
+func _gotk4_gtk3_EntryClass_activate(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
@@ -266,7 +266,7 @@ func _gotk4_gtk3_EntryClass_activate(arg0 *C.GtkEntry) {
 }
 
 //export _gotk4_gtk3_EntryClass_backspace
-func _gotk4_gtk3_EntryClass_backspace(arg0 *C.GtkEntry) {
+func _gotk4_gtk3_EntryClass_backspace(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Backspace() })
 
@@ -274,7 +274,7 @@ func _gotk4_gtk3_EntryClass_backspace(arg0 *C.GtkEntry) {
 }
 
 //export _gotk4_gtk3_EntryClass_copy_clipboard
-func _gotk4_gtk3_EntryClass_copy_clipboard(arg0 *C.GtkEntry) {
+func _gotk4_gtk3_EntryClass_copy_clipboard(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CopyClipboard() })
 
@@ -282,7 +282,7 @@ func _gotk4_gtk3_EntryClass_copy_clipboard(arg0 *C.GtkEntry) {
 }
 
 //export _gotk4_gtk3_EntryClass_cut_clipboard
-func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.GtkEntry) {
+func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CutClipboard() })
 
@@ -290,7 +290,7 @@ func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.GtkEntry) {
 }
 
 //export _gotk4_gtk3_EntryClass_get_frame_size
-func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
+func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FrameSize(x, y, width, height *int32)
@@ -310,7 +310,7 @@ func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 
 }
 
 //export _gotk4_gtk3_EntryClass_get_text_area_size
-func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
+func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TextAreaSize(x, y, width, height *int32)
@@ -330,7 +330,7 @@ func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.GtkEntry, arg1 *C.gint, a
 }
 
 //export _gotk4_gtk3_EntryClass_insert_at_cursor
-func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.GtkEntry, arg1 *C.gchar) {
+func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InsertAtCursor(str string) })
 
@@ -342,7 +342,7 @@ func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.GtkEntry, arg1 *C.gchar) {
 }
 
 //export _gotk4_gtk3_EntryClass_insert_emoji
-func _gotk4_gtk3_EntryClass_insert_emoji(arg0 *C.GtkEntry) {
+func _gotk4_gtk3_EntryClass_insert_emoji(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InsertEmoji() })
 
@@ -350,7 +350,7 @@ func _gotk4_gtk3_EntryClass_insert_emoji(arg0 *C.GtkEntry) {
 }
 
 //export _gotk4_gtk3_EntryClass_paste_clipboard
-func _gotk4_gtk3_EntryClass_paste_clipboard(arg0 *C.GtkEntry) {
+func _gotk4_gtk3_EntryClass_paste_clipboard(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PasteClipboard() })
 
@@ -358,7 +358,7 @@ func _gotk4_gtk3_EntryClass_paste_clipboard(arg0 *C.GtkEntry) {
 }
 
 //export _gotk4_gtk3_EntryClass_populate_popup
-func _gotk4_gtk3_EntryClass_populate_popup(arg0 *C.GtkEntry, arg1 *C.GtkWidget) {
+func _gotk4_gtk3_EntryClass_populate_popup(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PopulatePopup(popup Widgetter) })
 
@@ -386,7 +386,7 @@ func _gotk4_gtk3_EntryClass_populate_popup(arg0 *C.GtkEntry, arg1 *C.GtkWidget) 
 }
 
 //export _gotk4_gtk3_EntryClass_toggle_overwrite
-func _gotk4_gtk3_EntryClass_toggle_overwrite(arg0 *C.GtkEntry) {
+func _gotk4_gtk3_EntryClass_toggle_overwrite(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleOverwrite() })
 
@@ -531,7 +531,7 @@ func (entry *Entry) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_Entry_ConnectInsertAtCursor
-func _gotk4_gtk3_Entry_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk3_Entry_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(str string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -608,7 +608,7 @@ func (entry *Entry) ConnectPasteClipboard(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_Entry_ConnectPopulatePopup
-func _gotk4_gtk3_Entry_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
+func _gotk4_gtk3_Entry_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(widget Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -658,7 +658,7 @@ func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) coreglib.Sign
 }
 
 //export _gotk4_gtk3_Entry_ConnectPreeditChanged
-func _gotk4_gtk3_Entry_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk3_Entry_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(preedit string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -738,14 +738,15 @@ func NewEntry() *Entry {
 //    - entry: new Entry.
 //
 func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**EntryBuffer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("new_Entry_with_buffer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("new_Entry_with_buffer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(buffer)
@@ -765,14 +766,15 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 //    - ok: TRUE if the entry will activate the default widget.
 //
 func (entry *Entry) ActivatesDefault() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_activates_default", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_activates_default", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -793,14 +795,15 @@ func (entry *Entry) ActivatesDefault() bool {
 //    - gfloat: alignment.
 //
 func (entry *Entry) Alignment() float32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gfloat // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_alignment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_alignment", _args[:], nil)
 	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -820,14 +823,15 @@ func (entry *Entry) Alignment() float32 {
 //    - attrList (optional): attribute list, or NULL if none was set.
 //
 func (entry *Entry) Attributes() *pango.AttrList {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_attributes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_attributes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -855,14 +859,15 @@ func (entry *Entry) Attributes() *pango.AttrList {
 //    - entryBuffer: EntryBuffer object.
 //
 func (entry *Entry) Buffer() *EntryBuffer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_buffer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_buffer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -881,14 +886,15 @@ func (entry *Entry) Buffer() *EntryBuffer {
 //    - entryCompletion: auxiliary completion object currently in use by entry.
 //
 func (entry *Entry) Completion() *EntryCompletion {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_completion", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_completion", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -911,14 +917,15 @@ func (entry *Entry) Completion() *EntryCompletion {
 //      or -1.
 //
 func (entry *Entry) CurrentIconDragSource() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_current_icon_drag_source", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_current_icon_drag_source", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -939,14 +946,15 @@ func (entry *Entry) CurrentIconDragSource() int32 {
 //      been set.
 //
 func (entry *Entry) CursorHAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_cursor_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_cursor_hadjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -967,14 +975,15 @@ func (entry *Entry) CursorHAdjustment() *Adjustment {
 //    - ok: whether the entry has a beveled frame.
 //
 func (entry *Entry) HasFrame() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_has_frame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_has_frame", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1003,7 +1012,7 @@ func (entry *Entry) HasFrame() bool {
 //    - gint: index of the icon at the given position, or -1.
 //
 func (entry *Entry) IconAtPos(x, y int32) int32 {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -1012,10 +1021,12 @@ func (entry *Entry) IconAtPos(x, y int32) int32 {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_icon_at_pos", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_icon_at_pos", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1041,14 +1052,15 @@ func (entry *Entry) IconAtPos(x, y int32) int32 {
 //    - border (optional) entry’s Border, or NULL if none was set.
 //
 func (entry *Entry) InnerBorder() *Border {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_inner_border", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_inner_border", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1072,14 +1084,15 @@ func (entry *Entry) InnerBorder() *Border {
 //      invisible text at all.
 //
 func (entry *Entry) InvisibleChar() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gunichar // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_invisible_char", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_invisible_char", _args[:], nil)
 	_cret = *(*C.gunichar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1106,14 +1119,15 @@ func (entry *Entry) InvisibleChar() uint32 {
 //    - layout for this entry.
 //
 func (entry *Entry) Layout() *pango.Layout {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_layout", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1130,6 +1144,59 @@ func (entry *Entry) Layout() *pango.Layout {
 	return _layout
 }
 
+// LayoutOffsets obtains the position of the Layout used to render text in the
+// entry, in widget coordinates. Useful if you want to line up the text in an
+// entry with some other text, e.g. when using the entry to implement editable
+// cells in a sheet widget.
+//
+// Also useful to convert mouse events into coordinates inside the Layout, e.g.
+// to take some action if some part of the entry text is clicked.
+//
+// Note that as the user scrolls around in the entry the offsets will change;
+// you’ll need to connect to the “notify::scroll-offset” signal to track this.
+// Remember when using the Layout functions you need to convert to and from
+// pixels using PANGO_PIXELS() or NGO_SCALE.
+//
+// Keep in mind that the layout text may contain a preedit string, so
+// gtk_entry_layout_index_to_text_index() and
+// gtk_entry_text_index_to_layout_index() are needed to convert byte indices in
+// the layout to byte indices in the entry contents.
+//
+// The function returns the following values:
+//
+//    - x (optional): location to store X offset of layout, or NULL.
+//    - y (optional): location to store Y offset of layout, or NULL.
+//
+func (entry *Entry) LayoutOffsets() (x int32, y int32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("get_layout_offsets", _args[:], _outs[:])
+
+	runtime.KeepAlive(entry)
+
+	var _x int32 // out
+	var _y int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_x = *(*int32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_y = *(*int32)(unsafe.Pointer(_out1))
+	}
+
+	return _x, _y
+}
+
 // MaxLength retrieves the maximum allowed length of the text in entry. See
 // gtk_entry_set_max_length().
 //
@@ -1142,14 +1209,15 @@ func (entry *Entry) Layout() *pango.Layout {
 //      maximum.
 //
 func (entry *Entry) MaxLength() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_max_length", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_max_length", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1169,14 +1237,15 @@ func (entry *Entry) MaxLength() int32 {
 //    - gint: maximum width of the entry, in characters.
 //
 func (entry *Entry) MaxWidthChars() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_max_width_chars", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_max_width_chars", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1195,14 +1264,15 @@ func (entry *Entry) MaxWidthChars() int32 {
 //    - ok: whether the text is overwritten when typing.
 //
 func (entry *Entry) OverwriteMode() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_overwrite_mode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_overwrite_mode", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1226,14 +1296,15 @@ func (entry *Entry) OverwriteMode() bool {
 //      modified or stored.
 //
 func (entry *Entry) PlaceholderText() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_placeholder_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_placeholder_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1253,14 +1324,15 @@ func (entry *Entry) PlaceholderText() string {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (entry *Entry) ProgressFraction() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_progress_fraction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_progress_fraction", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1280,14 +1352,15 @@ func (entry *Entry) ProgressFraction() float64 {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (entry *Entry) ProgressPulseStep() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_progress_pulse_step", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_progress_pulse_step", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1307,14 +1380,15 @@ func (entry *Entry) ProgressPulseStep() float64 {
 //    - tabArray (optional): tabstops, or NULL if none was set.
 //
 func (entry *Entry) Tabs() *pango.TabArray {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_tabs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_tabs", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1341,14 +1415,15 @@ func (entry *Entry) Tabs() *pango.TabArray {
 //      freed, modified or stored.
 //
 func (entry *Entry) Text() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1358,6 +1433,39 @@ func (entry *Entry) Text() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// TextArea gets the area where the entry’s text is drawn. This function is
+// useful when drawing something to the entry in a draw callback.
+//
+// If the entry is not realized, text_area is filled with zeros.
+//
+// See also gtk_entry_get_icon_area().
+//
+// The function returns the following values:
+//
+//    - textArea: return location for the text area.
+//
+func (entry *Entry) TextArea() *gdk.Rectangle {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("get_text_area", _args[:], _outs[:])
+
+	runtime.KeepAlive(entry)
+
+	var _textArea *gdk.Rectangle // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_textArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _textArea
 }
 
 // TextLength retrieves the current length of the text in entry.
@@ -1370,14 +1478,15 @@ func (entry *Entry) Text() string {
 //    - guint16: current number of characters in Entry, or 0 if there are none.
 //
 func (entry *Entry) TextLength() uint16 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint16 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_text_length", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_text_length", _args[:], nil)
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1397,14 +1506,15 @@ func (entry *Entry) TextLength() uint16 {
 //    - ok: TRUE if the text is currently visible.
 //
 func (entry *Entry) Visibility() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_visibility", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_visibility", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1425,14 +1535,15 @@ func (entry *Entry) Visibility() bool {
 //    - gint: number of chars to request space for, or negative if unset.
 //
 func (entry *Entry) WidthChars() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_width_chars", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_width_chars", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1451,13 +1562,14 @@ func (entry *Entry) WidthChars() int32 {
 // which the user usually doesn't want to replace all text in, such as
 // search-as-you-type entries.
 func (entry *Entry) GrabFocusWithoutSelecting() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("grab_focus_without_selecting", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("grab_focus_without_selecting", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 }
@@ -1482,16 +1594,18 @@ func (entry *Entry) GrabFocusWithoutSelecting() {
 //    - ok: TRUE if the input method handled the key event.
 //
 func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("im_context_filter_keypress", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("im_context_filter_keypress", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1519,16 +1633,18 @@ func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 //    - gint: byte index into the entry contents.
 //
 func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gint(layoutIndex)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("layout_index_to_text_index", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("layout_index_to_text_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -1547,13 +1663,14 @@ func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int32) int32 {
 // the block to move by a little bit (the amount of movement per pulse is
 // determined by gtk_entry_set_progress_pulse_step()).
 func (entry *Entry) ProgressPulse() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("progress_pulse", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("progress_pulse", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 }
@@ -1563,13 +1680,14 @@ func (entry *Entry) ProgressPulse() {
 // This can be necessary in the case where modifying the buffer would confuse
 // on-going input method behavior.
 func (entry *Entry) ResetIMContext() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("reset_im_context", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("reset_im_context", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 }
@@ -1588,7 +1706,7 @@ func (entry *Entry) ResetIMContext() {
 //    - setting: TRUE to activate window’s default widget on Enter keypress.
 //
 func (entry *Entry) SetActivatesDefault(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1596,9 +1714,11 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_activates_default", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_activates_default", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(setting)
@@ -1614,15 +1734,17 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 //      RTL layouts.
 //
 func (entry *Entry) SetAlignment(xalign float32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.gfloat // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gfloat(xalign)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_alignment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_alignment", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(xalign)
@@ -1636,15 +1758,17 @@ func (entry *Entry) SetAlignment(xalign float32) {
 //    - attrs: AttrList.
 //
 func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_attributes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_attributes", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(attrs)
@@ -1657,15 +1781,17 @@ func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
 //    - buffer: EntryBuffer.
 //
 func (entry *Entry) SetBuffer(buffer *EntryBuffer) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_buffer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_buffer", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(buffer)
@@ -1681,7 +1807,7 @@ func (entry *Entry) SetBuffer(buffer *EntryBuffer) {
 //    - completion (optional) or NULL.
 //
 func (entry *Entry) SetCompletion(completion *EntryCompletion) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1689,9 +1815,11 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 	if completion != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_completion", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_completion", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(completion)
@@ -1711,7 +1839,7 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 //      or NULL.
 //
 func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1719,9 +1847,11 @@ func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
 	if adjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_cursor_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_cursor_hadjustment", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(adjustment)
@@ -1734,7 +1864,7 @@ func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
 //    - setting: new value.
 //
 func (entry *Entry) SetHasFrame(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1742,9 +1872,11 @@ func (entry *Entry) SetHasFrame(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_has_frame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_has_frame", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(setting)
@@ -1768,7 +1900,7 @@ func (entry *Entry) SetHasFrame(setting bool) {
 //    - border (optional) or NULL.
 //
 func (entry *Entry) SetInnerBorder(border *Border) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1776,9 +1908,11 @@ func (entry *Entry) SetInnerBorder(border *Border) {
 	if border != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(border)))
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_inner_border", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_inner_border", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(border)
@@ -1797,15 +1931,17 @@ func (entry *Entry) SetInnerBorder(border *Border) {
 //    - ch: unicode character.
 //
 func (entry *Entry) SetInvisibleChar(ch uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gunichar // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gunichar(ch)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_invisible_char", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gunichar)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_invisible_char", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(ch)
@@ -1825,15 +1961,17 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 //      range 0-65536.
 //
 func (entry *Entry) SetMaxLength(max int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gint(max)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_max_length", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_max_length", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(max)
@@ -1846,15 +1984,17 @@ func (entry *Entry) SetMaxLength(max int32) {
 //    - nChars: new desired maximum width, in characters.
 //
 func (entry *Entry) SetMaxWidthChars(nChars int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gint(nChars)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_max_width_chars", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_max_width_chars", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(nChars)
@@ -1868,7 +2008,7 @@ func (entry *Entry) SetMaxWidthChars(nChars int32) {
 //    - overwrite: new value.
 //
 func (entry *Entry) SetOverwriteMode(overwrite bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -1876,9 +2016,11 @@ func (entry *Entry) SetOverwriteMode(overwrite bool) {
 	if overwrite {
 		_arg1 = C.TRUE
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_overwrite_mode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_overwrite_mode", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(overwrite)
@@ -1899,7 +2041,7 @@ func (entry *Entry) SetOverwriteMode(overwrite bool) {
 //      unfocused, or NULL.
 //
 func (entry *Entry) SetPlaceholderText(text string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -1908,9 +2050,11 @@ func (entry *Entry) SetPlaceholderText(text string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_placeholder_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_placeholder_text", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(text)
@@ -1925,15 +2069,17 @@ func (entry *Entry) SetPlaceholderText(text string) {
 //    - fraction of the task that’s been completed.
 //
 func (entry *Entry) SetProgressFraction(fraction float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gdouble(fraction)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_progress_fraction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_progress_fraction", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(fraction)
@@ -1947,15 +2093,17 @@ func (entry *Entry) SetProgressFraction(fraction float64) {
 //    - fraction between 0.0 and 1.0.
 //
 func (entry *Entry) SetProgressPulseStep(fraction float64) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gdouble(fraction)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_progress_pulse_step", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_progress_pulse_step", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(fraction)
@@ -1969,15 +2117,17 @@ func (entry *Entry) SetProgressPulseStep(fraction float64) {
 //    - tabs: TabArray.
 //
 func (entry *Entry) SetTabs(tabs *pango.TabArray) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(tabs)))
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_tabs", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_tabs", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(tabs)
@@ -1993,16 +2143,18 @@ func (entry *Entry) SetTabs(tabs *pango.TabArray) {
 //    - text: new text.
 //
 func (entry *Entry) SetText(text string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_text", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(text)
@@ -2025,7 +2177,7 @@ func (entry *Entry) SetText(text string) {
 //    - visible: TRUE if the contents of the entry are displayed as plaintext.
 //
 func (entry *Entry) SetVisibility(visible bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -2033,9 +2185,11 @@ func (entry *Entry) SetVisibility(visible bool) {
 	if visible {
 		_arg1 = C.TRUE
 	}
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_visibility", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_visibility", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(visible)
@@ -2051,15 +2205,17 @@ func (entry *Entry) SetVisibility(visible bool) {
 //    - nChars: width in chars.
 //
 func (entry *Entry) SetWidthChars(nChars int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gint(nChars)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_width_chars", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_width_chars", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(nChars)
@@ -2079,16 +2235,18 @@ func (entry *Entry) SetWidthChars(nChars int32) {
 //    - gint: byte index into the entry layout text.
 //
 func (entry *Entry) TextIndexToLayoutIndex(textIndex int32) int32 {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	_arg1 = C.gint(textIndex)
-	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("text_index_to_layout_index", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("text_index_to_layout_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
@@ -2105,13 +2263,14 @@ func (entry *Entry) TextIndexToLayoutIndex(textIndex int32) int32 {
 // gtk_entry_set_invisible_char(). So that the default invisible char is used
 // again.
 func (entry *Entry) UnsetInvisibleChar() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "Entry").InvokeMethod("unset_invisible_char", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("unset_invisible_char", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 }

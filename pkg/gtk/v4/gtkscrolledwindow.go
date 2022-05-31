@@ -255,14 +255,15 @@ func NewScrolledWindow() *ScrolledWindow {
 //    - widget (optional): child widget of scrolled_window.
 //
 func (scrolledWindow *ScrolledWindow) Child() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -299,14 +300,15 @@ func (scrolledWindow *ScrolledWindow) Child() Widgetter {
 //    - adjustment: horizontal GtkAdjustment.
 //
 func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_hadjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -325,14 +327,15 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 //    - ok: TRUE if the scrolled_window has a frame.
 //
 func (scrolledWindow *ScrolledWindow) HasFrame() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_has_frame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_has_frame", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -353,14 +356,15 @@ func (scrolledWindow *ScrolledWindow) HasFrame() bool {
 //    - widget: horizontal scrollbar of the scrolled window.
 //
 func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_hscrollbar", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_hscrollbar", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -395,14 +399,15 @@ func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 //    - ok: scrolling behavior flags.
 //
 func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_kinetic_scrolling", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_kinetic_scrolling", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -423,14 +428,15 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 //    - gint: maximum content height, or -1.
 //
 func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_max_content_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_max_content_height", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -449,14 +455,15 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
 //    - gint: maximum content width, or -1.
 //
 func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_max_content_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_max_content_width", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -475,14 +482,15 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
 //    - gint: minimal content height.
 //
 func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_min_content_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_min_content_height", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -501,14 +509,15 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
 //    - gint: minimum content width.
 //
 func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_min_content_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_min_content_width", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -528,14 +537,15 @@ func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
 //    - ok: TRUE if overlay scrolling is enabled.
 //
 func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_overlay_scrolling", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_overlay_scrolling", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -549,6 +559,48 @@ func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
 	return _ok
 }
 
+// Policy retrieves the current policy values for the horizontal and vertical
+// scrollbars.
+//
+// See gtk.ScrolledWindow.SetPolicy().
+//
+// The function returns the following values:
+//
+//    - hscrollbarPolicy (optional): location to store the policy for the
+//      horizontal scrollbar, or NULL.
+//    - vscrollbarPolicy (optional): location to store the policy for the
+//      vertical scrollbar, or NULL.
+//
+func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_policy", _args[:], _outs[:])
+
+	runtime.KeepAlive(scrolledWindow)
+
+	var _hscrollbarPolicy PolicyType // out
+	var _vscrollbarPolicy PolicyType // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_hscrollbarPolicy = *(*PolicyType)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_vscrollbarPolicy = *(*PolicyType)(unsafe.Pointer(_out1))
+	}
+
+	return _hscrollbarPolicy, _vscrollbarPolicy
+}
+
 // PropagateNaturalHeight reports whether the natural height of the child will
 // be calculated and propagated through the scrolled window’s requested natural
 // height.
@@ -558,14 +610,15 @@ func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
 //    - ok: whether natural height propagation is enabled.
 //
 func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_propagate_natural_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_propagate_natural_height", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -588,14 +641,15 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
 //    - ok: whether natural width propagation is enabled.
 //
 func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_propagate_natural_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_propagate_natural_width", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -619,14 +673,15 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
 //    - adjustment: vertical GtkAdjustment.
 //
 func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_vadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_vadjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -645,14 +700,15 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 //    - widget: vertical scrollbar of the scrolled window.
 //
 func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_vscrollbar", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_vscrollbar", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrolledWindow)
@@ -687,7 +743,7 @@ func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 //    - child (optional) widget.
 //
 func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -695,9 +751,11 @@ func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
 	if child != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(child)
@@ -711,7 +769,7 @@ func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
 //      one.
 //
 func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -719,9 +777,11 @@ func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 	if hadjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_hadjustment", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(hadjustment)
@@ -734,7 +794,7 @@ func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 //    - hasFrame: whether to draw a frame around scrolled window contents.
 //
 func (scrolledWindow *ScrolledWindow) SetHasFrame(hasFrame bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -742,9 +802,11 @@ func (scrolledWindow *ScrolledWindow) SetHasFrame(hasFrame bool) {
 	if hasFrame {
 		_arg1 = C.TRUE
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_has_frame", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_has_frame", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(hasFrame)
@@ -759,7 +821,7 @@ func (scrolledWindow *ScrolledWindow) SetHasFrame(hasFrame bool) {
 //    - kineticScrolling: TRUE to enable kinetic scrolling.
 //
 func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -767,9 +829,11 @@ func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool)
 	if kineticScrolling {
 		_arg1 = C.TRUE
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_kinetic_scrolling", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_kinetic_scrolling", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(kineticScrolling)
@@ -789,15 +853,17 @@ func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool)
 //    - height: maximum content height.
 //
 func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
 	_arg1 = C.int(height)
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_max_content_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_max_content_height", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(height)
@@ -817,15 +883,17 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
 //    - width: maximum content width.
 //
 func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
 	_arg1 = C.int(width)
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_max_content_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_max_content_width", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(width)
@@ -845,15 +913,17 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
 //    - height: minimal content height.
 //
 func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
 	_arg1 = C.int(height)
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_min_content_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_min_content_height", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(height)
@@ -873,15 +943,17 @@ func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
 //    - width: minimal content width.
 //
 func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
 	_arg1 = C.int(width)
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_min_content_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_min_content_width", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(width)
@@ -895,7 +967,7 @@ func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int32) {
 //    - overlayScrolling: whether to enable overlay scrolling.
 //
 func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -903,9 +975,11 @@ func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool)
 	if overlayScrolling {
 		_arg1 = C.TRUE
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_overlay_scrolling", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_overlay_scrolling", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(overlayScrolling)
@@ -920,7 +994,7 @@ func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool)
 //    - propagate: whether to propagate natural height.
 //
 func (scrolledWindow *ScrolledWindow) SetPropagateNaturalHeight(propagate bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -928,9 +1002,11 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalHeight(propagate bool) 
 	if propagate {
 		_arg1 = C.TRUE
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_propagate_natural_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_propagate_natural_height", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(propagate)
@@ -945,7 +1021,7 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalHeight(propagate bool) 
 //    - propagate: whether to propagate natural width.
 //
 func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -953,9 +1029,11 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 	if propagate {
 		_arg1 = C.TRUE
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_propagate_natural_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_propagate_natural_width", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(propagate)
@@ -969,7 +1047,7 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 //      one.
 //
 func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -977,9 +1055,11 @@ func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
 	if vadjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
-	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_vadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_vadjustment", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(vadjustment)
@@ -991,13 +1071,14 @@ func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
 // If no window placement is set for a scrolled window, it defaults to
 // GTK_CORNER_TOP_LEFT.
 func (scrolledWindow *ScrolledWindow) UnsetPlacement() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
-	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("unset_placement", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("unset_placement", _args[:], nil)
 
 	runtime.KeepAlive(scrolledWindow)
 }

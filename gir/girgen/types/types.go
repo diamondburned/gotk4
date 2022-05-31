@@ -333,22 +333,43 @@ func AnyTypeIsPtr(any gir.AnyType) bool {
 	return strings.Contains(AnyTypeC(any), "*")
 }
 
-// AnyTypePrimitive converts AnyType to a C primitive type.
-func AnyTypePrimitive(any gir.AnyType) string {
-	return CTypeToPrimitive(AnyTypeC(any))
+// AnyTypeCPrimitive converts AnyType to a C primitive type.
+func AnyTypeCPrimitive(gen FileGenerator, any gir.AnyType) string {
+	cType := AnyTypeC(any)
+
+	switch {
+	case any.Array != nil:
+		return MoveCPtr(cType, "void")
+	case any.Type != nil:
+		if prim := CTypeToPrimitive(cType); prim != "" {
+			return prim
+		}
+		if prim := Resolve(gen, *any.Type).AsPrimitiveCType(gen); prim != "" {
+			return prim
+		}
+	}
+
+	return ""
 }
 
 // CTypeToPrimitive converts a C type to the primitive type.
 func CTypeToPrimitive(cType string) string {
-	if cType == "gpointer" || cType == "gconstpointer" || CountPtr(cType) > 0 {
+	// Keep this in sync with valueconverted.go's isRuntimeLinking check inside
+	// resolveType. We probably can't make the C callback header generator use
+	// the type converter, so we'll have to keep them in sync.
+
+	if cType == "gpointer" || cType == "gconstpointer" {
 		return "gpointer"
+	}
+
+	if CountPtr(cType) > 0 {
+		return MoveCPtr(cType, "void")
 	}
 
 	if GIRIsPrimitive(cType) {
 		return cType
 	}
 
-	panic("unknown primitive " + cType)
 	return ""
 }
 

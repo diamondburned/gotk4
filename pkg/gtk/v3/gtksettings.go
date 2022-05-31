@@ -101,16 +101,18 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //    - name of the setting to reset.
 //
 func (settings *Settings) ResetProperty(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("reset_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("reset_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -125,7 +127,7 @@ func (settings *Settings) ResetProperty(name string) {
 //    - origin
 //
 func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin string) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
 	var _arg2 C.gdouble // out
@@ -137,11 +139,13 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 	_arg2 = C.gdouble(vDouble)
 	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_double_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_double_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -158,7 +162,7 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 //    - origin
 //
 func (settings *Settings) SetLongProperty(name string, vLong int32, origin string) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.glong // out
@@ -170,11 +174,13 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 	_arg2 = C.glong(vLong)
 	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_long_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.glong)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_long_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -190,7 +196,7 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 //    - svalue
 //
 func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -199,10 +205,12 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(svalue)))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_property_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_property_value", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -218,7 +226,7 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 //    - origin
 //
 func (settings *Settings) SetStringProperty(name, vString, origin string) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -231,11 +239,13 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_arg3))
-	*(**Settings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_string_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_string_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -278,14 +288,15 @@ func SettingsGetDefault() *Settings {
 //    - settings Settings object.
 //
 func SettingsGetForScreen(screen *gdk.Screen) *Settings {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**gdk.Screen)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "get_for_screen").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "get_for_screen").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)

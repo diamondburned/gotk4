@@ -104,7 +104,7 @@ func (r RecentFilterFlags) Has(other RecentFilterFlags) bool {
 type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
 
 //export _gotk4_gtk3_RecentFilterFunc
-func _gotk4_gtk3_RecentFilterFunc(arg1 *C.GtkRecentFilterInfo, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk3_RecentFilterFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
 	var fn RecentFilterFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -236,15 +236,17 @@ func NewRecentFilter() *RecentFilter {
 //    - days: number of days.
 //
 func (filter *RecentFilter) AddAge(days int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = C.gint(days)
-	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_age", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_age", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(days)
@@ -258,16 +260,18 @@ func (filter *RecentFilter) AddAge(days int32) {
 //    - application name.
 //
 func (filter *RecentFilter) AddApplication(application string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(application)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_application", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_application", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(application)
@@ -281,16 +285,18 @@ func (filter *RecentFilter) AddApplication(application string) {
 //    - group name.
 //
 func (filter *RecentFilter) AddGroup(group string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(group)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_group", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_group", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(group)
@@ -304,16 +310,18 @@ func (filter *RecentFilter) AddGroup(group string) {
 //    - mimeType: MIME type.
 //
 func (filter *RecentFilter) AddMIMEType(mimeType string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_mime_type", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_mime_type", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(mimeType)
@@ -327,16 +335,18 @@ func (filter *RecentFilter) AddMIMEType(mimeType string) {
 //    - pattern: file pattern.
 //
 func (filter *RecentFilter) AddPattern(pattern string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_pattern", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_pattern", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(pattern)
@@ -345,13 +355,14 @@ func (filter *RecentFilter) AddPattern(pattern string) {
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
 // GdkPixbuf.
 func (filter *RecentFilter) AddPixbufFormats() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	*(**RecentFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_pixbuf_formats", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("add_pixbuf_formats", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 }
@@ -373,16 +384,18 @@ func (filter *RecentFilter) AddPixbufFormats() {
 //    - ok: TRUE if the file should be displayed.
 //
 func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(filterInfo)))
-	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("filter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("filter", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
@@ -406,14 +419,15 @@ func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 //      owned by the filter object and should not be freed.
 //
 func (filter *RecentFilter) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	*(**RecentFilter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
@@ -436,16 +450,18 @@ func (filter *RecentFilter) Name() string {
 //    - name: then human readable name of filter.
 //
 func (filter *RecentFilter) SetName(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**RecentFilter)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("set_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "RecentFilter").InvokeMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(name)

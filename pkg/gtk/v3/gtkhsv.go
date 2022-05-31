@@ -15,7 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_HSVClass_changed(GtkHSV*);
+// extern void _gotk4_gtk3_HSVClass_changed(void*);
 // extern void _gotk4_gtk3_HSV_ConnectChanged(gpointer, guintptr);
 import "C"
 
@@ -65,7 +65,7 @@ func classInitHSVer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_HSVClass_changed
-func _gotk4_gtk3_HSVClass_changed(arg0 *C.GtkHSV) {
+func _gotk4_gtk3_HSVClass_changed(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
@@ -132,6 +132,78 @@ func NewHSV() *HSV {
 	return _hsV
 }
 
+// Color queries the current color in an HSV color selector. Returned values
+// will be in the [0.0, 1.0] range.
+//
+// The function returns the following values:
+//
+//    - h: return value for the hue.
+//    - s: return value for the saturation.
+//    - v: return value for the value.
+//
+func (hsv *HSV) Color() (h float64, s float64, v float64) {
+	var _args [1]girepository.Argument
+	var _outs [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _out2 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "HSV").InvokeMethod("get_color", _args[:], _outs[:])
+
+	runtime.KeepAlive(hsv)
+
+	var _h float64 // out
+	var _s float64 // out
+	var _v float64 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+
+	_h = *(*float64)(unsafe.Pointer(_out0))
+	_s = *(*float64)(unsafe.Pointer(_out1))
+	_v = *(*float64)(unsafe.Pointer(_out2))
+
+	return _h, _s, _v
+}
+
+// Metrics queries the size and ring width of an HSV color selector.
+//
+// The function returns the following values:
+//
+//    - size: return value for the diameter of the hue ring.
+//    - ringWidth: return value for the width of the hue ring.
+//
+func (hsv *HSV) Metrics() (size int32, ringWidth int32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "HSV").InvokeMethod("get_metrics", _args[:], _outs[:])
+
+	runtime.KeepAlive(hsv)
+
+	var _size int32      // out
+	var _ringWidth int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_size = *(*int32)(unsafe.Pointer(_out0))
+	_ringWidth = *(*int32)(unsafe.Pointer(_out1))
+
+	return _size, _ringWidth
+}
+
 // IsAdjusting: HSV color selector can be said to be adjusting if multiple rapid
 // changes are being made to its value, for example, when the user is adjusting
 // the value with the mouse. This function queries whether the HSV color
@@ -144,14 +216,15 @@ func NewHSV() *HSV {
 //      be final.
 //
 func (hsv *HSV) IsAdjusting() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
-	*(**HSV)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HSV").InvokeMethod("is_adjusting", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HSV").InvokeMethod("is_adjusting", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hsv)
@@ -175,7 +248,7 @@ func (hsv *HSV) IsAdjusting() bool {
 //    - v: value.
 //
 func (hsv *HSV) SetColor(h, s, v float64) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.double // out
 	var _arg2 C.double // out
@@ -185,11 +258,13 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 	_arg1 = C.double(h)
 	_arg2 = C.double(s)
 	_arg3 = C.double(v)
-	*(**HSV)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_color", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_color", _args[:], nil)
 
 	runtime.KeepAlive(hsv)
 	runtime.KeepAlive(h)
@@ -205,7 +280,7 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 //    - ringWidth: width of the hue ring.
 //
 func (hsv *HSV) SetMetrics(size, ringWidth int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -213,10 +288,12 @@ func (hsv *HSV) SetMetrics(size, ringWidth int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
 	_arg1 = C.gint(size)
 	_arg2 = C.gint(ringWidth)
-	*(**HSV)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_metrics", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_metrics", _args[:], nil)
 
 	runtime.KeepAlive(hsv)
 	runtime.KeepAlive(size)

@@ -10,6 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -32,6 +33,36 @@ func init() {
 
 func init() {
 	girepository.Require("Gtk", "4.0")
+}
+
+// The function returns the following values:
+//
+func BuilderErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
+}
+
+// The function returns the following values:
+//
+func ConstraintVflParserErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
 }
 
 type EditableProperties C.gint
@@ -76,6 +107,36 @@ func (e EditableProperties) String() string {
 	default:
 		return fmt.Sprintf("EditableProperties(%d)", e)
 	}
+}
+
+// The function returns the following values:
+//
+func IconThemeErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
+}
+
+// The function returns the following values:
+//
+func RecentManagerErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
 }
 
 type DebugFlags C.guint
@@ -171,4 +232,19 @@ func (d DebugFlags) String() string {
 // Has returns true if d contains other.
 func (d DebugFlags) Has(other DebugFlags) bool {
 	return (d & other) == other
+}
+
+// The function returns the following values:
+//
+func CSSParserErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "css_parser_error_quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
 }

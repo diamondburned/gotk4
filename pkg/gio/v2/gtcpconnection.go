@@ -69,14 +69,15 @@ func marshalTCPConnection(p uintptr) (interface{}, error) {
 //    - ok: TRUE if graceful disconnect is used on close, FALSE otherwise.
 //
 func (connection *TCPConnection) GracefulDisconnect() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**TCPConnection)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "TcpConnection").InvokeMethod("get_graceful_disconnect", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "TcpConnection").InvokeMethod("get_graceful_disconnect", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
@@ -106,7 +107,7 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 //    - gracefulDisconnect: whether to do graceful disconnects or not.
 //
 func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -114,9 +115,11 @@ func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) 
 	if gracefulDisconnect {
 		_arg1 = C.TRUE
 	}
-	*(**TCPConnection)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "TcpConnection").InvokeMethod("set_graceful_disconnect", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "TcpConnection").InvokeMethod("set_graceful_disconnect", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(gracefulDisconnect)

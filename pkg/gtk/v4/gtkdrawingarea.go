@@ -15,8 +15,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
+// extern void _gotk4_gtk4_DrawingAreaClass_resize(void*, int, int);
+// extern void _gotk4_gtk4_DrawingAreaDrawFunc(void*, void*, int, int, gpointer);
 // extern void _gotk4_gtk4_DrawingArea_ConnectResize(gpointer, gint, gint, guintptr);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtkdrawingarea.go.
@@ -36,7 +38,7 @@ func init() {
 type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int32)
 
 //export _gotk4_gtk4_DrawingAreaDrawFunc
-func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
+func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
 	var fn DrawingAreaDrawFunc
 	{
 		v := gbox.Get(uintptr(arg5))
@@ -176,7 +178,7 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_DrawingAreaClass_resize
-func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.GtkDrawingArea, arg1 C.int, arg2 C.int) {
+func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.void, arg1 C.int, arg2 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Resize(width, height int32) })
 
@@ -270,14 +272,15 @@ func NewDrawingArea() *DrawingArea {
 //    - gint: height requested for content of the drawing area.
 //
 func (self *DrawingArea) ContentHeight() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DrawingArea)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_height", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -296,14 +299,15 @@ func (self *DrawingArea) ContentHeight() int32 {
 //    - gint: width requested for content of the drawing area.
 //
 func (self *DrawingArea) ContentWidth() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DrawingArea)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_width", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -328,15 +332,17 @@ func (self *DrawingArea) ContentWidth() int32 {
 //    - height of contents.
 //
 func (self *DrawingArea) SetContentHeight(height int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.int(height)
-	*(**DrawingArea)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_height", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_height", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(height)
@@ -355,16 +361,60 @@ func (self *DrawingArea) SetContentHeight(height int32) {
 //    - width of contents.
 //
 func (self *DrawingArea) SetContentWidth(width int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.int(width)
-	*(**DrawingArea)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_width", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_width", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(width)
+}
+
+// SetDrawFunc: setting a draw function is the main thing you want to do when
+// using a drawing area.
+//
+// The draw function is called whenever GTK needs to draw the contents of the
+// drawing area to the screen.
+//
+// The draw function will be called during the drawing stage of GTK. In the
+// drawing stage it is not allowed to change properties of any GTK widgets or
+// call any functions that would cause any properties to be changed. You should
+// restrict yourself exclusively to drawing your contents in the draw function.
+//
+// If what you are drawing does change, call gtk.Widget.QueueDraw() on the
+// drawing area. This will cause a redraw and will call draw_func again.
+//
+// The function takes the following parameters:
+//
+//    - drawFunc (optional): callback that lets you draw the drawing area's
+//      contents.
+//
+func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
+	var _args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if drawFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
+		_arg2 = C.gpointer(gbox.Assign(drawFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_draw_func", _args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(drawFunc)
 }

@@ -465,6 +465,156 @@ func (t TouchpadGesturePhase) String() string {
 	}
 }
 
+// EventsGetAngle returns the relative angle from event1 to event2.
+//
+// The relative angle is the angle between the X axis and the line through both
+// events' positions. The rotation direction for positive angles is from the
+// positive X axis towards the positive Y axis.
+//
+// This assumes that both events have X/Y information. If not, this function
+// returns FALSE.
+//
+// The function takes the following parameters:
+//
+//    - event1: first GdkEvent.
+//    - event2: second GdkEvent.
+//
+// The function returns the following values:
+//
+//    - angle: return location for the relative angle between both events.
+//    - ok: TRUE if the angle could be calculated.
+//
+func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "events_get_angle").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _angle float64 // out
+	var _ok bool       // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_angle = *(*float64)(unsafe.Pointer(_out0))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _angle, _ok
+}
+
+// EventsGetCenter returns the point halfway between the events' positions.
+//
+// This assumes that both events have X/Y information. If not, this function
+// returns FALSE.
+//
+// The function takes the following parameters:
+//
+//    - event1: first GdkEvent.
+//    - event2: second GdkEvent.
+//
+// The function returns the following values:
+//
+//    - x: return location for the X coordinate of the center.
+//    - y: return location for the Y coordinate of the center.
+//    - ok: TRUE if the center could be calculated.
+//
+func EventsGetCenter(event1, event2 Eventer) (x float64, y float64, ok bool) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "events_get_center").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_x = *(*float64)(unsafe.Pointer(_out0))
+	_y = *(*float64)(unsafe.Pointer(_out1))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _x, _y, _ok
+}
+
+// EventsGetDistance returns the distance between the event locations.
+//
+// This assumes that both events have X/Y information. If not, this function
+// returns FALSE.
+//
+// The function takes the following parameters:
+//
+//    - event1: first GdkEvent.
+//    - event2: second GdkEvent.
+//
+// The function returns the following values:
+//
+//    - distance: return location for the distance.
+//    - ok: TRUE if the distance could be calculated.
+//
+func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _out0 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "events_get_distance").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event1)
+	runtime.KeepAlive(event2)
+
+	var _distance float64 // out
+	var _ok bool          // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_distance = *(*float64)(unsafe.Pointer(_out0))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _distance, _ok
+}
+
 // ButtonEvent: event related to a button on a pointer device.
 type ButtonEvent struct {
 	_ [0]func() // equal guard
@@ -494,14 +644,15 @@ func marshalButtonEvent(p uintptr) (interface{}, error) {
 //    - guint: button of event.
 //
 func (event *ButtonEvent) Button() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**ButtonEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ButtonEvent").InvokeMethod("get_button", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ButtonEvent").InvokeMethod("get_button", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -542,14 +693,15 @@ func marshalCrossingEvent(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the surface is the focus surface.
 //
 func (event *CrossingEvent) Focus() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**CrossingEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "CrossingEvent").InvokeMethod("get_focus", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "CrossingEvent").InvokeMethod("get_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -592,14 +744,15 @@ func marshalDNDEvent(p uintptr) (interface{}, error) {
 //    - drop (optional): drop.
 //
 func (event *DNDEvent) Drop() Dropper {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**DNDEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DNDEvent").InvokeMethod("get_drop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DNDEvent").InvokeMethod("get_drop", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -693,6 +846,44 @@ func BaseEvent(obj Eventer) *Event {
 	return obj.baseEvent()
 }
 
+// Axes extracts all axis values from an event.
+//
+// The function returns the following values:
+//
+//    - axes: array of values for all axes.
+//    - ok: TRUE on success, otherwise FALSE.
+//
+func (event *Event) Axes() ([]float64, bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.double  // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_axes", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event)
+
+	var _axes []float64 // out
+	var _ok bool        // out
+	_out0 = *(**C.double)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(*C.gboolean)(unsafe.Pointer(&_outs[1]))
+
+	_axes = make([]float64, _out1)
+	copy(_axes, unsafe.Slice((*float64)(unsafe.Pointer(_out0)), _out1))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _axes, _ok
+}
+
 // Device returns the device of an event.
 //
 // The function returns the following values:
@@ -700,14 +891,15 @@ func BaseEvent(obj Eventer) *Event {
 //    - device (optional): Device.
 //
 func (event *Event) Device() Devicer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_device", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_device", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -749,14 +941,15 @@ func (event *Event) Device() Devicer {
 //    - deviceTool (optional): current device tool, or NULL.
 //
 func (event *Event) DeviceTool() *DeviceTool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_device_tool", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_device_tool", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -777,14 +970,15 @@ func (event *Event) DeviceTool() *DeviceTool {
 //    - display (optional): Display.
 //
 func (event *Event) Display() *Display {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_display", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -808,14 +1002,15 @@ func (event *Event) Display() *Display {
 //    - eventSequence: event sequence that the event belongs to.
 //
 func (event *Event) EventSequence() *EventSequence {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_event_sequence", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_event_sequence", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -836,14 +1031,15 @@ func (event *Event) EventSequence() *EventSequence {
 //    - ok: TRUE if this event is emulated.
 //
 func (event *Event) PointerEmulated() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_pointer_emulated", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_pointer_emulated", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -857,6 +1053,46 @@ func (event *Event) PointerEmulated() bool {
 	return _ok
 }
 
+// Position: extract the event surface relative x/y coordinates from an event.
+//
+// The function returns the following values:
+//
+//    - x: location to put event surface x coordinate.
+//    - y: location to put event surface y coordinate.
+//    - ok
+//
+func (event *Event) Position() (x float64, y float64, ok bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_position", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event)
+
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_x = *(*float64)(unsafe.Pointer(_out0))
+	_y = *(*float64)(unsafe.Pointer(_out1))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _x, _y, _ok
+}
+
 // Seat returns the seat that originated the event.
 //
 // The function returns the following values:
@@ -864,14 +1100,15 @@ func (event *Event) PointerEmulated() bool {
 //    - seat (optional): Seat.
 //
 func (event *Event) Seat() Seater {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_seat", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_seat", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -905,14 +1142,15 @@ func (event *Event) Seat() Seater {
 //    - surface associated with the event.
 //
 func (event *Event) Surface() Surfacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -950,14 +1188,15 @@ func (event *Event) Surface() Surfacer {
 //    - guint32: timestamp field from event.
 //
 func (event *Event) Time() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_time", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("get_time", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -982,14 +1221,15 @@ func (event *Event) Time() uint32 {
 //    - ok: TRUE if the event should trigger a context menu.
 //
 func (event *Event) TriggersContextMenu() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**Event)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("triggers_context_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Event").InvokeMethod("triggers_context_menu", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1033,14 +1273,15 @@ func marshalFocusEvent(p uintptr) (interface{}, error) {
 //    - ok: TRUE of the focus is entering.
 //
 func (event *FocusEvent) In() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**FocusEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "FocusEvent").InvokeMethod("get_in", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "FocusEvent").InvokeMethod("get_in", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1083,14 +1324,15 @@ func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 //    - surface: grab surface of event.
 //
 func (event *GrabBrokenEvent) GrabSurface() Surfacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**GrabBrokenEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "GrabBrokenEvent").InvokeMethod("get_grab_surface", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "GrabBrokenEvent").InvokeMethod("get_grab_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1125,14 +1367,15 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 //    - ok: TRUE if the an implicit grab was broken.
 //
 func (event *GrabBrokenEvent) Implicit() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**GrabBrokenEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "GrabBrokenEvent").InvokeMethod("get_implicit", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "GrabBrokenEvent").InvokeMethod("get_implicit", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1175,14 +1418,15 @@ func marshalKeyEvent(p uintptr) (interface{}, error) {
 //    - guint: keycode of event.
 //
 func (event *KeyEvent) Keycode() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**KeyEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_keycode", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_keycode", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1201,14 +1445,15 @@ func (event *KeyEvent) Keycode() uint32 {
 //    - guint: keyval of event.
 //
 func (event *KeyEvent) Keyval() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**KeyEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_keyval", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_keyval", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1227,14 +1472,15 @@ func (event *KeyEvent) Keyval() uint32 {
 //    - guint: layout of event.
 //
 func (event *KeyEvent) Layout() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**KeyEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_layout", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_layout", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1253,14 +1499,15 @@ func (event *KeyEvent) Layout() uint32 {
 //    - guint: shift level of event.
 //
 func (event *KeyEvent) Level() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**KeyEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_level", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1272,6 +1519,48 @@ func (event *KeyEvent) Level() uint32 {
 	return _guint
 }
 
+// Match gets a keyval and modifier combination that will match the event.
+//
+// See gdk.KeyEvent.Matches().
+//
+// The function returns the following values:
+//
+//    - keyval: return location for a keyval.
+//    - modifiers: return location for modifiers.
+//    - ok: TRUE on success.
+//
+func (event *KeyEvent) Match() (uint32, ModifierType, bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("get_match", _args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event)
+
+	var _keyval uint32          // out
+	var _modifiers ModifierType // out
+	var _ok bool                // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_keyval = *(*uint32)(unsafe.Pointer(_out0))
+	_modifiers = *(*ModifierType)(unsafe.Pointer(_out1))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keyval, _modifiers, _ok
+}
+
 // IsModifier extracts whether the key event is for a modifier key.
 //
 // The function returns the following values:
@@ -1279,14 +1568,15 @@ func (event *KeyEvent) Level() uint32 {
 //    - ok: TRUE if the event is for a modifier key.
 //
 func (event *KeyEvent) IsModifier() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**KeyEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("is_modifier", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "KeyEvent").InvokeMethod("is_modifier", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1344,6 +1634,39 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 	return wrapPadEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// AxisValue extracts the information from a pad strip or ring event.
+//
+// The function returns the following values:
+//
+//    - index: return location for the axis index.
+//    - value: return location for the axis value.
+//
+func (event *PadEvent) AxisValue() (uint32, float64) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "PadEvent").InvokeMethod("get_axis_value", _args[:], _outs[:])
+
+	runtime.KeepAlive(event)
+
+	var _index uint32  // out
+	var _value float64 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_index = *(*uint32)(unsafe.Pointer(_out0))
+	_value = *(*float64)(unsafe.Pointer(_out1))
+
+	return _index, _value
+}
+
 // Button extracts information about the pressed button from a pad event.
 //
 // The function returns the following values:
@@ -1351,14 +1674,15 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 //    - guint: button of event.
 //
 func (event *PadEvent) Button() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**PadEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "PadEvent").InvokeMethod("get_button", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "PadEvent").InvokeMethod("get_button", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1368,6 +1692,39 @@ func (event *PadEvent) Button() uint32 {
 	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// GroupMode extracts group and mode information from a pad event.
+//
+// The function returns the following values:
+//
+//    - group: return location for the group.
+//    - mode: return location for the mode.
+//
+func (event *PadEvent) GroupMode() (group uint32, mode uint32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "PadEvent").InvokeMethod("get_group_mode", _args[:], _outs[:])
+
+	runtime.KeepAlive(event)
+
+	var _group uint32 // out
+	var _mode uint32  // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_group = *(*uint32)(unsafe.Pointer(_out0))
+	_mode = *(*uint32)(unsafe.Pointer(_out1))
+
+	return _group, _mode
 }
 
 // ProximityEvent: event related to the proximity of a tool to a device.
@@ -1414,6 +1771,41 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 	return wrapScrollEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// Deltas extracts the scroll deltas of a scroll event.
+//
+// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
+//
+// The function returns the following values:
+//
+//    - deltaX: return location for x scroll delta.
+//    - deltaY: return location for y scroll delta.
+//
+func (event *ScrollEvent) Deltas() (deltaX float64, deltaY float64) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "ScrollEvent").InvokeMethod("get_deltas", _args[:], _outs[:])
+
+	runtime.KeepAlive(event)
+
+	var _deltaX float64 // out
+	var _deltaY float64 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_deltaX = *(*float64)(unsafe.Pointer(_out0))
+	_deltaY = *(*float64)(unsafe.Pointer(_out1))
+
+	return _deltaX, _deltaY
+}
+
 // IsStop: check whether a scroll event is a stop scroll event.
 //
 // Scroll sequences with smooth scroll information may provide a stop scroll
@@ -1428,14 +1820,15 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the event is a scroll stop event.
 //
 func (event *ScrollEvent) IsStop() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**ScrollEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "ScrollEvent").InvokeMethod("is_stop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ScrollEvent").InvokeMethod("is_stop", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1478,14 +1871,15 @@ func marshalTouchEvent(p uintptr) (interface{}, error) {
 //    - ok: TRUE if event is emulating.
 //
 func (event *TouchEvent) EmulatingPointer() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**TouchEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "TouchEvent").InvokeMethod("get_emulating_pointer", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "TouchEvent").InvokeMethod("get_emulating_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1526,6 +1920,39 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	return wrapTouchpadEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// Deltas extracts delta information from a touchpad event.
+//
+// The function returns the following values:
+//
+//    - dx: return location for x.
+//    - dy: return location for y.
+//
+func (event *TouchpadEvent) Deltas() (dx float64, dy float64) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_deltas", _args[:], _outs[:])
+
+	runtime.KeepAlive(event)
+
+	var _dx float64 // out
+	var _dy float64 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_dx = *(*float64)(unsafe.Pointer(_out0))
+	_dy = *(*float64)(unsafe.Pointer(_out1))
+
+	return _dx, _dy
+}
+
 // NFingers extracts the number of fingers from a touchpad event.
 //
 // The function returns the following values:
@@ -1533,14 +1960,15 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 //    - guint: number of fingers for event.
 //
 func (event *TouchpadEvent) NFingers() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**TouchpadEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_n_fingers", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_n_fingers", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1559,14 +1987,15 @@ func (event *TouchpadEvent) NFingers() uint32 {
 //    - gdouble: angle delta of event.
 //
 func (event *TouchpadEvent) PinchAngleDelta() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**TouchpadEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_pinch_angle_delta", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_pinch_angle_delta", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)
@@ -1585,14 +2014,15 @@ func (event *TouchpadEvent) PinchAngleDelta() float64 {
 //    - gdouble: scale of event.
 //
 func (event *TouchpadEvent) PinchScale() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.double // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	*(**TouchpadEvent)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_pinch_scale", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_pinch_scale", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event)

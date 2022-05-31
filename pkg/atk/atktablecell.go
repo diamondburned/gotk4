@@ -13,9 +13,11 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern AtkObject* _gotk4_atk1_TableCellIface_get_table(AtkTableCell*);
-// extern gint _gotk4_atk1_TableCellIface_get_column_span(AtkTableCell*);
-// extern gint _gotk4_atk1_TableCellIface_get_row_span(AtkTableCell*);
+// extern AtkObject* _gotk4_atk1_TableCellIface_get_table(void*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_position(void*, void*, void*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(void*, void*, void*, void*, void*);
+// extern gint _gotk4_atk1_TableCellIface_get_column_span(void*);
+// extern gint _gotk4_atk1_TableCellIface_get_row_span(void*);
 import "C"
 
 // glib.Type values for atktablecell.go.
@@ -38,6 +40,31 @@ type TableCellOverrider interface {
 	//      if the cell does not implement this method.
 	//
 	ColumnSpan() int32
+	// Position retrieves the tabular position of this cell.
+	//
+	// The function returns the following values:
+	//
+	//    - row of the given cell.
+	//    - column of the given cell.
+	//    - ok: TRUE if successful; FALSE otherwise.
+	//
+	Position() (row int32, column int32, ok bool)
+	// RowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
+	//
+	// Note: If the object does not implement this function, then, by default,
+	// atk will implement this function by calling get_row_span and
+	// get_column_span on the object.
+	//
+	// The function returns the following values:
+	//
+	//    - row index of the given cell.
+	//    - column index of the given cell.
+	//    - rowSpan: number of rows occupied by this cell.
+	//    - columnSpan: number of columns occupied by this cell.
+	//    - ok: TRUE if successful; FALSE otherwise.
+	//
+	RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool)
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	//
 	// The function returns the following values:
@@ -79,6 +106,11 @@ type TableCeller interface {
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
 	ColumnSpan() int32
+	// Position retrieves the tabular position of this cell.
+	Position() (row int32, column int32, ok bool)
+	// RowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
+	RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool)
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	RowSpan() int32
 	// Table returns a reference to the accessible of the containing table.
@@ -90,12 +122,14 @@ var _ TableCeller = (*TableCell)(nil)
 func ifaceInitTableCeller(gifacePtr, data C.gpointer) {
 	iface := (*C.AtkTableCellIface)(unsafe.Pointer(gifacePtr))
 	iface.get_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_column_span)
+	iface.get_position = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_position)
+	iface.get_row_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_column_span)
 	iface.get_row_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_span)
 	iface.get_table = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_table)
 }
 
 //export _gotk4_atk1_TableCellIface_get_column_span
-func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.AtkTableCell) (cret C.gint) {
+func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
@@ -106,8 +140,42 @@ func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.AtkTableCell) (cret C.gi
 	return cret
 }
 
+//export _gotk4_atk1_TableCellIface_get_position
+func _gotk4_atk1_TableCellIface_get_position(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableCellOverrider)
+
+	row, column, ok := iface.Position()
+
+	*arg1 = (*C.void)(unsafe.Pointer(row))
+	*arg2 = (*C.void)(unsafe.Pointer(column))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_row_column_span
+func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TableCellOverrider)
+
+	row, column, rowSpan, columnSpan, ok := iface.RowColumnSpan()
+
+	*arg1 = (*C.void)(unsafe.Pointer(row))
+	*arg2 = (*C.void)(unsafe.Pointer(column))
+	*arg3 = (*C.void)(unsafe.Pointer(rowSpan))
+	*arg4 = (*C.void)(unsafe.Pointer(columnSpan))
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_atk1_TableCellIface_get_row_span
-func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.AtkTableCell) (cret C.gint) {
+func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
@@ -119,7 +187,7 @@ func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.AtkTableCell) (cret C.gint)
 }
 
 //export _gotk4_atk1_TableCellIface_get_table
-func _gotk4_atk1_TableCellIface_get_table(arg0 *C.AtkTableCell) (cret *C.AtkObject) {
+func _gotk4_atk1_TableCellIface_get_table(arg0 *C.void) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
@@ -151,12 +219,13 @@ func marshalTableCell(p uintptr) (interface{}, error) {
 //      the cell does not implement this method.
 //
 func (cell *TableCell) ColumnSpan() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	*(**TableCell)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -169,6 +238,99 @@ func (cell *TableCell) ColumnSpan() int32 {
 	return _gint
 }
 
+// Position retrieves the tabular position of this cell.
+//
+// The function returns the following values:
+//
+//    - row of the given cell.
+//    - column of the given cell.
+//    - ok: TRUE if successful; FALSE otherwise.
+//
+func (cell *TableCell) Position() (row int32, column int32, ok bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cell)
+
+	var _row int32    // out
+	var _column int32 // out
+	var _ok bool      // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_row = *(*int32)(unsafe.Pointer(_out0))
+	_column = *(*int32)(unsafe.Pointer(_out1))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _row, _column, _ok
+}
+
+// RowColumnSpan gets the row and column indexes and span of this cell
+// accessible.
+//
+// Note: If the object does not implement this function, then, by default, atk
+// will implement this function by calling get_row_span and get_column_span on
+// the object.
+//
+// The function returns the following values:
+//
+//    - row index of the given cell.
+//    - column index of the given cell.
+//    - rowSpan: number of rows occupied by this cell.
+//    - columnSpan: number of columns occupied by this cell.
+//    - ok: TRUE if successful; FALSE otherwise.
+//
+func (cell *TableCell) RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool) {
+	var _args [1]girepository.Argument
+	var _outs [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _out2 *C.void    // in
+	var _out3 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cell)
+
+	var _row int32        // out
+	var _column int32     // out
+	var _rowSpan int32    // out
+	var _columnSpan int32 // out
+	var _ok bool          // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+
+	_row = *(*int32)(unsafe.Pointer(_out0))
+	_column = *(*int32)(unsafe.Pointer(_out1))
+	_rowSpan = *(*int32)(unsafe.Pointer(_out2))
+	_columnSpan = *(*int32)(unsafe.Pointer(_out3))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _row, _column, _rowSpan, _columnSpan, _ok
+}
+
 // RowSpan returns the number of rows occupied by this cell accessible.
 //
 // The function returns the following values:
@@ -177,12 +339,13 @@ func (cell *TableCell) ColumnSpan() int32 {
 //      cell does not implement this method.
 //
 func (cell *TableCell) RowSpan() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	*(**TableCell)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -202,12 +365,13 @@ func (cell *TableCell) RowSpan() int32 {
 //    - object: atk object for the containing table.
 //
 func (cell *TableCell) Table() *ObjectClass {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	*(**TableCell)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

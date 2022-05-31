@@ -82,7 +82,7 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 //    - sliceListModel: new GtkSliceListModel.
 //
 func NewSliceListModel(model gio.ListModeller, offset, size uint32) *SliceListModel {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -94,11 +94,12 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint32) *SliceListMo
 	}
 	_arg1 = C.guint(offset)
 	_arg2 = C.guint(size)
-	*(*gio.ListModeller)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("new_SliceListModel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("new_SliceListModel", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -119,14 +120,15 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint32) *SliceListMo
 //    - listModel (optional): model in use.
 //
 func (self *SliceListModel) Model() *gio.ListModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**SliceListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("get_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -152,14 +154,15 @@ func (self *SliceListModel) Model() *gio.ListModel {
 //    - guint: offset.
 //
 func (self *SliceListModel) Offset() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**SliceListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("get_offset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("get_offset", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -178,14 +181,15 @@ func (self *SliceListModel) Offset() uint32 {
 //    - guint: size.
 //
 func (self *SliceListModel) Size() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**SliceListModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("get_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("get_size", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -206,7 +210,7 @@ func (self *SliceListModel) Size() uint32 {
 //    - model (optional) to be sliced.
 //
 func (self *SliceListModel) SetModel(model gio.ListModeller) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -214,9 +218,11 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	if model != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(**SliceListModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("set_model", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
@@ -231,15 +237,17 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 //    - offset: new offset to use.
 //
 func (self *SliceListModel) SetOffset(offset uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.guint(offset)
-	*(**SliceListModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("set_offset", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("set_offset", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(offset)
@@ -255,15 +263,17 @@ func (self *SliceListModel) SetOffset(offset uint32) {
 //    - size: maximum size.
 //
 func (self *SliceListModel) SetSize(size uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = C.guint(size)
-	*(**SliceListModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("set_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("set_size", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(size)

@@ -104,7 +104,7 @@ func marshalLayout(p uintptr) (interface{}, error) {
 //    - layout: new Layout.
 //
 func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -115,10 +115,11 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 	if vadjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
-	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
-	*(**Adjustment)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("new_Layout", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("new_Layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hadjustment)
@@ -138,14 +139,15 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 //    - window: Window.
 //
 func (layout *Layout) BinWindow() gdk.Windower {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**Layout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_bin_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_bin_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
@@ -187,14 +189,15 @@ func (layout *Layout) BinWindow() gdk.Windower {
 //    - adjustment: horizontal scroll adjustment.
 //
 func (layout *Layout) HAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**Layout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_hadjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
@@ -204,6 +207,44 @@ func (layout *Layout) HAdjustment() *Adjustment {
 	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
+}
+
+// Size gets the size that has been set on the layout, and that determines the
+// total extents of the layout’s scrollbar area. See gtk_layout_set_size ().
+//
+// The function returns the following values:
+//
+//    - width (optional): location to store the width set on layout, or NULL.
+//    - height (optional): location to store the height set on layout, or NULL.
+//
+func (layout *Layout) Size() (width uint32, height uint32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Layout").InvokeMethod("get_size", _args[:], _outs[:])
+
+	runtime.KeepAlive(layout)
+
+	var _width uint32  // out
+	var _height uint32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_width = *(*uint32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_height = *(*uint32)(unsafe.Pointer(_out1))
+	}
+
+	return _width, _height
 }
 
 // VAdjustment: this function should only be called after the layout has been
@@ -220,14 +261,15 @@ func (layout *Layout) HAdjustment() *Adjustment {
 //    - adjustment: vertical scroll adjustment.
 //
 func (layout *Layout) VAdjustment() *Adjustment {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**Layout)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_vadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_vadjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
@@ -248,7 +290,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 //    - y: y position to move to.
 //
 func (layout *Layout) Move(childWidget Widgetter, x, y int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -258,11 +300,13 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int32) {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(childWidget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
-	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("move", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Layout").InvokeMethod("move", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(childWidget)
@@ -280,7 +324,7 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int32) {
 //    - y: y position of child widget.
 //
 func (layout *Layout) Put(childWidget Widgetter, x, y int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.gint  // out
@@ -290,11 +334,13 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int32) {
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(childWidget).Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
-	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("put", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Layout").InvokeMethod("put", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(childWidget)
@@ -313,7 +359,7 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int32) {
 //    - adjustment (optional): new scroll adjustment.
 //
 func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -321,9 +367,11 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 	if adjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_hadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_hadjustment", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(adjustment)
@@ -337,7 +385,7 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 //    - height of entire scrollable area.
 //
 func (layout *Layout) SetSize(width, height uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -345,10 +393,12 @@ func (layout *Layout) SetSize(width, height uint32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	_arg1 = C.guint(width)
 	_arg2 = C.guint(height)
-	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_size", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(width)
@@ -366,7 +416,7 @@ func (layout *Layout) SetSize(width, height uint32) {
 //    - adjustment (optional): new scroll adjustment.
 //
 func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -374,9 +424,11 @@ func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	if adjustment != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_vadjustment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_vadjustment", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(adjustment)

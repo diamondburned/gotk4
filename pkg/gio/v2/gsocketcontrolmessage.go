@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -14,9 +15,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gsize _gotk4_gio2_SocketControlMessageClass_get_size(GSocketControlMessage*);
-// extern int _gotk4_gio2_SocketControlMessageClass_get_level(GSocketControlMessage*);
-// extern int _gotk4_gio2_SocketControlMessageClass_get_type(GSocketControlMessage*);
+// extern gsize _gotk4_gio2_SocketControlMessageClass_get_size(void*);
+// extern int _gotk4_gio2_SocketControlMessageClass_get_level(void*);
+// extern int _gotk4_gio2_SocketControlMessageClass_get_type(void*);
+// extern void _gotk4_gio2_SocketControlMessageClass_serialize(void*, gpointer);
 import "C"
 
 // glib.Type values for gsocketcontrolmessage.go.
@@ -49,6 +51,17 @@ type SocketControlMessageOverrider interface {
 	// The function returns the following values:
 	//
 	Type() int32
+	// Serialize converts the data in the message to bytes placed in the
+	// message.
+	//
+	// data is guaranteed to have enough space to fit the size returned by
+	// g_socket_control_message_get_size() on this object.
+	//
+	// The function takes the following parameters:
+	//
+	//    - data: buffer to write data to.
+	//
+	Serialize(data unsafe.Pointer)
 }
 
 // SocketControlMessage is a special-purpose utility message that can be sent to
@@ -111,10 +124,14 @@ func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
 	if _, ok := goval.(interface{ Type() int32 }); ok {
 		pclass.get_type = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_type)
 	}
+
+	if _, ok := goval.(interface{ Serialize(data unsafe.Pointer) }); ok {
+		pclass.serialize = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_serialize)
+	}
 }
 
 //export _gotk4_gio2_SocketControlMessageClass_get_level
-func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessage) (cret C.int) {
+func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.void) (cret C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Level() int32 })
 
@@ -126,7 +143,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessa
 }
 
 //export _gotk4_gio2_SocketControlMessageClass_get_size
-func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessage) (cret C.gsize) {
+func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.void) (cret C.gsize) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Size() uint })
 
@@ -138,7 +155,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessag
 }
 
 //export _gotk4_gio2_SocketControlMessageClass_get_type
-func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessage) (cret C.int) {
+func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.void) (cret C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Type() int32 })
 
@@ -147,6 +164,18 @@ func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessag
 	cret = C.int(gint)
 
 	return cret
+}
+
+//export _gotk4_gio2_SocketControlMessageClass_serialize
+func _gotk4_gio2_SocketControlMessageClass_serialize(arg0 *C.void, arg1 C.gpointer) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Serialize(data unsafe.Pointer) })
+
+	var _data unsafe.Pointer // out
+
+	_data = (unsafe.Pointer)(unsafe.Pointer(arg1))
+
+	iface.Serialize(_data)
 }
 
 func wrapSocketControlMessage(obj *coreglib.Object) *SocketControlMessage {
@@ -176,14 +205,15 @@ func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
 //    - gint: integer describing the level.
 //
 func (message *SocketControlMessage) Level() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**SocketControlMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_level", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_level", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -203,14 +233,15 @@ func (message *SocketControlMessage) Level() int32 {
 //    - gint: integer describing the type of control message.
 //
 func (message *SocketControlMessage) MsgType() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.int   // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**SocketControlMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_msg_type", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_msg_type", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -230,14 +261,15 @@ func (message *SocketControlMessage) MsgType() int32 {
 //    - gsize: number of bytes required.
 //
 func (message *SocketControlMessage) Size() uint {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gsize // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**SocketControlMessage)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_size", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
@@ -247,4 +279,98 @@ func (message *SocketControlMessage) Size() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+// Serialize converts the data in the message to bytes placed in the message.
+//
+// data is guaranteed to have enough space to fit the size returned by
+// g_socket_control_message_get_size() on this object.
+//
+// The function takes the following parameters:
+//
+//    - data: buffer to write data to.
+//
+func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
+	var _args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.gpointer // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("serialize", _args[:], nil)
+
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(data)
+}
+
+// SocketControlMessageDeserialize tries to deserialize a socket control message
+// of a given level and type. This will ask all known (to GType) subclasses of
+// ControlMessage if they can understand this kind of message and if so
+// deserialize it into a ControlMessage.
+//
+// If there is no implementation for this kind of control message, NULL will be
+// returned.
+//
+// The function takes the following parameters:
+//
+//    - level: socket level.
+//    - typ: socket control message type for the given level.
+//    - data: pointer to the message data.
+//
+// The function returns the following values:
+//
+//    - socketControlMessage: deserialized message or NULL.
+//
+func SocketControlMessageDeserialize(level, typ int32, data []byte) SocketControlMessager {
+	var _args [4]girepository.Argument
+	var _arg0 C.int    // out
+	var _arg1 C.int    // out
+	var _arg3 C.guint8 // out
+	var _arg2 C.gsize
+	var _cret *C.void // in
+
+	_arg0 = C.int(level)
+	_arg1 = C.int(typ)
+	_arg2 = (C.gsize)(len(data))
+	if len(data) > 0 {
+		_arg3 = (C.guint8)(unsafe.Pointer(&data[0]))
+	}
+
+	*(*C.int)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint8)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "deserialize").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(level)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(data)
+
+	var _socketControlMessage SocketControlMessager // out
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SocketControlMessager is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(SocketControlMessager)
+			return ok
+		})
+		rv, ok := casted.(SocketControlMessager)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketControlMessager")
+		}
+		_socketControlMessage = rv
+	}
+
+	return _socketControlMessage
 }

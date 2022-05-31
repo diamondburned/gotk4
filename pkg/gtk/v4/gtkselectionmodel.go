@@ -15,15 +15,15 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GtkBitset* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(GtkSelectionModel*, guint, guint);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_is_selected(GtkSelectionModel*, guint);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_all(GtkSelectionModel*);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_item(GtkSelectionModel*, guint, gboolean);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_range(GtkSelectionModel*, guint, guint, gboolean);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_set_selection(GtkSelectionModel*, GtkBitset*, GtkBitset*);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_all(GtkSelectionModel*);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_item(GtkSelectionModel*, guint);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_range(GtkSelectionModel*, guint, guint);
+// extern GtkBitset* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(void*, guint, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_is_selected(void*, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_all(void*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_item(void*, guint, gboolean);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_range(void*, guint, guint, gboolean);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_set_selection(void*, void*, void*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_all(void*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_item(void*, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_range(void*, guint, guint);
 // extern void _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(gpointer, guint, guint, guintptr);
 import "C"
 
@@ -280,7 +280,7 @@ func ifaceInitSelectionModeller(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_get_selection_in_range
-func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret *C.GtkBitset) {
+func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.void, arg1 C.guint, arg2 C.guint) (cret *C.GtkBitset) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -298,7 +298,7 @@ func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.GtkSelec
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_is_selected
-func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.void, arg1 C.guint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -316,7 +316,7 @@ func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.GtkSelectionModel, 
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_select_all
-func _gotk4_gtk4_SelectionModelInterface_select_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_select_all(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -330,7 +330,7 @@ func _gotk4_gtk4_SelectionModelInterface_select_all(arg0 *C.GtkSelectionModel) (
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_select_item
-func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.gboolean) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.void, arg1 C.guint, arg2 C.gboolean) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -352,7 +352,7 @@ func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.GtkSelectionModel, 
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_select_range
-func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint, arg3 C.gboolean) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.void, arg1 C.guint, arg2 C.guint, arg3 C.gboolean) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -376,7 +376,7 @@ func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.GtkSelectionModel,
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_set_selection
-func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.GtkSelectionModel, arg1 *C.GtkBitset, arg2 *C.GtkBitset) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -410,7 +410,7 @@ func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.GtkSelectionModel
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_unselect_all
-func _gotk4_gtk4_SelectionModelInterface_unselect_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_unselect_all(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -424,7 +424,7 @@ func _gotk4_gtk4_SelectionModelInterface_unselect_all(arg0 *C.GtkSelectionModel)
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_unselect_item
-func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.void, arg1 C.guint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -442,7 +442,7 @@ func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.GtkSelectionModel
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_unselect_range
-func _gotk4_gtk4_SelectionModelInterface_unselect_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret C.gboolean) {
+func _gotk4_gtk4_SelectionModelInterface_unselect_range(arg0 *C.void, arg1 C.guint, arg2 C.guint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -519,12 +519,13 @@ func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uin
 //      modified.
 //
 func (model *SelectionModel) Selection() *Bitset {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(**SelectionModel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -560,7 +561,7 @@ func (model *SelectionModel) Selection() *Bitset {
 //      with all other values being undefined. The bitset must not be modified.
 //
 func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -569,8 +570,10 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -602,14 +605,16 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 //    - ok: TRUE if the item is selected.
 //
 func (model *SelectionModel) IsSelected(position uint32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -633,12 +638,13 @@ func (model *SelectionModel) IsSelected(position uint32) bool {
 //      This does not mean that all items are now selected.
 //
 func (model *SelectionModel) SelectAll() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(**SelectionModel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -666,7 +672,7 @@ func (model *SelectionModel) SelectAll() bool {
 //      This does not mean the item was selected.
 //
 func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _arg2 C.gboolean // out
@@ -677,8 +683,10 @@ func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool
 	if unselectRest {
 		_arg2 = C.TRUE
 	}
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -709,7 +717,7 @@ func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool
 //      This does not mean the range was selected.
 //
 func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest bool) bool {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _arg2 C.guint    // out
@@ -722,9 +730,11 @@ func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest b
 	if unselectRest {
 		_arg3 = C.TRUE
 	}
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -753,7 +763,7 @@ func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest b
 //    - nItems: number of changed items.
 //
 func (model *SelectionModel) SelectionChanged(position, nItems uint32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -761,8 +771,10 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -812,7 +824,7 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint32) {
 //      This does not mean that all items were updated according to the inputs.
 //
 func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 *C.void    // out
@@ -821,8 +833,10 @@ func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(selected)))
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(mask)))
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(**Bitset)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -847,12 +861,13 @@ func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 //      This does not mean that all items are now unselected.
 //
 func (model *SelectionModel) UnselectAll() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(**SelectionModel)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -879,14 +894,16 @@ func (model *SelectionModel) UnselectAll() bool {
 //      This does not mean the item was unselected.
 //
 func (model *SelectionModel) UnselectItem(position uint32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -915,7 +932,7 @@ func (model *SelectionModel) UnselectItem(position uint32) bool {
 //      This does not mean the range was unselected.
 //
 func (model *SelectionModel) UnselectRange(position, nItems uint32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
 	var _arg2 C.guint    // out
@@ -924,8 +941,10 @@ func (model *SelectionModel) UnselectRange(position, nItems uint32) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
-	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

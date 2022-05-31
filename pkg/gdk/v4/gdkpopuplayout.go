@@ -175,12 +175,13 @@ func marshalPopupLayout(p uintptr) (interface{}, error) {
 //    - popupLayout: copy of layout.
 //
 func (layout *PopupLayout) Copy() *PopupLayout {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-	*(**PopupLayout)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -211,14 +212,16 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 //      FALSE.
 //
 func (layout *PopupLayout) Equal(other *PopupLayout) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-	*(**PopupLayout)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -241,12 +244,13 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 //    - rectangle: anchor rectangle.
 //
 func (layout *PopupLayout) AnchorRect() *Rectangle {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-	*(**PopupLayout)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -259,6 +263,78 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 	return _rectangle
 }
 
+// Offset retrieves the offset for the anchor rectangle.
+//
+// The function returns the following values:
+//
+//    - dx: return location for the delta X coordinate.
+//    - dy: return location for the delta Y coordinate.
+//
+func (layout *PopupLayout) Offset() (dx int32, dy int32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(layout)
+
+	var _dx int32 // out
+	var _dy int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_dx = *(*int32)(unsafe.Pointer(_out0))
+	_dy = *(*int32)(unsafe.Pointer(_out1))
+
+	return _dx, _dy
+}
+
+// ShadowWidth obtains the shadow widths of this layout.
+//
+// The function returns the following values:
+//
+//    - left: return location for the left shadow width.
+//    - right: return location for the right shadow width.
+//    - top: return location for the top shadow width.
+//    - bottom: return location for the bottom shadow width.
+//
+func (layout *PopupLayout) ShadowWidth() (left int32, right int32, top int32, bottom int32) {
+	var _args [1]girepository.Argument
+	var _outs [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _out2 *C.void // in
+	var _out3 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(layout)
+
+	var _left int32   // out
+	var _right int32  // out
+	var _top int32    // out
+	var _bottom int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+
+	_left = *(*int32)(unsafe.Pointer(_out0))
+	_right = *(*int32)(unsafe.Pointer(_out1))
+	_top = *(*int32)(unsafe.Pointer(_out2))
+	_bottom = *(*int32)(unsafe.Pointer(_out3))
+
+	return _left, _right, _top, _bottom
+}
+
 // SetAnchorRect: set the anchor rectangle.
 //
 // The function takes the following parameters:
@@ -266,13 +342,15 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 //    - anchorRect: new anchor rectangle.
 //
 func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(anchorRect)))
-	*(**PopupLayout)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(anchorRect)
@@ -286,7 +364,7 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 //    - dy: y delta to offset the anchor rectangle with.
 //
 func (layout *PopupLayout) SetOffset(dx int32, dy int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -294,8 +372,10 @@ func (layout *PopupLayout) SetOffset(dx int32, dy int32) {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = C.int(dx)
 	_arg2 = C.int(dy)
-	*(**PopupLayout)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(dx)
@@ -316,7 +396,7 @@ func (layout *PopupLayout) SetOffset(dx int32, dy int32) {
 //    - bottom: height of the bottom part of the shadow.
 //
 func (layout *PopupLayout) SetShadowWidth(left int32, right int32, top int32, bottom int32) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -328,10 +408,12 @@ func (layout *PopupLayout) SetShadowWidth(left int32, right int32, top int32, bo
 	_arg2 = C.int(right)
 	_arg3 = C.int(top)
 	_arg4 = C.int(bottom)
-	*(**PopupLayout)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(left)

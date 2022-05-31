@@ -15,9 +15,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectAccept(gpointer, GdkDrop*, guintptr);
-// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, GdkDrop*, guintptr);
+// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectAccept(gpointer, void*, guintptr);
+// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, void*, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkdroptargetasync.go.
@@ -95,7 +95,7 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_DropTargetAsync_ConnectAccept
-func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(drop gdk.Dropper) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -156,7 +156,7 @@ func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) c
 }
 
 //export _gotk4_gtk4_DropTargetAsync_ConnectDragLeave
-func _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) {
+func _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(drop gdk.Dropper)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -200,7 +200,7 @@ func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) coreglib
 }
 
 //export _gotk4_gtk4_DropTargetAsync_ConnectDrop
-func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.void, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
 	var f func(drop gdk.Dropper, x, y float64) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -272,14 +272,15 @@ func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) 
 //    - contentFormats (optional): supported data formats.
 //
 func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**DropTargetAsync)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("get_formats", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("get_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -309,15 +310,17 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 //    - drop of an ongoing drag operation.
 //
 func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drop).Native()))
-	*(**DropTargetAsync)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("reject_drop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("reject_drop", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drop)
@@ -330,7 +333,7 @@ func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 //    - formats (optional): supported data formats or NULL for any format.
 //
 func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -338,9 +341,11 @@ func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	if formats != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 	}
-	*(**DropTargetAsync)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("set_formats", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("set_formats", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(formats)

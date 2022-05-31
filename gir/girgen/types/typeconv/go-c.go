@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
@@ -494,7 +495,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	}
 
 	switch {
-	case value.Resolved.IsBuiltin("cgo.Handle"):
+	case value.Resolved.IsBuiltin("cgo.Handle", "unsafe.Pointer", "uintptr"):
 		value.header.Import("runtime/cgo")
 		value.header.Import("unsafe")
 		// unsafe.Pointer is needed for pointer to pointers, so we're playing it
@@ -668,98 +669,96 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 
 	case *gir.Callback:
-		// TODO: figure this stuff out. We may need to figure uot how to use
-		// GClosure
+		exportedName := file.CallableExportedName(
+			value.Resolved.Extern.NamespaceFindResult,
+			&v.CallableAttrs,
+		)
 
-		//exportedName := file.CallableExportedName(
-		//	value.Resolved.Extern.NamespaceFindResult,
-		//	&v.CallableAttrs,
-		//)
+		// Callbacks must have the closure attribute to store the closure
+		// pointer.
+		if value.Closure == nil {
+			conv.Logln(logger.Debug, exportedName, "missing closure")
+			// Maybe we can use this function with a NULL argument if the
+			// callback is nullable.
+			return value.Nullable
+		}
 
-		//// Callbacks must have the closure attribute to store the closure
-		//// pointer.
-		//if value.Closure == nil {
-		//	conv.Logln(logger.Debug, exportedName, "missing closure")
-		//	// Maybe we can use this function with a NULL argument if the
-		//	// callback is nullable.
-		//	return value.Nullable
-		//}
+		closure := conv.param(*value.Closure)
+		if closure == nil || closure.Type == nil {
+			value.Logln(logger.Debug, exportedName, "closure", *value.Closure, "not found")
+			return value.Nullable
+		}
 
-		//closure := conv.param(*value.Closure)
-		//if closure == nil || closure.Type == nil {
-		//	value.Logln(logger.Debug, exportedName, "closure", *value.Closure, "not found")
-		//	return value.Nullable
-		//}
+		value.header.ImportCore("gbox")
+		types.AddCallbackHeader(types.OverrideNamespace(conv.fgen, value.Resolved.Extern.NamespaceFindResult), &value.header, v)
+		// types.AddCallbackHeader(conv.fgen, &value.header, value.Resolved.Extern.NamespaceFindResult, v)
 
-		//value.header.ImportCore("gbox")
-		//types.AddCallbackHeader(&value.header, value.Resolved.Extern.NamespaceFindResult, v)
+		// Return the constant function here. The function will dynamically load
+		// the user_data, which will match with the "gpointer" case above.
+		//
+		// As for the pointer to byte array cast, see
+		// https://github.com/golang/go/issues/19835.
+		value.p.Linef("%s = (*[0]byte)(C.%s)", value.Out.Set, exportedName)
 
-		//// Return the constant function here. The function will dynamically load
-		//// the user_data, which will match with the "gpointer" case above.
-		////
-		//// As for the pointer to byte array cast, see
-		//// https://github.com/golang/go/issues/19835.
-		//value.p.Linef("%s = (*[0]byte)(C.%s)", value.Out.Set, exportedName)
+		scope := value.Scope
+		if scope == "" {
+			// https://wiki.gnome.org/Projects/GObjectIntrospection/Annotations
+			scope = "call"
+		}
 
-		//scope := value.Scope
-		//if scope == "" {
-		//	// https://wiki.gnome.org/Projects/GObjectIntrospection/Annotations
-		//	scope = "call"
-		//}
+		assign := "Assign"
+		if scope == "async" {
+			// AssignOnce will pop the callback once it's called.
+			assign = "AssignOnce"
+		}
 
-		//assign := "Assign"
-		//if scope == "async" {
-		//	// AssignOnce will pop the callback once it's called.
-		//	assign = "AssignOnce"
-		//}
+		userDataType := types.AnyTypeCGo(closure.AnyType)
 
-		//userDataType := types.AnyTypeCGo(closure.AnyType)
+		value.outDecl.Linef("var %s %s", closure.OutName, userDataType)
+		value.p.Linef(
+			"%s = %s(gbox.%s(%s))",
+			closure.Out.Set, userDataType, assign, value.InName,
+		)
 
-		//value.outDecl.Linef("var %s %s", closure.OutName, userDataType)
-		//value.p.Linef(
-		//	"%s = %s(gbox.%s(%s))",
-		//	closure.Out.Set, userDataType, assign, value.InName,
-		//)
+		switch scope {
+		case "call":
+			value.p.Linef("defer gbox.Delete(uintptr(%s))", closure.Out.Set)
+		case "async":
+			// Handled in AssignOnce.
+		case "forever":
+			// Retain forever.
+		case "notified":
+			if value.Destroy == nil {
+				value.Logln(logger.Debug, "scope=notified missing destroy param")
+				return false
+			}
 
-		//switch scope {
-		//case "call":
-		//	value.p.Linef("defer gbox.Delete(uintptr(%s))", closure.Out.Set)
-		//case "async":
-		//	// Handled in AssignOnce.
-		//case "forever":
-		//	// Retain forever.
-		//case "notified":
-		//	if value.Destroy == nil {
-		//		value.Logln(logger.Debug, "scope=notified missing destroy param")
-		//		return false
-		//	}
+			// Check if destroy's Resolved type is nil
+			destroy := conv.param(*value.Destroy)
+			if destroy == nil {
+				value.Logln(logger.Debug, "cannot find destroy param, allowing anyway...")
+				return true
+			}
+			if destroy.Type == nil || destroy.Type.CType != "GDestroyNotify" {
+				value.Logln(logger.Debug, "unknown destroyer type, allowing anyway...")
+				return true
+			}
 
-		//	// Check if destroy's Resolved type is nil
-		//	destroy := conv.param(*value.Destroy)
-		//	if destroy == nil {
-		//		value.Logln(logger.Debug, "cannot find destroy param, allowing anyway...")
-		//		return true
-		//	}
-		//	if destroy.Type == nil || destroy.Type.CType != "GDestroyNotify" {
-		//		value.Logln(logger.Debug, "unknown destroyer type, allowing anyway...")
-		//		return true
-		//	}
+			// Mark this as done.
+			if destroy.finalize() {
+				value.header.CallbackDelete = true
+				value.outDecl.Linef("var %s C.GDestroyNotify", destroy.OutName)
+			}
 
-		//	// Mark this as done.
-		//	if destroy.finalize() {
-		//		value.header.CallbackDelete = true
-		//		value.outDecl.Linef("var %s C.GDestroyNotify", destroy.OutName)
-		//	}
+			value.p.Linef(
+				"%s = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))",
+				destroy.OutName,
+			)
+		default:
+			return false
+		}
 
-		//	value.p.Linef(
-		//		"%s = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))",
-		//		destroy.OutName,
-		//	)
-		//default:
-		//	return false
-		//}
-
-		//return true
+		return true
 
 	case *gir.Alias:
 		typ := types.MoveTypePtr(*value.Type, v.Type)

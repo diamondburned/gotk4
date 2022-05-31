@@ -127,15 +127,16 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 //    - editableLabel: new GtkEditableLabel.
 //
 func NewEditableLabel(str string) *EditableLabel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("new_EditableLabel", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("new_EditableLabel", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -154,14 +155,15 @@ func NewEditableLabel(str string) *EditableLabel {
 //    - ok: TRUE if self is currently in editing mode.
 //
 func (self *EditableLabel) Editing() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**EditableLabel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("get_editing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("get_editing", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -177,13 +179,14 @@ func (self *EditableLabel) Editing() bool {
 
 // StartEditing switches the label into “editing mode”.
 func (self *EditableLabel) StartEditing() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**EditableLabel)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("start_editing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("start_editing", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -199,7 +202,7 @@ func (self *EditableLabel) StartEditing() {
 //    - commit: whether to set the edited text on the label.
 //
 func (self *EditableLabel) StopEditing(commit bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -207,9 +210,11 @@ func (self *EditableLabel) StopEditing(commit bool) {
 	if commit {
 		_arg1 = C.TRUE
 	}
-	*(**EditableLabel)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("stop_editing", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("stop_editing", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(commit)

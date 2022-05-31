@@ -51,14 +51,16 @@ type roundedRect struct {
 //    - ok: TRUE if the point is inside the rounded rectangle.
 //
 func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -86,14 +88,16 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 //    - ok: TRUE if the rect is fully contained inside the rounded rectangle.
 //
 func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -126,7 +130,7 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 //    - roundedRect: initialized rectangle.
 //
 func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRight *graphene.Size, bottomRight *graphene.Size, bottomLeft *graphene.Size) *RoundedRect {
-	var args [6]girepository.Argument
+	var _args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -141,11 +145,13 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(topRight)))
 	_arg4 = (*C.void)(gextras.StructNative(unsafe.Pointer(bottomRight)))
 	_arg5 = (*C.void)(gextras.StructNative(unsafe.Pointer(bottomLeft)))
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
-	*(**graphene.Rect)(unsafe.Pointer(&args[2])) = _arg2
-	*(**graphene.Size)(unsafe.Pointer(&args[3])) = _arg3
-	*(**graphene.Size)(unsafe.Pointer(&args[4])) = _arg4
-	*(**graphene.Size)(unsafe.Pointer(&args[5])) = _arg5
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
+	*(**C.void)(unsafe.Pointer(&_args[5])) = _arg5
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -177,14 +183,16 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 //    - roundedRect: initialized rectangle.
 //
 func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -211,7 +219,7 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 //    - roundedRect: initialized rectangle.
 //
 func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *RoundedRect {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.float // out
@@ -220,8 +228,10 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 	_arg2 = C.float(radius)
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
-	*(**graphene.Rect)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -248,14 +258,16 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 //    - ok: TRUE if the rect intersects with the rounded rectangle.
 //
 func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -282,12 +294,13 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 //    - ok: TRUE if the rectangle is rectilinear.
 //
 func (self *RoundedRect) IsRectilinear() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**RoundedRect)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -312,12 +325,13 @@ func (self *RoundedRect) IsRectilinear() bool {
 //    - roundedRect: normalized rectangle.
 //
 func (self *RoundedRect) Normalize() *RoundedRect {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**RoundedRect)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -344,7 +358,7 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 //    - roundedRect: offset rectangle.
 //
 func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _arg2 C.float // out
@@ -353,8 +367,10 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.float(dx)
 	_arg2 = C.float(dy)
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -390,7 +406,7 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 //    - roundedRect: resized GskRoundedRect.
 //
 func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _arg2 C.float // out
@@ -403,10 +419,12 @@ func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left
 	_arg2 = C.float(right)
 	_arg3 = C.float(bottom)
 	_arg4 = C.float(left)
-	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.float)(unsafe.Pointer(&_args[4])) = _arg4
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

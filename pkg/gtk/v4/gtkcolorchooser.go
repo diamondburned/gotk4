@@ -15,9 +15,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_ColorChooserInterface_color_activated(GtkColorChooser*, GdkRGBA*);
-// extern void _gotk4_gtk4_ColorChooserInterface_set_rgba(GtkColorChooser*, GdkRGBA*);
-// extern void _gotk4_gtk4_ColorChooser_ConnectColorActivated(gpointer, GdkRGBA*, guintptr);
+// extern void _gotk4_gtk4_ColorChooserInterface_color_activated(void*, void*);
+// extern void _gotk4_gtk4_ColorChooserInterface_get_rgba(void*, void*);
+// extern void _gotk4_gtk4_ColorChooserInterface_set_rgba(void*, void*);
+// extern void _gotk4_gtk4_ColorChooser_ConnectColorActivated(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkcolorchooser.go.
@@ -34,6 +35,13 @@ type ColorChooserOverrider interface {
 	// The function takes the following parameters:
 	//
 	ColorActivated(color *gdk.RGBA)
+	// RGBA gets the currently-selected color.
+	//
+	// The function returns the following values:
+	//
+	//    - color: GdkRGBA to fill in with the current color.
+	//
+	RGBA() *gdk.RGBA
 	// SetRGBA sets the color.
 	//
 	// The function takes the following parameters:
@@ -67,6 +75,8 @@ var (
 type ColorChooserer interface {
 	coreglib.Objector
 
+	// RGBA gets the currently-selected color.
+	RGBA() *gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
 	UseAlpha() bool
 	// SetRGBA sets the color.
@@ -85,11 +95,12 @@ var _ ColorChooserer = (*ColorChooser)(nil)
 func ifaceInitColorChooserer(gifacePtr, data C.gpointer) {
 	iface := (*C.GtkColorChooserInterface)(unsafe.Pointer(gifacePtr))
 	iface.color_activated = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_color_activated)
+	iface.get_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_get_rgba)
 	iface.set_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_set_rgba)
 }
 
 //export _gotk4_gtk4_ColorChooserInterface_color_activated
-func _gotk4_gtk4_ColorChooserInterface_color_activated(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
+func _gotk4_gtk4_ColorChooserInterface_color_activated(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ColorChooserOverrider)
 
@@ -100,8 +111,18 @@ func _gotk4_gtk4_ColorChooserInterface_color_activated(arg0 *C.GtkColorChooser, 
 	iface.ColorActivated(_color)
 }
 
+//export _gotk4_gtk4_ColorChooserInterface_get_rgba
+func _gotk4_gtk4_ColorChooserInterface_get_rgba(arg0 *C.void, arg1 *C.void) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ColorChooserOverrider)
+
+	color := iface.RGBA()
+
+	*arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+}
+
 //export _gotk4_gtk4_ColorChooserInterface_set_rgba
-func _gotk4_gtk4_ColorChooserInterface_set_rgba(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
+func _gotk4_gtk4_ColorChooserInterface_set_rgba(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ColorChooserOverrider)
 
@@ -123,7 +144,7 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_ColorChooser_ConnectColorActivated
-func _gotk4_gtk4_ColorChooser_ConnectColorActivated(arg0 C.gpointer, arg1 *C.GdkRGBA, arg2 C.guintptr) {
+func _gotk4_gtk4_ColorChooser_ConnectColorActivated(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(color *gdk.RGBA)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -152,6 +173,32 @@ func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) core
 	return coreglib.ConnectGeneratedClosure(chooser, "color-activated", false, unsafe.Pointer(C._gotk4_gtk4_ColorChooser_ConnectColorActivated), f)
 }
 
+// RGBA gets the currently-selected color.
+//
+// The function returns the following values:
+//
+//    - color: GdkRGBA to fill in with the current color.
+//
+func (chooser *ColorChooser) RGBA() *gdk.RGBA {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(chooser)
+
+	var _color *gdk.RGBA // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _color
+}
+
 // UseAlpha returns whether the color chooser shows the alpha channel.
 //
 // The function returns the following values:
@@ -159,12 +206,13 @@ func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) core
 //    - ok: TRUE if the color chooser uses the alpha channel, FALSE if not.
 //
 func (chooser *ColorChooser) UseAlpha() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**ColorChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -186,13 +234,15 @@ func (chooser *ColorChooser) UseAlpha() bool {
 //    - color: new color.
 //
 func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(**ColorChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(color)
@@ -206,7 +256,7 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 //    - useAlpha: TRUE if color chooser should use alpha channel, FALSE if not.
 //
 func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -214,7 +264,9 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	if useAlpha {
 		_arg1 = C.TRUE
 	}
-	*(**ColorChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)

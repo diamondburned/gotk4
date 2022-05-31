@@ -15,7 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_MenuToolButtonClass_show_menu(GtkMenuToolButton*);
+// extern void _gotk4_gtk3_MenuToolButtonClass_show_menu(void*);
 // extern void _gotk4_gtk3_MenuToolButton_ConnectShowMenu(gpointer, guintptr);
 import "C"
 
@@ -79,7 +79,7 @@ func classInitMenuToolButtonner(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_MenuToolButtonClass_show_menu
-func _gotk4_gtk3_MenuToolButtonClass_show_menu(arg0 *C.GtkMenuToolButton) {
+func _gotk4_gtk3_MenuToolButtonClass_show_menu(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ShowMenu() })
 
@@ -175,7 +175,7 @@ func (button *MenuToolButton) ConnectShowMenu(f func()) coreglib.SignalHandle {
 //    - menuToolButton: new MenuToolButton.
 //
 func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -187,10 +187,11 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
-	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconWidget)
@@ -218,15 +219,16 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 //    - menuToolButton: new MenuToolButton.
 //
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton_from_stock", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton_from_stock", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
@@ -245,14 +247,15 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 //    - widget associated with MenuToolButton.
 //
 func (button *MenuToolButton) Menu() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**MenuToolButton)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("get_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("get_menu", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
@@ -289,16 +292,18 @@ func (button *MenuToolButton) Menu() Widgetter {
 //    - markup text to be used as tooltip text for button’s arrow button.
 //
 func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**MenuToolButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_markup", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_markup", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(markup)
@@ -313,16 +318,18 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 //    - text to be used as tooltip text for button’s arrow button.
 //
 func (button *MenuToolButton) SetArrowTooltipText(text string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**MenuToolButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_text", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_text", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(text)
@@ -336,15 +343,17 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 //    - menu associated with MenuToolButton.
 //
 func (button *MenuToolButton) SetMenu(menu Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(**MenuToolButton)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_menu", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_menu", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(menu)

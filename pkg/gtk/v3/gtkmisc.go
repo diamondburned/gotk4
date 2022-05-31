@@ -102,6 +102,86 @@ func BaseMisc(obj Miscer) *Misc {
 	return obj.baseMisc()
 }
 
+// Alignment gets the X and Y alignment of the widget within its allocation. See
+// gtk_misc_set_alignment().
+//
+// Deprecated: Use Widget alignment and margin properties.
+//
+// The function returns the following values:
+//
+//    - xalign (optional): location to store X alignment of misc, or NULL.
+//    - yalign (optional): location to store Y alignment of misc, or NULL.
+//
+func (misc *Misc) Alignment() (xalign float32, yalign float32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Misc").InvokeMethod("get_alignment", _args[:], _outs[:])
+
+	runtime.KeepAlive(misc)
+
+	var _xalign float32 // out
+	var _yalign float32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_xalign = *(*float32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_yalign = *(*float32)(unsafe.Pointer(_out1))
+	}
+
+	return _xalign, _yalign
+}
+
+// Padding gets the padding in the X and Y directions of the widget. See
+// gtk_misc_set_padding().
+//
+// Deprecated: Use Widget alignment and margin properties.
+//
+// The function returns the following values:
+//
+//    - xpad (optional): location to store padding in the X direction, or NULL.
+//    - ypad (optional): location to store padding in the Y direction, or NULL.
+//
+func (misc *Misc) Padding() (xpad int32, ypad int32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "Misc").InvokeMethod("get_padding", _args[:], _outs[:])
+
+	runtime.KeepAlive(misc)
+
+	var _xpad int32 // out
+	var _ypad int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_xpad = *(*int32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_ypad = *(*int32)(unsafe.Pointer(_out1))
+	}
+
+	return _xpad, _ypad
+}
+
 // SetAlignment sets the alignment of the widget.
 //
 // Deprecated: Use Widget's alignment (Widget:halign and Widget:valign) and
@@ -113,7 +193,7 @@ func BaseMisc(obj Miscer) *Misc {
 //    - yalign: vertical alignment, from 0 (top) to 1 (bottom).
 //
 func (misc *Misc) SetAlignment(xalign, yalign float32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.gfloat // out
 	var _arg2 C.gfloat // out
@@ -121,10 +201,12 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 	_arg1 = C.gfloat(xalign)
 	_arg2 = C.gfloat(yalign)
-	*(**Misc)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_alignment", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_alignment", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xalign)
@@ -143,7 +225,7 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 //      pixels.
 //
 func (misc *Misc) SetPadding(xpad, ypad int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -151,10 +233,12 @@ func (misc *Misc) SetPadding(xpad, ypad int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 	_arg1 = C.gint(xpad)
 	_arg2 = C.gint(ypad)
-	*(**Misc)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_padding", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_padding", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xpad)

@@ -98,7 +98,7 @@ func NewConstraintGuide() *ConstraintGuide {
 //    - height (optional): return location for the maximum height, or NULL.
 //
 func (guide *ConstraintGuide) MaxSize(width, height *int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -110,10 +110,12 @@ func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 	if height != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(height))
 	}
-	*(**ConstraintGuide)(unsafe.Pointer(&args[1])) = _arg1
-	*(**int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_max_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_max_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -128,7 +130,7 @@ func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 //    - height (optional): return location for the minimum height, or NULL.
 //
 func (guide *ConstraintGuide) MinSize(width, height *int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -140,10 +142,12 @@ func (guide *ConstraintGuide) MinSize(width, height *int32) {
 	if height != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(height))
 	}
-	*(**ConstraintGuide)(unsafe.Pointer(&args[1])) = _arg1
-	*(**int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_min_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_min_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -157,14 +161,15 @@ func (guide *ConstraintGuide) MinSize(width, height *int32) {
 //    - utf8 (optional): name of the guide.
 //
 func (guide *ConstraintGuide) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-	*(**ConstraintGuide)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(guide)
@@ -186,7 +191,7 @@ func (guide *ConstraintGuide) Name() string {
 //    - height (optional): return location for the natural height, or NULL.
 //
 func (guide *ConstraintGuide) NatSize(width, height *int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -198,10 +203,12 @@ func (guide *ConstraintGuide) NatSize(width, height *int32) {
 	if height != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(height))
 	}
-	*(**ConstraintGuide)(unsafe.Pointer(&args[1])) = _arg1
-	*(**int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_nat_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_nat_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -219,7 +226,7 @@ func (guide *ConstraintGuide) NatSize(width, height *int32) {
 //    - height: new maximum height, or -1 to not change it.
 //
 func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -227,10 +234,12 @@ func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
-	*(**ConstraintGuide)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_max_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_max_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -248,7 +257,7 @@ func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
 //    - height: new minimum height, or -1 to not change it.
 //
 func (guide *ConstraintGuide) SetMinSize(width, height int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -256,10 +265,12 @@ func (guide *ConstraintGuide) SetMinSize(width, height int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
-	*(**ConstraintGuide)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_min_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_min_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -275,7 +286,7 @@ func (guide *ConstraintGuide) SetMinSize(width, height int32) {
 //    - name (optional) for the guide.
 //
 func (guide *ConstraintGuide) SetName(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -284,9 +295,11 @@ func (guide *ConstraintGuide) SetName(name string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**ConstraintGuide)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(name)
@@ -303,7 +316,7 @@ func (guide *ConstraintGuide) SetName(name string) {
 //    - height: new natural height, or -1 to not change it.
 //
 func (guide *ConstraintGuide) SetNatSize(width, height int32) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -311,10 +324,12 @@ func (guide *ConstraintGuide) SetNatSize(width, height int32) {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
-	*(**ConstraintGuide)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_nat_size", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_nat_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)

@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -14,7 +17,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gio2_AsyncInitableIface_init_finish(GAsyncInitable*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_AsyncInitableIface_init_finish(void*, void*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
 // glib.Type values for gasyncinitable.go.
@@ -24,18 +28,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeAsyncInitable, F: marshalAsyncInitable},
 	})
-}
-
-// AsyncInitableOverrider contains methods that are overridable.
-type AsyncInitableOverrider interface {
-	// InitFinish finishes asynchronous initialization and returns the result.
-	// See g_async_initable_init_async().
-	//
-	// The function takes the following parameters:
-	//
-	//    - res: Result.
-	//
-	InitFinish(res AsyncResulter) error
 }
 
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
@@ -151,6 +143,9 @@ var (
 type AsyncInitabler interface {
 	coreglib.Objector
 
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface.
+	InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	InitFinish(res AsyncResulter) error
 	// NewFinish finishes the async construction for the various
@@ -160,45 +155,6 @@ type AsyncInitabler interface {
 }
 
 var _ AsyncInitabler = (*AsyncInitable)(nil)
-
-func ifaceInitAsyncInitabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GAsyncInitableIface)(unsafe.Pointer(gifacePtr))
-	iface.init_finish = (*[0]byte)(C._gotk4_gio2_AsyncInitableIface_init_finish)
-}
-
-//export _gotk4_gio2_AsyncInitableIface_init_finish
-func _gotk4_gio2_AsyncInitableIface_init_finish(arg0 *C.GAsyncInitable, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(AsyncInitableOverrider)
-
-	var _res AsyncResulter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
-			return ok
-		})
-		rv, ok := casted.(AsyncResulter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	_goerr := iface.InitFinish(_res)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
-	}
-
-	return cret
-}
 
 func wrapAsyncInitable(obj *coreglib.Object) *AsyncInitable {
 	return &AsyncInitable{
@@ -210,6 +166,79 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 	return wrapAsyncInitable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// InitAsync starts asynchronous initialization of the object implementing the
+// interface. This must be done before any real use of the object after initial
+// construction. If the object also implements #GInitable you can optionally
+// call g_initable_init() instead.
+//
+// This method is intended for language bindings. If writing in C,
+// g_async_initable_new_async() should typically be used instead.
+//
+// When the initialization is finished, callback will be called. You can then
+// call g_async_initable_init_finish() to get the result of the initialization.
+//
+// Implementations may also support cancellation. If cancellable is not NULL,
+// then initialization can be cancelled by triggering the cancellable object
+// from another thread. If the operation was cancelled, the error
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL, and the
+// object doesn't support cancellable initialization, the error
+// G_IO_ERROR_NOT_SUPPORTED will be returned.
+//
+// As with #GInitable, if the object is not initialized, or initialization
+// returns with an error, then all operations on the object except
+// g_object_ref() and g_object_unref() are considered to be invalid, and have
+// undefined behaviour. They will often fail with g_critical() or g_warning(),
+// but this must not be relied on.
+//
+// Callers should not assume that a class which implements Initable can be
+// initialized multiple times; for more information, see g_initable_init(). If a
+// class explicitly supports being initialized multiple times, implementation
+// requires yielding all subsequent calls to init_async() on the results of the
+// first call.
+//
+// For classes that also support the #GInitable interface, the default
+// implementation of this method will run the g_initable_init() function in a
+// thread, so if you want to support asynchronous initialization via threads,
+// just implement the Initable interface without overriding any interface
+// methods.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - ioPriority: [I/O priority][io-priority] of the operation.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg3 C.gpointer // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+
+	runtime.KeepAlive(initable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // InitFinish finishes asynchronous initialization and returns the result. See
 // g_async_initable_init_async().
 //
@@ -218,14 +247,16 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 //    - res: Result.
 //
 func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-	*(**AsyncInitable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(res)
@@ -252,7 +283,7 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 //      g_object_unref().
 //
 func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, error) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -260,7 +291,9 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-	*(**AsyncInitable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

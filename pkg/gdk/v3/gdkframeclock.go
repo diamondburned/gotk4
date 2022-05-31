@@ -363,13 +363,14 @@ func (frameClock *FrameClock) ConnectUpdate(f func()) coreglib.SignalHandle {
 // function may be called multiple times and frames will be requested until
 // gdk_frame_clock_end_updating() is called the same number of times.
 func (frameClock *FrameClock) BeginUpdating() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(**FrameClock)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("begin_updating", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("begin_updating", _args[:], nil)
 
 	runtime.KeepAlive(frameClock)
 }
@@ -377,13 +378,14 @@ func (frameClock *FrameClock) BeginUpdating() {
 // EndUpdating stops updates for an animation. See the documentation for
 // gdk_frame_clock_begin_updating().
 func (frameClock *FrameClock) EndUpdating() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(**FrameClock)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("end_updating", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("end_updating", _args[:], nil)
 
 	runtime.KeepAlive(frameClock)
 }
@@ -397,14 +399,15 @@ func (frameClock *FrameClock) EndUpdating() {
 //      have been processed, returns NULL.
 //
 func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(**FrameClock)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_current_timings", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_current_timings", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
@@ -434,14 +437,15 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 //      last frame.
 //
 func (frameClock *FrameClock) FrameCounter() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(**FrameClock)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_frame_counter", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_frame_counter", _args[:], nil)
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
@@ -465,14 +469,15 @@ func (frameClock *FrameClock) FrameCounter() int64 {
 //      g_get_monotonic_time().
 //
 func (frameClock *FrameClock) FrameTime() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(**FrameClock)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_frame_time", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_frame_time", _args[:], nil)
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
@@ -496,14 +501,15 @@ func (frameClock *FrameClock) FrameTime() int64 {
 //      internal frame history of the FrameClock.
 //
 func (frameClock *FrameClock) HistoryStart() int64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void  // out
 	var _cret C.gint64 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(**FrameClock)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_history_start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_history_start", _args[:], nil)
 	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
@@ -513,6 +519,57 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
+}
+
+// RefreshInfo: using the frame history stored in the frame clock, finds the
+// last known presentation time and refresh interval, and assuming that
+// presentation times are separated by the refresh interval, predicts a
+// presentation time that is a multiple of the refresh interval after the last
+// presentation time, and later than base_time.
+//
+// The function takes the following parameters:
+//
+//    - baseTime: base time for determining a presentaton time.
+//
+// The function returns the following values:
+//
+//    - refreshIntervalReturn (optional): location to store the determined
+//      refresh interval, or NULL. A default refresh interval of 1/60th of a
+//      second will be stored if no history is present.
+//    - presentationTimeReturn: location to store the next candidate presentation
+//      time after the given base time. 0 will be will be stored if no history is
+//      present.
+//
+func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.gint64 // out
+	var _out0 *C.void  // in
+	var _out1 *C.void  // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg1 = C.gint64(baseTime)
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint64)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_refresh_info", _args[:], _outs[:])
+
+	runtime.KeepAlive(frameClock)
+	runtime.KeepAlive(baseTime)
+
+	var _refreshIntervalReturn int64  // out
+	var _presentationTimeReturn int64 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_refreshIntervalReturn = *(*int64)(unsafe.Pointer(_out0))
+	}
+	_presentationTimeReturn = *(*int64)(unsafe.Pointer(_out1))
+
+	return _refreshIntervalReturn, _presentationTimeReturn
 }
 
 // Timings retrieves a FrameTimings object holding timing information for the
@@ -529,16 +586,18 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 //      not available. See gdk_frame_clock_get_history_start().
 //
 func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 C.gint64 // out
 	var _cret *C.void  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 	_arg1 = C.gint64(frameCounter)
-	*(**FrameClock)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_timings", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint64)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_timings", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)

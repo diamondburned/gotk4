@@ -13,7 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for gtkcellrendereraccel.go.
@@ -89,7 +89,7 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared
-func _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+func _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(pathString string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

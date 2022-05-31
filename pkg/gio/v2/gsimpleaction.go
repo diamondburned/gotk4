@@ -33,7 +33,7 @@ import "C"
 //    - simpleAction: new Action.
 //
 func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -43,10 +43,11 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 	if parameterType != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(**glib.VariantType)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "SimpleAction").InvokeMethod("new_SimpleAction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "SimpleAction").InvokeMethod("new_SimpleAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -77,7 +78,7 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 //    - simpleAction: new Action.
 //
 func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -89,11 +90,12 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(state)))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(**glib.VariantType)(unsafe.Pointer(&args[1])) = _arg1
-	*(**glib.Variant)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "SimpleAction").InvokeMethod("new_SimpleAction_stateful", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "SimpleAction").InvokeMethod("new_SimpleAction_stateful", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -120,7 +122,7 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 //    - enabled: whether the action is enabled.
 //
 func (simple *SimpleAction) SetEnabled(enabled bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -128,9 +130,11 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 	if enabled {
 		_arg1 = C.TRUE
 	}
-	*(**SimpleAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_enabled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_enabled", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(enabled)
@@ -151,15 +155,17 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 //    - value: new #GVariant for the state.
 //
 func (simple *SimpleAction) SetState(value *glib.Variant) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**SimpleAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_state", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_state", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(value)
@@ -174,7 +180,7 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 //    - stateHint (optional) representing the state hint.
 //
 func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -182,9 +188,11 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	if stateHint != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(stateHint)))
 	}
-	*(**SimpleAction)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_state_hint", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_state_hint", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(stateHint)

@@ -13,8 +13,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_ActivatableIface_sync_action_properties(GtkActivatable*, GtkAction*);
-// extern void _gotk4_gtk3_ActivatableIface_update(GtkActivatable*, GtkAction*, gchar*);
+// extern void _gotk4_gtk3_ActivatableIface_sync_action_properties(void*, void*);
+// extern void _gotk4_gtk3_ActivatableIface_update(void*, void*, void*);
 import "C"
 
 // glib.Type values for gtkactivatable.go.
@@ -329,7 +329,7 @@ func ifaceInitActivatabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_ActivatableIface_sync_action_properties
-func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.GtkActivatable, arg1 *C.GtkAction) {
+func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActivatableOverrider)
 
@@ -343,7 +343,7 @@ func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.GtkActivatable,
 }
 
 //export _gotk4_gtk3_ActivatableIface_update
-func _gotk4_gtk3_ActivatableIface_update(arg0 *C.GtkActivatable, arg1 *C.GtkAction, arg2 *C.gchar) {
+func _gotk4_gtk3_ActivatableIface_update(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActivatableOverrider)
 
@@ -387,13 +387,15 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 //    - action to set.
 //
 func (activatable *Activatable) DoSetRelatedAction(action *Action) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
@@ -408,12 +410,13 @@ func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 //    - action: related Action if one is set.
 //
 func (activatable *Activatable) RelatedAction() *Action {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
-	*(**Activatable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -437,12 +440,13 @@ func (activatable *Activatable) RelatedAction() *Action {
 //    - ok: whether activatable uses its actions appearance.
 //
 func (activatable *Activatable) UseActionAppearance() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
-	*(**Activatable)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -469,13 +473,15 @@ func (activatable *Activatable) UseActionAppearance() bool {
 //    - action to set.
 //
 func (activatable *Activatable) SetRelatedAction(action *Action) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
@@ -496,7 +502,7 @@ func (activatable *Activatable) SetRelatedAction(action *Action) {
 //    - useAppearance: whether to use the actions appearance.
 //
 func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -504,7 +510,9 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 	if useAppearance {
 		_arg1 = C.TRUE
 	}
-	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(useAppearance)
@@ -522,7 +530,7 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 //    - action (optional): related Action or NULL.
 //
 func (activatable *Activatable) SyncActionProperties(action *Action) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -530,7 +538,9 @@ func (activatable *Activatable) SyncActionProperties(action *Action) {
 	if action != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	}
-	*(**Activatable)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)

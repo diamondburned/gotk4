@@ -66,6 +66,8 @@ type NativeSurfacer interface {
 	Renderer() gsk.Rendererer
 	// Surface returns the surface of this GtkNative.
 	Surface() gdk.Surfacer
+	// SurfaceTransform retrieves the surface transform of self.
+	SurfaceTransform() (x float64, y float64)
 	// Realize realizes a GtkNative.
 	Realize()
 	// Unrealize unrealizes a GtkNative.
@@ -108,12 +110,13 @@ func marshalNativeSurface(p uintptr) (interface{}, error) {
 //    - renderer for self.
 //
 func (self *NativeSurface) Renderer() gsk.Rendererer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**NativeSurface)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -149,12 +152,13 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 //    - surface of self.
 //
 func (self *NativeSurface) Surface() gdk.Surfacer {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**NativeSurface)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -183,15 +187,50 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 	return _surface
 }
 
+// SurfaceTransform retrieves the surface transform of self.
+//
+// This is the translation from self's surface coordinates into self's widget
+// coordinates.
+//
+// The function returns the following values:
+//
+//    - x: return location for the x coordinate.
+//    - y: return location for the y coordinate.
+//
+func (self *NativeSurface) SurfaceTransform() (x float64, y float64) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(self)
+
+	var _x float64 // out
+	var _y float64 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_x = *(*float64)(unsafe.Pointer(_out0))
+	_y = *(*float64)(unsafe.Pointer(_out1))
+
+	return _x, _y
+}
+
 // Realize realizes a GtkNative.
 //
 // This should only be used by subclasses.
 func (self *NativeSurface) Realize() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**NativeSurface)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(self)
 }
@@ -200,11 +239,12 @@ func (self *NativeSurface) Realize() {
 //
 // This should only be used by subclasses.
 func (self *NativeSurface) Unrealize() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**NativeSurface)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(self)
 }
@@ -220,14 +260,15 @@ func (self *NativeSurface) Unrealize() {
 //    - native: GtkNative that is associated with surface.
 //
 func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(*gdk.Surfacer)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "get_for_surface").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "get_for_surface").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)

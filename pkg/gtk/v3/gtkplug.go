@@ -16,7 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern void _gotk4_gtk3_PlugClass_embedded(GtkPlug*);
+// extern void _gotk4_gtk3_PlugClass_embedded(void*);
 // extern void _gotk4_gtk3_Plug_ConnectEmbedded(gpointer, guintptr);
 import "C"
 
@@ -76,7 +76,7 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_PlugClass_embedded
-func _gotk4_gtk3_PlugClass_embedded(arg0 *C.GtkPlug) {
+func _gotk4_gtk3_PlugClass_embedded(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Embedded() })
 
@@ -138,14 +138,15 @@ func (plug *Plug) ConnectEmbedded(f func()) coreglib.SignalHandle {
 //    - ok: TRUE if the plug is embedded in a socket.
 //
 func (plug *Plug) Embedded() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-	*(**Plug)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_embedded", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_embedded", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
@@ -166,14 +167,15 @@ func (plug *Plug) Embedded() bool {
 //    - window (optional) of the socket, or NULL.
 //
 func (plug *Plug) SocketWindow() gdk.Windower {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-	*(**Plug)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_socket_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_socket_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)

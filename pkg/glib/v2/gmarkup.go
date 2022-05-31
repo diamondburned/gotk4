@@ -5,6 +5,7 @@ package glib
 import (
 	"fmt"
 	"runtime"
+	"runtime/cgo"
 	"strings"
 	"unsafe"
 
@@ -352,6 +353,34 @@ func (context *MarkupParseContext) Position() (lineNumber int32, charNumber int3
 	return _lineNumber, _charNumber
 }
 
+// UserData returns the user_data associated with context.
+//
+// This will either be the user_data that was provided to
+// g_markup_parse_context_new() or to the most recent call of
+// g_markup_parse_context_push().
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): provided user_data. The returned data belongs to the
+//      markup context and will be freed when g_markup_parse_context_free() is
+//      called.
+//
+func (context *MarkupParseContext) UserData() unsafe.Pointer {
+	var _arg0 *C.GMarkupParseContext // out
+	var _cret C.gpointer             // in
+
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+
+	_cret = C.g_markup_parse_context_get_user_data(_arg0)
+	runtime.KeepAlive(context)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
 // Parse: feed some data to the ParseContext.
 //
 // The data need not be valid UTF-8; an error will be signaled if it's invalid.
@@ -390,6 +419,103 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 	}
 
 	return _goerr
+}
+
+// Pop completes the process of a temporary sub-parser redirection.
+//
+// This function exists to collect the user_data allocated by a matching call to
+// g_markup_parse_context_push(). It must be called in the end_element handler
+// corresponding to the start_element handler during which
+// g_markup_parse_context_push() was called. You must not call this function
+// from the error callback -- the user_data is provided directly to the callback
+// in that case.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+//
+// The function returns the following values:
+//
+//    - gpointer (optional): user data passed to g_markup_parse_context_push().
+//
+func (context *MarkupParseContext) Pop() unsafe.Pointer {
+	var _arg0 *C.GMarkupParseContext // out
+	var _cret C.gpointer             // in
+
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+
+	_cret = C.g_markup_parse_context_pop(_arg0)
+	runtime.KeepAlive(context)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// Push: temporarily redirects markup data to a sub-parser.
+//
+// This function may only be called from the start_element handler of a Parser.
+// It must be matched with a corresponding call to g_markup_parse_context_pop()
+// in the matching end_element handler (except in the case that the parser
+// aborts due to an error).
+//
+// All tags, text and other data between the matching tags is redirected to the
+// subparser given by parser. user_data is used as the user_data for that
+// parser. user_data is also passed to the error callback in the event that an
+// error occurs. This includes errors that occur in subparsers of the subparser.
+//
+// The end tag matching the start tag for which this call was made is handled by
+// the previous parser (which is given its own user_data) which is why
+// g_markup_parse_context_pop() is provided to allow "one last access" to the
+// user_data provided to this function. In the case of error, the user_data
+// provided here is passed directly to the error callback of the subparser and
+// g_markup_parse_context_pop() should not be called. In either case, if
+// user_data was allocated then it ought to be freed from both of these
+// locations.
+//
+// This function is not intended to be directly called by users interested in
+// invoking subparsers. Instead, it is intended to be used by the subparsers
+// themselves to implement a higher-level interface.
+//
+// As an example, see the following implementation of a simple parser that
+// counts the number of tags encountered.
+//
+//    static void start_element (context, element_name, ...)
+//    {
+//      if (strcmp (element_name, "count-these") == 0)
+//        start_counting (context);
+//
+//      // else, handle other tags...
+//    }
+//
+//    static void end_element (context, element_name, ...)
+//    {
+//      if (strcmp (element_name, "count-these") == 0)
+//        g_print ("Counted d tags\n", end_counting (context));
+//
+//      // else, handle other tags...
+//    }.
+//
+// The function takes the following parameters:
+//
+//    - parser: Parser.
+//    - userData (optional): user data to pass to Parser functions.
+//
+func (context *MarkupParseContext) Push(parser *MarkupParser, userData unsafe.Pointer) {
+	var _arg0 *C.GMarkupParseContext // out
+	var _arg1 *C.GMarkupParser       // out
+	var _arg2 C.gpointer             // out
+
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+	_arg1 = (*C.GMarkupParser)(gextras.StructNative(unsafe.Pointer(parser)))
+	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
+
+	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(parser)
+	runtime.KeepAlive(userData)
 }
 
 // MarkupParser: any of the fields in Parser can be NULL, in which case they

@@ -14,10 +14,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(GtkLayoutManager*, GtkWidget*, GtkWidget*);
-// extern void _gotk4_gtk4_LayoutManagerClass_allocate(GtkLayoutManager*, GtkWidget*, int, int, int);
-// extern void _gotk4_gtk4_LayoutManagerClass_root(GtkLayoutManager*);
-// extern void _gotk4_gtk4_LayoutManagerClass_unroot(GtkLayoutManager*);
+// extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(void*, void*, void*);
+// extern void _gotk4_gtk4_LayoutManagerClass_allocate(void*, void*, int, int, int);
+// extern void _gotk4_gtk4_LayoutManagerClass_root(void*);
+// extern void _gotk4_gtk4_LayoutManagerClass_unroot(void*);
 import "C"
 
 // glib.Type values for gtklayoutmanager.go.
@@ -160,7 +160,7 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_LayoutManagerClass_allocate
-func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.int, arg3 C.int, arg4 C.int) {
+func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Allocate(widget Widgetter, width, height, baseline int32)
@@ -196,7 +196,7 @@ func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.G
 }
 
 //export _gotk4_gtk4_LayoutManagerClass_create_layout_child
-func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 *C.GtkWidget) (cret *C.GtkLayoutChild) {
+func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.GtkLayoutChild) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
@@ -249,7 +249,7 @@ func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.GtkLayoutManager
 }
 
 //export _gotk4_gtk4_LayoutManagerClass_root
-func _gotk4_gtk4_LayoutManagerClass_root(arg0 *C.GtkLayoutManager) {
+func _gotk4_gtk4_LayoutManagerClass_root(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Root() })
 
@@ -257,7 +257,7 @@ func _gotk4_gtk4_LayoutManagerClass_root(arg0 *C.GtkLayoutManager) {
 }
 
 //export _gotk4_gtk4_LayoutManagerClass_unroot
-func _gotk4_gtk4_LayoutManagerClass_unroot(arg0 *C.GtkLayoutManager) {
+func _gotk4_gtk4_LayoutManagerClass_unroot(arg0 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unroot() })
 
@@ -295,7 +295,7 @@ func BaseLayoutManager(obj LayoutManagerer) *LayoutManager {
 //    - baseline position of the widget, or -1.
 //
 func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline int32) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 C.int   // out
@@ -307,12 +307,14 @@ func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline
 	_arg2 = C.int(width)
 	_arg3 = C.int(height)
 	_arg4 = C.int(baseline)
-	*(**LayoutManager)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
-	girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("allocate", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("allocate", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(widget)
@@ -339,16 +341,18 @@ func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline
 //    - layoutChild: GtkLayoutChild.
 //
 func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**LayoutManager)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("get_layout_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("get_layout_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -384,14 +388,15 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 //    - widget (optional): GtkWidget.
 //
 func (manager *LayoutManager) Widget() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**LayoutManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("get_widget", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
@@ -423,13 +428,14 @@ func (manager *LayoutManager) Widget() Widgetter {
 // This function should be called by subclasses of GtkLayoutManager in response
 // to changes to their layout management policies.
 func (manager *LayoutManager) LayoutChanged() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**LayoutManager)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("layout_changed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("layout_changed", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 }

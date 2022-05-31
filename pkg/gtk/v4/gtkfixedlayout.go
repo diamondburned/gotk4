@@ -152,14 +152,15 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 //    - transform (optional): GskTransform.
 //
 func (child *FixedLayoutChild) Transform() *gsk.Transform {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**FixedLayoutChild)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("get_transform", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("get_transform", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
@@ -187,15 +188,17 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 //    - transform: GskTransform.
 //
 func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
-	*(**FixedLayoutChild)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("set_transform", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("set_transform", _args[:], nil)
 
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(transform)

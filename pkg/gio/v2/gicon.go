@@ -4,6 +4,7 @@ package gio
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -16,9 +17,9 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GVariant* _gotk4_gio2_IconIface_serialize(GIcon*);
-// extern gboolean _gotk4_gio2_IconIface_equal(GIcon*, GIcon*);
-// extern guint _gotk4_gio2_IconIface_hash(GIcon*);
+// extern GVariant* _gotk4_gio2_IconIface_serialize(void*);
+// extern gboolean _gotk4_gio2_IconIface_equal(void*, void*);
+// extern guint _gotk4_gio2_IconIface_hash(void*);
 import "C"
 
 // glib.Type values for gicon.go.
@@ -127,7 +128,7 @@ func ifaceInitIconner(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_IconIface_equal
-func _gotk4_gio2_IconIface_equal(arg0 *C.GIcon, arg1 *C.GIcon) (cret C.gboolean) {
+func _gotk4_gio2_IconIface_equal(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
@@ -160,7 +161,7 @@ func _gotk4_gio2_IconIface_equal(arg0 *C.GIcon, arg1 *C.GIcon) (cret C.gboolean)
 }
 
 //export _gotk4_gio2_IconIface_hash
-func _gotk4_gio2_IconIface_hash(arg0 *C.GIcon) (cret C.guint) {
+func _gotk4_gio2_IconIface_hash(arg0 *C.void) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
@@ -172,7 +173,7 @@ func _gotk4_gio2_IconIface_hash(arg0 *C.GIcon) (cret C.guint) {
 }
 
 //export _gotk4_gio2_IconIface_serialize
-func _gotk4_gio2_IconIface_serialize(arg0 *C.GIcon) (cret *C.GVariant) {
+func _gotk4_gio2_IconIface_serialize(arg0 *C.void) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
@@ -206,7 +207,7 @@ func marshalIcon(p uintptr) (interface{}, error) {
 //    - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
 //
 func (icon1 *Icon) Equal(icon2 Iconner) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -217,7 +218,9 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	if icon2 != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon2).Native()))
 	}
-	*(**Icon)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -245,12 +248,13 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 //      not be floating.
 //
 func (icon *Icon) Serialize() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	*(**Icon)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -293,12 +297,13 @@ func (icon *Icon) Serialize() *glib.Variant {
 //      can't be serialized. Use g_free() to free.
 //
 func (icon *Icon) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	*(**Icon)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -326,14 +331,15 @@ func (icon *Icon) String() string {
 //    - icon (optional) or NULL when deserialization fails.
 //
 func IconDeserialize(value *glib.Variant) *Icon {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**glib.Variant)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "deserialize").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "deserialize").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
@@ -345,6 +351,38 @@ func IconDeserialize(value *glib.Variant) *Icon {
 	}
 
 	return _icon
+}
+
+// IconHash gets a hash for an icon.
+//
+// The function takes the following parameters:
+//
+//    - icon to an icon object.
+//
+// The function returns the following values:
+//
+//    - guint containing a hash for the icon, suitable for use in a Table or
+//      similar data structure.
+//
+func IconHash(icon unsafe.Pointer) uint32 {
+	var _args [1]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _cret C.guint    // in
+
+	_arg0 = (C.gpointer)(unsafe.Pointer(icon))
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "hash").Invoke(_args[:], nil)
+	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(icon)
+
+	var _guint uint32 // out
+
+	_guint = uint32(_cret)
+
+	return _guint
 }
 
 // NewIconForString: generate a #GIcon instance from str. This function can fail
@@ -363,16 +401,17 @@ func IconDeserialize(value *glib.Variant) *Icon {
 //    - icon: object implementing the #GIcon interface or NULL if error is set.
 //
 func NewIconForString(str string) (*Icon, error) {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "new_for_string").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "new_for_string").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)

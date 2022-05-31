@@ -220,14 +220,15 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 //      owned by GTK and should not be modified or freed.
 //
 func (self *FileChooserNative) AcceptLabel() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**FileChooserNative)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("get_accept_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("get_accept_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -249,14 +250,15 @@ func (self *FileChooserNative) AcceptLabel() string {
 //      owned by GTK and should not be modified or freed.
 //
 func (self *FileChooserNative) CancelLabel() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**FileChooserNative)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("get_cancel_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("get_cancel_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -284,7 +286,7 @@ func (self *FileChooserNative) CancelLabel() string {
 //    - acceptLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -293,9 +295,11 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(acceptLabel)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**FileChooserNative)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("set_accept_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("set_accept_label", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(acceptLabel)
@@ -315,7 +319,7 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 //    - cancelLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -324,9 +328,11 @@ func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(cancelLabel)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**FileChooserNative)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("set_cancel_label", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("set_cancel_label", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(cancelLabel)

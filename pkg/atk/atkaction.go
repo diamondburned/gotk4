@@ -13,13 +13,13 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_atk1_ActionIface_do_action(AtkAction*, gint);
-// extern gboolean _gotk4_atk1_ActionIface_set_description(AtkAction*, gint, gchar*);
-// extern gchar* _gotk4_atk1_ActionIface_get_description(AtkAction*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_keybinding(AtkAction*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_localized_name(AtkAction*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_name(AtkAction*, gint);
-// extern gint _gotk4_atk1_ActionIface_get_n_actions(AtkAction*);
+// extern gboolean _gotk4_atk1_ActionIface_do_action(void*, gint);
+// extern gboolean _gotk4_atk1_ActionIface_set_description(void*, gint, void*);
+// extern gchar* _gotk4_atk1_ActionIface_get_description(void*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_keybinding(void*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_localized_name(void*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_name(void*, gint);
+// extern gint _gotk4_atk1_ActionIface_get_n_actions(void*);
 import "C"
 
 // glib.Type values for atkaction.go.
@@ -215,7 +215,7 @@ func ifaceInitActioner(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_ActionIface_do_action
-func _gotk4_atk1_ActionIface_do_action(arg0 *C.AtkAction, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_ActionIface_do_action(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -233,7 +233,7 @@ func _gotk4_atk1_ActionIface_do_action(arg0 *C.AtkAction, arg1 C.gint) (cret C.g
 }
 
 //export _gotk4_atk1_ActionIface_get_description
-func _gotk4_atk1_ActionIface_get_description(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -252,7 +252,7 @@ func _gotk4_atk1_ActionIface_get_description(arg0 *C.AtkAction, arg1 C.gint) (cr
 }
 
 //export _gotk4_atk1_ActionIface_get_keybinding
-func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -271,7 +271,7 @@ func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.AtkAction, arg1 C.gint) (cre
 }
 
 //export _gotk4_atk1_ActionIface_get_localized_name
-func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -290,7 +290,7 @@ func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.AtkAction, arg1 C.gint) 
 }
 
 //export _gotk4_atk1_ActionIface_get_n_actions
-func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.AtkAction) (cret C.gint) {
+func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -302,7 +302,7 @@ func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.AtkAction) (cret C.gint) {
 }
 
 //export _gotk4_atk1_ActionIface_get_name
-func _gotk4_atk1_ActionIface_get_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_name(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -321,7 +321,7 @@ func _gotk4_atk1_ActionIface_get_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.g
 }
 
 //export _gotk4_atk1_ActionIface_set_description
-func _gotk4_atk1_ActionIface_set_description(arg0 *C.AtkAction, arg1 C.gint, arg2 *C.gchar) (cret C.gboolean) {
+func _gotk4_atk1_ActionIface_set_description(arg0 *C.void, arg1 C.gint, arg2 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -361,14 +361,16 @@ func marshalAction(p uintptr) (interface{}, error) {
 //    - ok: TRUE if success, FALSE otherwise.
 //
 func (action *Action) DoAction(i int32) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -396,14 +398,16 @@ func (action *Action) DoAction(i int32) bool {
 //      this interface.
 //
 func (action *Action) Description(i int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -454,14 +458,16 @@ func (action *Action) Description(i int32) string {
 //      NULL if there is no keybinding for this action.
 //
 func (action *Action) Keybinding(i int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -490,14 +496,16 @@ func (action *Action) Keybinding(i int32) string {
 //      interface.
 //
 func (action *Action) LocalizedName(i int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -523,12 +531,13 @@ func (action *Action) LocalizedName(i int32) string {
 //      interface.
 //
 func (action *Action) NActions() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(**Action)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -564,14 +573,16 @@ func (action *Action) NActions() int32 {
 //      interface.
 //
 func (action *Action) Name(i int32) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	_arg1 = C.gint(i)
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -599,7 +610,7 @@ func (action *Action) Name(i int32) string {
 //    - ok: gboolean representing if the description was successfully set;.
 //
 func (action *Action) SetDescription(i int32, desc string) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 *C.void    // out
@@ -609,8 +620,10 @@ func (action *Action) SetDescription(i int32, desc string) bool {
 	_arg1 = C.gint(i)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(desc)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**Action)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

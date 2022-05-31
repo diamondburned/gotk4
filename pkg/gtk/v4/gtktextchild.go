@@ -94,14 +94,15 @@ func NewTextChildAnchor() *TextChildAnchor {
 //    - ok: TRUE if the child anchor has been deleted from its buffer.
 //
 func (anchor *TextChildAnchor) Deleted() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-	*(**TextChildAnchor)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_deleted", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_deleted", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(anchor)
@@ -113,4 +114,59 @@ func (anchor *TextChildAnchor) Deleted() bool {
 	}
 
 	return _ok
+}
+
+// Widgets gets a list of all widgets anchored at this child anchor.
+//
+// The order in which the widgets are returned is not defined.
+//
+// The function returns the following values:
+//
+//    - widgets: an array of widgets anchored at anchor.
+//
+func (anchor *TextChildAnchor) Widgets() []Widgetter {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void       // out
+	var _cret **C.GtkWidget // in
+	var _out0 *C.void       // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_widgets", _args[:], _outs[:])
+	_cret = *(***C.GtkWidget)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(anchor)
+
+	var _widgets []Widgetter // out
+	_out0 = *(***C.GtkWidget)(unsafe.Pointer(&_outs[0]))
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice((**C.void)(_cret), _out0)
+		_widgets = make([]Widgetter, _out0)
+		for i := 0; i < int(_out0); i++ {
+			{
+				objptr := unsafe.Pointer(src[i])
+				if objptr == nil {
+					panic("object of type gtk.Widgetter is nil")
+				}
+
+				object := coreglib.Take(objptr)
+				casted := object.WalkCast(func(obj coreglib.Objector) bool {
+					_, ok := obj.(Widgetter)
+					return ok
+				})
+				rv, ok := casted.(Widgetter)
+				if !ok {
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+				}
+				_widgets[i] = rv
+			}
+		}
+	}
+
+	return _widgets
 }

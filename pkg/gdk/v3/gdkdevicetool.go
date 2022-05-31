@@ -91,14 +91,15 @@ func (d DeviceToolType) String() string {
 //    - guint64: hardware identificator of this tool.
 //
 func (tool *DeviceTool) HardwareID() uint64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint64 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
-	*(**DeviceTool)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_hardware_id", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_hardware_id", _args[:], nil)
 	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tool)
@@ -118,14 +119,15 @@ func (tool *DeviceTool) HardwareID() uint64 {
 //    - guint64: serial ID for this tool.
 //
 func (tool *DeviceTool) Serial() uint64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint64 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
-	*(**DeviceTool)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_serial", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_serial", _args[:], nil)
 	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tool)

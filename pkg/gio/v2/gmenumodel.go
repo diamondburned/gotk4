@@ -16,16 +16,16 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern GMenuAttributeIter* _gotk4_gio2_MenuModelClass_iterate_item_attributes(GMenuModel*, gint);
-// extern GMenuLinkIter* _gotk4_gio2_MenuModelClass_iterate_item_links(GMenuModel*, gint);
-// extern GMenuModel* _gotk4_gio2_MenuModelClass_get_item_link(GMenuModel*, gint, gchar*);
-// extern GVariant* _gotk4_gio2_MenuModelClass_get_item_attribute_value(GMenuModel*, gint, gchar*, GVariantType*);
-// extern gboolean _gotk4_gio2_MenuAttributeIterClass_get_next(GMenuAttributeIter*, gchar**, GVariant**);
-// extern gboolean _gotk4_gio2_MenuLinkIterClass_get_next(GMenuLinkIter*, gchar**, GMenuModel**);
-// extern gboolean _gotk4_gio2_MenuModelClass_is_mutable(GMenuModel*);
-// extern gint _gotk4_gio2_MenuModelClass_get_n_items(GMenuModel*);
-// extern void _gotk4_gio2_MenuModelClass_get_item_attributes(GMenuModel*, gint, GHashTable**);
-// extern void _gotk4_gio2_MenuModelClass_get_item_links(GMenuModel*, gint, GHashTable**);
+// extern GMenuAttributeIter* _gotk4_gio2_MenuModelClass_iterate_item_attributes(void*, gint);
+// extern GMenuLinkIter* _gotk4_gio2_MenuModelClass_iterate_item_links(void*, gint);
+// extern GMenuModel* _gotk4_gio2_MenuModelClass_get_item_link(void*, gint, void*);
+// extern GVariant* _gotk4_gio2_MenuModelClass_get_item_attribute_value(void*, gint, void*, void*);
+// extern gboolean _gotk4_gio2_MenuAttributeIterClass_get_next(void*, void**, void**);
+// extern gboolean _gotk4_gio2_MenuLinkIterClass_get_next(void*, void**, void**);
+// extern gboolean _gotk4_gio2_MenuModelClass_is_mutable(void*);
+// extern gint _gotk4_gio2_MenuModelClass_get_n_items(void*);
+// extern void _gotk4_gio2_MenuModelClass_get_item_attributes(void*, gint, void**);
+// extern void _gotk4_gio2_MenuModelClass_get_item_links(void*, gint, void**);
 // extern void _gotk4_gio2_MenuModel_ConnectItemsChanged(gpointer, gint, gint, gint, guintptr);
 import "C"
 
@@ -154,7 +154,7 @@ func classInitMenuAttributeIterer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_MenuAttributeIterClass_get_next
-func _gotk4_gio2_MenuAttributeIterClass_get_next(arg0 *C.GMenuAttributeIter, arg1 **C.gchar, arg2 **C.GVariant) (cret C.gboolean) {
+func _gotk4_gio2_MenuAttributeIterClass_get_next(arg0 *C.void, arg1 **C.void, arg2 **C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Next() (string, *glib.Variant, bool)
@@ -207,14 +207,15 @@ func BaseMenuAttributeIter(obj MenuAttributeIterer) *MenuAttributeIter {
 //    - utf8: name of the attribute.
 //
 func (iter *MenuAttributeIter) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuAttributeIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -248,17 +249,18 @@ func (iter *MenuAttributeIter) Name() string {
 //    - ok: TRUE on success, or FALSE if there is no additional attribute.
 //
 func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
-	var args [1]girepository.Argument
-	var outs [2]girepository.Argument
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _out0 *C.void    // in
 	var _out1 *C.void    // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuAttributeIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("get_next", args[:], outs[:])
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("get_next", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -266,7 +268,8 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _outName string      // out
 	var _value *glib.Variant // out
 	var _ok bool             // out
-	_out1 = *(*string)(unsafe.Pointer(&outs[1]))
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	if _out0 != nil {
 		_outName = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
@@ -296,14 +299,15 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 //    - variant: value of the current attribute.
 //
 func (iter *MenuAttributeIter) Value() *glib.Variant {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuAttributeIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("get_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -333,14 +337,15 @@ func (iter *MenuAttributeIter) Value() *glib.Variant {
 //    - ok: TRUE on success, or FALSE when there are no more attributes.
 //
 func (iter *MenuAttributeIter) Next() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuAttributeIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("next", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuAttributeIter").InvokeMethod("next", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -421,7 +426,7 @@ func classInitMenuLinkIterer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_MenuLinkIterClass_get_next
-func _gotk4_gio2_MenuLinkIterClass_get_next(arg0 *C.GMenuLinkIter, arg1 **C.gchar, arg2 **C.GMenuModel) (cret C.gboolean) {
+func _gotk4_gio2_MenuLinkIterClass_get_next(arg0 *C.void, arg1 **C.void, arg2 **C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Next() (string, MenuModeller, bool)
@@ -474,14 +479,15 @@ func BaseMenuLinkIter(obj MenuLinkIterer) *MenuLinkIter {
 //    - utf8: type of the link.
 //
 func (iter *MenuLinkIter) Name() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuLinkIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("get_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -514,17 +520,18 @@ func (iter *MenuLinkIter) Name() string {
 //    - ok: TRUE on success, or FALSE if there is no additional link.
 //
 func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
-	var args [1]girepository.Argument
-	var outs [2]girepository.Argument
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _out0 *C.void    // in
 	var _out1 *C.void    // in
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuLinkIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("get_next", args[:], outs[:])
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("get_next", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -532,7 +539,8 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 	var _outLink string     // out
 	var _value MenuModeller // out
 	var _ok bool            // out
-	_out1 = *(*string)(unsafe.Pointer(&outs[1]))
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	if _out0 != nil {
 		_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
@@ -569,14 +577,15 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 //    - menuModel that is linked to.
 //
 func (iter *MenuLinkIter) Value() MenuModeller {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuLinkIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("get_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -616,14 +625,15 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 //    - ok: TRUE on success, or FALSE when there are no more links.
 //
 func (iter *MenuLinkIter) Next() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iter).Native()))
-	*(**MenuLinkIter)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("next", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuLinkIter").InvokeMethod("next", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
@@ -949,7 +959,7 @@ func classInitMenuModeller(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_MenuModelClass_get_item_attribute_value
-func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GVariantType) (cret *C.GVariant) {
+func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.void, arg1 C.gint, arg2 *C.void, arg3 *C.void) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemAttributeValue(itemIndex int32, attribute string, expectedType *glib.VariantType) *glib.Variant
@@ -975,7 +985,7 @@ func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.GMenuModel, arg
 }
 
 //export _gotk4_gio2_MenuModelClass_get_item_attributes
-func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
+func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.void, arg1 C.gint, arg2 **C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemAttributes(itemIndex int32) map[string]*glib.Variant
@@ -999,7 +1009,7 @@ func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.GMenuModel, arg1 C.g
 }
 
 //export _gotk4_gio2_MenuModelClass_get_item_link
-func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar) (cret *C.GMenuModel) {
+func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.void, arg1 C.gint, arg2 *C.void) (cret *C.GMenuModel) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemLink(itemIndex int32, link string) MenuModeller
@@ -1022,7 +1032,7 @@ func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, a
 }
 
 //export _gotk4_gio2_MenuModelClass_get_item_links
-func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
+func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.void, arg1 C.gint, arg2 **C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemLinks(itemIndex int32) map[string]MenuModeller
@@ -1046,7 +1056,7 @@ func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, 
 }
 
 //export _gotk4_gio2_MenuModelClass_get_n_items
-func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.GMenuModel) (cret C.gint) {
+func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NItems() int32 })
 
@@ -1058,7 +1068,7 @@ func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.GMenuModel) (cret C.gint) {
 }
 
 //export _gotk4_gio2_MenuModelClass_is_mutable
-func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.GMenuModel) (cret C.gboolean) {
+func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsMutable() bool })
 
@@ -1072,7 +1082,7 @@ func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.GMenuModel) (cret C.gboolean)
 }
 
 //export _gotk4_gio2_MenuModelClass_iterate_item_attributes
-func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuAttributeIter) {
+func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.void, arg1 C.gint) (cret *C.GMenuAttributeIter) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		IterateItemAttributes(itemIndex int32) MenuAttributeIterer
@@ -1091,7 +1101,7 @@ func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.GMenuModel, arg1
 }
 
 //export _gotk4_gio2_MenuModelClass_iterate_item_links
-func _gotk4_gio2_MenuModelClass_iterate_item_links(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuLinkIter) {
+func _gotk4_gio2_MenuModelClass_iterate_item_links(arg0 *C.void, arg1 C.gint) (cret *C.GMenuLinkIter) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		IterateItemLinks(itemIndex int32) MenuLinkIterer
@@ -1197,7 +1207,7 @@ func (model *MenuModel) ConnectItemsChanged(f func(position, removed, added int3
 //    - variant (optional): value of the attribute.
 //
 func (model *MenuModel) ItemAttributeValue(itemIndex int32, attribute string, expectedType *glib.VariantType) *glib.Variant {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -1211,11 +1221,13 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int32, attribute string, ex
 	if expectedType != nil {
 		_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(expectedType)))
 	}
-	*(**MenuModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
-	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("get_item_attribute_value", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("get_item_attribute_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -1254,7 +1266,7 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int32, attribute string, ex
 //    - menuModel (optional): linked Model, or NULL.
 //
 func (model *MenuModel) ItemLink(itemIndex int32, link string) MenuModeller {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 *C.void // out
@@ -1264,10 +1276,12 @@ func (model *MenuModel) ItemLink(itemIndex int32, link string) MenuModeller {
 	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(link)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**MenuModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("get_item_link", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("get_item_link", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -1303,14 +1317,15 @@ func (model *MenuModel) ItemLink(itemIndex int32, link string) MenuModeller {
 //    - gint: number of items.
 //
 func (model *MenuModel) NItems() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(**MenuModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("get_n_items", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("get_n_items", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -1332,14 +1347,15 @@ func (model *MenuModel) NItems() int32 {
 //    - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
 //
 func (model *MenuModel) IsMutable() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(**MenuModel)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("is_mutable", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("is_mutable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -1376,7 +1392,7 @@ func (model *MenuModel) IsMutable() bool {
 //    - added: number of items added.
 //
 func (model *MenuModel) ItemsChanged(position, removed, added int32) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _arg2 C.gint  // out
@@ -1386,11 +1402,13 @@ func (model *MenuModel) ItemsChanged(position, removed, added int32) {
 	_arg1 = C.gint(position)
 	_arg2 = C.gint(removed)
 	_arg3 = C.gint(added)
-	*(**MenuModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gio", "MenuModel").InvokeMethod("items_changed", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gio", "MenuModel").InvokeMethod("items_changed", _args[:], nil)
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -1412,16 +1430,18 @@ func (model *MenuModel) ItemsChanged(position, removed, added int32) {
 //    - menuAttributeIter: new AttributeIter.
 //
 func (model *MenuModel) IterateItemAttributes(itemIndex int32) MenuAttributeIterer {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.gint(itemIndex)
-	*(**MenuModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("iterate_item_attributes", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("iterate_item_attributes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
@@ -1464,16 +1484,18 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int32) MenuAttributeIter
 //    - menuLinkIter: new LinkIter.
 //
 func (model *MenuModel) IterateItemLinks(itemIndex int32) MenuLinkIterer {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.gint(itemIndex)
-	*(**MenuModel)(unsafe.Pointer(&args[1])) = _arg1
 
-	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("iterate_item_links", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "MenuModel").InvokeMethod("iterate_item_links", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)

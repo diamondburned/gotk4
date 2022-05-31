@@ -155,7 +155,7 @@ func marshalPadController(p uintptr) (interface{}, error) {
 //    - padController: newly created PadController.
 //
 func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -166,11 +166,12 @@ func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) 
 	if pad != nil {
 		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 	}
-	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
-	*(*gio.ActionGrouper)(unsafe.Pointer(&args[1])) = _arg1
-	*(*gdk.Devicer)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "PadController").InvokeMethod("new_PadController", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "PadController").InvokeMethod("new_PadController", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)

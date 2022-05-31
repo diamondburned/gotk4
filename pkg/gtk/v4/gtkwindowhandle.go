@@ -109,14 +109,15 @@ func NewWindowHandle() *WindowHandle {
 //    - widget (optional): child widget of self.
 //
 func (self *WindowHandle) Child() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**WindowHandle)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("get_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -150,7 +151,7 @@ func (self *WindowHandle) Child() Widgetter {
 //    - child (optional) widget.
 //
 func (self *WindowHandle) SetChild(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -158,9 +159,11 @@ func (self *WindowHandle) SetChild(child Widgetter) {
 	if child != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-	*(**WindowHandle)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("set_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)

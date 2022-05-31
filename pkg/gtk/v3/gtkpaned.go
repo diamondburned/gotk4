@@ -16,11 +16,11 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_gtk3_PanedClass_accept_position(GtkPaned*);
-// extern gboolean _gotk4_gtk3_PanedClass_cancel_position(GtkPaned*);
-// extern gboolean _gotk4_gtk3_PanedClass_cycle_child_focus(GtkPaned*, gboolean);
-// extern gboolean _gotk4_gtk3_PanedClass_cycle_handle_focus(GtkPaned*, gboolean);
-// extern gboolean _gotk4_gtk3_PanedClass_toggle_handle_focus(GtkPaned*);
+// extern gboolean _gotk4_gtk3_PanedClass_accept_position(void*);
+// extern gboolean _gotk4_gtk3_PanedClass_cancel_position(void*);
+// extern gboolean _gotk4_gtk3_PanedClass_cycle_child_focus(void*, gboolean);
+// extern gboolean _gotk4_gtk3_PanedClass_cycle_handle_focus(void*, gboolean);
+// extern gboolean _gotk4_gtk3_PanedClass_toggle_handle_focus(void*);
 // extern gboolean _gotk4_gtk3_Paned_ConnectAcceptPosition(gpointer, guintptr);
 // extern gboolean _gotk4_gtk3_Paned_ConnectCancelPosition(gpointer, guintptr);
 // extern gboolean _gotk4_gtk3_Paned_ConnectCycleChildFocus(gpointer, gboolean, guintptr);
@@ -145,7 +145,7 @@ func classInitPanedder(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_PanedClass_accept_position
-func _gotk4_gtk3_PanedClass_accept_position(arg0 *C.GtkPaned) (cret C.gboolean) {
+func _gotk4_gtk3_PanedClass_accept_position(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AcceptPosition() bool })
 
@@ -159,7 +159,7 @@ func _gotk4_gtk3_PanedClass_accept_position(arg0 *C.GtkPaned) (cret C.gboolean) 
 }
 
 //export _gotk4_gtk3_PanedClass_cancel_position
-func _gotk4_gtk3_PanedClass_cancel_position(arg0 *C.GtkPaned) (cret C.gboolean) {
+func _gotk4_gtk3_PanedClass_cancel_position(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CancelPosition() bool })
 
@@ -173,7 +173,7 @@ func _gotk4_gtk3_PanedClass_cancel_position(arg0 *C.GtkPaned) (cret C.gboolean) 
 }
 
 //export _gotk4_gtk3_PanedClass_cycle_child_focus
-func _gotk4_gtk3_PanedClass_cycle_child_focus(arg0 *C.GtkPaned, arg1 C.gboolean) (cret C.gboolean) {
+func _gotk4_gtk3_PanedClass_cycle_child_focus(arg0 *C.void, arg1 C.gboolean) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CycleChildFocus(reverse bool) bool })
 
@@ -193,7 +193,7 @@ func _gotk4_gtk3_PanedClass_cycle_child_focus(arg0 *C.GtkPaned, arg1 C.gboolean)
 }
 
 //export _gotk4_gtk3_PanedClass_cycle_handle_focus
-func _gotk4_gtk3_PanedClass_cycle_handle_focus(arg0 *C.GtkPaned, arg1 C.gboolean) (cret C.gboolean) {
+func _gotk4_gtk3_PanedClass_cycle_handle_focus(arg0 *C.void, arg1 C.gboolean) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CycleHandleFocus(reverse bool) bool })
 
@@ -213,7 +213,7 @@ func _gotk4_gtk3_PanedClass_cycle_handle_focus(arg0 *C.GtkPaned, arg1 C.gboolean
 }
 
 //export _gotk4_gtk3_PanedClass_toggle_handle_focus
-func _gotk4_gtk3_PanedClass_toggle_handle_focus(arg0 *C.GtkPaned) (cret C.gboolean) {
+func _gotk4_gtk3_PanedClass_toggle_handle_focus(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleHandleFocus() bool })
 
@@ -427,15 +427,17 @@ func (paned *Paned) ConnectToggleHandleFocus(f func() (ok bool)) coreglib.Signal
 //    - child to add.
 //
 func (paned *Paned) Add1(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Paned)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("add1", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Paned").InvokeMethod("add1", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
@@ -449,15 +451,17 @@ func (paned *Paned) Add1(child Widgetter) {
 //    - child to add.
 //
 func (paned *Paned) Add2(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**Paned)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("add2", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Paned").InvokeMethod("add2", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
@@ -470,14 +474,15 @@ func (paned *Paned) Add2(child Widgetter) {
 //    - widget (optional): first child, or NULL if it is not set.
 //
 func (paned *Paned) Child1() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(**Paned)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_child1", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_child1", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
@@ -511,14 +516,15 @@ func (paned *Paned) Child1() Widgetter {
 //    - widget (optional): second child, or NULL if it is not set.
 //
 func (paned *Paned) Child2() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(**Paned)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_child2", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_child2", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
@@ -554,14 +560,15 @@ func (paned *Paned) Child2() Widgetter {
 //    - window paned’s handle window.
 //
 func (paned *Paned) HandleWindow() gdk.Windower {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(**Paned)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_handle_window", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_handle_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
@@ -596,14 +603,15 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 //    - gint: position of the divider.
 //
 func (paned *Paned) Position() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(**Paned)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_position", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_position", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
@@ -622,14 +630,15 @@ func (paned *Paned) Position() int32 {
 //    - ok: TRUE if the paned should have a wide handle.
 //
 func (paned *Paned) WideHandle() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(**Paned)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_wide_handle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_wide_handle", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
@@ -652,7 +661,7 @@ func (paned *Paned) WideHandle() bool {
 //    - shrink: can this child be made smaller than its requisition.
 //
 func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -666,11 +675,13 @@ func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 	if shrink {
 		_arg3 = C.TRUE
 	}
-	*(**Paned)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("pack1", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Paned").InvokeMethod("pack1", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
@@ -687,7 +698,7 @@ func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 //    - shrink: can this child be made smaller than its requisition.
 //
 func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _arg2 C.gboolean // out
@@ -701,11 +712,13 @@ func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 	if shrink {
 		_arg3 = C.TRUE
 	}
-	*(**Paned)(unsafe.Pointer(&args[1])) = _arg1
-	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("pack2", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Paned").InvokeMethod("pack2", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
@@ -721,15 +734,17 @@ func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 //      position is unset.
 //
 func (paned *Paned) SetPosition(position int32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	_arg1 = C.gint(position)
-	*(**Paned)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_position", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_position", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(position)
@@ -742,7 +757,7 @@ func (paned *Paned) SetPosition(position int32) {
 //    - wide: new value for the Paned:wide-handle property.
 //
 func (paned *Paned) SetWideHandle(wide bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -750,9 +765,11 @@ func (paned *Paned) SetWideHandle(wide bool) {
 	if wide {
 		_arg1 = C.TRUE
 	}
-	*(**Paned)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_wide_handle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_wide_handle", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(wide)

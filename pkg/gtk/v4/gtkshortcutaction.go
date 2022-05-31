@@ -18,6 +18,8 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern gboolean _gotk4_gtk4_ShortcutFunc(void*, void*, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // glib.Type values for gtkshortcutaction.go.
@@ -96,7 +98,7 @@ func (s ShortcutActionFlags) Has(other ShortcutActionFlags) bool {
 type ShortcutFunc func(widget Widgetter, args *glib.Variant) (ok bool)
 
 //export _gotk4_gtk4_ShortcutFunc
-func _gotk4_gtk4_ShortcutFunc(arg1 *C.GtkWidget, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk4_ShortcutFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
 	var fn ShortcutFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -236,6 +238,45 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 	return wrapCallbackAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewCallbackAction: create a custom action that calls the given callback when
+// activated.
+//
+// The function takes the following parameters:
+//
+//    - callback (optional) to call.
+//
+// The function returns the following values:
+//
+//    - callbackAction: new shortcut action.
+//
+func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
+	var _args [3]girepository.Argument
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer
+	var _arg2 C.GDestroyNotify
+	var _cret *C.void // in
+
+	if callback != nil {
+		_arg0 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
+		_arg1 = C.gpointer(gbox.Assign(callback))
+		_arg2 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CallbackAction").InvokeMethod("new_CallbackAction", _args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(callback)
+
+	var _callbackAction *CallbackAction // out
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_callbackAction = wrapCallbackAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _callbackAction
+}
+
 // MnemonicActionOverrider contains methods that are overridable.
 type MnemonicActionOverrider interface {
 }
@@ -342,15 +383,16 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 //    - namedAction: new GtkShortcutAction.
 //
 func NewNamedAction(name string) *NamedAction {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("new_NamedAction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("new_NamedAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -369,14 +411,15 @@ func NewNamedAction(name string) *NamedAction {
 //    - utf8: name of the action to activate.
 //
 func (self *NamedAction) ActionName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**NamedAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("get_action_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("get_action_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -547,15 +590,16 @@ func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
 //    - shortcutAction (optional): new GtkShortcutAction or NULL on error.
 //
 func NewShortcutActionParseString(str string) *ShortcutAction {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("new_ShortcutAction_parse_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("new_ShortcutAction_parse_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -579,14 +623,15 @@ func NewShortcutActionParseString(str string) *ShortcutAction {
 //    - utf8: new string.
 //
 func (self *ShortcutAction) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**ShortcutAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("to_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("to_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
@@ -650,15 +695,16 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 //    - signalAction: new GtkShortcutAction.
 //
 func NewSignalAction(signalName string) *SignalAction {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(signalName)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("new_SignalAction", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("new_SignalAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(signalName)
@@ -677,14 +723,15 @@ func NewSignalAction(signalName string) *SignalAction {
 //    - utf8: name of the signal to emit.
 //
 func (self *SignalAction) SignalName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**SignalAction)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("get_signal_name", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("get_signal_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)

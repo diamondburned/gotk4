@@ -507,7 +507,7 @@ func (tree *Tree) wrap(obj string, h *file.Header, gen FileGenerator) string {
 		case tree.Resolved.IsExternGLib("Object"):
 			return "obj"
 		case tree.Resolved.IsExternGLib("InitiallyUnowned"):
-			tree.Resolved.ImportImpl(h)
+			tree.Resolved.ImportImpl(gen, h)
 			return fmt.Sprintf("coreglib.InitiallyUnowned{\nObject: %s,\n}", obj)
 		default:
 			tree.gen.Logln(logger.Debug, "unknown builtin wrap:", spew.Sdump(tree.Resolved))
@@ -517,7 +517,7 @@ func (tree *Tree) wrap(obj string, h *file.Header, gen FileGenerator) string {
 
 	needsNamespace := tree.Resolved.NeedsNamespace(gen.Namespace())
 	if needsNamespace {
-		tree.Resolved.ImportImpl(h)
+		tree.Resolved.ImportImpl(gen, h)
 	}
 
 	typName := tree.Resolved.ImplType(needsNamespace)

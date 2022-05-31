@@ -73,7 +73,7 @@ const MINOR_VERSION = 2
 //      is owned by GTK and should not be modified or freed.
 //
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 C.guint // out
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
@@ -82,11 +82,12 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 	_arg0 = C.guint(requiredMajor)
 	_arg1 = C.guint(requiredMinor)
 	_arg2 = C.guint(requiredMicro)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "check_version").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "check_version").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(requiredMajor)

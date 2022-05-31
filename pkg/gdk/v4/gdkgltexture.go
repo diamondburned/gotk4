@@ -66,13 +66,14 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 // The texture contents are still available via the gdk.Texture.Download()
 // function, after this function has been called.
 func (self *GLTexture) Release() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**GLTexture)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("Gdk", "GLTexture").InvokeMethod("release", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "GLTexture").InvokeMethod("release", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }

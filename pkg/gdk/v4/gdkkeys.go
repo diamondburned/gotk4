@@ -14,6 +14,46 @@ import (
 // #include <glib.h>
 import "C"
 
+// KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
+// symbol.
+//
+// Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
+//
+// The function takes the following parameters:
+//
+//    - symbol: keyval.
+//
+// The function returns the following values:
+//
+//    - lower: return location for lowercase version of symbol.
+//    - upper: return location for uppercase version of symbol.
+//
+func KeyvalConvertCase(symbol uint32) (lower uint32, upper uint32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 C.guint // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = C.guint(symbol)
+
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("Gdk", "keyval_convert_case").Invoke(_args[:], _outs[:])
+
+	runtime.KeepAlive(symbol)
+
+	var _lower uint32 // out
+	var _upper uint32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_lower = *(*uint32)(unsafe.Pointer(_out0))
+	_upper = *(*uint32)(unsafe.Pointer(_out1))
+
+	return _lower, _upper
+}
+
 // KeyvalFromName converts a key name to a key value.
 //
 // The names are the same as those in the gdk/gdkkeysyms.h header file but
@@ -29,15 +69,16 @@ import "C"
 //      not a valid key.
 //
 func KeyvalFromName(keyvalName string) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(C.CString(keyvalName)))
 	defer C.free(unsafe.Pointer(_arg0))
-	*(*string)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_from_name").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_from_name").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyvalName)
@@ -61,14 +102,15 @@ func KeyvalFromName(keyvalName string) uint32 {
 //      conversion.
 //
 func KeyvalIsLower(keyval uint32) bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_is_lower").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_is_lower").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -94,14 +136,15 @@ func KeyvalIsLower(keyval uint32) bool {
 //      conversion.
 //
 func KeyvalIsUpper(keyval uint32) bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint    // out
 	var _cret C.gboolean // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_is_upper").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_is_upper").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -130,14 +173,15 @@ func KeyvalIsUpper(keyval uint32) bool {
 //      is not a valid key. The string should not be modified.
 //
 func KeyvalName(keyval uint32) string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_name").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_name").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -163,14 +207,15 @@ func KeyvalName(keyval uint32) string {
 //      lower case or it is not subject to case conversion.
 //
 func KeyvalToLower(keyval uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 	var _cret C.guint // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_to_lower").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_to_lower").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -198,14 +243,15 @@ func KeyvalToLower(keyval uint32) uint32 {
 //      corresponding character.
 //
 func KeyvalToUnicode(keyval uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint   // out
 	var _cret C.guint32 // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_to_unicode").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_to_unicode").Invoke(_args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -229,14 +275,15 @@ func KeyvalToUnicode(keyval uint32) uint32 {
 //      upper case or it is not subject to case conversion.
 //
 func KeyvalToUpper(keyval uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint // out
 	var _cret C.guint // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "keyval_to_upper").Invoke(args[:], nil)
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "keyval_to_upper").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -260,14 +307,15 @@ func KeyvalToUpper(keyval uint32) uint32 {
 //      corresponding symbol, wc | 0x01000000.
 //
 func UnicodeToKeyval(wc uint32) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 C.guint32 // out
 	var _cret C.guint   // in
 
 	_arg0 = C.guint32(wc)
-	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gdk", "unicode_to_keyval").Invoke(args[:], nil)
+	*(*C.guint32)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "unicode_to_keyval").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(wc)

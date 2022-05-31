@@ -37,14 +37,15 @@ func init() {
 //    - guint32: time stamp.
 //
 func X11GetServerTime(window *X11Window) uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**X11Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "x11_get_server_time").Invoke(args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "x11_get_server_time").Invoke(_args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
@@ -96,14 +97,15 @@ func marshalX11Window(p uintptr) (interface{}, error) {
 //    - guint32: current workspace of window.
 //
 func (window *X11Window) Desktop() uint32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.guint32 // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**X11Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("GdkX11", "X11Window").InvokeMethod("get_desktop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Window").InvokeMethod("get_desktop", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
@@ -121,13 +123,14 @@ func (window *X11Window) Desktop() uint32 {
 // specification. Will not do anything if the window is already on all
 // workspaces.
 func (window *X11Window) MoveToCurrentDesktop() {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**X11Window)(unsafe.Pointer(&args[0])) = _arg0
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("move_to_current_desktop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("move_to_current_desktop", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -142,15 +145,17 @@ func (window *X11Window) MoveToCurrentDesktop() {
 //    - desktop: number of the workspace to move the window to.
 //
 func (window *X11Window) MoveToDesktop(desktop uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint32 // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	_arg1 = C.guint32(desktop)
-	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("move_to_desktop", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("move_to_desktop", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(desktop)
@@ -169,7 +174,7 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 //    - bottom extent.
 //
 func (window *X11Window) SetFrameExtents(left, right, top, bottom int32) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -181,12 +186,14 @@ func (window *X11Window) SetFrameExtents(left, right, top, bottom int32) {
 	_arg2 = C.int(right)
 	_arg3 = C.int(top)
 	_arg4 = C.int(bottom)
-	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_frame_extents", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_frame_extents", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(left)
@@ -207,7 +214,7 @@ func (window *X11Window) SetFrameExtents(left, right, top, bottom int32) {
 //    - frameSyncEnabled: whether frame-synchronization should be enabled.
 //
 func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -215,9 +222,11 @@ func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	if frameSyncEnabled {
 		_arg1 = C.TRUE
 	}
-	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_frame_sync_enabled", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_frame_sync_enabled", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(frameSyncEnabled)
@@ -235,7 +244,7 @@ func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 //    - hideTitlebarWhenMaximized: whether to hide the titlebar when maximized.
 //
 func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -243,9 +252,11 @@ func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized 
 	if hideTitlebarWhenMaximized {
 		_arg1 = C.TRUE
 	}
-	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_hide_titlebar_when_maximized", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_hide_titlebar_when_maximized", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(hideTitlebarWhenMaximized)
@@ -265,16 +276,18 @@ func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized 
 //    - variant: theme variant to export.
 //
 func (window *X11Window) SetThemeVariant(variant string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(variant)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_theme_variant", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_theme_variant", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(variant)
@@ -296,15 +309,17 @@ func (window *X11Window) SetThemeVariant(variant string) {
 //    - timestamp: XServer timestamp to which the property should be set.
 //
 func (window *X11Window) SetUserTime(timestamp uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.guint32 // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	_arg1 = C.guint32(timestamp)
-	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_user_time", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_user_time", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(timestamp)
@@ -320,7 +335,7 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 //    - value (optional): property value, or NULL to delete.
 //
 func (window *X11Window) SetUTF8Property(name, value string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -332,10 +347,12 @@ func (window *X11Window) SetUTF8Property(name, value string) {
 		_arg2 = (*C.void)(unsafe.Pointer(C.CString(value)))
 		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 
-	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_utf8_property", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_utf8_property", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(name)

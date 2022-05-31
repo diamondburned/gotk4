@@ -15,13 +15,14 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// extern gboolean _gotk4_atk1_ComponentIface_grab_focus(AtkComponent*);
-// extern gboolean _gotk4_atk1_ComponentIface_set_size(AtkComponent*, gint, gint);
-// extern gdouble _gotk4_atk1_ComponentIface_get_alpha(AtkComponent*);
-// extern gint _gotk4_atk1_ComponentIface_get_mdi_zorder(AtkComponent*);
-// extern void _gotk4_atk1_ComponentIface_bounds_changed(AtkComponent*, AtkRectangle*);
-// extern void _gotk4_atk1_ComponentIface_remove_focus_handler(AtkComponent*, guint);
-// extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
+// extern gboolean _gotk4_atk1_ComponentIface_grab_focus(void*);
+// extern gboolean _gotk4_atk1_ComponentIface_set_size(void*, gint, gint);
+// extern gdouble _gotk4_atk1_ComponentIface_get_alpha(void*);
+// extern gint _gotk4_atk1_ComponentIface_get_mdi_zorder(void*);
+// extern void _gotk4_atk1_ComponentIface_bounds_changed(void*, void*);
+// extern void _gotk4_atk1_ComponentIface_get_size(void*, void*, void*);
+// extern void _gotk4_atk1_ComponentIface_remove_focus_handler(void*, guint);
+// extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, void*, guintptr);
 import "C"
 
 // glib.Type values for atkcomponent.go.
@@ -118,6 +119,19 @@ type ComponentOverrider interface {
 	//      container.
 	//
 	MDIZOrder() int32
+	// Size gets the size of the component in terms of width and height.
+	//
+	// If the size can not be obtained (e.g. a non-embedded plug or missing
+	// support), width and height are set to -1.
+	//
+	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+	//
+	// The function returns the following values:
+	//
+	//    - width (optional) address of #gint to put width of component.
+	//    - height (optional) address of #gint to put height of component.
+	//
+	Size() (width int32, height int32)
 	// GrabFocus grabs focus for this component.
 	//
 	// The function returns the following values:
@@ -182,6 +196,8 @@ type Componenter interface {
 	Alpha() float64
 	// MDIZOrder gets the zorder of the component.
 	MDIZOrder() int32
+	// Size gets the size of the component in terms of width and height.
+	Size() (width int32, height int32)
 	// GrabFocus grabs focus for this component.
 	GrabFocus() bool
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
@@ -203,13 +219,14 @@ func ifaceInitComponenter(gifacePtr, data C.gpointer) {
 	iface.bounds_changed = (*[0]byte)(C._gotk4_atk1_ComponentIface_bounds_changed)
 	iface.get_alpha = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_alpha)
 	iface.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
+	iface.get_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_size)
 	iface.grab_focus = (*[0]byte)(C._gotk4_atk1_ComponentIface_grab_focus)
 	iface.remove_focus_handler = (*[0]byte)(C._gotk4_atk1_ComponentIface_remove_focus_handler)
 	iface.set_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_size)
 }
 
 //export _gotk4_atk1_ComponentIface_bounds_changed
-func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.AtkRectangle) {
+func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.void, arg1 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
@@ -221,7 +238,7 @@ func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.Atk
 }
 
 //export _gotk4_atk1_ComponentIface_get_alpha
-func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble) {
+func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.void) (cret C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
@@ -233,7 +250,7 @@ func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble)
 }
 
 //export _gotk4_atk1_ComponentIface_get_mdi_zorder
-func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gint) {
+func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.void) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
@@ -244,8 +261,19 @@ func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gin
 	return cret
 }
 
+//export _gotk4_atk1_ComponentIface_get_size
+func _gotk4_atk1_ComponentIface_get_size(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ComponentOverrider)
+
+	width, height := iface.Size()
+
+	*arg1 = (*C.void)(unsafe.Pointer(width))
+	*arg2 = (*C.void)(unsafe.Pointer(height))
+}
+
 //export _gotk4_atk1_ComponentIface_grab_focus
-func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolean) {
+func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
@@ -259,7 +287,7 @@ func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolea
 }
 
 //export _gotk4_atk1_ComponentIface_remove_focus_handler
-func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 C.guint) {
+func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.void, arg1 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
@@ -271,7 +299,7 @@ func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 
 }
 
 //export _gotk4_atk1_ComponentIface_set_size
-func _gotk4_atk1_ComponentIface_set_size(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_ComponentIface_set_size(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
@@ -301,7 +329,7 @@ func marshalComponent(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_atk1_Component_ConnectBoundsChanged
-func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRectangle, arg2 C.guintptr) {
+func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(arg1 *Rectangle)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -334,12 +362,13 @@ func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) coregl
 //    - gdouble: alpha value from 0 to 1.0, inclusive.
 //
 func (component *Component) Alpha() float64 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void   // out
 	var _cret C.gdouble // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-	*(**Component)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
@@ -362,12 +391,13 @@ func (component *Component) Alpha() float64 {
 //      component is shown in relation to other components in the same container.
 //
 func (component *Component) MDIZOrder() int32 {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-	*(**Component)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -380,6 +410,46 @@ func (component *Component) MDIZOrder() int32 {
 	return _gint
 }
 
+// Size gets the size of the component in terms of width and height.
+//
+// If the size can not be obtained (e.g. a non-embedded plug or missing
+// support), width and height are set to -1.
+//
+// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+//
+// The function returns the following values:
+//
+//    - width (optional) address of #gint to put width of component.
+//    - height (optional) address of #gint to put height of component.
+//
+func (component *Component) Size() (width int32, height int32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(component)
+
+	var _width int32  // out
+	var _height int32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	if _out0 != nil {
+		_width = *(*int32)(unsafe.Pointer(_out0))
+	}
+	if _out1 != nil {
+		_height = *(*int32)(unsafe.Pointer(_out1))
+	}
+
+	return _width, _height
+}
+
 // GrabFocus grabs focus for this component.
 //
 // The function returns the following values:
@@ -387,12 +457,13 @@ func (component *Component) MDIZOrder() int32 {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (component *Component) GrabFocus() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-	*(**Component)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -419,13 +490,15 @@ func (component *Component) GrabFocus() bool {
 //    - handlerId: handler id of the focus handler to be removed from component.
 //
 func (component *Component) RemoveFocusHandler(handlerId uint32) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 	_arg1 = C.guint(handlerId)
-	*(**Component)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(handlerId)
@@ -443,7 +516,7 @@ func (component *Component) RemoveFocusHandler(handlerId uint32) {
 //    - ok: TRUE or FALSE whether the size was set or not.
 //
 func (component *Component) SetSize(width, height int32) bool {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -452,8 +525,10 @@ func (component *Component) SetSize(width, height int32) bool {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
-	*(**Component)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

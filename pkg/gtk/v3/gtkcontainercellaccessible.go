@@ -96,15 +96,17 @@ func NewContainerCellAccessible() *ContainerCellAccessible {
 // The function takes the following parameters:
 //
 func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**ContainerCellAccessible)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("add_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("add_child", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
@@ -115,14 +117,15 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 // The function returns the following values:
 //
 func (container *ContainerCellAccessible) Children() []*CellAccessible {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	*(**ContainerCellAccessible)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("get_children", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("get_children", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
@@ -143,15 +146,17 @@ func (container *ContainerCellAccessible) Children() []*CellAccessible {
 // The function takes the following parameters:
 //
 func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**ContainerCellAccessible)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("remove_child", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("remove_child", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)

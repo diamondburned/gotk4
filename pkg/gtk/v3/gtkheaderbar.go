@@ -111,14 +111,15 @@ func NewHeaderBar() *HeaderBar {
 //      been set explicitly.
 //
 func (bar *HeaderBar) CustomTitle() Widgetter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_custom_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_custom_title", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -153,14 +154,15 @@ func (bar *HeaderBar) CustomTitle() Widgetter {
 //    - utf8: decoration layout.
 //
 func (bar *HeaderBar) DecorationLayout() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_decoration_layout", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_decoration_layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -180,14 +182,15 @@ func (bar *HeaderBar) DecorationLayout() string {
 //    - ok: TRUE if the header bar reserves space for a subtitle.
 //
 func (bar *HeaderBar) HasSubtitle() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_has_subtitle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_has_subtitle", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -209,14 +212,15 @@ func (bar *HeaderBar) HasSubtitle() bool {
 //    - ok: TRUE if the decorations are shown.
 //
 func (bar *HeaderBar) ShowCloseButton() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_show_close_button", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_show_close_button", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -240,14 +244,15 @@ func (bar *HeaderBar) ShowCloseButton() bool {
 //      modified or freed.
 //
 func (bar *HeaderBar) Subtitle() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_subtitle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_subtitle", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -270,14 +275,15 @@ func (bar *HeaderBar) Subtitle() string {
 //      modified or freed.
 //
 func (bar *HeaderBar) Title() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("get_title", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bar)
@@ -298,15 +304,17 @@ func (bar *HeaderBar) Title() string {
 //    - child to be added to bar.
 //
 func (bar *HeaderBar) PackEnd(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("pack_end", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("pack_end", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
@@ -319,15 +327,17 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 //    - child to be added to bar.
 //
 func (bar *HeaderBar) PackStart(child Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("pack_start", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("pack_start", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
@@ -348,7 +358,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //    - titleWidget (optional): custom widget to use for a title.
 //
 func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -356,9 +366,11 @@ func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 	if titleWidget != nil {
 		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(titleWidget).Native()))
 	}
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_custom_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_custom_title", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(titleWidget)
@@ -385,7 +397,7 @@ func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
 //    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (bar *HeaderBar) SetDecorationLayout(layout string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -394,9 +406,11 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(layout)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_decoration_layout", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_decoration_layout", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(layout)
@@ -410,7 +424,7 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 //    - setting: TRUE to reserve space for a subtitle.
 //
 func (bar *HeaderBar) SetHasSubtitle(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -418,9 +432,11 @@ func (bar *HeaderBar) SetHasSubtitle(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_has_subtitle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_has_subtitle", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(setting)
@@ -434,7 +450,7 @@ func (bar *HeaderBar) SetHasSubtitle(setting bool) {
 //    - setting: TRUE to show standard window decorations.
 //
 func (bar *HeaderBar) SetShowCloseButton(setting bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -442,9 +458,11 @@ func (bar *HeaderBar) SetShowCloseButton(setting bool) {
 	if setting {
 		_arg1 = C.TRUE
 	}
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_show_close_button", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_show_close_button", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(setting)
@@ -462,7 +480,7 @@ func (bar *HeaderBar) SetShowCloseButton(setting bool) {
 //    - subtitle (optional): subtitle, or NULL.
 //
 func (bar *HeaderBar) SetSubtitle(subtitle string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -471,9 +489,11 @@ func (bar *HeaderBar) SetSubtitle(subtitle string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(subtitle)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_subtitle", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_subtitle", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(subtitle)
@@ -488,7 +508,7 @@ func (bar *HeaderBar) SetSubtitle(subtitle string) {
 //    - title (optional): title, or NULL.
 //
 func (bar *HeaderBar) SetTitle(title string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
@@ -497,9 +517,11 @@ func (bar *HeaderBar) SetTitle(title string) {
 		_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
 		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**HeaderBar)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_title", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "HeaderBar").InvokeMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(title)

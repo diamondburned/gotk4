@@ -95,14 +95,15 @@ func marshalVScale(p uintptr) (interface{}, error) {
 //    - vScale: new VScale.
 //
 func NewVScale(adjustment *Adjustment) *VScale {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
@@ -137,7 +138,7 @@ func NewVScale(adjustment *Adjustment) *VScale {
 //    - vScale: new VScale.
 //
 func NewVScaleWithRange(min, max, step float64) *VScale {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 C.gdouble // out
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
@@ -146,11 +147,12 @@ func NewVScaleWithRange(min, max, step float64) *VScale {
 	_arg0 = C.gdouble(min)
 	_arg1 = C.gdouble(max)
 	_arg2 = C.gdouble(step)
-	*(*float64)(unsafe.Pointer(&args[0])) = _arg0
-	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
 
-	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale_with_range", args[:], nil)
+	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale_with_range", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(min)

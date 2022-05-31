@@ -81,7 +81,7 @@ func NewTransform() *Transform {
 //    - ok: TRUE if the two transforms perform the same operation.
 //
 func (first *Transform) Equal(second *Transform) bool {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
 	var _cret C.gboolean // in
@@ -92,7 +92,9 @@ func (first *Transform) Equal(second *Transform) bool {
 	if second != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 	}
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -121,14 +123,15 @@ func (first *Transform) Equal(second *Transform) bool {
 //      be inverted.
 //
 func (self *Transform) Invert() *Transform {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if self != nil {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
-	*(**Transform)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -160,7 +163,7 @@ func (self *Transform) Invert() *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -169,7 +172,9 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -205,7 +210,7 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Perspective(depth float32) *Transform {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _cret *C.void // in
@@ -214,7 +219,9 @@ func (next *Transform) Perspective(depth float32) *Transform {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	_arg1 = C.float(depth)
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -245,7 +252,7 @@ func (next *Transform) Perspective(depth float32) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Rotate(angle float32) *Transform {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _cret *C.void // in
@@ -254,7 +261,9 @@ func (next *Transform) Rotate(angle float32) *Transform {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	_arg1 = C.float(angle)
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -288,7 +297,7 @@ func (next *Transform) Rotate(angle float32) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _arg2 *C.void // out
@@ -299,8 +308,10 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	}
 	_arg1 = C.float(angle)
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -335,7 +346,7 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _arg2 C.float // out
@@ -346,8 +357,10 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	}
 	_arg1 = C.float(factorX)
 	_arg2 = C.float(factorY)
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -381,7 +394,7 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
-	var args [4]girepository.Argument
+	var _args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.float // out
 	var _arg2 C.float // out
@@ -394,9 +407,11 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	_arg1 = C.float(factorX)
 	_arg2 = C.float(factorY)
 	_arg3 = C.float(factorZ)
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
-	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
-	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -418,6 +433,144 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	return _transform
 }
 
+// To2D converts a GskTransform to a 2D transformation matrix.
+//
+// self must be a 2D transformation. If you are not sure, use
+// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D to check.
+//
+// The returned values have the following layout:
+//
+//      | xx yx |   |  a  b  0 |
+//      | xy yy | = |  c  d  0 |
+//      | dx dy |   | tx ty  1 |
+//
+//
+// This function can be used to convert between a GskTransform and a matrix type
+// from other 2D drawing libraries, in particular Cairo.
+//
+// The function returns the following values:
+//
+//    - outXx: return location for the xx member.
+//    - outYx: return location for the yx member.
+//    - outXy: return location for the xy member.
+//    - outYy: return location for the yy member.
+//    - outDx: return location for the x0 member.
+//    - outDy: return location for the y0 member.
+//
+func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
+	var _args [1]girepository.Argument
+	var _outs [6]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _out2 *C.void // in
+	var _out3 *C.void // in
+	var _out4 *C.void // in
+	var _out5 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(self)
+
+	var _outXx float32 // out
+	var _outYx float32 // out
+	var _outXy float32 // out
+	var _outYy float32 // out
+	var _outDx float32 // out
+	var _outDy float32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+	_out4 = *(**C.void)(unsafe.Pointer(&_outs[4]))
+	_out5 = *(**C.void)(unsafe.Pointer(&_outs[5]))
+
+	_outXx = *(*float32)(unsafe.Pointer(_out0))
+	_outYx = *(*float32)(unsafe.Pointer(_out1))
+	_outXy = *(*float32)(unsafe.Pointer(_out2))
+	_outYy = *(*float32)(unsafe.Pointer(_out3))
+	_outDx = *(*float32)(unsafe.Pointer(_out4))
+	_outDy = *(*float32)(unsafe.Pointer(_out5))
+
+	return _outXx, _outYx, _outXy, _outYy, _outDx, _outDy
+}
+
+// ToAffine converts a GskTransform to 2D affine transformation factors.
+//
+// self must be a 2D transformation. If you are not sure, use
+// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE to check.
+//
+// The function returns the following values:
+//
+//    - outScaleX: return location for the scale factor in the x direction.
+//    - outScaleY: return location for the scale factor in the y direction.
+//    - outDx: return location for the translation in the x direction.
+//    - outDy: return location for the translation in the y direction.
+//
+func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
+	var _args [1]girepository.Argument
+	var _outs [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+	var _out2 *C.void // in
+	var _out3 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(self)
+
+	var _outScaleX float32 // out
+	var _outScaleY float32 // out
+	var _outDx float32     // out
+	var _outDy float32     // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
+	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
+
+	_outScaleX = *(*float32)(unsafe.Pointer(_out0))
+	_outScaleY = *(*float32)(unsafe.Pointer(_out1))
+	_outDx = *(*float32)(unsafe.Pointer(_out2))
+	_outDy = *(*float32)(unsafe.Pointer(_out3))
+
+	return _outScaleX, _outScaleY, _outDx, _outDy
+}
+
+// ToMatrix computes the actual value of self and stores it in out_matrix.
+//
+// The previous value of out_matrix will be ignored.
+//
+// The function returns the following values:
+//
+//    - outMatrix: matrix to set.
+//
+func (self *Transform) ToMatrix() *graphene.Matrix {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+
+	if self != nil {
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	}
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(self)
+
+	var _outMatrix *graphene.Matrix // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _outMatrix
+}
+
 // String converts a matrix into a string that is suitable for printing.
 //
 // The resulting string can be parsed with gsk.Transform().Parse.
@@ -429,14 +582,15 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 //    - utf8: new string for self.
 //
 func (self *Transform) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	if self != nil {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
-	*(**Transform)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -450,6 +604,40 @@ func (self *Transform) String() string {
 	return _utf8
 }
 
+// ToTranslate converts a GskTransform to a translation operation.
+//
+// self must be a 2D transformation. If you are not sure, use
+// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE to check.
+//
+// The function returns the following values:
+//
+//    - outDx: return location for the translation in the x direction.
+//    - outDy: return location for the translation in the y direction.
+//
+func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _out0 *C.void // in
+	var _out1 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	runtime.KeepAlive(self)
+
+	var _outDx float32 // out
+	var _outDy float32 // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
+
+	_outDx = *(*float32)(unsafe.Pointer(_out0))
+	_outDy = *(*float32)(unsafe.Pointer(_out1))
+
+	return _outDx, _outDy
+}
+
 // Transform applies all the operations from other to next.
 //
 // The function takes the following parameters:
@@ -461,7 +649,7 @@ func (self *Transform) String() string {
 //    - transform: new transform.
 //
 func (next *Transform) Transform(other *Transform) *Transform {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -472,7 +660,9 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	if other != nil {
 		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 	}
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -492,6 +682,76 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	return _transform
 }
 
+// TransformBounds transforms a graphene_rect_t using the given transform self.
+//
+// The result is the bounding box containing the coplanar quad.
+//
+// The function takes the following parameters:
+//
+//    - rect: graphene_rect_t.
+//
+// The function returns the following values:
+//
+//    - outRect: return location for the bounds of the transformed rectangle.
+//
+func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rect)
+
+	var _outRect *graphene.Rect // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _outRect
+}
+
+// TransformPoint transforms a graphene_point_t using the given transform self.
+//
+// The function takes the following parameters:
+//
+//    - point: graphene_point_t.
+//
+// The function returns the following values:
+//
+//    - outPoint: return location for the transformed point.
+//
+func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _out0 *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(point)
+
+	var _outPoint *graphene.Point // out
+	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
+
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+
+	return _outPoint
+}
+
 // Translate translates next in 2-dimensional space by point.
 //
 // The function takes the following parameters:
@@ -503,7 +763,7 @@ func (next *Transform) Transform(other *Transform) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Translate(point *graphene.Point) *Transform {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -512,7 +772,9 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -543,7 +805,7 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -552,7 +814,9 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

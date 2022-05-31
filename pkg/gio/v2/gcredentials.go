@@ -115,16 +115,18 @@ func NewCredentials() *Credentials {
 //    - otherCredentials: #GCredentials.
 //
 func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(otherCredentials).Native()))
-	*(**Credentials)(unsafe.Pointer(&args[1])) = _arg1
 
-	girepository.MustFind("Gio", "Credentials").InvokeMethod("is_same_user", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+
+	girepository.MustFind("Gio", "Credentials").InvokeMethod("is_same_user", _args[:], nil)
 
 	runtime.KeepAlive(credentials)
 	runtime.KeepAlive(otherCredentials)
@@ -147,14 +149,15 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 //    - utf8: string that should be freed with g_free().
 //
 func (credentials *Credentials) String() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
-	*(**Credentials)(unsafe.Pointer(&args[0])) = _arg0
 
-	_gret := girepository.MustFind("Gio", "Credentials").InvokeMethod("to_string", args[:], nil)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Credentials").InvokeMethod("to_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(credentials)

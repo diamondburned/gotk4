@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -102,6 +103,25 @@ func (f FileChooserError) String() string {
 	default:
 		return fmt.Sprintf("FileChooserError(%d)", f)
 	}
+}
+
+// FileChooserErrorQuark registers an error quark for GtkFileChooser errors.
+//
+// The function returns the following values:
+//
+//    - quark: error quark used for GtkFileChooser errors.
+//
+func FileChooserErrorQuark() glib.Quark {
+	var _cret C.guint32 // in
+
+	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	var _quark glib.Quark // out
+
+	_quark = uint32(_cret)
+
+	return _quark
 }
 
 // FileChooser: GtkFileChooser is an interface that can be implemented by file
@@ -251,7 +271,7 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 //      same length as options.
 //
 func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []string) {
-	var args [5]girepository.Argument
+	var _args [5]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
 	var _arg2 *C.void  // out
@@ -289,10 +309,12 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 			}
 		}
 	}
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*string)(unsafe.Pointer(&args[3])) = _arg3
-	*(*[]string)(unsafe.Pointer(&args[4])) = _arg4
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(***C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(***C.void)(unsafe.Pointer(&_args[4])) = _arg4
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
@@ -315,13 +337,15 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 //    - filter: GtkFileFilter.
 //
 func (chooser *FileChooser) AddFilter(filter *FileFilter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
@@ -335,14 +359,16 @@ func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 //    - folder: GFile for the folder to add.
 //
 func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(folder).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(folder)
@@ -367,7 +393,7 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 //    - utf8: ID of the currently selected option.
 //
 func (chooser *FileChooser) Choice(id string) string {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cret *C.void // in
@@ -375,7 +401,9 @@ func (chooser *FileChooser) Choice(id string) string {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -396,12 +424,13 @@ func (chooser *FileChooser) Choice(id string) string {
 //    - ok: TRUE if the Create Folder button should be displayed.
 //
 func (chooser *FileChooser) CreateFolders() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -423,12 +452,13 @@ func (chooser *FileChooser) CreateFolders() bool {
 //    - file: GFile for the current folder.
 //
 func (chooser *FileChooser) CurrentFolder() *gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -460,12 +490,13 @@ func (chooser *FileChooser) CurrentFolder() *gio.File {
 //      encoding, which is not necessarily the system’s encoding for filenames.
 //
 func (chooser *FileChooser) CurrentName() string {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -492,12 +523,13 @@ func (chooser *FileChooser) CurrentName() string {
 //      release it.
 //
 func (chooser *FileChooser) File() *gio.File {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -525,12 +557,13 @@ func (chooser *FileChooser) File() *gio.File {
 //      g_object_unref().
 //
 func (chooser *FileChooser) Files() *gio.ListModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -555,12 +588,13 @@ func (chooser *FileChooser) Files() *gio.ListModel {
 //    - fileFilter (optional): current filter, or NULL.
 //
 func (chooser *FileChooser) Filter() *FileFilter {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -589,12 +623,13 @@ func (chooser *FileChooser) Filter() *FileFilter {
 //      filters.
 //
 func (chooser *FileChooser) Filters() *gio.ListModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -620,12 +655,13 @@ func (chooser *FileChooser) Filters() *gio.ListModel {
 //    - ok: TRUE if multiple files can be selected.
 //
 func (chooser *FileChooser) SelectMultiple() bool {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -650,12 +686,13 @@ func (chooser *FileChooser) SelectMultiple() bool {
 //    - listModel: list model of GFiles.
 //
 func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
-	var args [1]girepository.Argument
+	var _args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -681,14 +718,16 @@ func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
 //    - id: ID of the choice to remove.
 //
 func (chooser *FileChooser) RemoveChoice(id string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
@@ -702,13 +741,15 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 //    - filter: GtkFileFilter.
 //
 func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
@@ -722,14 +763,16 @@ func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 //    - folder: GFile for the folder to remove.
 //
 func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(folder).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(folder)
@@ -754,7 +797,7 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 //    - option: ID of the option to select.
 //
 func (chooser *FileChooser) SetChoice(id, option string) {
-	var args [3]girepository.Argument
+	var _args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _arg2 *C.void // out
@@ -764,8 +807,10 @@ func (chooser *FileChooser) SetChoice(id, option string) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(option)))
 	defer C.free(unsafe.Pointer(_arg2))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
-	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
@@ -782,7 +827,7 @@ func (chooser *FileChooser) SetChoice(id, option string) {
 //    - createFolders: TRUE if the Create Folder button should be displayed.
 //
 func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -790,7 +835,9 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 	if createFolders {
 		_arg1 = C.TRUE
 	}
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(createFolders)
@@ -803,14 +850,16 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 //    - file: GFile for the new folder.
 //
 func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(file)
@@ -843,14 +892,16 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 //    - name to use, as a UTF-8 string.
 //
 func (chooser *FileChooser) SetCurrentName(name string) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(name)
@@ -902,14 +953,16 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 //    - file: GFile to set as current.
 //
 func (chooser *FileChooser) SetFile(file gio.Filer) error {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 	var _cerr *C.void // in
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(file)
@@ -938,13 +991,15 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 //    - filter: GtkFileFilter.
 //
 func (chooser *FileChooser) SetFilter(filter *FileFilter) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
 
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
@@ -961,7 +1016,7 @@ func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 //    - selectMultiple: TRUE if multiple files can be selected.
 //
 func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
-	var args [2]girepository.Argument
+	var _args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gboolean // out
 
@@ -969,7 +1024,9 @@ func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
 	if selectMultiple {
 		_arg1 = C.TRUE
 	}
-	*(**FileChooser)(unsafe.Pointer(&args[1])) = _arg1
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(selectMultiple)

@@ -115,7 +115,7 @@ func marshalGridView(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_GridView_ConnectActivate
 func _gotk4_gtk4_GridView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
-	var f func(position uint)
+	var f func(position uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -123,12 +123,12 @@ func _gotk4_gtk4_GridView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(position uint))
+		f = closure.Func.(func(position uint32))
 	}
 
-	var _position uint // out
+	var _position uint32 // out
 
-	_position = uint(arg1)
+	_position = uint32(arg1)
 
 	f(_position)
 }
@@ -138,7 +138,7 @@ func _gotk4_gtk4_GridView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 //
 // This allows for a convenient way to handle activation in a gridview. See
 // gtk.ListItem:activatable for details on how to use this signal.
-func (self *GridView) ConnectActivate(f func(position uint)) coreglib.SignalHandle {
+func (self *GridView) ConnectActivate(f func(position uint32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_GridView_ConnectActivate), f)
 }
 
@@ -252,7 +252,7 @@ func (self *GridView) Factory() *ListItemFactory {
 //
 //    - guint: maximum number of columns.
 //
-func (self *GridView) MaxColumns() uint {
+func (self *GridView) MaxColumns() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -265,9 +265,9 @@ func (self *GridView) MaxColumns() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -278,7 +278,7 @@ func (self *GridView) MaxColumns() uint {
 //
 //    - guint: minimum number of columns.
 //
-func (self *GridView) MinColumns() uint {
+func (self *GridView) MinColumns() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -291,9 +291,9 @@ func (self *GridView) MinColumns() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -413,7 +413,7 @@ func (self *GridView) SetFactory(factory *ListItemFactory) {
 //
 //    - maxColumns: maximum number of columns.
 //
-func (self *GridView) SetMaxColumns(maxColumns uint) {
+func (self *GridView) SetMaxColumns(maxColumns uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -439,7 +439,7 @@ func (self *GridView) SetMaxColumns(maxColumns uint) {
 //
 //    - minColumns: minimum number of columns.
 //
-func (self *GridView) SetMinColumns(minColumns uint) {
+func (self *GridView) SetMinColumns(minColumns uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

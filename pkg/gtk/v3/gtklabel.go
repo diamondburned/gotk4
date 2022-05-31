@@ -546,7 +546,7 @@ func (label *Label) LineWrap() bool {
 //
 //    - gint: number of lines.
 //
-func (label *Label) Lines() int {
+func (label *Label) Lines() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -559,9 +559,9 @@ func (label *Label) Lines() int {
 
 	runtime.KeepAlive(label)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -573,7 +573,7 @@ func (label *Label) Lines() int {
 //
 //    - gint: maximum width of the label in characters.
 //
-func (label *Label) MaxWidthChars() int {
+func (label *Label) MaxWidthChars() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -586,9 +586,9 @@ func (label *Label) MaxWidthChars() int {
 
 	runtime.KeepAlive(label)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -601,7 +601,7 @@ func (label *Label) MaxWidthChars() int {
 //
 //    - guint: GDK keyval usable for accelerators, or K_KEY_VoidSymbol.
 //
-func (label *Label) MnemonicKeyval() uint {
+func (label *Label) MnemonicKeyval() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -614,9 +614,9 @@ func (label *Label) MnemonicKeyval() uint {
 
 	runtime.KeepAlive(label)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -845,7 +845,7 @@ func (label *Label) UseUnderline() bool {
 //
 //    - gint: width of the label in characters.
 //
-func (label *Label) WidthChars() int {
+func (label *Label) WidthChars() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -858,9 +858,9 @@ func (label *Label) WidthChars() int {
 
 	runtime.KeepAlive(label)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -927,7 +927,7 @@ func (label *Label) YAlign() float32 {
 //    - startOffset: start offset (in characters not bytes).
 //    - endOffset: end offset (in characters not bytes).
 //
-func (label *Label) SelectRegion(startOffset, endOffset int) {
+func (label *Label) SelectRegion(startOffset, endOffset int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -937,7 +937,7 @@ func (label *Label) SelectRegion(startOffset, endOffset int) {
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 	*(**Label)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("select_region", args[:], nil)
 
@@ -1063,7 +1063,7 @@ func (label *Label) SetLineWrap(wrap bool) {
 //
 //    - lines: desired number of lines, or -1.
 //
-func (label *Label) SetLines(lines int) {
+func (label *Label) SetLines(lines int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1158,7 +1158,7 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 //
 //    - nChars: new desired maximum width, in characters.
 //
-func (label *Label) SetMaxWidthChars(nChars int) {
+func (label *Label) SetMaxWidthChars(nChars int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1414,7 +1414,7 @@ func (label *Label) SetUseUnderline(setting bool) {
 //
 //    - nChars: new desired width, in characters.
 //
-func (label *Label) SetWidthChars(nChars int) {
+func (label *Label) SetWidthChars(nChars int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

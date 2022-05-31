@@ -134,6 +134,32 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 	return _guint32
 }
 
+// ScreenNumber returns the index of a X11Screen.
+//
+// The function returns the following values:
+//
+//    - gint: position of screen among the screens of its display.
+//
+func (screen *X11Screen) ScreenNumber() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	*(**X11Screen)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_screen_number", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(screen)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // WindowManagerName returns the name of the window manager for screen.
 //
 // The function returns the following values:

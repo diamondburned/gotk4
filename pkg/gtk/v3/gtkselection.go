@@ -131,7 +131,7 @@ func marshalTargetEntry(p uintptr) (interface{}, error) {
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
-func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
+func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -143,8 +143,8 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	_arg1 = C.guint(flags)
 	_arg2 = C.guint(info)
 	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -173,18 +173,18 @@ func (t *TargetEntry) Target() string {
 }
 
 // Flags for DND.
-func (t *TargetEntry) Flags() uint {
-	var v uint // out
-	v = uint(t.native.flags)
+func (t *TargetEntry) Flags() uint32 {
+	var v uint32 // out
+	v = uint32(t.native.flags)
 	return v
 }
 
 // Info: application-assigned integer ID which will get passed as a parameter to
 // e.g the Widget::selection-get signal. It allows the application to identify
 // the target type without extensive string compares.
-func (t *TargetEntry) Info() uint {
-	var v uint // out
-	v = uint(t.native.info)
+func (t *TargetEntry) Info() uint32 {
+	var v uint32 // out
+	v = uint32(t.native.info)
 	return v
 }
 
@@ -247,7 +247,7 @@ func marshalTargetList(p uintptr) (interface{}, error) {
 //    - writable: whether to add only targets for which GTK+ knows how to convert
 //      a pixbuf into the format.
 //
-func (list *TargetList) AddImageTargets(info uint, writable bool) {
+func (list *TargetList) AddImageTargets(info uint32, writable bool) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -259,7 +259,7 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 		_arg2 = C.TRUE
 	}
 	*(**TargetList)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
@@ -278,7 +278,7 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 //      added, serializable formats otherwise.
 //    - buffer: TextBuffer.
 //
-func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer *TextBuffer) {
+func (list *TargetList) AddRichTextTargets(info uint32, deserializable bool, buffer *TextBuffer) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -292,7 +292,7 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 	}
 	_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(**TargetList)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
 
 	runtime.KeepAlive(list)
@@ -308,7 +308,7 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 //
 //    - info: ID that will be passed back to the application.
 //
-func (list *TargetList) AddTextTargets(info uint) {
+func (list *TargetList) AddTextTargets(info uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -328,7 +328,7 @@ func (list *TargetList) AddTextTargets(info uint) {
 //
 //    - info: ID that will be passed back to the application.
 //
-func (list *TargetList) AddURITargets(info uint) {
+func (list *TargetList) AddURITargets(info uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

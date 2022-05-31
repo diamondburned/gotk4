@@ -284,7 +284,7 @@ func _gotk4_glib2_SpawnChildSetupFunc(arg1 C.gpointer) {
 //
 //    - exitStatus: exit code as returned from g_spawn_sync().
 //
-func SpawnCheckExitStatus(exitStatus int) error {
+func SpawnCheckExitStatus(exitStatus int32) error {
 	var _arg1 C.gint    // out
 	var _cerr *C.GError // in
 
@@ -367,7 +367,7 @@ func SpawnCommandLineAsync(commandLine string) error {
 //    - exitStatus (optional): return location for child exit status, as returned
 //      by waitpid().
 //
-func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int32, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
 	var _arg3 *C.gchar  // in
@@ -382,7 +382,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 
 	var _standardOutput []byte // out
 	var _standardError []byte  // out
-	var _exitStatus int        // out
+	var _exitStatus int32      // out
 	var _goerr error           // out
 
 	if _arg2 != nil {
@@ -417,7 +417,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			}
 		}
 	}
-	_exitStatus = int(_arg4)
+	_exitStatus = int32(_arg4)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

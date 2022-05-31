@@ -163,6 +163,32 @@ func (self *BookmarkList) Filename() string {
 	return _utf8
 }
 
+// IOPriority gets the IO priority to use while loading file.
+//
+// The function returns the following values:
+//
+//    - gint: IO priority.
+//
+func (self *BookmarkList) IOPriority() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**BookmarkList)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("get_io_priority", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // IsLoading returns TRUE if the files are currently being loaded.
 //
 // Files will be added to self from time to time while loading is going on. The
@@ -220,4 +246,27 @@ func (self *BookmarkList) SetAttributes(attributes string) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(attributes)
+}
+
+// SetIOPriority sets the IO priority to use while loading files.
+//
+// The default IO priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//    - ioPriority: IO priority to use.
+//
+func (self *BookmarkList) SetIOPriority(ioPriority int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(ioPriority)
+	*(**BookmarkList)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "BookmarkList").InvokeMethod("set_io_priority", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ioPriority)
 }

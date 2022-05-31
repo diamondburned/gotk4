@@ -61,7 +61,7 @@ type StatusIconOverrider interface {
 	//    - button
 	//    - activateTime
 	//
-	PopupMenu(button uint, activateTime uint32)
+	PopupMenu(button, activateTime uint32)
 	// The function takes the following parameters:
 	//
 	//    - x
@@ -71,7 +71,7 @@ type StatusIconOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
+	QueryTooltip(x, y int32, keyboardMode bool, tooltip *Tooltip) bool
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -81,7 +81,7 @@ type StatusIconOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	SizeChanged(size int) bool
+	SizeChanged(size int32) bool
 }
 
 // StatusIcon: “system tray” or notification area is normally used for transient
@@ -155,13 +155,13 @@ func classInitStatusIconner(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		PopupMenu(button uint, activateTime uint32)
+		PopupMenu(button, activateTime uint32)
 	}); ok {
 		pclass.popup_menu = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_popup_menu)
 	}
 
 	if _, ok := goval.(interface {
-		QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
+		QueryTooltip(x, y int32, keyboardMode bool, tooltip *Tooltip) bool
 	}); ok {
 		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_query_tooltip)
 	}
@@ -172,7 +172,7 @@ func classInitStatusIconner(gclassPtr, data C.gpointer) {
 		pclass.scroll_event = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_scroll_event)
 	}
 
-	if _, ok := goval.(interface{ SizeChanged(size int) bool }); ok {
+	if _, ok := goval.(interface{ SizeChanged(size int32) bool }); ok {
 		pclass.size_changed = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_size_changed)
 	}
 }
@@ -229,13 +229,13 @@ func _gotk4_gtk3_StatusIconClass_button_release_event(arg0 *C.GtkStatusIcon, arg
 func _gotk4_gtk3_StatusIconClass_popup_menu(arg0 *C.GtkStatusIcon, arg1 C.guint, arg2 C.guint32) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PopupMenu(button uint, activateTime uint32)
+		PopupMenu(button, activateTime uint32)
 	})
 
-	var _button uint         // out
+	var _button uint32       // out
 	var _activateTime uint32 // out
 
-	_button = uint(arg1)
+	_button = uint32(arg1)
 	_activateTime = uint32(arg2)
 
 	iface.PopupMenu(_button, _activateTime)
@@ -245,16 +245,16 @@ func _gotk4_gtk3_StatusIconClass_popup_menu(arg0 *C.GtkStatusIcon, arg1 C.guint,
 func _gotk4_gtk3_StatusIconClass_query_tooltip(arg0 *C.GtkStatusIcon, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
+		QueryTooltip(x, y int32, keyboardMode bool, tooltip *Tooltip) bool
 	})
 
-	var _x int             // out
-	var _y int             // out
+	var _x int32           // out
+	var _y int32           // out
 	var _keyboardMode bool // out
 	var _tooltip *Tooltip  // out
 
-	_x = int(arg1)
-	_y = int(arg2)
+	_x = int32(arg1)
+	_y = int32(arg2)
 	if arg3 != 0 {
 		_keyboardMode = true
 	}
@@ -292,11 +292,11 @@ func _gotk4_gtk3_StatusIconClass_scroll_event(arg0 *C.GtkStatusIcon, arg1 *C.Gdk
 //export _gotk4_gtk3_StatusIconClass_size_changed
 func _gotk4_gtk3_StatusIconClass_size_changed(arg0 *C.GtkStatusIcon, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SizeChanged(size int) bool })
+	iface := goval.(interface{ SizeChanged(size int32) bool })
 
-	var _size int // out
+	var _size int32 // out
 
-	_size = int(arg1)
+	_size = int32(arg1)
 
 	ok := iface.SizeChanged(_size)
 
@@ -414,7 +414,7 @@ func (statusIcon *StatusIcon) ConnectButtonReleaseEvent(f func(event *gdk.EventB
 
 //export _gotk4_gtk3_StatusIcon_ConnectPopupMenu
 func _gotk4_gtk3_StatusIcon_ConnectPopupMenu(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
-	var f func(button, activateTime uint)
+	var f func(button, activateTime uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -422,14 +422,14 @@ func _gotk4_gtk3_StatusIcon_ConnectPopupMenu(arg0 C.gpointer, arg1 C.guint, arg2
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(button, activateTime uint))
+		f = closure.Func.(func(button, activateTime uint32))
 	}
 
-	var _button uint       // out
-	var _activateTime uint // out
+	var _button uint32       // out
+	var _activateTime uint32 // out
 
-	_button = uint(arg1)
-	_activateTime = uint(arg2)
+	_button = uint32(arg1)
+	_activateTime = uint32(arg2)
 
 	f(_button, _activateTime)
 }
@@ -443,13 +443,13 @@ func _gotk4_gtk3_StatusIcon_ConnectPopupMenu(arg0 C.gpointer, arg1 C.guint, arg2
 //
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
-func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint)) coreglib.SignalHandle {
+func (statusIcon *StatusIcon) ConnectPopupMenu(f func(button, activateTime uint32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(statusIcon, "popup-menu", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectPopupMenu), f)
 }
 
 //export _gotk4_gtk3_StatusIcon_ConnectQueryTooltip
 func _gotk4_gtk3_StatusIcon_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
+	var f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -457,16 +457,16 @@ func _gotk4_gtk3_StatusIcon_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, ar
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
+		f = closure.Func.(func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool))
 	}
 
-	var _x int             // out
-	var _y int             // out
+	var _x int32           // out
+	var _y int32           // out
 	var _keyboardMode bool // out
 	var _tooltip *Tooltip  // out
 
-	_x = int(arg1)
-	_y = int(arg2)
+	_x = int32(arg1)
+	_y = int32(arg2)
 	if arg3 != 0 {
 		_keyboardMode = true
 	}
@@ -495,7 +495,7 @@ func _gotk4_gtk3_StatusIcon_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, ar
 //
 // Whether this signal is emitted is platform-dependent. For plain text
 // tooltips, use StatusIcon:tooltip-text in preference.
-func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
+func (statusIcon *StatusIcon) ConnectQueryTooltip(f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(statusIcon, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectQueryTooltip), f)
 }
 
@@ -536,7 +536,7 @@ func (statusIcon *StatusIcon) ConnectScrollEvent(f func(event *gdk.EventScroll) 
 
 //export _gotk4_gtk3_StatusIcon_ConnectSizeChanged
 func _gotk4_gtk3_StatusIcon_ConnectSizeChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(size int) (ok bool)
+	var f func(size int32) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -544,12 +544,12 @@ func _gotk4_gtk3_StatusIcon_ConnectSizeChanged(arg0 C.gpointer, arg1 C.gint, arg
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(size int) (ok bool))
+		f = closure.Func.(func(size int32) (ok bool))
 	}
 
-	var _size int // out
+	var _size int32 // out
 
-	_size = int(arg1)
+	_size = int32(arg1)
 
 	ok := f(_size)
 
@@ -562,7 +562,7 @@ func _gotk4_gtk3_StatusIcon_ConnectSizeChanged(arg0 C.gpointer, arg1 C.gint, arg
 
 // ConnectSizeChanged gets emitted when the size available for the image
 // changes, e.g. because the notification area got resized.
-func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) (ok bool)) coreglib.SignalHandle {
+func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int32) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(statusIcon, "size-changed", false, unsafe.Pointer(C._gotk4_gtk3_StatusIcon_ConnectSizeChanged), f)
 }
 
@@ -971,7 +971,7 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 //
 //    - gint: size that is available for the image.
 //
-func (statusIcon *StatusIcon) Size() int {
+func (statusIcon *StatusIcon) Size() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -984,9 +984,9 @@ func (statusIcon *StatusIcon) Size() int {
 
 	runtime.KeepAlive(statusIcon)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

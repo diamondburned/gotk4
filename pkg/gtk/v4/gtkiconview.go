@@ -515,6 +515,58 @@ func (iconView *IconView) ActivateOnSingleClick() bool {
 	return _ok
 }
 
+// ColumnSpacing returns the value of the ::column-spacing property.
+//
+// The function returns the following values:
+//
+//    - gint: space between columns.
+//
+func (iconView *IconView) ColumnSpacing() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_column_spacing", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// Columns returns the value of the ::columns property.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns, or -1.
+//
+func (iconView *IconView) Columns() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_columns", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Cursor fills in path and cell with the current cursor path and cell. If the
 // cursor isn’t currently set, then *path will be NULL. If no cell currently has
 // focus, then *cell will be NULL.
@@ -580,6 +632,253 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	return _path, _cell, _ok
 }
 
+// ItemAtPos gets the path and cell for the icon at the given position.
+//
+// The function takes the following parameters:
+//
+//    - x position to be identified.
+//    - y position to be identified.
+//
+// The function returns the following values:
+//
+//    - path (optional): return location for the path, or NULL.
+//    - cell (optional): return location for the renderer responsible for the
+//      cell at (x, y), or NULL.
+//    - ok: TRUE if an item exists at the specified position.
+//
+func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool) {
+	var args [3]girepository.Argument
+	var outs [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+	var _out0 *C.void    // in
+	var _out1 *C.void    // in
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_at_pos", args[:], outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _path *TreePath      // out
+	var _cell CellRendererer // out
+	var _ok bool             // out
+	_out1 = *(**TreePath)(unsafe.Pointer(&outs[1]))
+
+	if _out0 != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_path)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+	if _out1 != nil {
+		{
+			objptr := unsafe.Pointer(_out1)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
+			rv, ok := casted.(CellRendererer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+			}
+			_cell = rv
+		}
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _path, _cell, _ok
+}
+
+// ItemColumn gets the column in which the item path is currently displayed.
+// Column numbers start at 0.
+//
+// The function takes the following parameters:
+//
+//    - path of the item.
+//
+// The function returns the following values:
+//
+//    - gint: column in which the item is displayed.
+//
+func (iconView *IconView) ItemColumn(path *TreePath) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(path)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// ItemPadding returns the value of the ::item-padding property.
+//
+// The function returns the following values:
+//
+//    - gint: padding around items.
+//
+func (iconView *IconView) ItemPadding() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_padding", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// ItemRow gets the row in which the item path is currently displayed. Row
+// numbers start at 0.
+//
+// The function takes the following parameters:
+//
+//    - path of the item.
+//
+// The function returns the following values:
+//
+//    - gint: row in which the item is displayed.
+//
+func (iconView *IconView) ItemRow(path *TreePath) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_row", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(path)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// ItemWidth returns the value of the ::item-width property.
+//
+// The function returns the following values:
+//
+//    - gint: width of a single item, or -1.
+//
+func (iconView *IconView) ItemWidth() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// Margin returns the value of the ::margin property.
+//
+// The function returns the following values:
+//
+//    - gint: space at the borders.
+//
+func (iconView *IconView) Margin() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_margin", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MarkupColumn returns the column with markup text for icon_view.
+//
+// The function returns the following values:
+//
+//    - gint: markup column, or -1 if it’s unset.
+//
+func (iconView *IconView) MarkupColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_markup_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Model returns the model the IconView is based on. Returns NULL if the model
 // is unset.
 //
@@ -609,6 +908,79 @@ func (iconView *IconView) Model() *TreeModel {
 	return _treeModel
 }
 
+// PathAtPos gets the path for the icon at the given position.
+//
+// The function takes the following parameters:
+//
+//    - x position to be identified.
+//    - y position to be identified.
+//
+// The function returns the following values:
+//
+//    - treePath (optional) corresponding to the icon or NULL if no icon exists
+//      at that position.
+//
+func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_path_at_pos", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _treePath *TreePath // out
+
+	if _cret != nil {
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_treePath)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			},
+		)
+	}
+
+	return _treePath
+}
+
+// PixbufColumn returns the column with pixbufs for icon_view.
+//
+// The function returns the following values:
+//
+//    - gint: pixbuf column, or -1 if it’s unset.
+//
+func (iconView *IconView) PixbufColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_pixbuf_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Reorderable retrieves whether the user can reorder the list via
 // drag-and-drop. See gtk_icon_view_set_reorderable().
 //
@@ -636,6 +1008,32 @@ func (iconView *IconView) Reorderable() bool {
 	}
 
 	return _ok
+}
+
+// RowSpacing returns the value of the ::row-spacing property.
+//
+// The function returns the following values:
+//
+//    - gint: space between rows.
+//
+func (iconView *IconView) RowSpacing() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_row_spacing", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // SelectedItems creates a list of paths of all selected items. Additionally, if
@@ -681,6 +1079,86 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 	})
 
 	return _list
+}
+
+// Spacing returns the value of the ::spacing property.
+//
+// The function returns the following values:
+//
+//    - gint: space between cells.
+//
+func (iconView *IconView) Spacing() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_spacing", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// TextColumn returns the column with text for icon_view.
+//
+// The function returns the following values:
+//
+//    - gint: text column, or -1 if it’s unset.
+//
+func (iconView *IconView) TextColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_text_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// TooltipColumn returns the column of icon_view’s model which is being used for
+// displaying tooltips on icon_view’s rows.
+//
+// The function returns the following values:
+//
+//    - gint: index of the tooltip column that is currently being used, or -1 if
+//      this is disabled.
+//
+func (iconView *IconView) TooltipColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**IconView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_tooltip_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // VisibleRange sets start_path and end_path to be the first and last visible
@@ -797,6 +1275,56 @@ func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 	return _ok
 }
 
+// ScrollToPath moves the alignments of icon_view to the position specified by
+// path. row_align determines where the row is placed, and col_align determines
+// where column is placed. Both are expected to be between 0.0 and 1.0. 0.0
+// means left/top alignment, 1.0 means right/bottom alignment, 0.5 means center.
+//
+// If use_align is FALSE, then the alignment arguments are ignored, and the tree
+// does the minimum amount of work to scroll the item onto the screen. This
+// means that the item will be scrolled to the edge closest to its current
+// position. If the item is currently visible on the screen, nothing is done.
+//
+// This function only works if the model is set, and path is a valid row on the
+// model. If the model changes before the icon_view is realized, the centered
+// path will be modified to reflect this change.
+//
+// The function takes the following parameters:
+//
+//    - path of the item to move to.
+//    - useAlign: whether to use alignment arguments, or FALSE.
+//    - rowAlign: vertical alignment of the item specified by path.
+//    - colAlign: horizontal alignment of the item specified by path.
+//
+func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign, colAlign float32) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.gboolean // out
+	var _arg3 C.float    // out
+	var _arg4 C.float    // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	if useAlign {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.float(rowAlign)
+	_arg4 = C.float(colAlign)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("scroll_to_path", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(useAlign)
+	runtime.KeepAlive(rowAlign)
+	runtime.KeepAlive(colAlign)
+}
+
 // SelectAll selects all the icons. icon_view must has its selection mode set to
 // K_SELECTION_MULTIPLE.
 func (iconView *IconView) SelectAll() {
@@ -856,6 +1384,51 @@ func (iconView *IconView) SetActivateOnSingleClick(single bool) {
 	runtime.KeepAlive(single)
 }
 
+// SetColumnSpacing sets the ::column-spacing property which specifies the space
+// which is inserted between the columns of the icon view.
+//
+// The function takes the following parameters:
+//
+//    - columnSpacing: column spacing.
+//
+func (iconView *IconView) SetColumnSpacing(columnSpacing int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(columnSpacing)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_column_spacing", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(columnSpacing)
+}
+
+// SetColumns sets the ::columns property which determines in how many columns
+// the icons are arranged. If columns is -1, the number of columns will be
+// chosen automatically to fill the available area.
+//
+// The function takes the following parameters:
+//
+//    - columns: number of columns.
+//
+func (iconView *IconView) SetColumns(columns int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(columns)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_columns", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(columns)
+}
+
 // SetCursor sets the current keyboard focus to be at path, and selects it. This
 // is useful when you want to focus the user’s attention on a particular item.
 // If cell is not NULL, then focus is given to the cell specified by it.
@@ -899,6 +1472,97 @@ func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEd
 	runtime.KeepAlive(startEditing)
 }
 
+// SetItemPadding sets the IconView:item-padding property which specifies the
+// padding around each of the icon view’s items.
+//
+// The function takes the following parameters:
+//
+//    - itemPadding: item padding.
+//
+func (iconView *IconView) SetItemPadding(itemPadding int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(itemPadding)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_item_padding", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(itemPadding)
+}
+
+// SetItemWidth sets the ::item-width property which specifies the width to use
+// for each item. If it is set to -1, the icon view will automatically determine
+// a suitable item size.
+//
+// The function takes the following parameters:
+//
+//    - itemWidth: width for each item.
+//
+func (iconView *IconView) SetItemWidth(itemWidth int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(itemWidth)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_item_width", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(itemWidth)
+}
+
+// SetMargin sets the ::margin property which specifies the space which is
+// inserted at the top, bottom, left and right of the icon view.
+//
+// The function takes the following parameters:
+//
+//    - margin: margin.
+//
+func (iconView *IconView) SetMargin(margin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(margin)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_margin", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarkupColumn sets the column with markup information for icon_view to be
+// column. The markup column must be of type TYPE_STRING. If the markup column
+// is set to something, it overrides the text column set by
+// gtk_icon_view_set_text_column().
+//
+// The function takes the following parameters:
+//
+//    - column in the currently used model, or -1 to display no text.
+//
+func (iconView *IconView) SetMarkupColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(column)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_markup_column", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(column)
+}
+
 // SetModel sets the model for a IconView. If the icon_view already has a model
 // set, it will remove it before setting the new model. If model is NULL, then
 // it will unset the old model.
@@ -922,6 +1586,28 @@ func (iconView *IconView) SetModel(model TreeModeller) {
 
 	runtime.KeepAlive(iconView)
 	runtime.KeepAlive(model)
+}
+
+// SetPixbufColumn sets the column with pixbufs for icon_view to be column. The
+// pixbuf column must be of type K_TYPE_PIXBUF.
+//
+// The function takes the following parameters:
+//
+//    - column in the currently used model, or -1 to disable.
+//
+func (iconView *IconView) SetPixbufColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(column)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_pixbuf_column", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(column)
 }
 
 // SetReorderable: this function is a convenience function to allow you to
@@ -958,6 +1644,72 @@ func (iconView *IconView) SetReorderable(reorderable bool) {
 	runtime.KeepAlive(reorderable)
 }
 
+// SetRowSpacing sets the ::row-spacing property which specifies the space which
+// is inserted between the rows of the icon view.
+//
+// The function takes the following parameters:
+//
+//    - rowSpacing: row spacing.
+//
+func (iconView *IconView) SetRowSpacing(rowSpacing int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(rowSpacing)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_row_spacing", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(rowSpacing)
+}
+
+// SetSpacing sets the ::spacing property which specifies the space which is
+// inserted between the cells (i.e. the icon and the text) of an item.
+//
+// The function takes the following parameters:
+//
+//    - spacing: spacing.
+//
+func (iconView *IconView) SetSpacing(spacing int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(spacing)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_spacing", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(spacing)
+}
+
+// SetTextColumn sets the column with text for icon_view to be column. The text
+// column must be of type TYPE_STRING.
+//
+// The function takes the following parameters:
+//
+//    - column in the currently used model, or -1 to display no text.
+//
+func (iconView *IconView) SetTextColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(column)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_text_column", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(column)
+}
+
 // SetTooltipCell sets the tip area of tooltip to the area which cell occupies
 // in the item pointed to by path. See also gtk_tooltip_set_tip_area().
 //
@@ -992,6 +1744,36 @@ func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell 
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(cell)
+}
+
+// SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
+// full items, you can use this function to have IconView handle these
+// automatically for you. column should be set to the column in icon_view’s
+// model containing the tooltip texts, or -1 to disable this feature.
+//
+// When enabled, Widget:has-tooltip will be set to TRUE and icon_view will
+// connect a Widget::query-tooltip signal handler.
+//
+// Note that the signal handler sets the text with gtk_tooltip_set_markup(), so
+// &, <, etc have to be escaped in the text.
+//
+// The function takes the following parameters:
+//
+//    - column: integer, which is a valid column number for icon_view’s model.
+//
+func (iconView *IconView) SetTooltipColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	_arg1 = C.int(column)
+	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_tooltip_column", args[:], nil)
+
+	runtime.KeepAlive(iconView)
+	runtime.KeepAlive(column)
 }
 
 // SetTooltipItem sets the tip area of tooltip to be the area covered by the

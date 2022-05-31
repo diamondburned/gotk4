@@ -37,7 +37,7 @@ type TableCellOverrider interface {
 	//    - gint representing the number of columns occupied by this cell, or 0
 	//      if the cell does not implement this method.
 	//
-	ColumnSpan() int
+	ColumnSpan() int32
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	//
 	// The function returns the following values:
@@ -45,7 +45,7 @@ type TableCellOverrider interface {
 	//    - gint representing the number of rows occupied by this cell, or 0 if
 	//      the cell does not implement this method.
 	//
-	RowSpan() int
+	RowSpan() int32
 	// Table returns a reference to the accessible of the containing table.
 	//
 	// The function returns the following values:
@@ -78,9 +78,9 @@ type TableCeller interface {
 
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
-	ColumnSpan() int
+	ColumnSpan() int32
 	// RowSpan returns the number of rows occupied by this cell accessible.
-	RowSpan() int
+	RowSpan() int32
 	// Table returns a reference to the accessible of the containing table.
 	Table() *ObjectClass
 }
@@ -150,7 +150,7 @@ func marshalTableCell(p uintptr) (interface{}, error) {
 //    - gint representing the number of columns occupied by this cell, or 0 if
 //      the cell does not implement this method.
 //
-func (cell *TableCell) ColumnSpan() int {
+func (cell *TableCell) ColumnSpan() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -162,9 +162,9 @@ func (cell *TableCell) ColumnSpan() int {
 
 	runtime.KeepAlive(cell)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -176,7 +176,7 @@ func (cell *TableCell) ColumnSpan() int {
 //    - gint representing the number of rows occupied by this cell, or 0 if the
 //      cell does not implement this method.
 //
-func (cell *TableCell) RowSpan() int {
+func (cell *TableCell) RowSpan() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -188,9 +188,9 @@ func (cell *TableCell) RowSpan() int {
 
 	runtime.KeepAlive(cell)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

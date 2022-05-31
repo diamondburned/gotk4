@@ -74,6 +74,20 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 	return _fileAttributeInfoList
 }
 
+// Infos: array of AttributeInfos.
+func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
+	var v *FileAttributeInfo // out
+	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(f.native.infos)))
+	return v
+}
+
+// NInfos: number of values in the array.
+func (f *FileAttributeInfoList) NInfos() int32 {
+	var v int32 // out
+	v = int32(f.native.n_infos)
+	return v
+}
+
 // Dup makes a duplicate of a file attribute info list.
 //
 // The function returns the following values:

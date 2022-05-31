@@ -280,7 +280,7 @@ func (comboBox *ComboBoxText) ActiveText() string {
 //    - id (optional): string ID for this value, or NULL.
 //    - text: string to display.
 //
-func (comboBox *ComboBoxText) Insert(position int, id, text string) {
+func (comboBox *ComboBoxText) Insert(position int32, id, text string) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -296,7 +296,7 @@ func (comboBox *ComboBoxText) Insert(position int, id, text string) {
 	_arg3 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg3))
 	*(**ComboBoxText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("insert", args[:], nil)
@@ -320,7 +320,7 @@ func (comboBox *ComboBoxText) Insert(position int, id, text string) {
 //    - position: index to insert text.
 //    - text: string.
 //
-func (comboBox *ComboBoxText) InsertText(position int, text string) {
+func (comboBox *ComboBoxText) InsertText(position int32, text string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -331,7 +331,7 @@ func (comboBox *ComboBoxText) InsertText(position int, text string) {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**ComboBoxText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("insert_text", args[:], nil)
 
@@ -404,7 +404,7 @@ func (comboBox *ComboBoxText) PrependText(text string) {
 //
 //    - position: index of the item to remove.
 //
-func (comboBox *ComboBoxText) Remove(position int) {
+func (comboBox *ComboBoxText) Remove(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

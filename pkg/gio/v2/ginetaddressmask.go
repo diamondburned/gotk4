@@ -77,7 +77,7 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 //
 //    - inetAddressMask: new AddressMask, or NULL on error.
 //
-func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error) {
+func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, error) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -87,7 +87,7 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
 	_arg1 = C.guint(length)
 	*(**InetAddress)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("new_InetAddressMask", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -213,7 +213,7 @@ func (mask *InetAddressMask) Address() *InetAddress {
 //
 //    - guint mask's length.
 //
-func (mask *InetAddressMask) Length() uint {
+func (mask *InetAddressMask) Length() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -226,9 +226,9 @@ func (mask *InetAddressMask) Length() uint {
 
 	runtime.KeepAlive(mask)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

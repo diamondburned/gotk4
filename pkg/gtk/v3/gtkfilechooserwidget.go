@@ -303,7 +303,7 @@ func (v *FileChooserWidget) ConnectPlacesShortcut(f func()) coreglib.SignalHandl
 
 //export _gotk4_gtk3_FileChooserWidget_ConnectQuickBookmark
 func _gotk4_gtk3_FileChooserWidget_ConnectQuickBookmark(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(bookmarkIndex int)
+	var f func(bookmarkIndex int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -311,12 +311,12 @@ func _gotk4_gtk3_FileChooserWidget_ConnectQuickBookmark(arg0 C.gpointer, arg1 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(bookmarkIndex int))
+		f = closure.Func.(func(bookmarkIndex int32))
 	}
 
-	var _bookmarkIndex int // out
+	var _bookmarkIndex int32 // out
 
-	_bookmarkIndex = int(arg1)
+	_bookmarkIndex = int32(arg1)
 
 	f(_bookmarkIndex)
 }
@@ -332,7 +332,7 @@ func _gotk4_gtk3_FileChooserWidget_ConnectQuickBookmark(arg0 C.gpointer, arg1 C.
 // Note that in the default binding, that Alt + 1 is actually defined to switch
 // to the bookmark at index 0, and so on successively; Alt + 0 is defined to
 // switch to the bookmark at index 10.
-func (v *FileChooserWidget) ConnectQuickBookmark(f func(bookmarkIndex int)) coreglib.SignalHandle {
+func (v *FileChooserWidget) ConnectQuickBookmark(f func(bookmarkIndex int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "quick-bookmark", false, unsafe.Pointer(C._gotk4_gtk3_FileChooserWidget_ConnectQuickBookmark), f)
 }
 

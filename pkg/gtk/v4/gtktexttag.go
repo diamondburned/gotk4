@@ -131,3 +131,62 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(sizeChanged)
 }
+
+// Priority: get the tag priority.
+//
+// The function returns the following values:
+//
+//    - gint tag’s priority.
+//
+func (tag *TextTag) Priority() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	*(**TextTag)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("get_priority", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(tag)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// SetPriority sets the priority of a GtkTextTag.
+//
+// Valid priorities start at 0 and go to one less than
+// gtk.TextTagTable.GetSize(). Each tag in a table has a unique priority;
+// setting the priority of one tag shifts the priorities of all the other tags
+// in the table to maintain a unique priority for each tag.
+//
+// Higher priority tags “win” if two tags both set the same text attribute. When
+// adding a tag to a tag table, it will be assigned the highest priority in the
+// table by default; so normally the precedence of a set of tags is the order in
+// which they were added to the table, or created with
+// gtk.TextBuffer.CreateTag(), which adds the tag to the buffer’s table
+// automatically.
+//
+// The function takes the following parameters:
+//
+//    - priority: new priority.
+//
+func (tag *TextTag) SetPriority(priority int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg1 = C.int(priority)
+	*(**TextTag)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextTag").InvokeMethod("set_priority", args[:], nil)
+
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(priority)
+}

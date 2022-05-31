@@ -110,7 +110,7 @@ func (set *RelationSet) Add(relation *Relation) {
 //
 //    - gint: integer representing the number of relations in the set.
 //
-func (set *RelationSet) NRelations() int {
+func (set *RelationSet) NRelations() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -123,9 +123,9 @@ func (set *RelationSet) NRelations() int {
 
 	runtime.KeepAlive(set)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -141,7 +141,7 @@ func (set *RelationSet) NRelations() int {
 //
 //    - relation which is the relation at position i in the set.
 //
-func (set *RelationSet) Relation(i int) *Relation {
+func (set *RelationSet) Relation(i int32) *Relation {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

@@ -478,3 +478,28 @@ func (listener *SocketListener) Close() {
 
 	runtime.KeepAlive(listener)
 }
+
+// SetBacklog sets the listen backlog on the sockets in the listener. This must
+// be called before adding any sockets, addresses or ports to the Listener (for
+// example, by calling g_socket_listener_add_inet_port()) to be effective.
+//
+// See g_socket_set_listen_backlog() for details.
+//
+// The function takes the following parameters:
+//
+//    - listenBacklog: integer.
+//
+func (listener *SocketListener) SetBacklog(listenBacklog int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	_arg1 = C.int(listenBacklog)
+	*(**SocketListener)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gio", "SocketListener").InvokeMethod("set_backlog", args[:], nil)
+
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(listenBacklog)
+}

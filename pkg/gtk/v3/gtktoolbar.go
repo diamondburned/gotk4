@@ -72,7 +72,7 @@ type ToolbarOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	PopupContextMenu(x, y, buttonNumber int) bool
+	PopupContextMenu(x, y, buttonNumber int32) bool
 }
 
 // Toolbar: toolbar is created with a call to gtk_toolbar_new().
@@ -130,7 +130,7 @@ func classInitToolbarrer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GtkToolbarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		PopupContextMenu(x, y, buttonNumber int) bool
+		PopupContextMenu(x, y, buttonNumber int32) bool
 	}); ok {
 		pclass.popup_context_menu = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_popup_context_menu)
 	}
@@ -140,16 +140,16 @@ func classInitToolbarrer(gclassPtr, data C.gpointer) {
 func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.GtkToolbar, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PopupContextMenu(x, y, buttonNumber int) bool
+		PopupContextMenu(x, y, buttonNumber int32) bool
 	})
 
-	var _x int            // out
-	var _y int            // out
-	var _buttonNumber int // out
+	var _x int32            // out
+	var _y int32            // out
+	var _buttonNumber int32 // out
 
-	_x = int(arg1)
-	_y = int(arg2)
-	_buttonNumber = int(arg3)
+	_x = int32(arg1)
+	_y = int32(arg2)
+	_buttonNumber = int32(arg3)
 
 	ok := iface.PopupContextMenu(_x, _y, _buttonNumber)
 
@@ -258,7 +258,7 @@ func (toolbar *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) (ok bool)) 
 
 //export _gotk4_gtk3_Toolbar_ConnectPopupContextMenu
 func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(x, y, button int) (ok bool)
+	var f func(x, y, button int32) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -266,16 +266,16 @@ func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, a
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y, button int) (ok bool))
+		f = closure.Func.(func(x, y, button int32) (ok bool))
 	}
 
-	var _x int      // out
-	var _y int      // out
-	var _button int // out
+	var _x int32      // out
+	var _y int32      // out
+	var _button int32 // out
 
-	_x = int(arg1)
-	_y = int(arg2)
-	_button = int(arg3)
+	_x = int32(arg1)
+	_y = int32(arg2)
+	_button = int32(arg3)
 
 	ok := f(_x, _y, _button)
 
@@ -293,7 +293,7 @@ func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, a
 // context menu on the toolbar. The context-menu should appear at the
 // coordinates given by x and y. The mouse button number is given by the button
 // parameter. If the menu was popped up using the keybaord, button is -1.
-func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) (ok bool)) coreglib.SignalHandle {
+func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int32) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(toolbar, "popup-context-menu", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectPopupContextMenu), f)
 }
 
@@ -331,7 +331,7 @@ func NewToolbar() *Toolbar {
 //
 //    - gint: position corresponding to the point (x, y) on the toolbar.
 //
-func (toolbar *Toolbar) DropIndex(x, y int) int {
+func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -342,7 +342,7 @@ func (toolbar *Toolbar) DropIndex(x, y int) int {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**Toolbar)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_drop_index", args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -351,9 +351,9 @@ func (toolbar *Toolbar) DropIndex(x, y int) int {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -369,7 +369,7 @@ func (toolbar *Toolbar) DropIndex(x, y int) int {
 //
 //    - gint: position of item on the toolbar.
 //
-func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
+func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -385,9 +385,9 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -398,7 +398,7 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 //
 //    - gint: number of items on the toolbar.
 //
-func (toolbar *Toolbar) NItems() int {
+func (toolbar *Toolbar) NItems() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -411,9 +411,9 @@ func (toolbar *Toolbar) NItems() int {
 
 	runtime.KeepAlive(toolbar)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -430,7 +430,7 @@ func (toolbar *Toolbar) NItems() int {
 //    - toolItem (optional): n'th ToolItem on toolbar, or NULL if there isn’t an
 //      n'th item.
 //
-func (toolbar *Toolbar) NthItem(n int) *ToolItem {
+func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -493,7 +493,7 @@ func (toolbar *Toolbar) ShowArrow() bool {
 //    - item: ToolItem.
 //    - pos: position of the new item.
 //
-func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
+func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -525,7 +525,7 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 //    - toolItem (optional) or NULL to turn of highlighting.
 //    - index_: position on toolbar.
 //
-func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
+func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out

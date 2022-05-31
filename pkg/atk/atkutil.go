@@ -101,7 +101,7 @@ func (k KeyEventType) String() string {
 // occurs, if registered via atk_add_key_event_listener. It allows for
 // pre-emptive interception of key events via the return code as described
 // below.
-type KeySnoopFunc func(event *KeyEventStruct) (gint int)
+type KeySnoopFunc func(event *KeyEventStruct) (gint int32)
 
 //export _gotk4_atk1_KeySnoopFunc
 func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret C.gint) {
@@ -259,12 +259,12 @@ func GetVersion() string {
 //
 //    - trackerId: id of the focus tracker to remove.
 //
-func RemoveFocusTracker(trackerId uint) {
+func RemoveFocusTracker(trackerId uint32) {
 	var args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(trackerId)
-	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Atk", "remove_focus_tracker").Invoke(args[:], nil)
 
@@ -287,12 +287,12 @@ func RemoveFocusTracker(trackerId uint) {
 //
 //    - listenerId: id of the event listener to remove.
 //
-func RemoveGlobalEventListener(listenerId uint) {
+func RemoveGlobalEventListener(listenerId uint32) {
 	var args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(listenerId)
-	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Atk", "remove_global_event_listener").Invoke(args[:], nil)
 
@@ -308,12 +308,12 @@ func RemoveGlobalEventListener(listenerId uint) {
 //
 //    - listenerId: id of the event listener to remove.
 //
-func RemoveKeyEventListener(listenerId uint) {
+func RemoveKeyEventListener(listenerId uint32) {
 	var args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(listenerId)
-	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Atk", "remove_key_event_listener").Invoke(args[:], nil)
 
@@ -369,9 +369,9 @@ type keyEventStruct struct {
 
 // Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
 // ATK_KEY_EVENT_RELEASE.
-func (k *KeyEventStruct) Type() int {
-	var v int // out
-	v = int(k.native._type)
+func (k *KeyEventStruct) Type() int32 {
+	var v int32 // out
+	v = int32(k.native._type)
 	return v
 }
 
@@ -379,24 +379,24 @@ func (k *KeyEventStruct) Type() int {
 // the event takes place. The meaning of the bits is currently defined to match
 // the bitmask used by GDK in GdkEventType.state, see
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
-func (k *KeyEventStruct) State() uint {
-	var v uint // out
-	v = uint(k.native.state)
+func (k *KeyEventStruct) State() uint32 {
+	var v uint32 // out
+	v = uint32(k.native.state)
 	return v
 }
 
 // Keyval: guint representing a keysym value corresponding to those used by GDK
 // and X11: see /usr/X11/include/keysymdef.h.
-func (k *KeyEventStruct) Keyval() uint {
-	var v uint // out
-	v = uint(k.native.keyval)
+func (k *KeyEventStruct) Keyval() uint32 {
+	var v uint32 // out
+	v = uint32(k.native.keyval)
 	return v
 }
 
 // Length: length of member #string.
-func (k *KeyEventStruct) Length() int {
-	var v int // out
-	v = int(k.native.length)
+func (k *KeyEventStruct) Length() int32 {
+	var v int32 // out
+	v = int32(k.native.length)
 	return v
 }
 

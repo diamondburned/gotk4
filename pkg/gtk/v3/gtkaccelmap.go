@@ -187,12 +187,12 @@ func AccelMapLoad(fileName string) {
 //
 //    - fd: valid readable file descriptor.
 //
-func AccelMapLoadFd(fd int) {
+func AccelMapLoadFd(fd int32) {
 	var args [1]girepository.Argument
 	var _arg0 C.gint // out
 
 	_arg0 = C.gint(fd)
-	*(*int)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Gtk", "load_fd").Invoke(args[:], nil)
 
@@ -279,12 +279,12 @@ func AccelMapSave(fileName string) {
 //
 //    - fd: valid writable file descriptor.
 //
-func AccelMapSaveFd(fd int) {
+func AccelMapSaveFd(fd int32) {
 	var args [1]girepository.Argument
 	var _arg0 C.gint // out
 
 	_arg0 = C.gint(fd)
-	*(*int)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Gtk", "save_fd").Invoke(args[:], nil)
 

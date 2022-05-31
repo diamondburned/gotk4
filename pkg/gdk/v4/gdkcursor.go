@@ -141,6 +141,54 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	return _cursor
 }
 
+// NewCursorFromTexture creates a new cursor from a GdkTexture.
+//
+// The function takes the following parameters:
+//
+//    - texture providing the pixel data.
+//    - hotspotX: horizontal offset of the “hotspot” of the cursor.
+//    - hotspotY: vertical offset of the “hotspot” of the cursor.
+//    - fallback (optional): NULL or the GdkCursor to fall back to when this one
+//      cannot be supported.
+//
+// The function returns the following values:
+//
+//    - cursor: new GdkCursor.
+//
+func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *Cursor) *Cursor {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _arg3 *C.void // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg1 = C.int(hotspotX)
+	_arg2 = C.int(hotspotY)
+	if fallback != nil {
+		_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
+	}
+	*(*Texturer)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(**Cursor)(unsafe.Pointer(&args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_texture", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(texture)
+	runtime.KeepAlive(hotspotX)
+	runtime.KeepAlive(hotspotY)
+	runtime.KeepAlive(fallback)
+
+	var _cursor *Cursor // out
+
+	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _cursor
+}
+
 // Fallback returns the fallback for this cursor.
 //
 // The fallback will be used if this cursor is not available on a given
@@ -174,6 +222,70 @@ func (cursor *Cursor) Fallback() *Cursor {
 	}
 
 	return _ret
+}
+
+// HotspotX returns the horizontal offset of the hotspot.
+//
+// The hotspot indicates the pixel that will be directly above the cursor.
+//
+// Note that named cursors may have a nonzero hotspot, but this function will
+// only return the hotspot position for cursors created with
+// gdk.Cursor.NewFromTexture.
+//
+// The function returns the following values:
+//
+//    - gint: horizontal offset of the hotspot or 0 for named cursors.
+//
+func (cursor *Cursor) HotspotX() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_x", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cursor)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// HotspotY returns the vertical offset of the hotspot.
+//
+// The hotspot indicates the pixel that will be directly above the cursor.
+//
+// Note that named cursors may have a nonzero hotspot, but this function will
+// only return the hotspot position for cursors created with
+// gdk.Cursor.NewFromTexture.
+//
+// The function returns the following values:
+//
+//    - gint: vertical offset of the hotspot or 0 for named cursors.
+//
+func (cursor *Cursor) HotspotY() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	*(**Cursor)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_y", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cursor)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Name returns the name of the cursor.

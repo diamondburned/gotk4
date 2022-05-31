@@ -113,7 +113,7 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 //    - inetSocketAddress (optional): new SocketAddress, or NULL if address
 //      cannot be parsed.
 //
-func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
+func NewInetSocketAddressFromString(address string, port uint32) *InetSocketAddress {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -123,7 +123,7 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = C.guint(port)
 	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("new_InetSocketAddress_from_string", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

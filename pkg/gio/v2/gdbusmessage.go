@@ -679,7 +679,7 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //
 //    - utf8: string that should be freed with g_free().
 //
-func (message *DBusMessage) Print(indent uint) string {
+func (message *DBusMessage) Print(indent uint32) string {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

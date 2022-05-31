@@ -145,7 +145,7 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_ColumnView_ConnectActivate
 func _gotk4_gtk4_ColumnView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
-	var f func(position uint)
+	var f func(position uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -153,12 +153,12 @@ func _gotk4_gtk4_ColumnView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(position uint))
+		f = closure.Func.(func(position uint32))
 	}
 
-	var _position uint // out
+	var _position uint32 // out
 
-	_position = uint(arg1)
+	_position = uint32(arg1)
 
 	f(_position)
 }
@@ -168,7 +168,7 @@ func _gotk4_gtk4_ColumnView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 
 //
 // This allows for a convenient way to handle activation in a columnview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
-func (self *ColumnView) ConnectActivate(f func(position uint)) coreglib.SignalHandle {
+func (self *ColumnView) ConnectActivate(f func(position uint32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ColumnView_ConnectActivate), f)
 }
 
@@ -489,7 +489,7 @@ func (self *ColumnView) Sorter() *Sorter {
 //    - position to insert column at.
 //    - column: GtkColumnViewColumn to insert.
 //
-func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
+func (self *ColumnView) InsertColumn(position uint32, column *ColumnViewColumn) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -499,7 +499,7 @@ func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
 	_arg1 = C.guint(position)
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
 	*(**ColumnView)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "ColumnView").InvokeMethod("insert_column", args[:], nil)
 

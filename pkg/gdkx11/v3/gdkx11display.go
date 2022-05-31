@@ -44,7 +44,7 @@ func init() {
 //    - eventBase: first event type code to register.
 //    - nEvents: number of event type codes to register.
 //
-func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
+func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -54,8 +54,8 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 	_arg1 = C.gint(eventBase)
 	_arg2 = C.gint(nEvents)
 	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("GdkX11", "x11_register_standard_event_type").Invoke(args[:], nil)
 
@@ -137,7 +137,7 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 //
 //    - gint: x error code or 0 on success.
 //
-func (display *X11Display) ErrorTrapPop() int {
+func (display *X11Display) ErrorTrapPop() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -150,9 +150,9 @@ func (display *X11Display) ErrorTrapPop() int {
 
 	runtime.KeepAlive(display)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -310,7 +310,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //
 //    - scale: new scale value.
 //
-func (display *X11Display) SetWindowScale(scale int) {
+func (display *X11Display) SetWindowScale(scale int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

@@ -82,12 +82,12 @@ func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 //
 //    - watcherId: identifier obtained from g_bus_watch_name().
 //
-func BusUnwatchName(watcherId uint) {
+func BusUnwatchName(watcherId uint32) {
 	var args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(watcherId)
-	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Gio", "bus_unwatch_name").Invoke(args[:], nil)
 

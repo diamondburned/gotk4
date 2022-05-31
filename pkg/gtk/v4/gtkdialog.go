@@ -17,6 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern void _gotk4_gtk4_DialogClass_close(GtkDialog*);
+// extern void _gotk4_gtk4_DialogClass_response(GtkDialog*, int);
 // extern void _gotk4_gtk4_Dialog_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk4_Dialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
@@ -158,6 +159,15 @@ func (d DialogFlags) Has(other DialogFlags) bool {
 // DialogOverrider contains methods that are overridable.
 type DialogOverrider interface {
 	Close()
+	// Response emits the ::response signal with the given response ID.
+	//
+	// Used to indicate that the user has responded to the dialog in some way.
+	//
+	// The function takes the following parameters:
+	//
+	//    - responseId: response ID.
+	//
+	Response(responseId int32)
 }
 
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
@@ -301,6 +311,10 @@ func classInitDialogger(gclassPtr, data C.gpointer) {
 	if _, ok := goval.(interface{ Close() }); ok {
 		pclass.close = (*[0]byte)(C._gotk4_gtk4_DialogClass_close)
 	}
+
+	if _, ok := goval.(interface{ Response(responseId int32) }); ok {
+		pclass.response = (*[0]byte)(C._gotk4_gtk4_DialogClass_response)
+	}
 }
 
 //export _gotk4_gtk4_DialogClass_close
@@ -309,6 +323,18 @@ func _gotk4_gtk4_DialogClass_close(arg0 *C.GtkDialog) {
 	iface := goval.(interface{ Close() })
 
 	iface.Close()
+}
+
+//export _gotk4_gtk4_DialogClass_response
+func _gotk4_gtk4_DialogClass_response(arg0 *C.GtkDialog, arg1 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Response(responseId int32) })
+
+	var _responseId int32 // out
+
+	_responseId = int32(arg1)
+
+	iface.Response(_responseId)
 }
 
 func wrapDialog(obj *coreglib.Object) *Dialog {
@@ -387,7 +413,7 @@ func (dialog *Dialog) ConnectClose(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk4_Dialog_ConnectResponse
 func _gotk4_gtk4_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
+	var f func(responseId int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -395,12 +421,12 @@ func _gotk4_gtk4_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gui
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(responseId int))
+		f = closure.Func.(func(responseId int32))
 	}
 
-	var _responseId int // out
+	var _responseId int32 // out
 
-	_responseId = int(arg1)
+	_responseId = int32(arg1)
 
 	f(_responseId)
 }
@@ -411,7 +437,7 @@ func _gotk4_gtk4_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gui
 // gtk.Dialog.Response() is called. On a delete event, the response ID is
 // GTK_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
 // clicked.
-func (dialog *Dialog) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
+func (dialog *Dialog) ConnectResponse(f func(responseId int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(dialog, "response", false, unsafe.Pointer(C._gotk4_gtk4_Dialog_ConnectResponse), f)
 }
 
@@ -435,6 +461,99 @@ func NewDialog() *Dialog {
 	_dialog = wrapDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _dialog
+}
+
+// AddActionWidget adds an activatable widget to the action area of a GtkDialog.
+//
+// GTK connects a signal handler that will emit the gtk.Dialog::response signal
+// on the dialog when the widget is activated. The widget is appended to the end
+// of the dialog’s action area.
+//
+// If you want to add a non-activatable widget, simply pack it into the
+// action_area field of the GtkDialog struct.
+//
+// The function takes the following parameters:
+//
+//    - child: activatable widget.
+//    - responseId: response ID for child.
+//
+func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(responseId)
+	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("add_action_widget", args[:], nil)
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(responseId)
+}
+
+// AddButton adds a button with the given text.
+//
+// GTK arranges things so that clicking the button will emit the
+// gtk.Dialog::response signal with the given response_id. The button is
+// appended to the end of the dialog’s action area. The button widget is
+// returned, but usually you don’t need it.
+//
+// The function takes the following parameters:
+//
+//    - buttonText: text of button.
+//    - responseId: response ID for the button.
+//
+// The function returns the following values:
+//
+//    - widget: GtkButton widget that was added.
+//
+func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(responseId)
+	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("add_button", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(buttonText)
+	runtime.KeepAlive(responseId)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
 }
 
 // ContentArea returns the content area of dialog.
@@ -490,4 +609,166 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _headerBar
+}
+
+// ResponseForWidget gets the response id of a widget in the action area of a
+// dialog.
+//
+// The function takes the following parameters:
+//
+//    - widget in the action area of dialog.
+//
+// The function returns the following values:
+//
+//    - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
+//      a response id set.
+//
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_response_for_widget", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// WidgetForResponse gets the widget button that uses the given response ID in
+// the action area of a dialog.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID used by the dialog widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional) button that uses the given response_id, or NULL.
+//
+func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = C.int(responseId)
+	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "Dialog").InvokeMethod("get_widget_for_response", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// Response emits the ::response signal with the given response ID.
+//
+// Used to indicate that the user has responded to the dialog in some way.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
+func (dialog *Dialog) Response(responseId int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = C.int(responseId)
+	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("response", args[:], nil)
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
+}
+
+// SetDefaultResponse sets the default widget for the dialog based on the
+// response ID.
+//
+// Pressing “Enter” normally activates the default widget.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
+func (dialog *Dialog) SetDefaultResponse(responseId int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = C.int(responseId)
+	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_default_response", args[:], nil)
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
+}
+
+// SetResponseSensitive: convenient way to sensitize/desensitize dialog buttons.
+//
+// Calls gtk_widget_set_sensitive (widget, setting) for each widget in the
+// dialog’s action area with the given response_id.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//    - setting: TRUE for sensitive.
+//
+func (dialog *Dialog) SetResponseSensitive(responseId int32, setting bool) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.gboolean // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = C.int(responseId)
+	if setting {
+		_arg2 = C.TRUE
+	}
+	*(**Dialog)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Dialog").InvokeMethod("set_response_sensitive", args[:], nil)
+
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
+	runtime.KeepAlive(setting)
 }

@@ -247,7 +247,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 //    - x: x position to move to.
 //    - y: y position to move to.
 //
-func (layout *Layout) Move(childWidget Widgetter, x, y int) {
+func (layout *Layout) Move(childWidget Widgetter, x, y int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -260,7 +260,7 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 	_arg3 = C.gint(y)
 	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "Layout").InvokeMethod("move", args[:], nil)
 
@@ -279,7 +279,7 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 //    - x: x position of child widget.
 //    - y: y position of child widget.
 //
-func (layout *Layout) Put(childWidget Widgetter, x, y int) {
+func (layout *Layout) Put(childWidget Widgetter, x, y int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -292,7 +292,7 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 	_arg3 = C.gint(y)
 	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "Layout").InvokeMethod("put", args[:], nil)
 
@@ -336,7 +336,7 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 //    - width of entire scrollable area.
 //    - height of entire scrollable area.
 //
-func (layout *Layout) SetSize(width, height uint) {
+func (layout *Layout) SetSize(width, height uint32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -346,7 +346,7 @@ func (layout *Layout) SetSize(width, height uint) {
 	_arg1 = C.guint(width)
 	_arg2 = C.guint(height)
 	*(**Layout)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_size", args[:], nil)
 

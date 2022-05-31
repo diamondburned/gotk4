@@ -96,7 +96,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 //
 //    - desktop: number of a workspace, or -1.
 //
-func (context *AppLaunchContext) SetDesktop(desktop int) {
+func (context *AppLaunchContext) SetDesktop(desktop int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

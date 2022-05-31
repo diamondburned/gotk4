@@ -92,6 +92,33 @@ func _gotk4_gtk4_ListBoxForEachFunc(arg1 *C.GtkListBox, arg2 *C.GtkListBoxRow, a
 	fn(_box, _row)
 }
 
+// ListBoxSortFunc: compare two rows to determine which should be first.
+type ListBoxSortFunc func(row1, row2 *ListBoxRow) (gint int32)
+
+//export _gotk4_gtk4_ListBoxSortFunc
+func _gotk4_gtk4_ListBoxSortFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListBoxRow, arg3 C.gpointer) (cret C.int) {
+	var fn ListBoxSortFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ListBoxSortFunc)
+	}
+
+	var _row1 *ListBoxRow // out
+	var _row2 *ListBoxRow // out
+
+	_row1 = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg1)))
+	_row2 = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg2)))
+
+	gint := fn(_row1, _row2)
+
+	cret = C.int(gint)
+
+	return cret
+}
+
 // ListBoxUpdateHeaderFunc: whenever row changes or which row is before row
 // changes this is called, which lets you update the header on row.
 //
@@ -512,6 +539,80 @@ func (box *ListBox) Adjustment() *Adjustment {
 	return _adjustment
 }
 
+// RowAtIndex gets the n-th child in the list (not counting headers).
+//
+// If index_ is negative or larger than the number of items in the list, NULL is
+// returned.
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the row.
+//
+// The function returns the following values:
+//
+//    - listBoxRow (optional): child GtkWidget or NULL.
+//
+func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.int(index_)
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_row_at_index", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(index_)
+
+	var _listBoxRow *ListBoxRow // out
+
+	if _cret != nil {
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _listBoxRow
+}
+
+// RowAtY gets the row at the y position.
+//
+// The function takes the following parameters:
+//
+//    - y: position.
+//
+// The function returns the following values:
+//
+//    - listBoxRow (optional): row or NULL in case no row exists for the given y
+//      coordinate.
+//
+func (box *ListBox) RowAtY(y int32) *ListBoxRow {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.int(y)
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_row_at_y", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(y)
+
+	var _listBoxRow *ListBoxRow // out
+
+	if _cret != nil {
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _listBoxRow
+}
+
 // SelectedRow gets the selected row, or NULL if no rows are selected.
 //
 // Note that the box may allow multiple selection, in which case you should use
@@ -603,6 +704,38 @@ func (box *ListBox) ShowSeparators() bool {
 	}
 
 	return _ok
+}
+
+// Insert the child into the box at position.
+//
+// If a sort function is set, the widget will actually be inserted at the
+// calculated position.
+//
+// If position is -1, or larger than the total number of items in the box, then
+// the child will be appended to the end.
+//
+// The function takes the following parameters:
+//
+//    - child: GtkWidget to add.
+//    - position to insert child in.
+//
+func (box *ListBox) Insert(child Widgetter, position int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(position)
+	*(**ListBox)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "ListBox").InvokeMethod("insert", args[:], nil)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
 }
 
 // InvalidateFilter: update the filtering for all rows.
@@ -1141,6 +1274,32 @@ func (row *ListBoxRow) Header() Widgetter {
 	}
 
 	return _widget
+}
+
+// Index gets the current index of the row in its GtkListBox container.
+//
+// The function returns the following values:
+//
+//    - gint: index of the row, or -1 if the row is not in a listbox.
+//
+func (row *ListBoxRow) Index() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	*(**ListBoxRow)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_index", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(row)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Selectable gets whether the row can be selected.

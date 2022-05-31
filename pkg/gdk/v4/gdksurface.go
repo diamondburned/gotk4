@@ -166,7 +166,7 @@ func (surface *Surface) ConnectEvent(f func(event Eventer) (ok bool)) coreglib.S
 
 //export _gotk4_gdk4_Surface_ConnectLayout
 func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int)
+	var f func(width, height int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -174,14 +174,14 @@ func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(width, height int))
+		f = closure.Func.(func(width, height int32))
 	}
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(arg1)
-	_height = int(arg2)
+	_width = int32(arg1)
+	_height = int32(arg2)
 
 	f(_width, _height)
 }
@@ -191,7 +191,7 @@ func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint
 //
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk_surface_get_scale_factor()).
-func (surface *Surface) ConnectLayout(f func(width, height int)) coreglib.SignalHandle {
+func (surface *Surface) ConnectLayout(f func(width, height int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(surface, "layout", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectLayout), f)
 }
 
@@ -654,6 +654,35 @@ func (surface *Surface) FrameClock() FrameClocker {
 	return _frameClock
 }
 
+// Height returns the height of the given surface.
+//
+// Surface size is reported in ”application pixels”, not ”device pixels” (see
+// gdk.Surface.GetScaleFactor()).
+//
+// The function returns the following values:
+//
+//    - gint: height of surface.
+//
+func (surface *Surface) Height() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**Surface)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_height", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(surface)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Mapped checks whether the surface has been mapped.
 //
 // A surface is mapped with gdk.Toplevel.Present() or gdk.Popup.Present().
@@ -682,6 +711,71 @@ func (surface *Surface) Mapped() bool {
 	}
 
 	return _ok
+}
+
+// ScaleFactor returns the internal scale factor that maps from surface
+// coordinates to the actual device pixels.
+//
+// On traditional systems this is 1, but on very high density outputs this can
+// be a higher value (often 2). A higher value means that drawing is
+// automatically scaled up to a higher resolution, so any code doing drawing
+// will automatically look nicer. However, if you are supplying pixel-based data
+// the scale value can be used to determine whether to use a pixel resource with
+// higher resolution data.
+//
+// The scale of a surface may change during runtime.
+//
+// The function returns the following values:
+//
+//    - gint: scale factor.
+//
+func (surface *Surface) ScaleFactor() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**Surface)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_scale_factor", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(surface)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// Width returns the width of the given surface.
+//
+// Surface size is reported in ”application pixels”, not ”device pixels” (see
+// gdk.Surface.GetScaleFactor()).
+//
+// The function returns the following values:
+//
+//    - gint: width of surface.
+//
+func (surface *Surface) Width() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**Surface)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(surface)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Hide the surface.

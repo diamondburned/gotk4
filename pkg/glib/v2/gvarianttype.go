@@ -523,7 +523,7 @@ func (typ *VariantType) StringLength() uint {
 //
 //      Since 2.24.
 //
-func (typ *VariantType) Hash() uint {
+func (typ *VariantType) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -532,9 +532,9 @@ func (typ *VariantType) Hash() uint {
 	_cret = C.g_variant_type_hash(_arg0)
 	runtime.KeepAlive(typ)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

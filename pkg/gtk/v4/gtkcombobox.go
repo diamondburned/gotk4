@@ -442,6 +442,38 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	return _comboBox
 }
 
+// Active returns the index of the currently active item.
+//
+// If the model is a non-flat treemodel, and the active item is not an immediate
+// child of the root of the tree, this function returns
+// gtk_tree_path_get_indices (path)[0], where path is the gtk.TreePath of the
+// active item.
+//
+// The function returns the following values:
+//
+//    - gint: integer which is the index of the currently active item, or -1 if
+//      there’s no active item.
+//
+func (comboBox *ComboBox) Active() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_active", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(comboBox)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ActiveID returns the ID of the active row of combo_box.
 //
 // This value is taken from the active row and the column specified by the
@@ -521,6 +553,33 @@ func (comboBox *ComboBox) Child() Widgetter {
 	return _widget
 }
 
+// EntryTextColumn returns the column which combo_box is using to get the
+// strings from to display in the internal entry.
+//
+// The function returns the following values:
+//
+//    - gint: column in the data source model of combo_box.
+//
+func (comboBox *ComboBox) EntryTextColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_entry_text_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(comboBox)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // HasEntry returns whether the combo box has an entry.
 //
 // The function returns the following values:
@@ -547,6 +606,33 @@ func (comboBox *ComboBox) HasEntry() bool {
 	}
 
 	return _ok
+}
+
+// IDColumn returns the column which combo_box is using to get string IDs for
+// values from.
+//
+// The function returns the following values:
+//
+//    - gint: column in the data source model of combo_box.
+//
+func (comboBox *ComboBox) IDColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	*(**ComboBox)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ComboBox").InvokeMethod("get_id_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(comboBox)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Model returns the GtkTreeModel of combo_box.
@@ -664,6 +750,28 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 	runtime.KeepAlive(device)
 }
 
+// SetActive sets the active item of combo_box to be the item at index.
+//
+// The function takes the following parameters:
+//
+//    - index_: index in the model passed during construction, or -1 to have no
+//      active item.
+//
+func (comboBox *ComboBox) SetActive(index_ int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	_arg1 = C.int(index_)
+	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_active", args[:], nil)
+
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(index_)
+}
+
 // SetActiveID changes the active row of combo_box to the one that has an ID
 // equal to active_id.
 //
@@ -756,6 +864,59 @@ func (comboBox *ComboBox) SetChild(child Widgetter) {
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(child)
+}
+
+// SetEntryTextColumn sets the model column which combo_box should use to get
+// strings from to be text_column.
+//
+// The column text_column in the model of combo_box must be of type
+// G_TYPE_STRING.
+//
+// This is only relevant if combo_box has been created with
+// gtk.ComboBox:has-entry as TRUE.
+//
+// The function takes the following parameters:
+//
+//    - textColumn: column in model to get the strings from for the internal
+//      entry.
+//
+func (comboBox *ComboBox) SetEntryTextColumn(textColumn int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	_arg1 = C.int(textColumn)
+	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_entry_text_column", args[:], nil)
+
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(textColumn)
+}
+
+// SetIDColumn sets the model column which combo_box should use to get string
+// IDs for values from.
+//
+// The column id_column in the model of combo_box must be of type G_TYPE_STRING.
+//
+// The function takes the following parameters:
+//
+//    - idColumn: column in model to get string IDs for values from.
+//
+func (comboBox *ComboBox) SetIDColumn(idColumn int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	_arg1 = C.int(idColumn)
+	*(**ComboBox)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ComboBox").InvokeMethod("set_id_column", args[:], nil)
+
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(idColumn)
 }
 
 // SetModel sets the model used by combo_box to be model.

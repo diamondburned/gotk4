@@ -96,7 +96,7 @@ type EntryOverrider interface {
 	//    - width
 	//    - height
 	//
-	FrameSize(x, y, width, height *int)
+	FrameSize(x, y, width, height *int32)
 	// The function takes the following parameters:
 	//
 	//    - x
@@ -104,7 +104,7 @@ type EntryOverrider interface {
 	//    - width
 	//    - height
 	//
-	TextAreaSize(x, y, width, height *int)
+	TextAreaSize(x, y, width, height *int32)
 	// The function takes the following parameters:
 	//
 	InsertAtCursor(str string)
@@ -225,13 +225,13 @@ func classInitEntrier(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		FrameSize(x, y, width, height *int)
+		FrameSize(x, y, width, height *int32)
 	}); ok {
 		pclass.get_frame_size = (*[0]byte)(C._gotk4_gtk3_EntryClass_get_frame_size)
 	}
 
 	if _, ok := goval.(interface {
-		TextAreaSize(x, y, width, height *int)
+		TextAreaSize(x, y, width, height *int32)
 	}); ok {
 		pclass.get_text_area_size = (*[0]byte)(C._gotk4_gtk3_EntryClass_get_text_area_size)
 	}
@@ -293,18 +293,18 @@ func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.GtkEntry) {
 func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		FrameSize(x, y, width, height *int)
+		FrameSize(x, y, width, height *int32)
 	})
 
-	var _x *int      // out
-	var _y *int      // out
-	var _width *int  // out
-	var _height *int // out
+	var _x *int32      // out
+	var _y *int32      // out
+	var _width *int32  // out
+	var _height *int32 // out
 
-	_x = (*int)(unsafe.Pointer(arg1))
-	_y = (*int)(unsafe.Pointer(arg2))
-	_width = (*int)(unsafe.Pointer(arg3))
-	_height = (*int)(unsafe.Pointer(arg4))
+	_x = (*int32)(unsafe.Pointer(arg1))
+	_y = (*int32)(unsafe.Pointer(arg2))
+	_width = (*int32)(unsafe.Pointer(arg3))
+	_height = (*int32)(unsafe.Pointer(arg4))
 
 	iface.FrameSize(_x, _y, _width, _height)
 }
@@ -313,18 +313,18 @@ func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 
 func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		TextAreaSize(x, y, width, height *int)
+		TextAreaSize(x, y, width, height *int32)
 	})
 
-	var _x *int      // out
-	var _y *int      // out
-	var _width *int  // out
-	var _height *int // out
+	var _x *int32      // out
+	var _y *int32      // out
+	var _width *int32  // out
+	var _height *int32 // out
 
-	_x = (*int)(unsafe.Pointer(arg1))
-	_y = (*int)(unsafe.Pointer(arg2))
-	_width = (*int)(unsafe.Pointer(arg3))
-	_height = (*int)(unsafe.Pointer(arg4))
+	_x = (*int32)(unsafe.Pointer(arg1))
+	_y = (*int32)(unsafe.Pointer(arg2))
+	_width = (*int32)(unsafe.Pointer(arg3))
+	_height = (*int32)(unsafe.Pointer(arg4))
 
 	iface.TextAreaSize(_x, _y, _width, _height)
 }
@@ -910,7 +910,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 //    - gint: index of the icon which is the source of the current DND operation,
 //      or -1.
 //
-func (entry *Entry) CurrentIconDragSource() int {
+func (entry *Entry) CurrentIconDragSource() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -923,9 +923,9 @@ func (entry *Entry) CurrentIconDragSource() int {
 
 	runtime.KeepAlive(entry)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1002,7 +1002,7 @@ func (entry *Entry) HasFrame() bool {
 //
 //    - gint: index of the icon at the given position, or -1.
 //
-func (entry *Entry) IconAtPos(x, y int) int {
+func (entry *Entry) IconAtPos(x, y int32) int32 {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1013,7 +1013,7 @@ func (entry *Entry) IconAtPos(x, y int) int {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_icon_at_pos", args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1022,9 +1022,9 @@ func (entry *Entry) IconAtPos(x, y int) int {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1141,7 +1141,7 @@ func (entry *Entry) Layout() *pango.Layout {
 //    - gint: maximum allowed number of characters in Entry, or 0 if there is no
 //      maximum.
 //
-func (entry *Entry) MaxLength() int {
+func (entry *Entry) MaxLength() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1154,9 +1154,9 @@ func (entry *Entry) MaxLength() int {
 
 	runtime.KeepAlive(entry)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1168,7 +1168,7 @@ func (entry *Entry) MaxLength() int {
 //
 //    - gint: maximum width of the entry, in characters.
 //
-func (entry *Entry) MaxWidthChars() int {
+func (entry *Entry) MaxWidthChars() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1181,9 +1181,9 @@ func (entry *Entry) MaxWidthChars() int {
 
 	runtime.KeepAlive(entry)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1424,7 +1424,7 @@ func (entry *Entry) Visibility() bool {
 //
 //    - gint: number of chars to request space for, or negative if unset.
 //
-func (entry *Entry) WidthChars() int {
+func (entry *Entry) WidthChars() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1437,9 +1437,9 @@ func (entry *Entry) WidthChars() int {
 
 	runtime.KeepAlive(entry)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1518,7 +1518,7 @@ func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 //
 //    - gint: byte index into the entry contents.
 //
-func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
+func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1534,9 +1534,9 @@ func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(layoutIndex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1824,7 +1824,7 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 //      maximum length of entries.) The value passed in will be clamped to the
 //      range 0-65536.
 //
-func (entry *Entry) SetMaxLength(max int) {
+func (entry *Entry) SetMaxLength(max int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1845,7 +1845,7 @@ func (entry *Entry) SetMaxLength(max int) {
 //
 //    - nChars: new desired maximum width, in characters.
 //
-func (entry *Entry) SetMaxWidthChars(nChars int) {
+func (entry *Entry) SetMaxWidthChars(nChars int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2050,7 +2050,7 @@ func (entry *Entry) SetVisibility(visible bool) {
 //
 //    - nChars: width in chars.
 //
-func (entry *Entry) SetWidthChars(nChars int) {
+func (entry *Entry) SetWidthChars(nChars int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2078,7 +2078,7 @@ func (entry *Entry) SetWidthChars(nChars int) {
 //
 //    - gint: byte index into the entry layout text.
 //
-func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
+func (entry *Entry) TextIndexToLayoutIndex(textIndex int32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2094,9 +2094,9 @@ func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(textIndex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

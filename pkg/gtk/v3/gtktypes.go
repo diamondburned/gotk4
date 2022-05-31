@@ -675,7 +675,7 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 //
 //    - gint: format of the selection.
 //
-func (selectionData *SelectionData) Format() int {
+func (selectionData *SelectionData) Format() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -687,9 +687,9 @@ func (selectionData *SelectionData) Format() int {
 
 	runtime.KeepAlive(selectionData)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -700,7 +700,7 @@ func (selectionData *SelectionData) Format() int {
 //
 //    - gint: length of the data of the selection.
 //
-func (selectionData *SelectionData) Length() int {
+func (selectionData *SelectionData) Length() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -712,9 +712,9 @@ func (selectionData *SelectionData) Length() int {
 
 	runtime.KeepAlive(selectionData)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -878,7 +878,7 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 //
 //    - ok: TRUE if the selection was successfully set, otherwise FALSE.
 //
-func (selectionData *SelectionData) SetText(str string, len int) bool {
+func (selectionData *SelectionData) SetText(str string, len int32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
@@ -1166,7 +1166,7 @@ func NewWidgetPath() *WidgetPath {
 //
 //    - gint: position where the data was inserted.
 //
-func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
+func (path *WidgetPath) AppendForWidget(widget Widgetter) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1181,9 +1181,9 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(widget)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1207,7 +1207,7 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 //
 //    - gint: position where the element was inserted.
 //
-func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint) int {
+func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint32) int32 {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1226,9 +1226,9 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 	runtime.KeepAlive(siblings)
 	runtime.KeepAlive(siblingIndex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1272,7 +1272,7 @@ func (path *WidgetPath) Copy() *WidgetPath {
 //    - pos: position to modify, -1 for the path head.
 //    - name class name.
 //
-func (path *WidgetPath) IterAddClass(pos int, name string) {
+func (path *WidgetPath) IterAddClass(pos int32, name string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1283,7 +1283,7 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1297,7 +1297,7 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 //
 //    - pos: position to modify, -1 for the path head.
 //
-func (path *WidgetPath) IterClearClasses(pos int) {
+func (path *WidgetPath) IterClearClasses(pos int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1319,7 +1319,7 @@ func (path *WidgetPath) IterClearClasses(pos int) {
 //
 //    - pos: position to modify, -1 for the path head.
 //
-func (path *WidgetPath) IterClearRegions(pos int) {
+func (path *WidgetPath) IterClearRegions(pos int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1343,7 +1343,7 @@ func (path *WidgetPath) IterClearRegions(pos int) {
 //
 //    - utf8 (optional): widget name, or NULL if none was set.
 //
-func (path *WidgetPath) IterGetName(pos int) string {
+func (path *WidgetPath) IterGetName(pos int32) string {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1378,7 +1378,7 @@ func (path *WidgetPath) IterGetName(pos int) string {
 //
 //    - utf8 (optional): name or NULL.
 //
-func (path *WidgetPath) IterGetObjectName(pos int) string {
+func (path *WidgetPath) IterGetObjectName(pos int32) string {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1415,7 +1415,7 @@ func (path *WidgetPath) IterGetObjectName(pos int) string {
 //
 //    - guint: 0 or the index into the list of siblings for the element at pos.
 //
-func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
+func (path *WidgetPath) IterGetSiblingIndex(pos int32) uint32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1430,9 +1430,9 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1448,7 +1448,7 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int) uint {
 //
 //    - widgetPath: NULL or the list of siblings for the element at pos.
 //
-func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
+func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1489,7 +1489,7 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 //
 //    - ok: TRUE if the class name is defined for the widget at pos.
 //
-func (path *WidgetPath) IterHasClass(pos int, name string) bool {
+func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1501,7 +1501,7 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1530,7 +1530,7 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 //
 //    - ok: TRUE if the widget at pos has this name.
 //
-func (path *WidgetPath) IterHasName(pos int, name string) bool {
+func (path *WidgetPath) IterHasName(pos int32, name string) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1542,7 +1542,7 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1571,7 +1571,7 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 //    - sList: list of classes, This is a list of strings, the List contents are
 //      owned by GTK+, but you should use g_slist_free() to free the list itself.
 //
-func (path *WidgetPath) IterListClasses(pos int) []string {
+func (path *WidgetPath) IterListClasses(pos int32) []string {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1613,7 +1613,7 @@ func (path *WidgetPath) IterListClasses(pos int) []string {
 //    - sList: list of regions, This is a list of strings, the List contents are
 //      owned by GTK+, but you should use g_slist_free() to free the list itself.
 //
-func (path *WidgetPath) IterListRegions(pos int) []string {
+func (path *WidgetPath) IterListRegions(pos int32) []string {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1649,7 +1649,7 @@ func (path *WidgetPath) IterListRegions(pos int) []string {
 //    - pos: position to modify, -1 for the path head.
 //    - name class name.
 //
-func (path *WidgetPath) IterRemoveClass(pos int, name string) {
+func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1660,7 +1660,7 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1677,7 +1677,7 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 //    - pos: position to modify, -1 for the path head.
 //    - name: region name.
 //
-func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
+func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1688,7 +1688,7 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1703,7 +1703,7 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 //    - pos: position to modify, -1 for the path head.
 //    - name: widget name.
 //
-func (path *WidgetPath) IterSetName(pos int, name string) {
+func (path *WidgetPath) IterSetName(pos int32, name string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1714,7 +1714,7 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1731,7 +1731,7 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 //    - pos: position to modify, -1 for the path head.
 //    - name (optional): object name to set or NULL to unset.
 //
-func (path *WidgetPath) IterSetObjectName(pos int, name string) {
+func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1744,7 +1744,7 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 		defer C.free(unsafe.Pointer(_arg2))
 	}
 	*(**WidgetPath)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1758,7 +1758,7 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 //
 //    - gint: number of elements in the path.
 //
-func (path *WidgetPath) Length() int {
+func (path *WidgetPath) Length() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1770,9 +1770,9 @@ func (path *WidgetPath) Length() int {
 
 	runtime.KeepAlive(path)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

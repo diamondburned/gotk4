@@ -92,6 +92,34 @@ func (context *AppLaunchContext) Display() *Display {
 	return _display
 }
 
+// SetDesktop sets the workspace on which applications will be launched.
+//
+// This only works when running under a window manager that supports multiple
+// workspaces, as described in the Extended Window Manager Hints
+// (http://www.freedesktop.org/Standards/wm-spec).
+//
+// When the workspace is not specified or desktop is set to -1, it is up to the
+// window manager to pick one, typically it will be the current workspace.
+//
+// The function takes the following parameters:
+//
+//    - desktop: number of a workspace, or -1.
+//
+func (context *AppLaunchContext) SetDesktop(desktop int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(desktop)
+	*(**AppLaunchContext)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_desktop", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(desktop)
+}
+
 // SetIcon sets the icon for applications that are launched with this context.
 //
 // Window Managers can use this information when displaying startup

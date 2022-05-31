@@ -89,23 +89,23 @@ func NewItem() *Item {
 }
 
 // Offset: byte offset of the start of this item in text.
-func (i *Item) Offset() int {
-	var v int // out
-	v = int(i.native.offset)
+func (i *Item) Offset() int32 {
+	var v int32 // out
+	v = int32(i.native.offset)
 	return v
 }
 
 // Length: length of this item in bytes.
-func (i *Item) Length() int {
-	var v int // out
-	v = int(i.native.length)
+func (i *Item) Length() int32 {
+	var v int32 // out
+	v = int32(i.native.length)
 	return v
 }
 
 // NumChars: number of Unicode characters in the item.
-func (i *Item) NumChars() int {
-	var v int // out
-	v = int(i.native.num_chars)
+func (i *Item) NumChars() int32 {
+	var v int32 // out
+	v = int32(i.native.num_chars)
 	return v
 }
 
@@ -198,7 +198,7 @@ func (item *Item) Copy() *Item {
 //    - item: new item representing text before split_index, which should be
 //      freed with pango.Item.Free().
 //
-func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
+func (orig *Item) Split(splitIndex int32, splitOffset int32) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

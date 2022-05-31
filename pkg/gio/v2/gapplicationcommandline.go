@@ -334,6 +334,33 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 	return _filenames
 }
 
+// ExitStatus gets the exit status of cmdline. See
+// g_application_command_line_set_exit_status() for more information.
+//
+// The function returns the following values:
+//
+//    - gint: exit status.
+//
+func (cmdline *ApplicationCommandLine) ExitStatus() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("get_exit_status", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cmdline)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // IsRemote determines if cmdline represents a remote invocation.
 //
 // The function returns the following values:
@@ -538,4 +565,43 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 	}
 
 	return _utf8
+}
+
+// SetExitStatus sets the exit status that will be used when the invoking
+// process exits.
+//
+// The return value of the #GApplication::command-line signal is passed to this
+// function when the handler returns. This is the usual way of setting the exit
+// status.
+//
+// In the event that you want the remote invocation to continue running and want
+// to decide on the exit status in the future, you can use this call. For the
+// case of a remote invocation, the remote process will typically exit when the
+// last reference is dropped on cmdline. The exit status of the remote process
+// will be equal to the last value that was set with this function.
+//
+// In the case that the commandline invocation is local, the situation is
+// slightly more complicated. If the commandline invocation results in the
+// mainloop running (ie: because the use-count of the application increased to a
+// non-zero value) then the application is considered to have been 'successful'
+// in a certain sense, and the exit status is always zero. If the application
+// use count is zero, though, the exit status of the local CommandLine is used.
+//
+// The function takes the following parameters:
+//
+//    - exitStatus: exit status.
+//
+func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
+	_arg1 = C.int(exitStatus)
+	*(**ApplicationCommandLine)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gio", "ApplicationCommandLine").InvokeMethod("set_exit_status", args[:], nil)
+
+	runtime.KeepAlive(cmdline)
+	runtime.KeepAlive(exitStatus)
 }

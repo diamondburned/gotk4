@@ -42,7 +42,7 @@ func (queue *Queue) Clear() {
 //
 //    - guint: number of items in queue.
 //
-func (queue *Queue) Length() uint {
+func (queue *Queue) Length() uint32 {
 	var _arg0 *C.GQueue // out
 	var _cret C.guint   // in
 
@@ -51,9 +51,9 @@ func (queue *Queue) Length() uint {
 	_cret = C.g_queue_get_length(_arg0)
 	runtime.KeepAlive(queue)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

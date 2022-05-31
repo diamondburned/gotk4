@@ -234,6 +234,47 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	runtime.KeepAlive(handlerId)
 }
 
+// Fd gets the file descriptor for a cancellable job. This can be used to
+// implement cancellable operations on Unix systems. The returned fd will turn
+// readable when cancellable is cancelled.
+//
+// You are not supposed to read from the fd yourself, just check for readable
+// status. Reading to unset the readable status is done with
+// g_cancellable_reset().
+//
+// After a successful return from this function, you should use
+// g_cancellable_release_fd() to free up resources allocated for the returned
+// file descriptor.
+//
+// See also g_cancellable_make_pollfd().
+//
+// The function returns the following values:
+//
+//    - gint: valid file descriptor. -1 if the file descriptor is not supported,
+//      or on errors.
+//
+func (cancellable *Cancellable) Fd() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	if cancellable != nil {
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+	}
+	*(**Cancellable)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("get_fd", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(cancellable)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // IsCancelled checks if a cancellable job has been cancelled.
 //
 // The function returns the following values:

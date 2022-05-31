@@ -505,7 +505,7 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 //
 //    - gint: pixel size used for named icons.
 //
-func (image *Image) PixelSize() int {
+func (image *Image) PixelSize() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -518,9 +518,9 @@ func (image *Image) PixelSize() int {
 
 	runtime.KeepAlive(image)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -649,7 +649,7 @@ func (image *Image) SetFromSurface(surface *cairo.Surface) {
 //
 //    - pixelSize: new pixel size.
 //
-func (image *Image) SetPixelSize(pixelSize int) {
+func (image *Image) SetPixelSize(pixelSize int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

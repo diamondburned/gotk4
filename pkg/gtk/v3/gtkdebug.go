@@ -22,15 +22,15 @@ import "C"
 //
 //    - guint: GTK+ debug flags.
 //
-func GetDebugFlags() uint {
+func GetDebugFlags() uint32 {
 	var _cret C.guint // in
 
 	_gret := girepository.MustFind("Gtk", "get_debug_flags").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -39,12 +39,12 @@ func GetDebugFlags() uint {
 //
 // The function takes the following parameters:
 //
-func SetDebugFlags(flags uint) {
+func SetDebugFlags(flags uint32) {
 	var args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(flags)
-	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Gtk", "set_debug_flags").Invoke(args[:], nil)
 

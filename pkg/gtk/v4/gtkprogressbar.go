@@ -130,6 +130,32 @@ func NewProgressBar() *ProgressBar {
 	return _progressBar
 }
 
+// Fraction returns the current fraction of the task that’s been completed.
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
+func (pbar *ProgressBar) Fraction() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_fraction", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(pbar)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // Inverted returns whether the progress bar is inverted.
 //
 // The function returns the following values:
@@ -156,6 +182,34 @@ func (pbar *ProgressBar) Inverted() bool {
 	}
 
 	return _ok
+}
+
+// PulseStep retrieves the pulse step.
+//
+// See gtk.ProgressBar.SetPulseStep().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
+func (pbar *ProgressBar) PulseStep() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	*(**ProgressBar)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("get_pulse_step", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(pbar)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // ShowText returns whether the GtkProgressBar shows text.
@@ -239,6 +293,30 @@ func (pbar *ProgressBar) Pulse() {
 	runtime.KeepAlive(pbar)
 }
 
+// SetFraction causes the progress bar to “fill in” the given fraction of the
+// bar.
+//
+// The fraction should be between 0.0 and 1.0, inclusive.
+//
+// The function takes the following parameters:
+//
+//    - fraction of the task that’s been completed.
+//
+func (pbar *ProgressBar) SetFraction(fraction float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg1 = C.double(fraction)
+	*(**ProgressBar)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_fraction", args[:], nil)
+
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(fraction)
+}
+
 // SetInverted sets whether the progress bar is inverted.
 //
 // Progress bars normally grow from top to bottom or left to right. Inverted
@@ -263,6 +341,30 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(inverted)
+}
+
+// SetPulseStep sets the fraction of total progress bar length to move the
+// bouncing block.
+//
+// The bouncing block is moved when gtk.ProgressBar.Pulse() is called.
+//
+// The function takes the following parameters:
+//
+//    - fraction between 0.0 and 1.0.
+//
+func (pbar *ProgressBar) SetPulseStep(fraction float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg1 = C.double(fraction)
+	*(**ProgressBar)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ProgressBar").InvokeMethod("set_pulse_step", args[:], nil)
+
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(fraction)
 }
 
 // SetShowText sets whether the progress bar will show text next to the bar.

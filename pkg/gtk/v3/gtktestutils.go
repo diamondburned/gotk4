@@ -138,6 +138,70 @@ func TestRegisterAllTypes() {
 	girepository.MustFind("Gtk", "test_register_all_types").Invoke(nil, nil)
 }
 
+// TestSliderGetValue: retrive the literal adjustment value for GtkRange based
+// widgets and spin buttons. Note that the value returned by this function is
+// anything between the lower and upper bounds of the adjustment belonging to
+// widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
+//
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - widget: valid widget pointer.
+//
+// The function returns the following values:
+//
+//    - gdouble: gtk_adjustment_get_value (adjustment) for an adjustment
+//      belonging to widget.
+//
+func TestSliderGetValue(widget Widgetter) float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "test_slider_get_value").Invoke(args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// TestSliderSetPerc: this function will adjust the slider position of all
+// GtkRange based widgets, such as scrollbars or scales, it’ll also adjust spin
+// buttons. The adjustment value of these widgets is set to a value between the
+// lower and upper limits, according to the percentage argument.
+//
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
+//
+// The function takes the following parameters:
+//
+//    - widget: valid widget pointer.
+//    - percentage: value between 0 and 100.
+//
+func TestSliderSetPerc(widget Widgetter, percentage float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.double(percentage)
+	*(*Widgetter)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "test_slider_set_perc").Invoke(args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(percentage)
+}
+
 // TestSpinButtonClick: this function will generate a button click in the
 // upwards or downwards spin button arrow areas, usually leading to an increase
 // or decrease of spin button’s value.
@@ -155,7 +219,7 @@ func TestRegisterAllTypes() {
 //    - ok: whether all actions neccessary for the button click simulation were
 //      carried out successfully.
 //
-func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
+func TestSpinButtonClick(spinner *SpinButton, button uint32, upwards bool) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -168,7 +232,7 @@ func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 		_arg2 = C.TRUE
 	}
 	*(**SpinButton)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
 	*(*bool)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "test_spin_button_click").Invoke(args[:], nil)

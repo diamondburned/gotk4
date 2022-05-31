@@ -77,7 +77,7 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk3_GestureMultiPress_ConnectPressed
 func _gotk4_gtk3_GestureMultiPress_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
-	var f func(nPress int, x, y float64)
+	var f func(nPress int32, x, y float64)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -85,14 +85,14 @@ func _gotk4_gtk3_GestureMultiPress_ConnectPressed(arg0 C.gpointer, arg1 C.gint, 
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(nPress int, x, y float64))
+		f = closure.Func.(func(nPress int32, x, y float64))
 	}
 
-	var _nPress int // out
-	var _x float64  // out
-	var _y float64  // out
+	var _nPress int32 // out
+	var _x float64    // out
+	var _y float64    // out
 
-	_nPress = int(arg1)
+	_nPress = int32(arg1)
 	_x = float64(arg2)
 	_y = float64(arg3)
 
@@ -101,13 +101,13 @@ func _gotk4_gtk3_GestureMultiPress_ConnectPressed(arg0 C.gpointer, arg1 C.gint, 
 
 // ConnectPressed: this signal is emitted whenever a button or touch press
 // happens.
-func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64)) coreglib.SignalHandle {
+func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int32, x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectPressed), f)
 }
 
 //export _gotk4_gtk3_GestureMultiPress_ConnectReleased
 func _gotk4_gtk3_GestureMultiPress_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
-	var f func(nPress int, x, y float64)
+	var f func(nPress int32, x, y float64)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -115,14 +115,14 @@ func _gotk4_gtk3_GestureMultiPress_ConnectReleased(arg0 C.gpointer, arg1 C.gint,
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(nPress int, x, y float64))
+		f = closure.Func.(func(nPress int32, x, y float64))
 	}
 
-	var _nPress int // out
-	var _x float64  // out
-	var _y float64  // out
+	var _nPress int32 // out
+	var _x float64    // out
+	var _y float64    // out
 
-	_nPress = int(arg1)
+	_nPress = int32(arg1)
 	_x = float64(arg2)
 	_y = float64(arg3)
 
@@ -133,7 +133,7 @@ func _gotk4_gtk3_GestureMultiPress_ConnectReleased(arg0 C.gpointer, arg1 C.gint,
 // n_press will report the number of press that is paired to this event, note
 // that GestureMultiPress::stopped may have been emitted between the press and
 // its release, n_press will only start over at the next press.
-func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float64)) coreglib.SignalHandle {
+func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int32, x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "released", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectReleased), f)
 }
 

@@ -15,6 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(GtkLayoutManager*, GtkWidget*, GtkWidget*);
+// extern void _gotk4_gtk4_LayoutManagerClass_allocate(GtkLayoutManager*, GtkWidget*, int, int, int);
 // extern void _gotk4_gtk4_LayoutManagerClass_root(GtkLayoutManager*);
 // extern void _gotk4_gtk4_LayoutManagerClass_unroot(GtkLayoutManager*);
 import "C"
@@ -30,6 +31,18 @@ func init() {
 
 // LayoutManagerOverrider contains methods that are overridable.
 type LayoutManagerOverrider interface {
+	// Allocate assigns the given width, height, and baseline to a widget, and
+	// computes the position and sizes of the children of the widget using the
+	// layout management policy of manager.
+	//
+	// The function takes the following parameters:
+	//
+	//    - widget: GtkWidget using manager.
+	//    - width: new width of the widget.
+	//    - height: new height of the widget.
+	//    - baseline position of the widget, or -1.
+	//
+	Allocate(widget Widgetter, width, height, baseline int32)
 	// CreateLayoutChild: create a LayoutChild instance for the given for_child
 	// widget.
 	//
@@ -126,6 +139,12 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
+		Allocate(widget Widgetter, width, height, baseline int32)
+	}); ok {
+		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_allocate)
+	}
+
+	if _, ok := goval.(interface {
 		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
 	}); ok {
 		pclass.create_layout_child = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_create_layout_child)
@@ -138,6 +157,42 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 	if _, ok := goval.(interface{ Unroot() }); ok {
 		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_unroot)
 	}
+}
+
+//export _gotk4_gtk4_LayoutManagerClass_allocate
+func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.int, arg3 C.int, arg4 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Allocate(widget Widgetter, width, height, baseline int32)
+	})
+
+	var _widget Widgetter // out
+	var _width int32      // out
+	var _height int32     // out
+	var _baseline int32   // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_width = int32(arg2)
+	_height = int32(arg3)
+	_baseline = int32(arg4)
+
+	iface.Allocate(_widget, _width, _height, _baseline)
 }
 
 //export _gotk4_gtk4_LayoutManagerClass_create_layout_child
@@ -226,6 +281,44 @@ func (manager *LayoutManager) baseLayoutManager() *LayoutManager {
 // BaseLayoutManager returns the underlying base object.
 func BaseLayoutManager(obj LayoutManagerer) *LayoutManager {
 	return obj.baseLayoutManager()
+}
+
+// Allocate assigns the given width, height, and baseline to a widget, and
+// computes the position and sizes of the children of the widget using the
+// layout management policy of manager.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget using manager.
+//    - width: new width of the widget.
+//    - height: new height of the widget.
+//    - baseline position of the widget, or -1.
+//
+func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline int32) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	_arg4 = C.int(baseline)
+	*(**LayoutManager)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "LayoutManager").InvokeMethod("allocate", args[:], nil)
+
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(baseline)
 }
 
 // LayoutChild retrieves a GtkLayoutChild instance for the GtkLayoutManager,

@@ -263,7 +263,7 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 //
 //    - toolItemGroup (optional) at position or NULL if there is no such group.
 //
-func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
+func (palette *ToolPalette) DropGroup(x, y int32) *ToolItemGroup {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -274,7 +274,7 @@ func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drop_group", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -304,7 +304,7 @@ func (palette *ToolPalette) DropGroup(x, y int) *ToolItemGroup {
 //
 //    - toolItem (optional) at position or NULL if there is no such item.
 //
-func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
+func (palette *ToolPalette) DropItem(x, y int32) *ToolItem {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -315,7 +315,7 @@ func (palette *ToolPalette) DropItem(x, y int) *ToolItem {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**ToolPalette)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drop_item", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -416,7 +416,7 @@ func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 //
 //    - gint: index of group or -1 if group is not a child of palette.
 //
-func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
+func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -432,9 +432,9 @@ func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -561,7 +561,7 @@ func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
 //    - group which is a child of palette.
 //    - position: new index for group.
 //
-func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int) {
+func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out

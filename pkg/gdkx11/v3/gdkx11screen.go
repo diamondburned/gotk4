@@ -34,15 +34,15 @@ func init() {
 //      option or the DISPLAY environment variable when gdk_init() calls
 //      XOpenDisplay().
 //
-func X11GetDefaultScreen() int {
+func X11GetDefaultScreen() int32 {
 	var _cret C.gint // in
 
 	_gret := girepository.MustFind("GdkX11", "x11_get_default_screen").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -156,6 +156,32 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 	_guint32 = uint32(_cret)
 
 	return _guint32
+}
+
+// ScreenNumber returns the index of a Screen.
+//
+// The function returns the following values:
+//
+//    - gint: position of screen among the screens of its display.
+//
+func (screen *X11Screen) ScreenNumber() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	*(**X11Screen)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_screen_number", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(screen)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // WindowManagerName returns the name of the window manager for screen.

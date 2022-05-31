@@ -163,7 +163,7 @@ func NewCellRendererText() *CellRendererText {
 //    - numberOfRows: number of rows of text each cell renderer is allocated, or
 //      -1.
 //
-func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
+func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

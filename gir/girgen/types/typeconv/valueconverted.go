@@ -57,9 +57,9 @@ type ValueType struct {
 func (vt *ValueType) Import(h *file.Header, public bool) {
 	if vt.NeedsNamespace {
 		if public {
-			h.ImportPubl(vt.Resolved)
+			vt.Resolved.ImportPubl(h)
 		} else {
-			h.ImportImpl(vt.Resolved)
+			vt.Resolved.ImportImpl(h)
 		}
 	}
 }
@@ -456,7 +456,8 @@ func (value *ValueConverted) resolveTypeInner(conv *Converter, typ *gir.Type) (V
 	}
 
 	if vType.Resolved.IsCallback() {
-		value.header.AddCallback(
+		types.AddCallbackHeader(
+			&value.header,
 			vType.Resolved.Extern.NamespaceFindResult,
 			vType.Resolved.Extern.Type.(*gir.Callback),
 		)

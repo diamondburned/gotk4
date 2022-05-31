@@ -56,7 +56,7 @@ type SelectionModelOverrider interface {
 	//      range with all other values being undefined. The bitset must not be
 	//      modified.
 	//
-	SelectionInRange(position, nItems uint) *Bitset
+	SelectionInRange(position, nItems uint32) *Bitset
 	// IsSelected checks if the given item is selected.
 	//
 	// The function takes the following parameters:
@@ -67,7 +67,7 @@ type SelectionModelOverrider interface {
 	//
 	//    - ok: TRUE if the item is selected.
 	//
-	IsSelected(position uint) bool
+	IsSelected(position uint32) bool
 	// SelectAll requests to select all items in the model.
 	//
 	// The function returns the following values:
@@ -88,7 +88,7 @@ type SelectionModelOverrider interface {
 	//    - ok: TRUE if this action was supported and no fallback should be
 	//      tried. This does not mean the item was selected.
 	//
-	SelectItem(position uint, unselectRest bool) bool
+	SelectItem(position uint32, unselectRest bool) bool
 	// SelectRange requests to select a range of items in the model.
 	//
 	// The function takes the following parameters:
@@ -102,7 +102,7 @@ type SelectionModelOverrider interface {
 	//    - ok: TRUE if this action was supported and no fallback should be
 	//      tried. This does not mean the range was selected.
 	//
-	SelectRange(position, nItems uint, unselectRest bool) bool
+	SelectRange(position, nItems uint32, unselectRest bool) bool
 	// SetSelection: make selection changes.
 	//
 	// This is the most advanced selection updating method that allows the most
@@ -167,7 +167,7 @@ type SelectionModelOverrider interface {
 	//    - ok: TRUE if this action was supported and no fallback should be
 	//      tried. This does not mean the item was unselected.
 	//
-	UnselectItem(position uint) bool
+	UnselectItem(position uint32) bool
 	// UnselectRange requests to unselect a range of items in the model.
 	//
 	// The function takes the following parameters:
@@ -180,7 +180,7 @@ type SelectionModelOverrider interface {
 	//    - ok: TRUE if this action was supported and no fallback should be
 	//      tried. This does not mean the range was unselected.
 	//
-	UnselectRange(position, nItems uint) bool
+	UnselectRange(position, nItems uint32) bool
 }
 
 // SelectionModel: GtkSelectionModel is an interface that add support for
@@ -238,30 +238,30 @@ type SelectionModeller interface {
 	// model.
 	Selection() *Bitset
 	// SelectionInRange gets the set of selected items in a range.
-	SelectionInRange(position, nItems uint) *Bitset
+	SelectionInRange(position, nItems uint32) *Bitset
 	// IsSelected checks if the given item is selected.
-	IsSelected(position uint) bool
+	IsSelected(position uint32) bool
 	// SelectAll requests to select all items in the model.
 	SelectAll() bool
 	// SelectItem requests to select an item in the model.
-	SelectItem(position uint, unselectRest bool) bool
+	SelectItem(position uint32, unselectRest bool) bool
 	// SelectRange requests to select a range of items in the model.
-	SelectRange(position, nItems uint, unselectRest bool) bool
+	SelectRange(position, nItems uint32, unselectRest bool) bool
 	// SelectionChanged: helper function for implementations of
 	// GtkSelectionModel.
-	SelectionChanged(position, nItems uint)
+	SelectionChanged(position, nItems uint32)
 	// SetSelection: make selection changes.
 	SetSelection(selected, mask *Bitset) bool
 	// UnselectAll requests to unselect all items in the model.
 	UnselectAll() bool
 	// UnselectItem requests to unselect an item in the model.
-	UnselectItem(position uint) bool
+	UnselectItem(position uint32) bool
 	// UnselectRange requests to unselect a range of items in the model.
-	UnselectRange(position, nItems uint) bool
+	UnselectRange(position, nItems uint32) bool
 
 	// Selection-changed is emitted when the selection state of some of the
 	// items in model changes.
-	ConnectSelectionChanged(func(position, nItems uint)) coreglib.SignalHandle
+	ConnectSelectionChanged(func(position, nItems uint32)) coreglib.SignalHandle
 }
 
 var _ SelectionModeller = (*SelectionModel)(nil)
@@ -284,11 +284,11 @@ func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.GtkSelec
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
-	var _position uint // out
-	var _nItems uint   // out
+	var _position uint32 // out
+	var _nItems uint32   // out
 
-	_position = uint(arg1)
-	_nItems = uint(arg2)
+	_position = uint32(arg1)
+	_nItems = uint32(arg2)
 
 	bitset := iface.SelectionInRange(_position, _nItems)
 
@@ -302,9 +302,9 @@ func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.GtkSelectionModel, 
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
-	var _position uint // out
+	var _position uint32 // out
 
-	_position = uint(arg1)
+	_position = uint32(arg1)
 
 	ok := iface.IsSelected(_position)
 
@@ -334,10 +334,10 @@ func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.GtkSelectionModel, 
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
-	var _position uint     // out
+	var _position uint32   // out
 	var _unselectRest bool // out
 
-	_position = uint(arg1)
+	_position = uint32(arg1)
 	if arg2 != 0 {
 		_unselectRest = true
 	}
@@ -356,12 +356,12 @@ func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.GtkSelectionModel,
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
-	var _position uint     // out
-	var _nItems uint       // out
+	var _position uint32   // out
+	var _nItems uint32     // out
 	var _unselectRest bool // out
 
-	_position = uint(arg1)
-	_nItems = uint(arg2)
+	_position = uint32(arg1)
+	_nItems = uint32(arg2)
 	if arg3 != 0 {
 		_unselectRest = true
 	}
@@ -428,9 +428,9 @@ func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.GtkSelectionModel
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
-	var _position uint // out
+	var _position uint32 // out
 
-	_position = uint(arg1)
+	_position = uint32(arg1)
 
 	ok := iface.UnselectItem(_position)
 
@@ -446,11 +446,11 @@ func _gotk4_gtk4_SelectionModelInterface_unselect_range(arg0 *C.GtkSelectionMode
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
-	var _position uint // out
-	var _nItems uint   // out
+	var _position uint32 // out
+	var _nItems uint32   // out
 
-	_position = uint(arg1)
-	_nItems = uint(arg2)
+	_position = uint32(arg1)
+	_nItems = uint32(arg2)
 
 	ok := iface.UnselectRange(_position, _nItems)
 
@@ -475,7 +475,7 @@ func marshalSelectionModel(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_SelectionModel_ConnectSelectionChanged
 func _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
-	var f func(position, nItems uint)
+	var f func(position, nItems uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -483,14 +483,14 @@ func _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(position, nItems uint))
+		f = closure.Func.(func(position, nItems uint32))
 	}
 
-	var _position uint // out
-	var _nItems uint   // out
+	var _position uint32 // out
+	var _nItems uint32   // out
 
-	_position = uint(arg1)
-	_nItems = uint(arg2)
+	_position = uint32(arg1)
+	_nItems = uint32(arg2)
 
 	f(_position, _nItems)
 }
@@ -502,7 +502,7 @@ func _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.
 // they need to be queried manually. It is also not necessary for a model to
 // change the selection state of any of the items in the selection model, though
 // it would be rather useless to emit such a signal.
-func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint)) coreglib.SignalHandle {
+func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uint32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(model, "selection-changed", false, unsafe.Pointer(C._gotk4_gtk4_SelectionModel_ConnectSelectionChanged), f)
 }
 
@@ -559,7 +559,7 @@ func (model *SelectionModel) Selection() *Bitset {
 //    - bitset: GtkBitset that matches the selection state for the given range
 //      with all other values being undefined. The bitset must not be modified.
 //
-func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
+func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -570,7 +570,7 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -601,7 +601,7 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 //
 //    - ok: TRUE if the item is selected.
 //
-func (model *SelectionModel) IsSelected(position uint) bool {
+func (model *SelectionModel) IsSelected(position uint32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -665,7 +665,7 @@ func (model *SelectionModel) SelectAll() bool {
 //    - ok: TRUE if this action was supported and no fallback should be tried.
 //      This does not mean the item was selected.
 //
-func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
+func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -678,7 +678,7 @@ func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 		_arg2 = C.TRUE
 	}
 	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -708,7 +708,7 @@ func (model *SelectionModel) SelectItem(position uint, unselectRest bool) bool {
 //    - ok: TRUE if this action was supported and no fallback should be tried.
 //      This does not mean the range was selected.
 //
-func (model *SelectionModel) SelectRange(position, nItems uint, unselectRest bool) bool {
+func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest bool) bool {
 	var args [4]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -723,8 +723,8 @@ func (model *SelectionModel) SelectRange(position, nItems uint, unselectRest boo
 		_arg3 = C.TRUE
 	}
 	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint)(unsafe.Pointer(&args[3])) = _arg3
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -752,7 +752,7 @@ func (model *SelectionModel) SelectRange(position, nItems uint, unselectRest boo
 //    - position: first changed item.
 //    - nItems: number of changed items.
 //
-func (model *SelectionModel) SelectionChanged(position, nItems uint) {
+func (model *SelectionModel) SelectionChanged(position, nItems uint32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -762,7 +762,7 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint) {
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -878,7 +878,7 @@ func (model *SelectionModel) UnselectAll() bool {
 //    - ok: TRUE if this action was supported and no fallback should be tried.
 //      This does not mean the item was unselected.
 //
-func (model *SelectionModel) UnselectItem(position uint) bool {
+func (model *SelectionModel) UnselectItem(position uint32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -914,7 +914,7 @@ func (model *SelectionModel) UnselectItem(position uint) bool {
 //    - ok: TRUE if this action was supported and no fallback should be tried.
 //      This does not mean the range was unselected.
 //
-func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
+func (model *SelectionModel) UnselectRange(position, nItems uint32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -925,7 +925,7 @@ func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(nItems)
 	*(**SelectionModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 

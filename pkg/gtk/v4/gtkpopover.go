@@ -626,6 +626,36 @@ func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 	runtime.KeepAlive(mnemonicsVisible)
 }
 
+// SetOffset sets the offset to use when calculating the position of the
+// popover.
+//
+// These values are used when preparing the gdk.PopupLayout for positioning the
+// popover.
+//
+// The function takes the following parameters:
+//
+//    - xOffset: x offset to adjust the position by.
+//    - yOffset: y offset to adjust the position by.
+//
+func (popover *Popover) SetOffset(xOffset, yOffset int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	_arg1 = C.int(xOffset)
+	_arg2 = C.int(yOffset)
+	*(**Popover)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Popover").InvokeMethod("set_offset", args[:], nil)
+
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(xOffset)
+	runtime.KeepAlive(yOffset)
+}
+
 // SetPointingTo sets the rectangle that popover points to.
 //
 // This is in the coordinate space of the popover parent.

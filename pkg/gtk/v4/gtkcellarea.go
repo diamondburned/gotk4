@@ -876,6 +876,39 @@ func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, is
 	runtime.KeepAlive(isExpanded)
 }
 
+// AttributeConnect connects an attribute to apply values from column for the
+// TreeModel in use.
+//
+// The function takes the following parameters:
+//
+//    - renderer to connect an attribute for.
+//    - attribute name.
+//    - column column to fetch attribute values from.
+//
+func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.int(column)
+	*(**CellArea)(unsafe.Pointer(&args[1])) = _arg1
+	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "CellArea").InvokeMethod("attribute_connect", args[:], nil)
+
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(column)
+}
+
 // AttributeDisconnect disconnects attribute for the renderer in area so that
 // attribute will no longer be updated with values from the model.
 //
@@ -902,6 +935,46 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
+}
+
+// AttributeGetColumn returns the model column that an attribute has been mapped
+// to, or -1 if the attribute is not mapped.
+//
+// The function takes the following parameters:
+//
+//    - renderer: CellRenderer.
+//    - attribute on the renderer.
+//
+// The function returns the following values:
+//
+//    - gint: model column, or -1.
+//
+func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int32 {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
+	*(**CellArea)(unsafe.Pointer(&args[1])) = _arg1
+	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("attribute_get_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(attribute)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // CellGetProperty gets the value of a cell property for renderer in area.

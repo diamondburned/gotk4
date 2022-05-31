@@ -124,6 +124,59 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	return wrapConstraint(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// Constant retrieves the constant factor added to the source attributes' value.
+//
+// The function returns the following values:
+//
+//    - gdouble: constant factor.
+//
+func (constraint *Constraint) Constant() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
+	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_constant", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(constraint)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// Multiplier retrieves the multiplication factor applied to the source
+// attribute's value.
+//
+// The function returns the following values:
+//
+//    - gdouble: multiplication factor.
+//
+func (constraint *Constraint) Multiplier() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
+	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_multiplier", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(constraint)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // Source retrieves the gtk.ConstraintTarget used as the source for the
 // constraint.
 //
@@ -154,6 +207,32 @@ func (constraint *Constraint) Source() *ConstraintTarget {
 	}
 
 	return _constraintTarget
+}
+
+// Strength retrieves the strength of the constraint.
+//
+// The function returns the following values:
+//
+//    - gint: strength value.
+//
+func (constraint *Constraint) Strength() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
+	*(**Constraint)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_strength", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(constraint)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Target retrieves the gtk.ConstraintTarget used as the target for the

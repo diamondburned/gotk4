@@ -38,7 +38,7 @@ type ListModelOverrider interface {
 	//
 	//    - guint: number of items in list.
 	//
-	NItems() uint
+	NItems() uint32
 }
 
 // ListModel is an interface that represents a mutable list of #GObjects. Its
@@ -100,15 +100,15 @@ type ListModeller interface {
 	coreglib.Objector
 
 	// NItems gets the number of items in list.
-	NItems() uint
+	NItems() uint32
 	// Item: get the item at position.
-	Item(position uint) *coreglib.Object
+	Item(position uint32) *coreglib.Object
 	// ItemsChanged emits the Model::items-changed signal on list.
-	ItemsChanged(position, removed, added uint)
+	ItemsChanged(position, removed, added uint32)
 
 	// Items-changed: this signal is emitted whenever items were added to or
 	// removed from list.
-	ConnectItemsChanged(func(position, removed, added uint)) coreglib.SignalHandle
+	ConnectItemsChanged(func(position, removed, added uint32)) coreglib.SignalHandle
 }
 
 var _ ListModeller = (*ListModel)(nil)
@@ -142,7 +142,7 @@ func marshalListModel(p uintptr) (interface{}, error) {
 
 //export _gotk4_gio2_ListModel_ConnectItemsChanged
 func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.guintptr) {
-	var f func(position, removed, added uint)
+	var f func(position, removed, added uint32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -150,16 +150,16 @@ func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, ar
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(position, removed, added uint))
+		f = closure.Func.(func(position, removed, added uint32))
 	}
 
-	var _position uint // out
-	var _removed uint  // out
-	var _added uint    // out
+	var _position uint32 // out
+	var _removed uint32  // out
+	var _added uint32    // out
 
-	_position = uint(arg1)
-	_removed = uint(arg2)
-	_added = uint(arg3)
+	_position = uint32(arg1)
+	_removed = uint32(arg2)
+	_added = uint32(arg3)
 
 	f(_position, _removed, _added)
 }
@@ -170,7 +170,7 @@ func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, ar
 //
 // Note: If removed != added, the positions of all later items in the model
 // change.
-func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) coreglib.SignalHandle {
+func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(list, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_ListModel_ConnectItemsChanged), f)
 }
 
@@ -184,7 +184,7 @@ func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)
 //
 //    - guint: number of items in list.
 //
-func (list *ListModel) NItems() uint {
+func (list *ListModel) NItems() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -196,9 +196,9 @@ func (list *ListModel) NItems() uint {
 
 	runtime.KeepAlive(list)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -217,7 +217,7 @@ func (list *ListModel) NItems() uint {
 //
 //    - object (optional) at position.
 //
-func (list *ListModel) Item(position uint) *coreglib.Object {
+func (list *ListModel) Item(position uint32) *coreglib.Object {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -266,7 +266,7 @@ func (list *ListModel) Item(position uint) *coreglib.Object {
 //    - removed: number of items removed.
 //    - added: number of items added.
 //
-func (list *ListModel) ItemsChanged(position, removed, added uint) {
+func (list *ListModel) ItemsChanged(position, removed, added uint32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -278,8 +278,8 @@ func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	_arg2 = C.guint(removed)
 	_arg3 = C.guint(added)
 	*(**ListModel)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint)(unsafe.Pointer(&args[3])) = _arg3
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)

@@ -94,6 +94,32 @@ func NewGridLayout() *GridLayout {
 	return _gridLayout
 }
 
+// BaselineRow retrieves the row set with gtk_grid_layout_set_baseline_row().
+//
+// The function returns the following values:
+//
+//    - gint: global baseline row.
+//
+func (grid *GridLayout) BaselineRow() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	*(**GridLayout)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GridLayout").InvokeMethod("get_baseline_row", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(grid)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ColumnHomogeneous checks whether all columns of grid should have the same
 // width.
 //
@@ -130,7 +156,7 @@ func (grid *GridLayout) ColumnHomogeneous() bool {
 //
 //    - guint: spacing between consecutive columns.
 //
-func (grid *GridLayout) ColumnSpacing() uint {
+func (grid *GridLayout) ColumnSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -143,9 +169,9 @@ func (grid *GridLayout) ColumnSpacing() uint {
 
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -184,7 +210,7 @@ func (grid *GridLayout) RowHomogeneous() bool {
 //
 //    - guint: spacing between consecutive rows.
 //
-func (grid *GridLayout) RowSpacing() uint {
+func (grid *GridLayout) RowSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -197,11 +223,36 @@ func (grid *GridLayout) RowSpacing() uint {
 
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// SetBaselineRow sets which row defines the global baseline for the entire
+// grid.
+//
+// Each row in the grid can have its own local baseline, but only one of those
+// is global, meaning it will be the baseline in the parent of the grid.
+//
+// The function takes the following parameters:
+//
+//    - row index.
+//
+func (grid *GridLayout) SetBaselineRow(row int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(row)
+	*(**GridLayout)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "GridLayout").InvokeMethod("set_baseline_row", args[:], nil)
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(row)
 }
 
 // SetColumnHomogeneous sets whether all columns of grid should have the same
@@ -235,7 +286,7 @@ func (grid *GridLayout) SetColumnHomogeneous(homogeneous bool) {
 //
 //    - spacing: amount of space between columns, in pixels.
 //
-func (grid *GridLayout) SetColumnSpacing(spacing uint) {
+func (grid *GridLayout) SetColumnSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -279,7 +330,7 @@ func (grid *GridLayout) SetRowHomogeneous(homogeneous bool) {
 //
 //    - spacing: amount of space between rows, in pixels.
 //
-func (grid *GridLayout) SetRowSpacing(spacing uint) {
+func (grid *GridLayout) SetRowSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -326,4 +377,192 @@ func wrapGridLayoutChild(obj *coreglib.Object) *GridLayoutChild {
 
 func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 	return wrapGridLayoutChild(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Column retrieves the column number to which child attaches its left side.
+//
+// The function returns the following values:
+//
+//    - gint: column number.
+//
+func (child *GridLayoutChild) Column() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**GridLayoutChild)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("get_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(child)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// ColumnSpan retrieves the number of columns that child spans to.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns.
+//
+func (child *GridLayoutChild) ColumnSpan() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**GridLayoutChild)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("get_column_span", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(child)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// Row retrieves the row number to which child attaches its top side.
+//
+// The function returns the following values:
+//
+//    - gint: row number.
+//
+func (child *GridLayoutChild) Row() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**GridLayoutChild)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("get_row", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(child)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// RowSpan retrieves the number of rows that child spans to.
+//
+// The function returns the following values:
+//
+//    - gint: number of row.
+//
+func (child *GridLayoutChild) RowSpan() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**GridLayoutChild)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("get_row_span", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(child)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// SetColumn sets the column number to attach the left side of child.
+//
+// The function takes the following parameters:
+//
+//    - column: attach point for child.
+//
+func (child *GridLayoutChild) SetColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(column)
+	*(**GridLayoutChild)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("set_column", args[:], nil)
+
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(column)
+}
+
+// SetColumnSpan sets the number of columns child spans to.
+//
+// The function takes the following parameters:
+//
+//    - span of child.
+//
+func (child *GridLayoutChild) SetColumnSpan(span int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(span)
+	*(**GridLayoutChild)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("set_column_span", args[:], nil)
+
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(span)
+}
+
+// SetRow sets the row to place child in.
+//
+// The function takes the following parameters:
+//
+//    - row for child.
+//
+func (child *GridLayoutChild) SetRow(row int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(row)
+	*(**GridLayoutChild)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("set_row", args[:], nil)
+
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(row)
+}
+
+// SetRowSpan sets the number of rows child spans to.
+//
+// The function takes the following parameters:
+//
+//    - span of child.
+//
+func (child *GridLayoutChild) SetRowSpan(span int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(span)
+	*(**GridLayoutChild)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "GridLayoutChild").InvokeMethod("set_row_span", args[:], nil)
+
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(span)
 }

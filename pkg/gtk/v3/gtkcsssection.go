@@ -127,7 +127,7 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 //
 //    - guint: line number.
 //
-func (section *CSSSection) EndLine() uint {
+func (section *CSSSection) EndLine() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -139,9 +139,9 @@ func (section *CSSSection) EndLine() uint {
 
 	runtime.KeepAlive(section)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -157,7 +157,7 @@ func (section *CSSSection) EndLine() uint {
 //
 //    - guint: offset in bytes from the start of the line.
 //
-func (section *CSSSection) EndPosition() uint {
+func (section *CSSSection) EndPosition() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -169,9 +169,9 @@ func (section *CSSSection) EndPosition() uint {
 
 	runtime.KeepAlive(section)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -255,7 +255,7 @@ func (section *CSSSection) Parent() *CSSSection {
 //
 //    - guint: line number.
 //
-func (section *CSSSection) StartLine() uint {
+func (section *CSSSection) StartLine() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -267,9 +267,9 @@ func (section *CSSSection) StartLine() uint {
 
 	runtime.KeepAlive(section)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -281,7 +281,7 @@ func (section *CSSSection) StartLine() uint {
 //
 //    - guint: offset in bytes from the start of the line.
 //
-func (section *CSSSection) StartPosition() uint {
+func (section *CSSSection) StartPosition() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -293,9 +293,9 @@ func (section *CSSSection) StartPosition() uint {
 
 	runtime.KeepAlive(section)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -395,7 +395,7 @@ func (g *Generator) Use(typ interface{}) bool {
 		)
 
 		// Import the extern function header for the trampoline function.
-		g.header.AddCallable(g.Root.NamespaceFindResult, exportedSignal, sigCallable)
+		types.AddCallableHeader(&g.header, g.Root.NamespaceFindResult, exportedSignal, sigCallable)
 		// Import everything that the conversion trampoline needs into the
 		// callable's headers.
 		g.header.ApplyFrom(callbackGen.Header())
@@ -439,7 +439,7 @@ func (g *Generator) ImplInterfaces() []string {
 	for i, resolved := range impls {
 		namespace := resolved.NeedsNamespace(g.gen.Namespace())
 		if namespace {
-			g.header.ImportPubl(resolved)
+			resolved.ImportPubl(&g.header)
 		}
 		names[i] = resolved.PublicType(namespace)
 	}

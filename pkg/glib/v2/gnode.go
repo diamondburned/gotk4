@@ -141,7 +141,7 @@ type node struct {
 //
 //    - gint: position of child with respect to its siblings.
 //
-func (node *Node) ChildPosition(child *Node) int {
+func (node *Node) ChildPosition(child *Node) int32 {
 	var _arg0 *C.GNode // out
 	var _arg1 *C.GNode // out
 	var _cret C.gint   // in
@@ -153,9 +153,9 @@ func (node *Node) ChildPosition(child *Node) int {
 	runtime.KeepAlive(node)
 	runtime.KeepAlive(child)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -169,7 +169,7 @@ func (node *Node) ChildPosition(child *Node) int {
 //
 //    - guint: depth of the #GNode.
 //
-func (node *Node) Depth() uint {
+func (node *Node) Depth() uint32 {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
@@ -178,9 +178,9 @@ func (node *Node) Depth() uint {
 	_cret = C.g_node_depth(_arg0)
 	runtime.KeepAlive(node)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -239,7 +239,7 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 //
 //    - guint: maximum height of the tree beneath root.
 //
-func (root *Node) MaxHeight() uint {
+func (root *Node) MaxHeight() uint32 {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
@@ -248,9 +248,9 @@ func (root *Node) MaxHeight() uint {
 	_cret = C.g_node_max_height(_arg0)
 	runtime.KeepAlive(root)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -261,7 +261,7 @@ func (root *Node) MaxHeight() uint {
 //
 //    - guint: number of children of node.
 //
-func (node *Node) NChildren() uint {
+func (node *Node) NChildren() uint32 {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
@@ -270,9 +270,9 @@ func (node *Node) NChildren() uint {
 	_cret = C.g_node_n_children(_arg0)
 	runtime.KeepAlive(node)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -288,7 +288,7 @@ func (node *Node) NChildren() uint {
 //
 //    - guint: number of nodes in the tree.
 //
-func (root *Node) NNodes(flags TraverseFlags) uint {
+func (root *Node) NNodes(flags TraverseFlags) uint32 {
 	var _arg0 *C.GNode         // out
 	var _arg1 C.GTraverseFlags // out
 	var _cret C.guint          // in
@@ -300,9 +300,9 @@ func (root *Node) NNodes(flags TraverseFlags) uint {
 	runtime.KeepAlive(root)
 	runtime.KeepAlive(flags)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -556,7 +556,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //
 //    - cursor: new Cursor.
 //
-func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *Cursor {
+func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int32) *Cursor {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -570,8 +570,8 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 	_arg3 = C.gint(y)
 	*(**Display)(unsafe.Pointer(&args[0])) = _arg0
 	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_pixbuf", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

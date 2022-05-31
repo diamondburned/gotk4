@@ -67,15 +67,15 @@ func DisableMultidevice() {
 //
 //    - gint: x error code or 0 on success.
 //
-func ErrorTrapPop() int {
+func ErrorTrapPop() int32 {
 	var _cret C.gint // in
 
 	_gret := girepository.MustFind("Gdk", "error_trap_pop").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -356,12 +356,12 @@ func SetAllowedBackends(backends string) {
 //
 //    - msec: double click time in milliseconds (thousandths of a second).
 //
-func SetDoubleClickTime(msec uint) {
+func SetDoubleClickTime(msec uint32) {
 	var args [1]girepository.Argument
 	var _arg0 C.guint // out
 
 	_arg0 = C.guint(msec)
-	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
 	girepository.MustFind("Gdk", "set_double_click_time").Invoke(args[:], nil)
 
@@ -402,15 +402,15 @@ func SetProgramClass(programClass string) {
 //
 //    - gint: height of the default screen in pixels.
 //
-func ScreenHeight() int {
+func ScreenHeight() int32 {
 	var _cret C.gint // in
 
 	_gret := girepository.MustFind("Gdk", "height").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -425,15 +425,15 @@ func ScreenHeight() int {
 //    - gint: height of the default screen in millimeters, though it is not
 //      always correct.
 //
-func ScreenHeightMm() int {
+func ScreenHeightMm() int32 {
 	var _cret C.gint // in
 
 	_gret := girepository.MustFind("Gdk", "height_mm").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -448,15 +448,15 @@ func ScreenHeightMm() int {
 //
 //    - gint: width of the default screen in pixels.
 //
-func ScreenWidth() int {
+func ScreenWidth() int32 {
 	var _cret C.gint // in
 
 	_gret := girepository.MustFind("Gdk", "width").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -471,15 +471,15 @@ func ScreenWidth() int {
 //    - gint: width of the default screen in millimeters, though it is not always
 //      correct.
 //
-func ScreenWidthMm() int {
+func ScreenWidthMm() int32 {
 	var _cret C.gint // in
 
 	_gret := girepository.MustFind("Gdk", "width_mm").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

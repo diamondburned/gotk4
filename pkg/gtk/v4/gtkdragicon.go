@@ -269,3 +269,40 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 
 	return _widget
 }
+
+// DragIconSetFromPaintable creates a GtkDragIcon that shows paintable, and
+// associates it with the drag operation.
+//
+// The hotspot position on the paintable is aligned with the hotspot of the
+// cursor.
+//
+// The function takes the following parameters:
+//
+//    - drag: GdkDrag.
+//    - paintable: GdkPaintable to display.
+//    - hotX: x coordinate of the hotspot.
+//    - hotY: y coordinate of the hotspot.
+//
+func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, hotY int32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	_arg2 = C.int(hotX)
+	_arg3 = C.int(hotY)
+	*(*gdk.Dragger)(unsafe.Pointer(&args[0])) = _arg0
+	*(*gdk.Paintabler)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "set_from_paintable").Invoke(args[:], nil)
+
+	runtime.KeepAlive(drag)
+	runtime.KeepAlive(paintable)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
+}

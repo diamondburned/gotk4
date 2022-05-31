@@ -52,7 +52,7 @@ func init() {
 //    - list: GList of pango.Item structures. The items should be freed using
 //      pango.Item.Free() probably in combination with g_list_free_full().
 //
-func Itemize(context *Context, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
+func Itemize(context *Context, text string, startIndex, length int32, attrs *AttrList, cachedIter *AttrIterator) []*Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 *C.char              // out
 	var _arg3 C.int                // out
@@ -122,7 +122,7 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 //    - list: GList of pango.Item structures. The items should be freed using
 //      pango.Item.Free() probably in combination with g_list_free_full().
 //
-func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
+func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int32, attrs *AttrList, cachedIter *AttrIterator) []*Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 C.PangoDirection     // out
 	var _arg3 *C.char              // out
@@ -567,7 +567,7 @@ func (context *Context) RoundGlyphPositions() bool {
 //
 //    - guint: current serial number of context.
 //
-func (context *Context) Serial() uint {
+func (context *Context) Serial() uint32 {
 	var _arg0 *C.PangoContext // out
 	var _cret C.guint         // in
 
@@ -576,9 +576,9 @@ func (context *Context) Serial() uint {
 	_cret = C.pango_context_get_serial(_arg0)
 	runtime.KeepAlive(context)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -822,7 +822,7 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 //    - attribute: newly allocated PangoAttribute, which should be freed with
 //      pango.Attribute.Destroy().
 //
-func NewAttrLetterSpacing(letterSpacing int) *Attribute {
+func NewAttrLetterSpacing(letterSpacing int32) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
@@ -933,7 +933,7 @@ func NewAttrOverline(overline Overline) *Attribute {
 //    - attribute: newly allocated PangoAttribute, which should be freed with
 //      pango.Attribute.Destroy().
 //
-func NewAttrRise(rise int) *Attribute {
+func NewAttrRise(rise int32) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
@@ -1459,7 +1459,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 //    - accelChar (optional) address of return location for accelerator char, or
 //      NULL.
 //
-func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
+func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList, string, uint32, error) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
 	var _arg3 C.gunichar       // out
@@ -1703,9 +1703,9 @@ func (a *AttrInt) Attr() *Attribute {
 }
 
 // Value: value of the attribute.
-func (a *AttrInt) Value() int {
-	var v int // out
-	v = int(a.native.value)
+func (a *AttrInt) Value() int32 {
+	var v int32 // out
+	v = int32(a.native.value)
 	return v
 }
 
@@ -1874,7 +1874,7 @@ func (iterator *AttrIterator) Next() bool {
 //    - start: location to store the start of the range.
 //    - end: location to store the end of the range.
 //
-func (iterator *AttrIterator) Range() (start int, end int) {
+func (iterator *AttrIterator) Range() (start int32, end int32) {
 	var _arg0 *C.PangoAttrIterator // out
 	var _arg1 C.gint               // in
 	var _arg2 C.gint               // in
@@ -1884,11 +1884,11 @@ func (iterator *AttrIterator) Range() (start int, end int) {
 	C.pango_attr_iterator_range(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iterator)
 
-	var _start int // out
-	var _end int   // out
+	var _start int32 // out
+	var _end int32   // out
 
-	_start = int(_arg1)
-	_end = int(_arg2)
+	_start = int32(_arg1)
+	_end = int32(_arg2)
 
 	return _start, _end
 }
@@ -2222,7 +2222,7 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 //      since the attributes in other may only be present at some subsection of
 //      this range).
 //
-func (list *AttrList) Splice(other *AttrList, pos int, len int) {
+func (list *AttrList) Splice(other *AttrList, pos int32, len int32) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 *C.PangoAttrList // out
 	var _arg2 C.gint           // out
@@ -2259,7 +2259,7 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 //    - remove: number of removed bytes.
 //    - add: number of added bytes.
 //
-func (list *AttrList) Update(pos int, remove int, add int) {
+func (list *AttrList) Update(pos int32, remove int32, add int32) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 C.int            // out
 	var _arg2 C.int            // out
@@ -2353,9 +2353,9 @@ func (a *AttrSize) Attr() *Attribute {
 
 // Size: size of font, in units of 1/PANGO_SCALE of a point (for
 // PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE).
-func (a *AttrSize) Size() int {
-	var v int // out
-	v = int(a.native.size)
+func (a *AttrSize) Size() int32 {
+	var v int32 // out
+	v = int32(a.native.size)
 	return v
 }
 
@@ -2370,7 +2370,7 @@ func (a *AttrSize) Size() int {
 //    - attribute: newly allocated PangoAttribute, which should be freed with
 //      pango.Attribute.Destroy().
 //
-func NewAttrSize(size int) *Attribute {
+func NewAttrSize(size int32) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
@@ -2403,7 +2403,7 @@ func NewAttrSize(size int) *Attribute {
 //    - attribute: newly allocated PangoAttribute, which should be freed with
 //      pango.Attribute.Destroy().
 //
-func NewAttrSizeAbsolute(size int) *Attribute {
+func NewAttrSizeAbsolute(size int32) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 

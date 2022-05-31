@@ -377,3 +377,38 @@ func (context *PrintContext) Width() float64 {
 
 	return _gdouble
 }
+
+// SetCairoContext sets a new cairo context on a print context.
+//
+// This function is intended to be used when implementing an internal print
+// preview, it is not needed for printing, since GTK+ itself creates a suitable
+// cairo context in that case.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - dpiX: horizontal resolution to use with cr.
+//    - dpiY: vertical resolution to use with cr.
+//
+func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float64) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.double(dpiX)
+	_arg3 = C.double(dpiY)
+	*(**PrintContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(**cairo.Context)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "PrintContext").InvokeMethod("set_cairo_context", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(dpiX)
+	runtime.KeepAlive(dpiY)
+}

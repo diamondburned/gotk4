@@ -37,7 +37,7 @@ import "C"
 //
 //    - guint: ID of the export (never zero), or 0 in case of failure.
 //
-func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
+func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint32, error) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -59,10 +59,10 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(menu)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -81,7 +81,7 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 //
 //    - exportId: ID from g_dbus_connection_export_menu_model().
 //
-func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
+func (connection *DBusConnection) UnexportMenuModel(exportId uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

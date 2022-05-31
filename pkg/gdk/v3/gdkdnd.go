@@ -572,7 +572,7 @@ func (context *DragContext) SetDevice(device Devicer) {
 //    - hotX: x coordinate of the drag window hotspot.
 //    - hotY: y coordinate of the drag window hotspot.
 //
-func (context *DragContext) SetHotspot(hotX, hotY int) {
+func (context *DragContext) SetHotspot(hotX, hotY int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -582,7 +582,7 @@ func (context *DragContext) SetHotspot(hotX, hotY int) {
 	_arg1 = C.gint(hotX)
 	_arg2 = C.gint(hotY)
 	*(**DragContext)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gdk", "DragContext").InvokeMethod("set_hotspot", args[:], nil)
 

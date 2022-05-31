@@ -287,6 +287,33 @@ func (op *MountOperation) Anonymous() bool {
 	return _ok
 }
 
+// Choice gets a choice from the mount operation.
+//
+// The function returns the following values:
+//
+//    - gint: integer containing an index of the user's choice from the choice's
+//      list, or 0.
+//
+func (op *MountOperation) Choice() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**MountOperation)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_choice", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(op)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Domain gets the domain of the mount operation.
 //
 // The function returns the following values:
@@ -407,7 +434,7 @@ func (op *MountOperation) Password() string {
 //
 //    - guint: veraCrypt PIM within op.
 //
-func (op *MountOperation) Pim() uint {
+func (op *MountOperation) Pim() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -420,9 +447,9 @@ func (op *MountOperation) Pim() uint {
 
 	runtime.KeepAlive(op)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -477,6 +504,27 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(anonymous)
+}
+
+// SetChoice sets a default choice for the mount operation.
+//
+// The function takes the following parameters:
+//
+//    - choice: integer.
+//
+func (op *MountOperation) SetChoice(choice int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg1 = C.int(choice)
+	*(**MountOperation)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_choice", args[:], nil)
+
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(choice)
 }
 
 // SetDomain sets the mount operation's domain.
@@ -581,7 +629,7 @@ func (op *MountOperation) SetPassword(password string) {
 //
 //    - pim: unsigned integer.
 //
-func (op *MountOperation) SetPim(pim uint) {
+func (op *MountOperation) SetPim(pim uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

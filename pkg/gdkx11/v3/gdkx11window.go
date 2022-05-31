@@ -156,6 +156,45 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 	runtime.KeepAlive(desktop)
 }
 
+// SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
+// only works on GdkX11Window.
+//
+// Deprecated: Use gdk_window_set_shadow_width() instead.
+//
+// The function takes the following parameters:
+//
+//    - left extent.
+//    - right extent.
+//    - top extent.
+//    - bottom extent.
+//
+func (window *X11Window) SetFrameExtents(left, right, top, bottom int32) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.int(left)
+	_arg2 = C.int(right)
+	_arg3 = C.int(top)
+	_arg4 = C.int(bottom)
+	*(**X11Window)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	girepository.MustFind("GdkX11", "X11Window").InvokeMethod("set_frame_extents", args[:], nil)
+
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(left)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(bottom)
+}
+
 // SetFrameSyncEnabled: this function can be used to disable frame
 // synchronization for a window. Normally frame synchronziation will be enabled
 // or disabled based on whether the system has a compositor that supports frame

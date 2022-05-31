@@ -117,7 +117,7 @@ type ComponentOverrider interface {
 	//      the component is shown in relation to other components in the same
 	//      container.
 	//
-	MDIZOrder() int
+	MDIZOrder() int32
 	// GrabFocus grabs focus for this component.
 	//
 	// The function returns the following values:
@@ -137,7 +137,7 @@ type ComponentOverrider interface {
 	//    - handlerId: handler id of the focus handler to be removed from
 	//      component.
 	//
-	RemoveFocusHandler(handlerId uint)
+	RemoveFocusHandler(handlerId uint32)
 	// SetSize: set the size of the component in terms of width and height.
 	//
 	// The function takes the following parameters:
@@ -149,7 +149,7 @@ type ComponentOverrider interface {
 	//
 	//    - ok: TRUE or FALSE whether the size was set or not.
 	//
-	SetSize(width, height int) bool
+	SetSize(width, height int32) bool
 }
 
 // Component should be implemented by most if not all UI elements with an actual
@@ -181,15 +181,15 @@ type Componenter interface {
 	// Alpha returns the alpha value (i.e.
 	Alpha() float64
 	// MDIZOrder gets the zorder of the component.
-	MDIZOrder() int
+	MDIZOrder() int32
 	// GrabFocus grabs focus for this component.
 	GrabFocus() bool
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
-	RemoveFocusHandler(handlerId uint)
+	RemoveFocusHandler(handlerId uint32)
 	// SetSize: set the size of the component in terms of width and height.
-	SetSize(width, height int) bool
+	SetSize(width, height int32) bool
 
 	// Bounds-changed: 'bounds-changed" signal is emitted when the bposition or
 	// size of the component changes.
@@ -263,9 +263,9 @@ func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
-	var _handlerId uint // out
+	var _handlerId uint32 // out
 
-	_handlerId = uint(arg1)
+	_handlerId = uint32(arg1)
 
 	iface.RemoveFocusHandler(_handlerId)
 }
@@ -275,11 +275,11 @@ func _gotk4_atk1_ComponentIface_set_size(arg0 *C.AtkComponent, arg1 C.gint, arg2
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(arg1)
-	_height = int(arg2)
+	_width = int32(arg1)
+	_height = int32(arg2)
 
 	ok := iface.SetSize(_width, _height)
 
@@ -361,7 +361,7 @@ func (component *Component) Alpha() float64 {
 //    - gint which is the zorder of the component, i.e. the depth at which the
 //      component is shown in relation to other components in the same container.
 //
-func (component *Component) MDIZOrder() int {
+func (component *Component) MDIZOrder() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -373,9 +373,9 @@ func (component *Component) MDIZOrder() int {
 
 	runtime.KeepAlive(component)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -418,7 +418,7 @@ func (component *Component) GrabFocus() bool {
 //
 //    - handlerId: handler id of the focus handler to be removed from component.
 //
-func (component *Component) RemoveFocusHandler(handlerId uint) {
+func (component *Component) RemoveFocusHandler(handlerId uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -442,7 +442,7 @@ func (component *Component) RemoveFocusHandler(handlerId uint) {
 //
 //    - ok: TRUE or FALSE whether the size was set or not.
 //
-func (component *Component) SetSize(width, height int) bool {
+func (component *Component) SetSize(width, height int32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -453,7 +453,7 @@ func (component *Component) SetSize(width, height int) bool {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**Component)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -490,7 +490,7 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // NewRectangle creates a new Rectangle instance from the given
 // fields.
-func NewRectangle(x, y, width, height int) Rectangle {
+func NewRectangle(x, y, width, height int32) Rectangle {
 	var f0 C.gint // out
 	f0 = C.gint(x)
 	var f1 C.gint // out
@@ -511,29 +511,29 @@ func NewRectangle(x, y, width, height int) Rectangle {
 }
 
 // X coordinate of the left side of the rectangle.
-func (r *Rectangle) X() int {
-	var v int // out
-	v = int(r.native.x)
+func (r *Rectangle) X() int32 {
+	var v int32 // out
+	v = int32(r.native.x)
 	return v
 }
 
 // Y coordinate of the top side of the rectangle.
-func (r *Rectangle) Y() int {
-	var v int // out
-	v = int(r.native.y)
+func (r *Rectangle) Y() int32 {
+	var v int32 // out
+	v = int32(r.native.y)
 	return v
 }
 
 // Width: width of the rectangle.
-func (r *Rectangle) Width() int {
-	var v int // out
-	v = int(r.native.width)
+func (r *Rectangle) Width() int32 {
+	var v int32 // out
+	v = int32(r.native.width)
 	return v
 }
 
 // Height: height of the rectangle.
-func (r *Rectangle) Height() int {
-	var v int // out
-	v = int(r.native.height)
+func (r *Rectangle) Height() int32 {
+	var v int32 // out
+	v = int32(r.native.height)
 	return v
 }

@@ -137,14 +137,14 @@ func marshalSocket(p uintptr) (interface{}, error) {
 //
 //    - socket or NULL on error. Free the returned object with g_object_unref().
 //
-func NewSocketFromFd(fd int) (*Socket, error) {
+func NewSocketFromFd(fd int32) (*Socket, error) {
 	var args [1]girepository.Argument
 	var _arg0 C.gint  // out
 	var _cret *C.void // in
 	var _cerr *C.void // in
 
 	_arg0 = C.gint(fd)
-	*(*int)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("new_Socket_from_fd", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -545,6 +545,35 @@ func (socket *Socket) Credentials() (*Credentials, error) {
 	return _credentials, _goerr
 }
 
+// Fd returns the underlying OS socket object. On unix this is a socket file
+// descriptor, and on Windows this is a Winsock2 SOCKET handle. This may be
+// useful for doing platform specific or otherwise unusual operations on the
+// socket.
+//
+// The function returns the following values:
+//
+//    - gint: file descriptor of the socket.
+//
+func (socket *Socket) Fd() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**Socket)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_fd", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(socket)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Keepalive gets the keepalive mode of the socket. For details on this, see
 // g_socket_set_keepalive().
 //
@@ -581,7 +610,7 @@ func (socket *Socket) Keepalive() bool {
 //
 //    - gint: maximum number of pending connections.
 //
-func (socket *Socket) ListenBacklog() int {
+func (socket *Socket) ListenBacklog() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -594,9 +623,9 @@ func (socket *Socket) ListenBacklog() int {
 
 	runtime.KeepAlive(socket)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -688,7 +717,7 @@ func (socket *Socket) MulticastLoopback() bool {
 //
 //    - guint: multicast time-to-live setting on socket.
 //
-func (socket *Socket) MulticastTTL() uint {
+func (socket *Socket) MulticastTTL() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -701,9 +730,9 @@ func (socket *Socket) MulticastTTL() uint {
 
 	runtime.KeepAlive(socket)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -764,7 +793,7 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 //
 //    - guint: timeout in seconds.
 //
-func (socket *Socket) Timeout() uint {
+func (socket *Socket) Timeout() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -777,9 +806,9 @@ func (socket *Socket) Timeout() uint {
 
 	runtime.KeepAlive(socket)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -791,7 +820,7 @@ func (socket *Socket) Timeout() uint {
 //
 //    - guint: time-to-live setting on socket.
 //
-func (socket *Socket) TTL() uint {
+func (socket *Socket) TTL() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -804,9 +833,9 @@ func (socket *Socket) TTL() uint {
 
 	runtime.KeepAlive(socket)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1629,7 +1658,7 @@ func (socket *Socket) SetKeepalive(keepalive bool) {
 //
 //    - backlog: maximum number of pending connections.
 //
-func (socket *Socket) SetListenBacklog(backlog int) {
+func (socket *Socket) SetListenBacklog(backlog int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1678,7 +1707,7 @@ func (socket *Socket) SetMulticastLoopback(loopback bool) {
 //
 //    - ttl: time-to-live value for all multicast datagrams on socket.
 //
-func (socket *Socket) SetMulticastTTL(ttl uint) {
+func (socket *Socket) SetMulticastTTL(ttl uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1708,7 +1737,7 @@ func (socket *Socket) SetMulticastTTL(ttl uint) {
 //    - optname: "name" of the option (eg, SO_BROADCAST).
 //    - value to set the option to.
 //
-func (socket *Socket) SetOption(level, optname, value int) error {
+func (socket *Socket) SetOption(level, optname, value int32) error {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1721,8 +1750,8 @@ func (socket *Socket) SetOption(level, optname, value int) error {
 	_arg2 = C.gint(optname)
 	_arg3 = C.gint(value)
 	*(**Socket)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gio", "Socket").InvokeMethod("set_option", args[:], nil)
 
@@ -1762,7 +1791,7 @@ func (socket *Socket) SetOption(level, optname, value int) error {
 //
 //    - timeout for socket, in seconds, or 0 for none.
 //
-func (socket *Socket) SetTimeout(timeout uint) {
+func (socket *Socket) SetTimeout(timeout uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1784,7 +1813,7 @@ func (socket *Socket) SetTimeout(timeout uint) {
 //
 //    - ttl: time-to-live value for all unicast packets on socket.
 //
-func (socket *Socket) SetTTL(ttl uint) {
+func (socket *Socket) SetTTL(ttl uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

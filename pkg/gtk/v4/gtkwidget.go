@@ -14,14 +14,17 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern gboolean _gotk4_gtk4_WidgetClass_contains(GtkWidget*, double, double);
 // extern gboolean _gotk4_gtk4_WidgetClass_grab_focus(GtkWidget*);
 // extern gboolean _gotk4_gtk4_WidgetClass_mnemonic_activate(GtkWidget*, gboolean);
+// extern gboolean _gotk4_gtk4_WidgetClass_query_tooltip(GtkWidget*, int, int, gboolean, GtkTooltip*);
 // extern gboolean _gotk4_gtk4_Widget_ConnectMnemonicActivate(gpointer, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_Widget_ConnectQueryTooltip(gpointer, gint, gint, gboolean, GtkTooltip*, guintptr);
 // extern void _gotk4_gtk4_WidgetClass_hide(GtkWidget*);
@@ -30,6 +33,7 @@ import (
 // extern void _gotk4_gtk4_WidgetClass_root(GtkWidget*);
 // extern void _gotk4_gtk4_WidgetClass_set_focus_child(GtkWidget*, GtkWidget*);
 // extern void _gotk4_gtk4_WidgetClass_show(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_size_allocate(GtkWidget*, int, int, int);
 // extern void _gotk4_gtk4_WidgetClass_snapshot(GtkWidget*, GtkSnapshot*);
 // extern void _gotk4_gtk4_WidgetClass_unmap(GtkWidget*);
 // extern void _gotk4_gtk4_WidgetClass_unrealize(GtkWidget*);
@@ -124,6 +128,21 @@ func _gotk4_gtk4_TickCallback(arg1 *C.GtkWidget, arg2 *C.GdkFrameClock, arg3 C.g
 
 // WidgetOverrider contains methods that are overridable.
 type WidgetOverrider interface {
+	// Contains tests if the point at (x, y) is contained in widget.
+	//
+	// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
+	// assumed to be the top left of widget's content area.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x: x coordinate to test, relative to widget's origin.
+	//    - y: y coordinate to test, relative to widget's origin.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if widget contains (x, y).
+	//
+	Contains(x, y float64) bool
 	// GrabFocus causes widget to have the keyboard focus for the GtkWindow it's
 	// inside.
 	//
@@ -158,6 +177,16 @@ type WidgetOverrider interface {
 	//    - ok: TRUE if the signal has been handled.
 	//
 	MnemonicActivate(groupCycling bool) bool
+	// The function takes the following parameters:
+	//
+	//    - x
+	//    - y
+	//    - keyboardTooltip
+	//    - tooltip
+	//
+	// The function returns the following values:
+	//
+	QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
 	// Realize creates the GDK resources associated with a widget.
 	//
 	// Normally realization happens implicitly; if you show a widget and all its
@@ -199,6 +228,13 @@ type WidgetOverrider interface {
 	// mapped; other shown widgets are realized and mapped when their toplevel
 	// container is realized and mapped.
 	Show()
+	// The function takes the following parameters:
+	//
+	//    - width
+	//    - height
+	//    - baseline
+	//
+	SizeAllocate(width, height, baseline int32)
 	// The function takes the following parameters:
 	//
 	Snapshot(snapshot *Snapshot)
@@ -597,6 +633,10 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkWidgetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
+	if _, ok := goval.(interface{ Contains(x, y float64) bool }); ok {
+		pclass.contains = (*[0]byte)(C._gotk4_gtk4_WidgetClass_contains)
+	}
+
 	if _, ok := goval.(interface{ GrabFocus() bool }); ok {
 		pclass.grab_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_grab_focus)
 	}
@@ -611,6 +651,12 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 
 	if _, ok := goval.(interface{ MnemonicActivate(groupCycling bool) bool }); ok {
 		pclass.mnemonic_activate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_mnemonic_activate)
+	}
+
+	if _, ok := goval.(interface {
+		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+	}); ok {
+		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk4_WidgetClass_query_tooltip)
 	}
 
 	if _, ok := goval.(interface{ Realize() }); ok {
@@ -629,6 +675,12 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 		pclass.show = (*[0]byte)(C._gotk4_gtk4_WidgetClass_show)
 	}
 
+	if _, ok := goval.(interface {
+		SizeAllocate(width, height, baseline int32)
+	}); ok {
+		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_size_allocate)
+	}
+
 	if _, ok := goval.(interface{ Snapshot(snapshot *Snapshot) }); ok {
 		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_snapshot)
 	}
@@ -644,6 +696,26 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	if _, ok := goval.(interface{ Unroot() }); ok {
 		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unroot)
 	}
+}
+
+//export _gotk4_gtk4_WidgetClass_contains
+func _gotk4_gtk4_WidgetClass_contains(arg0 *C.GtkWidget, arg1 C.double, arg2 C.double) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Contains(x, y float64) bool })
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	ok := iface.Contains(_x, _y)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 //export _gotk4_gtk4_WidgetClass_grab_focus
@@ -688,6 +760,34 @@ func _gotk4_gtk4_WidgetClass_mnemonic_activate(arg0 *C.GtkWidget, arg1 C.gboolea
 	}
 
 	ok := iface.MnemonicActivate(_groupCycling)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_WidgetClass_query_tooltip
+func _gotk4_gtk4_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+	})
+
+	var _x int32              // out
+	var _y int32              // out
+	var _keyboardTooltip bool // out
+	var _tooltip *Tooltip     // out
+
+	_x = int32(arg1)
+	_y = int32(arg2)
+	if arg3 != 0 {
+		_keyboardTooltip = true
+	}
+	_tooltip = wrapTooltip(coreglib.Take(unsafe.Pointer(arg4)))
+
+	ok := iface.QueryTooltip(_x, _y, _keyboardTooltip, _tooltip)
 
 	if ok {
 		cret = C.TRUE
@@ -745,6 +845,24 @@ func _gotk4_gtk4_WidgetClass_show(arg0 *C.GtkWidget) {
 	iface := goval.(interface{ Show() })
 
 	iface.Show()
+}
+
+//export _gotk4_gtk4_WidgetClass_size_allocate
+func _gotk4_gtk4_WidgetClass_size_allocate(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SizeAllocate(width, height, baseline int32)
+	})
+
+	var _width int32    // out
+	var _height int32   // out
+	var _baseline int32 // out
+
+	_width = int32(arg1)
+	_height = int32(arg2)
+	_baseline = int32(arg3)
+
+	iface.SizeAllocate(_width, _height, _baseline)
 }
 
 //export _gotk4_gtk4_WidgetClass_snapshot
@@ -928,7 +1046,7 @@ func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) (ok bool
 
 //export _gotk4_gtk4_Widget_ConnectQueryTooltip
 func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
+	var f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -936,16 +1054,16 @@ func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
+		f = closure.Func.(func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool))
 	}
 
-	var _x int             // out
-	var _y int             // out
+	var _x int32           // out
+	var _y int32           // out
 	var _keyboardMode bool // out
 	var _tooltip *Tooltip  // out
 
-	_x = int(arg1)
-	_y = int(arg2)
+	_x = int32(arg1)
+	_y = int32(arg2)
 	if arg3 != 0 {
 		_keyboardMode = true
 	}
@@ -973,7 +1091,7 @@ func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 //
 // The signal handler is free to manipulate tooltip with the therefore destined
 // function calls.
-func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
+func (widget *Widget) ConnectQueryTooltip(f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectQueryTooltip), f)
 }
 
@@ -1289,6 +1407,94 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 	runtime.KeepAlive(label)
 }
 
+// Allocate: this function is only used by GtkWidget subclasses, to assign a
+// size, position and (optionally) baseline to their child widgets.
+//
+// In this function, the allocation and baseline may be adjusted. The given
+// allocation will be forced to be bigger than the widget's minimum size, as
+// well as at least 0×0 in size.
+//
+// For a version that does not take a transform, see gtk.Widget.SizeAllocate().
+//
+// The function takes the following parameters:
+//
+//    - width: new width of widget.
+//    - height: new height of widget.
+//    - baseline: new baseline of widget, or -1.
+//    - transform (optional): transformation to be applied to widget.
+//
+func (widget *Widget) Allocate(width, height, baseline int32, transform *gsk.Transform) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	_arg3 = C.int(baseline)
+	if transform != nil {
+		_arg4 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
+	}
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("allocate", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(baseline)
+	runtime.KeepAlive(transform)
+}
+
+// Contains tests if the point at (x, y) is contained in widget.
+//
+// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
+// assumed to be the top left of widget's content area.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate to test, relative to widget's origin.
+//    - y: y coordinate to test, relative to widget's origin.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget contains (x, y).
+//
+func (widget *Widget) Contains(x, y float64) bool {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.double   // out
+	var _arg2 C.double   // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.double(x)
+	_arg2 = C.double(y)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("contains", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // CreatePangoContext creates a new PangoContext with the appropriate font map,
 // font options, font description, and base direction for drawing text for this
 // widget.
@@ -1388,6 +1594,90 @@ func (widget *Widget) ErrorBell() {
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("error_bell", args[:], nil)
 
 	runtime.KeepAlive(widget)
+}
+
+// AllocatedBaseline returns the baseline that has currently been allocated to
+// widget.
+//
+// This function is intended to be used when implementing handlers for the
+// GtkWidgetClass.snapshot() function, and when allocating child widgets in
+// GtkWidgetClass.size_allocate().
+//
+// The function returns the following values:
+//
+//    - gint: baseline of the widget, or -1 if none.
+//
+func (widget *Widget) AllocatedBaseline() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_allocated_baseline", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// AllocatedHeight returns the height that has currently been allocated to
+// widget.
+//
+// The function returns the following values:
+//
+//    - gint: height of the widget.
+//
+func (widget *Widget) AllocatedHeight() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_allocated_height", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// AllocatedWidth returns the width that has currently been allocated to widget.
+//
+// The function returns the following values:
+//
+//    - gint: width of the widget.
+//
+func (widget *Widget) AllocatedWidth() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_allocated_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // CanFocus determines whether the input focus can enter widget or any of its
@@ -1968,6 +2258,37 @@ func (widget *Widget) HasTooltip() bool {
 	return _ok
 }
 
+// Height returns the content height of the widget.
+//
+// This function returns the size passed to its size-allocate implementation,
+// which is the size you should be using in GtkWidgetClass.snapshot().
+//
+// For pointer events, see gtk.Widget.Contains().
+//
+// The function returns the following values:
+//
+//    - gint: height of widget.
+//
+func (widget *Widget) Height() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_height", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // HExpand gets whether the widget would like any available extra horizontal
 // space.
 //
@@ -2159,6 +2480,110 @@ func (widget *Widget) Mapped() bool {
 	return _ok
 }
 
+// MarginBottom gets the bottom margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: bottom margin of widget.
+//
+func (widget *Widget) MarginBottom() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_bottom", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MarginEnd gets the end margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: end margin of widget.
+//
+func (widget *Widget) MarginEnd() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_end", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MarginStart gets the start margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: start margin of widget.
+//
+func (widget *Widget) MarginStart() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_start", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MarginTop gets the top margin of widget.
+//
+// The function returns the following values:
+//
+//    - gint: top margin of widget.
+//
+func (widget *Widget) MarginTop() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_top", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Name retrieves the name of a widget.
 //
 // See gtk.Widget.SetName() for the significance of widget names.
@@ -2262,6 +2687,34 @@ func (widget *Widget) NextSibling() Widgetter {
 	}
 
 	return _ret
+}
+
+// Opacity the requested opacity for this widget.
+//
+// See gtk.Widget.SetOpacity().
+//
+// The function returns the following values:
+//
+//    - gdouble: requested opacity for this widget.
+//
+func (widget *Widget) Opacity() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_opacity", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // PangoContext gets a PangoContext with the appropriate font map, font
@@ -2516,6 +2969,38 @@ func (widget *Widget) Root() *Root {
 	return _root
 }
 
+// ScaleFactor retrieves the internal scale factor that maps from window
+// coordinates to the actual device pixels.
+//
+// On traditional systems this is 1, on high density outputs, it can be a higher
+// value (typically 2).
+//
+// See gdk.Surface.GetScaleFactor().
+//
+// The function returns the following values:
+//
+//    - gint: scale factor for widget.
+//
+func (widget *Widget) ScaleFactor() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_scale_factor", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Sensitive returns the widget’s sensitivity.
 //
 // This function returns the value that has been set using
@@ -2767,6 +3252,37 @@ func (widget *Widget) Visible() bool {
 	}
 
 	return _ok
+}
+
+// Width returns the content width of the widget.
+//
+// This function returns the size passed to its size-allocate implementation,
+// which is the size you should be using in GtkWidgetClass.snapshot().
+//
+// For pointer events, see gtk.Widget.Contains().
+//
+// The function returns the following values:
+//
+//    - gint: width of widget.
+//
+func (widget *Widget) Width() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**Widget)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // GrabFocus causes widget to have the keyboard focus for the GtkWindow it's
@@ -3655,7 +4171,7 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 //
 //    - id returned by gtk.Widget.AddTickCallback().
 //
-func (widget *Widget) RemoveTickCallback(id uint) {
+func (widget *Widget) RemoveTickCallback(id uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -4133,6 +4649,90 @@ func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 	runtime.KeepAlive(layoutManager)
 }
 
+// SetMarginBottom sets the bottom margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: bottom margin.
+//
+func (widget *Widget) SetMarginBottom(margin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(margin)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_bottom", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginEnd sets the end margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: end margin.
+//
+func (widget *Widget) SetMarginEnd(margin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(margin)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_end", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginStart sets the start margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: start margin.
+//
+func (widget *Widget) SetMarginStart(margin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(margin)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_start", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
+// SetMarginTop sets the top margin of widget.
+//
+// The function takes the following parameters:
+//
+//    - margin: top margin.
+//
+func (widget *Widget) SetMarginTop(margin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(margin)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_top", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(margin)
+}
+
 // SetName sets a widgets name.
 //
 // Setting a name allows you to refer to the widget from a CSS file. You can
@@ -4163,6 +4763,45 @@ func (widget *Widget) SetName(name string) {
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(name)
+}
+
+// SetOpacity: request the widget to be rendered partially transparent.
+//
+// An opacity of 0 is fully transparent and an opacity of 1 is fully opaque.
+//
+// Opacity works on both toplevel widgets and child widgets, although there are
+// some limitations: For toplevel widgets, applying opacity depends on the
+// capabilities of the windowing system. On X11, this has any effect only on X
+// displays with a compositing manager, see gdk_display_is_composited(). On
+// Windows and Wayland it should always work, although setting a window’s
+// opacity after the window has been shown may cause some flicker.
+//
+// Note that the opacity is inherited through inclusion — if you set a toplevel
+// to be partially translucent, all of its content will appear translucent,
+// since it is ultimatively rendered on that toplevel. The opacity value itself
+// is not inherited by child widgets (since that would make widgets deeper in
+// the hierarchy progressively more translucent). As a consequence, gtk.Popovers
+// and other gtk.Native widgets with their own surface will use their own
+// opacity value, and thus by default appear non-translucent, even if they are
+// attached to a toplevel that is translucent.
+//
+// The function takes the following parameters:
+//
+//    - opacity: desired opacity, between 0 and 1.
+//
+func (widget *Widget) SetOpacity(opacity float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.double(opacity)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_opacity", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(opacity)
 }
 
 // SetParent sets parent as the parent widget of widget.
@@ -4242,6 +4881,58 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(sensitive)
+}
+
+// SetSizeRequest sets the minimum size of a widget.
+//
+// That is, the widget’s size request will be at least width by height. You can
+// use this function to force a widget to be larger than it normally would be.
+//
+// In most cases, gtk.Window.SetDefaultSize() is a better choice for toplevel
+// windows than this function; setting the default size will still allow users
+// to shrink the window. Setting the size request will force them to leave the
+// window at least as large as the size request.
+//
+// Note the inherent danger of setting any fixed size - themes, translations
+// into other languages, different fonts, and user action can all change the
+// appropriate size for a given widget. So, it's basically impossible to
+// hardcode a size that will always be correct.
+//
+// The size request of a widget is the smallest size a widget can accept while
+// still functioning well and drawing itself correctly. However in some strange
+// cases a widget may be allocated less than its requested size, and in many
+// cases a widget may be allocated more space than it requested.
+//
+// If the size request in a given direction is -1 (unset), then the “natural”
+// size request of the widget will be used instead.
+//
+// The size request set here does not include any margin from the properties
+// gtk.Widget:margin-start, gtk.Widget:margin-end, gtk.Widget:margin-top, and
+// gtk.Widget:margin-bottom, but it does include pretty much all other padding
+// or border properties set by any subclass of GtkWidget.
+//
+// The function takes the following parameters:
+//
+//    - width widget should request, or -1 to unset.
+//    - height widget should request, or -1 to unset.
+//
+func (widget *Widget) SetSizeRequest(width, height int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_size_request", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // SetTooltipMarkup sets markup as the contents of the tooltip, which is marked
@@ -4439,6 +5130,35 @@ func (widget *Widget) Show() {
 	runtime.KeepAlive(widget)
 }
 
+// SizeAllocate allocates widget with a transformation that translates the
+// origin to the position in allocation.
+//
+// This is a simple form of gtk.Widget.Allocate().
+//
+// The function takes the following parameters:
+//
+//    - allocation: position and size to be allocated to widget.
+//    - baseline of the child, or -1.
+//
+func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(allocation)))
+	_arg2 = C.int(baseline)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+	*(**Allocation)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Widget").InvokeMethod("size_allocate", args[:], nil)
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(allocation)
+	runtime.KeepAlive(baseline)
+}
+
 // SnapshotChild: snapshot the a child of widget.
 //
 // When a widget receives a call to the snapshot function, it must send
@@ -4573,6 +5293,20 @@ func NewRequisition() *Requisition {
 	)
 
 	return _requisition
+}
+
+// Width widget’s desired width.
+func (r *Requisition) Width() int32 {
+	var v int32 // out
+	v = int32(r.native.width)
+	return v
+}
+
+// Height widget’s desired height.
+func (r *Requisition) Height() int32 {
+	var v int32 // out
+	v = int32(r.native.height)
+	return v
 }
 
 // Copy copies a GtkRequisition.

@@ -277,3 +277,65 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(anchorRect)
 }
+
+// SetOffset: offset the position of the anchor rectangle with the given delta.
+//
+// The function takes the following parameters:
+//
+//    - dx: x delta to offset the anchor rectangle with.
+//    - dy: y delta to offset the anchor rectangle with.
+//
+func (layout *PopupLayout) SetOffset(dx int32, dy int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg1 = C.int(dx)
+	_arg2 = C.int(dy)
+	*(**PopupLayout)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+}
+
+// SetShadowWidth sets the shadow width of the popup.
+//
+// The shadow width corresponds to the part of the computed surface size that
+// would consist of the shadow margin surrounding the window, would there be
+// any.
+//
+// The function takes the following parameters:
+//
+//    - left: width of the left part of the shadow.
+//    - right: width of the right part of the shadow.
+//    - top: height of the top part of the shadow.
+//    - bottom: height of the bottom part of the shadow.
+//
+func (layout *PopupLayout) SetShadowWidth(left int32, right int32, top int32, bottom int32) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg1 = C.int(left)
+	_arg2 = C.int(right)
+	_arg3 = C.int(top)
+	_arg4 = C.int(bottom)
+	*(**PopupLayout)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(left)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(bottom)
+}

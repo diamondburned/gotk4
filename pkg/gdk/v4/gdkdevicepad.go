@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -95,7 +96,10 @@ var (
 type DevicePadder interface {
 	coreglib.Objector
 
-	baseDevicePad() *DevicePad
+	// GroupNModes returns the number of modes that group may have.
+	GroupNModes(groupIdx int32) int32
+	// NGroups returns the number of groups this pad device has.
+	NGroups() int32
 }
 
 var _ DevicePadder = (*DevicePad)(nil)
@@ -115,11 +119,62 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 	return wrapDevicePad(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (v *DevicePad) baseDevicePad() *DevicePad {
-	return v
+// GroupNModes returns the number of modes that group may have.
+//
+// The function takes the following parameters:
+//
+//    - groupIdx: group to get the number of available modes from.
+//
+// The function returns the following values:
+//
+//    - gint: number of modes available in group.
+//
+func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+	_arg1 = C.int(groupIdx)
+	*(**DevicePad)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(pad)
+	runtime.KeepAlive(groupIdx)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
-// BaseDevicePad returns the underlying base object.
-func BaseDevicePad(obj DevicePadder) *DevicePad {
-	return obj.baseDevicePad()
+// NGroups returns the number of groups this pad device has.
+//
+// Pads have at least one group. A pad group is a subcollection of
+// buttons/strip/rings that is affected collectively by a same current mode.
+//
+// The function returns the following values:
+//
+//    - gint: number of button/ring/strip groups in the pad.
+//
+func (pad *DevicePad) NGroups() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+	*(**DevicePad)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(pad)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }

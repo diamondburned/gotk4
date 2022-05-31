@@ -98,7 +98,7 @@ func (t TreeViewDropPosition) String() string {
 	}
 }
 
-type TreeDestroyCountFunc func(treeView *TreeView, path *TreePath, children int)
+type TreeDestroyCountFunc func(treeView *TreeView, path *TreePath, children int32)
 
 //export _gotk4_gtk3_TreeDestroyCountFunc
 func _gotk4_gtk3_TreeDestroyCountFunc(arg1 *C.GtkTreeView, arg2 *C.GtkTreePath, arg3 C.gint, arg4 C.gpointer) {
@@ -113,11 +113,11 @@ func _gotk4_gtk3_TreeDestroyCountFunc(arg1 *C.GtkTreeView, arg2 *C.GtkTreePath, 
 
 	var _treeView *TreeView // out
 	var _path *TreePath     // out
-	var _children int       // out
+	var _children int32     // out
 
 	_treeView = wrapTreeView(coreglib.Take(unsafe.Pointer(arg1)))
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_children = int(arg3)
+	_children = int32(arg3)
 
 	fn(_treeView, _path, _children)
 }
@@ -237,7 +237,7 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeI
 // matches a search key string entered by the user. Note the return value is
 // reversed from what you would normally expect, though it has some similarity
 // to strcmp() returning 0 for equal strings.
-type TreeViewSearchEqualFunc func(model TreeModeller, column int, key string, iter *TreeIter) (ok bool)
+type TreeViewSearchEqualFunc func(model TreeModeller, column int32, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeViewSearchEqualFunc
 func _gotk4_gtk3_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.gint, arg3 *C.gchar, arg4 *C.GtkTreeIter, arg5 C.gpointer) (cret C.gboolean) {
@@ -251,7 +251,7 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.gint, arg3
 	}
 
 	var _model TreeModeller // out
-	var _column int         // out
+	var _column int32       // out
 	var _key string         // out
 	var _iter *TreeIter     // out
 
@@ -272,7 +272,7 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.gint, arg3
 		}
 		_model = rv
 	}
-	_column = int(arg2)
+	_column = int32(arg2)
 	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
@@ -1280,7 +1280,7 @@ func NewTreeViewWithModel(model TreeModeller) *TreeView {
 //
 //    - gint: number of columns in tree_view after appending.
 //
-func (treeView *TreeView) AppendColumn(column *TreeViewColumn) int {
+func (treeView *TreeView) AppendColumn(column *TreeViewColumn) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1296,9 +1296,9 @@ func (treeView *TreeView) AppendColumn(column *TreeViewColumn) int {
 	runtime.KeepAlive(treeView)
 	runtime.KeepAlive(column)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1563,7 +1563,7 @@ func (treeView *TreeView) BinWindow() gdk.Windower {
 //    - treeViewColumn (optional) or NULL if the position is outside the range of
 //      columns.
 //
-func (treeView *TreeView) Column(n int) *TreeViewColumn {
+func (treeView *TreeView) Column(n int32) *TreeViewColumn {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1931,7 +1931,7 @@ func (treeView *TreeView) HoverSelection() bool {
 //    - gint: amount of extra indentation for child levels in tree_view. A return
 //      value of 0 means that this feature is disabled.
 //
-func (treeView *TreeView) LevelIndentation() int {
+func (treeView *TreeView) LevelIndentation() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1944,9 +1944,9 @@ func (treeView *TreeView) LevelIndentation() int {
 
 	runtime.KeepAlive(treeView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1986,7 +1986,7 @@ func (treeView *TreeView) Model() *TreeModel {
 //
 //    - guint: number of columns in the tree_view.
 //
-func (treeView *TreeView) NColumns() uint {
+func (treeView *TreeView) NColumns() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1999,9 +1999,9 @@ func (treeView *TreeView) NColumns() uint {
 
 	runtime.KeepAlive(treeView)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -2101,7 +2101,7 @@ func (treeView *TreeView) RulesHint() bool {
 //
 //    - gint: column the interactive search code searches in.
 //
-func (treeView *TreeView) SearchColumn() int {
+func (treeView *TreeView) SearchColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -2114,9 +2114,9 @@ func (treeView *TreeView) SearchColumn() int {
 
 	runtime.KeepAlive(treeView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2211,7 +2211,7 @@ func (treeView *TreeView) ShowExpanders() bool {
 //    - gint: index of the tooltip column that is currently being used, or -1 if
 //      this is disabled.
 //
-func (treeView *TreeView) TooltipColumn() int {
+func (treeView *TreeView) TooltipColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -2224,9 +2224,9 @@ func (treeView *TreeView) TooltipColumn() int {
 
 	runtime.KeepAlive(treeView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2330,7 +2330,7 @@ func (treeView *TreeView) VisibleRange() (startPath *TreePath, endPath *TreePath
 //
 //    - gint: number of columns in tree_view after insertion.
 //
-func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int) int {
+func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int32) int32 {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -2350,9 +2350,9 @@ func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int) int
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(position)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2426,7 +2426,7 @@ func (treeView *TreeView) MoveColumnAfter(column, baseColumn *TreeViewColumn) {
 //
 //    - gint: number of columns in tree_view after removing.
 //
-func (treeView *TreeView) RemoveColumn(column *TreeViewColumn) int {
+func (treeView *TreeView) RemoveColumn(column *TreeViewColumn) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -2442,9 +2442,9 @@ func (treeView *TreeView) RemoveColumn(column *TreeViewColumn) int {
 	runtime.KeepAlive(treeView)
 	runtime.KeepAlive(column)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2585,7 +2585,7 @@ func (treeView *TreeView) ScrollToCell(path *TreePath, column *TreeViewColumn, u
 //    - treeX: x coordinate of new top-left pixel of visible area, or -1.
 //    - treeY: y coordinate of new top-left pixel of visible area, or -1.
 //
-func (treeView *TreeView) ScrollToPoint(treeX, treeY int) {
+func (treeView *TreeView) ScrollToPoint(treeX, treeY int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2595,7 +2595,7 @@ func (treeView *TreeView) ScrollToPoint(treeX, treeY int) {
 	_arg1 = C.gint(treeX)
 	_arg2 = C.gint(treeY)
 	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "TreeView").InvokeMethod("scroll_to_point", args[:], nil)
 
@@ -2964,7 +2964,7 @@ func (treeView *TreeView) SetHoverSelection(hover bool) {
 //
 //    - indentation: amount, in pixels, of extra indentation in tree_view.
 //
-func (treeView *TreeView) SetLevelIndentation(indentation int) {
+func (treeView *TreeView) SetLevelIndentation(indentation int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -3116,7 +3116,7 @@ func (treeView *TreeView) SetRulesHint(setting bool) {
 //
 //    - column of the model to search in, or -1 to disable searching.
 //
-func (treeView *TreeView) SetSearchColumn(column int) {
+func (treeView *TreeView) SetSearchColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -3253,7 +3253,7 @@ func (treeView *TreeView) SetTooltipCell(tooltip *Tooltip, path *TreePath, colum
 //
 //    - column: integer, which is a valid column number for tree_view’s model.
 //
-func (treeView *TreeView) SetTooltipColumn(column int) {
+func (treeView *TreeView) SetTooltipColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

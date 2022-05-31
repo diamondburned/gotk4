@@ -243,7 +243,7 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 //
 //    - guint: keyval.
 //
-func (self *KeyvalTrigger) Keyval() uint {
+func (self *KeyvalTrigger) Keyval() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -256,9 +256,9 @@ func (self *KeyvalTrigger) Keyval() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -315,13 +315,13 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 //
 //    - mnemonicTrigger: new GtkShortcutTrigger.
 //
-func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
+func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
 	var args [1]girepository.Argument
 	var _arg0 C.guint // out
 	var _cret *C.void // in
 
 	_arg0 = C.guint(keyval)
-	*(*uint)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "MnemonicTrigger").InvokeMethod("new_MnemonicTrigger", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -341,7 +341,7 @@ func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
 //
 //    - guint: keyval.
 //
-func (self *MnemonicTrigger) Keyval() uint {
+func (self *MnemonicTrigger) Keyval() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -354,9 +354,9 @@ func (self *MnemonicTrigger) Keyval() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

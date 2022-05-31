@@ -142,7 +142,7 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 //    - ypad: amount of space to add on the top and bottom of the widget, in
 //      pixels.
 //
-func (misc *Misc) SetPadding(xpad, ypad int) {
+func (misc *Misc) SetPadding(xpad, ypad int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -152,7 +152,7 @@ func (misc *Misc) SetPadding(xpad, ypad int) {
 	_arg1 = C.gint(xpad)
 	_arg2 = C.gint(ypad)
 	*(**Misc)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_padding", args[:], nil)
 

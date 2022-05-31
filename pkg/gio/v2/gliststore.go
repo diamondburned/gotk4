@@ -75,7 +75,7 @@ func marshalListStore(p uintptr) (interface{}, error) {
 //
 //    - position of the item that is to be removed.
 //
-func (store *ListStore) Remove(position uint) {
+func (store *ListStore) Remove(position uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

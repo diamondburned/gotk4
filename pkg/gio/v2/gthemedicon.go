@@ -97,6 +97,47 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 	return _themedIcon
 }
 
+// NewThemedIconFromNames creates a new themed icon for iconnames.
+//
+// The function takes the following parameters:
+//
+//    - iconnames: array of strings containing icon names.
+//
+// The function returns the following values:
+//
+//    - themedIcon: new Icon.
+//
+func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
+	var args [2]girepository.Argument
+	var _arg0 **C.void // out
+	var _arg1 C.int
+	var _cret *C.void // in
+
+	_arg1 = (C.int)(len(iconnames))
+	_arg0 = (**C.void)(C.calloc(C.size_t(len(iconnames)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg0))
+	{
+		out := unsafe.Slice((**C.void)(_arg0), len(iconnames))
+		for i := range iconnames {
+			out[i] = (*C.void)(unsafe.Pointer(C.CString(iconnames[i])))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	*(*[]string)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon_from_names", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconnames)
+
+	var _themedIcon *ThemedIcon // out
+	_out1 = *(**ThemedIcon)(unsafe.Pointer(&outs[1]))
+
+	_themedIcon = wrapThemedIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _themedIcon
+}
+
 // NewThemedIconWithDefaultFallbacks creates a new themed icon for iconname, and
 // all the names that can be created by shortening iconname at '-' characters.
 //

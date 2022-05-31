@@ -31,7 +31,7 @@ import "C"
 //
 //    - gint: XInput2 device ID.
 //
-func X11DeviceGetID(device *X11DeviceCore) int {
+func X11DeviceGetID(device *X11DeviceCore) int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -44,9 +44,9 @@ func X11DeviceGetID(device *X11DeviceCore) int {
 
 	runtime.KeepAlive(device)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

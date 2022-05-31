@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
 type TypeStruct struct {
@@ -126,7 +127,7 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 	method.C.Name = file.ExportedName(ts.ns, ts.Record.Name, field.Name)
 	method.C.Tail = cbgen.CGoTail
 	method.Header.ApplyFrom(cbgen.Header())
-	method.Header.AddCallable(ts.ns, method.C.Name, vmethod.CallableAttrs)
+	types.AddCallableHeader(&method.Header, ts.ns, method.C.Name, vmethod.CallableAttrs)
 
 	return method, true
 }

@@ -156,6 +156,34 @@ func NewCSSProvider() *CSSProvider {
 	return _cssProvider
 }
 
+// LoadFromData loads data into css_provider.
+//
+// This clears any previously loaded information.
+//
+// The function takes the following parameters:
+//
+//    - data: CSS data loaded in memory.
+//
+func (cssProvider *CSSProvider) LoadFromData(data string) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.gssize
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cssProvider).Native()))
+	_arg2 = (C.gssize)(len(data))
+	_arg1 = (*C.void)(C.calloc(C.size_t((len(data) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(data)), data)
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**CSSProvider)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "CssProvider").InvokeMethod("load_from_data", args[:], nil)
+
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(data)
+}
+
 // LoadFromFile loads the data contained in file into css_provider.
 //
 // This clears any previously loaded information.

@@ -358,7 +358,7 @@ func (self *DropDown) Model() *gio.ListModel {
 //    - guint: position of the selected item, or GTK_INVALID_LIST_POSITION if not
 //      item is selected.
 //
-func (self *DropDown) Selected() uint {
+func (self *DropDown) Selected() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -371,9 +371,9 @@ func (self *DropDown) Selected() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -507,7 +507,7 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 //
 //    - position of the item to select, or GTK_INVALID_LIST_POSITION.
 //
-func (self *DropDown) SetSelected(position uint) {
+func (self *DropDown) SetSelected(position uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

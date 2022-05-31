@@ -162,6 +162,52 @@ func (snapshot *Snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 	runtime.KeepAlive(bounds)
 }
 
+// AppendInsetShadow appends an inset shadow into the box given by outline.
+//
+// The function takes the following parameters:
+//
+//    - outline of the region surrounded by shadow.
+//    - color of the shadow.
+//    - dx: horizontal offset of shadow.
+//    - dy: vertical offset of shadow.
+//    - spread: how far the shadow spreads towards the inside.
+//    - blurRadius: how much blur to apply to the shadow.
+//
+func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) {
+	var args [7]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.float // out
+	var _arg4 C.float // out
+	var _arg5 C.float // out
+	var _arg6 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg3 = C.float(dx)
+	_arg4 = C.float(dy)
+	_arg5 = C.float(spread)
+	_arg6 = C.float(blurRadius)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(**gsk.RoundedRect)(unsafe.Pointer(&args[2])) = _arg2
+	*(**gdk.RGBA)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float32)(unsafe.Pointer(&args[5])) = _arg5
+	*(*float32)(unsafe.Pointer(&args[6])) = _arg6
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_inset_shadow", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
+}
+
 // The function takes the following parameters:
 //
 //    - layout
@@ -211,6 +257,53 @@ func (snapshot *Snapshot) AppendNode(node gsk.RenderNoder) {
 	runtime.KeepAlive(node)
 }
 
+// AppendOutsetShadow appends an outset shadow node around the box given by
+// outline.
+//
+// The function takes the following parameters:
+//
+//    - outline of the region surrounded by shadow.
+//    - color of the shadow.
+//    - dx: horizontal offset of shadow.
+//    - dy: vertical offset of shadow.
+//    - spread: how far the shadow spreads towards the outside.
+//    - blurRadius: how much blur to apply to the shadow.
+//
+func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) {
+	var args [7]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.float // out
+	var _arg4 C.float // out
+	var _arg5 C.float // out
+	var _arg6 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg3 = C.float(dx)
+	_arg4 = C.float(dy)
+	_arg5 = C.float(spread)
+	_arg6 = C.float(blurRadius)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(**gsk.RoundedRect)(unsafe.Pointer(&args[2])) = _arg2
+	*(**gdk.RGBA)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float32)(unsafe.Pointer(&args[5])) = _arg5
+	*(*float32)(unsafe.Pointer(&args[6])) = _arg6
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_outset_shadow", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
+}
+
 // AppendTexture creates a new render node drawing the texture into the given
 // bounds and appends it to the current render node of snapshot.
 //
@@ -255,6 +348,29 @@ func (snapshot *Snapshot) GLShaderPopTexture() {
 	runtime.KeepAlive(snapshot)
 }
 
+// Perspective applies a perspective projection transform.
+//
+// See gsk.Transform.Perspective() for a discussion on the details.
+//
+// The function takes the following parameters:
+//
+//    - depth: distance of the z=0 plane.
+//
+func (snapshot *Snapshot) Perspective(depth float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.float(depth)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("perspective", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(depth)
+}
+
 // Pop removes the top element from the stack of render nodes, and appends it to
 // the node underneath it.
 func (snapshot *Snapshot) Pop() {
@@ -267,6 +383,29 @@ func (snapshot *Snapshot) Pop() {
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("pop", args[:], nil)
 
 	runtime.KeepAlive(snapshot)
+}
+
+// PushBlur blurs an image.
+//
+// The image is recorded until the next call to gtk.Snapshot.Pop().
+//
+// The function takes the following parameters:
+//
+//    - radius: blur radius to use.
+//
+func (snapshot *Snapshot) PushBlur(radius float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.double(radius)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_blur", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(radius)
 }
 
 // PushClip clips an image to a rectangle.
@@ -319,6 +458,34 @@ func (snapshot *Snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOff
 	runtime.KeepAlive(snapshot)
 	runtime.KeepAlive(colorMatrix)
 	runtime.KeepAlive(colorOffset)
+}
+
+// PushCrossFade snapshots a cross-fade operation between two images with the
+// given progress.
+//
+// Until the first call to gtk.Snapshot.Pop(), the start image will be snapshot.
+// After that call, the end image will be recorded until the second call to
+// gtk.Snapshot.Pop().
+//
+// Calling this function requires two subsequent calls to gtk.Snapshot.Pop().
+//
+// The function takes the following parameters:
+//
+//    - progress between 0.0 and 1.0.
+//
+func (snapshot *Snapshot) PushCrossFade(progress float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.double(progress)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_cross_fade", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(progress)
 }
 
 // PushGLShader: push a GskGLShaderNode.
@@ -381,6 +548,29 @@ func (snapshot *Snapshot) PushGLShader(shader *gsk.GLShader, bounds *graphene.Re
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(bounds)
 	runtime.KeepAlive(takeArgs)
+}
+
+// PushOpacity modifies the opacity of an image.
+//
+// The image is recorded until the next call to gtk.Snapshot.Pop().
+//
+// The function takes the following parameters:
+//
+//    - opacity to use.
+//
+func (snapshot *Snapshot) PushOpacity(opacity float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.double(opacity)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_opacity", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(opacity)
 }
 
 // PushRepeat creates a node that repeats the child node.
@@ -465,6 +655,173 @@ func (snapshot *Snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 	runtime.KeepAlive(nShadows)
 }
 
+// RenderBackground creates a render node for the CSS background according to
+// context, and appends it to the current node of snapshot, without changing the
+// current node.
+//
+// The function takes the following parameters:
+//
+//    - context: GtkStyleContext to use.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
+func (snapshot *Snapshot) RenderBackground(context *StyleContext, x, y, width, height float64) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+	var _arg4 C.double // out
+	var _arg5 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(**StyleContext)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_background", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// RenderFocus creates a render node for the focus outline according to context,
+// and appends it to the current node of snapshot, without changing the current
+// node.
+//
+// The function takes the following parameters:
+//
+//    - context: GtkStyleContext to use.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
+func (snapshot *Snapshot) RenderFocus(context *StyleContext, x, y, width, height float64) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+	var _arg4 C.double // out
+	var _arg5 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(**StyleContext)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_focus", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// RenderFrame creates a render node for the CSS border according to context,
+// and appends it to the current node of snapshot, without changing the current
+// node.
+//
+// The function takes the following parameters:
+//
+//    - context: GtkStyleContext to use.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - width: rectangle width.
+//    - height: rectangle height.
+//
+func (snapshot *Snapshot) RenderFrame(context *StyleContext, x, y, width, height float64) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+	var _arg4 C.double // out
+	var _arg5 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(**StyleContext)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_frame", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// RenderLayout creates a render node for rendering layout according to the
+// style information in context, and appends it to the current node of snapshot,
+// without changing the current node.
+//
+// The function takes the following parameters:
+//
+//    - context: GtkStyleContext to use.
+//    - x: x origin of the rectangle.
+//    - y: y origin of the rectangle.
+//    - layout to render.
+//
+func (snapshot *Snapshot) RenderLayout(context *StyleContext, x, y float64, layout *pango.Layout) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+	var _arg4 *C.void  // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(**StyleContext)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_layout", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(layout)
+}
+
 // Restore restores snapshot to the state saved by a preceding call to
 // gtk_snapshot_save() and removes that state from the stack of saved states.
 func (snapshot *Snapshot) Restore() {
@@ -477,6 +834,58 @@ func (snapshot *Snapshot) Restore() {
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("restore", args[:], nil)
 
 	runtime.KeepAlive(snapshot)
+}
+
+// Rotate rotates @snapshot's coordinate system by angle degrees in 2D space -
+// or in 3D speak, rotates around the Z axis.
+//
+// To rotate around other axes, use gsk.Transform.Rotate3D().
+//
+// The function takes the following parameters:
+//
+//    - angle: rotation angle, in degrees (clockwise).
+//
+func (snapshot *Snapshot) Rotate(angle float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.float(angle)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("rotate", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(angle)
+}
+
+// Rotate3D rotates snapshot's coordinate system by angle degrees around axis.
+//
+// For a rotation in 2D space, use gsk.Transform.Rotate().
+//
+// The function takes the following parameters:
+//
+//    - angle: rotation angle, in degrees (clockwise).
+//    - axis: rotation axis.
+//
+func (snapshot *Snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.float(angle)
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("rotate_3d", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(angle)
+	runtime.KeepAlive(axis)
 }
 
 // Save makes a copy of the current state of snapshot and saves it on an
@@ -499,6 +908,66 @@ func (snapshot *Snapshot) Save() {
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("save", args[:], nil)
 
 	runtime.KeepAlive(snapshot)
+}
+
+// Scale scales snapshot's coordinate system in 2-dimensional space by the given
+// factors.
+//
+// Use gtk.Snapshot.Scale3D() to scale in all 3 dimensions.
+//
+// The function takes the following parameters:
+//
+//    - factorX: scaling factor on the X axis.
+//    - factorY: scaling factor on the Y axis.
+//
+func (snapshot *Snapshot) Scale(factorX, factorY float32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("scale", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
+}
+
+// Scale3D scales snapshot's coordinate system by the given factors.
+//
+// The function takes the following parameters:
+//
+//    - factorX: scaling factor on the X axis.
+//    - factorY: scaling factor on the Y axis.
+//    - factorZ: scaling factor on the Z axis.
+//
+func (snapshot *Snapshot) Scale3D(factorX, factorY, factorZ float32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 C.float // out
+	var _arg3 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	_arg3 = C.float(factorZ)
+	*(**Snapshot)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("scale_3d", args[:], nil)
+
+	runtime.KeepAlive(snapshot)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
+	runtime.KeepAlive(factorZ)
 }
 
 // ToNode returns the render node that was constructed by snapshot.

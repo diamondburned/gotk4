@@ -161,7 +161,7 @@ type TreeModelOverrider interface {
 	//
 	//    - gint: number of columns.
 	//
-	NColumns() int
+	NColumns() int32
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	//
 	// This path should be freed with gtk_tree_path_free().
@@ -199,7 +199,7 @@ type TreeModelOverrider interface {
 	//
 	//    - gint: number of children of iter.
 	//
-	IterNChildren(iter *TreeIter) int
+	IterNChildren(iter *TreeIter) int32
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	//
@@ -471,7 +471,7 @@ type TreeModeller interface {
 	coreglib.Objector
 
 	// NColumns returns the number of columns supported by tree_model.
-	NColumns() int
+	NColumns() int32
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	Path(iter *TreeIter) *TreePath
 	// StringFromIter generates a string representation of the iter.
@@ -479,7 +479,7 @@ type TreeModeller interface {
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
 	IterHasChild(iter *TreeIter) bool
 	// IterNChildren returns the number of children that iter has.
-	IterNChildren(iter *TreeIter) int
+	IterNChildren(iter *TreeIter) int32
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	IterNext(iter *TreeIter) bool
@@ -498,7 +498,7 @@ type TreeModeller interface {
 	// RowInserted emits the TreeModel::row-inserted signal on tree_model.
 	RowInserted(path *TreePath, iter *TreeIter)
 	// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
-	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int)
+	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32)
 	// UnrefNode lets the tree unref the node.
 	UnrefNode(iter *TreeIter)
 
@@ -847,7 +847,7 @@ func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *Tre
 //
 //    - gint: number of columns.
 //
-func (treeModel *TreeModel) NColumns() int {
+func (treeModel *TreeModel) NColumns() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -859,9 +859,9 @@ func (treeModel *TreeModel) NColumns() int {
 
 	runtime.KeepAlive(treeModel)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -989,7 +989,7 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 //
 //    - gint: number of children of iter.
 //
-func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int {
+func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1006,9 +1006,9 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1231,7 +1231,7 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 //    - newOrder: array of integers mapping the current position of each child to
 //      its old position before the re-ordering, i.e. new_order[newpos] = oldpos.
 //
-func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int) {
+func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1256,7 +1256,7 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 	*(**TreeModel)(unsafe.Pointer(&args[1])) = _arg1
 	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
 	*(**TreeIter)(unsafe.Pointer(&args[3])) = _arg3
-	*(*[]int)(unsafe.Pointer(&args[4])) = _arg4
+	*(*[]int32)(unsafe.Pointer(&args[4])) = _arg4
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1397,7 +1397,7 @@ func NewTreePathFirst() *TreePath {
 }
 
 // NewTreePathFromIndices constructs a struct TreePath.
-func NewTreePathFromIndices(indices []int) *TreePath {
+func NewTreePathFromIndices(indices []int32) *TreePath {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gsize
@@ -1412,7 +1412,7 @@ func NewTreePathFromIndices(indices []int) *TreePath {
 			out[i] = C.gint(indices[i])
 		}
 	}
-	*(*[]int)(unsafe.Pointer(&args[0])) = _arg0
+	*(*[]int32)(unsafe.Pointer(&args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1467,7 +1467,7 @@ func NewTreePathFromString(path string) *TreePath {
 //
 //    - index_: index.
 //
-func (path *TreePath) AppendIndex(index_ int) {
+func (path *TreePath) AppendIndex(index_ int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1493,7 +1493,7 @@ func (path *TreePath) AppendIndex(index_ int) {
 //
 //    - gint: relative positions of a and b.
 //
-func (a *TreePath) Compare(b *TreePath) int {
+func (a *TreePath) Compare(b *TreePath) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1508,9 +1508,9 @@ func (a *TreePath) Compare(b *TreePath) int {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1563,7 +1563,7 @@ func (path *TreePath) Down() {
 //
 //    - gint: depth of path.
 //
-func (path *TreePath) Depth() int {
+func (path *TreePath) Depth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1575,9 +1575,9 @@ func (path *TreePath) Depth() int {
 
 	runtime.KeepAlive(path)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1669,7 +1669,7 @@ func (path *TreePath) Next() {
 //
 //    - index_: index.
 //
-func (path *TreePath) PrependIndex(index_ int) {
+func (path *TreePath) PrependIndex(index_ int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

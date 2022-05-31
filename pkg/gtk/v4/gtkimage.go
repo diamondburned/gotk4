@@ -522,6 +522,32 @@ func (image *Image) Paintable() *gdk.Paintable {
 	return _paintable
 }
 
+// PixelSize gets the pixel size used for named icons.
+//
+// The function returns the following values:
+//
+//    - gint: pixel size used for named icons.
+//
+func (image *Image) PixelSize() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	*(**Image)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("get_pixel_size", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(image)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // SetFromFile sets a GtkImage to show a file.
 //
 // See gtk.Image.NewFromFile for details.
@@ -674,4 +700,28 @@ func (image *Image) SetFromResource(resourcePath string) {
 
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(resourcePath)
+}
+
+// SetPixelSize sets the pixel size to use for named icons.
+//
+// If the pixel size is set to a value != -1, it is used instead of the icon
+// size set by gtk.Image.SetFromIconName().
+//
+// The function takes the following parameters:
+//
+//    - pixelSize: new pixel size.
+//
+func (image *Image) SetPixelSize(pixelSize int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = C.int(pixelSize)
+	*(**Image)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Image").InvokeMethod("set_pixel_size", args[:], nil)
+
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(pixelSize)
 }

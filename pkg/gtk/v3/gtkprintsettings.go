@@ -556,7 +556,7 @@ func (settings *PrintSettings) Finishings() string {
 //
 //    - gint: integer value of key.
 //
-func (settings *PrintSettings) Int(key string) int {
+func (settings *PrintSettings) Int(key string) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -573,9 +573,9 @@ func (settings *PrintSettings) Int(key string) int {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -592,7 +592,7 @@ func (settings *PrintSettings) Int(key string) int {
 //
 //    - gint: integer value of key.
 //
-func (settings *PrintSettings) IntWithDefault(key string, def int) int {
+func (settings *PrintSettings) IntWithDefault(key string, def int32) int32 {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -613,9 +613,9 @@ func (settings *PrintSettings) IntWithDefault(key string, def int) int {
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(def)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -654,7 +654,7 @@ func (settings *PrintSettings) MediaType() string {
 //
 //    - gint: number of copies to print.
 //
-func (settings *PrintSettings) NCopies() int {
+func (settings *PrintSettings) NCopies() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -667,9 +667,9 @@ func (settings *PrintSettings) NCopies() int {
 
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -680,7 +680,7 @@ func (settings *PrintSettings) NCopies() int {
 //
 //    - gint: number of pages per sheet.
 //
-func (settings *PrintSettings) NumberUp() int {
+func (settings *PrintSettings) NumberUp() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -693,9 +693,9 @@ func (settings *PrintSettings) NumberUp() int {
 
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -818,7 +818,7 @@ func (settings *PrintSettings) PrinterLpi() float64 {
 //
 //    - gint: resolution in dpi.
 //
-func (settings *PrintSettings) Resolution() int {
+func (settings *PrintSettings) Resolution() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -831,9 +831,9 @@ func (settings *PrintSettings) Resolution() int {
 
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -844,7 +844,7 @@ func (settings *PrintSettings) Resolution() int {
 //
 //    - gint: horizontal resolution in dpi.
 //
-func (settings *PrintSettings) ResolutionX() int {
+func (settings *PrintSettings) ResolutionX() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -857,9 +857,9 @@ func (settings *PrintSettings) ResolutionX() int {
 
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -870,7 +870,7 @@ func (settings *PrintSettings) ResolutionX() int {
 //
 //    - gint: vertical resolution in dpi.
 //
-func (settings *PrintSettings) ResolutionY() int {
+func (settings *PrintSettings) ResolutionY() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -883,9 +883,9 @@ func (settings *PrintSettings) ResolutionY() int {
 
 	runtime.KeepAlive(settings)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1264,7 +1264,7 @@ func (settings *PrintSettings) SetFinishings(finishings string) {
 //    - key: key.
 //    - value: integer.
 //
-func (settings *PrintSettings) SetInt(key string, value int) {
+func (settings *PrintSettings) SetInt(key string, value int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1314,7 +1314,7 @@ func (settings *PrintSettings) SetMediaType(mediaType string) {
 //
 //    - numCopies: number of copies.
 //
-func (settings *PrintSettings) SetNCopies(numCopies int) {
+func (settings *PrintSettings) SetNCopies(numCopies int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1335,7 +1335,7 @@ func (settings *PrintSettings) SetNCopies(numCopies int) {
 //
 //    - numberUp: number of pages per sheet.
 //
-func (settings *PrintSettings) SetNumberUp(numberUp int) {
+func (settings *PrintSettings) SetNumberUp(numberUp int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1445,7 +1445,7 @@ func (settings *PrintSettings) SetPrinterLpi(lpi float64) {
 //
 //    - resolution in dpi.
 //
-func (settings *PrintSettings) SetResolution(resolution int) {
+func (settings *PrintSettings) SetResolution(resolution int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1468,7 +1468,7 @@ func (settings *PrintSettings) SetResolution(resolution int) {
 //    - resolutionX: horizontal resolution in dpi.
 //    - resolutionY: vertical resolution in dpi.
 //
-func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int) {
+func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1478,7 +1478,7 @@ func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int) {
 	_arg1 = C.gint(resolutionX)
 	_arg2 = C.gint(resolutionY)
 	*(**PrintSettings)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "PrintSettings").InvokeMethod("set_resolution_xy", args[:], nil)
 
@@ -1687,7 +1687,7 @@ type pageRange struct {
 
 // NewPageRange creates a new PageRange instance from the given
 // fields.
-func NewPageRange(start, end int) PageRange {
+func NewPageRange(start, end int32) PageRange {
 	var f0 C.gint // out
 	f0 = C.gint(start)
 	var f1 C.gint // out
@@ -1702,15 +1702,15 @@ func NewPageRange(start, end int) PageRange {
 }
 
 // Start: start of page range.
-func (p *PageRange) Start() int {
-	var v int // out
-	v = int(p.native.start)
+func (p *PageRange) Start() int32 {
+	var v int32 // out
+	v = int32(p.native.start)
 	return v
 }
 
 // End: end of page range.
-func (p *PageRange) End() int {
-	var v int // out
-	v = int(p.native.end)
+func (p *PageRange) End() int32 {
+	var v int32 // out
+	v = int32(p.native.end)
 	return v
 }

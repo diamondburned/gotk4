@@ -1225,7 +1225,7 @@ func (value *Variant) Classify() VariantClass {
 //
 //    - gint: negative value if a < b; zero if a = b; positive value if a > b.
 //
-func (one *Variant) Compare(two *Variant) int {
+func (one *Variant) Compare(two *Variant) int32 {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
@@ -1237,9 +1237,9 @@ func (one *Variant) Compare(two *Variant) int {
 	runtime.KeepAlive(one)
 	runtime.KeepAlive(two)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2208,7 +2208,7 @@ func (value *Variant) Variant() *Variant {
 //
 //    - guint: hash value corresponding to value.
 //
-func (value *Variant) Hash() uint {
+func (value *Variant) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -2217,9 +2217,9 @@ func (value *Variant) Hash() uint {
 	_cret = C.g_variant_hash(_arg0)
 	runtime.KeepAlive(value)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

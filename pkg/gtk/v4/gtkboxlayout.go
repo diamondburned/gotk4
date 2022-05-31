@@ -112,7 +112,7 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 //
 //    - guint: spacing of the layout.
 //
-func (boxLayout *BoxLayout) Spacing() uint {
+func (boxLayout *BoxLayout) Spacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -125,9 +125,9 @@ func (boxLayout *BoxLayout) Spacing() uint {
 
 	runtime.KeepAlive(boxLayout)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -162,7 +162,7 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 //
 //    - spacing to apply between children.
 //
-func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
+func (boxLayout *BoxLayout) SetSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

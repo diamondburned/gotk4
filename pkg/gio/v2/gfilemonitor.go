@@ -181,7 +181,7 @@ func (monitor *FileMonitor) IsCancelled() bool {
 //    - limitMsecs: non-negative integer with the limit in milliseconds to poll
 //      for changes.
 //
-func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
+func (monitor *FileMonitor) SetRateLimit(limitMsecs int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

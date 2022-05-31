@@ -261,6 +261,73 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 	return _ok
 }
 
+// Reorder reorders store to follow the order indicated by new_order. Note that
+// this function only works with unsorted stores.
+//
+// The function takes the following parameters:
+//
+//    - newOrder: array of integers mapping the new position of each child to its
+//      old position before the re-ordering, i.e. new_order[newpos] = oldpos. It
+//      must have exactly as many items as the list store’s length.
+//
+func (store *ListStore) Reorder(newOrder []int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
+	{
+		_arg1 = (*C.void)(C.calloc(C.size_t((len(newOrder) + 1)), C.size_t(C.sizeof_int)))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(newOrder)+1)
+			var zero C.int
+			out[len(newOrder)] = zero
+			for i := range newOrder {
+				out[i] = C.int(newOrder[i])
+			}
+		}
+	}
+	*(**ListStore)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ListStore").InvokeMethod("reorder", args[:], nil)
+
+	runtime.KeepAlive(store)
+	runtime.KeepAlive(newOrder)
+}
+
+// SetValue sets the data in the cell specified by iter and column. The type of
+// value must be convertible to the type of the column.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter for the row being modified.
+//    - column number to modify.
+//    - value: new value for the cell.
+//
+func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = C.int(column)
+	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**ListStore)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TreeIter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "ListStore").InvokeMethod("set_value", args[:], nil)
+
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(value)
+}
+
 // Swap swaps a and b in store. Note that this function only works with unsorted
 // stores.
 //

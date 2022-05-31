@@ -96,9 +96,9 @@ type DevicePadder interface {
 	coreglib.Objector
 
 	// GroupNModes returns the number of modes that group may have.
-	GroupNModes(groupIdx int) int
+	GroupNModes(groupIdx int32) int32
 	// NGroups returns the number of groups this pad device has.
-	NGroups() int
+	NGroups() int32
 }
 
 var _ DevicePadder = (*DevicePad)(nil)
@@ -128,7 +128,7 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 //
 //    - gint: number of modes available in group.
 //
-func (pad *DevicePad) GroupNModes(groupIdx int) int {
+func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -143,9 +143,9 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	runtime.KeepAlive(pad)
 	runtime.KeepAlive(groupIdx)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -158,7 +158,7 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 //
 //    - gint: number of button/ring/strip groups in the pad.
 //
-func (pad *DevicePad) NGroups() int {
+func (pad *DevicePad) NGroups() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -170,9 +170,9 @@ func (pad *DevicePad) NGroups() int {
 
 	runtime.KeepAlive(pad)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

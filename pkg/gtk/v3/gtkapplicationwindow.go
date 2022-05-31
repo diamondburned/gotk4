@@ -260,7 +260,7 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 //    - guint: unique ID for window, or 0 if the window has not yet been added to
 //      a Application.
 //
-func (window *ApplicationWindow) ID() uint {
+func (window *ApplicationWindow) ID() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -273,9 +273,9 @@ func (window *ApplicationWindow) ID() uint {
 
 	runtime.KeepAlive(window)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -631,6 +631,38 @@ func (self *Text) InvisibleChar() uint32 {
 	return _gunichar
 }
 
+// MaxLength retrieves the maximum allowed length of the text in self.
+//
+// See gtk.Text.SetMaxLength().
+//
+// This is equivalent to getting self's GtkEntryBuffer and calling
+// gtk.EntryBuffer.GetMaxLength() on it.
+//
+// The function returns the following values:
+//
+//    - gint: maximum allowed number of characters in GtkText, or 0 if there is
+//      no maximum.
+//
+func (self *Text) MaxLength() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Text)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_max_length", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // OverwriteMode gets the value set by gtk_text_set_overwrite_mode().
 //
 // The function returns the following values:
@@ -1014,6 +1046,35 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ch)
+}
+
+// SetMaxLength sets the maximum allowed length of the contents of the widget.
+//
+// If the current contents are longer than the given length, then they will be
+// truncated to fit.
+//
+// This is equivalent to getting self's GtkEntryBuffer and calling
+// gtk.EntryBuffer.SetMaxLength() on it.
+//
+// The function takes the following parameters:
+//
+//    - length: maximum length of the GtkText, or 0 for no maximum. (other than
+//      the maximum length of entries.) The value passed in will be clamped to
+//      the range 0-65536.
+//
+func (self *Text) SetMaxLength(length int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(length)
+	*(**Text)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Text").InvokeMethod("set_max_length", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(length)
 }
 
 // SetOverwriteMode sets whether the text is overwritten when typing in the

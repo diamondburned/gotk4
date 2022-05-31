@@ -428,7 +428,7 @@ func (stack *Stack) InterpolateSize() bool {
 //
 //    - guint: transition duration.
 //
-func (stack *Stack) TransitionDuration() uint {
+func (stack *Stack) TransitionDuration() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -441,9 +441,9 @@ func (stack *Stack) TransitionDuration() uint {
 
 	runtime.KeepAlive(stack)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -665,7 +665,7 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 //
 //    - duration: new duration, in milliseconds.
 //
-func (stack *Stack) SetTransitionDuration(duration uint) {
+func (stack *Stack) SetTransitionDuration(duration uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

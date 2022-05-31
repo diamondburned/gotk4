@@ -169,18 +169,14 @@ func (i *Info) InvokeFunction(in, out []Argument) Argument {
 
 // InvokeMethod invokes the method of this ClassInfo with the given name.
 func (i *Info) InvokeMethod(name string, in, out []Argument) Argument {
-	k := c.keys
+	k := i.keys
 	k[2] = name
 
 	method := findInfo(k, func(ckey infoCKey) unsafe.Pointer {
-		return unsafe.Pointer(C.g_object_info_find_method((*C.GIObjectInfo)(c.info), ckey[2]))
+		return unsafe.Pointer(C.g_object_info_find_method((*C.GIObjectInfo)(i.info), ckey[2]))
 	})
 
 	return invokeFunc(method, in, out)
-}
-
-func (c *ClassInfo) String() string {
-	return (*Info)(c).String()
 }
 
 func findInfo(k infoKey, f func(infoCKey) unsafe.Pointer) *Info {

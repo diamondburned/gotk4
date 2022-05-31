@@ -148,7 +148,7 @@ func (self *ListItem) Child() Widgetter {
 //
 //    - guint: position of this item.
 //
-func (self *ListItem) Position() uint {
+func (self *ListItem) Position() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -161,9 +161,9 @@ func (self *ListItem) Position() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

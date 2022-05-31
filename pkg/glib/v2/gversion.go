@@ -35,7 +35,7 @@ import "C"
 //      string describing the version mismatch. The returned string is owned by
 //      GLib and must not be modified or freed.
 //
-func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
+func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out
 	var _arg3 C.guint  // out

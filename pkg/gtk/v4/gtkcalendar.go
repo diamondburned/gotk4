@@ -291,7 +291,7 @@ func (self *Calendar) Date() *glib.DateTime {
 //
 //    - ok: whether the day is marked.
 //
-func (calendar *Calendar) DayIsMarked(day uint) bool {
+func (calendar *Calendar) DayIsMarked(day uint32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -413,7 +413,7 @@ func (self *Calendar) ShowWeekNumbers() bool {
 //
 //    - day number to mark between 1 and 31.
 //
-func (calendar *Calendar) MarkDay(day uint) {
+func (calendar *Calendar) MarkDay(day uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -527,7 +527,7 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 //
 //    - day number to unmark between 1 and 31.
 //
-func (calendar *Calendar) UnmarkDay(day uint) {
+func (calendar *Calendar) UnmarkDay(day uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

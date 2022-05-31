@@ -232,7 +232,7 @@ func (context *StyleContext) AddClass(className string) {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -280,6 +280,32 @@ func (context *StyleContext) Display() *gdk.Display {
 	}
 
 	return _display
+}
+
+// Scale returns the scale used for assets.
+//
+// The function returns the following values:
+//
+//    - gint: scale.
+//
+func (context *StyleContext) Scale() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**StyleContext)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_scale", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(context)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // HasClass returns TRUE if context currently has defined the given class name.
@@ -423,6 +449,27 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 	runtime.KeepAlive(display)
 }
 
+// SetScale sets the scale to use when getting image assets for the style.
+//
+// The function takes the following parameters:
+//
+//    - scale: scale.
+//
+func (context *StyleContext) SetScale(scale int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(scale)
+	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("set_scale", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(scale)
+}
+
 // StyleContextAddProviderForDisplay adds a global style provider to display,
 // which will be used in style construction for all GtkStyleContexts under
 // display.
@@ -442,7 +489,7 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
+func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -453,7 +500,7 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 	_arg2 = C.guint(priority)
 	*(**gdk.Display)(unsafe.Pointer(&args[0])) = _arg0
 	*(*StyleProviderer)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "add_provider_for_display").Invoke(args[:], nil)
 

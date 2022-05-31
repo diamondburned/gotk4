@@ -169,6 +169,69 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	return _transform
 }
 
+// Move sets a translation transformation to the given x and y coordinates to
+// the child widget of the GtkFixed.
+//
+// The function takes the following parameters:
+//
+//    - widget: child widget.
+//    - x: horizontal position to move the widget to.
+//    - y: vertical position to move the widget to.
+//
+func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Fixed").InvokeMethod("move", args[:], nil)
+
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// Put adds a widget to a GtkFixed at the given position.
+//
+// The function takes the following parameters:
+//
+//    - widget to add.
+//    - x: horizontal position to place the widget at.
+//    - y: vertical position to place the widget at.
+//
+func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "Fixed").InvokeMethod("put", args[:], nil)
+
+	runtime.KeepAlive(fixed)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
 // Remove removes a child from fixed.
 //
 // The function takes the following parameters:

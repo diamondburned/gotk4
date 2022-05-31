@@ -186,7 +186,7 @@ func (menu *Menu) Freeze() {
 //    - label (optional): section label, or NULL.
 //    - detailedAction (optional): detailed action string, or NULL.
 //
-func (menu *Menu) Insert(position int, label, detailedAction string) {
+func (menu *Menu) Insert(position int32, label, detailedAction string) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -204,7 +204,7 @@ func (menu *Menu) Insert(position int, label, detailedAction string) {
 		defer C.free(unsafe.Pointer(_arg3))
 	}
 	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gio", "Menu").InvokeMethod("insert", args[:], nil)
@@ -237,7 +237,7 @@ func (menu *Menu) Insert(position int, label, detailedAction string) {
 //    - position at which to insert the item.
 //    - item to insert.
 //
-func (menu *Menu) InsertItem(position int, item *MenuItem) {
+func (menu *Menu) InsertItem(position int32, item *MenuItem) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -247,7 +247,7 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 	_arg1 = C.gint(position)
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gio", "Menu").InvokeMethod("insert_item", args[:], nil)
 
@@ -266,7 +266,7 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 //    - label (optional): section label, or NULL.
 //    - section with the items of the section.
 //
-func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
+func (menu *Menu) InsertSection(position int32, label string, section MenuModeller) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -281,7 +281,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 	}
 	_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(section).Native()))
 	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gio", "Menu").InvokeMethod("insert_section", args[:], nil)
@@ -302,7 +302,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 //    - label (optional): section label, or NULL.
 //    - submenu with the items of the submenu.
 //
-func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
+func (menu *Menu) InsertSubmenu(position int32, label string, submenu MenuModeller) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -317,7 +317,7 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 	}
 	_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 	*(*string)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gio", "Menu").InvokeMethod("insert_submenu", args[:], nil)
@@ -462,7 +462,7 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 //
 //    - position of the item to remove.
 //
-func (menu *Menu) Remove(position int) {
+func (menu *Menu) Remove(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -552,7 +552,7 @@ func NewMenuItem(label, detailedAction string) *MenuItem {
 //
 //    - menuItem: new Item.
 //
-func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
+func NewMenuItemFromModel(model MenuModeller, itemIndex int32) *MenuItem {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -561,7 +561,7 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	_arg1 = C.gint(itemIndex)
 	*(*MenuModeller)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "MenuItem").InvokeMethod("new_MenuItem_from_model", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

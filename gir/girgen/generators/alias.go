@@ -42,7 +42,7 @@ func GenerateAlias(gen FileGeneratorWriter, alias *gir.Alias) bool {
 	}
 
 	writer := FileWriterFromType(gen, alias)
-	writer.Header().ImportPubl(resolved)
+	resolved.ImportPubl(writer.Header())
 	writer.Pen().WriteTmpl(aliasTmpl, aliasData{
 		Alias:  alias,
 		GoType: goType,

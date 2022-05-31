@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -267,6 +268,302 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 	return _goerr
 }
 
+// FindUniformByName looks for a uniform by the name name, and returns the index
+// of the uniform, or -1 if it was not found.
+//
+// The function takes the following parameters:
+//
+//    - name: uniform name.
+//
+// The function returns the following values:
+//
+//    - gint: index of the uniform, or -1.
+//
+func (shader *GLShader) FindUniformByName(name string) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("find_uniform_by_name", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(name)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// ArgBool gets the value of the uniform idx in the args block.
+//
+// The uniform must be of bool type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
+// The function returns the following values:
+//
+//    - ok: value.
+//
+func (shader *GLShader) ArgBool(args *glib.Bytes, idx int32) bool {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	_arg2 = C.int(idx)
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_bool", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(args)
+	runtime.KeepAlive(idx)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ArgFloat gets the value of the uniform idx in the args block.
+//
+// The uniform must be of float type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
+// The function returns the following values:
+//
+//    - gfloat: value.
+//
+func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int32) float32 {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	_arg2 = C.int(idx)
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_float", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(args)
+	runtime.KeepAlive(idx)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// ArgInt gets the value of the uniform idx in the args block.
+//
+// The uniform must be of int type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
+// The function returns the following values:
+//
+//    - gint32: value.
+//
+func (shader *GLShader) ArgInt(args *glib.Bytes, idx int32) int32 {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.int    // out
+	var _cret C.gint32 // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	_arg2 = C.int(idx)
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_int", args[:], nil)
+	_cret = *(*C.gint32)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(args)
+	runtime.KeepAlive(idx)
+
+	var _gint32 int32 // out
+
+	_gint32 = int32(_cret)
+
+	return _gint32
+}
+
+// ArgUint gets the value of the uniform idx in the args block.
+//
+// The uniform must be of uint type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//
+// The function returns the following values:
+//
+//    - guint32: value.
+//
+func (shader *GLShader) ArgUint(args *glib.Bytes, idx int32) uint32 {
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _arg2 C.int     // out
+	var _cret C.guint32 // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	_arg2 = C.int(idx)
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_uint", args[:], nil)
+	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(args)
+	runtime.KeepAlive(idx)
+
+	var _guint32 uint32 // out
+
+	_guint32 = uint32(_cret)
+
+	return _guint32
+}
+
+// ArgVec2 gets the value of the uniform idx in the args block.
+//
+// The uniform must be of vec2 type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//    - outValue: location to store the uniform value in.
+//
+func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int32, outValue *graphene.Vec2) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	_arg2 = C.int(idx)
+	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec2", args[:], nil)
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(args)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(outValue)
+}
+
+// ArgVec3 gets the value of the uniform idx in the args block.
+//
+// The uniform must be of vec3 type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//    - outValue: location to store the uniform value in.
+//
+func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int32, outValue *graphene.Vec3) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	_arg2 = C.int(idx)
+	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec3", args[:], nil)
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(args)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(outValue)
+}
+
+// ArgVec4 gets the value of the uniform idx in the args block.
+//
+// The uniform must be of vec4 type.
+//
+// The function takes the following parameters:
+//
+//    - args: uniform arguments.
+//    - idx: index of the uniform.
+//    - outValue: location to store set the uniform value in.
+//
+func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int32, outValue *graphene.Vec4) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	_arg2 = C.int(idx)
+	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+	*(**glib.Bytes)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec4", args[:], nil)
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(args)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(outValue)
+}
+
 // ArgsSize: get the size of the data block used to specify arguments for this
 // shader.
 //
@@ -292,6 +589,62 @@ func (shader *GLShader) ArgsSize() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+// NTextures returns the number of textures that the shader requires.
+//
+// This can be used to check that the a passed shader works in your usecase. It
+// is determined by looking at the highest u_textureN value that the shader
+// defines.
+//
+// The function returns the following values:
+//
+//    - gint: number of texture inputs required by shader.
+//
+func (shader *GLShader) NTextures() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_textures", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// NUniforms: get the number of declared uniforms for this shader.
+//
+// The function returns the following values:
+//
+//    - gint: number of declared uniforms.
+//
+func (shader *GLShader) NUniforms() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	*(**GLShader)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_uniforms", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Resource gets the resource path for the GLSL sourcecode being used to render
@@ -354,6 +707,74 @@ func (shader *GLShader) Source() *glib.Bytes {
 	return _bytes
 }
 
+// UniformName: get the name of the declared uniform for this shader at index
+// idx.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the declared uniform.
+//
+func (shader *GLShader) UniformName(idx int32) string {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = C.int(idx)
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_name", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(idx)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// UniformOffset: get the offset into the data block where data for this
+// uniforms is stored.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//
+// The function returns the following values:
+//
+//    - gint: data offset.
+//
+func (shader *GLShader) UniformOffset(idx int32) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	_arg1 = C.int(idx)
+	*(**GLShader)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_offset", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shader)
+	runtime.KeepAlive(idx)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ShaderArgsBuilder: object to build the uniforms data for a GLShader.
 //
 // An instance of this type is always passed by reference.
@@ -401,6 +822,190 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 	)
 
 	return _shaderArgsBuilder
+}
+
+// SetBool sets the value of the uniform idx.
+//
+// The uniform must be of bool type.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//    - value to set the uniform to.
+//
+func (builder *ShaderArgsBuilder) SetBool(idx int32, value bool) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.gboolean // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = C.int(idx)
+	if value {
+		_arg2 = C.TRUE
+	}
+	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
+}
+
+// SetFloat sets the value of the uniform idx.
+//
+// The uniform must be of float type.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//    - value to set the uniform to.
+//
+func (builder *ShaderArgsBuilder) SetFloat(idx int32, value float32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.float // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = C.int(idx)
+	_arg2 = C.float(value)
+	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
+}
+
+// SetInt sets the value of the uniform idx.
+//
+// The uniform must be of int type.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//    - value to set the uniform to.
+//
+func (builder *ShaderArgsBuilder) SetInt(idx int32, value int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.int    // out
+	var _arg2 C.gint32 // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = C.int(idx)
+	_arg2 = C.gint32(value)
+	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
+}
+
+// SetUint sets the value of the uniform idx.
+//
+// The uniform must be of uint type.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//    - value to set the uniform to.
+//
+func (builder *ShaderArgsBuilder) SetUint(idx int32, value uint32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 C.int     // out
+	var _arg2 C.guint32 // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = C.int(idx)
+	_arg2 = C.guint32(value)
+	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
+}
+
+// SetVec2 sets the value of the uniform idx.
+//
+// The uniform must be of vec2 type.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//    - value to set the uniform too.
+//
+func (builder *ShaderArgsBuilder) SetVec2(idx int32, value *graphene.Vec2) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 *C.void // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = C.int(idx)
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
+}
+
+// SetVec3 sets the value of the uniform idx.
+//
+// The uniform must be of vec3 type.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//    - value to set the uniform too.
+//
+func (builder *ShaderArgsBuilder) SetVec3(idx int32, value *graphene.Vec3) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 *C.void // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = C.int(idx)
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
+}
+
+// SetVec4 sets the value of the uniform idx.
+//
+// The uniform must be of vec4 type.
+//
+// The function takes the following parameters:
+//
+//    - idx: index of the uniform.
+//    - value to set the uniform too.
+//
+func (builder *ShaderArgsBuilder) SetVec4(idx int32, value *graphene.Vec4) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 *C.void // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = C.int(idx)
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**ShaderArgsBuilder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(idx)
+	runtime.KeepAlive(value)
 }
 
 // ToArgs creates a new GBytes args from the current state of the given builder.

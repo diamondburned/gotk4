@@ -895,7 +895,7 @@ func NewUIManager() *UIManager {
 //      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
 //      value is 0.
 //
-func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
+func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -913,10 +913,10 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(filename)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -939,7 +939,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 //      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
 //      value is 0.
 //
-func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
+func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -957,10 +957,10 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(resourcePath)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -985,7 +985,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 //      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
 //      value is 0.
 //
-func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, error) {
+func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, error) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
@@ -1007,10 +1007,10 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(length)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1287,7 +1287,7 @@ func (manager *UIManager) Widget(path string) Widgetter {
 //    - actionGroup: action group to be inserted.
 //    - pos: position at which the group will be inserted.
 //
-func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
+func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1315,7 +1315,7 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 //
 //    - guint: unused merge id.
 //
-func (manager *UIManager) NewMergeID() uint {
+func (manager *UIManager) NewMergeID() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1328,9 +1328,9 @@ func (manager *UIManager) NewMergeID() uint {
 
 	runtime.KeepAlive(manager)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1367,7 +1367,7 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 //
 //    - mergeId: merge id as returned by gtk_ui_manager_add_ui_from_string().
 //
-func (manager *UIManager) RemoveUi(mergeId uint) {
+func (manager *UIManager) RemoveUi(mergeId uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

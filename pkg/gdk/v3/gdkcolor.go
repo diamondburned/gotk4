@@ -176,7 +176,7 @@ func (colora *Color) Equal(colorb *Color) bool {
 //
 //    - guint: hash function applied to color.
 //
-func (color *Color) Hash() uint {
+func (color *Color) Hash() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -188,9 +188,9 @@ func (color *Color) Hash() uint {
 
 	runtime.KeepAlive(color)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

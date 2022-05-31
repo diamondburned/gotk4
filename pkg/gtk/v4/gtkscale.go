@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -23,6 +24,32 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		{T: GTypeScale, F: marshalScale},
 	})
+}
+
+type ScaleFormatValueFunc func(scale *Scale, value float64) (utf8 string)
+
+//export _gotk4_gtk4_ScaleFormatValueFunc
+func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.GtkScale, arg2 C.double, arg3 C.gpointer) (cret *C.char) {
+	var fn ScaleFormatValueFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ScaleFormatValueFunc)
+	}
+
+	var _scale *Scale  // out
+	var _value float64 // out
+
+	_scale = wrapScale(coreglib.Take(unsafe.Pointer(arg1)))
+	_value = float64(arg2)
+
+	utf8 := fn(_scale, _value)
+
+	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
 }
 
 // ScaleOverrider contains methods that are overridable.
@@ -169,6 +196,32 @@ func (scale *Scale) ClearMarks() {
 	runtime.KeepAlive(scale)
 }
 
+// Digits gets the number of decimal places that are displayed in the value.
+//
+// The function returns the following values:
+//
+//    - gint: number of decimal places that are displayed.
+//
+func (scale *Scale) Digits() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	*(**Scale)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Scale").InvokeMethod("get_digits", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scale)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // DrawValue returns whether the current value is displayed as a string next to
 // the slider.
 //
@@ -261,6 +314,38 @@ func (scale *Scale) Layout() *pango.Layout {
 	}
 
 	return _layout
+}
+
+// SetDigits sets the number of decimal places that are displayed in the value.
+//
+// Also causes the value of the adjustment to be rounded to this number of
+// digits, so the retrieved value matches the displayed one, if
+// gtkscale:draw-value is TRUE when the value changes. If you want to enforce
+// rounding the value when gtkscale:draw-value is FALSE, you can set
+// gtkrange:round-digits instead.
+//
+// Note that rounding to a small number of digits can interfere with the smooth
+// autoscrolling that is built into GtkScale. As an alternative, you can use
+// gtk.Scale.SetFormatValueFunc() to format the displayed value yourself.
+//
+// The function takes the following parameters:
+//
+//    - digits: number of decimal places to display, e.g. use 1 to display 1.0, 2
+//      to display 1.00, etc.
+//
+func (scale *Scale) SetDigits(digits int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg1 = C.int(digits)
+	*(**Scale)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Scale").InvokeMethod("set_digits", args[:], nil)
+
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(digits)
 }
 
 // SetDrawValue specifies whether the current value is displayed as a string

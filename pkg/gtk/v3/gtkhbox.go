@@ -109,7 +109,7 @@ func marshalHBox(p uintptr) (interface{}, error) {
 //
 //    - hBox: new HBox.
 //
-func NewHBox(homogeneous bool, spacing int) *HBox {
+func NewHBox(homogeneous bool, spacing int32) *HBox {
 	var args [2]girepository.Argument
 	var _arg0 C.gboolean // out
 	var _arg1 C.gint     // out
@@ -120,7 +120,7 @@ func NewHBox(homogeneous bool, spacing int) *HBox {
 	}
 	_arg1 = C.gint(spacing)
 	*(*bool)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "HBox").InvokeMethod("new_HBox", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

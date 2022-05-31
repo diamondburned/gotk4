@@ -228,7 +228,7 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 //    - res: return location for the #graphene_vec4_t that is used to store the
 //      row vector.
 //
-func (m *Matrix) Row(index_ uint) *Vec4 {
+func (m *Matrix) Row(index_ uint32) *Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
 	var _arg2 C.graphene_vec4_t    // in
@@ -258,7 +258,7 @@ func (m *Matrix) Row(index_ uint) *Vec4 {
 //
 //    - gfloat: value at the given indices.
 //
-func (m *Matrix) Value(row uint, col uint) float32 {
+func (m *Matrix) Value(row uint32, col uint32) float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
 	var _arg2 C.uint               // out

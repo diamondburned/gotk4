@@ -387,7 +387,7 @@ func (expander *Expander) ResizeToplevel() bool {
 //
 //    - gint: spacing between the expander and child.
 //
-func (expander *Expander) Spacing() int {
+func (expander *Expander) Spacing() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -400,9 +400,9 @@ func (expander *Expander) Spacing() int {
 
 	runtime.KeepAlive(expander)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -602,7 +602,7 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 //
 //    - spacing: distance between the expander and child in pixels.
 //
-func (expander *Expander) SetSpacing(spacing int) {
+func (expander *Expander) SetSpacing(spacing int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

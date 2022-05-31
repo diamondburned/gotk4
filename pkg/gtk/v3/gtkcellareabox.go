@@ -114,7 +114,7 @@ func NewCellAreaBox() *CellAreaBox {
 //
 //    - gint: space added between cell renderers in box.
 //
-func (box *CellAreaBox) Spacing() int {
+func (box *CellAreaBox) Spacing() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -127,9 +127,9 @@ func (box *CellAreaBox) Spacing() int {
 
 	runtime.KeepAlive(box)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -232,7 +232,7 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed 
 //
 //    - spacing: space to add between CellRenderers.
 //
-func (box *CellAreaBox) SetSpacing(spacing int) {
+func (box *CellAreaBox) SetSpacing(spacing int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

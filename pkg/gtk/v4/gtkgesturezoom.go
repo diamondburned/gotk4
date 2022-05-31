@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -85,8 +86,8 @@ func _gotk4_gtk4_GestureZoom_ConnectScaleChanged(arg0 C.gpointer, arg1 C.gdouble
 
 // ConnectScaleChanged is emitted whenever the distance between both tracked
 // sequences changes.
-func (v *GestureZoom) ConnectScaleChanged(f func(scale float64)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(v, "scale-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureZoom_ConnectScaleChanged), f)
+func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "scale-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureZoom_ConnectScaleChanged), f)
 }
 
 // NewGestureZoom returns a newly created GtkGesture that recognizes pinch/zoom
@@ -107,4 +108,34 @@ func NewGestureZoom() *GestureZoom {
 	_gestureZoom = wrapGestureZoom(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureZoom
+}
+
+// ScaleDelta gets the scale delta.
+//
+// If gesture is active, this function returns the zooming difference since the
+// gesture was recognized (hence the starting point is considered 1:1). If
+// gesture is not active, 1 is returned.
+//
+// The function returns the following values:
+//
+//    - gdouble: scale delta.
+//
+func (gesture *GestureZoom) ScaleDelta() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	*(**GestureZoom)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureZoom").InvokeMethod("get_scale_delta", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(gesture)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }

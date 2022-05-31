@@ -513,6 +513,38 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 	return _goerr
 }
 
+// PurgeItems purges every item from the recently used resources list.
+//
+// The function returns the following values:
+//
+//    - gint: number of items that have been removed from the recently used
+//      resources list.
+//
+func (manager *RecentManager) PurgeItems() (int32, error) {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**RecentManager)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("purge_items", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(manager)
+
+	var _gint int32  // out
+	var _goerr error // out
+
+	_gint = int32(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gint, _goerr
+}
+
 // RemoveItem removes a resource pointed by uri from the recently used resources
 // list handled by a recent manager.
 //
@@ -774,6 +806,33 @@ func (info *RecentInfo) Added() *glib.DateTime {
 	)
 
 	return _dateTime
+}
+
+// Age gets the number of days elapsed since the last update of the resource
+// pointed by info.
+//
+// The function returns the following values:
+//
+//    - gint: positive integer containing the number of days elapsed since the
+//      time this resource was last modified.
+//
+func (info *RecentInfo) Age() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(**RecentInfo)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(info)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Description gets the (short) description of the resource.

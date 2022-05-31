@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gtk4_CellAreaContextClass_allocate(GtkCellAreaContext*, int, int);
 // extern void _gotk4_gtk4_CellAreaContextClass_reset(GtkCellAreaContext*);
 import "C"
 
@@ -28,6 +29,24 @@ func init() {
 
 // CellAreaContextOverrider contains methods that are overridable.
 type CellAreaContextOverrider interface {
+	// Allocate allocates a width and/or a height for all rows which are to be
+	// rendered with context.
+	//
+	// Usually allocation is performed only horizontally or sometimes vertically
+	// since a group of rows are usually rendered side by side vertically or
+	// horizontally and share either the same width or the same height.
+	// Sometimes they are allocated in both horizontal and vertical orientations
+	// producing a homogeneous effect of the rows. This is generally the case
+	// for TreeView when TreeView:fixed-height-mode is enabled.
+	//
+	// The function takes the following parameters:
+	//
+	//    - width: allocated width for all TreeModel rows rendered with context,
+	//      or -1.
+	//    - height: allocated height for all TreeModel rows rendered with
+	//      context, or -1.
+	//
+	Allocate(width, height int32)
 	// Reset resets any previously cached request and allocation data.
 	//
 	// When underlying TreeModel data changes its important to reset the context
@@ -81,9 +100,27 @@ func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
+	if _, ok := goval.(interface{ Allocate(width, height int32) }); ok {
+		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_allocate)
+	}
+
 	if _, ok := goval.(interface{ Reset() }); ok {
 		pclass.reset = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_reset)
 	}
+}
+
+//export _gotk4_gtk4_CellAreaContextClass_allocate
+func _gotk4_gtk4_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 C.int, arg2 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Allocate(width, height int32) })
+
+	var _width int32  // out
+	var _height int32 // out
+
+	_width = int32(arg1)
+	_height = int32(arg2)
+
+	iface.Allocate(_width, _height)
 }
 
 //export _gotk4_gtk4_CellAreaContextClass_reset
@@ -102,6 +139,42 @@ func wrapCellAreaContext(obj *coreglib.Object) *CellAreaContext {
 
 func marshalCellAreaContext(p uintptr) (interface{}, error) {
 	return wrapCellAreaContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Allocate allocates a width and/or a height for all rows which are to be
+// rendered with context.
+//
+// Usually allocation is performed only horizontally or sometimes vertically
+// since a group of rows are usually rendered side by side vertically or
+// horizontally and share either the same width or the same height. Sometimes
+// they are allocated in both horizontal and vertical orientations producing a
+// homogeneous effect of the rows. This is generally the case for TreeView when
+// TreeView:fixed-height-mode is enabled.
+//
+// The function takes the following parameters:
+//
+//    - width: allocated width for all TreeModel rows rendered with context, or
+//      -1.
+//    - height: allocated height for all TreeModel rows rendered with context, or
+//      -1.
+//
+func (context *CellAreaContext) Allocate(width, height int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	*(**CellAreaContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("allocate", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // Area fetches the CellArea this context was created by.
@@ -152,6 +225,68 @@ func (context *CellAreaContext) Area() CellAreaer {
 	}
 
 	return _cellArea
+}
+
+// PushPreferredHeight causes the minimum and/or natural height to grow if the
+// new proposed sizes exceed the current minimum and natural height.
+//
+// This is used by CellAreaContext implementations during the request process
+// over a series of TreeModel rows to progressively push the requested height
+// over a series of gtk_cell_area_get_preferred_height() requests.
+//
+// The function takes the following parameters:
+//
+//    - minimumHeight: proposed new minimum height for context.
+//    - naturalHeight: proposed new natural height for context.
+//
+func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(minimumHeight)
+	_arg2 = C.int(naturalHeight)
+	*(**CellAreaContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("push_preferred_height", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(minimumHeight)
+	runtime.KeepAlive(naturalHeight)
+}
+
+// PushPreferredWidth causes the minimum and/or natural width to grow if the new
+// proposed sizes exceed the current minimum and natural width.
+//
+// This is used by CellAreaContext implementations during the request process
+// over a series of TreeModel rows to progressively push the requested width
+// over a series of gtk_cell_area_get_preferred_width() requests.
+//
+// The function takes the following parameters:
+//
+//    - minimumWidth: proposed new minimum width for context.
+//    - naturalWidth: proposed new natural width for context.
+//
+func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(minimumWidth)
+	_arg2 = C.int(naturalWidth)
+	*(**CellAreaContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("push_preferred_width", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(minimumWidth)
+	runtime.KeepAlive(naturalWidth)
 }
 
 // Reset resets any previously cached request and allocation data.

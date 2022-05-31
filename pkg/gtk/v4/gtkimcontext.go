@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern gboolean _gotk4_gtk4_IMContextClass_delete_surrounding(GtkIMContext*, int, int);
 // extern gboolean _gotk4_gtk4_IMContextClass_filter_keypress(GtkIMContext*, GdkEvent*);
 // extern gboolean _gotk4_gtk4_IMContextClass_retrieve_surrounding(GtkIMContext*);
 // extern gboolean _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(gpointer, gint, gint, guintptr);
@@ -29,6 +30,8 @@ import (
 // extern void _gotk4_gtk4_IMContextClass_reset(GtkIMContext*);
 // extern void _gotk4_gtk4_IMContextClass_set_client_widget(GtkIMContext*, GtkWidget*);
 // extern void _gotk4_gtk4_IMContextClass_set_cursor_location(GtkIMContext*, GdkRectangle*);
+// extern void _gotk4_gtk4_IMContextClass_set_surrounding(GtkIMContext*, char*, int, int);
+// extern void _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(GtkIMContext*, char*, int, int, int);
 // extern void _gotk4_gtk4_IMContextClass_set_use_preedit(GtkIMContext*, gboolean);
 // extern void _gotk4_gtk4_IMContext_ConnectCommit(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_IMContext_ConnectPreeditChanged(gpointer, guintptr);
@@ -50,6 +53,35 @@ type IMContextOverrider interface {
 	// The function takes the following parameters:
 	//
 	Commit(str string)
+	// DeleteSurrounding asks the widget that the input context is attached to
+	// delete characters around the cursor position by emitting the
+	// GtkIMContext::delete_surrounding signal.
+	//
+	// Note that offset and n_chars are in characters not in bytes which differs
+	// from the usage other places in IMContext.
+	//
+	// In order to use this function, you should first call
+	// gtk_im_context_get_surrounding() to get the current context, and call
+	// this function immediately afterwards to make sure that you know what you
+	// are deleting. You should also account for the fact that even if the
+	// signal was handled, the input context might not have deleted all the
+	// characters that were requested to be deleted.
+	//
+	// This function is used by an input method that wants to make subsitutions
+	// in the existing text in response to new input. It is not useful for
+	// applications.
+	//
+	// The function takes the following parameters:
+	//
+	//    - offset from cursor position in chars; a negative value means start
+	//      before the cursor.
+	//    - nChars: number of characters to delete.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if the signal was handled.
+	//
+	DeleteSurrounding(offset, nChars int32) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events.
 	//
@@ -110,6 +142,37 @@ type IMContextOverrider interface {
 	//    - area: new location.
 	//
 	SetCursorLocation(area *gdk.Rectangle)
+	// SetSurrounding sets surrounding context around the insertion point and
+	// preedit string.
+	//
+	// This function is expected to be called in response to the
+	// gtk.IMContext::retrieve-surrounding signal, and will likely have no
+	// effect if called at other times.
+	//
+	// Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - text surrounding the insertion point, as UTF-8. the preedit string
+	//      should not be included within text.
+	//    - len: length of text, or -1 if text is nul-terminated.
+	//    - cursorIndex: byte index of the insertion cursor within text.
+	//
+	SetSurrounding(text string, len, cursorIndex int32)
+	// SetSurroundingWithSelection sets surrounding context around the insertion
+	// point and preedit string. This function is expected to be called in
+	// response to the GtkIMContext::retrieve_surrounding signal, and will
+	// likely have no effect if called at other times.
+	//
+	// The function takes the following parameters:
+	//
+	//    - text surrounding the insertion point, as UTF-8. the preedit string
+	//      should not be included within text.
+	//    - len: length of text, or -1 if text is nul-terminated.
+	//    - cursorIndex: byte index of the insertion cursor within text.
+	//    - anchorIndex: byte index of the selection bound within text.
+	//
+	SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int32)
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback.
 	//
@@ -194,6 +257,12 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 		pclass.commit = (*[0]byte)(C._gotk4_gtk4_IMContextClass_commit)
 	}
 
+	if _, ok := goval.(interface {
+		DeleteSurrounding(offset, nChars int32) bool
+	}); ok {
+		pclass.delete_surrounding = (*[0]byte)(C._gotk4_gtk4_IMContextClass_delete_surrounding)
+	}
+
 	if _, ok := goval.(interface{ FilterKeypress(event gdk.Eventer) bool }); ok {
 		pclass.filter_keypress = (*[0]byte)(C._gotk4_gtk4_IMContextClass_filter_keypress)
 	}
@@ -234,6 +303,18 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 		pclass.set_cursor_location = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_cursor_location)
 	}
 
+	if _, ok := goval.(interface {
+		SetSurrounding(text string, len, cursorIndex int32)
+	}); ok {
+		pclass.set_surrounding = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_surrounding)
+	}
+
+	if _, ok := goval.(interface {
+		SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int32)
+	}); ok {
+		pclass.set_surrounding_with_selection = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_surrounding_with_selection)
+	}
+
 	if _, ok := goval.(interface{ SetUsePreedit(usePreedit bool) }); ok {
 		pclass.set_use_preedit = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_use_preedit)
 	}
@@ -249,6 +330,28 @@ func _gotk4_gtk4_IMContextClass_commit(arg0 *C.GtkIMContext, arg1 *C.char) {
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 
 	iface.Commit(_str)
+}
+
+//export _gotk4_gtk4_IMContextClass_delete_surrounding
+func _gotk4_gtk4_IMContextClass_delete_surrounding(arg0 *C.GtkIMContext, arg1 C.int, arg2 C.int) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DeleteSurrounding(offset, nChars int32) bool
+	})
+
+	var _offset int32 // out
+	var _nChars int32 // out
+
+	_offset = int32(arg1)
+	_nChars = int32(arg2)
+
+	ok := iface.DeleteSurrounding(_offset, _nChars)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }
 
 //export _gotk4_gtk4_IMContextClass_filter_keypress
@@ -386,6 +489,44 @@ func _gotk4_gtk4_IMContextClass_set_cursor_location(arg0 *C.GtkIMContext, arg1 *
 	iface.SetCursorLocation(_area)
 }
 
+//export _gotk4_gtk4_IMContextClass_set_surrounding
+func _gotk4_gtk4_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.char, arg2 C.int, arg3 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SetSurrounding(text string, len, cursorIndex int32)
+	})
+
+	var _text string       // out
+	var _len int32         // out
+	var _cursorIndex int32 // out
+
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_len = int32(arg2)
+	_cursorIndex = int32(arg3)
+
+	iface.SetSurrounding(_text, _len, _cursorIndex)
+}
+
+//export _gotk4_gtk4_IMContextClass_set_surrounding_with_selection
+func _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(arg0 *C.GtkIMContext, arg1 *C.char, arg2 C.int, arg3 C.int, arg4 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int32)
+	})
+
+	var _text string       // out
+	var _len int32         // out
+	var _cursorIndex int32 // out
+	var _anchorIndex int32 // out
+
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_len = int32(arg2)
+	_cursorIndex = int32(arg3)
+	_anchorIndex = int32(arg4)
+
+	iface.SetSurroundingWithSelection(_text, _len, _cursorIndex, _anchorIndex)
+}
+
 //export _gotk4_gtk4_IMContextClass_set_use_preedit
 func _gotk4_gtk4_IMContextClass_set_use_preedit(arg0 *C.GtkIMContext, arg1 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
@@ -448,7 +589,7 @@ func (context *IMContext) ConnectCommit(f func(str string)) coreglib.SignalHandl
 
 //export _gotk4_gtk4_IMContext_ConnectDeleteSurrounding
 func _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(offset, nChars int) (ok bool)
+	var f func(offset, nChars int32) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -456,14 +597,14 @@ func _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(offset, nChars int) (ok bool))
+		f = closure.Func.(func(offset, nChars int32) (ok bool))
 	}
 
-	var _offset int // out
-	var _nChars int // out
+	var _offset int32 // out
+	var _nChars int32 // out
 
-	_offset = int(arg1)
-	_nChars = int(arg2)
+	_offset = int32(arg1)
+	_nChars = int32(arg2)
 
 	ok := f(_offset, _nChars)
 
@@ -476,7 +617,7 @@ func _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint
 
 // ConnectDeleteSurrounding signal is emitted when the input method needs to
 // delete all or part of the context surrounding the cursor.
-func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) (ok bool)) coreglib.SignalHandle {
+func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int32) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(context, "delete-surrounding", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectDeleteSurrounding), f)
 }
 
@@ -574,6 +715,63 @@ func _gotk4_gtk4_IMContext_ConnectRetrieveSurrounding(arg0 C.gpointer, arg1 C.gu
 // surrounding context by calling the gtk_im_context_set_surrounding() method.
 func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(context, "retrieve-surrounding", false, unsafe.Pointer(C._gotk4_gtk4_IMContext_ConnectRetrieveSurrounding), f)
+}
+
+// DeleteSurrounding asks the widget that the input context is attached to
+// delete characters around the cursor position by emitting the
+// GtkIMContext::delete_surrounding signal.
+//
+// Note that offset and n_chars are in characters not in bytes which differs
+// from the usage other places in IMContext.
+//
+// In order to use this function, you should first call
+// gtk_im_context_get_surrounding() to get the current context, and call this
+// function immediately afterwards to make sure that you know what you are
+// deleting. You should also account for the fact that even if the signal was
+// handled, the input context might not have deleted all the characters that
+// were requested to be deleted.
+//
+// This function is used by an input method that wants to make subsitutions in
+// the existing text in response to new input. It is not useful for
+// applications.
+//
+// The function takes the following parameters:
+//
+//    - offset from cursor position in chars; a negative value means start before
+//      the cursor.
+//    - nChars: number of characters to delete.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the signal was handled.
+//
+func (context *IMContext) DeleteSurrounding(offset, nChars int32) bool {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(offset)
+	_arg2 = C.int(nChars)
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("delete_surrounding", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(nChars)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // FilterKeypress: allow an input method to internally handle key press and
@@ -715,6 +913,87 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(area)
+}
+
+// SetSurrounding sets surrounding context around the insertion point and
+// preedit string.
+//
+// This function is expected to be called in response to the
+// gtk.IMContext::retrieve-surrounding signal, and will likely have no effect if
+// called at other times.
+//
+// Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
+//
+// The function takes the following parameters:
+//
+//    - text surrounding the insertion point, as UTF-8. the preedit string should
+//      not be included within text.
+//    - len: length of text, or -1 if text is nul-terminated.
+//    - cursorIndex: byte index of the insertion cursor within text.
+//
+func (context *IMContext) SetSurrounding(text string, len, cursorIndex int32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(len)
+	_arg3 = C.int(cursorIndex)
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_surrounding", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(cursorIndex)
+}
+
+// SetSurroundingWithSelection sets surrounding context around the insertion
+// point and preedit string. This function is expected to be called in response
+// to the GtkIMContext::retrieve_surrounding signal, and will likely have no
+// effect if called at other times.
+//
+// The function takes the following parameters:
+//
+//    - text surrounding the insertion point, as UTF-8. the preedit string should
+//      not be included within text.
+//    - len: length of text, or -1 if text is nul-terminated.
+//    - cursorIndex: byte index of the insertion cursor within text.
+//    - anchorIndex: byte index of the selection bound within text.
+//
+func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int32) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(len)
+	_arg3 = C.int(cursorIndex)
+	_arg4 = C.int(anchorIndex)
+	*(**IMContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_surrounding_with_selection", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(cursorIndex)
+	runtime.KeepAlive(anchorIndex)
 }
 
 // SetUsePreedit sets whether the IM context should use the preedit string to

@@ -246,6 +246,32 @@ func (frame *Frame) Label() string {
 	return _utf8
 }
 
+// LabelAlign retrieves the X alignment of the frame’s label.
+//
+// The function returns the following values:
+//
+//    - gfloat frames X alignment.
+//
+func (frame *Frame) LabelAlign() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	*(**Frame)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("get_label_align", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(frame)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // LabelWidget retrieves the label widget for the frame.
 //
 // The function returns the following values:
@@ -333,6 +359,30 @@ func (frame *Frame) SetLabel(label string) {
 
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(label)
+}
+
+// SetLabelAlign sets the X alignment of the frame widget’s label.
+//
+// The default value for a newly created frame is 0.0.
+//
+// The function takes the following parameters:
+//
+//    - xalign: position of the label along the top edge of the widget. A value
+//      of 0.0 represents left alignment; 1.0 represents right alignment.
+//
+func (frame *Frame) SetLabelAlign(xalign float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg1 = C.float(xalign)
+	*(**Frame)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_label_align", args[:], nil)
+
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(xalign)
 }
 
 // SetLabelWidget sets the label widget for the frame.

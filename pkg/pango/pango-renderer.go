@@ -103,7 +103,7 @@ type RendererOverrider interface {
 	//    - width of underline, in Pango units in user coordinate system.
 	//    - height of underline, in Pango units in user coordinate system.
 	//
-	DrawErrorUnderline(x, y, width, height int)
+	DrawErrorUnderline(x, y, width, height int32)
 	// DrawGlyph draws a single glyph with coordinates in device space.
 	//
 	// The function takes the following parameters:
@@ -137,7 +137,7 @@ type RendererOverrider interface {
 	//    - y: y position of left edge of baseline, in user space coordinates in
 	//      Pango units.
 	//
-	DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
+	DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32)
 	// DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
 	//
 	// The function takes the following parameters:
@@ -149,7 +149,7 @@ type RendererOverrider interface {
 	//    - y: y position of left edge of baseline, in user space coordinates in
 	//      Pango units.
 	//
-	DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
+	DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32)
 	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
 	// with the specified PangoRenderer.
 	//
@@ -166,14 +166,14 @@ type RendererOverrider interface {
 	//    - width of rectangle in Pango units.
 	//    - height of rectangle in Pango units.
 	//
-	DrawRectangle(part RenderPart, x, y, width, height int)
+	DrawRectangle(part RenderPart, x, y, width, height int32)
 	// The function takes the following parameters:
 	//
 	//    - attr
 	//    - x
 	//    - y
 	//
-	DrawShape(attr *AttrShape, x, y int)
+	DrawShape(attr *AttrShape, x, y int32)
 	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
 	// X axis using the given PangoRenderer; coordinates are in device space.
 	//
@@ -255,7 +255,9 @@ func classInitRendererer(gclassPtr, data C.gpointer) {
 		pclass.begin = (*[0]byte)(C._gotk4_pango1_RendererClass_begin)
 	}
 
-	if _, ok := goval.(interface{ DrawErrorUnderline(x, y, width, height int) }); ok {
+	if _, ok := goval.(interface {
+		DrawErrorUnderline(x, y, width, height int32)
+	}); ok {
 		pclass.draw_error_underline = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_error_underline)
 	}
 
@@ -266,25 +268,25 @@ func classInitRendererer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
+		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32)
 	}); ok {
 		pclass.draw_glyph_item = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyph_item)
 	}
 
 	if _, ok := goval.(interface {
-		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
+		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32)
 	}); ok {
 		pclass.draw_glyphs = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyphs)
 	}
 
 	if _, ok := goval.(interface {
-		DrawRectangle(part RenderPart, x, y, width, height int)
+		DrawRectangle(part RenderPart, x, y, width, height int32)
 	}); ok {
 		pclass.draw_rectangle = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_rectangle)
 	}
 
 	if _, ok := goval.(interface {
-		DrawShape(attr *AttrShape, x, y int)
+		DrawShape(attr *AttrShape, x, y int32)
 	}); ok {
 		pclass.draw_shape = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_shape)
 	}
@@ -319,17 +321,19 @@ func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
 //export _gotk4_pango1_RendererClass_draw_error_underline
 func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DrawErrorUnderline(x, y, width, height int) })
+	iface := goval.(interface {
+		DrawErrorUnderline(x, y, width, height int32)
+	})
 
-	var _x int      // out
-	var _y int      // out
-	var _width int  // out
-	var _height int // out
+	var _x int32      // out
+	var _y int32      // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_x = int(arg1)
-	_y = int(arg2)
-	_width = int(arg3)
-	_height = int(arg4)
+	_x = int32(arg1)
+	_y = int32(arg2)
+	_width = int32(arg3)
+	_height = int32(arg4)
 
 	iface.DrawErrorUnderline(_x, _y, _width, _height)
 }
@@ -374,20 +378,20 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.Pango
 func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.char, arg2 *C.PangoGlyphItem, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
+		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32)
 	})
 
 	var _text string          // out
 	var _glyphItem *GlyphItem // out
-	var _x int                // out
-	var _y int                // out
+	var _x int32              // out
+	var _y int32              // out
 
 	if arg1 != nil {
 		_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	}
 	_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_x = int(arg3)
-	_y = int(arg4)
+	_x = int32(arg3)
+	_y = int32(arg4)
 
 	iface.DrawGlyphItem(_text, _glyphItem, _x, _y)
 }
@@ -396,13 +400,13 @@ func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.
 func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 *C.PangoGlyphString, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
+		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32)
 	})
 
 	var _font Fonter         // out
 	var _glyphs *GlyphString // out
-	var _x int               // out
-	var _y int               // out
+	var _x int32             // out
+	var _y int32             // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -422,8 +426,8 @@ func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.Pang
 		_font = rv
 	}
 	_glyphs = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_x = int(arg3)
-	_y = int(arg4)
+	_x = int32(arg3)
+	_y = int32(arg4)
 
 	iface.DrawGlyphs(_font, _glyphs, _x, _y)
 }
@@ -432,20 +436,20 @@ func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.Pang
 func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawRectangle(part RenderPart, x, y, width, height int)
+		DrawRectangle(part RenderPart, x, y, width, height int32)
 	})
 
 	var _part RenderPart // out
-	var _x int           // out
-	var _y int           // out
-	var _width int       // out
-	var _height int      // out
+	var _x int32         // out
+	var _y int32         // out
+	var _width int32     // out
+	var _height int32    // out
 
 	_part = RenderPart(arg1)
-	_x = int(arg2)
-	_y = int(arg3)
-	_width = int(arg4)
-	_height = int(arg5)
+	_x = int32(arg2)
+	_y = int32(arg3)
+	_width = int32(arg4)
+	_height = int32(arg5)
 
 	iface.DrawRectangle(_part, _x, _y, _width, _height)
 }
@@ -454,16 +458,16 @@ func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.Pa
 func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.PangoAttrShape, arg2 C.int, arg3 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawShape(attr *AttrShape, x, y int)
+		DrawShape(attr *AttrShape, x, y int32)
 	})
 
 	var _attr *AttrShape // out
-	var _x int           // out
-	var _y int           // out
+	var _x int32         // out
+	var _y int32         // out
 
 	_attr = (*AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_x = int(arg2)
-	_y = int(arg3)
+	_x = int32(arg2)
+	_y = int32(arg3)
 
 	iface.DrawShape(_attr, _x, _y)
 }
@@ -588,7 +592,7 @@ func (renderer *Renderer) Deactivate() {
 //    - width of underline, in Pango units in user coordinate system.
 //    - height of underline, in Pango units in user coordinate system.
 //
-func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
+func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int32) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
 	var _arg2 C.int            // out
@@ -662,7 +666,7 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //    - y: y position of left edge of baseline, in user space coordinates in
 //      Pango units.
 //
-func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
+func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
 	var _arg2 *C.PangoGlyphItem // out
@@ -697,7 +701,7 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 //    - y: y position of left edge of baseline, in user space coordinates in
 //      Pango units.
 //
-func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
+func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -728,7 +732,7 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 //    - y: y position of left edge of baseline, in user space coordinates in
 //      Pango units.
 //
-func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
+func (renderer *Renderer) DrawLayout(layout *Layout, x, y int32) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
 	var _arg2 C.int            // out
@@ -756,7 +760,7 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 //    - y: y position of left edge of baseline, in user space coordinates in
 //      Pango units.
 //
-func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
+func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int32) {
 	var _arg0 *C.PangoRenderer   // out
 	var _arg1 *C.PangoLayoutLine // out
 	var _arg2 C.int              // out
@@ -790,7 +794,7 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 //    - width of rectangle in Pango units.
 //    - height of rectangle in Pango units.
 //
-func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int) {
+func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int32) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
 	var _arg2 C.int             // out

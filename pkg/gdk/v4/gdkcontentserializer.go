@@ -192,6 +192,34 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 	return _outputStream
 }
 
+// Priority gets the I/O priority for the current operation.
+//
+// This is the priority that was passed to content_serialize_async.
+//
+// The function returns the following values:
+//
+//    - gint: i/O priority for the current operation.
+//
+func (serializer *ContentSerializer) Priority() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
+	*(**ContentSerializer)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "ContentSerializer").InvokeMethod("get_priority", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(serializer)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Value gets the GValue to read the object to serialize from.
 //
 // The function returns the following values:

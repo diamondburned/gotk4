@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -44,7 +45,8 @@ var (
 type DragSurfacer interface {
 	coreglib.Objector
 
-	baseDragSurface() *DragSurface
+	// Present drag_surface.
+	Present(width, height int32) bool
 }
 
 var _ DragSurfacer = (*DragSurface)(nil)
@@ -64,11 +66,41 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 	return wrapDragSurface(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (v *DragSurface) baseDragSurface() *DragSurface {
-	return v
-}
+// Present drag_surface.
+//
+// The function takes the following parameters:
+//
+//    - width: unconstrained drag_surface width to layout.
+//    - height: unconstrained drag_surface height to layout.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE if it failed to be presented, otherwise TRUE.
+//
+func (dragSurface *DragSurface) Present(width, height int32) bool {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+	var _cret C.gboolean // in
 
-// BaseDragSurface returns the underlying base object.
-func BaseDragSurface(obj DragSurfacer) *DragSurface {
-	return obj.baseDragSurface()
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSurface).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	*(**DragSurface)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(dragSurface)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

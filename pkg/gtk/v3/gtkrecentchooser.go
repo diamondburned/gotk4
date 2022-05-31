@@ -113,7 +113,7 @@ func (r RecentSortType) String() string {
 	}
 }
 
-type RecentSortFunc func(a, b *RecentInfo) (gint int)
+type RecentSortFunc func(a, b *RecentInfo) (gint int32)
 
 //export _gotk4_gtk3_RecentSortFunc
 func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, arg3 C.gpointer) (cret C.gint) {
@@ -269,7 +269,7 @@ type RecentChooserer interface {
 	Items() []*RecentInfo
 	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
 	// and gtk_recent_chooser_get_uris().
-	Limit() int
+	Limit() int32
 	// LocalOnly gets whether only local resources should be shown in the
 	// recently used resources selector.
 	LocalOnly() bool
@@ -304,7 +304,7 @@ type RecentChooserer interface {
 	SetFilter(filter *RecentFilter)
 	// SetLimit sets the number of items that should be returned by
 	// gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
-	SetLimit(limit int)
+	SetLimit(limit int32)
 	// SetLocalOnly sets whether only local resources, that is resources using
 	// the file:// URI scheme, should be shown in the recently used resources
 	// selector.
@@ -716,7 +716,7 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 //
 //    - gint: positive integer, or -1 meaning that all items are returned.
 //
-func (chooser *RecentChooser) Limit() int {
+func (chooser *RecentChooser) Limit() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -728,9 +728,9 @@ func (chooser *RecentChooser) Limit() int {
 
 	runtime.KeepAlive(chooser)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1054,7 +1054,7 @@ func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 //
 //    - limit: positive integer, or -1 for all items.
 //
-func (chooser *RecentChooser) SetLimit(limit int) {
+func (chooser *RecentChooser) SetLimit(limit int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

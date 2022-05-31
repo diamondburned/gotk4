@@ -991,7 +991,7 @@ func (connection *DBusConnection) IsClosed() bool {
 //    - guint: 0 if error is set, otherwise a registration ID (never 0) that can
 //      be used with g_dbus_connection_unregister_object() .
 //
-func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint, error) {
+func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint32, error) {
 	var args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1025,10 +1025,10 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 	runtime.KeepAlive(getPropertyClosure)
 	runtime.KeepAlive(setPropertyClosure)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1049,7 +1049,7 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 //
 //    - filterId: identifier obtained from g_dbus_connection_add_filter().
 //
-func (connection *DBusConnection) RemoveFilter(filterId uint) {
+func (connection *DBusConnection) RemoveFilter(filterId uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1159,7 +1159,7 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 //    - subscriptionId: subscription id obtained from
 //      g_dbus_connection_signal_subscribe().
 //
-func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
+func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1201,7 +1201,7 @@ func (connection *DBusConnection) StartMessageProcessing() {
 //
 //    - ok: TRUE if the object was unregistered, FALSE otherwise.
 //
-func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
+func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -1237,7 +1237,7 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 //
 //    - ok: TRUE if the subtree was unregistered, FALSE otherwise.
 //
-func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
+func (connection *DBusConnection) UnregisterSubtree(registrationId uint32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out

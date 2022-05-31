@@ -1019,7 +1019,7 @@ func (textView *TextView) AcceptsTab() bool {
 //
 //    - gint: bottom margin in pixels.
 //
-func (textView *TextView) BottomMargin() int {
+func (textView *TextView) BottomMargin() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1032,9 +1032,9 @@ func (textView *TextView) BottomMargin() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1197,7 +1197,7 @@ func (textView *TextView) HAdjustment() *Adjustment {
 //
 //    - gint: number of pixels of indentation.
 //
-func (textView *TextView) Indent() int {
+func (textView *TextView) Indent() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1210,9 +1210,9 @@ func (textView *TextView) Indent() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1224,7 +1224,7 @@ func (textView *TextView) Indent() int {
 //
 //    - gint: left margin in pixels.
 //
-func (textView *TextView) LeftMargin() int {
+func (textView *TextView) LeftMargin() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1237,9 +1237,9 @@ func (textView *TextView) LeftMargin() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1308,7 +1308,7 @@ func (textView *TextView) Overwrite() bool {
 //
 //    - gint: default number of pixels above paragraphs.
 //
-func (textView *TextView) PixelsAboveLines() int {
+func (textView *TextView) PixelsAboveLines() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1321,9 +1321,9 @@ func (textView *TextView) PixelsAboveLines() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1338,7 +1338,7 @@ func (textView *TextView) PixelsAboveLines() int {
 //
 //    - gint: default number of blank pixels below paragraphs.
 //
-func (textView *TextView) PixelsBelowLines() int {
+func (textView *TextView) PixelsBelowLines() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1351,9 +1351,9 @@ func (textView *TextView) PixelsBelowLines() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1365,7 +1365,7 @@ func (textView *TextView) PixelsBelowLines() int {
 //
 //    - gint: default number of pixels of blank space between wrapped lines.
 //
-func (textView *TextView) PixelsInsideWrap() int {
+func (textView *TextView) PixelsInsideWrap() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1378,9 +1378,9 @@ func (textView *TextView) PixelsInsideWrap() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1392,7 +1392,7 @@ func (textView *TextView) PixelsInsideWrap() int {
 //
 //    - gint: right margin in pixels.
 //
-func (textView *TextView) RightMargin() int {
+func (textView *TextView) RightMargin() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1405,9 +1405,9 @@ func (textView *TextView) RightMargin() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1455,7 +1455,7 @@ func (textView *TextView) Tabs() *pango.TabArray {
 //
 //    - gint: top margin in pixels.
 //
-func (textView *TextView) TopMargin() int {
+func (textView *TextView) TopMargin() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1468,9 +1468,9 @@ func (textView *TextView) TopMargin() int {
 
 	runtime.KeepAlive(textView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1574,7 +1574,7 @@ func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
 //    - xpos: new X position in window coordinates.
 //    - ypos: new Y position in window coordinates.
 //
-func (textView *TextView) MoveChild(child Widgetter, xpos, ypos int) {
+func (textView *TextView) MoveChild(child Widgetter, xpos, ypos int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1587,7 +1587,7 @@ func (textView *TextView) MoveChild(child Widgetter, xpos, ypos int) {
 	_arg3 = C.gint(ypos)
 	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "TextView").InvokeMethod("move_child", args[:], nil)
 
@@ -1653,7 +1653,7 @@ func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 //
 //    - ok: TRUE if iter moved and is not on the end iterator.
 //
-func (textView *TextView) MoveVisually(iter *TextIter, count int) bool {
+func (textView *TextView) MoveVisually(iter *TextIter, count int32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
@@ -1920,7 +1920,7 @@ func (textView *TextView) SetAcceptsTab(acceptsTab bool) {
 //
 //    - bottomMargin: bottom margin in pixels.
 //
-func (textView *TextView) SetBottomMargin(bottomMargin int) {
+func (textView *TextView) SetBottomMargin(bottomMargin int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2022,7 +2022,7 @@ func (textView *TextView) SetEditable(setting bool) {
 //
 //    - indent: indentation in pixels.
 //
-func (textView *TextView) SetIndent(indent int) {
+func (textView *TextView) SetIndent(indent int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2047,7 +2047,7 @@ func (textView *TextView) SetIndent(indent int) {
 //
 //    - leftMargin: left margin in pixels.
 //
-func (textView *TextView) SetLeftMargin(leftMargin int) {
+func (textView *TextView) SetLeftMargin(leftMargin int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2116,7 +2116,7 @@ func (textView *TextView) SetOverwrite(overwrite bool) {
 //
 //    - pixelsAboveLines pixels above paragraphs.
 //
-func (textView *TextView) SetPixelsAboveLines(pixelsAboveLines int) {
+func (textView *TextView) SetPixelsAboveLines(pixelsAboveLines int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2139,7 +2139,7 @@ func (textView *TextView) SetPixelsAboveLines(pixelsAboveLines int) {
 //
 //    - pixelsBelowLines pixels below paragraphs.
 //
-func (textView *TextView) SetPixelsBelowLines(pixelsBelowLines int) {
+func (textView *TextView) SetPixelsBelowLines(pixelsBelowLines int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2162,7 +2162,7 @@ func (textView *TextView) SetPixelsBelowLines(pixelsBelowLines int) {
 //
 //    - pixelsInsideWrap: default number of pixels between wrapped lines.
 //
-func (textView *TextView) SetPixelsInsideWrap(pixelsInsideWrap int) {
+func (textView *TextView) SetPixelsInsideWrap(pixelsInsideWrap int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2187,7 +2187,7 @@ func (textView *TextView) SetPixelsInsideWrap(pixelsInsideWrap int) {
 //
 //    - rightMargin: right margin in pixels.
 //
-func (textView *TextView) SetRightMargin(rightMargin int) {
+func (textView *TextView) SetRightMargin(rightMargin int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2233,7 +2233,7 @@ func (textView *TextView) SetTabs(tabs *pango.TabArray) {
 //
 //    - topMargin: top margin in pixels.
 //
-func (textView *TextView) SetTopMargin(topMargin int) {
+func (textView *TextView) SetTopMargin(topMargin int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

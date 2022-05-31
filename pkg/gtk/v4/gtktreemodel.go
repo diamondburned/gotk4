@@ -21,6 +21,8 @@ import (
 // extern gboolean _gotk4_gtk4_TreeModelIface_iter_has_child(GtkTreeModel*, GtkTreeIter*);
 // extern gboolean _gotk4_gtk4_TreeModelIface_iter_next(GtkTreeModel*, GtkTreeIter*);
 // extern gboolean _gotk4_gtk4_TreeModelIface_iter_previous(GtkTreeModel*, GtkTreeIter*);
+// extern int _gotk4_gtk4_TreeModelIface_get_n_columns(GtkTreeModel*);
+// extern int _gotk4_gtk4_TreeModelIface_iter_n_children(GtkTreeModel*, GtkTreeIter*);
 // extern void _gotk4_gtk4_TreeModelIface_ref_node(GtkTreeModel*, GtkTreeIter*);
 // extern void _gotk4_gtk4_TreeModelIface_row_changed(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
 // extern void _gotk4_gtk4_TreeModelIface_row_deleted(GtkTreeModel*, GtkTreePath*);
@@ -153,6 +155,13 @@ func _gotk4_gtk4_TreeModelForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath,
 
 // TreeModelOverrider contains methods that are overridable.
 type TreeModelOverrider interface {
+	// NColumns returns the number of columns supported by tree_model.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of columns.
+	//
+	NColumns() int32
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	//
 	// This path should be freed with gtk_tree_path_free().
@@ -177,6 +186,20 @@ type TreeModelOverrider interface {
 	//    - ok: TRUE if iter has children.
 	//
 	IterHasChild(iter *TreeIter) bool
+	// IterNChildren returns the number of children that iter has.
+	//
+	// As a special case, if iter is NULL, then the number of toplevel nodes is
+	// returned.
+	//
+	// The function takes the following parameters:
+	//
+	//    - iter (optional) or NULL.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of children of iter.
+	//
+	IterNChildren(iter *TreeIter) int32
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	//
@@ -484,12 +507,16 @@ var (
 type TreeModeller interface {
 	coreglib.Objector
 
+	// NColumns returns the number of columns supported by tree_model.
+	NColumns() int32
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	Path(iter *TreeIter) *TreePath
 	// StringFromIter generates a string representation of the iter.
 	StringFromIter(iter *TreeIter) string
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
 	IterHasChild(iter *TreeIter) bool
+	// IterNChildren returns the number of children that iter has.
+	IterNChildren(iter *TreeIter) int32
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	IterNext(iter *TreeIter) bool
@@ -507,6 +534,8 @@ type TreeModeller interface {
 	RowHasChildToggled(path *TreePath, iter *TreeIter)
 	// RowInserted emits the TreeModel::row-inserted signal on tree_model.
 	RowInserted(path *TreePath, iter *TreeIter)
+	// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
+	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32)
 	// UnrefNode lets the tree unref the node.
 	UnrefNode(iter *TreeIter)
 
@@ -526,8 +555,10 @@ var _ TreeModeller = (*TreeModel)(nil)
 
 func ifaceInitTreeModeller(gifacePtr, data C.gpointer) {
 	iface := (*C.GtkTreeModelIface)(unsafe.Pointer(gifacePtr))
+	iface.get_n_columns = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_n_columns)
 	iface.get_path = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_path)
 	iface.iter_has_child = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_has_child)
+	iface.iter_n_children = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_n_children)
 	iface.iter_next = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_next)
 	iface.iter_previous = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_previous)
 	iface.ref_node = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_ref_node)
@@ -536,6 +567,18 @@ func ifaceInitTreeModeller(gifacePtr, data C.gpointer) {
 	iface.row_has_child_toggled = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_has_child_toggled)
 	iface.row_inserted = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_inserted)
 	iface.unref_node = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_unref_node)
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_n_columns
+func _gotk4_gtk4_TreeModelIface_get_n_columns(arg0 *C.GtkTreeModel) (cret C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	gint := iface.NColumns()
+
+	cret = C.int(gint)
+
+	return cret
 }
 
 //export _gotk4_gtk4_TreeModelIface_get_path
@@ -569,6 +612,24 @@ func _gotk4_gtk4_TreeModelIface_iter_has_child(arg0 *C.GtkTreeModel, arg1 *C.Gtk
 	if ok {
 		cret = C.TRUE
 	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_TreeModelIface_iter_n_children
+func _gotk4_gtk4_TreeModelIface_iter_n_children(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _iter *TreeIter // out
+
+	if arg1 != nil {
+		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	}
+
+	gint := iface.IterNChildren(_iter)
+
+	cret = C.int(gint)
 
 	return cret
 }
@@ -817,6 +878,31 @@ func (childModel *TreeModel) ConnectRowInserted(f func(path *TreePath, iter *Tre
 	return coreglib.ConnectGeneratedClosure(childModel, "row-inserted", false, unsafe.Pointer(C._gotk4_gtk4_TreeModel_ConnectRowInserted), f)
 }
 
+// NColumns returns the number of columns supported by tree_model.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns.
+//
+func (treeModel *TreeModel) NColumns() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**TreeModel)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeModel)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Path returns a newly-created TreePath-struct referenced by iter.
 //
 // This path should be freed with gtk_tree_path_free().
@@ -927,6 +1013,43 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 	}
 
 	return _ok
+}
+
+// IterNChildren returns the number of children that iter has.
+//
+// As a special case, if iter is NULL, then the number of toplevel nodes is
+// returned.
+//
+// The function takes the following parameters:
+//
+//    - iter (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - gint: number of children of iter.
+//
+func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	if iter != nil {
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
+	*(**TreeModel)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // IterNext sets iter to point to the node following it at the current level.
@@ -1135,6 +1258,51 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 	runtime.KeepAlive(iter)
 }
 
+// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
+//
+// This should be called by models when their rows have been reordered.
+//
+// The function takes the following parameters:
+//
+//    - path pointing to the tree node whose children have been reordered.
+//    - iter (optional): valid TreeIter-struct pointing to the node whose
+//      children have been reordered, or NULL if the depth of path is 0.
+//    - newOrder: array of integers mapping the current position of each child to
+//      its old position before the re-ordering, i.e. new_order[newpos] = oldpos.
+//
+func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32) {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 *C.void // out
+	var _arg4 C.int
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	if iter != nil {
+		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
+	_arg4 = (C.int)(len(newOrder))
+	_arg3 = (*C.void)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.int)(_arg3), len(newOrder))
+		for i := range newOrder {
+			out[i] = C.int(newOrder[i])
+		}
+	}
+	*(**TreeModel)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
+	*(**TreeIter)(unsafe.Pointer(&args[3])) = _arg3
+	*(*[]int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(newOrder)
+}
+
 // UnrefNode lets the tree unref the node.
 //
 // This is an optional method for models to implement. To be more specific,
@@ -1269,6 +1437,42 @@ func NewTreePathFirst() *TreePath {
 	return _treePath
 }
 
+// NewTreePathFromIndices constructs a struct TreePath.
+func NewTreePathFromIndices(indices []int32) *TreePath {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.gsize
+	var _cret *C.void // in
+
+	_arg1 = (C.gsize)(len(indices))
+	_arg0 = (*C.void)(C.calloc(C.size_t(len(indices)), C.size_t(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(_arg0))
+	{
+		out := unsafe.Slice((*C.int)(_arg0), len(indices))
+		for i := range indices {
+			out[i] = C.int(indices[i])
+		}
+	}
+	*(*[]int32)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(indices)
+
+	var _treePath *TreePath // out
+	_out1 = *(**TreePath)(unsafe.Pointer(&outs[1]))
+
+	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_treePath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+		},
+	)
+
+	return _treePath
+}
+
 // NewTreePathFromString constructs a struct TreePath.
 func NewTreePathFromString(path string) *TreePath {
 	var args [1]girepository.Argument
@@ -1296,6 +1500,62 @@ func NewTreePathFromString(path string) *TreePath {
 	}
 
 	return _treePath
+}
+
+// AppendIndex appends a new index to a path.
+//
+// As a result, the depth of the path is increased.
+//
+// The function takes the following parameters:
+//
+//    - index_: index.
+//
+func (path *TreePath) AppendIndex(index_ int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.int(index_)
+	*(**TreePath)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(index_)
+}
+
+// Compare compares two paths.
+//
+// If a appears before b in a tree, then -1 is returned. If b appears before a,
+// then 1 is returned. If the two nodes are equal, then 0 is returned.
+//
+// The function takes the following parameters:
+//
+//    - b to compare with.
+//
+// The function returns the following values:
+//
+//    - gint: relative positions of a and b.
+//
+func (a *TreePath) Compare(b *TreePath) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
+	*(**TreePath)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(a)
+	runtime.KeepAlive(b)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Copy creates a new TreePath-struct as a copy of path.
@@ -1338,6 +1598,31 @@ func (path *TreePath) Down() {
 	*(**TreePath)(unsafe.Pointer(&args[0])) = _arg0
 
 	runtime.KeepAlive(path)
+}
+
+// Depth returns the current depth of path.
+//
+// The function returns the following values:
+//
+//    - gint: depth of path.
+//
+func (path *TreePath) Depth() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**TreePath)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(path)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // IsAncestor returns TRUE if descendant is a descendant of path.
@@ -1417,6 +1702,27 @@ func (path *TreePath) Next() {
 	*(**TreePath)(unsafe.Pointer(&args[0])) = _arg0
 
 	runtime.KeepAlive(path)
+}
+
+// PrependIndex prepends a new index to a path.
+//
+// As a result, the depth of the path is increased.
+//
+// The function takes the following parameters:
+//
+//    - index_: index.
+//
+func (path *TreePath) PrependIndex(index_ int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.int(index_)
+	*(**TreePath)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(index_)
 }
 
 // Prev moves the path to point to the previous node at the current depth, if it

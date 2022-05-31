@@ -507,7 +507,7 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 //    - gint: number of items that have been removed from the recently used
 //      resources list.
 //
-func (manager *RecentManager) PurgeItems() (int, error) {
+func (manager *RecentManager) PurgeItems() (int32, error) {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -521,10 +521,10 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 
 	runtime.KeepAlive(manager)
 
-	var _gint int    // out
+	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -773,7 +773,7 @@ func (info *RecentInfo) Exists() bool {
 //    - gint: positive integer containing the number of days elapsed since the
 //      time this resource was last modified.
 //
-func (info *RecentInfo) Age() int {
+func (info *RecentInfo) Age() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -785,9 +785,9 @@ func (info *RecentInfo) Age() int {
 
 	runtime.KeepAlive(info)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -889,7 +889,7 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 //    - pixbuf (optional) containing the icon, or NULL. Use g_object_unref() when
 //      finished using the icon.
 //
-func (info *RecentInfo) Icon(size int) *gdkpixbuf.Pixbuf {
+func (info *RecentInfo) Icon(size int32) *gdkpixbuf.Pixbuf {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

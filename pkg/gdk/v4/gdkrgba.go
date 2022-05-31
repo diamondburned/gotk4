@@ -49,6 +49,57 @@ func marshalRGBA(p uintptr) (interface{}, error) {
 	return &RGBA{&rgbA{(*C.GdkRGBA)(b)}}, nil
 }
 
+// NewRGBA creates a new RGBA instance from the given
+// fields.
+func NewRGBA(red, green, blue, alpha float32) RGBA {
+	var f0 C.float // out
+	f0 = C.float(red)
+	var f1 C.float // out
+	f1 = C.float(green)
+	var f2 C.float // out
+	f2 = C.float(blue)
+	var f3 C.float // out
+	f3 = C.float(alpha)
+
+	v := C.GdkRGBA{
+		red:   f0,
+		green: f1,
+		blue:  f2,
+		alpha: f3,
+	}
+
+	return *(*RGBA)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
+// Red: intensity of the red channel from 0.0 to 1.0 inclusive.
+func (r *RGBA) Red() float32 {
+	var v float32 // out
+	v = float32(r.native.red)
+	return v
+}
+
+// Green: intensity of the green channel from 0.0 to 1.0 inclusive.
+func (r *RGBA) Green() float32 {
+	var v float32 // out
+	v = float32(r.native.green)
+	return v
+}
+
+// Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
+func (r *RGBA) Blue() float32 {
+	var v float32 // out
+	v = float32(r.native.blue)
+	return v
+}
+
+// Alpha: opacity of the color from 0.0 for completely translucent to 1.0 for
+// opaque.
+func (r *RGBA) Alpha() float32 {
+	var v float32 // out
+	v = float32(r.native.alpha)
+	return v
+}
+
 // Copy makes a copy of a GdkRGBA.
 //
 // The result must be freed through gdk.RGBA.Free().

@@ -88,7 +88,7 @@ func marshalShortcutsSection(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage
 func _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object int) (ok bool)
+	var f func(object int32) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -96,12 +96,12 @@ func _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object int) (ok bool))
+		f = closure.Func.(func(object int32) (ok bool))
 	}
 
-	var _object int // out
+	var _object int32 // out
 
-	_object = int(arg1)
+	_object = int32(arg1)
 
 	ok := f(_object)
 
@@ -112,6 +112,6 @@ func _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1
 	return cret
 }
 
-func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) (ok bool)) coreglib.SignalHandle {
+func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int32) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage), f)
 }

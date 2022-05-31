@@ -62,7 +62,7 @@ func marshalDateTime(p uintptr) (interface{}, error) {
 }
 
 // NewDateTime constructs a struct DateTime.
-func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTime(tz *TimeZone, year int32, month int32, day int32, hour int32, minute int32, seconds float64) *DateTime {
 	var _arg1 *C.GTimeZone // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
@@ -236,7 +236,7 @@ func NewDateTimeFromUnixUTC(t int64) *DateTime {
 }
 
 // NewDateTimeLocal constructs a struct DateTime.
-func NewDateTimeLocal(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTimeLocal(year int32, month int32, day int32, hour int32, minute int32, seconds float64) *DateTime {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
@@ -343,7 +343,7 @@ func NewDateTimeNowUTC() *DateTime {
 }
 
 // NewDateTimeUTC constructs a struct DateTime.
-func NewDateTimeUTC(year int, month int, day int, hour int, minute int, seconds float64) *DateTime {
+func NewDateTimeUTC(year int32, month int32, day int32, hour int32, minute int32, seconds float64) *DateTime {
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out
@@ -432,7 +432,7 @@ func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 //    - dateTime (optional): newly created Time which should be freed with
 //      g_date_time_unref(), or NULL.
 //
-func (datetime *DateTime) AddDays(days int) *DateTime {
+func (datetime *DateTime) AddDays(days int32) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _cret *C.GDateTime // in
@@ -476,7 +476,7 @@ func (datetime *DateTime) AddDays(days int) *DateTime {
 //    - dateTime (optional): newly created Time which should be freed with
 //      g_date_time_unref(), or NULL.
 //
-func (datetime *DateTime) AddFull(years int, months int, days int, hours int, minutes int, seconds float64) *DateTime {
+func (datetime *DateTime) AddFull(years int32, months int32, days int32, hours int32, minutes int32, seconds float64) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -530,7 +530,7 @@ func (datetime *DateTime) AddFull(years int, months int, days int, hours int, mi
 //    - dateTime (optional): newly created Time which should be freed with
 //      g_date_time_unref(), or NULL.
 //
-func (datetime *DateTime) AddHours(hours int) *DateTime {
+func (datetime *DateTime) AddHours(hours int32) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _cret *C.GDateTime // in
@@ -569,7 +569,7 @@ func (datetime *DateTime) AddHours(hours int) *DateTime {
 //    - dateTime (optional): newly created Time which should be freed with
 //      g_date_time_unref(), or NULL.
 //
-func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
+func (datetime *DateTime) AddMinutes(minutes int32) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _cret *C.GDateTime // in
@@ -613,7 +613,7 @@ func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
 //    - dateTime (optional): newly created Time which should be freed with
 //      g_date_time_unref(), or NULL.
 //
-func (datetime *DateTime) AddMonths(months int) *DateTime {
+func (datetime *DateTime) AddMonths(months int32) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _cret *C.GDateTime // in
@@ -691,7 +691,7 @@ func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 //    - dateTime (optional): newly created Time which should be freed with
 //      g_date_time_unref(), or NULL.
 //
-func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
+func (datetime *DateTime) AddWeeks(weeks int32) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _cret *C.GDateTime // in
@@ -733,7 +733,7 @@ func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
 //    - dateTime (optional): newly created Time which should be freed with
 //      g_date_time_unref(), or NULL.
 //
-func (datetime *DateTime) AddYears(years int) *DateTime {
+func (datetime *DateTime) AddYears(years int32) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
 	var _cret *C.GDateTime // in
@@ -771,7 +771,7 @@ func (datetime *DateTime) AddYears(years int) *DateTime {
 //
 //    - gint: -1, 0 or 1 if dt1 is less than, equal to or greater than dt2.
 //
-func (dt1 *DateTime) Compare(dt2 *DateTime) int {
+func (dt1 *DateTime) Compare(dt2 *DateTime) int32 {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
@@ -783,9 +783,9 @@ func (dt1 *DateTime) Compare(dt2 *DateTime) int {
 	runtime.KeepAlive(dt1)
 	runtime.KeepAlive(dt2)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1069,7 +1069,7 @@ func (datetime *DateTime) FormatISO8601() string {
 //
 //    - gint: day of the month.
 //
-func (datetime *DateTime) DayOfMonth() int {
+func (datetime *DateTime) DayOfMonth() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1078,9 +1078,9 @@ func (datetime *DateTime) DayOfMonth() int {
 	_cret = C.g_date_time_get_day_of_month(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1092,7 +1092,7 @@ func (datetime *DateTime) DayOfMonth() int {
 //
 //    - gint: day of the week.
 //
-func (datetime *DateTime) DayOfWeek() int {
+func (datetime *DateTime) DayOfWeek() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1101,9 +1101,9 @@ func (datetime *DateTime) DayOfWeek() int {
 	_cret = C.g_date_time_get_day_of_week(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1115,7 +1115,7 @@ func (datetime *DateTime) DayOfWeek() int {
 //
 //    - gint: day of the year.
 //
-func (datetime *DateTime) DayOfYear() int {
+func (datetime *DateTime) DayOfYear() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1124,9 +1124,9 @@ func (datetime *DateTime) DayOfYear() int {
 	_cret = C.g_date_time_get_day_of_year(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1137,7 +1137,7 @@ func (datetime *DateTime) DayOfYear() int {
 //
 //    - gint: hour of the day.
 //
-func (datetime *DateTime) Hour() int {
+func (datetime *DateTime) Hour() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1146,9 +1146,9 @@ func (datetime *DateTime) Hour() int {
 	_cret = C.g_date_time_get_hour(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1159,7 +1159,7 @@ func (datetime *DateTime) Hour() int {
 //
 //    - gint: microsecond of the second.
 //
-func (datetime *DateTime) Microsecond() int {
+func (datetime *DateTime) Microsecond() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1168,9 +1168,9 @@ func (datetime *DateTime) Microsecond() int {
 	_cret = C.g_date_time_get_microsecond(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1181,7 +1181,7 @@ func (datetime *DateTime) Microsecond() int {
 //
 //    - gint: minute of the hour.
 //
-func (datetime *DateTime) Minute() int {
+func (datetime *DateTime) Minute() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1190,9 +1190,9 @@ func (datetime *DateTime) Minute() int {
 	_cret = C.g_date_time_get_minute(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1204,7 +1204,7 @@ func (datetime *DateTime) Minute() int {
 //
 //    - gint: month represented by datetime.
 //
-func (datetime *DateTime) Month() int {
+func (datetime *DateTime) Month() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1213,9 +1213,9 @@ func (datetime *DateTime) Month() int {
 	_cret = C.g_date_time_get_month(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1226,7 +1226,7 @@ func (datetime *DateTime) Month() int {
 //
 //    - gint: second represented by datetime.
 //
-func (datetime *DateTime) Second() int {
+func (datetime *DateTime) Second() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1235,9 +1235,9 @@ func (datetime *DateTime) Second() int {
 	_cret = C.g_date_time_get_second(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1386,7 +1386,7 @@ func (datetime *DateTime) UTCOffset() TimeSpan {
 //
 //    - gint: ISO 8601 week-numbering year for datetime.
 //
-func (datetime *DateTime) WeekNumberingYear() int {
+func (datetime *DateTime) WeekNumberingYear() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1395,9 +1395,9 @@ func (datetime *DateTime) WeekNumberingYear() int {
 	_cret = C.g_date_time_get_week_numbering_year(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1421,7 +1421,7 @@ func (datetime *DateTime) WeekNumberingYear() int {
 //
 //    - gint: ISO 8601 week number for datetime.
 //
-func (datetime *DateTime) WeekOfYear() int {
+func (datetime *DateTime) WeekOfYear() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1430,9 +1430,9 @@ func (datetime *DateTime) WeekOfYear() int {
 	_cret = C.g_date_time_get_week_of_year(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1443,7 +1443,7 @@ func (datetime *DateTime) WeekOfYear() int {
 //
 //    - gint: year represented by datetime.
 //
-func (datetime *DateTime) Year() int {
+func (datetime *DateTime) Year() int32 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
 
@@ -1452,9 +1452,9 @@ func (datetime *DateTime) Year() int {
 	_cret = C.g_date_time_get_year(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1467,7 +1467,7 @@ func (datetime *DateTime) Year() int {
 //    - month (optional): return location for the month of the year, or NULL.
 //    - day (optional): return location for the day of the month, or NULL.
 //
-func (datetime *DateTime) Ymd() (year int, month int, day int) {
+func (datetime *DateTime) Ymd() (year int32, month int32, day int32) {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -1478,13 +1478,13 @@ func (datetime *DateTime) Ymd() (year int, month int, day int) {
 	C.g_date_time_get_ymd(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(datetime)
 
-	var _year int  // out
-	var _month int // out
-	var _day int   // out
+	var _year int32  // out
+	var _month int32 // out
+	var _day int32   // out
 
-	_year = int(_arg1)
-	_month = int(_arg2)
-	_day = int(_arg3)
+	_year = int32(_arg1)
+	_month = int32(_arg2)
+	_day = int32(_arg3)
 
 	return _year, _month, _day
 }
@@ -1495,7 +1495,7 @@ func (datetime *DateTime) Ymd() (year int, month int, day int) {
 //
 //    - guint containing the hash.
 //
-func (datetime *DateTime) Hash() uint {
+func (datetime *DateTime) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -1504,9 +1504,9 @@ func (datetime *DateTime) Hash() uint {
 	_cret = C.g_date_time_hash(_arg0)
 	runtime.KeepAlive(datetime)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -37,6 +39,60 @@ const TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID = -1
 //
 // See also: gtk.TreeSortable.SetSortColumnID().
 const TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = -2
+
+// TreeIterCompareFunc should return a negative integer, zero, or a positive
+// integer if a sorts before b, a sorts with b, or a sorts after b respectively.
+//
+// If two iters compare as equal, their order in the sorted model is undefined.
+// In order to ensure that the TreeSortable behaves as expected, the
+// GtkTreeIterCompareFunc must define a partial order on the model, i.e. it must
+// be reflexive, antisymmetric and transitive.
+//
+// For example, if model is a product catalogue, then a compare function for the
+// “price” column could be one which returns price_of(a) - price_of(b).
+type TreeIterCompareFunc func(model TreeModeller, a, b *TreeIter) (gint int32)
+
+//export _gotk4_gtk4_TreeIterCompareFunc
+func _gotk4_gtk4_TreeIterCompareFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.int) {
+	var fn TreeIterCompareFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeIterCompareFunc)
+	}
+
+	var _model TreeModeller // out
+	var _a *TreeIter        // out
+	var _b *TreeIter        // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_a = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_b = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+
+	gint := fn(_model, _a, _b)
+
+	cret = C.int(gint)
+
+	return cret
+}
 
 // TreeSortableOverrider contains methods that are overridable.
 type TreeSortableOverrider interface {

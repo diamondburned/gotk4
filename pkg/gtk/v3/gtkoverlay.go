@@ -241,6 +241,39 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	return _ok
 }
 
+// ReorderOverlay moves child to a new index in the list of overlay children.
+// The list contains overlays in the order that these were added to overlay by
+// default. See also Overlay:index.
+//
+// A widget’s index in the overlay children list determines which order the
+// children are drawn if they overlap. The first child is drawn at the bottom.
+// It also affects the default focus chain order.
+//
+// The function takes the following parameters:
+//
+//    - child: overlaid Widget to move.
+//    - index_: new index for child in the list of overlay children of overlay,
+//      starting from 0. If negative, indicates the end of the list.
+//
+func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(index_)
+	*(**Overlay)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Overlay").InvokeMethod("reorder_overlay", args[:], nil)
+
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(index_)
+}
+
 // SetOverlayPassThrough: convenience function to set the value of the
 // Overlay:pass-through child property for widget.
 //

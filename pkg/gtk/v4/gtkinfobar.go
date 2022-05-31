@@ -160,7 +160,7 @@ func (infoBar *InfoBar) ConnectClose(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk4_InfoBar_ConnectResponse
 func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
+	var f func(responseId int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -168,12 +168,12 @@ func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(responseId int))
+		f = closure.Func.(func(responseId int32))
 	}
 
-	var _responseId int // out
+	var _responseId int32 // out
 
-	_responseId = int(arg1)
+	_responseId = int32(arg1)
 
 	f(_responseId)
 }
@@ -183,7 +183,7 @@ func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 // The signal is also emitted when the application programmer calls
 // gtk.InfoBar.Response(). The response_id depends on which action widget was
 // clicked.
-func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk4_InfoBar_ConnectResponse), f)
 }
 
@@ -204,6 +204,80 @@ func NewInfoBar() *InfoBar {
 	_infoBar = wrapInfoBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _infoBar
+}
+
+// AddActionWidget: add an activatable widget to the action area of a
+// GtkInfoBar.
+//
+// This also connects a signal handler that will emit the gtk.InfoBar::response
+// signal on the message area when the widget is activated. The widget is
+// appended to the end of the message areas action area.
+//
+// The function takes the following parameters:
+//
+//    - child: activatable widget.
+//    - responseId: response ID for child.
+//
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("add_action_widget", args[:], nil)
+
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(responseId)
+}
+
+// AddButton adds a button with the given text.
+//
+// Clicking the button will emit the gtk.InfoBar::response signal with the given
+// response_id. The button is appended to the end of the info bars's action
+// area. The button widget is returned, but usually you don't need it.
+//
+// The function takes the following parameters:
+//
+//    - buttonText: text of button.
+//    - responseId: response ID for the button.
+//
+// The function returns the following values:
+//
+//    - button: GtkButton widget that was added.
+//
+func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("add_button", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(buttonText)
+	runtime.KeepAlive(responseId)
+
+	var _button *Button // out
+
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _button
 }
 
 // AddChild adds a widget to the content area of the info bar.
@@ -327,6 +401,86 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(widget)
+}
+
+// Response emits the “response” signal with the given response_id.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
+func (infoBar *InfoBar) Response(responseId int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	_arg1 = C.int(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("response", args[:], nil)
+
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
+}
+
+// SetDefaultResponse sets the last widget in the info bar’s action area with
+// the given response_id as the default widget for the dialog.
+//
+// Pressing “Enter” normally activates the default widget.
+//
+// Note that this function currently requires info_bar to be added to a widget
+// hierarchy.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
+func (infoBar *InfoBar) SetDefaultResponse(responseId int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	_arg1 = C.int(responseId)
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_default_response", args[:], nil)
+
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
+}
+
+// SetResponseSensitive sets the sensitivity of action widgets for response_id.
+//
+// Calls gtk_widget_set_sensitive (widget, setting) for each widget in the info
+// bars’s action area with the given response_id. A convenient way to
+// sensitize/desensitize buttons.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//    - setting: TRUE for sensitive.
+//
+func (infoBar *InfoBar) SetResponseSensitive(responseId int32, setting bool) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.gboolean // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	_arg1 = C.int(responseId)
+	if setting {
+		_arg2 = C.TRUE
+	}
+	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_response_sensitive", args[:], nil)
+
+	runtime.KeepAlive(infoBar)
+	runtime.KeepAlive(responseId)
+	runtime.KeepAlive(setting)
 }
 
 // SetRevealed sets whether the GtkInfoBar is revealed.

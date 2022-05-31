@@ -98,6 +98,32 @@ func NewCellAreaBox() *CellAreaBox {
 	return _cellAreaBox
 }
 
+// Spacing gets the spacing added between cell renderers.
+//
+// The function returns the following values:
+//
+//    - gint: space added between cell renderers in box.
+//
+func (box *CellAreaBox) Spacing() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**CellAreaBox)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("get_spacing", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(box)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // PackEnd adds renderer to box, packed with reference to the end of box.
 //
 // The renderer is packed after (away from end of) any other CellRenderer packed
@@ -188,4 +214,25 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed 
 	runtime.KeepAlive(expand)
 	runtime.KeepAlive(align)
 	runtime.KeepAlive(fixed)
+}
+
+// SetSpacing sets the spacing to add between cell renderers in box.
+//
+// The function takes the following parameters:
+//
+//    - spacing: space to add between CellRenderers.
+//
+func (box *CellAreaBox) SetSpacing(spacing int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.int(spacing)
+	*(**CellAreaBox)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("set_spacing", args[:], nil)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
 }

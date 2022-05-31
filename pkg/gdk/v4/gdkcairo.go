@@ -9,12 +9,88 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
 import "C"
+
+// CairoDrawFromGL: main way to draw GL content in GTK.
+//
+// It takes a render buffer ID (source_type == RENDERBUFFER) or a texture id
+// (source_type == TEXTURE) and draws it onto cr with an OVER operation,
+// respecting the current clip. The top left corner of the rectangle specified
+// by x, y, width and height will be drawn at the current (0,0) position of the
+// cairo_t.
+//
+// This will work for *all* cairo_t, as long as surface is realized, but the
+// fallback implementation that reads back the pixels from the buffer may be
+// used in the general case. In the case of direct drawing to a surface with no
+// special effects applied to cr it will however use a more efficient approach.
+//
+// For RENDERBUFFER the code will always fall back to software for buffers with
+// alpha components, so make sure you use TEXTURE if using alpha.
+//
+// Calling this may change the current GL context.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - surface we're rendering for (not necessarily into).
+//    - source: GL ID of the source buffer.
+//    - sourceType: type of the source.
+//    - bufferScale: scale-factor that the source buffer is allocated for.
+//    - x: source x position in source to start copying from in GL coordinates.
+//    - y: source y position in source to start copying from in GL coordinates.
+//    - width of the region to draw.
+//    - height of the region to draw.
+//
+func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bufferScale, x, y, width, height int32) {
+	var args [9]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 C.int   // out
+	var _arg5 C.int   // out
+	var _arg6 C.int   // out
+	var _arg7 C.int   // out
+	var _arg8 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg2 = C.int(source)
+	_arg3 = C.int(sourceType)
+	_arg4 = C.int(bufferScale)
+	_arg5 = C.int(x)
+	_arg6 = C.int(y)
+	_arg7 = C.int(width)
+	_arg8 = C.int(height)
+	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
+	*(*Surfacer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[5])) = _arg5
+	*(*int32)(unsafe.Pointer(&args[6])) = _arg6
+	*(*int32)(unsafe.Pointer(&args[7])) = _arg7
+	*(*int32)(unsafe.Pointer(&args[8])) = _arg8
+
+	girepository.MustFind("Gdk", "cairo_draw_from_gl").Invoke(args[:], nil)
+
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(sourceType)
+	runtime.KeepAlive(bufferScale)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
 
 // CairoRectangle adds the given rectangle to the current path of cr.
 //
@@ -100,6 +176,42 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	})
 
 	return _region
+}
+
+// CairoSetSourcePixbuf sets the given pixbuf as the source pattern for cr.
+//
+// The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
+// the origin of pixbuf is pixbuf_x, pixbuf_y.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - pixbuf: Pixbuf.
+//    - pixbufX: x coordinate of location to place upper left corner of pixbuf.
+//    - pixbufY: y coordinate of location to place upper left corner of pixbuf.
+//
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg2 = C.double(pixbufX)
+	_arg3 = C.double(pixbufY)
+	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
+	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gdk", "cairo_set_source_pixbuf").Invoke(args[:], nil)
+
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(pixbufX)
+	runtime.KeepAlive(pixbufY)
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of cr.

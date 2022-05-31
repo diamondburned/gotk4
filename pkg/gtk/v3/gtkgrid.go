@@ -126,7 +126,7 @@ func NewGrid() *Grid {
 //    - width: number of columns that child will span.
 //    - height: number of rows that child will span.
 //
-func (grid *Grid) Attach(child Widgetter, left, top, width, height int) {
+func (grid *Grid) Attach(child Widgetter, left, top, width, height int32) {
 	var args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -143,9 +143,9 @@ func (grid *Grid) Attach(child Widgetter, left, top, width, height int) {
 	_arg5 = C.gint(height)
 	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int)(unsafe.Pointer(&args[4])) = _arg4
-	*(*int)(unsafe.Pointer(&args[5])) = _arg5
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[5])) = _arg5
 
 	girepository.MustFind("Gtk", "Grid").InvokeMethod("attach", args[:], nil)
 
@@ -163,7 +163,7 @@ func (grid *Grid) Attach(child Widgetter, left, top, width, height int) {
 //
 //    - gint: row index defining the global baseline.
 //
-func (grid *Grid) BaselineRow() int {
+func (grid *Grid) BaselineRow() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -176,9 +176,9 @@ func (grid *Grid) BaselineRow() int {
 
 	runtime.KeepAlive(grid)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -195,7 +195,7 @@ func (grid *Grid) BaselineRow() int {
 //
 //    - widget (optional): child at the given position, or NULL.
 //
-func (grid *Grid) ChildAt(left, top int) Widgetter {
+func (grid *Grid) ChildAt(left, top int32) Widgetter {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -206,7 +206,7 @@ func (grid *Grid) ChildAt(left, top int) Widgetter {
 	_arg1 = C.gint(left)
 	_arg2 = C.gint(top)
 	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_child_at", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -271,7 +271,7 @@ func (grid *Grid) ColumnHomogeneous() bool {
 //
 //    - guint: column spacing of grid.
 //
-func (grid *Grid) ColumnSpacing() uint {
+func (grid *Grid) ColumnSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -284,9 +284,9 @@ func (grid *Grid) ColumnSpacing() uint {
 
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -325,7 +325,7 @@ func (grid *Grid) RowHomogeneous() bool {
 //
 //    - guint: row spacing of grid.
 //
-func (grid *Grid) RowSpacing() uint {
+func (grid *Grid) RowSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -338,9 +338,9 @@ func (grid *Grid) RowSpacing() uint {
 
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -355,7 +355,7 @@ func (grid *Grid) RowSpacing() uint {
 //
 //    - position to insert the column at.
 //
-func (grid *Grid) InsertColumn(position int) {
+func (grid *Grid) InsertColumn(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -379,7 +379,7 @@ func (grid *Grid) InsertColumn(position int) {
 //
 //    - position to insert the row at.
 //
-func (grid *Grid) InsertRow(position int) {
+func (grid *Grid) InsertRow(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -404,7 +404,7 @@ func (grid *Grid) InsertRow(position int) {
 //
 //    - position of the column to remove.
 //
-func (grid *Grid) RemoveColumn(position int) {
+func (grid *Grid) RemoveColumn(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -429,7 +429,7 @@ func (grid *Grid) RemoveColumn(position int) {
 //
 //    - position of the row to remove.
 //
-func (grid *Grid) RemoveRow(position int) {
+func (grid *Grid) RemoveRow(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -452,7 +452,7 @@ func (grid *Grid) RemoveRow(position int) {
 //
 //    - row index.
 //
-func (grid *Grid) SetBaselineRow(row int) {
+func (grid *Grid) SetBaselineRow(row int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -497,7 +497,7 @@ func (grid *Grid) SetColumnHomogeneous(homogeneous bool) {
 //
 //    - spacing: amount of space to insert between columns.
 //
-func (grid *Grid) SetColumnSpacing(spacing uint) {
+func (grid *Grid) SetColumnSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -541,7 +541,7 @@ func (grid *Grid) SetRowHomogeneous(homogeneous bool) {
 //
 //    - spacing: amount of space to insert between rows.
 //
-func (grid *Grid) SetRowSpacing(spacing uint) {
+func (grid *Grid) SetRowSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

@@ -810,7 +810,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 //
 //    - guint: current border width.
 //
-func (container *Container) BorderWidth() uint {
+func (container *Container) BorderWidth() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -823,9 +823,9 @@ func (container *Container) BorderWidth() uint {
 
 	runtime.KeepAlive(container)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1184,7 +1184,7 @@ func (container *Container) ResizeChildren() {
 //    - borderWidth: amount of blank space to leave outside the container. Valid
 //      values are in the range 0-65535 pixels.
 //
-func (container *Container) SetBorderWidth(borderWidth uint) {
+func (container *Container) SetBorderWidth(borderWidth uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

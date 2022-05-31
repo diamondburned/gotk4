@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -54,6 +55,12 @@ type Popupper interface {
 	Autohide() bool
 	// Parent returns the parent surface of a popup.
 	Parent() Surfacer
+	// PositionX obtains the position of the popup relative to its parent.
+	PositionX() int32
+	// PositionY obtains the position of the popup relative to its parent.
+	PositionY() int32
+	// Present popup after having processed the PopupLayout rules.
+	Present(width, height int32, layout *PopupLayout) bool
 }
 
 var _ Popupper = (*Popup)(nil)
@@ -139,4 +146,112 @@ func (popup *Popup) Parent() Surfacer {
 	}
 
 	return _surface
+}
+
+// PositionX obtains the position of the popup relative to its parent.
+//
+// The function returns the following values:
+//
+//    - gint: x coordinate of popup position.
+//
+func (popup *Popup) PositionX() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	*(**Popup)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(popup)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// PositionY obtains the position of the popup relative to its parent.
+//
+// The function returns the following values:
+//
+//    - gint: y coordinate of popup position.
+//
+func (popup *Popup) PositionY() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	*(**Popup)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(popup)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// Present popup after having processed the PopupLayout rules.
+//
+// If the popup was previously now showing, it will be showed, otherwise it will
+// change position according to layout.
+//
+// After calling this function, the result should be handled in response to the
+// gdksurface::layout signal being emitted. The resulting popup position can be
+// queried using gdk.Popup.GetPositionX(), gdk.Popup.GetPositionY(), and the
+// resulting size will be sent as parameters in the layout signal. Use
+// gdk.Popup.GetRectAnchor() and gdk.Popup.GetSurfaceAnchor() to get the
+// resulting anchors.
+//
+// Presenting may fail, for example if the popup is set to autohide and is
+// immediately hidden upon being presented. If presenting failed, the
+// gdk.Surface::layout signal will not me emitted.
+//
+// The function takes the following parameters:
+//
+//    - width: unconstrained popup width to layout.
+//    - height: unconstrained popup height to layout.
+//    - layout: GdkPopupLayout object used to layout.
+//
+// The function returns the following values:
+//
+//    - ok: FALSE if it failed to be presented, otherwise TRUE.
+//
+func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
+	var args [4]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+	var _arg3 *C.void    // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	*(**Popup)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(popup)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(layout)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

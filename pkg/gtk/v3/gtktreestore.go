@@ -163,7 +163,7 @@ func (treeStore *TreeStore) IsAncestor(iter, descendant *TreeIter) bool {
 //
 //    - gint: depth of iter.
 //
-func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
+func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -179,9 +179,9 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -332,7 +332,7 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 //    - column number to modify.
 //    - value: new value for the cell.
 //
-func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *coreglib.Value) {
+func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -345,7 +345,7 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *coreglib
 	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
 	*(**TreeStore)(unsafe.Pointer(&args[1])) = _arg1
 	*(**TreeIter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "TreeStore").InvokeMethod("set_value", args[:], nil)
 

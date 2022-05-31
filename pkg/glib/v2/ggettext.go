@@ -27,7 +27,7 @@ import "C"
 //
 //    - utf8: translated string for the given locale category.
 //
-func Dcgettext(domain, msgid string, category int) string {
+func Dcgettext(domain, msgid string, category int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gint   // out

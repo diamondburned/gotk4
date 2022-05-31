@@ -196,6 +196,48 @@ func (iter *TextIter) BackwardChar() bool {
 	return _ok
 }
 
+// BackwardChars moves count characters backward, if possible.
+//
+// If count would move past the start or end of the buffer, moves to the start
+// or end of the buffer.
+//
+// The return value indicates whether the iterator moved onto a dereferenceable
+// position; if the iterator didn’t move, or moved onto the end iterator, then
+// FALSE is returned. If count is 0, the function does nothing and returns
+// FALSE.
+//
+// The function takes the following parameters:
+//
+//    - count: number of characters to move.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
+func (iter *TextIter) BackwardChars(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // BackwardCursorPosition: like gtk_text_iter_forward_cursor_position(), but
 // moves backward.
 //
@@ -214,6 +256,42 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BackwardCursorPositions moves up to count cursor positions.
+//
+// See gtk.TextIter.ForwardCursorPosition() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
+func (iter *TextIter) BackwardCursorPositions(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -258,6 +336,48 @@ func (iter *TextIter) BackwardLine() bool {
 	return _ok
 }
 
+// BackwardLines moves count lines backward, if possible.
+//
+// If count would move past the start or end of the buffer, moves to the start
+// or end of the buffer.
+//
+// The return value indicates whether the iterator moved onto a dereferenceable
+// position; if the iterator didn’t move, or moved onto the end iterator, then
+// FALSE is returned. If count is 0, the function does nothing and returns
+// FALSE. If count is negative, moves forward by 0 - count lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move backward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
+func (iter *TextIter) BackwardLines(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // BackwardSentenceStart moves backward to the previous sentence start.
 //
 // If iter is already at the start of a sentence, moves backward to the next
@@ -281,6 +401,43 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BackwardSentenceStarts calls gtk_text_iter_backward_sentence_start() up to
+// count times.
+//
+// If count is negative, moves forward instead of backward.
+//
+// The function takes the following parameters:
+//
+//    - count: number of sentences to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
+func (iter *TextIter) BackwardSentenceStarts(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -362,6 +519,42 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 	return _ok
 }
 
+// BackwardVisibleCursorPositions moves up to count visible cursor positions.
+//
+// See gtk.TextIter.BackwardCursorPosition() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
+func (iter *TextIter) BackwardVisibleCursorPositions(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // BackwardVisibleLine moves iter to the start of the previous visible line.
 //
 // Returns TRUE if iter could be moved; i.e. if iter was at character offset 0,
@@ -386,6 +579,48 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BackwardVisibleLines moves count visible lines backward, if possible.
+//
+// If count would move past the start or end of the buffer, moves to the start
+// or end of the buffer.
+//
+// The return value indicates whether the iterator moved onto a dereferenceable
+// position; if the iterator didn’t move, or moved onto the end iterator, then
+// FALSE is returned. If count is 0, the function does nothing and returns
+// FALSE. If count is negative, moves forward by 0 - count lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move backward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
+func (iter *TextIter) BackwardVisibleLines(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -429,6 +664,41 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 	return _ok
 }
 
+// BackwardVisibleWordStarts calls gtk_text_iter_backward_visible_word_start()
+// up to count times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
+func (iter *TextIter) BackwardVisibleWordStarts(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // BackwardWordStart moves backward to the previous word start.
 //
 // If iter is currently on a word start, moves backward to the next one after
@@ -452,6 +722,41 @@ func (iter *TextIter) BackwardWordStart() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BackwardWordStarts calls gtk_text_iter_backward_word_start() up to count
+// times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
+func (iter *TextIter) BackwardWordStarts(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -502,6 +807,43 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 	}
 
 	return _ok
+}
+
+// Compare: qsort()-style function that returns negative if lhs is less than
+// rhs, positive if lhs is greater than rhs, and 0 if they’re equal.
+//
+// Ordering is in character offset order, i.e. the first character in the buffer
+// is less than the second character in the buffer.
+//
+// The function takes the following parameters:
+//
+//    - rhs: another GtkTextIter.
+//
+// The function returns the following values:
+//
+//    - gint: -1 if lhs is less than rhs, 1 if lhs is greater, 0 if they are
+//      equal.
+//
+func (lhs *TextIter) Compare(rhs *TextIter) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(lhs)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rhs)))
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(lhs)
+	runtime.KeepAlive(rhs)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Copy creates a dynamically-allocated copy of an iterator.
@@ -798,6 +1140,48 @@ func (iter *TextIter) ForwardChar() bool {
 	return _ok
 }
 
+// ForwardChars moves count characters if possible.
+//
+// If count would move past the start or end of the buffer, moves to the start
+// or end of the buffer.
+//
+// The return value indicates whether the new position of iter is different from
+// its original position, and dereferenceable (the last iterator in the buffer
+// is not dereferenceable). If count is 0, the function does nothing and returns
+// FALSE.
+//
+// The function takes the following parameters:
+//
+//    - count: number of characters to move, may be negative.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
+func (iter *TextIter) ForwardChars(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ForwardCursorPosition moves iter forward by a single cursor position.
 //
 // Cursor positions are (unsurprisingly) positions where the cursor can appear.
@@ -827,6 +1211,42 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ForwardCursorPositions moves up to count cursor positions.
+//
+// See gtk.TextIter.ForwardCursorPosition() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
+func (iter *TextIter) ForwardCursorPositions(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -868,6 +1288,48 @@ func (iter *TextIter) ForwardLine() bool {
 	return _ok
 }
 
+// ForwardLines moves count lines forward, if possible.
+//
+// If count would move past the start or end of the buffer, moves to the start
+// or end of the buffer.
+//
+// The return value indicates whether the iterator moved onto a dereferenceable
+// position; if the iterator didn’t move, or moved onto the end iterator, then
+// FALSE is returned. If count is 0, the function does nothing and returns
+// FALSE. If count is negative, moves backward by 0 - count lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move forward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
+func (iter *TextIter) ForwardLines(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ForwardSentenceEnd moves forward to the next sentence end.
 //
 // If iter is at the end of a sentence, moves to the next end of sentence.
@@ -890,6 +1352,42 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ForwardSentenceEnds calls gtk_text_iter_forward_sentence_end() count times.
+//
+// If count is negative, moves backward instead of forward.
+//
+// The function takes the following parameters:
+//
+//    - count: number of sentences to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
+func (iter *TextIter) ForwardSentenceEnds(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -1022,6 +1520,42 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 	return _ok
 }
 
+// ForwardVisibleCursorPositions moves up to count visible cursor positions.
+//
+// See gtk.TextIter.ForwardCursorPosition() for details.
+//
+// The function takes the following parameters:
+//
+//    - count: number of positions to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if we moved and the new position is dereferenceable.
+//
+func (iter *TextIter) ForwardVisibleCursorPositions(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ForwardVisibleLine moves iter to the start of the next visible line.
 //
 // Returns TRUE if there was a next line to move to, and FALSE if iter was
@@ -1043,6 +1577,48 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ForwardVisibleLines moves count visible lines forward, if possible.
+//
+// If count would move past the start or end of the buffer, moves to the start
+// or end of the buffer.
+//
+// The return value indicates whether the iterator moved onto a dereferenceable
+// position; if the iterator didn’t move, or moved onto the end iterator, then
+// FALSE is returned. If count is 0, the function does nothing and returns
+// FALSE. If count is negative, moves backward by 0 - count lines.
+//
+// The function takes the following parameters:
+//
+//    - count: number of lines to move forward.
+//
+// The function returns the following values:
+//
+//    - ok: whether iter moved and is dereferenceable.
+//
+func (iter *TextIter) ForwardVisibleLines(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -1085,6 +1661,41 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 	return _ok
 }
 
+// ForwardVisibleWordEnds calls gtk_text_iter_forward_visible_word_end() up to
+// count times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
+func (iter *TextIter) ForwardVisibleWordEnds(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ForwardWordEnd moves forward to the next word end.
 //
 // If iter is currently on a word end, moves forward to the next one after that.
@@ -1107,6 +1718,40 @@ func (iter *TextIter) ForwardWordEnd() bool {
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ForwardWordEnds calls gtk_text_iter_forward_word_end() up to count times.
+//
+// The function takes the following parameters:
+//
+//    - count: number of times to move.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not the end iterator.
+//
+func (iter *TextIter) ForwardWordEnds(count int32) bool {
+	var args [2]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(count)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -1142,6 +1787,32 @@ func (iter *TextIter) Buffer() *TextBuffer {
 	return _textBuffer
 }
 
+// BytesInLine returns the number of bytes in the line containing iter,
+// including the paragraph delimiters.
+//
+// The function returns the following values:
+//
+//    - gint: number of bytes in the line.
+//
+func (iter *TextIter) BytesInLine() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Char: unicode character at this iterator is returned.
 //
 // Equivalent to operator* on a C++ iterator. If the element at this iterator is
@@ -1172,6 +1843,32 @@ func (iter *TextIter) Char() uint32 {
 	_gunichar = uint32(_cret)
 
 	return _gunichar
+}
+
+// CharsInLine returns the number of characters in the line containing iter,
+// including the paragraph delimiters.
+//
+// The function returns the following values:
+//
+//    - gint: number of characters in the line.
+//
+func (iter *TextIter) CharsInLine() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // ChildAnchor: if the location at iter contains a child anchor, the anchor is
@@ -1236,6 +1933,91 @@ func (iter *TextIter) Language() *pango.Language {
 	return _language
 }
 
+// Line returns the line number containing the iterator.
+//
+// Lines in a GtkTextBuffer are numbered beginning with 0 for the first line in
+// the buffer.
+//
+// The function returns the following values:
+//
+//    - gint: line number.
+//
+func (iter *TextIter) Line() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// LineIndex returns the byte index of the iterator, counting from the start of
+// a newline-terminated line.
+//
+// Remember that GtkTextBuffer encodes text in UTF-8, and that characters can
+// require a variable number of bytes to represent.
+//
+// The function returns the following values:
+//
+//    - gint: distance from start of line, in bytes.
+//
+func (iter *TextIter) LineIndex() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// LineOffset returns the character offset of the iterator, counting from the
+// start of a newline-terminated line.
+//
+// The first character on the line has offset 0.
+//
+// The function returns the following values:
+//
+//    - gint: offset from start of line.
+//
+func (iter *TextIter) LineOffset() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Marks returns a list of all GtkTextMark at this location.
 //
 // Because marks are not iterable (they don’t take up any "space" in the buffer,
@@ -1271,6 +2053,35 @@ func (iter *TextIter) Marks() []*TextMark {
 	})
 
 	return _sList
+}
+
+// Offset returns the character offset of an iterator.
+//
+// Each character in a GtkTextBuffer has an offset, starting with 0 for the
+// first character in the buffer. Use gtk,textbuffer.GetIterAtOffset to convert
+// an offset back into an iterator.
+//
+// The function returns the following values:
+//
+//    - gint: character offset.
+//
+func (iter *TextIter) Offset() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Paintable: if the element at iter is a paintable, the paintable is returned.
@@ -1464,6 +2275,60 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 	})
 
 	return _sList
+}
+
+// VisibleLineIndex returns the number of bytes from the start of the line to
+// the given iter, not counting bytes that are invisible due to tags with the
+// “invisible” flag toggled on.
+//
+// The function returns the following values:
+//
+//    - gint: byte index of iter with respect to the start of the line.
+//
+func (iter *TextIter) VisibleLineIndex() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// VisibleLineOffset returns the offset in characters from the start of the line
+// to the given iter, not counting characters that are invisible due to tags
+// with the “invisible” flag toggled on.
+//
+// The function returns the following values:
+//
+//    - gint: offset in visible characters from the start of the line.
+//
+func (iter *TextIter) VisibleLineOffset() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TextIter)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // VisibleSlice returns visible text in the given range.
@@ -1795,6 +2660,137 @@ func (first *TextIter) Order(second *TextIter) {
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
+}
+
+// SetLine moves iterator iter to the start of the line line_number.
+//
+// If line_number is negative or larger than or equal to the number of lines in
+// the buffer, moves iter to the start of the last line in the buffer.
+//
+// The function takes the following parameters:
+//
+//    - lineNumber: line number (counted from 0).
+//
+func (iter *TextIter) SetLine(lineNumber int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(lineNumber)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(lineNumber)
+}
+
+// SetLineIndex: same as gtk_text_iter_set_line_offset(), but works with a byte
+// index. The given byte index must be at the start of a character, it can’t be
+// in the middle of a UTF-8 encoded character.
+//
+// The function takes the following parameters:
+//
+//    - byteOnLine: byte index relative to the start of iter’s current line.
+//
+func (iter *TextIter) SetLineIndex(byteOnLine int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(byteOnLine)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(byteOnLine)
+}
+
+// SetLineOffset moves iter within a line, to a new character (not byte) offset.
+//
+// The given character offset must be less than or equal to the number of
+// characters in the line; if equal, iter moves to the start of the next line.
+// See gtk.TextIter.SetLineIndex() if you have a byte index rather than a
+// character offset.
+//
+// The function takes the following parameters:
+//
+//    - charOnLine: character offset relative to the start of iter’s current
+//      line.
+//
+func (iter *TextIter) SetLineOffset(charOnLine int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(charOnLine)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(charOnLine)
+}
+
+// SetOffset sets iter to point to char_offset.
+//
+// char_offset counts from the start of the entire text buffer, starting with 0.
+//
+// The function takes the following parameters:
+//
+//    - charOffset: character number.
+//
+func (iter *TextIter) SetOffset(charOffset int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(charOffset)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(charOffset)
+}
+
+// SetVisibleLineIndex: like gtk_text_iter_set_line_index(), but the index is in
+// visible bytes, i.e. text with a tag making it invisible is not counted in the
+// index.
+//
+// The function takes the following parameters:
+//
+//    - byteOnLine: byte index.
+//
+func (iter *TextIter) SetVisibleLineIndex(byteOnLine int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(byteOnLine)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(byteOnLine)
+}
+
+// SetVisibleLineOffset: like gtk_text_iter_set_line_offset(), but the offset is
+// in visible characters, i.e. text with a tag making it invisible is not
+// counted in the offset.
+//
+// The function takes the following parameters:
+//
+//    - charOnLine: character offset.
+//
+func (iter *TextIter) SetVisibleLineOffset(charOnLine int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = C.int(charOnLine)
+	*(**TextIter)(unsafe.Pointer(&args[1])) = _arg1
+
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(charOnLine)
 }
 
 // StartsLine returns TRUE if iter begins a paragraph.

@@ -188,7 +188,7 @@ type SettingsOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	ChangeEvent(keys *glib.Quark, nKeys int) bool
+	ChangeEvent(keys *glib.Quark, nKeys int32) bool
 	// The function takes the following parameters:
 	//
 	Changed(key string)
@@ -491,7 +491,7 @@ func classInitSettingser(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GSettingsClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		ChangeEvent(keys *glib.Quark, nKeys int) bool
+		ChangeEvent(keys *glib.Quark, nKeys int32) bool
 	}); ok {
 		pclass.change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_change_event)
 	}
@@ -509,14 +509,14 @@ func classInitSettingser(gclassPtr, data C.gpointer) {
 func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		ChangeEvent(keys *glib.Quark, nKeys int) bool
+		ChangeEvent(keys *glib.Quark, nKeys int32) bool
 	})
 
 	var _keys *glib.Quark // out
-	var _nKeys int        // out
+	var _nKeys int32      // out
 
 	_keys = (*uint32)(unsafe.Pointer(arg1))
-	_nKeys = int(arg2)
+	_nKeys = int32(arg2)
 
 	ok := iface.ChangeEvent(_keys, _nKeys)
 
@@ -596,7 +596,7 @@ func (settings *Settings) ConnectChanged(f func(key string)) coreglib.SignalHand
 
 //export _gotk4_gio2_Settings_ConnectWritableChangeEvent
 func _gotk4_gio2_Settings_ConnectWritableChangeEvent(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(key uint) (ok bool)
+	var f func(key uint32) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -604,12 +604,12 @@ func _gotk4_gio2_Settings_ConnectWritableChangeEvent(arg0 C.gpointer, arg1 C.gui
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(key uint) (ok bool))
+		f = closure.Func.(func(key uint32) (ok bool))
 	}
 
-	var _key uint // out
+	var _key uint32 // out
 
-	_key = uint(arg1)
+	_key = uint32(arg1)
 
 	ok := f(_key)
 
@@ -636,7 +636,7 @@ func _gotk4_gio2_Settings_ConnectWritableChangeEvent(arg0 C.gpointer, arg1 C.gui
 // writability might also imply changes in value (if for example, a new
 // mandatory setting is introduced). If any other connected handler returns TRUE
 // then this default functionality will be suppressed.
-func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) (ok bool)) coreglib.SignalHandle {
+func (settings *Settings) ConnectWritableChangeEvent(f func(key uint32) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(settings, "writable-change-event", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectWritableChangeEvent), f)
 }
 
@@ -1037,7 +1037,7 @@ func (settings *Settings) Double(key string) float64 {
 //
 //    - gint: enum value.
 //
-func (settings *Settings) Enum(key string) int {
+func (settings *Settings) Enum(key string) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1054,9 +1054,9 @@ func (settings *Settings) Enum(key string) int {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1081,7 +1081,7 @@ func (settings *Settings) Enum(key string) int {
 //
 //    - guint flags value.
 //
-func (settings *Settings) Flags(key string) uint {
+func (settings *Settings) Flags(key string) uint32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1098,9 +1098,9 @@ func (settings *Settings) Flags(key string) uint {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1149,7 +1149,7 @@ func (settings *Settings) HasUnapplied() bool {
 //
 //    - gint: integer.
 //
-func (settings *Settings) Int(key string) int {
+func (settings *Settings) Int(key string) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1166,9 +1166,9 @@ func (settings *Settings) Int(key string) int {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1359,7 +1359,7 @@ func (settings *Settings) Strv(key string) []string {
 //
 //    - guint: unsigned integer.
 //
-func (settings *Settings) Uint(key string) uint {
+func (settings *Settings) Uint(key string) uint32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1376,9 +1376,9 @@ func (settings *Settings) Uint(key string) uint {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1856,7 +1856,7 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 //
 //    - ok: TRUE, if the set succeeds.
 //
-func (settings *Settings) SetEnum(key string, value int) bool {
+func (settings *Settings) SetEnum(key string, value int32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
@@ -1905,7 +1905,7 @@ func (settings *Settings) SetEnum(key string, value int) bool {
 //
 //    - ok: TRUE, if the set succeeds.
 //
-func (settings *Settings) SetFlags(key string, value uint) bool {
+func (settings *Settings) SetFlags(key string, value uint32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
@@ -1951,7 +1951,7 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 //
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
-func (settings *Settings) SetInt(key string, value int) bool {
+func (settings *Settings) SetInt(key string, value int32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
@@ -2149,7 +2149,7 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 //
 //    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
-func (settings *Settings) SetUint(key string, value uint) bool {
+func (settings *Settings) SetUint(key string, value uint32) bool {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out

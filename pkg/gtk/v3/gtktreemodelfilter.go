@@ -118,7 +118,7 @@ type TreeModelFilterOverrider interface {
 	//    - value
 	//    - column
 	//
-	Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
+	Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
 	// The function takes the following parameters:
 	//
 	//    - childModel
@@ -214,7 +214,7 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
+		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
 	}); ok {
 		pclass.modify = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterClass_modify)
 	}
@@ -230,13 +230,13 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GValue, arg4 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
+		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
 	})
 
 	var _childModel TreeModeller // out
 	var _iter *TreeIter          // out
 	var _value *coreglib.Value   // out
-	var _column int              // out
+	var _column int32            // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -257,7 +257,7 @@ func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C
 	}
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	_value = coreglib.ValueFromNative(unsafe.Pointer(arg3))
-	_column = int(arg4)
+	_column = int32(arg4)
 
 	iface.Modify(_childModel, _iter, _value, _column)
 }
@@ -476,7 +476,7 @@ func (filter *TreeModelFilter) Refilter() {
 //
 //    - column which is the column containing the visible information.
 //
-func (filter *TreeModelFilter) SetVisibleColumn(column int) {
+func (filter *TreeModelFilter) SetVisibleColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

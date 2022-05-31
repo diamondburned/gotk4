@@ -85,6 +85,37 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 	return wrapX11Display(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ErrorTrapPop pops the error trap pushed by gdk_x11_display_error_trap_push().
+// Will XSync() if necessary and will always block until the error is known to
+// have occurred or not occurred, so the error code can be returned.
+//
+// If you don’t need to use the return value,
+// gdk_x11_display_error_trap_pop_ignored() would be more efficient.
+//
+// The function returns the following values:
+//
+//    - gint: x error code or 0 on success.
+//
+func (display *X11Display) ErrorTrapPop() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**X11Display)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("error_trap_pop", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(display)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ErrorTrapPopIgnored pops the error trap pushed by
 // gdk_x11_display_error_trap_push(). Does not block to see if an error
 // occurred; merely records the range of requests to ignore errors for, and
@@ -330,6 +361,33 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(startupId)
+}
+
+// SetSurfaceScale forces a specific window scale for all windows on this
+// display, instead of using the default or user configured scale. This is can
+// be used to disable scaling support by setting scale to 1, or to
+// programmatically set the window scale.
+//
+// Once the scale is set by this call it will not change in response to later
+// user configuration changes.
+//
+// The function takes the following parameters:
+//
+//    - scale: new scale value.
+//
+func (display *X11Display) SetSurfaceScale(scale int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = C.int(scale)
+	*(**X11Display)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("GdkX11", "X11Display").InvokeMethod("set_surface_scale", args[:], nil)
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(scale)
 }
 
 // Ungrab display after it has been grabbed with gdk_x11_display_grab().

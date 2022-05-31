@@ -93,6 +93,34 @@ func _gotk4_gtk4_FlowBoxForEachFunc(arg1 *C.GtkFlowBox, arg2 *C.GtkFlowBoxChild,
 	fn(_box, _child)
 }
 
+// FlowBoxSortFunc: function to compare two children to determine which should
+// come first.
+type FlowBoxSortFunc func(child1, child2 *FlowBoxChild) (gint int32)
+
+//export _gotk4_gtk4_FlowBoxSortFunc
+func _gotk4_gtk4_FlowBoxSortFunc(arg1 *C.GtkFlowBoxChild, arg2 *C.GtkFlowBoxChild, arg3 C.gpointer) (cret C.int) {
+	var fn FlowBoxSortFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FlowBoxSortFunc)
+	}
+
+	var _child1 *FlowBoxChild // out
+	var _child2 *FlowBoxChild // out
+
+	_child1 = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(arg1)))
+	_child2 = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(arg2)))
+
+	gint := fn(_child1, _child2)
+
+	cret = C.int(gint)
+
+	return cret
+}
+
 // FlowBox: GtkFlowBox puts child widgets in reflowing grid.
 //
 // For instance, with the horizontal orientation, the widgets will be arranged
@@ -376,13 +404,94 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 	return _ok
 }
 
+// ChildAtIndex gets the nth child in the box.
+//
+// The function takes the following parameters:
+//
+//    - idx: position of the child.
+//
+// The function returns the following values:
+//
+//    - flowBoxChild (optional): child widget, which will always be a
+//      GtkFlowBoxChild or NULL in case no child widget with the given index
+//      exists.
+//
+func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.int(idx)
+	*(**FlowBox)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_child_at_index", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(idx)
+
+	var _flowBoxChild *FlowBoxChild // out
+
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _flowBoxChild
+}
+
+// ChildAtPos gets the child in the (x, y) position.
+//
+// Both x and y are assumed to be relative to the origin of box.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of the child.
+//    - y coordinate of the child.
+//
+// The function returns the following values:
+//
+//    - flowBoxChild (optional): child widget, which will always be a
+//      GtkFlowBoxChild or NULL in case no child widget exists for the given x
+//      and y coordinates.
+//
+func (box *FlowBox) ChildAtPos(x, y int32) *FlowBoxChild {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	*(**FlowBox)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_child_at_pos", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _flowBoxChild *FlowBoxChild // out
+
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _flowBoxChild
+}
+
 // ColumnSpacing gets the horizontal spacing.
 //
 // The function returns the following values:
 //
 //    - guint: horizontal spacing.
 //
-func (box *FlowBox) ColumnSpacing() uint {
+func (box *FlowBox) ColumnSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -395,9 +504,9 @@ func (box *FlowBox) ColumnSpacing() uint {
 
 	runtime.KeepAlive(box)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -436,7 +545,7 @@ func (box *FlowBox) Homogeneous() bool {
 //
 //    - guint: maximum number of children per line.
 //
-func (box *FlowBox) MaxChildrenPerLine() uint {
+func (box *FlowBox) MaxChildrenPerLine() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -449,9 +558,9 @@ func (box *FlowBox) MaxChildrenPerLine() uint {
 
 	runtime.KeepAlive(box)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -462,7 +571,7 @@ func (box *FlowBox) MaxChildrenPerLine() uint {
 //
 //    - guint: minimum number of children per line.
 //
-func (box *FlowBox) MinChildrenPerLine() uint {
+func (box *FlowBox) MinChildrenPerLine() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -475,9 +584,9 @@ func (box *FlowBox) MinChildrenPerLine() uint {
 
 	runtime.KeepAlive(box)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -488,7 +597,7 @@ func (box *FlowBox) MinChildrenPerLine() uint {
 //
 //    - guint: vertical spacing.
 //
-func (box *FlowBox) RowSpacing() uint {
+func (box *FlowBox) RowSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -501,9 +610,9 @@ func (box *FlowBox) RowSpacing() uint {
 
 	runtime.KeepAlive(box)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -539,6 +648,38 @@ func (box *FlowBox) SelectedChildren() []*FlowBoxChild {
 	})
 
 	return _list
+}
+
+// Insert inserts the widget into box at position.
+//
+// If a sort function is set, the widget will actually be inserted at the
+// calculated position.
+//
+// If position is -1, or larger than the total number of children in the box,
+// then the widget will be appended to the end.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget to add.
+//    - position to insert child in.
+//
+func (box *FlowBox) Insert(widget Widgetter, position int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.int(position)
+	*(**FlowBox)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("insert", args[:], nil)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(position)
 }
 
 // InvalidateFilter updates the filtering for all children.
@@ -660,7 +801,7 @@ func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 //
 //    - spacing to use.
 //
-func (box *FlowBox) SetColumnSpacing(spacing uint) {
+func (box *FlowBox) SetColumnSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -741,7 +882,7 @@ func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 //
 //    - nChildren: maximum number of children per line.
 //
-func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint) {
+func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -763,7 +904,7 @@ func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint) {
 //
 //    - nChildren: minimum number of children per line.
 //
-func (box *FlowBox) SetMinChildrenPerLine(nChildren uint) {
+func (box *FlowBox) SetMinChildrenPerLine(nChildren uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -784,7 +925,7 @@ func (box *FlowBox) SetMinChildrenPerLine(nChildren uint) {
 //
 //    - spacing to use.
 //
-func (box *FlowBox) SetRowSpacing(spacing uint) {
+func (box *FlowBox) SetRowSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1048,6 +1189,32 @@ func (self *FlowBoxChild) Child() Widgetter {
 	}
 
 	return _widget
+}
+
+// Index gets the current index of the child in its GtkFlowBox container.
+//
+// The function returns the following values:
+//
+//    - gint: index of the child, or -1 if the child is not in a flow box.
+//
+func (child *FlowBoxChild) Index() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**FlowBoxChild)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "FlowBoxChild").InvokeMethod("get_index", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(child)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // IsSelected returns whether the child is currently selected in its GtkFlowBox

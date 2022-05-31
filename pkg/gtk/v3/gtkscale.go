@@ -254,7 +254,7 @@ func (scale *Scale) ClearMarks() {
 //
 //    - gint: number of decimal places that are displayed.
 //
-func (scale *Scale) Digits() int {
+func (scale *Scale) Digits() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -267,9 +267,9 @@ func (scale *Scale) Digits() int {
 
 	runtime.KeepAlive(scale)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -381,7 +381,7 @@ func (scale *Scale) Layout() *pango.Layout {
 //    - digits: number of decimal places to display, e.g. use 1 to display 1.0, 2
 //      to display 1.00, etc.
 //
-func (scale *Scale) SetDigits(digits int) {
+func (scale *Scale) SetDigits(digits int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

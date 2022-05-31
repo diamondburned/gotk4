@@ -238,6 +238,32 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 	return _ok
 }
 
+// Size returns the size of the table (number of tags).
+//
+// The function returns the following values:
+//
+//    - gint: number of tags in table.
+//
+func (table *TextTagTable) Size() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(**TextTagTable)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextTagTable").InvokeMethod("get_size", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(table)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Lookup: look up a named tag.
 //
 // The function takes the following parameters:

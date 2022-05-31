@@ -368,7 +368,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 //
 //    - guint: default cursor size.
 //
-func (display *Display) DefaultCursorSize() uint {
+func (display *Display) DefaultCursorSize() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -381,9 +381,9 @@ func (display *Display) DefaultCursorSize() uint {
 
 	runtime.KeepAlive(display)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -577,6 +577,80 @@ func (display *Display) Event() *Event {
 	return _event
 }
 
+// Monitor gets a monitor associated with this display.
+//
+// The function takes the following parameters:
+//
+//    - monitorNum: number of the monitor.
+//
+// The function returns the following values:
+//
+//    - monitor (optional) or NULL if monitor_num is not a valid monitor number.
+//
+func (display *Display) Monitor(monitorNum int32) *Monitor {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = C.int(monitorNum)
+	*(**Display)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_monitor", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(monitorNum)
+
+	var _monitor *Monitor // out
+
+	if _cret != nil {
+		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _monitor
+}
+
+// MonitorAtPoint gets the monitor in which the point (x, y) is located, or a
+// nearby monitor if the point is not in any monitor.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of the point.
+//    - y coordinate of the point.
+//
+// The function returns the following values:
+//
+//    - monitor containing the point.
+//
+func (display *Display) MonitorAtPoint(x, y int32) *Monitor {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	*(**Display)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_monitor_at_point", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _monitor *Monitor // out
+
+	_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _monitor
+}
+
 // MonitorAtWindow gets the monitor in which the largest area of window resides,
 // or a monitor close to window if it is outside of all monitors.
 //
@@ -611,6 +685,35 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	return _monitor
 }
 
+// NMonitors gets the number of monitors that belong to display.
+//
+// The returned number is valid until the next emission of the
+// Display::monitor-added or Display::monitor-removed signal.
+//
+// The function returns the following values:
+//
+//    - gint: number of monitors.
+//
+func (display *Display) NMonitors() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**Display)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_n_monitors", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(display)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // NScreens gets the number of screen managed by the display.
 //
 // Deprecated: The number of screens is always 1.
@@ -619,7 +722,7 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 //
 //    - gint: number of screens.
 //
-func (display *Display) NScreens() int {
+func (display *Display) NScreens() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -632,9 +735,9 @@ func (display *Display) NScreens() int {
 
 	runtime.KeepAlive(display)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -713,7 +816,7 @@ func (display *Display) PrimaryMonitor() *Monitor {
 //
 //    - screen: Screen object.
 //
-func (display *Display) Screen(screenNum int) *Screen {
+func (display *Display) Screen(screenNum int32) *Screen {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1063,7 +1166,7 @@ func (display *Display) PutEvent(event *Event) {
 //
 //    - distance in pixels.
 //
-func (display *Display) SetDoubleClickDistance(distance uint) {
+func (display *Display) SetDoubleClickDistance(distance uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1086,7 +1189,7 @@ func (display *Display) SetDoubleClickDistance(distance uint) {
 //
 //    - msec: double click time in milliseconds (thousandths of a second).
 //
-func (display *Display) SetDoubleClickTime(msec uint) {
+func (display *Display) SetDoubleClickTime(msec uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1349,7 +1452,7 @@ func (display *Display) Sync() {
 //    - x coordinate of the destination.
 //    - y coordinate of the destination.
 //
-func (display *Display) WarpPointer(screen *Screen, x, y int) {
+func (display *Display) WarpPointer(screen *Screen, x, y int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1362,7 +1465,7 @@ func (display *Display) WarpPointer(screen *Screen, x, y int) {
 	_arg3 = C.gint(y)
 	*(**Display)(unsafe.Pointer(&args[1])) = _arg1
 	*(**Screen)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("warp_pointer", args[:], nil)
 

@@ -133,7 +133,7 @@ func NewFixed() *Fixed {
 //    - x: horizontal position to move the widget to.
 //    - y: vertical position to move the widget to.
 //
-func (fixed *Fixed) Move(widget Widgetter, x, y int) {
+func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -146,7 +146,7 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int) {
 	_arg3 = C.gint(y)
 	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "Fixed").InvokeMethod("move", args[:], nil)
 
@@ -164,7 +164,7 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int) {
 //    - x: horizontal position to place the widget at.
 //    - y: vertical position to place the widget at.
 //
-func (fixed *Fixed) Put(widget Widgetter, x, y int) {
+func (fixed *Fixed) Put(widget Widgetter, x, y int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -177,7 +177,7 @@ func (fixed *Fixed) Put(widget Widgetter, x, y int) {
 	_arg3 = C.gint(y)
 	*(**Fixed)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "Fixed").InvokeMethod("put", args[:], nil)
 
@@ -219,14 +219,14 @@ func (f *FixedChild) Widget() Widgetter {
 	return v
 }
 
-func (f *FixedChild) X() int {
-	var v int // out
-	v = int(f.native.x)
+func (f *FixedChild) X() int32 {
+	var v int32 // out
+	v = int32(f.native.x)
 	return v
 }
 
-func (f *FixedChild) Y() int {
-	var v int // out
-	v = int(f.native.y)
+func (f *FixedChild) Y() int32 {
+	var v int32 // out
+	v = int32(f.native.y)
 	return v
 }

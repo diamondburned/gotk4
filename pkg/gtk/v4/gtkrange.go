@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// extern void _gotk4_gtk4_RangeClass_adjust_bounds(GtkRange*, double);
 // extern void _gotk4_gtk4_RangeClass_get_range_border(GtkRange*, GtkBorder*);
 // extern void _gotk4_gtk4_RangeClass_value_changed(GtkRange*);
 // extern void _gotk4_gtk4_Range_ConnectAdjustBounds(gpointer, gdouble, guintptr);
@@ -32,6 +33,9 @@ func init() {
 
 // RangeOverrider contains methods that are overridable.
 type RangeOverrider interface {
+	// The function takes the following parameters:
+	//
+	AdjustBounds(newValue float64)
 	// The function takes the following parameters:
 	//
 	RangeBorder(border_ *Border)
@@ -70,6 +74,10 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkRangeClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
+	if _, ok := goval.(interface{ AdjustBounds(newValue float64) }); ok {
+		pclass.adjust_bounds = (*[0]byte)(C._gotk4_gtk4_RangeClass_adjust_bounds)
+	}
+
 	if _, ok := goval.(interface{ RangeBorder(border_ *Border) }); ok {
 		pclass.get_range_border = (*[0]byte)(C._gotk4_gtk4_RangeClass_get_range_border)
 	}
@@ -77,6 +85,18 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 	if _, ok := goval.(interface{ ValueChanged() }); ok {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_RangeClass_value_changed)
 	}
+}
+
+//export _gotk4_gtk4_RangeClass_adjust_bounds
+func _gotk4_gtk4_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.double) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ AdjustBounds(newValue float64) })
+
+	var _newValue float64 // out
+
+	_newValue = float64(arg1)
+
+	iface.AdjustBounds(_newValue)
 }
 
 //export _gotk4_gtk4_RangeClass_get_range_border
@@ -200,6 +220,32 @@ func (_range *Range) Adjustment() *Adjustment {
 	return _adjustment
 }
 
+// FillLevel gets the current position of the fill level indicator.
+//
+// The function returns the following values:
+//
+//    - gdouble: current fill level.
+//
+func (_range *Range) FillLevel() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_fill_level", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(_range)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // Flippable gets whether the GtkRange respects text direction.
 //
 // See gtk.Range.SetFlippable().
@@ -288,6 +334,34 @@ func (_range *Range) RestrictToFillLevel() bool {
 	return _ok
 }
 
+// RoundDigits gets the number of digits to round the value to when it changes.
+//
+// See gtk.Range::change-value.
+//
+// The function returns the following values:
+//
+//    - gint: number of digits to round to.
+//
+func (_range *Range) RoundDigits() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_round_digits", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(_range)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ShowFillLevel gets whether the range displays the fill level graphically.
 //
 // The function returns the following values:
@@ -346,6 +420,32 @@ func (_range *Range) SliderSizeFixed() bool {
 	return _ok
 }
 
+// Value gets the current value of the range.
+//
+// The function returns the following values:
+//
+//    - gdouble: current value of the range.
+//
+func (_range *Range) Value() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	*(**Range)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Range").InvokeMethod("get_value", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(_range)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // SetAdjustment sets the adjustment to be used as the “model” object for the
 // GtkRange
 //
@@ -376,6 +476,42 @@ func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 	runtime.KeepAlive(adjustment)
 }
 
+// SetFillLevel: set the new position of the fill level indicator.
+//
+// The “fill level” is probably best described by its most prominent use case,
+// which is an indicator for the amount of pre-buffering in a streaming media
+// player. In that use case, the value of the range would indicate the current
+// play position, and the fill level would be the position up to which the
+// file/stream has been downloaded.
+//
+// This amount of prebuffering can be displayed on the range’s trough and is
+// themeable separately from the trough. To enable fill level display, use
+// gtk.Range.SetShowFillLevel(). The range defaults to not showing the fill
+// level.
+//
+// Additionally, it’s possible to restrict the range’s slider position to values
+// which are smaller than the fill level. This is controlled by
+// gtk.Range.SetRestrictToFillLevel() and is by default enabled.
+//
+// The function takes the following parameters:
+//
+//    - fillLevel: new position of the fill level indicator.
+//
+func (_range *Range) SetFillLevel(fillLevel float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.double(fillLevel)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_fill_level", args[:], nil)
+
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(fillLevel)
+}
+
 // SetFlippable sets whether the GtkRange respects text direction.
 //
 // If a range is flippable, it will switch its direction if it is horizontal and
@@ -402,6 +538,36 @@ func (_range *Range) SetFlippable(flippable bool) {
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(flippable)
+}
+
+// SetIncrements sets the step and page sizes for the range.
+//
+// The step size is used when the user clicks the GtkScrollbar arrows or moves a
+// GtkScale via arrow keys. The page size is used for example when moving via
+// Page Up or Page Down keys.
+//
+// The function takes the following parameters:
+//
+//    - step size.
+//    - page size.
+//
+func (_range *Range) SetIncrements(step, page float64) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+	var _arg2 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.double(step)
+	_arg2 = C.double(page)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_increments", args[:], nil)
+
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(page)
 }
 
 // SetInverted sets whether to invert the range.
@@ -431,6 +597,35 @@ func (_range *Range) SetInverted(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
+// SetRange sets the allowable values in the GtkRange.
+//
+// The range value is clamped to be between min and max. (If the range has a
+// non-zero page size, it is clamped between min and max - page-size.).
+//
+// The function takes the following parameters:
+//
+//    - min: minimum range value.
+//    - max: maximum range value.
+//
+func (_range *Range) SetRange(min, max float64) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+	var _arg2 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.double(min)
+	_arg2 = C.double(max)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_range", args[:], nil)
+
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+}
+
 // SetRestrictToFillLevel sets whether the slider is restricted to the fill
 // level.
 //
@@ -456,6 +651,30 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(restrictToFillLevel)
+}
+
+// SetRoundDigits sets the number of digits to round the value to when it
+// changes.
+//
+// See gtk.Range::change-value.
+//
+// The function takes the following parameters:
+//
+//    - roundDigits: precision in digits, or -1.
+//
+func (_range *Range) SetRoundDigits(roundDigits int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.int(roundDigits)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_round_digits", args[:], nil)
+
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(roundDigits)
 }
 
 // SetShowFillLevel sets whether a graphical fill level is show on the trough.
@@ -508,4 +727,29 @@ func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
 
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(sizeFixed)
+}
+
+// SetValue sets the current value of the range.
+//
+// If the value is outside the minimum or maximum range values, it will be
+// clamped to fit inside them. The range emits the gtk.Range::value-changed
+// signal if the value changes.
+//
+// The function takes the following parameters:
+//
+//    - value: new value of the range.
+//
+func (_range *Range) SetValue(value float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.double(value)
+	*(**Range)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Range").InvokeMethod("set_value", args[:], nil)
+
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(value)
 }

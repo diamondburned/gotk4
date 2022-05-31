@@ -50,7 +50,7 @@ type IconOverrider interface {
 	//    - guint containing a hash for the icon, suitable for use in a Table or
 	//      similar data structure.
 	//
-	Hash() uint
+	Hash() uint32
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
 	// be retrieved back by calling g_icon_deserialize() on the returned value.
 	// As serialization will avoid using raw icon data when possible, it only

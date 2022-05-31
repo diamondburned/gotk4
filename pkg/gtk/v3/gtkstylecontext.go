@@ -826,7 +826,7 @@ func (context *StyleContext) AddClass(className string) {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -955,7 +955,7 @@ func (context *StyleContext) Path() *WidgetPath {
 //
 //    - gint: scale.
 //
-func (context *StyleContext) Scale() int {
+func (context *StyleContext) Scale() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -968,9 +968,9 @@ func (context *StyleContext) Scale() int {
 
 	runtime.KeepAlive(context)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1357,7 +1357,7 @@ func (context *StyleContext) Save() {
 //    - dx: amount to scroll in the X axis.
 //    - dy: amount to scroll in the Y axis.
 //
-func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx, dy int) {
+func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx, dy int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1370,7 +1370,7 @@ func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx, dy int) {
 	_arg3 = C.gint(dy)
 	*(**StyleContext)(unsafe.Pointer(&args[1])) = _arg1
 	*(*gdk.Windower)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("scroll_animations", args[:], nil)
 
@@ -1491,7 +1491,7 @@ func (context *StyleContext) SetPath(path *WidgetPath) {
 //
 //    - scale: scale.
 //
-func (context *StyleContext) SetScale(scale int) {
+func (context *StyleContext) SetScale(scale int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1551,7 +1551,7 @@ func (context *StyleContext) SetScreen(screen *gdk.Screen) {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint) {
+func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1562,7 +1562,7 @@ func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProvider
 	_arg2 = C.guint(priority)
 	*(**gdk.Screen)(unsafe.Pointer(&args[0])) = _arg0
 	*(*StyleProviderer)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "add_provider_for_screen").Invoke(args[:], nil)
 

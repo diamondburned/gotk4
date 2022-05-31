@@ -1400,6 +1400,54 @@ func (window *Window) SetDecorated(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
+// SetDefaultSize sets the default size of a window.
+//
+// If the window’s “natural” size (its size request) is larger than the default,
+// the default will be ignored.
+//
+// Unlike gtk.Widget.SetSizeRequest(), which sets a size request for a widget
+// and thus would keep users from shrinking the window, this function only sets
+// the initial size, just as if the user had resized the window themselves.
+// Users can still shrink the window again as they normally would. Setting a
+// default size of -1 means to use the “natural” default size (the size request
+// of the window).
+//
+// The default size of a window only affects the first time a window is shown;
+// if a window is hidden and re-shown, it will remember the size it had prior to
+// hiding, rather than using the default size.
+//
+// Windows can’t actually be 0x0 in size, they must be at least 1x1, but passing
+// 0 for width and height is OK, resulting in a 1x1 default size.
+//
+// If you use this function to reestablish a previously saved window size, note
+// that the appropriate size to save is the one returned by
+// gtk.Window.GetDefaultSize(). Using the window allocation directly will not
+// work in all circumstances and can lead to growing or shrinking windows.
+//
+// The function takes the following parameters:
+//
+//    - width in pixels, or -1 to unset the default width.
+//    - height in pixels, or -1 to unset the default height.
+//
+func (window *Window) SetDefaultSize(width, height int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Window").InvokeMethod("set_default_size", args[:], nil)
+
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
 // SetDefaultWidget sets the default widget.
 //
 // The default widget is the widget that is activated when the user presses

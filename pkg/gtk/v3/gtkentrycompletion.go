@@ -76,7 +76,7 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg1 *C.GtkEntryCompletion, arg2 *C.gc
 type EntryCompletionOverrider interface {
 	// The function takes the following parameters:
 	//
-	ActionActivated(index_ int)
+	ActionActivated(index_ int32)
 	// The function takes the following parameters:
 	//
 	//    - model
@@ -162,7 +162,7 @@ func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
-	if _, ok := goval.(interface{ ActionActivated(index_ int) }); ok {
+	if _, ok := goval.(interface{ ActionActivated(index_ int32) }); ok {
 		pclass.action_activated = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_action_activated)
 	}
 
@@ -190,11 +190,11 @@ func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
 //export _gotk4_gtk3_EntryCompletionClass_action_activated
 func _gotk4_gtk3_EntryCompletionClass_action_activated(arg0 *C.GtkEntryCompletion, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActionActivated(index_ int) })
+	iface := goval.(interface{ ActionActivated(index_ int32) })
 
-	var _index_ int // out
+	var _index_ int32 // out
 
-	_index_ = int(arg1)
+	_index_ = int32(arg1)
 
 	iface.ActionActivated(_index_)
 }
@@ -319,7 +319,7 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk3_EntryCompletion_ConnectActionActivated
 func _gotk4_gtk3_EntryCompletion_ConnectActionActivated(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(index int)
+	var f func(index int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -327,18 +327,18 @@ func _gotk4_gtk3_EntryCompletion_ConnectActionActivated(arg0 C.gpointer, arg1 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(index int))
+		f = closure.Func.(func(index int32))
 	}
 
-	var _index int // out
+	var _index int32 // out
 
-	_index = int(arg1)
+	_index = int32(arg1)
 
 	f(_index)
 }
 
 // ConnectActionActivated gets emitted when an action is activated.
-func (completion *EntryCompletion) ConnectActionActivated(f func(index int)) coreglib.SignalHandle {
+func (completion *EntryCompletion) ConnectActionActivated(f func(index int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(completion, "action-activated", false, unsafe.Pointer(C._gotk4_gtk3_EntryCompletion_ConnectActionActivated), f)
 }
 
@@ -626,7 +626,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 //
 //    - index_: index of the item to delete.
 //
-func (completion *EntryCompletion) DeleteAction(index_ int) {
+func (completion *EntryCompletion) DeleteAction(index_ int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -773,7 +773,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 //
 //    - gint: currently used minimum key length.
 //
-func (completion *EntryCompletion) MinimumKeyLength() int {
+func (completion *EntryCompletion) MinimumKeyLength() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -786,9 +786,9 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 
 	runtime.KeepAlive(completion)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -916,7 +916,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 //
 //    - gint: column containing the strings.
 //
-func (completion *EntryCompletion) TextColumn() int {
+func (completion *EntryCompletion) TextColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -929,9 +929,9 @@ func (completion *EntryCompletion) TextColumn() int {
 
 	runtime.KeepAlive(completion)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -944,7 +944,7 @@ func (completion *EntryCompletion) TextColumn() int {
 //    - index_: index of the item to insert.
 //    - markup of the item to insert.
 //
-func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string) {
+func (completion *EntryCompletion) InsertActionMarkup(index_ int32, markup string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -955,7 +955,7 @@ func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string)
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**EntryCompletion)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("insert_action_markup", args[:], nil)
 
@@ -976,7 +976,7 @@ func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string)
 //    - index_: index of the item to insert.
 //    - text of the item to insert.
 //
-func (completion *EntryCompletion) InsertActionText(index_ int, text string) {
+func (completion *EntryCompletion) InsertActionText(index_ int32, text string) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -987,7 +987,7 @@ func (completion *EntryCompletion) InsertActionText(index_ int, text string) {
 	_arg2 = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_arg2))
 	*(**EntryCompletion)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("insert_action_text", args[:], nil)
 
@@ -1066,7 +1066,7 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 //
 //    - length: minimum length of the key in order to start completing.
 //
-func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
+func (completion *EntryCompletion) SetMinimumKeyLength(length int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1193,7 +1193,7 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 //
 //    - column in the model of completion to get strings from.
 //
-func (completion *EntryCompletion) SetTextColumn(column int) {
+func (completion *EntryCompletion) SetTextColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

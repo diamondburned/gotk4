@@ -416,6 +416,110 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 	return _ok
 }
 
+// MaxContentHeight returns the maximum content height set.
+//
+// The function returns the following values:
+//
+//    - gint: maximum content height, or -1.
+//
+func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_max_content_height", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MaxContentWidth returns the maximum content width set.
+//
+// The function returns the following values:
+//
+//    - gint: maximum content width, or -1.
+//
+func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_max_content_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MinContentHeight gets the minimal content height of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - gint: minimal content height.
+//
+func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_min_content_height", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MinContentWidth gets the minimum content width of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - gint: minimum content width.
+//
+func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	*(**ScrolledWindow)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("get_min_content_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // OverlayScrolling returns whether overlay scrolling is enabled for this
 // scrolled window.
 //
@@ -669,6 +773,118 @@ func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool)
 
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(kineticScrolling)
+}
+
+// SetMaxContentHeight sets the maximum height that scrolled_window should keep
+// visible.
+//
+// The scrolled_window will grow up to this height before it starts scrolling
+// the content.
+//
+// It is a programming error to set the maximum content height to a value
+// smaller than gtk.ScrolledWindow:min-content-height.
+//
+// The function takes the following parameters:
+//
+//    - height: maximum content height.
+//
+func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.int(height)
+	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_max_content_height", args[:], nil)
+
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(height)
+}
+
+// SetMaxContentWidth sets the maximum width that scrolled_window should keep
+// visible.
+//
+// The scrolled_window will grow up to this width before it starts scrolling the
+// content.
+//
+// It is a programming error to set the maximum content width to a value smaller
+// than gtk.ScrolledWindow:min-content-width.
+//
+// The function takes the following parameters:
+//
+//    - width: maximum content width.
+//
+func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.int(width)
+	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_max_content_width", args[:], nil)
+
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(width)
+}
+
+// SetMinContentHeight sets the minimum height that scrolled_window should keep
+// visible.
+//
+// Note that this can and (usually will) be smaller than the minimum size of the
+// content.
+//
+// It is a programming error to set the minimum content height to a value
+// greater than gtk.ScrolledWindow:max-content-height.
+//
+// The function takes the following parameters:
+//
+//    - height: minimal content height.
+//
+func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.int(height)
+	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_min_content_height", args[:], nil)
+
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(height)
+}
+
+// SetMinContentWidth sets the minimum width that scrolled_window should keep
+// visible.
+//
+// Note that this can and (usually will) be smaller than the minimum size of the
+// content.
+//
+// It is a programming error to set the minimum content width to a value greater
+// than gtk.ScrolledWindow:max-content-width.
+//
+// The function takes the following parameters:
+//
+//    - width: minimal content width.
+//
+func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.int(width)
+	*(**ScrolledWindow)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ScrolledWindow").InvokeMethod("set_min_content_width", args[:], nil)
+
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(width)
 }
 
 // SetOverlayScrolling enables or disables overlay scrolling for this scrolled

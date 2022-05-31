@@ -495,7 +495,7 @@ func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 //    - width of the cell renderer, or -1.
 //    - height of the cell renderer, or -1.
 //
-func (cell *CellRenderer) SetFixedSize(width, height int) {
+func (cell *CellRenderer) SetFixedSize(width, height int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -505,7 +505,7 @@ func (cell *CellRenderer) SetFixedSize(width, height int) {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**CellRenderer)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_fixed_size", args[:], nil)
 
@@ -521,7 +521,7 @@ func (cell *CellRenderer) SetFixedSize(width, height int) {
 //    - xpad: x padding of the cell renderer.
 //    - ypad: y padding of the cell renderer.
 //
-func (cell *CellRenderer) SetPadding(xpad, ypad int) {
+func (cell *CellRenderer) SetPadding(xpad, ypad int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -531,7 +531,7 @@ func (cell *CellRenderer) SetPadding(xpad, ypad int) {
 	_arg1 = C.gint(xpad)
 	_arg2 = C.gint(ypad)
 	*(**CellRenderer)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_padding", args[:], nil)
 

@@ -133,6 +133,33 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	return _ok
 }
 
+// SetCursorTheme sets the cursor theme for the given display.
+//
+// The function takes the following parameters:
+//
+//    - name: new cursor theme.
+//    - size to use for cursors.
+//
+func (display *WaylandDisplay) SetCursorTheme(name string, size int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(size)
+	*(**WaylandDisplay)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_cursor_theme", args[:], nil)
+
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(size)
+}
+
 // SetStartupNotificationID sets the startup notification ID for a display.
 //
 // This is usually taken from the value of the DESKTOP_STARTUP_ID environment

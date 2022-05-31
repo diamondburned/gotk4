@@ -130,7 +130,7 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 //
 //    - position of sorter to remove.
 //
-func (self *MultiSorter) Remove(position uint) {
+func (self *MultiSorter) Remove(position uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

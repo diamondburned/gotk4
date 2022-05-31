@@ -207,6 +207,58 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeI
 	return cret
 }
 
+// TreeViewSearchEqualFunc: function used for checking whether a row in model
+// matches a search key string entered by the user. Note the return value is
+// reversed from what you would normally expect, though it has some similarity
+// to strcmp() returning 0 for equal strings.
+type TreeViewSearchEqualFunc func(model TreeModeller, column int32, key string, iter *TreeIter) (ok bool)
+
+//export _gotk4_gtk4_TreeViewSearchEqualFunc
+func _gotk4_gtk4_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.int, arg3 *C.char, arg4 *C.GtkTreeIter, arg5 C.gpointer) (cret C.gboolean) {
+	var fn TreeViewSearchEqualFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TreeViewSearchEqualFunc)
+	}
+
+	var _model TreeModeller // out
+	var _column int32       // out
+	var _key string         // out
+	var _iter *TreeIter     // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_model = rv
+	}
+	_column = int32(arg2)
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+
+	ok := fn(_model, _column, _key, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // TreeViewOverrider contains methods that are overridable.
 type TreeViewOverrider interface {
 	ColumnsChanged()
@@ -1169,6 +1221,41 @@ func NewTreeViewWithModel(model TreeModeller) *TreeView {
 	return _treeView
 }
 
+// AppendColumn appends column to the list of columns. If tree_view has
+// “fixed_height” mode enabled, then column must have its “sizing” property set
+// to be GTK_TREE_VIEW_COLUMN_FIXED.
+//
+// The function takes the following parameters:
+//
+//    - column to add.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns in tree_view after appending.
+//
+func (treeView *TreeView) AppendColumn(column *TreeViewColumn) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "TreeView").InvokeMethod("append_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(column)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // CollapseAll: recursively collapses all visible, expanded nodes in tree_view.
 func (treeView *TreeView) CollapseAll() {
 	var args [1]girepository.Argument
@@ -1377,6 +1464,42 @@ func (treeView *TreeView) ActivateOnSingleClick() bool {
 	}
 
 	return _ok
+}
+
+// Column gets the TreeViewColumn at the given position in the #tree_view.
+//
+// The function takes the following parameters:
+//
+//    - n of the column, counting from 0.
+//
+// The function returns the following values:
+//
+//    - treeViewColumn (optional) or NULL if the position is outside the range of
+//      columns.
+//
+func (treeView *TreeView) Column(n int32) *TreeViewColumn {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = C.int(n)
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "TreeView").InvokeMethod("get_column", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(n)
+
+	var _treeViewColumn *TreeViewColumn // out
+
+	if _cret != nil {
+		_treeViewColumn = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _treeViewColumn
 }
 
 // Columns returns a #GList of all the TreeViewColumn s currently in tree_view.
@@ -1688,6 +1811,34 @@ func (treeView *TreeView) HoverSelection() bool {
 	return _ok
 }
 
+// LevelIndentation returns the amount, in pixels, of extra indentation for
+// child levels in tree_view.
+//
+// The function returns the following values:
+//
+//    - gint: amount of extra indentation for child levels in tree_view. A return
+//      value of 0 means that this feature is disabled.
+//
+func (treeView *TreeView) LevelIndentation() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	*(**TreeView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TreeView").InvokeMethod("get_level_indentation", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Model returns the model the TreeView is based on. Returns NULL if the model
 // is unset.
 //
@@ -1723,7 +1874,7 @@ func (treeView *TreeView) Model() *TreeModel {
 //
 //    - guint: number of columns in the tree_view.
 //
-func (treeView *TreeView) NColumns() uint {
+func (treeView *TreeView) NColumns() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1736,9 +1887,9 @@ func (treeView *TreeView) NColumns() uint {
 
 	runtime.KeepAlive(treeView)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1800,6 +1951,32 @@ func (treeView *TreeView) RubberBanding() bool {
 	}
 
 	return _ok
+}
+
+// SearchColumn gets the column searched on by the interactive search code.
+//
+// The function returns the following values:
+//
+//    - gint: column the interactive search code searches in.
+//
+func (treeView *TreeView) SearchColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	*(**TreeView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TreeView").InvokeMethod("get_search_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // SearchEntry returns the Entry which is currently in use as interactive search
@@ -1886,6 +2063,34 @@ func (treeView *TreeView) ShowExpanders() bool {
 	return _ok
 }
 
+// TooltipColumn returns the column of tree_view’s model which is being used for
+// displaying tooltips on tree_view’s rows.
+//
+// The function returns the following values:
+//
+//    - gint: index of the tooltip column that is currently being used, or -1 if
+//      this is disabled.
+//
+func (treeView *TreeView) TooltipColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	*(**TreeView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TreeView").InvokeMethod("get_tooltip_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // VisibleRange sets start_path and end_path to be the first and last visible
 // path. Note that there may be invisible paths in between.
 //
@@ -1941,6 +2146,47 @@ func (treeView *TreeView) VisibleRange() (startPath *TreePath, endPath *TreePath
 	}
 
 	return _startPath, _endPath, _ok
+}
+
+// InsertColumn: this inserts the column into the tree_view at position. If
+// position is -1, then the column is inserted at the end. If tree_view has
+// “fixed_height” mode enabled, then column must have its “sizing” property set
+// to be GTK_TREE_VIEW_COLUMN_FIXED.
+//
+// The function takes the following parameters:
+//
+//    - column to be inserted.
+//    - position to insert column in.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns in tree_view after insertion.
+//
+func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int32) int32 {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	_arg2 = C.int(position)
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TreeViewColumn)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "TreeView").InvokeMethod("insert_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(position)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // IsRubberBandingActive returns whether a rubber banding operation is currently
@@ -2000,6 +2246,39 @@ func (treeView *TreeView) MoveColumnAfter(column, baseColumn *TreeViewColumn) {
 	runtime.KeepAlive(treeView)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(baseColumn)
+}
+
+// RemoveColumn removes column from tree_view.
+//
+// The function takes the following parameters:
+//
+//    - column to remove.
+//
+// The function returns the following values:
+//
+//    - gint: number of columns in tree_view after removing.
+//
+func (treeView *TreeView) RemoveColumn(column *TreeViewColumn) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "TreeView").InvokeMethod("remove_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(column)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // RowActivated activates the cell determined by path and column.
@@ -2062,6 +2341,99 @@ func (treeView *TreeView) RowExpanded(path *TreePath) bool {
 	}
 
 	return _ok
+}
+
+// ScrollToCell moves the alignments of tree_view to the position specified by
+// column and path. If column is NULL, then no horizontal scrolling occurs.
+// Likewise, if path is NULL no vertical scrolling occurs. At a minimum, one of
+// column or path need to be non-NULL. row_align determines where the row is
+// placed, and col_align determines where column is placed. Both are expected to
+// be between 0.0 and 1.0. 0.0 means left/top alignment, 1.0 means right/bottom
+// alignment, 0.5 means center.
+//
+// If use_align is FALSE, then the alignment arguments are ignored, and the tree
+// does the minimum amount of work to scroll the cell onto the screen. This
+// means that the cell will be scrolled to the edge closest to its current
+// position. If the cell is currently visible on the screen, nothing is done.
+//
+// This function only works if the model is set, and path is a valid row on the
+// model. If the model changes before the tree_view is realized, the centered
+// path will be modified to reflect this change.
+//
+// The function takes the following parameters:
+//
+//    - path (optional) of the row to move to, or NULL.
+//    - column (optional) to move horizontally to, or NULL.
+//    - useAlign: whether to use alignment arguments, or FALSE.
+//    - rowAlign: vertical alignment of the row specified by path.
+//    - colAlign: horizontal alignment of the column specified by column.
+//
+func (treeView *TreeView) ScrollToCell(path *TreePath, column *TreeViewColumn, useAlign bool, rowAlign, colAlign float32) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 *C.void    // out
+	var _arg3 C.gboolean // out
+	var _arg4 C.float    // out
+	var _arg5 C.float    // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	if path != nil {
+		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	}
+	if column != nil {
+		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	}
+	if useAlign {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.float(rowAlign)
+	_arg5 = C.float(colAlign)
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TreePath)(unsafe.Pointer(&args[2])) = _arg2
+	*(**TreeViewColumn)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float32)(unsafe.Pointer(&args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "TreeView").InvokeMethod("scroll_to_cell", args[:], nil)
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(useAlign)
+	runtime.KeepAlive(rowAlign)
+	runtime.KeepAlive(colAlign)
+}
+
+// ScrollToPoint scrolls the tree view such that the top-left corner of the
+// visible area is tree_x, tree_y, where tree_x and tree_y are specified in tree
+// coordinates. The tree_view must be realized before this function is called.
+// If it isn't, you probably want to be using gtk_tree_view_scroll_to_cell().
+//
+// If either tree_x or tree_y are -1, then that direction isn’t scrolled.
+//
+// The function takes the following parameters:
+//
+//    - treeX: x coordinate of new top-left pixel of visible area, or -1.
+//    - treeY: y coordinate of new top-left pixel of visible area, or -1.
+//
+func (treeView *TreeView) ScrollToPoint(treeX, treeY int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = C.int(treeX)
+	_arg2 = C.int(treeY)
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "TreeView").InvokeMethod("scroll_to_point", args[:], nil)
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(treeX)
+	runtime.KeepAlive(treeY)
 }
 
 // SetActivateOnSingleClick: cause the TreeView::row-activated signal to be
@@ -2389,6 +2761,31 @@ func (treeView *TreeView) SetHoverSelection(hover bool) {
 	runtime.KeepAlive(hover)
 }
 
+// SetLevelIndentation sets the amount of extra indentation for child levels to
+// use in tree_view in addition to the default indentation. The value should be
+// specified in pixels, a value of 0 disables this feature and in this case only
+// the default indentation will be used. This does not have any visible effects
+// for lists.
+//
+// The function takes the following parameters:
+//
+//    - indentation: amount, in pixels, of extra indentation in tree_view.
+//
+func (treeView *TreeView) SetLevelIndentation(indentation int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = C.int(indentation)
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TreeView").InvokeMethod("set_level_indentation", args[:], nil)
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(indentation)
+}
+
 // SetModel sets the model for a TreeView. If the tree_view already has a model
 // set, it will remove it before setting the new model. If model is NULL, then
 // it will unset the old model.
@@ -2472,6 +2869,35 @@ func (treeView *TreeView) SetRubberBanding(enable bool) {
 
 	runtime.KeepAlive(treeView)
 	runtime.KeepAlive(enable)
+}
+
+// SetSearchColumn sets column as the column where the interactive search code
+// should search in for the current model.
+//
+// If the search column is set, users can use the “start-interactive-search” key
+// binding to bring up search popup. The enable-search property controls whether
+// simply typing text will also start an interactive search.
+//
+// Note that column refers to a column of the current model. The search column
+// is reset to -1 when the model is changed.
+//
+// The function takes the following parameters:
+//
+//    - column of the model to search in, or -1 to disable searching.
+//
+func (treeView *TreeView) SetSearchColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = C.int(column)
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TreeView").InvokeMethod("set_search_column", args[:], nil)
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(column)
 }
 
 // SetSearchEntry sets the entry which the interactive search code will use for
@@ -2579,6 +3005,36 @@ func (treeView *TreeView) SetTooltipCell(tooltip *Tooltip, path *TreePath, colum
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(cell)
+}
+
+// SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
+// full rows, you can use this function to have TreeView handle these
+// automatically for you. column should be set to the column in tree_view’s
+// model containing the tooltip texts, or -1 to disable this feature.
+//
+// When enabled, Widget:has-tooltip will be set to TRUE and tree_view will
+// connect a Widget::query-tooltip signal handler.
+//
+// Note that the signal handler sets the text with gtk_tooltip_set_markup(), so
+// &, <, etc have to be escaped in the text.
+//
+// The function takes the following parameters:
+//
+//    - column: integer, which is a valid column number for tree_view’s model.
+//
+func (treeView *TreeView) SetTooltipColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
+	_arg1 = C.int(column)
+	*(**TreeView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TreeView").InvokeMethod("set_tooltip_column", args[:], nil)
+
+	runtime.KeepAlive(treeView)
+	runtime.KeepAlive(column)
 }
 
 // SetTooltipRow sets the tip area of tooltip to be the area covered by the row

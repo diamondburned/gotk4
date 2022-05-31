@@ -39,7 +39,7 @@ type NativeDialogOverrider interface {
 	Hide()
 	// The function takes the following parameters:
 	//
-	Response(responseId int)
+	Response(responseId int32)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it. When the user accepts the state of the dialog the dialog will be
 	// automatically hidden and the NativeDialog::response signal will be
@@ -98,7 +98,7 @@ func classInitNativeDialogger(gclassPtr, data C.gpointer) {
 		pclass.hide = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_hide)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+	if _, ok := goval.(interface{ Response(responseId int32) }); ok {
 		pclass.response = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_response)
 	}
 
@@ -118,11 +118,11 @@ func _gotk4_gtk3_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
 //export _gotk4_gtk3_NativeDialogClass_response
 func _gotk4_gtk3_NativeDialogClass_response(arg0 *C.GtkNativeDialog, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int) })
+	iface := goval.(interface{ Response(responseId int32) })
 
-	var _responseId int // out
+	var _responseId int32 // out
 
-	_responseId = int(arg1)
+	_responseId = int32(arg1)
 
 	iface.Response(_responseId)
 }
@@ -156,7 +156,7 @@ func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
 
 //export _gotk4_gtk3_NativeDialog_ConnectResponse
 func _gotk4_gtk3_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
+	var f func(responseId int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -164,12 +164,12 @@ func _gotk4_gtk3_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(responseId int))
+		f = closure.Func.(func(responseId int32))
 	}
 
-	var _responseId int // out
+	var _responseId int32 // out
 
-	_responseId = int(arg1)
+	_responseId = int32(arg1)
 
 	f(_responseId)
 }
@@ -180,7 +180,7 @@ func _gotk4_gtk3_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2
 //
 // If you call gtk_native_dialog_hide() before the user responds to the dialog
 // this signal will not be emitted.
-func (self *NativeDialog) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
+func (self *NativeDialog) ConnectResponse(f func(responseId int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "response", false, unsafe.Pointer(C._gotk4_gtk3_NativeDialog_ConnectResponse), f)
 }
 
@@ -371,7 +371,7 @@ func (self *NativeDialog) Hide() {
 //
 //    - gint: response ID.
 //
-func (self *NativeDialog) Run() int {
+func (self *NativeDialog) Run() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -384,9 +384,9 @@ func (self *NativeDialog) Run() int {
 
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

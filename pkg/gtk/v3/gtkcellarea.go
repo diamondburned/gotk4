@@ -884,7 +884,7 @@ func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, is
 //    - attribute name.
 //    - column column to fetch attribute values from.
 //
-func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int) {
+func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -948,7 +948,7 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 //
 //    - gint: model column, or -1.
 //
-func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int {
+func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int32 {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -969,9 +969,9 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

@@ -39,7 +39,7 @@ type InfoBarOverrider interface {
 	//
 	//    - responseId: response ID.
 	//
-	Response(responseId int)
+	Response(responseId int32)
 }
 
 // InfoBar is a widget that can be used to show messages to the user without
@@ -137,7 +137,7 @@ func classInitInfoBarrer(gclassPtr, data C.gpointer) {
 		pclass.close = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_close)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+	if _, ok := goval.(interface{ Response(responseId int32) }); ok {
 		pclass.response = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_response)
 	}
 }
@@ -153,11 +153,11 @@ func _gotk4_gtk3_InfoBarClass_close(arg0 *C.GtkInfoBar) {
 //export _gotk4_gtk3_InfoBarClass_response
 func _gotk4_gtk3_InfoBarClass_response(arg0 *C.GtkInfoBar, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int) })
+	iface := goval.(interface{ Response(responseId int32) })
 
-	var _responseId int // out
+	var _responseId int32 // out
 
-	_responseId = int(arg1)
+	_responseId = int32(arg1)
 
 	iface.Response(_responseId)
 }
@@ -217,7 +217,7 @@ func (infoBar *InfoBar) ConnectClose(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_InfoBar_ConnectResponse
 func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
+	var f func(responseId int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -225,12 +225,12 @@ func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(responseId int))
+		f = closure.Func.(func(responseId int32))
 	}
 
-	var _responseId int // out
+	var _responseId int32 // out
 
-	_responseId = int(arg1)
+	_responseId = int32(arg1)
 
 	f(_responseId)
 }
@@ -238,7 +238,7 @@ func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 // ConnectResponse is emitted when an action widget is clicked or the
 // application programmer calls gtk_dialog_response(). The response_id depends
 // on which action widget was clicked.
-func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk3_InfoBar_ConnectResponse), f)
 }
 
@@ -271,7 +271,7 @@ func NewInfoBar() *InfoBar {
 //    - child: activatable widget.
 //    - responseId: response ID for child.
 //
-func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -304,7 +304,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 //
 //    - button widget that was added.
 //
-func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
+func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -445,7 +445,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 //    - responseId: response ID.
 //
-func (infoBar *InfoBar) Response(responseId int) {
+func (infoBar *InfoBar) Response(responseId int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -471,7 +471,7 @@ func (infoBar *InfoBar) Response(responseId int) {
 //
 //    - responseId: response ID.
 //
-func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
+func (infoBar *InfoBar) SetDefaultResponse(responseId int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -495,7 +495,7 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 //    - responseId: response ID.
 //    - setting: TRUE for sensitive.
 //
-func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
+func (infoBar *InfoBar) SetResponseSensitive(responseId int32, setting bool) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -507,7 +507,7 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 		_arg2 = C.TRUE
 	}
 	*(**InfoBar)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_response_sensitive", args[:], nil)
 

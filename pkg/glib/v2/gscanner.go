@@ -209,7 +209,7 @@ type scanner struct {
 //
 //    - guint: current line.
 //
-func (scanner *Scanner) CurLine() uint {
+func (scanner *Scanner) CurLine() uint32 {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
@@ -218,9 +218,9 @@ func (scanner *Scanner) CurLine() uint {
 	_cret = C.g_scanner_cur_line(_arg0)
 	runtime.KeepAlive(scanner)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -233,7 +233,7 @@ func (scanner *Scanner) CurLine() uint {
 //
 //    - guint: current position on the line.
 //
-func (scanner *Scanner) CurPosition() uint {
+func (scanner *Scanner) CurPosition() uint32 {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
@@ -242,9 +242,9 @@ func (scanner *Scanner) CurPosition() uint {
 	_cret = C.g_scanner_cur_position(_arg0)
 	runtime.KeepAlive(scanner)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -337,7 +337,7 @@ func (scanner *Scanner) NextToken() TokenType {
 //
 //    - inputFd: file descriptor.
 //
-func (scanner *Scanner) InputFile(inputFd int) {
+func (scanner *Scanner) InputFile(inputFd int32) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.gint      // out
 
@@ -356,7 +356,7 @@ func (scanner *Scanner) InputFile(inputFd int) {
 //    - text buffer to scan.
 //    - textLen: length of the text buffer.
 //
-func (scanner *Scanner) InputText(text string, textLen uint) {
+func (scanner *Scanner) InputText(text string, textLen uint32) {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.guint     // out
@@ -411,7 +411,7 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 //    - scopeId: scope id.
 //    - symbol to remove.
 //
-func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
+func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint32, symbol string) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -437,7 +437,7 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 //
 //    - guint: old scope id.
 //
-func (scanner *Scanner) SetScope(scopeId uint) uint {
+func (scanner *Scanner) SetScope(scopeId uint32) uint32 {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
@@ -449,9 +449,9 @@ func (scanner *Scanner) SetScope(scopeId uint) uint {
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(scopeId)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -490,7 +490,7 @@ func (scanner *Scanner) SyncFileOffset() {
 //    - isError: if TRUE it is output as an error. If FALSE it is output as a
 //      warning.
 //
-func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
+func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int32) {
 	var _arg0 *C.GScanner  // out
 	var _arg1 C.GTokenType // out
 	var _arg2 *C.gchar     // out

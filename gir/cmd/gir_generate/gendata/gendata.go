@@ -741,8 +741,8 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	n := nsgen.Namespace()
 	r := nsgen.Repositories()
 
-	h.AddCallback(n, r.FindFullType("GLib-2.LogFunc").Type.(*gir.Callback))
-	h.AddCallback(n, r.FindFullType("GLib-2.LogWriterFunc").Type.(*gir.Callback))
+	AddCallbackHeader(h, n, r.FindFullType("GLib-2.LogFunc").Type.(*gir.Callback))
+	AddCallbackHeader(h, n, r.FindFullType("GLib-2.LogWriterFunc").Type.(*gir.Callback))
 
 	p := fg.Pen()
 	// This one might be subjective, but I think most can agree that having a

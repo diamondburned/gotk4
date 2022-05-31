@@ -66,6 +66,56 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return wrapAspectFrame(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewAspectFrame: create a new GtkAspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment of the child within the parent. Ranges from
+//      0.0 (left aligned) to 1.0 (right aligned).
+//    - yalign: vertical alignment of the child within the parent. Ranges from
+//      0.0 (top aligned) to 1.0 (bottom aligned).
+//    - ratio: desired aspect ratio.
+//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken from
+//      the requistion of the child.
+//
+// The function returns the following values:
+//
+//    - aspectFrame: new GtkAspectFrame.
+//
+func NewAspectFrame(xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
+	var args [4]girepository.Argument
+	var _arg0 C.float    // out
+	var _arg1 C.float    // out
+	var _arg2 C.float    // out
+	var _arg3 C.gboolean // out
+	var _cret *C.void    // in
+
+	_arg0 = C.float(xalign)
+	_arg1 = C.float(yalign)
+	_arg2 = C.float(ratio)
+	if obeyChild {
+		_arg3 = C.TRUE
+	}
+	*(*float32)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("new_AspectFrame", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+	runtime.KeepAlive(ratio)
+	runtime.KeepAlive(obeyChild)
+
+	var _aspectFrame *AspectFrame // out
+
+	_aspectFrame = wrapAspectFrame(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _aspectFrame
+}
+
 // Child gets the child widget of self.
 //
 // The function returns the following values:
@@ -136,6 +186,86 @@ func (self *AspectFrame) ObeyChild() bool {
 	return _ok
 }
 
+// Ratio returns the desired aspect ratio of the child.
+//
+// The function returns the following values:
+//
+//    - gfloat: desired aspect ratio.
+//
+func (self *AspectFrame) Ratio() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AspectFrame)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_ratio", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// XAlign returns the horizontal alignment of the child within the allocation of
+// the GtkAspectFrame.
+//
+// The function returns the following values:
+//
+//    - gfloat: horizontal alignment.
+//
+func (self *AspectFrame) XAlign() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AspectFrame)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_xalign", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// YAlign returns the vertical alignment of the child within the allocation of
+// the GtkAspectFrame.
+//
+// The function returns the following values:
+//
+//    - gfloat: vertical alignment.
+//
+func (self *AspectFrame) YAlign() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**AspectFrame)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_yalign", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // SetChild sets the child widget of self.
 //
 // The function takes the following parameters:
@@ -182,4 +312,71 @@ func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(obeyChild)
+}
+
+// SetRatio sets the desired aspect ratio of the child.
+//
+// The function takes the following parameters:
+//
+//    - ratio: aspect ratio of the child.
+//
+func (self *AspectFrame) SetRatio(ratio float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.float(ratio)
+	*(**AspectFrame)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_ratio", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ratio)
+}
+
+// SetXAlign sets the horizontal alignment of the child within the allocation of
+// the GtkAspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment, from 0.0 (left aligned) to 1.0 (right
+//      aligned).
+//
+func (self *AspectFrame) SetXAlign(xalign float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.float(xalign)
+	*(**AspectFrame)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_xalign", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(xalign)
+}
+
+// SetYAlign sets the vertical alignment of the child within the allocation of
+// the GtkAspectFrame.
+//
+// The function takes the following parameters:
+//
+//    - yalign: horizontal alignment, from 0.0 (top aligned) to 1.0 (bottom
+//      aligned).
+//
+func (self *AspectFrame) SetYAlign(yalign float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.float(yalign)
+	*(**AspectFrame)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_yalign", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(yalign)
 }

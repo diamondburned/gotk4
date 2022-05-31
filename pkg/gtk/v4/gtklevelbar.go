@@ -225,6 +225,76 @@ func NewLevelBar() *LevelBar {
 	return _levelBar
 }
 
+// NewLevelBarForInterval creates a new GtkLevelBar for the specified interval.
+//
+// The function takes the following parameters:
+//
+//    - minValue: positive value.
+//    - maxValue: positive value.
+//
+// The function returns the following values:
+//
+//    - levelBar: GtkLevelBar.
+//
+func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
+	var args [2]girepository.Argument
+	var _arg0 C.double // out
+	var _arg1 C.double // out
+	var _cret *C.void  // in
+
+	_arg0 = C.double(minValue)
+	_arg1 = C.double(maxValue)
+	*(*float64)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("new_LevelBar_for_interval", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(minValue)
+	runtime.KeepAlive(maxValue)
+
+	var _levelBar *LevelBar // out
+
+	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _levelBar
+}
+
+// AddOffsetValue adds a new offset marker on self at the position specified by
+// value.
+//
+// When the bar value is in the interval topped by value (or between value and
+// gtk.LevelBar:max-value in case the offset is the last one on the bar) a style
+// class named level-name will be applied when rendering the level bar fill.
+//
+// If another offset marker named name exists, its value will be replaced by
+// value.
+//
+// The function takes the following parameters:
+//
+//    - name of the new offset.
+//    - value for the new offset.
+//
+func (self *LevelBar) AddOffsetValue(name string, value float64) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.double(value)
+	*(**LevelBar)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("add_offset_value", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(value)
+}
+
 // Inverted returns whether the levelbar is inverted.
 //
 // The function returns the following values:
@@ -251,6 +321,85 @@ func (self *LevelBar) Inverted() bool {
 	}
 
 	return _ok
+}
+
+// MaxValue returns the max-value of the GtkLevelBar.
+//
+// The function returns the following values:
+//
+//    - gdouble: positive value.
+//
+func (self *LevelBar) MaxValue() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**LevelBar)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_max_value", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// MinValue returns the min-value of the GtkLevelBar`.
+//
+// The function returns the following values:
+//
+//    - gdouble: positive value.
+//
+func (self *LevelBar) MinValue() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**LevelBar)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_min_value", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// Value returns the value of the GtkLevelBar.
+//
+// The function returns the following values:
+//
+//    - gdouble: value in the interval between GtkLevelBar:min-value and
+//      GtkLevelBar:max-value.
+//
+func (self *LevelBar) Value() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**LevelBar)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_value", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // RemoveOffsetValue removes an offset marker from a GtkLevelBar.
@@ -301,4 +450,74 @@ func (self *LevelBar) SetInverted(inverted bool) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(inverted)
+}
+
+// SetMaxValue sets the max-value of the GtkLevelBar.
+//
+// You probably want to update preexisting level offsets after calling this
+// function.
+//
+// The function takes the following parameters:
+//
+//    - value: positive value.
+//
+func (self *LevelBar) SetMaxValue(value float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.double(value)
+	*(**LevelBar)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("set_max_value", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
+}
+
+// SetMinValue sets the min-value of the GtkLevelBar.
+//
+// You probably want to update preexisting level offsets after calling this
+// function.
+//
+// The function takes the following parameters:
+//
+//    - value: positive value.
+//
+func (self *LevelBar) SetMinValue(value float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.double(value)
+	*(**LevelBar)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("set_min_value", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
+}
+
+// SetValue sets the value of the GtkLevelBar.
+//
+// The function takes the following parameters:
+//
+//    - value in the interval between gtk.LevelBar:min-value and
+//      gtk.LevelBar:max-value.
+//
+func (self *LevelBar) SetValue(value float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.double(value)
+	*(**LevelBar)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("set_value", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }

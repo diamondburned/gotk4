@@ -248,7 +248,7 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 //
 //    - gint: height of screen in pixels.
 //
-func (screen *Screen) Height() int {
+func (screen *Screen) Height() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -261,9 +261,9 @@ func (screen *Screen) Height() int {
 
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -280,7 +280,7 @@ func (screen *Screen) Height() int {
 //
 //    - gint: heigth of screen in millimeters.
 //
-func (screen *Screen) HeightMm() int {
+func (screen *Screen) HeightMm() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -293,9 +293,9 @@ func (screen *Screen) HeightMm() int {
 
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -315,7 +315,7 @@ func (screen *Screen) HeightMm() int {
 //    - gint: monitor number in which the point (x,y) lies, or a monitor close to
 //      (x,y) if the point is not in any monitor.
 //
-func (screen *Screen) MonitorAtPoint(x, y int) int {
+func (screen *Screen) MonitorAtPoint(x, y int32) int32 {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -326,7 +326,7 @@ func (screen *Screen) MonitorAtPoint(x, y int) int {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**Screen)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gdk", "Screen").InvokeMethod("get_monitor_at_point", args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -335,9 +335,9 @@ func (screen *Screen) MonitorAtPoint(x, y int) int {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -356,7 +356,7 @@ func (screen *Screen) MonitorAtPoint(x, y int) int {
 //    - gint: monitor number in which most of window is located, or if window
 //      does not intersect any monitors, a monitor, close to window.
 //
-func (screen *Screen) MonitorAtWindow(window Windower) int {
+func (screen *Screen) MonitorAtWindow(window Windower) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -372,9 +372,9 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(window)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -392,7 +392,7 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 //
 //    - gint: height of the monitor, or -1 if not available.
 //
-func (screen *Screen) MonitorHeightMm(monitorNum int) int {
+func (screen *Screen) MonitorHeightMm(monitorNum int32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -408,9 +408,9 @@ func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -431,7 +431,7 @@ func (screen *Screen) MonitorHeightMm(monitorNum int) int {
 //    - utf8 (optional): newly-allocated string containing the name of the
 //      monitor, or NULL if the name cannot be determined.
 //
-func (screen *Screen) MonitorPlugName(monitorNum int) string {
+func (screen *Screen) MonitorPlugName(monitorNum int32) string {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -476,7 +476,7 @@ func (screen *Screen) MonitorPlugName(monitorNum int) string {
 //
 //    - gint: scale factor.
 //
-func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
+func (screen *Screen) MonitorScaleFactor(monitorNum int32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -492,9 +492,9 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -513,7 +513,7 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int) int {
 //
 //    - gint: width of the monitor, or -1 if not available.
 //
-func (screen *Screen) MonitorWidthMm(monitorNum int) int {
+func (screen *Screen) MonitorWidthMm(monitorNum int32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -529,9 +529,9 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -544,7 +544,7 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 //
 //    - gint: number of monitors which screen consists of.
 //
-func (screen *Screen) NMonitors() int {
+func (screen *Screen) NMonitors() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -557,9 +557,9 @@ func (screen *Screen) NMonitors() int {
 
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -573,7 +573,7 @@ func (screen *Screen) NMonitors() int {
 //
 //    - gint: index.
 //
-func (screen *Screen) Number() int {
+func (screen *Screen) Number() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -586,9 +586,9 @@ func (screen *Screen) Number() int {
 
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -608,7 +608,7 @@ func (screen *Screen) Number() int {
 //
 //    - gint: integer index for the primary monitor, or 0 if none is configured.
 //
-func (screen *Screen) PrimaryMonitor() int {
+func (screen *Screen) PrimaryMonitor() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -621,9 +621,9 @@ func (screen *Screen) PrimaryMonitor() int {
 
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -872,7 +872,7 @@ func (screen *Screen) ToplevelWindows() []Windower {
 //
 //    - gint: width of screen in pixels.
 //
-func (screen *Screen) Width() int {
+func (screen *Screen) Width() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -885,9 +885,9 @@ func (screen *Screen) Width() int {
 
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -904,7 +904,7 @@ func (screen *Screen) Width() int {
 //
 //    - gint: width of screen in millimeters.
 //
-func (screen *Screen) WidthMm() int {
+func (screen *Screen) WidthMm() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -917,9 +917,9 @@ func (screen *Screen) WidthMm() int {
 
 	runtime.KeepAlive(screen)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

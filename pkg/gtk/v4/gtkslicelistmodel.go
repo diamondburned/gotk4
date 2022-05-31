@@ -81,7 +81,7 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 //
 //    - sliceListModel: new GtkSliceListModel.
 //
-func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListModel {
+func NewSliceListModel(model gio.ListModeller, offset, size uint32) *SliceListModel {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -95,8 +95,8 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListMode
 	_arg1 = C.guint(offset)
 	_arg2 = C.guint(size)
 	*(*gio.ListModeller)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "SliceListModel").InvokeMethod("new_SliceListModel", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -151,7 +151,7 @@ func (self *SliceListModel) Model() *gio.ListModel {
 //
 //    - guint: offset.
 //
-func (self *SliceListModel) Offset() uint {
+func (self *SliceListModel) Offset() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -164,9 +164,9 @@ func (self *SliceListModel) Offset() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -177,7 +177,7 @@ func (self *SliceListModel) Offset() uint {
 //
 //    - guint: size.
 //
-func (self *SliceListModel) Size() uint {
+func (self *SliceListModel) Size() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -190,9 +190,9 @@ func (self *SliceListModel) Size() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -230,7 +230,7 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 //
 //    - offset: new offset to use.
 //
-func (self *SliceListModel) SetOffset(offset uint) {
+func (self *SliceListModel) SetOffset(offset uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -254,7 +254,7 @@ func (self *SliceListModel) SetOffset(offset uint) {
 //
 //    - size: maximum size.
 //
-func (self *SliceListModel) SetSize(size uint) {
+func (self *SliceListModel) SetSize(size uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

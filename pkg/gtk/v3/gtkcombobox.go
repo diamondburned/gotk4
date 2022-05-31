@@ -493,7 +493,7 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 //    - gint: integer which is the index of the currently active item, or -1 if
 //      there’s no active item.
 //
-func (comboBox *ComboBox) Active() int {
+func (comboBox *ComboBox) Active() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -506,9 +506,9 @@ func (comboBox *ComboBox) Active() int {
 
 	runtime.KeepAlive(comboBox)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -586,7 +586,7 @@ func (comboBox *ComboBox) AddTearoffs() bool {
 //
 //    - gint: column span column.
 //
-func (comboBox *ComboBox) ColumnSpanColumn() int {
+func (comboBox *ComboBox) ColumnSpanColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -599,9 +599,9 @@ func (comboBox *ComboBox) ColumnSpanColumn() int {
 
 	runtime.KeepAlive(comboBox)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -613,7 +613,7 @@ func (comboBox *ComboBox) ColumnSpanColumn() int {
 //
 //    - gint: column in the data source model of combo_box.
 //
-func (comboBox *ComboBox) EntryTextColumn() int {
+func (comboBox *ComboBox) EntryTextColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -626,9 +626,9 @@ func (comboBox *ComboBox) EntryTextColumn() int {
 
 	runtime.KeepAlive(comboBox)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -699,7 +699,7 @@ func (comboBox *ComboBox) HasEntry() bool {
 //
 //    - gint: column in the data source model of combo_box.
 //
-func (comboBox *ComboBox) IDColumn() int {
+func (comboBox *ComboBox) IDColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -712,9 +712,9 @@ func (comboBox *ComboBox) IDColumn() int {
 
 	runtime.KeepAlive(comboBox)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -815,7 +815,7 @@ func (comboBox *ComboBox) PopupFixedWidth() bool {
 //
 //    - gint: row span column.
 //
-func (comboBox *ComboBox) RowSpanColumn() int {
+func (comboBox *ComboBox) RowSpanColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -828,9 +828,9 @@ func (comboBox *ComboBox) RowSpanColumn() int {
 
 	runtime.KeepAlive(comboBox)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -873,7 +873,7 @@ func (comboBox *ComboBox) Title() string {
 //
 //    - gint: wrap width.
 //
-func (comboBox *ComboBox) WrapWidth() int {
+func (comboBox *ComboBox) WrapWidth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -886,9 +886,9 @@ func (comboBox *ComboBox) WrapWidth() int {
 
 	runtime.KeepAlive(comboBox)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -957,7 +957,7 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 //    - index_: index in the model passed during construction, or -1 to have no
 //      active item.
 //
-func (comboBox *ComboBox) SetActive(index_ int) {
+func (comboBox *ComboBox) SetActive(index_ int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1073,7 +1073,7 @@ func (comboBox *ComboBox) SetAddTearoffs(addTearoffs bool) {
 //
 //    - columnSpan: column in the model passed during construction.
 //
-func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int) {
+func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1100,7 +1100,7 @@ func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int) {
 //    - textColumn: column in model to get the strings from for the internal
 //      entry.
 //
-func (comboBox *ComboBox) SetEntryTextColumn(textColumn int) {
+func (comboBox *ComboBox) SetEntryTextColumn(textColumn int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1152,7 +1152,7 @@ func (combo *ComboBox) SetFocusOnClick(focusOnClick bool) {
 //
 //    - idColumn: column in model to get string IDs for values from.
 //
-func (comboBox *ComboBox) SetIDColumn(idColumn int) {
+func (comboBox *ComboBox) SetIDColumn(idColumn int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1228,7 +1228,7 @@ func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
 //
 //    - rowSpan: column in the model passed during construction.
 //
-func (comboBox *ComboBox) SetRowSpanColumn(rowSpan int) {
+func (comboBox *ComboBox) SetRowSpanColumn(rowSpan int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1275,7 +1275,7 @@ func (comboBox *ComboBox) SetTitle(title string) {
 //
 //    - width: preferred number of columns.
 //
-func (comboBox *ComboBox) SetWrapWidth(width int) {
+func (comboBox *ComboBox) SetWrapWidth(width int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

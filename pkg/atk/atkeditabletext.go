@@ -40,7 +40,7 @@ type EditableTextOverrider interface {
 	//    - startPos: start position.
 	//    - endPos: end position.
 	//
-	CopyText(startPos, endPos int)
+	CopyText(startPos, endPos int32)
 	// CutText: copy text from start_pos up to, but not including end_pos to the
 	// clipboard and then delete from the widget.
 	//
@@ -49,7 +49,7 @@ type EditableTextOverrider interface {
 	//    - startPos: start position.
 	//    - endPos: end position.
 	//
-	CutText(startPos, endPos int)
+	CutText(startPos, endPos int32)
 	// DeleteText: delete text start_pos up to, but not including end_pos.
 	//
 	// The function takes the following parameters:
@@ -57,7 +57,7 @@ type EditableTextOverrider interface {
 	//    - startPos: start position.
 	//    - endPos: end position.
 	//
-	DeleteText(startPos, endPos int)
+	DeleteText(startPos, endPos int32)
 	// InsertText: insert text at a given position.
 	//
 	// The function takes the following parameters:
@@ -68,14 +68,14 @@ type EditableTextOverrider interface {
 	//      the text. After the call it points at the position after the newly
 	//      inserted text.
 	//
-	InsertText(str string, length int, position *int)
+	InsertText(str string, length int32, position *int32)
 	// PasteText: paste text from clipboard to specified position.
 	//
 	// The function takes the following parameters:
 	//
 	//    - position to paste.
 	//
-	PasteText(position int)
+	PasteText(position int32)
 	// SetTextContents: set text contents of text.
 	//
 	// The function takes the following parameters:
@@ -111,16 +111,16 @@ type EditableTexter interface {
 
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
-	CopyText(startPos, endPos int)
+	CopyText(startPos, endPos int32)
 	// CutText: copy text from start_pos up to, but not including end_pos to the
 	// clipboard and then delete from the widget.
-	CutText(startPos, endPos int)
+	CutText(startPos, endPos int32)
 	// DeleteText: delete text start_pos up to, but not including end_pos.
-	DeleteText(startPos, endPos int)
+	DeleteText(startPos, endPos int32)
 	// InsertText: insert text at a given position.
-	InsertText(str string, length int, position *int)
+	InsertText(str string, length int32, position *int32)
 	// PasteText: paste text from clipboard to specified position.
-	PasteText(position int)
+	PasteText(position int32)
 	// SetTextContents: set text contents of text.
 	SetTextContents(str string)
 }
@@ -142,11 +142,11 @@ func _gotk4_atk1_EditableTextIface_copy_text(arg0 *C.AtkEditableText, arg1 C.gin
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
-	var _startPos int // out
-	var _endPos int   // out
+	var _startPos int32 // out
+	var _endPos int32   // out
 
-	_startPos = int(arg1)
-	_endPos = int(arg2)
+	_startPos = int32(arg1)
+	_endPos = int32(arg2)
 
 	iface.CopyText(_startPos, _endPos)
 }
@@ -156,11 +156,11 @@ func _gotk4_atk1_EditableTextIface_cut_text(arg0 *C.AtkEditableText, arg1 C.gint
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
-	var _startPos int // out
-	var _endPos int   // out
+	var _startPos int32 // out
+	var _endPos int32   // out
 
-	_startPos = int(arg1)
-	_endPos = int(arg2)
+	_startPos = int32(arg1)
+	_endPos = int32(arg2)
 
 	iface.CutText(_startPos, _endPos)
 }
@@ -170,11 +170,11 @@ func _gotk4_atk1_EditableTextIface_delete_text(arg0 *C.AtkEditableText, arg1 C.g
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
-	var _startPos int // out
-	var _endPos int   // out
+	var _startPos int32 // out
+	var _endPos int32   // out
 
-	_startPos = int(arg1)
-	_endPos = int(arg2)
+	_startPos = int32(arg1)
+	_endPos = int32(arg2)
 
 	iface.DeleteText(_startPos, _endPos)
 }
@@ -184,13 +184,13 @@ func _gotk4_atk1_EditableTextIface_insert_text(arg0 *C.AtkEditableText, arg1 *C.
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
-	var _str string    // out
-	var _length int    // out
-	var _position *int // out
+	var _str string      // out
+	var _length int32    // out
+	var _position *int32 // out
 
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_length = int(arg2)
-	_position = (*int)(unsafe.Pointer(arg3))
+	_length = int32(arg2)
+	_position = (*int32)(unsafe.Pointer(arg3))
 
 	iface.InsertText(_str, _length, _position)
 }
@@ -200,9 +200,9 @@ func _gotk4_atk1_EditableTextIface_paste_text(arg0 *C.AtkEditableText, arg1 C.gi
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
-	var _position int // out
+	var _position int32 // out
 
-	_position = int(arg1)
+	_position = int32(arg1)
 
 	iface.PasteText(_position)
 }
@@ -237,7 +237,7 @@ func marshalEditableText(p uintptr) (interface{}, error) {
 //    - startPos: start position.
 //    - endPos: end position.
 //
-func (text *EditableText) CopyText(startPos, endPos int) {
+func (text *EditableText) CopyText(startPos, endPos int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -247,7 +247,7 @@ func (text *EditableText) CopyText(startPos, endPos int) {
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -262,7 +262,7 @@ func (text *EditableText) CopyText(startPos, endPos int) {
 //    - startPos: start position.
 //    - endPos: end position.
 //
-func (text *EditableText) CutText(startPos, endPos int) {
+func (text *EditableText) CutText(startPos, endPos int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -272,7 +272,7 @@ func (text *EditableText) CutText(startPos, endPos int) {
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -286,7 +286,7 @@ func (text *EditableText) CutText(startPos, endPos int) {
 //    - startPos: start position.
 //    - endPos: end position.
 //
-func (text *EditableText) DeleteText(startPos, endPos int) {
+func (text *EditableText) DeleteText(startPos, endPos int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -296,7 +296,7 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -313,7 +313,7 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 //      text. After the call it points at the position after the newly inserted
 //      text.
 //
-func (text *EditableText) InsertText(str string, length int, position *int) {
+func (text *EditableText) InsertText(str string, length int32, position *int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -327,7 +327,7 @@ func (text *EditableText) InsertText(str string, length int, position *int) {
 	_arg3 = (*C.void)(unsafe.Pointer(position))
 	*(**EditableText)(unsafe.Pointer(&args[1])) = _arg1
 	*(*string)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)
@@ -341,7 +341,7 @@ func (text *EditableText) InsertText(str string, length int, position *int) {
 //
 //    - position to paste.
 //
-func (text *EditableText) PasteText(position int) {
+func (text *EditableText) PasteText(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

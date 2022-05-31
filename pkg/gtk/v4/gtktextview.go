@@ -759,6 +759,45 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 	runtime.KeepAlive(anchor)
 }
 
+// AddOverlay adds child at a fixed coordinate in the GtkTextView's text window.
+//
+// The xpos and ypos must be in buffer coordinates (see
+// gtk.TextView.GetIterLocation() to convert to buffer coordinates).
+//
+// child will scroll with the text view.
+//
+// If instead you want a widget that will not move with the GtkTextView contents
+// see Overlay.
+//
+// The function takes the following parameters:
+//
+//    - child: Widget.
+//    - xpos: x position of child in window coordinates.
+//    - ypos: y position of child in window coordinates.
+//
+func (textView *TextView) AddOverlay(child Widgetter, xpos, ypos int32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(xpos)
+	_arg3 = C.int(ypos)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("add_overlay", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(xpos)
+	runtime.KeepAlive(ypos)
+}
+
 // BackwardDisplayLine moves the given iter backward by one display (wrapped)
 // line.
 //
@@ -962,6 +1001,32 @@ func (textView *TextView) AcceptsTab() bool {
 	return _ok
 }
 
+// BottomMargin gets the bottom margin for text in the text_view.
+//
+// The function returns the following values:
+//
+//    - gint: bottom margin in pixels.
+//
+func (textView *TextView) BottomMargin() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_bottom_margin", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Buffer returns the GtkTextBuffer being displayed by this text view.
 //
 // The reference count on the buffer is not incremented; the caller of this
@@ -1092,6 +1157,63 @@ func (textView *TextView) ExtraMenu() gio.MenuModeller {
 	return _menuModel
 }
 
+// Indent gets the default indentation of paragraphs in text_view.
+//
+// Tags in the view’s buffer may override the default. The indentation may be
+// negative.
+//
+// The function returns the following values:
+//
+//    - gint: number of pixels of indentation.
+//
+func (textView *TextView) Indent() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_indent", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// LeftMargin gets the default left margin size of paragraphs in the text_view.
+//
+// Tags in the buffer may override the default.
+//
+// The function returns the following values:
+//
+//    - gint: left margin in pixels.
+//
+func (textView *TextView) LeftMargin() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_left_margin", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Monospace gets whether the GtkTextView uses monospace styling.
 //
 // The function returns the following values:
@@ -1148,6 +1270,119 @@ func (textView *TextView) Overwrite() bool {
 	return _ok
 }
 
+// PixelsAboveLines gets the default number of pixels to put above paragraphs.
+//
+// Adding this function with gtk.TextView.GetPixelsBelowLines() is equal to the
+// line space between each paragraph.
+//
+// The function returns the following values:
+//
+//    - gint: default number of pixels above paragraphs.
+//
+func (textView *TextView) PixelsAboveLines() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_pixels_above_lines", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// PixelsBelowLines gets the default number of pixels to put below paragraphs.
+//
+// The line space is the sum of the value returned by this function and the
+// value returned by gtk.TextView.GetPixelsAboveLines().
+//
+// The function returns the following values:
+//
+//    - gint: default number of blank pixels below paragraphs.
+//
+func (textView *TextView) PixelsBelowLines() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_pixels_below_lines", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// PixelsInsideWrap gets the default number of pixels to put between wrapped
+// lines inside a paragraph.
+//
+// The function returns the following values:
+//
+//    - gint: default number of pixels of blank space between wrapped lines.
+//
+func (textView *TextView) PixelsInsideWrap() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_pixels_inside_wrap", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// RightMargin gets the default right margin for text in text_view.
+//
+// Tags in the buffer may override the default.
+//
+// The function returns the following values:
+//
+//    - gint: right margin in pixels.
+//
+func (textView *TextView) RightMargin() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_right_margin", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Tabs gets the default tabs for text_view.
 //
 // Tags in the buffer may override the defaults. The returned array will be NULL
@@ -1185,6 +1420,32 @@ func (textView *TextView) Tabs() *pango.TabArray {
 	}
 
 	return _tabArray
+}
+
+// TopMargin gets the top margin for text in the text_view.
+//
+// The function returns the following values:
+//
+//    - gint: top margin in pixels.
+//
+func (textView *TextView) TopMargin() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	*(**TextView)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_top_margin", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // IMContextFilterKeypress: allow the GtkTextView input method to internally
@@ -1276,6 +1537,90 @@ func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(mark)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// MoveOverlay updates the position of a child.
+//
+// See gtk.TextView.AddOverlay().
+//
+// The function takes the following parameters:
+//
+//    - child: widget already added with gtk.TextView.AddOverlay().
+//    - xpos: new X position in buffer coordinates.
+//    - ypos: new Y position in buffer coordinates.
+//
+func (textView *TextView) MoveOverlay(child Widgetter, xpos, ypos int32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(xpos)
+	_arg3 = C.int(ypos)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("move_overlay", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(xpos)
+	runtime.KeepAlive(ypos)
+}
+
+// MoveVisually: move the iterator a given number of characters visually,
+// treating it as the strong cursor position.
+//
+// If count is positive, then the new strong cursor position will be count
+// positions to the right of the old cursor position. If count is negative then
+// the new strong cursor position will be count positions to the left of the old
+// cursor position.
+//
+// In the presence of bi-directional text, the correspondence between logical
+// and visual order will depend on the direction of the current run, and there
+// may be jumps when the cursor is moved off of the end of a run.
+//
+// The function takes the following parameters:
+//
+//    - iter: GtkTextIter.
+//    - count: number of characters to move (negative moves left, positive moves
+//      right).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter moved and is not on the end iterator.
+//
+func (textView *TextView) MoveVisually(iter *TextIter, count int32) bool {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = C.int(count)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TextIter)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("move_visually", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(count)
 
 	var _ok bool // out
 
@@ -1393,6 +1738,126 @@ func (textView *TextView) ScrollMarkOnscreen(mark *TextMark) {
 	runtime.KeepAlive(mark)
 }
 
+// ScrollToIter scrolls text_view so that iter is on the screen in the position
+// indicated by xalign and yalign.
+//
+// An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom, 0.5
+// means center. If use_align is FALSE, the text scrolls the minimal distance to
+// get the mark onscreen, possibly not scrolling at all. The effective screen
+// for purposes of this function is reduced by a margin of size within_margin.
+//
+// Note that this function uses the currently-computed height of the lines in
+// the text buffer. Line heights are computed in an idle handler; so this
+// function may not have the desired effect if it’s called before the height
+// computations. To avoid oddness, consider using gtk.TextView.ScrollToMark()
+// which saves a point to be scrolled to after line validation.
+//
+// The function takes the following parameters:
+//
+//    - iter: GtkTextIter.
+//    - withinMargin: margin as a [0.0,0.5) fraction of screen size.
+//    - useAlign: whether to use alignment arguments (if FALSE, just get the mark
+//      onscreen).
+//    - xalign: horizontal alignment of mark within visible area.
+//    - yalign: vertical alignment of mark within visible area.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if scrolling occurred.
+//
+func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign, yalign float64) bool {
+	var args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.double   // out
+	var _arg3 C.gboolean // out
+	var _arg4 C.double   // out
+	var _arg5 C.double   // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = C.double(withinMargin)
+	if useAlign {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.double(xalign)
+	_arg5 = C.double(yalign)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TextIter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+
+	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("scroll_to_iter", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(withinMargin)
+	runtime.KeepAlive(useAlign)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ScrollToMark scrolls text_view so that mark is on the screen in the position
+// indicated by xalign and yalign.
+//
+// An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom, 0.5
+// means center. If use_align is FALSE, the text scrolls the minimal distance to
+// get the mark onscreen, possibly not scrolling at all. The effective screen
+// for purposes of this function is reduced by a margin of size within_margin.
+//
+// The function takes the following parameters:
+//
+//    - mark: GtkTextMark.
+//    - withinMargin: margin as a [0.0,0.5) fraction of screen size.
+//    - useAlign: whether to use alignment arguments (if FALSE, just get the mark
+//      onscreen).
+//    - xalign: horizontal alignment of mark within visible area.
+//    - yalign: vertical alignment of mark within visible area.
+//
+func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, useAlign bool, xalign, yalign float64) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 *C.void    // out
+	var _arg2 C.double   // out
+	var _arg3 C.gboolean // out
+	var _arg4 C.double   // out
+	var _arg5 C.double   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	_arg2 = C.double(withinMargin)
+	if useAlign {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.double(xalign)
+	_arg5 = C.double(yalign)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TextMark)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("scroll_to_mark", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(mark)
+	runtime.KeepAlive(withinMargin)
+	runtime.KeepAlive(useAlign)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+}
+
 // SetAcceptsTab sets the behavior of the text widget when the Tab key is
 // pressed.
 //
@@ -1419,6 +1884,30 @@ func (textView *TextView) SetAcceptsTab(acceptsTab bool) {
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(acceptsTab)
+}
+
+// SetBottomMargin sets the bottom margin for text in text_view.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+//
+// The function takes the following parameters:
+//
+//    - bottomMargin: bottom margin in pixels.
+//
+func (textView *TextView) SetBottomMargin(bottomMargin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(bottomMargin)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_bottom_margin", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(bottomMargin)
 }
 
 // SetBuffer sets buffer as the buffer being displayed by text_view.
@@ -1530,6 +2019,55 @@ func (textView *TextView) SetExtraMenu(model gio.MenuModeller) {
 	runtime.KeepAlive(model)
 }
 
+// SetIndent sets the default indentation for paragraphs in text_view.
+//
+// Tags in the buffer may override the default.
+//
+// The function takes the following parameters:
+//
+//    - indent: indentation in pixels.
+//
+func (textView *TextView) SetIndent(indent int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(indent)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_indent", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(indent)
+}
+
+// SetLeftMargin sets the default left margin for text in text_view.
+//
+// Tags in the buffer may override the default.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+//
+// The function takes the following parameters:
+//
+//    - leftMargin: left margin in pixels.
+//
+func (textView *TextView) SetLeftMargin(leftMargin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(leftMargin)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_left_margin", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(leftMargin)
+}
+
 // SetMonospace sets whether the GtkTextView should display text in monospace
 // styling.
 //
@@ -1577,6 +2115,104 @@ func (textView *TextView) SetOverwrite(overwrite bool) {
 	runtime.KeepAlive(overwrite)
 }
 
+// SetPixelsAboveLines sets the default number of blank pixels above paragraphs
+// in text_view.
+//
+// Tags in the buffer for text_view may override the defaults.
+//
+// The function takes the following parameters:
+//
+//    - pixelsAboveLines pixels above paragraphs.
+//
+func (textView *TextView) SetPixelsAboveLines(pixelsAboveLines int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(pixelsAboveLines)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_pixels_above_lines", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(pixelsAboveLines)
+}
+
+// SetPixelsBelowLines sets the default number of pixels of blank space to put
+// below paragraphs in text_view.
+//
+// May be overridden by tags applied to text_view’s buffer.
+//
+// The function takes the following parameters:
+//
+//    - pixelsBelowLines pixels below paragraphs.
+//
+func (textView *TextView) SetPixelsBelowLines(pixelsBelowLines int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(pixelsBelowLines)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_pixels_below_lines", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(pixelsBelowLines)
+}
+
+// SetPixelsInsideWrap sets the default number of pixels of blank space to leave
+// between display/wrapped lines within a paragraph.
+//
+// May be overridden by tags in text_view’s buffer.
+//
+// The function takes the following parameters:
+//
+//    - pixelsInsideWrap: default number of pixels between wrapped lines.
+//
+func (textView *TextView) SetPixelsInsideWrap(pixelsInsideWrap int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(pixelsInsideWrap)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_pixels_inside_wrap", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(pixelsInsideWrap)
+}
+
+// SetRightMargin sets the default right margin for text in the text view.
+//
+// Tags in the buffer may override the default.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+//
+// The function takes the following parameters:
+//
+//    - rightMargin: right margin in pixels.
+//
+func (textView *TextView) SetRightMargin(rightMargin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(rightMargin)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_right_margin", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(rightMargin)
+}
+
 // SetTabs sets the default tab stops for paragraphs in text_view.
 //
 // Tags in the buffer may override the default.
@@ -1598,6 +2234,30 @@ func (textView *TextView) SetTabs(tabs *pango.TabArray) {
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(tabs)
+}
+
+// SetTopMargin sets the top margin for text in text_view.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+//
+// The function takes the following parameters:
+//
+//    - topMargin: top margin in pixels.
+//
+func (textView *TextView) SetTopMargin(topMargin int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.int(topMargin)
+	*(**TextView)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_top_margin", args[:], nil)
+
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(topMargin)
 }
 
 // StartsDisplayLine determines whether iter is at the start of a display line.

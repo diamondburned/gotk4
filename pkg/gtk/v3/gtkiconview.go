@@ -649,7 +649,7 @@ func (iconView *IconView) ActivateOnSingleClick() bool {
 //
 //    - gint: space between columns.
 //
-func (iconView *IconView) ColumnSpacing() int {
+func (iconView *IconView) ColumnSpacing() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -662,9 +662,9 @@ func (iconView *IconView) ColumnSpacing() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -675,7 +675,7 @@ func (iconView *IconView) ColumnSpacing() int {
 //
 //    - gint: number of columns, or -1.
 //
-func (iconView *IconView) Columns() int {
+func (iconView *IconView) Columns() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -688,9 +688,9 @@ func (iconView *IconView) Columns() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -779,7 +779,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 //      cell at (x, y), or NULL.
 //    - ok: TRUE if an item exists at the specified position.
 //
-func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) {
+func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool) {
 	var args [3]girepository.Argument
 	var outs [2]girepository.Argument
 	var _arg0 *C.void    // out
@@ -793,8 +793,8 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) 
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_at_pos", args[:], outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -851,7 +851,7 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) 
 //
 //    - gint: column in which the item is displayed.
 //
-func (iconView *IconView) ItemColumn(path *TreePath) int {
+func (iconView *IconView) ItemColumn(path *TreePath) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -867,9 +867,9 @@ func (iconView *IconView) ItemColumn(path *TreePath) int {
 	runtime.KeepAlive(iconView)
 	runtime.KeepAlive(path)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -880,7 +880,7 @@ func (iconView *IconView) ItemColumn(path *TreePath) int {
 //
 //    - gint: padding around items.
 //
-func (iconView *IconView) ItemPadding() int {
+func (iconView *IconView) ItemPadding() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -893,9 +893,9 @@ func (iconView *IconView) ItemPadding() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -911,7 +911,7 @@ func (iconView *IconView) ItemPadding() int {
 //
 //    - gint: row in which the item is displayed.
 //
-func (iconView *IconView) ItemRow(path *TreePath) int {
+func (iconView *IconView) ItemRow(path *TreePath) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -927,9 +927,9 @@ func (iconView *IconView) ItemRow(path *TreePath) int {
 	runtime.KeepAlive(iconView)
 	runtime.KeepAlive(path)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -940,7 +940,7 @@ func (iconView *IconView) ItemRow(path *TreePath) int {
 //
 //    - gint: width of a single item, or -1.
 //
-func (iconView *IconView) ItemWidth() int {
+func (iconView *IconView) ItemWidth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -953,9 +953,9 @@ func (iconView *IconView) ItemWidth() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -966,7 +966,7 @@ func (iconView *IconView) ItemWidth() int {
 //
 //    - gint: space at the borders.
 //
-func (iconView *IconView) Margin() int {
+func (iconView *IconView) Margin() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -979,9 +979,9 @@ func (iconView *IconView) Margin() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -992,7 +992,7 @@ func (iconView *IconView) Margin() int {
 //
 //    - gint: markup column, or -1 if it’s unset.
 //
-func (iconView *IconView) MarkupColumn() int {
+func (iconView *IconView) MarkupColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1005,9 +1005,9 @@ func (iconView *IconView) MarkupColumn() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1057,7 +1057,7 @@ func (iconView *IconView) Model() *TreeModel {
 //    - treePath (optional) corresponding to the icon or NULL if no icon exists
 //      at that position.
 //
-func (iconView *IconView) PathAtPos(x, y int) *TreePath {
+func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1068,7 +1068,7 @@ func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**IconView)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_path_at_pos", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1098,7 +1098,7 @@ func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 //
 //    - gint: pixbuf column, or -1 if it’s unset.
 //
-func (iconView *IconView) PixbufColumn() int {
+func (iconView *IconView) PixbufColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1111,9 +1111,9 @@ func (iconView *IconView) PixbufColumn() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1153,7 +1153,7 @@ func (iconView *IconView) Reorderable() bool {
 //
 //    - gint: space between rows.
 //
-func (iconView *IconView) RowSpacing() int {
+func (iconView *IconView) RowSpacing() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1166,9 +1166,9 @@ func (iconView *IconView) RowSpacing() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1224,7 +1224,7 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 //
 //    - gint: space between cells.
 //
-func (iconView *IconView) Spacing() int {
+func (iconView *IconView) Spacing() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1237,9 +1237,9 @@ func (iconView *IconView) Spacing() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1250,7 +1250,7 @@ func (iconView *IconView) Spacing() int {
 //
 //    - gint: text column, or -1 if it’s unset.
 //
-func (iconView *IconView) TextColumn() int {
+func (iconView *IconView) TextColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1263,9 +1263,9 @@ func (iconView *IconView) TextColumn() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1278,7 +1278,7 @@ func (iconView *IconView) TextColumn() int {
 //    - gint: index of the tooltip column that is currently being used, or -1 if
 //      this is disabled.
 //
-func (iconView *IconView) TooltipColumn() int {
+func (iconView *IconView) TooltipColumn() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1291,9 +1291,9 @@ func (iconView *IconView) TooltipColumn() int {
 
 	runtime.KeepAlive(iconView)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1528,7 +1528,7 @@ func (iconView *IconView) SetActivateOnSingleClick(single bool) {
 //
 //    - columnSpacing: column spacing.
 //
-func (iconView *IconView) SetColumnSpacing(columnSpacing int) {
+func (iconView *IconView) SetColumnSpacing(columnSpacing int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1551,7 +1551,7 @@ func (iconView *IconView) SetColumnSpacing(columnSpacing int) {
 //
 //    - columns: number of columns.
 //
-func (iconView *IconView) SetColumns(columns int) {
+func (iconView *IconView) SetColumns(columns int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1616,7 +1616,7 @@ func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEd
 //
 //    - itemPadding: item padding.
 //
-func (iconView *IconView) SetItemPadding(itemPadding int) {
+func (iconView *IconView) SetItemPadding(itemPadding int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1639,7 +1639,7 @@ func (iconView *IconView) SetItemPadding(itemPadding int) {
 //
 //    - itemWidth: width for each item.
 //
-func (iconView *IconView) SetItemWidth(itemWidth int) {
+func (iconView *IconView) SetItemWidth(itemWidth int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1661,7 +1661,7 @@ func (iconView *IconView) SetItemWidth(itemWidth int) {
 //
 //    - margin: margin.
 //
-func (iconView *IconView) SetMargin(margin int) {
+func (iconView *IconView) SetMargin(margin int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1685,7 +1685,7 @@ func (iconView *IconView) SetMargin(margin int) {
 //
 //    - column in the currently used model, or -1 to display no text.
 //
-func (iconView *IconView) SetMarkupColumn(column int) {
+func (iconView *IconView) SetMarkupColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1732,7 +1732,7 @@ func (iconView *IconView) SetModel(model TreeModeller) {
 //
 //    - column in the currently used model, or -1 to disable.
 //
-func (iconView *IconView) SetPixbufColumn(column int) {
+func (iconView *IconView) SetPixbufColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1788,7 +1788,7 @@ func (iconView *IconView) SetReorderable(reorderable bool) {
 //
 //    - rowSpacing: row spacing.
 //
-func (iconView *IconView) SetRowSpacing(rowSpacing int) {
+func (iconView *IconView) SetRowSpacing(rowSpacing int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1810,7 +1810,7 @@ func (iconView *IconView) SetRowSpacing(rowSpacing int) {
 //
 //    - spacing: spacing.
 //
-func (iconView *IconView) SetSpacing(spacing int) {
+func (iconView *IconView) SetSpacing(spacing int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1832,7 +1832,7 @@ func (iconView *IconView) SetSpacing(spacing int) {
 //
 //    - column in the currently used model, or -1 to display no text.
 //
-func (iconView *IconView) SetTextColumn(column int) {
+func (iconView *IconView) SetTextColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1898,7 +1898,7 @@ func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell 
 //
 //    - column: integer, which is a valid column number for icon_view’s model.
 //
-func (iconView *IconView) SetTooltipColumn(column int) {
+func (iconView *IconView) SetTooltipColumn(column int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

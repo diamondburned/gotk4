@@ -57,14 +57,14 @@ type Documenter interface {
 	// document.
 	AttributeValue(attributeName string) string
 	// CurrentPageNumber retrieves the current page number inside document.
-	CurrentPageNumber() int
+	CurrentPageNumber() int32
 	// DocumentType gets a string indicating the document type.
 	DocumentType() string
 	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
 	// of the content of this document instance.
 	Locale() string
 	// PageCount retrieves the total number of pages inside document.
-	PageCount() int
+	PageCount() int32
 	// SetAttributeValue sets the value for the given attribute_name inside
 	// document.
 	SetAttributeValue(attributeName, attributeValue string) bool
@@ -78,7 +78,7 @@ type Documenter interface {
 	ConnectLoadStopped(func()) coreglib.SignalHandle
 	// Page-changed: 'page-changed' signal is emitted when the current page of a
 	// document changes, e.g.
-	ConnectPageChanged(func(pageNumber int)) coreglib.SignalHandle
+	ConnectPageChanged(func(pageNumber int32)) coreglib.SignalHandle
 	// Reload: 'reload' signal is emitted when the contents of a document is
 	// refreshed from its source.
 	ConnectReload(func()) coreglib.SignalHandle
@@ -150,7 +150,7 @@ func (document *Document) ConnectLoadStopped(f func()) coreglib.SignalHandle {
 
 //export _gotk4_atk1_Document_ConnectPageChanged
 func _gotk4_atk1_Document_ConnectPageChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(pageNumber int)
+	var f func(pageNumber int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -158,19 +158,19 @@ func _gotk4_atk1_Document_ConnectPageChanged(arg0 C.gpointer, arg1 C.gint, arg2 
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(pageNumber int))
+		f = closure.Func.(func(pageNumber int32))
 	}
 
-	var _pageNumber int // out
+	var _pageNumber int32 // out
 
-	_pageNumber = int(arg1)
+	_pageNumber = int32(arg1)
 
 	f(_pageNumber)
 }
 
 // ConnectPageChanged: 'page-changed' signal is emitted when the current page of
 // a document changes, e.g. pressing page up/down in a document viewer.
-func (document *Document) ConnectPageChanged(f func(pageNumber int)) coreglib.SignalHandle {
+func (document *Document) ConnectPageChanged(f func(pageNumber int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(document, "page-changed", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectPageChanged), f)
 }
 
@@ -244,7 +244,7 @@ func (document *Document) AttributeValue(attributeName string) string {
 //    - gint: current page number inside document, or -1 if not implemented, not
 //      know by the implementor, or irrelevant.
 //
-func (document *Document) CurrentPageNumber() int {
+func (document *Document) CurrentPageNumber() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -256,9 +256,9 @@ func (document *Document) CurrentPageNumber() int {
 
 	runtime.KeepAlive(document)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -330,7 +330,7 @@ func (document *Document) Locale() string {
 //    - gint: total page count of document, or -1 if not implemented, not know by
 //      the implementor or irrelevant.
 //
-func (document *Document) PageCount() int {
+func (document *Document) PageCount() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -342,9 +342,9 @@ func (document *Document) PageCount() int {
 
 	runtime.KeepAlive(document)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

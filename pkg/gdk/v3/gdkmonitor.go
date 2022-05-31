@@ -158,6 +158,32 @@ func (monitor *Monitor) Display() *Display {
 	return _display
 }
 
+// HeightMm gets the height in millimeters of the monitor.
+//
+// The function returns the following values:
+//
+//    - gint: physical height of the monitor.
+//
+func (monitor *Monitor) HeightMm() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**Monitor)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_height_mm", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(monitor)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
 // available.
 //
@@ -217,6 +243,92 @@ func (monitor *Monitor) Model() string {
 	}
 
 	return _utf8
+}
+
+// RefreshRate gets the refresh rate of the monitor, if available.
+//
+// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as 60000.
+//
+// The function returns the following values:
+//
+//    - gint: refresh rate in milli-Hertz, or 0.
+//
+func (monitor *Monitor) RefreshRate() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**Monitor)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_refresh_rate", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(monitor)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// ScaleFactor gets the internal scale factor that maps from monitor coordinates
+// to the actual device pixels. On traditional systems this is 1, but on very
+// high density outputs this can be a higher value (often 2).
+//
+// This can be used if you want to create pixel based data for a particular
+// monitor, but most of the time you’re drawing to a window where it is better
+// to use gdk_window_get_scale_factor() instead.
+//
+// The function returns the following values:
+//
+//    - gint: scale factor.
+//
+func (monitor *Monitor) ScaleFactor() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**Monitor)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_scale_factor", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(monitor)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// WidthMm gets the width in millimeters of the monitor.
+//
+// The function returns the following values:
+//
+//    - gint: physical width of the monitor.
+//
+func (monitor *Monitor) WidthMm() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**Monitor)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_width_mm", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(monitor)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // IsPrimary gets whether this monitor should be considered primary (see

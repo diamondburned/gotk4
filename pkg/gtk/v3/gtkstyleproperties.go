@@ -652,7 +652,7 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 }
 
 // NewSymbolicColorWin32 constructs a struct SymbolicColor.
-func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
+func NewSymbolicColorWin32(themeClass string, id int32) *SymbolicColor {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -662,7 +662,7 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	defer C.free(unsafe.Pointer(_arg0))
 	_arg1 = C.gint(id)
 	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -270,7 +270,7 @@ func (self *MultiFilter) Append(filter *Filter) {
 //
 //    - position of filter to remove.
 //
-func (self *MultiFilter) Remove(position uint) {
+func (self *MultiFilter) Remove(position uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

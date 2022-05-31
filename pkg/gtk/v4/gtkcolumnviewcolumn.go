@@ -205,6 +205,32 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 	return _listItemFactory
 }
 
+// FixedWidth gets the fixed width of the column.
+//
+// The function returns the following values:
+//
+//    - gint: fixed with of the column.
+//
+func (self *ColumnViewColumn) FixedWidth() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**ColumnViewColumn)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_fixed_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // HeaderMenu gets the menu model that is used to create the context menu for
 // the column header.
 //
@@ -407,6 +433,31 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(factory)
+}
+
+// SetFixedWidth: if fixed_width is not -1, sets the fixed width of column;
+// otherwise unsets it.
+//
+// Setting a fixed width overrides the automatically calculated width.
+// Interactive resizing also sets the “fixed-width” property.
+//
+// The function takes the following parameters:
+//
+//    - fixedWidth: new fixed width, or -1.
+//
+func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(fixedWidth)
+	*(**ColumnViewColumn)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_fixed_width", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(fixedWidth)
 }
 
 // SetHeaderMenu sets the menu model that is used to create the context menu for

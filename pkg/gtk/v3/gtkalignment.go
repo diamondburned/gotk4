@@ -198,7 +198,7 @@ func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 //    - paddingLeft: padding at the left of the widget.
 //    - paddingRight: padding at the right of the widget.
 //
-func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
+func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -212,9 +212,9 @@ func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, p
 	_arg3 = C.guint(paddingLeft)
 	_arg4 = C.guint(paddingRight)
 	*(**Alignment)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint)(unsafe.Pointer(&args[3])) = _arg3
-	*(*uint)(unsafe.Pointer(&args[4])) = _arg4
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*uint32)(unsafe.Pointer(&args[4])) = _arg4
 
 	girepository.MustFind("Gtk", "Alignment").InvokeMethod("set_padding", args[:], nil)
 

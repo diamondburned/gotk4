@@ -38,9 +38,9 @@ func (a *Array) Data() string {
 
 // Len: number of elements in the #GArray not including the possible terminating
 // zero element.
-func (a *Array) Len() uint {
-	var v uint // out
-	v = uint(a.native.len)
+func (a *Array) Len() uint32 {
+	var v uint32 // out
+	v = uint32(a.native.len)
 	return v
 }
 
@@ -65,9 +65,9 @@ func (b *ByteArray) Data() *byte {
 }
 
 // Len: number of elements in the Array.
-func (b *ByteArray) Len() uint {
-	var v uint // out
-	v = uint(b.native.len)
+func (b *ByteArray) Len() uint32 {
+	var v uint32 // out
+	v = uint32(b.native.len)
 	return v
 }
 
@@ -151,7 +151,7 @@ func NewBytes(data []byte) *Bytes {
 //    - gint: negative value if bytes1 is less than bytes2, a positive value if
 //      bytes1 is greater than bytes2, and zero if bytes1 is equal to bytes2.
 //
-func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
+func (bytes1 *Bytes) Compare(bytes2 *Bytes) int32 {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
@@ -163,9 +163,9 @@ func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 	runtime.KeepAlive(bytes1)
 	runtime.KeepAlive(bytes2)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -268,7 +268,7 @@ func (bytes *Bytes) Size() uint {
 //
 //    - guint: hash value corresponding to the key.
 //
-func (bytes *Bytes) Hash() uint {
+func (bytes *Bytes) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -277,9 +277,9 @@ func (bytes *Bytes) Hash() uint {
 	_cret = C.g_bytes_hash(_arg0)
 	runtime.KeepAlive(bytes)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

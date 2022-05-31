@@ -590,6 +590,63 @@ func (self *Label) Layout() *pango.Layout {
 	return _layout
 }
 
+// Lines gets the number of lines to which an ellipsized, wrapping label should
+// be limited.
+//
+// See gtk.Label.SetLines().
+//
+// The function returns the following values:
+//
+//    - gint: number of lines.
+//
+func (self *Label) Lines() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Label)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_lines", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// MaxWidthChars retrieves the desired maximum width of label, in characters.
+//
+// See gtk.Label.SetWidthChars().
+//
+// The function returns the following values:
+//
+//    - gint: maximum width of the label in characters.
+//
+func (self *Label) MaxWidthChars() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Label)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_max_width_chars", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // MnemonicKeyval: return the mnemonic accelerator.
 //
 // If the label has been set so that it has a mnemonic key this function returns
@@ -600,7 +657,7 @@ func (self *Label) Layout() *pango.Layout {
 //
 //    - guint: GDK keyval usable for accelerators, or GDK_KEY_VoidSymbol.
 //
-func (self *Label) MnemonicKeyval() uint {
+func (self *Label) MnemonicKeyval() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -613,9 +670,9 @@ func (self *Label) MnemonicKeyval() uint {
 
 	runtime.KeepAlive(self)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -814,6 +871,34 @@ func (self *Label) UseUnderline() bool {
 	return _ok
 }
 
+// WidthChars retrieves the desired width of label, in characters.
+//
+// See gtk.Label.SetWidthChars().
+//
+// The function returns the following values:
+//
+//    - gint: width of the label in characters.
+//
+func (self *Label) WidthChars() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Label)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_width_chars", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Wrap returns whether lines in the label are automatically wrapped.
 //
 // See gtk.Label.SetWrap().
@@ -842,6 +927,93 @@ func (self *Label) Wrap() bool {
 	}
 
 	return _ok
+}
+
+// XAlign gets the xalign of the label.
+//
+// See the gtk.Label:xalign property.
+//
+// The function returns the following values:
+//
+//    - gfloat: xalign property.
+//
+func (self *Label) XAlign() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Label)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_xalign", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// YAlign gets the yalign of the label.
+//
+// See the gtk.Label:yalign property.
+//
+// The function returns the following values:
+//
+//    - gfloat: yalign property.
+//
+func (self *Label) YAlign() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**Label)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_yalign", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// SelectRegion selects a range of characters in the label, if the label is
+// selectable.
+//
+// See gtk.Label.SetSelectable(). If the label is not selectable, this function
+// has no effect. If start_offset or end_offset are -1, then the end of the
+// label will be substituted.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: start offset (in characters not bytes).
+//    - endOffset: end offset (in characters not bytes).
+//
+func (self *Label) SelectRegion(startOffset, endOffset int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(startOffset)
+	_arg2 = C.int(endOffset)
+	*(**Label)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "Label").InvokeMethod("select_region", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
 }
 
 // SetAttributes: apply attributes to the label text.
@@ -923,6 +1095,31 @@ func (self *Label) SetLabel(str string) {
 	runtime.KeepAlive(str)
 }
 
+// SetLines sets the number of lines to which an ellipsized, wrapping label
+// should be limited.
+//
+// This has no effect if the label is not wrapping or ellipsized. Set this to -1
+// if you don’t want to limit the number of lines.
+//
+// The function takes the following parameters:
+//
+//    - lines: desired number of lines, or -1.
+//
+func (self *Label) SetLines(lines int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(lines)
+	*(**Label)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Label").InvokeMethod("set_lines", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(lines)
+}
+
 // SetMarkup sets the labels text and attributes from markup.
 //
 // The string must be marked up with Pango markup (see pango.ParseMarkup()).
@@ -997,6 +1194,28 @@ func (self *Label) SetMarkupWithMnemonic(str string) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(str)
+}
+
+// SetMaxWidthChars sets the desired maximum width in characters of label to
+// n_chars.
+//
+// The function takes the following parameters:
+//
+//    - nChars: new desired maximum width, in characters.
+//
+func (self *Label) SetMaxWidthChars(nChars int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(nChars)
+	*(**Label)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Label").InvokeMethod("set_max_width_chars", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(nChars)
 }
 
 // SetMnemonicWidget: associate the label with its mnemonic target.
@@ -1192,6 +1411,27 @@ func (self *Label) SetUseUnderline(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
+// SetWidthChars sets the desired width in characters of label to n_chars.
+//
+// The function takes the following parameters:
+//
+//    - nChars: new desired width, in characters.
+//
+func (self *Label) SetWidthChars(nChars int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(nChars)
+	*(**Label)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Label").InvokeMethod("set_width_chars", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(nChars)
+}
+
 // SetWrap toggles line wrapping within the GtkLabel widget.
 //
 // TRUE makes it break lines if text exceeds the widget’s size. FALSE lets the
@@ -1221,4 +1461,50 @@ func (self *Label) SetWrap(wrap bool) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(wrap)
+}
+
+// SetXAlign sets the xalign of the label.
+//
+// See the gtk.Label:xalign property.
+//
+// The function takes the following parameters:
+//
+//    - xalign: new xalign value, between 0 and 1.
+//
+func (self *Label) SetXAlign(xalign float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.float(xalign)
+	*(**Label)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Label").InvokeMethod("set_xalign", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(xalign)
+}
+
+// SetYAlign sets the yalign of the label.
+//
+// See the gtk.Label:yalign property.
+//
+// The function takes the following parameters:
+//
+//    - yalign: new yalign value, between 0 and 1.
+//
+func (self *Label) SetYAlign(yalign float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.float(yalign)
+	*(**Label)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Label").InvokeMethod("set_yalign", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(yalign)
 }

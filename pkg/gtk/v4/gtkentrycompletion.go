@@ -543,6 +543,32 @@ func (completion *EntryCompletion) InlineSelection() bool {
 	return _ok
 }
 
+// MinimumKeyLength returns the minimum key length as set for completion.
+//
+// The function returns the following values:
+//
+//    - gint: currently used minimum key length.
+//
+func (completion *EntryCompletion) MinimumKeyLength() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
+	*(**EntryCompletion)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_minimum_key_length", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(completion)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Model returns the model the GtkEntryCompletion is using as data source.
 //
 // Returns NULL if the model is unset.
@@ -661,6 +687,32 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 	return _ok
 }
 
+// TextColumn returns the column in the model of completion to get strings from.
+//
+// The function returns the following values:
+//
+//    - gint: column containing the strings.
+//
+func (completion *EntryCompletion) TextColumn() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
+	*(**EntryCompletion)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_text_column", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(completion)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // InsertPrefix requests a prefix insertion.
 func (completion *EntryCompletion) InsertPrefix() {
 	var args [1]girepository.Argument
@@ -720,6 +772,32 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(inlineSelection)
+}
+
+// SetMinimumKeyLength requires the length of the search key for completion to
+// be at least length.
+//
+// This is useful for long lists, where completing using a small key takes a lot
+// of time and will come up with meaningless results anyway (ie, a too large
+// dataset).
+//
+// The function takes the following parameters:
+//
+//    - length: minimum length of the key in order to start completing.
+//
+func (completion *EntryCompletion) SetMinimumKeyLength(length int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
+	_arg1 = C.int(length)
+	*(**EntryCompletion)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_minimum_key_length", args[:], nil)
+
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(length)
 }
 
 // SetModel sets the model for a GtkEntryCompletion.
@@ -822,4 +900,35 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(popupSingleMatch)
+}
+
+// SetTextColumn: convenience function for setting up the most used case of this
+// code: a completion list with just strings.
+//
+// This function will set up completion to have a list displaying all (and just)
+// strings in the completion list, and to get those strings from column in the
+// model of completion.
+//
+// This functions creates and adds a GtkCellRendererText for the selected
+// column. If you need to set the text column, but don't want the cell renderer,
+// use g_object_set() to set the gtk.EntryCompletion:text-column property
+// directly.
+//
+// The function takes the following parameters:
+//
+//    - column in the model of completion to get strings from.
+//
+func (completion *EntryCompletion) SetTextColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
+	_arg1 = C.int(column)
+	*(**EntryCompletion)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_text_column", args[:], nil)
+
+	runtime.KeepAlive(completion)
+	runtime.KeepAlive(column)
 }

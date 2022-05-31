@@ -378,7 +378,7 @@ func (task *Task) Name() string {
 //
 //    - gint task's priority.
 //
-func (task *Task) Priority() int {
+func (task *Task) Priority() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -391,9 +391,9 @@ func (task *Task) Priority() int {
 
 	runtime.KeepAlive(task)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -736,7 +736,7 @@ func (task *Task) SetName(name string) {
 //
 //    - priority: [priority][io-priority] of the request.
 //
-func (task *Task) SetPriority(priority int) {
+func (task *Task) SetPriority(priority int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

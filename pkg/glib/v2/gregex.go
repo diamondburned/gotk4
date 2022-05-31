@@ -701,7 +701,7 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 //    - utf8 (optional): matched substring, or NULL if an error occurred. You
 //      have to free the string yourself.
 //
-func (matchInfo *MatchInfo) Fetch(matchNum int) string {
+func (matchInfo *MatchInfo) Fetch(matchNum int32) string {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 C.gint        // out
 	var _cret *C.gchar      // in
@@ -835,7 +835,7 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 //    - ok: TRUE if the position was fetched, FALSE otherwise. If the position
 //      cannot be fetched, start_pos and end_pos are left unchanged.
 //
-func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok bool) {
+func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int32, endPos int32, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // in
@@ -850,12 +850,12 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 	runtime.KeepAlive(matchInfo)
 	runtime.KeepAlive(name)
 
-	var _startPos int // out
-	var _endPos int   // out
-	var _ok bool      // out
+	var _startPos int32 // out
+	var _endPos int32   // out
+	var _ok bool        // out
 
-	_startPos = int(_arg2)
-	_endPos = int(_arg3)
+	_startPos = int32(_arg2)
+	_endPos = int32(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -889,7 +889,7 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 //    - ok: TRUE if the position was fetched, FALSE otherwise. If the position
 //      cannot be fetched, start_pos and end_pos are left unchanged.
 //
-func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
+func (matchInfo *MatchInfo) FetchPos(matchNum int32) (startPos int32, endPos int32, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // in
@@ -903,12 +903,12 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 	runtime.KeepAlive(matchInfo)
 	runtime.KeepAlive(matchNum)
 
-	var _startPos int // out
-	var _endPos int   // out
-	var _ok bool      // out
+	var _startPos int32 // out
+	var _endPos int32   // out
+	var _ok bool        // out
 
-	_startPos = int(_arg2)
-	_endPos = int(_arg3)
+	_startPos = int32(_arg2)
+	_endPos = int32(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -929,7 +929,7 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 //
 //    - gint: number of matched substrings, or -1 if an error occurred.
 //
-func (matchInfo *MatchInfo) MatchCount() int {
+func (matchInfo *MatchInfo) MatchCount() int32 {
 	var _arg0 *C.GMatchInfo // out
 	var _cret C.gint        // in
 
@@ -938,9 +938,9 @@ func (matchInfo *MatchInfo) MatchCount() int {
 	_cret = C.g_match_info_get_match_count(_arg0)
 	runtime.KeepAlive(matchInfo)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1217,7 +1217,7 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 //
 //    - gint: number of capturing subpatterns.
 //
-func (regex *Regex) CaptureCount() int {
+func (regex *Regex) CaptureCount() int32 {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
 
@@ -1226,9 +1226,9 @@ func (regex *Regex) CaptureCount() int {
 	_cret = C.g_regex_get_capture_count(_arg0)
 	runtime.KeepAlive(regex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1312,7 +1312,7 @@ func (regex *Regex) MatchFlags() RegexMatchFlags {
 //
 //    - gint: number of the highest back reference.
 //
-func (regex *Regex) MaxBackref() int {
+func (regex *Regex) MaxBackref() int32 {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
 
@@ -1321,9 +1321,9 @@ func (regex *Regex) MaxBackref() int {
 	_cret = C.g_regex_get_max_backref(_arg0)
 	runtime.KeepAlive(regex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1336,7 +1336,7 @@ func (regex *Regex) MaxBackref() int {
 //
 //    - gint: number of characters in the longest lookbehind assertion.
 //
-func (regex *Regex) MaxLookbehind() int {
+func (regex *Regex) MaxLookbehind() int32 {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
 
@@ -1345,9 +1345,9 @@ func (regex *Regex) MaxLookbehind() int {
 	_cret = C.g_regex_get_max_lookbehind(_arg0)
 	runtime.KeepAlive(regex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1385,7 +1385,7 @@ func (regex *Regex) Pattern() string {
 //
 //    - gint: number of the subexpression or -1 if name does not exists.
 //
-func (regex *Regex) StringNumber(name string) int {
+func (regex *Regex) StringNumber(name string) int32 {
 	var _arg0 *C.GRegex // out
 	var _arg1 *C.gchar  // out
 	var _cret C.gint    // in
@@ -1398,9 +1398,9 @@ func (regex *Regex) StringNumber(name string) int {
 	runtime.KeepAlive(regex)
 	runtime.KeepAlive(name)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1670,7 +1670,7 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 //
 //    - utf8: newly-allocated escaped string.
 //
-func RegexEscapeNUL(str string, length int) string {
+func RegexEscapeNUL(str string, length int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
 	var _cret *C.gchar // in

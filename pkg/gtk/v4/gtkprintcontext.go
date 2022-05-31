@@ -204,6 +204,86 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 	return _ret
 }
 
+// DPIX obtains the horizontal resolution of the GtkPrintContext, in dots per
+// inch.
+//
+// The function returns the following values:
+//
+//    - gdouble: horizontal resolution of context.
+//
+func (context *PrintContext) DPIX() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_x", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(context)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// DPIY obtains the vertical resolution of the GtkPrintContext, in dots per
+// inch.
+//
+// The function returns the following values:
+//
+//    - gdouble: vertical resolution of context.
+//
+func (context *PrintContext) DPIY() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_y", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(context)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// Height obtains the height of the GtkPrintContext, in pixels.
+//
+// The function returns the following values:
+//
+//    - gdouble: height of context.
+//
+func (context *PrintContext) Height() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_height", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(context)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // PageSetup obtains the GtkPageSetup that determines the page dimensions of the
 // GtkPrintContext.
 //
@@ -272,4 +352,65 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	}
 
 	return _fontMap
+}
+
+// Width obtains the width of the GtkPrintContext, in pixels.
+//
+// The function returns the following values:
+//
+//    - gdouble: width of context.
+//
+func (context *PrintContext) Width() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**PrintContext)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_width", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(context)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// SetCairoContext sets a new cairo context on a print context.
+//
+// This function is intended to be used when implementing an internal print
+// preview, it is not needed for printing, since GTK itself creates a suitable
+// cairo context in that case.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - dpiX: horizontal resolution to use with cr.
+//    - dpiY: vertical resolution to use with cr.
+//
+func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float64) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.double(dpiX)
+	_arg3 = C.double(dpiY)
+	*(**PrintContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(**cairo.Context)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "PrintContext").InvokeMethod("set_cairo_context", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(dpiX)
+	runtime.KeepAlive(dpiY)
 }

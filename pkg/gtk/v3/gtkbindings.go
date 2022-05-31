@@ -105,9 +105,9 @@ func (b *BindingSet) SetName() string {
 }
 
 // Priority: unused.
-func (b *BindingSet) Priority() int {
-	var v int // out
-	v = int(b.native.priority)
+func (b *BindingSet) Priority() int32 {
+	var v int32 // out
+	v = int32(b.native.priority)
 	return v
 }
 

@@ -145,6 +145,50 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 	return wrapIconPaintable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewIconPaintableForFile creates a GtkIconPaintable for a file with a given
+// size and scale.
+//
+// The icon can then be rendered by using it as a GdkPaintable.
+//
+// The function takes the following parameters:
+//
+//    - file: GFile.
+//    - size: desired icon size.
+//    - scale: desired scale.
+//
+// The function returns the following values:
+//
+//    - iconPaintable: GtkIconPaintable containing for the icon. Unref with
+//      g_object_unref().
+//
+func NewIconPaintableForFile(file gio.Filer, size, scale int32) *IconPaintable {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = C.int(size)
+	_arg2 = C.int(scale)
+	*(*gio.Filer)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "IconPaintable").InvokeMethod("new_IconPaintable_for_file", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+
+	var _iconPaintable *IconPaintable // out
+
+	_iconPaintable = wrapIconPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _iconPaintable
+}
+
 // File gets the GFile that was used to load the icon.
 //
 // Returns NULL if the icon was not loaded from a file.
@@ -471,6 +515,59 @@ func (self *IconTheme) IconNames() []string {
 	}
 
 	return _utf8s
+}
+
+// IconSizes returns an array of integers describing the sizes at which the icon
+// is available without scaling.
+//
+// A size of -1 means that the icon is available in a scalable format. The array
+// is zero-terminated.
+//
+// The function takes the following parameters:
+//
+//    - iconName: name of an icon.
+//
+// The function returns the following values:
+//
+//    - gints: newly allocated array describing the sizes at which the icon is
+//      available. The array should be freed with g_free() when it is no longer
+//      needed.
+//
+func (self *IconTheme) IconSizes(iconName string) []int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret *C.int  // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**IconTheme)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("get_icon_sizes", args[:], nil)
+	_cret = *(**C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
+
+	var _gints []int32 // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		var i int
+		var z C.int
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_gints = make([]int32, i)
+		for i := range src {
+			_gints[i] = int32(src[i])
+		}
+	}
+
+	return _gints
 }
 
 // ResourcePath gets the current resource path.

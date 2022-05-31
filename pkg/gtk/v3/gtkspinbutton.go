@@ -128,10 +128,10 @@ type SpinButtonOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Input(newValue *float64) int
+	Input(newValue *float64) int32
 	// The function returns the following values:
 	//
-	Output() int
+	Output() int32
 	ValueChanged()
 	Wrapped()
 }
@@ -203,11 +203,11 @@ func classInitSpinButtonner(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
-	if _, ok := goval.(interface{ Input(newValue *float64) int }); ok {
+	if _, ok := goval.(interface{ Input(newValue *float64) int32 }); ok {
 		pclass.input = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_input)
 	}
 
-	if _, ok := goval.(interface{ Output() int }); ok {
+	if _, ok := goval.(interface{ Output() int32 }); ok {
 		pclass.output = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_output)
 	}
 
@@ -223,7 +223,7 @@ func classInitSpinButtonner(gclassPtr, data C.gpointer) {
 //export _gotk4_gtk3_SpinButtonClass_input
 func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Input(newValue *float64) int })
+	iface := goval.(interface{ Input(newValue *float64) int32 })
 
 	var _newValue *float64 // out
 
@@ -239,7 +239,7 @@ func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (
 //export _gotk4_gtk3_SpinButtonClass_output
 func _gotk4_gtk3_SpinButtonClass_output(arg0 *C.GtkSpinButton) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Output() int })
+	iface := goval.(interface{ Output() int32 })
 
 	gint := iface.Output()
 
@@ -412,7 +412,7 @@ func (spinButton *SpinButton) ConnectWrapped(f func()) coreglib.SignalHandle {
 //
 //    - spinButton: new spin button as a Widget.
 //
-func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *SpinButton {
+func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *SpinButton {
 	var args [3]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gdouble // out
@@ -426,7 +426,7 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *Spin
 	_arg2 = C.guint(digits)
 	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
 	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("new_SpinButton", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -500,7 +500,7 @@ func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 //    - climbRate: new climb rate.
 //    - digits: number of decimal places to display in the spin button.
 //
-func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint) {
+func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
@@ -558,7 +558,7 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 //
 //    - guint: current precision.
 //
-func (spinButton *SpinButton) Digits() uint {
+func (spinButton *SpinButton) Digits() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -571,9 +571,9 @@ func (spinButton *SpinButton) Digits() uint {
 
 	runtime.KeepAlive(spinButton)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -668,7 +668,7 @@ func (spinButton *SpinButton) Value() float64 {
 //
 //    - gint: value of spin_button.
 //
-func (spinButton *SpinButton) ValueAsInt() int {
+func (spinButton *SpinButton) ValueAsInt() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -681,9 +681,9 @@ func (spinButton *SpinButton) ValueAsInt() int {
 
 	runtime.KeepAlive(spinButton)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -747,7 +747,7 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 //    - digits: number of digits after the decimal point to be displayed for the
 //      spin button’s value.
 //
-func (spinButton *SpinButton) SetDigits(digits uint) {
+func (spinButton *SpinButton) SetDigits(digits uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

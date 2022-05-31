@@ -261,7 +261,7 @@ func (button *FileChooserButton) Title() string {
 //    - gint: integer width (in characters) that the button will use to size
 //      itself.
 //
-func (button *FileChooserButton) WidthChars() int {
+func (button *FileChooserButton) WidthChars() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -274,9 +274,9 @@ func (button *FileChooserButton) WidthChars() int {
 
 	runtime.KeepAlive(button)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -337,7 +337,7 @@ func (button *FileChooserButton) SetTitle(title string) {
 //
 //    - nChars: new width, in characters.
 //
-func (button *FileChooserButton) SetWidthChars(nChars int) {
+func (button *FileChooserButton) SetWidthChars(nChars int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

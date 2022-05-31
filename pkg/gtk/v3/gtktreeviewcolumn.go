@@ -284,7 +284,7 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 //    - attribute on the renderer.
 //    - column position on the model to get the attribute from.
 //
-func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attribute string, column int) {
+func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attribute string, column int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -586,7 +586,7 @@ func (treeColumn *TreeViewColumn) Expand() bool {
 //
 //    - gint: fixed width of the column.
 //
-func (treeColumn *TreeViewColumn) FixedWidth() int {
+func (treeColumn *TreeViewColumn) FixedWidth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -599,9 +599,9 @@ func (treeColumn *TreeViewColumn) FixedWidth() int {
 
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -613,7 +613,7 @@ func (treeColumn *TreeViewColumn) FixedWidth() int {
 //
 //    - gint: maximum width of the tree_column.
 //
-func (treeColumn *TreeViewColumn) MaxWidth() int {
+func (treeColumn *TreeViewColumn) MaxWidth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -626,9 +626,9 @@ func (treeColumn *TreeViewColumn) MaxWidth() int {
 
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -640,7 +640,7 @@ func (treeColumn *TreeViewColumn) MaxWidth() int {
 //
 //    - gint: minimum width of the tree_column.
 //
-func (treeColumn *TreeViewColumn) MinWidth() int {
+func (treeColumn *TreeViewColumn) MinWidth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -653,9 +653,9 @@ func (treeColumn *TreeViewColumn) MinWidth() int {
 
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -725,7 +725,7 @@ func (treeColumn *TreeViewColumn) Resizable() bool {
 //    - gint: current sort_column_id for this column, or -1 if this column can’t
 //      be used for sorting.
 //
-func (treeColumn *TreeViewColumn) SortColumnID() int {
+func (treeColumn *TreeViewColumn) SortColumnID() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -738,9 +738,9 @@ func (treeColumn *TreeViewColumn) SortColumnID() int {
 
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -780,7 +780,7 @@ func (treeColumn *TreeViewColumn) SortIndicator() bool {
 //
 //    - gint: spacing of tree_column.
 //
-func (treeColumn *TreeViewColumn) Spacing() int {
+func (treeColumn *TreeViewColumn) Spacing() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -793,9 +793,9 @@ func (treeColumn *TreeViewColumn) Spacing() int {
 
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -946,7 +946,7 @@ func (treeColumn *TreeViewColumn) Widget() Widgetter {
 //
 //    - gint: current width of tree_column.
 //
-func (treeColumn *TreeViewColumn) Width() int {
+func (treeColumn *TreeViewColumn) Width() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -959,9 +959,9 @@ func (treeColumn *TreeViewColumn) Width() int {
 
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -972,7 +972,7 @@ func (treeColumn *TreeViewColumn) Width() int {
 //
 //    - gint: current X offset of tree_column.
 //
-func (treeColumn *TreeViewColumn) XOffset() int {
+func (treeColumn *TreeViewColumn) XOffset() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -985,9 +985,9 @@ func (treeColumn *TreeViewColumn) XOffset() int {
 
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1158,7 +1158,7 @@ func (treeColumn *TreeViewColumn) SetExpand(expand bool) {
 //
 //    - fixedWidth: new fixed width, in pixels, or -1.
 //
-func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int) {
+func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1182,7 +1182,7 @@ func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int) {
 //
 //    - maxWidth: maximum width of the column in pixels, or -1.
 //
-func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int) {
+func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1204,7 +1204,7 @@ func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int) {
 //
 //    - minWidth: minimum width of the column in pixels, or -1.
 //
-func (treeColumn *TreeViewColumn) SetMinWidth(minWidth int) {
+func (treeColumn *TreeViewColumn) SetMinWidth(minWidth int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1277,7 +1277,7 @@ func (treeColumn *TreeViewColumn) SetResizable(resizable bool) {
 //
 //    - sortColumnId: sort_column_id of the model to sort on.
 //
-func (treeColumn *TreeViewColumn) SetSortColumnID(sortColumnId int) {
+func (treeColumn *TreeViewColumn) SetSortColumnID(sortColumnId int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1324,7 +1324,7 @@ func (treeColumn *TreeViewColumn) SetSortIndicator(setting bool) {
 //
 //    - spacing: distance between cell renderers in pixels.
 //
-func (treeColumn *TreeViewColumn) SetSpacing(spacing int) {
+func (treeColumn *TreeViewColumn) SetSpacing(spacing int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

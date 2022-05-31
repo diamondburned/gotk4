@@ -863,7 +863,7 @@ type WindowOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	CreateSurface(width, height int) *cairo.Surface
+	CreateSurface(width, height int32) *cairo.Surface
 	// The function takes the following parameters:
 	//
 	//    - embedderX
@@ -914,7 +914,7 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GdkWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
-		CreateSurface(width, height int) *cairo.Surface
+		CreateSurface(width, height int32) *cairo.Surface
 	}); ok {
 		pclass.create_surface = (*[0]byte)(C._gotk4_gdk3_WindowClass_create_surface)
 	}
@@ -936,14 +936,14 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		CreateSurface(width, height int) *cairo.Surface
+		CreateSurface(width, height int32) *cairo.Surface
 	})
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(arg1)
-	_height = int(arg2)
+	_width = int32(arg1)
+	_height = int32(arg2)
 
 	surface := iface.CreateSurface(_width, _height)
 
@@ -1013,7 +1013,7 @@ func BaseWindow(obj Windower) *Window {
 
 //export _gotk4_gdk3_Window_ConnectCreateSurface
 func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret *C.cairo_surface_t) {
-	var f func(width, height int) (surface *cairo.Surface)
+	var f func(width, height int32) (surface *cairo.Surface)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -1021,14 +1021,14 @@ func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(width, height int) (surface *cairo.Surface))
+		f = closure.Func.(func(width, height int32) (surface *cairo.Surface))
 	}
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(arg1)
-	_height = int(arg2)
+	_width = int32(arg1)
+	_height = int32(arg2)
 
 	surface := f(_width, _height)
 
@@ -1046,7 +1046,7 @@ func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 
 // Note that it is not possible to access the window's previous surface from
 // within any callback of this signal. Calling
 // gdk_offscreen_window_get_surface() will lead to a crash.
-func (window *Window) ConnectCreateSurface(f func(width, height int) (surface *cairo.Surface)) coreglib.SignalHandle {
+func (window *Window) ConnectCreateSurface(f func(width, height int32) (surface *cairo.Surface)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "create-surface", false, unsafe.Pointer(C._gotk4_gdk3_Window_ConnectCreateSurface), f)
 }
 
@@ -1215,7 +1215,7 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 //    - rootY: root window Y coordinate of mouse click that began the drag.
 //    - timestamp of mouse click that began the drag.
 //
-func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) {
+func (window *Window) BeginMoveDrag(button, rootX, rootY int32, timestamp uint32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gint    // out
@@ -1229,9 +1229,9 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) 
 	_arg3 = C.gint(rootY)
 	_arg4 = C.guint32(timestamp)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("begin_move_drag", args[:], nil)
 
@@ -1256,7 +1256,7 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) 
 //    - rootY: root window Y coordinate of mouse click that began the drag.
 //    - timestamp of mouse click that began the drag.
 //
-func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, rootY int, timestamp uint32) {
+func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, rootY int32, timestamp uint32) {
 	var args [6]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 *C.void   // out
@@ -1273,9 +1273,9 @@ func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, root
 	_arg5 = C.guint32(timestamp)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Devicer)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int)(unsafe.Pointer(&args[4])) = _arg4
-	*(*int)(unsafe.Pointer(&args[5])) = _arg5
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[5])) = _arg5
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("begin_move_drag_for_device", args[:], nil)
 
@@ -1678,7 +1678,7 @@ func (window *Window) Fullscreen() {
 //
 //    - monitor: which monitor to display fullscreen on.
 //
-func (window *Window) FullscreenOnMonitor(monitor int) {
+func (window *Window) FullscreenOnMonitor(monitor int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2256,6 +2256,36 @@ func (window *Window) Group() Windower {
 	return _ret
 }
 
+// Height returns the height of the given window.
+//
+// On the X11 platform the returned size is the size reported in the
+// most-recently-processed configure event, rather than the current size on the
+// X server.
+//
+// The function returns the following values:
+//
+//    - gint: height of window.
+//
+func (window *Window) Height() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_height", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(window)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ModalHint determines whether or not the window manager is hinted that window
 // has modal behaviour.
 //
@@ -2381,7 +2411,7 @@ func (window *Window) PassThrough() bool {
 //
 //    - gint: scale factor.
 //
-func (window *Window) ScaleFactor() int {
+func (window *Window) ScaleFactor() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -2394,9 +2424,9 @@ func (window *Window) ScaleFactor() int {
 
 	runtime.KeepAlive(window)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2603,6 +2633,36 @@ func (window *Window) Visual() *Visual {
 	return _visual
 }
 
+// Width returns the width of the given window.
+//
+// On the X11 platform the returned size is the size reported in the
+// most-recently-processed configure event, rather than the current size on the
+// X server.
+//
+// The function returns the following values:
+//
+//    - gint: width of window.
+//
+func (window *Window) Width() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**Window)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(window)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // HasNative checks whether the window has a native window or not. Note that you
 // can use gdk_window_ensure_native() if a native window is needed.
 //
@@ -2684,7 +2744,7 @@ func (window *Window) Iconify() {
 //    - offsetX: x position of shape_region in window coordinates.
 //    - offsetY: y position of shape_region in window coordinates.
 //
-func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int) {
+func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -2697,7 +2757,7 @@ func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 	_arg3 = C.gint(offsetY)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 	*(**cairo.Region)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("input_shape_combine_region", args[:], nil)
 
@@ -3049,7 +3109,7 @@ func (window *Window) MergeChildShapes() {
 //    - x: x coordinate relative to window’s parent.
 //    - y: y coordinate relative to window’s parent.
 //
-func (window *Window) Move(x, y int) {
+func (window *Window) Move(x, y int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -3059,7 +3119,7 @@ func (window *Window) Move(x, y int) {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("move", args[:], nil)
 
@@ -3080,7 +3140,7 @@ func (window *Window) Move(x, y int) {
 //    - dx: amount to move in the X direction.
 //    - dy: amount to move in the Y direction.
 //
-func (window *Window) MoveRegion(region *cairo.Region, dx, dy int) {
+func (window *Window) MoveRegion(region *cairo.Region, dx, dy int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -3093,7 +3153,7 @@ func (window *Window) MoveRegion(region *cairo.Region, dx, dy int) {
 	_arg3 = C.gint(dy)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 	*(**cairo.Region)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("move_region", args[:], nil)
 
@@ -3115,7 +3175,7 @@ func (window *Window) MoveRegion(region *cairo.Region, dx, dy int) {
 //    - width: new width.
 //    - height: new height.
 //
-func (window *Window) MoveResize(x, y, width, height int) {
+func (window *Window) MoveResize(x, y, width, height int32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -3129,9 +3189,9 @@ func (window *Window) MoveResize(x, y, width, height int) {
 	_arg3 = C.gint(width)
 	_arg4 = C.gint(height)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("move_resize", args[:], nil)
 
@@ -3264,7 +3324,7 @@ func (window *Window) RegisterDND() {
 //    - x: x location inside the new parent.
 //    - y: y location inside the new parent.
 //
-func (window *Window) Reparent(newParent Windower, x, y int) {
+func (window *Window) Reparent(newParent Windower, x, y int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -3277,7 +3337,7 @@ func (window *Window) Reparent(newParent Windower, x, y int) {
 	_arg3 = C.gint(y)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Windower)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("reparent", args[:], nil)
 
@@ -3301,7 +3361,7 @@ func (window *Window) Reparent(newParent Windower, x, y int) {
 //    - width: new width of the window.
 //    - height: new height of the window.
 //
-func (window *Window) Resize(width, height int) {
+func (window *Window) Resize(width, height int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -3311,7 +3371,7 @@ func (window *Window) Resize(width, height int) {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("resize", args[:], nil)
 
@@ -3374,7 +3434,7 @@ func (window *Window) Restack(sibling Windower, above bool) {
 //    - dx: amount to scroll in the X direction.
 //    - dy: amount to scroll in the Y direction.
 //
-func (window *Window) Scroll(dx, dy int) {
+func (window *Window) Scroll(dx, dy int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -3384,7 +3444,7 @@ func (window *Window) Scroll(dx, dy int) {
 	_arg1 = C.gint(dx)
 	_arg2 = C.gint(dy)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("scroll", args[:], nil)
 
@@ -4079,7 +4139,7 @@ func (window *Window) SetRole(role string) {
 //    - top extent.
 //    - bottom extent.
 //
-func (window *Window) SetShadowWidth(left, right, top, bottom int) {
+func (window *Window) SetShadowWidth(left, right, top, bottom int32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -4093,9 +4153,9 @@ func (window *Window) SetShadowWidth(left, right, top, bottom int) {
 	_arg3 = C.gint(top)
 	_arg4 = C.gint(bottom)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("set_shadow_width", args[:], nil)
 
@@ -4348,7 +4408,7 @@ func (window *Window) SetUrgencyHint(urgent bool) {
 //    - offsetX: x position of shape_region in window coordinates.
 //    - offsetY: y position of shape_region in window coordinates.
 //
-func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int) {
+func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -4363,7 +4423,7 @@ func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX, off
 	_arg3 = C.gint(offsetY)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
 	*(**cairo.Region)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gdk", "Window").InvokeMethod("shape_combine_region", args[:], nil)
 

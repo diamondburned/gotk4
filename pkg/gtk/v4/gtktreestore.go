@@ -154,6 +154,40 @@ func (treeStore *TreeStore) IsAncestor(iter, descendant *TreeIter) bool {
 	return _ok
 }
 
+// IterDepth returns the depth of iter. This will be 0 for anything on the root
+// level, 1 for anything down a level, etc.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter.
+//
+// The function returns the following values:
+//
+//    - gint: depth of iter.
+//
+func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**TreeStore)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gtk", "TreeStore").InvokeMethod("iter_depth", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // IterIsValid: WARNING: This function is slow. Only use it for debugging and/or
 // testing purposes.
 //
@@ -289,6 +323,38 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 	}
 
 	return _ok
+}
+
+// SetValue sets the data in the cell specified by iter and column. The type of
+// value must be convertible to the type of the column.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter for the row being modified.
+//    - column number to modify.
+//    - value: new value for the cell.
+//
+func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 *C.void // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = C.int(column)
+	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**TreeStore)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TreeIter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "TreeStore").InvokeMethod("set_value", args[:], nil)
+
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(value)
 }
 
 // Swap swaps a and b in the same level of tree_store. Note that this function

@@ -21,6 +21,7 @@ import (
 // extern PangoFontFace* _gotk4_gtk4_FontChooserIface_get_font_face(GtkFontChooser*);
 // extern PangoFontFamily* _gotk4_gtk4_FontChooserIface_get_font_family(GtkFontChooser*);
 // extern PangoFontMap* _gotk4_gtk4_FontChooserIface_get_font_map(GtkFontChooser*);
+// extern int _gotk4_gtk4_FontChooserIface_get_font_size(GtkFontChooser*);
 // extern void _gotk4_gtk4_FontChooserIface_font_activated(GtkFontChooser*, char*);
 // extern void _gotk4_gtk4_FontChooserIface_set_font_map(GtkFontChooser*, PangoFontMap*);
 // extern void _gotk4_gtk4_FontChooser_ConnectFontActivated(gpointer, gchar*, guintptr);
@@ -206,6 +207,14 @@ type FontChooserOverrider interface {
 	//    - fontMap (optional): PangoFontMap, or NULL.
 	//
 	FontMap() pango.FontMapper
+	// FontSize: selected font size.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: n integer representing the selected font size, or -1 if no font
+	//      size is selected.
+	//
+	FontSize() int32
 	// SetFontMap sets a custom font map to use for this font chooser widget.
 	//
 	// A custom font map can be used to present application-specific fonts
@@ -272,6 +281,8 @@ type FontChooserer interface {
 	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
 	FontMap() pango.FontMapper
+	// FontSize: selected font size.
+	FontSize() int32
 	// Language gets the language that is used for font features.
 	Language() string
 	// PreviewText gets the text displayed in the preview area.
@@ -303,6 +314,7 @@ func ifaceInitFontChooserer(gifacePtr, data C.gpointer) {
 	iface.get_font_face = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_face)
 	iface.get_font_family = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_family)
 	iface.get_font_map = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_map)
+	iface.get_font_size = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_size)
 	iface.set_font_map = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_set_font_map)
 }
 
@@ -357,6 +369,18 @@ func _gotk4_gtk4_FontChooserIface_get_font_map(arg0 *C.GtkFontChooser) (cret *C.
 		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontMap).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(fontMap).Native()))
 	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_FontChooserIface_get_font_size
+func _gotk4_gtk4_FontChooserIface_get_font_size(arg0 *C.GtkFontChooser) (cret C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(FontChooserOverrider)
+
+	gint := iface.FontSize()
+
+	cret = C.int(gint)
 
 	return cret
 }
@@ -662,6 +686,32 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 	}
 
 	return _fontMap
+}
+
+// FontSize: selected font size.
+//
+// The function returns the following values:
+//
+//    - gint: n integer representing the selected font size, or -1 if no font
+//      size is selected.
+//
+func (fontchooser *FontChooser) FontSize() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**FontChooser)(unsafe.Pointer(&args[0])) = _arg0
+
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(fontchooser)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Language gets the language that is used for font features.

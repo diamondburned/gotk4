@@ -25,6 +25,7 @@ import (
 // extern gint _gotk4_gio2_ApplicationClass_handle_local_options(GApplication*, GVariantDict*);
 // extern gint _gotk4_gio2_Application_ConnectCommandLine(gpointer, GApplicationCommandLine*, guintptr);
 // extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, GVariantDict*, guintptr);
+// extern int _gotk4_gio2_ApplicationClass_command_line(GApplication*, GApplicationCommandLine*);
 // extern void _gotk4_gio2_ApplicationClass_activate(GApplication*);
 // extern void _gotk4_gio2_ApplicationClass_add_platform_data(GApplication*, GVariantBuilder*);
 // extern void _gotk4_gio2_ApplicationClass_after_emit(GApplication*, GVariant*);
@@ -70,6 +71,11 @@ type ApplicationOverrider interface {
 	BeforeEmit(platformData *glib.Variant)
 	// The function takes the following parameters:
 	//
+	// The function returns the following values:
+	//
+	CommandLine(commandLine *ApplicationCommandLine) int32
+	// The function takes the following parameters:
+	//
 	//    - connection
 	//    - objectPath
 	//
@@ -84,7 +90,7 @@ type ApplicationOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	HandleLocalOptions(options *glib.VariantDict) int
+	HandleLocalOptions(options *glib.VariantDict) int32
 	// The function returns the following values:
 	//
 	NameLost() bool
@@ -269,6 +275,12 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
+		CommandLine(commandLine *ApplicationCommandLine) int32
+	}); ok {
+		pclass.command_line = (*[0]byte)(C._gotk4_gio2_ApplicationClass_command_line)
+	}
+
+	if _, ok := goval.(interface {
 		DBusRegister(connection *DBusConnection, objectPath string) error
 	}); ok {
 		pclass.dbus_register = (*[0]byte)(C._gotk4_gio2_ApplicationClass_dbus_register)
@@ -281,7 +293,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		HandleLocalOptions(options *glib.VariantDict) int
+		HandleLocalOptions(options *glib.VariantDict) int32
 	}); ok {
 		pclass.handle_local_options = (*[0]byte)(C._gotk4_gio2_ApplicationClass_handle_local_options)
 	}
@@ -384,6 +396,24 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 	iface.BeforeEmit(_platformData)
 }
 
+//export _gotk4_gio2_ApplicationClass_command_line
+func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GApplicationCommandLine) (cret C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		CommandLine(commandLine *ApplicationCommandLine) int32
+	})
+
+	var _commandLine *ApplicationCommandLine // out
+
+	_commandLine = wrapApplicationCommandLine(coreglib.Take(unsafe.Pointer(arg1)))
+
+	gint := iface.CommandLine(_commandLine)
+
+	cret = C.int(gint)
+
+	return cret
+}
+
 //export _gotk4_gio2_ApplicationClass_dbus_register
 func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
@@ -426,7 +456,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.
 func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg1 *C.GVariantDict) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		HandleLocalOptions(options *glib.VariantDict) int
+		HandleLocalOptions(options *glib.VariantDict) int32
 	})
 
 	var _options *glib.VariantDict // out
@@ -571,7 +601,7 @@ func (application *Application) ConnectActivate(f func()) coreglib.SignalHandle 
 
 //export _gotk4_gio2_Application_ConnectCommandLine
 func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplicationCommandLine, arg2 C.guintptr) (cret C.gint) {
-	var f func(commandLine *ApplicationCommandLine) (gint int)
+	var f func(commandLine *ApplicationCommandLine) (gint int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -579,7 +609,7 @@ func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplic
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(commandLine *ApplicationCommandLine) (gint int))
+		f = closure.Func.(func(commandLine *ApplicationCommandLine) (gint int32))
 	}
 
 	var _commandLine *ApplicationCommandLine // out
@@ -596,13 +626,13 @@ func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplic
 // ConnectCommandLine signal is emitted on the primary instance when a
 // commandline is not handled locally. See g_application_run() and the
 // CommandLine documentation for more information.
-func (application *Application) ConnectCommandLine(f func(commandLine *ApplicationCommandLine) (gint int)) coreglib.SignalHandle {
+func (application *Application) ConnectCommandLine(f func(commandLine *ApplicationCommandLine) (gint int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(application, "command-line", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectCommandLine), f)
 }
 
 //export _gotk4_gio2_Application_ConnectHandleLocalOptions
 func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.GVariantDict, arg2 C.guintptr) (cret C.gint) {
-	var f func(options *glib.VariantDict) (gint int)
+	var f func(options *glib.VariantDict) (gint int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -610,7 +640,7 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(options *glib.VariantDict) (gint int))
+		f = closure.Func.(func(options *glib.VariantDict) (gint int32))
 	}
 
 	var _options *glib.VariantDict // out
@@ -668,7 +698,7 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 //
 // You can override local_command_line() if you need more powerful capabilities
 // than what is provided here, but this should not normally be required.
-func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) (gint int)) coreglib.SignalHandle {
+func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) (gint int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(application, "handle-local-options", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectHandleLocalOptions), f)
 }
 
@@ -976,7 +1006,7 @@ func (application *Application) DBusObjectPath() string {
 //
 //    - guint: timeout, in milliseconds.
 //
-func (application *Application) InactivityTimeout() uint {
+func (application *Application) InactivityTimeout() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -989,9 +1019,9 @@ func (application *Application) InactivityTimeout() uint {
 
 	runtime.KeepAlive(application)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1315,6 +1345,119 @@ func (application *Application) Release() {
 	runtime.KeepAlive(application)
 }
 
+// Run runs the application.
+//
+// This function is intended to be run from main() and its return value is
+// intended to be returned by main(). Although you are expected to pass the
+// argc, argv parameters from main() to this function, it is possible to pass
+// NULL if argv is not available or commandline handling is not required. Note
+// that on Windows, argc and argv are ignored, and g_win32_get_command_line() is
+// called internally (for proper support of Unicode commandline arguments).
+//
+// #GApplication will attempt to parse the commandline arguments. You can add
+// commandline flags to the list of recognised options by way of
+// g_application_add_main_option_entries(). After this, the
+// #GApplication::handle-local-options signal is emitted, from which the
+// application can inspect the values of its Entrys.
+//
+// #GApplication::handle-local-options is a good place to handle options such as
+// --version, where an immediate reply from the local process is desired
+// (instead of communicating with an already-running instance). A
+// #GApplication::handle-local-options handler can stop further processing by
+// returning a non-negative value, which then becomes the exit status of the
+// process.
+//
+// What happens next depends on the flags: if G_APPLICATION_HANDLES_COMMAND_LINE
+// was specified then the remaining commandline arguments are sent to the
+// primary instance, where a #GApplication::command-line signal is emitted.
+// Otherwise, the remaining commandline arguments are assumed to be a list of
+// files. If there are no files listed, the application is activated via the
+// #GApplication::activate signal. If there are one or more files, and
+// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via the
+// #GApplication::open signal.
+//
+// If you are interested in doing more complicated local handling of the
+// commandline then you should implement your own #GApplication subclass and
+// override local_command_line(). In this case, you most likely want to return
+// TRUE from your local_command_line() implementation to suppress the default
+// handling. See
+// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
+// example.
+//
+// If, after the above is done, the use count of the application is zero then
+// the exit status is returned immediately. If the use count is non-zero then
+// the default main context is iterated until the use count falls to zero, at
+// which point 0 is returned.
+//
+// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run for as
+// much as 10 seconds with a use count of zero while waiting for the message
+// that caused the activation to arrive. After that, if the use count falls to
+// zero the application will exit immediately, except in the case that
+// g_application_set_inactivity_timeout() is in use.
+//
+// This function sets the prgname (g_set_prgname()), if not already set, to the
+// basename of argv[0].
+//
+// Much like g_main_loop_run(), this function will acquire the main context for
+// the duration that the application is running.
+//
+// Since 2.40, applications that are not explicitly flagged as services or
+// launchers (ie: neither G_APPLICATION_IS_SERVICE or G_APPLICATION_IS_LAUNCHER
+// are given as flags) will check (from the default handler for
+// local_command_line) if "--gapplication-service" was given in the command
+// line. If this flag is present then normal commandline processing is
+// interrupted and the G_APPLICATION_IS_SERVICE flag is set. This provides a
+// "compromise" solution whereby running an application directly from the
+// commandline will invoke it in the normal way (which can be useful for
+// debugging) while still allowing applications to be D-Bus activated in service
+// mode. The D-Bus service file should invoke the executable with
+// "--gapplication-service" as the sole commandline argument. This approach is
+// suitable for use by most graphical applications but should not be used from
+// applications like editors that need precise control over when processes
+// invoked via the commandline will exit and what their exit status will be.
+//
+// The function takes the following parameters:
+//
+//    - argv (optional): the argv from main(), or NULL.
+//
+// The function returns the following values:
+//
+//    - gint: exit status.
+//
+func (application *Application) Run(argv []string) int32 {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg2 **C.void // out
+	var _arg1 C.int
+	var _cret C.int // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = (C.int)(len(argv))
+	_arg2 = (**C.void)(C.calloc(C.size_t(len(argv)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((**C.void)(_arg2), len(argv))
+		for i := range argv {
+			out[i] = (*C.void)(unsafe.Pointer(C.CString(argv[i])))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	*(**Application)(unsafe.Pointer(&args[1])) = _arg1
+	*(*[]string)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("run", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(argv)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // SendNotification sends a notification on behalf of application to the desktop
 // shell. There is no guarantee that the notification is displayed immediately,
 // or even at all.
@@ -1458,7 +1601,7 @@ func (application *Application) SetDefault() {
 //
 //    - inactivityTimeout: timeout, in milliseconds.
 //
-func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
+func (application *Application) SetInactivityTimeout(inactivityTimeout uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

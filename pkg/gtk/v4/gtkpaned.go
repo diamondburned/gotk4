@@ -350,6 +350,32 @@ func (paned *Paned) EndChild() Widgetter {
 	return _widget
 }
 
+// Position obtains the position of the divider between the two panes.
+//
+// The function returns the following values:
+//
+//    - gint: position of the divider.
+//
+func (paned *Paned) Position() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	*(**Paned)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_position", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(paned)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ResizeEndChild returns whether the end child can be resized.
 //
 // The function returns the following values:
@@ -552,6 +578,28 @@ func (paned *Paned) SetEndChild(child Widgetter) {
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
+}
+
+// SetPosition sets the position of the divider between the two panes.
+//
+// The function takes the following parameters:
+//
+//    - position: pixel position of divider, a negative value means that the
+//      position is unset.
+//
+func (paned *Paned) SetPosition(position int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg1 = C.int(position)
+	*(**Paned)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_position", args[:], nil)
+
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(position)
 }
 
 // SetResizeEndChild sets the GtkPaned:resize-end-child property.

@@ -442,6 +442,33 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	return _frameTimings
 }
 
+// FPS calculates the current frames-per-second, based on the frame timings of
+// frame_clock.
+//
+// The function returns the following values:
+//
+//    - gdouble: current fps, as a double.
+//
+func (frameClock *FrameClock) FPS() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	*(**FrameClock)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_fps", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(frameClock)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // FrameCounter: GdkFrameClock maintains a 64-bit counter that increments for
 // each frame drawn.
 //

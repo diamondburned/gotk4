@@ -893,6 +893,54 @@ type keymapKey struct {
 	native *C.GdkKeymapKey
 }
 
+// NewKeymapKey creates a new KeymapKey instance from the given
+// fields.
+func NewKeymapKey(keycode uint32, group, level int32) KeymapKey {
+	var f0 C.guint // out
+	f0 = C.guint(keycode)
+	var f1 C.int // out
+	f1 = C.int(group)
+	var f2 C.int // out
+	f2 = C.int(level)
+
+	v := C.GdkKeymapKey{
+		keycode: f0,
+		group:   f1,
+		level:   f2,
+	}
+
+	return *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
+// Keycode: hardware keycode. This is an identifying number for a physical key.
+func (k *KeymapKey) Keycode() uint32 {
+	var v uint32 // out
+	v = uint32(k.native.keycode)
+	return v
+}
+
+// Group indicates movement in a horizontal direction. Usually groups are used
+// for two different languages. In group 0, a key might have two English
+// characters, and in group 1 it might have two Hebrew characters. The Hebrew
+// characters will be printed on the key next to the English characters.
+func (k *KeymapKey) Group() int32 {
+	var v int32 // out
+	v = int32(k.native.group)
+	return v
+}
+
+// Level indicates which symbol on the key will be used, in a vertical
+// direction. So on a standard US keyboard, the key with the number “1” on it
+// also has the exclamation point ("!") character on it. The level indicates
+// whether to use the “1” or the “!” symbol. The letter keys are considered to
+// have a lowercase letter at level 0, and an uppercase letter at level 1,
+// though only the uppercase letter is printed.
+func (k *KeymapKey) Level() int32 {
+	var v int32 // out
+	v = int32(k.native.level)
+	return v
+}
+
 // Rectangle: GdkRectangle data type for representing rectangles.
 //
 // GdkRectangle is identical to cairo_rectangle_t. Together with Cairo’s
@@ -922,6 +970,95 @@ type rectangle struct {
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
+}
+
+// NewRectangle creates a new Rectangle instance from the given
+// fields.
+func NewRectangle(x, y, width, height int32) Rectangle {
+	var f0 C.int // out
+	f0 = C.int(x)
+	var f1 C.int // out
+	f1 = C.int(y)
+	var f2 C.int // out
+	f2 = C.int(width)
+	var f3 C.int // out
+	f3 = C.int(height)
+
+	v := C.GdkRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
+// X: x coordinate of the top left corner.
+func (r *Rectangle) X() int32 {
+	var v int32 // out
+	v = int32(r.native.x)
+	return v
+}
+
+// Y: y coordinate of the top left corner.
+func (r *Rectangle) Y() int32 {
+	var v int32 // out
+	v = int32(r.native.y)
+	return v
+}
+
+// Width: width of the rectangle.
+func (r *Rectangle) Width() int32 {
+	var v int32 // out
+	v = int32(r.native.width)
+	return v
+}
+
+// Height: height of the rectangle.
+func (r *Rectangle) Height() int32 {
+	var v int32 // out
+	v = int32(r.native.height)
+	return v
+}
+
+// ContainsPoint returns UE if rect contains the point described by x and y.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate.
+//    - y: y coordinate.
+//
+// The function returns the following values:
+//
+//    - ok if rect contains the point.
+//
+func (rect *Rectangle) ContainsPoint(x int32, y int32) bool {
+	var args [3]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	*(**Rectangle)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Equal checks if the two given rectangles are equal.

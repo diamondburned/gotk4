@@ -224,7 +224,7 @@ func (selection *TreeSelection) ConnectChanged(f func()) coreglib.SignalHandle {
 //
 //    - gint: number of rows selected.
 //
-func (selection *TreeSelection) CountSelectedRows() int {
+func (selection *TreeSelection) CountSelectedRows() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -237,9 +237,9 @@ func (selection *TreeSelection) CountSelectedRows() int {
 
 	runtime.KeepAlive(selection)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

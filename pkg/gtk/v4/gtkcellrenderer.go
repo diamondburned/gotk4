@@ -519,6 +519,59 @@ func (cell *CellRenderer) IsActivatable() bool {
 	return _ok
 }
 
+// SetAlignment sets the renderer’s alignment within its available space.
+//
+// The function takes the following parameters:
+//
+//    - xalign: x alignment of the cell renderer.
+//    - yalign: y alignment of the cell renderer.
+//
+func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg1 = C.float(xalign)
+	_arg2 = C.float(yalign)
+	*(**CellRenderer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_alignment", args[:], nil)
+
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+}
+
+// SetFixedSize sets the renderer size to be explicit, independent of the
+// properties set.
+//
+// The function takes the following parameters:
+//
+//    - width of the cell renderer, or -1.
+//    - height of the cell renderer, or -1.
+//
+func (cell *CellRenderer) SetFixedSize(width, height int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	*(**CellRenderer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_fixed_size", args[:], nil)
+
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
 // SetIsExpanded sets whether the given CellRenderer is expanded.
 //
 // The function takes the following parameters:
@@ -563,6 +616,32 @@ func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(isExpander)
+}
+
+// SetPadding sets the renderer’s padding.
+//
+// The function takes the following parameters:
+//
+//    - xpad: x padding of the cell renderer.
+//    - ypad: y padding of the cell renderer.
+//
+func (cell *CellRenderer) SetPadding(xpad, ypad int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg1 = C.int(xpad)
+	_arg2 = C.int(ypad)
+	*(**CellRenderer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_padding", args[:], nil)
+
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(xpad)
+	runtime.KeepAlive(ypad)
 }
 
 // SetSensitive sets the cell renderer’s sensitivity.

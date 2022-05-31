@@ -611,7 +611,7 @@ func (window *Window) AddAccelGroup(accelGroup *AccelGroup) {
 //    - keyval: mnemonic.
 //    - target: widget that gets activated by the mnemonic.
 //
-func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
+func (window *Window) AddMnemonic(keyval uint32, target Widgetter) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -621,7 +621,7 @@ func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
 	_arg1 = C.guint(keyval)
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("add_mnemonic", args[:], nil)
 
@@ -644,7 +644,7 @@ func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
 //    - rootY: y position where the user clicked to initiate the drag.
 //    - timestamp from the click event that initiated the drag.
 //
-func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) {
+func (window *Window) BeginMoveDrag(button, rootX, rootY int32, timestamp uint32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void   // out
 	var _arg1 C.gint    // out
@@ -658,9 +658,9 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) 
 	_arg3 = C.gint(rootY)
 	_arg4 = C.guint32(timestamp)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("begin_move_drag", args[:], nil)
 
@@ -737,7 +737,7 @@ func (window *Window) Fullscreen() {
 //    - screen to draw to.
 //    - monitor: which monitor to go fullscreen on.
 //
-func (window *Window) FullscreenOnMonitor(screen *gdk.Screen, monitor int) {
+func (window *Window) FullscreenOnMonitor(screen *gdk.Screen, monitor int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1857,7 +1857,7 @@ func (window *Window) Maximize() {
 //    - x: x coordinate to move window to.
 //    - y: y coordinate to move window to.
 //
-func (window *Window) Move(x, y int) {
+func (window *Window) Move(x, y int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1867,7 +1867,7 @@ func (window *Window) Move(x, y int) {
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("move", args[:], nil)
 
@@ -2103,7 +2103,7 @@ func (window *Window) RemoveAccelGroup(accelGroup *AccelGroup) {
 //    - keyval: mnemonic.
 //    - target: widget that gets activated by the mnemonic.
 //
-func (window *Window) RemoveMnemonic(keyval uint, target Widgetter) {
+func (window *Window) RemoveMnemonic(keyval uint32, target Widgetter) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -2113,7 +2113,7 @@ func (window *Window) RemoveMnemonic(keyval uint, target Widgetter) {
 	_arg1 = C.guint(keyval)
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("remove_mnemonic", args[:], nil)
 
@@ -2170,7 +2170,7 @@ func (window *Window) ReshowWithInitialSize() {
 //    - width in pixels to resize the window to.
 //    - height in pixels to resize the window to.
 //
-func (window *Window) Resize(width, height int) {
+func (window *Window) Resize(width, height int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2180,7 +2180,7 @@ func (window *Window) Resize(width, height int) {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("resize", args[:], nil)
 
@@ -2232,7 +2232,7 @@ func (window *Window) ResizeGripIsVisible() bool {
 //    - width in resize increments to resize the window to.
 //    - height in resize increments to resize the window to.
 //
-func (window *Window) ResizeToGeometry(width, height int) {
+func (window *Window) ResizeToGeometry(width, height int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2242,7 +2242,7 @@ func (window *Window) ResizeToGeometry(width, height int) {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("resize_to_geometry", args[:], nil)
 
@@ -2418,7 +2418,7 @@ func (window *Window) SetDefault(defaultWidget Widgetter) {
 //    - width in resize increments, or -1 to unset the default width.
 //    - height in resize increments, or -1 to unset the default height.
 //
-func (window *Window) SetDefaultGeometry(width, height int) {
+func (window *Window) SetDefaultGeometry(width, height int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2428,7 +2428,7 @@ func (window *Window) SetDefaultGeometry(width, height int) {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("set_default_geometry", args[:], nil)
 
@@ -2475,7 +2475,7 @@ func (window *Window) SetDefaultGeometry(width, height int) {
 //    - width in pixels, or -1 to unset the default width.
 //    - height in pixels, or -1 to unset the default height.
 //
-func (window *Window) SetDefaultSize(width, height int) {
+func (window *Window) SetDefaultSize(width, height int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2485,7 +2485,7 @@ func (window *Window) SetDefaultSize(width, height int) {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**Window)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Window").InvokeMethod("set_default_size", args[:], nil)
 

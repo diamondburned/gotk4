@@ -189,6 +189,235 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	return _transform
 }
 
+// Perspective applies a perspective projection transform.
+//
+// This transform scales points in X and Y based on their Z value, scaling
+// points with positive Z values away from the origin, and those with negative Z
+// values towards the origin. Points on the z=0 plane are unchanged.
+//
+// The function takes the following parameters:
+//
+//    - depth: distance of the z=0 plane. Lower values give a more flattened
+//      pyramid and therefore a more pronounced perspective effect.
+//
+// The function returns the following values:
+//
+//    - transform: new transform.
+//
+func (next *Transform) Perspective(depth float32) *Transform {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _cret *C.void // in
+
+	if next != nil {
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+	}
+	_arg1 = C.float(depth)
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(depth)
+
+	var _transform *Transform // out
+
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
+
+	return _transform
+}
+
+// Rotate rotates next angle degrees in 2D - or in 3D-speak, around the z axis.
+//
+// The function takes the following parameters:
+//
+//    - angle: rotation angle, in degrees (clockwise).
+//
+// The function returns the following values:
+//
+//    - transform: new transform.
+//
+func (next *Transform) Rotate(angle float32) *Transform {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _cret *C.void // in
+
+	if next != nil {
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+	}
+	_arg1 = C.float(angle)
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(angle)
+
+	var _transform *Transform // out
+
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
+
+	return _transform
+}
+
+// Rotate3D rotates next angle degrees around axis.
+//
+// For a rotation in 2D space, use gsk.Transform.Rotate().
+//
+// The function takes the following parameters:
+//
+//    - angle: rotation angle, in degrees (clockwise).
+//    - axis: rotation axis.
+//
+// The function returns the following values:
+//
+//    - transform: new transform.
+//
+func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 *C.void // out
+	var _cret *C.void // in
+
+	if next != nil {
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+	}
+	_arg1 = C.float(angle)
+	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(angle)
+	runtime.KeepAlive(axis)
+
+	var _transform *Transform // out
+
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
+
+	return _transform
+}
+
+// Scale scales next in 2-dimensional space by the given factors.
+//
+// Use gsk.Transform.Scale3D() to scale in all 3 dimensions.
+//
+// The function takes the following parameters:
+//
+//    - factorX: scaling factor on the X axis.
+//    - factorY: scaling factor on the Y axis.
+//
+// The function returns the following values:
+//
+//    - transform: new transform.
+//
+func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 C.float // out
+	var _cret *C.void // in
+
+	if next != nil {
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+	}
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
+
+	var _transform *Transform // out
+
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
+
+	return _transform
+}
+
+// Scale3D scales next by the given factors.
+//
+// The function takes the following parameters:
+//
+//    - factorX: scaling factor on the X axis.
+//    - factorY: scaling factor on the Y axis.
+//    - factorZ: scaling factor on the Z axis.
+//
+// The function returns the following values:
+//
+//    - transform: new transform.
+//
+func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 C.float // out
+	var _arg3 C.float // out
+	var _cret *C.void // in
+
+	if next != nil {
+		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+	}
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	_arg3 = C.float(factorZ)
+	*(**Transform)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(factorX)
+	runtime.KeepAlive(factorY)
+	runtime.KeepAlive(factorZ)
+
+	var _transform *Transform // out
+
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_transform)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+		},
+	)
+
+	return _transform
+}
+
 // String converts a matrix into a string that is suitable for printing.
 //
 // The resulting string can be parsed with gsk.Transform().Parse.

@@ -595,7 +595,7 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 //
 //    - gint: position of the divider.
 //
-func (paned *Paned) Position() int {
+func (paned *Paned) Position() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -608,9 +608,9 @@ func (paned *Paned) Position() int {
 
 	runtime.KeepAlive(paned)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -720,7 +720,7 @@ func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 //    - position: pixel position of divider, a negative value means that the
 //      position is unset.
 //
-func (paned *Paned) SetPosition(position int) {
+func (paned *Paned) SetPosition(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

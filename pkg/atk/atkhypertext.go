@@ -41,7 +41,7 @@ type HypertextOverrider interface {
 	//
 	//    - hyperlink: link in this hypertext document at index link_index.
 	//
-	Link(linkIndex int) *Hyperlink
+	Link(linkIndex int32) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by char_index.
 	//
@@ -54,17 +54,17 @@ type HypertextOverrider interface {
 	//    - gint: index into the array of hyperlinks in hypertext, or -1 if there
 	//      is no hyperlink associated with this character.
 	//
-	LinkIndex(charIndex int) int
+	LinkIndex(charIndex int32) int32
 	// NLinks gets the number of links within this hypertext document.
 	//
 	// The function returns the following values:
 	//
 	//    - gint: number of links within this hypertext document.
 	//
-	NLinks() int
+	NLinks() int32
 	// The function takes the following parameters:
 	//
-	LinkSelected(linkIndex int)
+	LinkSelected(linkIndex int32)
 }
 
 // Hypertext: interface used for objects which implement linking between
@@ -91,16 +91,16 @@ type Hypertexter interface {
 	coreglib.Objector
 
 	// Link gets the link in this hypertext document at index link_index.
-	Link(linkIndex int) *Hyperlink
+	Link(linkIndex int32) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
 	// with the character specified by char_index.
-	LinkIndex(charIndex int) int
+	LinkIndex(charIndex int32) int32
 	// NLinks gets the number of links within this hypertext document.
-	NLinks() int
+	NLinks() int32
 
 	// Link-selected: "link-selected" signal is emitted by an AtkHyperText
 	// object when one of the hyperlinks associated with the object is selected.
-	ConnectLinkSelected(func(arg1 int)) coreglib.SignalHandle
+	ConnectLinkSelected(func(arg1 int32)) coreglib.SignalHandle
 }
 
 var _ Hypertexter = (*Hypertext)(nil)
@@ -118,9 +118,9 @@ func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cre
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
-	var _linkIndex int // out
+	var _linkIndex int32 // out
 
-	_linkIndex = int(arg1)
+	_linkIndex = int32(arg1)
 
 	hyperlink := iface.Link(_linkIndex)
 
@@ -134,9 +134,9 @@ func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
-	var _charIndex int // out
+	var _charIndex int32 // out
 
-	_charIndex = int(arg1)
+	_charIndex = int32(arg1)
 
 	gint := iface.LinkIndex(_charIndex)
 
@@ -162,9 +162,9 @@ func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint)
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
-	var _linkIndex int // out
+	var _linkIndex int32 // out
 
-	_linkIndex = int(arg1)
+	_linkIndex = int32(arg1)
 
 	iface.LinkSelected(_linkIndex)
 }
@@ -181,7 +181,7 @@ func marshalHypertext(p uintptr) (interface{}, error) {
 
 //export _gotk4_atk1_Hypertext_ConnectLinkSelected
 func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(arg1 int)
+	var f func(arg1 int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -189,19 +189,19 @@ func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(arg1 int))
+		f = closure.Func.(func(arg1 int32))
 	}
 
-	var _arg1 int // out
+	var _arg1 int32 // out
 
-	_arg1 = int(arg1)
+	_arg1 = int32(arg1)
 
 	f(_arg1)
 }
 
 // ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
 // object when one of the hyperlinks associated with the object is selected.
-func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) coreglib.SignalHandle {
+func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(hypertext, "link-selected", false, unsafe.Pointer(C._gotk4_atk1_Hypertext_ConnectLinkSelected), f)
 }
 
@@ -215,7 +215,7 @@ func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) coreglib.Signa
 //
 //    - hyperlink: link in this hypertext document at index link_index.
 //
-func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
+func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -249,7 +249,7 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 //    - gint: index into the array of hyperlinks in hypertext, or -1 if there is
 //      no hyperlink associated with this character.
 //
-func (hypertext *Hypertext) LinkIndex(charIndex int) int {
+func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -264,9 +264,9 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(charIndex)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -277,7 +277,7 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 //
 //    - gint: number of links within this hypertext document.
 //
-func (hypertext *Hypertext) NLinks() int {
+func (hypertext *Hypertext) NLinks() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -289,9 +289,9 @@ func (hypertext *Hypertext) NLinks() int {
 
 	runtime.KeepAlive(hypertext)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

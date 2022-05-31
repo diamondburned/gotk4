@@ -89,31 +89,31 @@ type Editabler interface {
 	// DeleteSelection deletes the currently selected text of the editable.
 	DeleteSelection()
 	// DeleteText deletes a sequence of characters.
-	DeleteText(startPos, endPos int)
+	DeleteText(startPos, endPos int32)
 	// Chars retrieves a sequence of characters.
-	Chars(startPos, endPos int) string
+	Chars(startPos, endPos int32) string
 	// Editable retrieves whether editable is editable.
 	Editable() bool
 	// Position retrieves the current position of the cursor relative to the
 	// start of the content of the editable.
-	Position() int
+	Position() int32
 	// PasteClipboard pastes the content of the clipboard to the current
 	// position of the cursor in the editable.
 	PasteClipboard()
 	// SelectRegion selects a region of text.
-	SelectRegion(startPos, endPos int)
+	SelectRegion(startPos, endPos int32)
 	// SetEditable determines if the user can edit the text in the editable
 	// widget or not.
 	SetEditable(isEditable bool)
 	// SetPosition sets the cursor position in the editable to the given value.
-	SetPosition(position int)
+	SetPosition(position int32)
 
 	// Changed signal is emitted at the end of a single user-visible operation
 	// on the contents of the Editable.
 	ConnectChanged(func()) coreglib.SignalHandle
 	// Delete-text: this signal is emitted when text is deleted from the widget
 	// by the user.
-	ConnectDeleteText(func(startPos, endPos int)) coreglib.SignalHandle
+	ConnectDeleteText(func(startPos, endPos int32)) coreglib.SignalHandle
 }
 
 var _ Editabler = (*Editable)(nil)
@@ -157,7 +157,7 @@ func (editable *Editable) ConnectChanged(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_Editable_ConnectDeleteText
 func _gotk4_gtk3_Editable_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(startPos, endPos int)
+	var f func(startPos, endPos int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -165,14 +165,14 @@ func _gotk4_gtk3_Editable_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(startPos, endPos int))
+		f = closure.Func.(func(startPos, endPos int32))
 	}
 
-	var _startPos int // out
-	var _endPos int   // out
+	var _startPos int32 // out
+	var _endPos int32   // out
 
-	_startPos = int(arg1)
-	_endPos = int(arg2)
+	_startPos = int32(arg1)
+	_endPos = int32(arg2)
 
 	f(_startPos, _endPos)
 }
@@ -184,7 +184,7 @@ func _gotk4_gtk3_Editable_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C
 // the range of deleted text, or prevent it from being deleted entirely. The
 // start_pos and end_pos parameters are interpreted as for
 // gtk_editable_delete_text().
-func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) coreglib.SignalHandle {
+func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(editable, "delete-text", false, unsafe.Pointer(C._gotk4_gtk3_Editable_ConnectDeleteText), f)
 }
 
@@ -236,7 +236,7 @@ func (editable *Editable) DeleteSelection() {
 //    - startPos: start position.
 //    - endPos: end position.
 //
-func (editable *Editable) DeleteText(startPos, endPos int) {
+func (editable *Editable) DeleteText(startPos, endPos int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -246,7 +246,7 @@ func (editable *Editable) DeleteText(startPos, endPos int) {
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 	*(**Editable)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
@@ -271,7 +271,7 @@ func (editable *Editable) DeleteText(startPos, endPos int) {
 //      allocated by the Editable implementation and should be freed by the
 //      caller.
 //
-func (editable *Editable) Chars(startPos, endPos int) string {
+func (editable *Editable) Chars(startPos, endPos int32) string {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -282,7 +282,7 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 	*(**Editable)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -335,7 +335,7 @@ func (editable *Editable) Editable() bool {
 //
 //    - gint: cursor position.
 //
-func (editable *Editable) Position() int {
+func (editable *Editable) Position() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -347,9 +347,9 @@ func (editable *Editable) Position() int {
 
 	runtime.KeepAlive(editable)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -378,7 +378,7 @@ func (editable *Editable) PasteClipboard() {
 //    - startPos: start of region.
 //    - endPos: end of region.
 //
-func (editable *Editable) SelectRegion(startPos, endPos int) {
+func (editable *Editable) SelectRegion(startPos, endPos int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -388,7 +388,7 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 	_arg1 = C.gint(startPos)
 	_arg2 = C.gint(endPos)
 	*(**Editable)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
@@ -429,7 +429,7 @@ func (editable *Editable) SetEditable(isEditable bool) {
 //
 //    - position of the cursor.
 //
-func (editable *Editable) SetPosition(position int) {
+func (editable *Editable) SetPosition(position int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

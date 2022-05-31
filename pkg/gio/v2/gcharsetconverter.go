@@ -114,7 +114,7 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 //
 //    - guint: number of fallbacks that converter has applied.
 //
-func (converter *CharsetConverter) NumFallbacks() uint {
+func (converter *CharsetConverter) NumFallbacks() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -127,9 +127,9 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 
 	runtime.KeepAlive(converter)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

@@ -210,7 +210,7 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 //    - topAttach: row number to attach the top of the item to.
 //    - bottomAttach: row number to attach the bottom of the item to.
 //
-func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
+func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint32) {
 	var args [6]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -227,9 +227,9 @@ func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bo
 	_arg5 = C.guint(bottomAttach)
 	*(**Menu)(unsafe.Pointer(&args[1])) = _arg1
 	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*uint)(unsafe.Pointer(&args[3])) = _arg3
-	*(*uint)(unsafe.Pointer(&args[4])) = _arg4
-	*(*uint)(unsafe.Pointer(&args[5])) = _arg5
+	*(*uint32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*uint32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*uint32)(unsafe.Pointer(&args[5])) = _arg5
 
 	girepository.MustFind("Gtk", "Menu").InvokeMethod("attach", args[:], nil)
 
@@ -402,7 +402,7 @@ func (menu *Menu) AttachWidget() Widgetter {
 //    - gint: number of the monitor on which the menu should be popped up or -1,
 //      if no monitor has been set.
 //
-func (menu *Menu) Monitor() int {
+func (menu *Menu) Monitor() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -415,9 +415,9 @@ func (menu *Menu) Monitor() int {
 
 	runtime.KeepAlive(menu)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -588,7 +588,7 @@ func (menu *Menu) PopupAtPointer(triggerEvent *gdk.Event) {
 //    - position: new position to place child. Positions are numbered from 0 to n
 //      - 1.
 //
-func (menu *Menu) ReorderChild(child Widgetter, position int) {
+func (menu *Menu) ReorderChild(child Widgetter, position int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -697,7 +697,7 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 //
 //    - index of the menu item to select. Index values are from 0 to n-1.
 //
-func (menu *Menu) SetActive(index uint) {
+func (menu *Menu) SetActive(index uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -725,7 +725,7 @@ func (menu *Menu) SetActive(index uint) {
 //
 //    - monitorNum: number of the monitor on which the menu should be popped up.
 //
-func (menu *Menu) SetMonitor(monitorNum int) {
+func (menu *Menu) SetMonitor(monitorNum int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

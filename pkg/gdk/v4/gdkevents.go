@@ -493,7 +493,7 @@ func marshalButtonEvent(p uintptr) (interface{}, error) {
 //
 //    - guint: button of event.
 //
-func (event *ButtonEvent) Button() uint {
+func (event *ButtonEvent) Button() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -506,9 +506,9 @@ func (event *ButtonEvent) Button() uint {
 
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1174,7 +1174,7 @@ func marshalKeyEvent(p uintptr) (interface{}, error) {
 //
 //    - guint: keycode of event.
 //
-func (event *KeyEvent) Keycode() uint {
+func (event *KeyEvent) Keycode() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1187,9 +1187,9 @@ func (event *KeyEvent) Keycode() uint {
 
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1200,7 +1200,7 @@ func (event *KeyEvent) Keycode() uint {
 //
 //    - guint: keyval of event.
 //
-func (event *KeyEvent) Keyval() uint {
+func (event *KeyEvent) Keyval() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1213,9 +1213,9 @@ func (event *KeyEvent) Keyval() uint {
 
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1226,7 +1226,7 @@ func (event *KeyEvent) Keyval() uint {
 //
 //    - guint: layout of event.
 //
-func (event *KeyEvent) Layout() uint {
+func (event *KeyEvent) Layout() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1239,9 +1239,9 @@ func (event *KeyEvent) Layout() uint {
 
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1252,7 +1252,7 @@ func (event *KeyEvent) Layout() uint {
 //
 //    - guint: shift level of event.
 //
-func (event *KeyEvent) Level() uint {
+func (event *KeyEvent) Level() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1265,9 +1265,9 @@ func (event *KeyEvent) Level() uint {
 
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1350,7 +1350,7 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 //
 //    - guint: button of event.
 //
-func (event *PadEvent) Button() uint {
+func (event *PadEvent) Button() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1363,9 +1363,9 @@ func (event *PadEvent) Button() uint {
 
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1532,7 +1532,7 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 //
 //    - guint: number of fingers for event.
 //
-func (event *TouchpadEvent) NFingers() uint {
+func (event *TouchpadEvent) NFingers() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1545,11 +1545,63 @@ func (event *TouchpadEvent) NFingers() uint {
 
 	runtime.KeepAlive(event)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// PinchAngleDelta extracts the angle delta from a touchpad pinch event.
+//
+// The function returns the following values:
+//
+//    - gdouble: angle delta of event.
+//
+func (event *TouchpadEvent) PinchAngleDelta() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	*(**TouchpadEvent)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_pinch_angle_delta", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// PinchScale extracts the scale from a touchpad pinch event.
+//
+// The function returns the following values:
+//
+//    - gdouble: scale of event.
+//
+func (event *TouchpadEvent) PinchScale() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	*(**TouchpadEvent)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "TouchpadEvent").InvokeMethod("get_pinch_scale", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(event)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // EventSequence: GdkEventSequence is an opaque type representing a sequence of

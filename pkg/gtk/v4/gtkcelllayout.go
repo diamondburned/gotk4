@@ -17,10 +17,12 @@ import (
 // #include <glib.h>
 // extern GList* _gotk4_gtk4_CellLayoutIface_get_cells(GtkCellLayout*);
 // extern GtkCellArea* _gotk4_gtk4_CellLayoutIface_get_area(GtkCellLayout*);
+// extern void _gotk4_gtk4_CellLayoutIface_add_attribute(GtkCellLayout*, GtkCellRenderer*, char*, int);
 // extern void _gotk4_gtk4_CellLayoutIface_clear(GtkCellLayout*);
 // extern void _gotk4_gtk4_CellLayoutIface_clear_attributes(GtkCellLayout*, GtkCellRenderer*);
 // extern void _gotk4_gtk4_CellLayoutIface_pack_end(GtkCellLayout*, GtkCellRenderer*, gboolean);
 // extern void _gotk4_gtk4_CellLayoutIface_pack_start(GtkCellLayout*, GtkCellRenderer*, gboolean);
+// extern void _gotk4_gtk4_CellLayoutIface_reorder(GtkCellLayout*, GtkCellRenderer*, int);
 import "C"
 
 // glib.Type values for gtkcelllayout.go.
@@ -110,6 +112,20 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg1 *C.GtkCellLayout, arg2 *C.GtkCellRender
 
 // CellLayoutOverrider contains methods that are overridable.
 type CellLayoutOverrider interface {
+	// AddAttribute adds an attribute mapping to the list in cell_layout.
+	//
+	// The column is the column of the model to get a value from, and the
+	// attribute is the parameter on cell to be set from the value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a CellRendererText get its values from column 2.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell: CellRenderer.
+	//    - attribute on the renderer.
+	//    - column position on the model to get the attribute from.
+	//
+	AddAttribute(cell CellRendererer, attribute string, column int32)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
@@ -165,6 +181,17 @@ type CellLayoutOverrider interface {
 	//      cell_layout.
 	//
 	PackStart(cell CellRendererer, expand bool)
+	// Reorder re-inserts cell at position.
+	//
+	// Note that cell has already to be packed into cell_layout for this to
+	// function properly.
+	//
+	// The function takes the following parameters:
+	//
+	//    - cell to reorder.
+	//    - position: new position to insert cell at.
+	//
+	Reorder(cell CellRendererer, position int32)
 }
 
 // CellLayout: interface for packing cells
@@ -271,6 +298,8 @@ var (
 type CellLayouter interface {
 	coreglib.Objector
 
+	// AddAttribute adds an attribute mapping to the list in cell_layout.
+	AddAttribute(cell CellRendererer, attribute string, column int32)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
@@ -286,18 +315,54 @@ type CellLayouter interface {
 	PackEnd(cell CellRendererer, expand bool)
 	// PackStart packs the cell into the beginning of cell_layout.
 	PackStart(cell CellRendererer, expand bool)
+	// Reorder re-inserts cell at position.
+	Reorder(cell CellRendererer, position int32)
 }
 
 var _ CellLayouter = (*CellLayout)(nil)
 
 func ifaceInitCellLayouter(gifacePtr, data C.gpointer) {
 	iface := (*C.GtkCellLayoutIface)(unsafe.Pointer(gifacePtr))
+	iface.add_attribute = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_add_attribute)
 	iface.clear = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_clear)
 	iface.clear_attributes = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_clear_attributes)
 	iface.get_area = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_get_area)
 	iface.get_cells = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_get_cells)
 	iface.pack_end = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_pack_end)
 	iface.pack_start = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_pack_start)
+	iface.reorder = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_reorder)
+}
+
+//export _gotk4_gtk4_CellLayoutIface_add_attribute
+func _gotk4_gtk4_CellLayoutIface_add_attribute(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.char, arg3 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	var _cell CellRendererer // out
+	var _attribute string    // out
+	var _column int32        // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_cell = rv
+	}
+	_attribute = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_column = int32(arg3)
+
+	iface.AddAttribute(_cell, _attribute, _column)
 }
 
 //export _gotk4_gtk4_CellLayoutIface_clear
@@ -431,6 +496,36 @@ func _gotk4_gtk4_CellLayoutIface_pack_start(arg0 *C.GtkCellLayout, arg1 *C.GtkCe
 	iface.PackStart(_cell, _expand)
 }
 
+//export _gotk4_gtk4_CellLayoutIface_reorder
+func _gotk4_gtk4_CellLayoutIface_reorder(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(CellLayoutOverrider)
+
+	var _cell CellRendererer // out
+	var _position int32      // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.CellRendererer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(CellRendererer)
+			return ok
+		})
+		rv, ok := casted.(CellRendererer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+		}
+		_cell = rv
+	}
+	_position = int32(arg2)
+
+	iface.Reorder(_cell, _position)
+}
+
 func wrapCellLayout(obj *coreglib.Object) *CellLayout {
 	return &CellLayout{
 		Object: obj,
@@ -439,6 +534,41 @@ func wrapCellLayout(obj *coreglib.Object) *CellLayout {
 
 func marshalCellLayout(p uintptr) (interface{}, error) {
 	return wrapCellLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// AddAttribute adds an attribute mapping to the list in cell_layout.
+//
+// The column is the column of the model to get a value from, and the attribute
+// is the parameter on cell to be set from the value. So for example if column 2
+// of the model contains strings, you could have the “text” attribute of a
+// CellRendererText get its values from column 2.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - attribute on the renderer.
+//    - column position on the model to get the attribute from.
+//
+func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.int(column)
+	*(**CellLayout)(unsafe.Pointer(&args[1])) = _arg1
+	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(column)
 }
 
 // Clear unsets all the mappings on all renderers on cell_layout and removes all
@@ -622,4 +752,31 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(expand)
+}
+
+// Reorder re-inserts cell at position.
+//
+// Note that cell has already to be packed into cell_layout for this to function
+// properly.
+//
+// The function takes the following parameters:
+//
+//    - cell to reorder.
+//    - position: new position to insert cell at.
+//
+func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg2 = C.int(position)
+	*(**CellLayout)(unsafe.Pointer(&args[1])) = _arg1
+	*(*CellRendererer)(unsafe.Pointer(&args[2])) = _arg2
+
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(position)
 }

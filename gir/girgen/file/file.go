@@ -7,13 +7,17 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
-	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
 // CoreImportPath is the path to the core import path.
 const CoreImportPath = "github.com/diamondburned/gotk4/pkg/core"
+
+// Import is a single import for a package.
+type Import struct {
+	Path    string // full path
+	Package string // package name, import alias
+}
 
 // Headerer is an interface of something that returns its internal header.
 type Headerer interface {
@@ -110,48 +114,6 @@ func (h *Header) NeedsExternGLib() {
 	h.ImportAlias("github.com/diamondburned/gotk4/pkg/core/glib", "coreglib")
 }
 
-func (h *Header) ImportPubl(resolved *types.Resolved) {
-	if h.stop {
-		return
-	}
-
-	if resolved == nil {
-		return
-	}
-
-	if resolved.IsAbstract() {
-		h.ImportResolvedType(resolved.PublImport)
-	} else {
-		h.ImportResolvedType(resolved.ImplImport)
-	}
-
-	if resolved.Extern != nil {
-		callback, ok := resolved.Extern.Type.(*gir.Callback)
-		if ok {
-			h.AddCallback(resolved.Extern.NamespaceFindResult, callback)
-		}
-	}
-}
-
-func (h *Header) ImportImpl(resolved *types.Resolved) {
-	if h.stop {
-		return
-	}
-
-	if resolved == nil {
-		return
-	}
-
-	h.ImportResolvedType(resolved.ImplImport)
-
-	if resolved.Extern != nil {
-		callback, ok := resolved.Extern.Type.(*gir.Callback)
-		if ok {
-			h.AddCallback(resolved.Extern.NamespaceFindResult, callback)
-		}
-	}
-}
-
 // DashImport imports the given path if it's not already imported.
 func (h *Header) DashImport(path string) {
 	if h.stop {
@@ -167,7 +129,7 @@ func (h *Header) DashImport(path string) {
 	}
 }
 
-func (h *Header) ImportResolvedType(imports types.ResolvedImport) {
+func (h *Header) ImportResolvedType(imports Import) {
 	if imports.Path != "" {
 		h.ImportAlias(imports.Path, imports.Package)
 	}
@@ -185,16 +147,6 @@ func (h *Header) AddMarshaler(glibGetType, goName string) {
 	h.NeedsGLibObject()
 	// Need this for the pointer cast (which one?).
 	h.Import("unsafe")
-}
-
-func (h *Header) AddCallback(source *gir.NamespaceFindResult, callback *gir.Callback) {
-	h.AddCallable(source, "", &callback.CallableAttrs)
-}
-
-// AddCallable adds an extern C function header from the callable. The extern
-// function will have the given name.
-func (h *Header) AddCallable(source *gir.NamespaceFindResult, name string, callable *gir.CallableAttrs) {
-	h.AddCallbackHeader(CallableCHeader(source, name, callable))
 }
 
 const callbackPrefix = "_gotk4"
@@ -215,35 +167,6 @@ func ExportedName(source *gir.NamespaceFindResult, suffixes ...string) string {
 	}
 
 	return callbackPrefix + "_" + namespaceName + "_" + strings.Join(suffixes, "_")
-}
-
-// CallableCHeader renders the C function signature.
-func CallableCHeader(source *gir.NamespaceFindResult, name string, callable *gir.CallableAttrs) string {
-	var ctail pen.Joints
-	if callable.Parameters != nil {
-		ctail = pen.NewJoints(", ", len(callable.Parameters.Parameters)+1)
-
-		if callable.Parameters.InstanceParameter != nil {
-			ctail.Add(types.AnyTypeC(callable.Parameters.InstanceParameter.AnyType))
-		}
-		for _, param := range callable.Parameters.Parameters {
-			ctail.Add(types.AnyTypeC(param.AnyType))
-		}
-		if callable.Throws {
-			ctail.Add("GError**")
-		}
-	}
-
-	cReturn := "void"
-	if callable.ReturnValue != nil {
-		cReturn = types.AnyTypeC(callable.ReturnValue.AnyType)
-	}
-
-	if name == "" {
-		name = CallableExportedName(source, callable)
-	}
-
-	return fmt.Sprintf("extern %s %s(%s);", cReturn, name, ctail.Join())
 }
 
 // AddCBlock adds a block of C code into the Cgo preamble.

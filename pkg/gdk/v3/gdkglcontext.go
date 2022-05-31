@@ -445,6 +445,69 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 	runtime.KeepAlive(compatible)
 }
 
+// SetRequiredVersion sets the major and minor version of OpenGL to request.
+//
+// Setting major and minor to zero will use the default values.
+//
+// The GLContext must not be realized or made current prior to calling this
+// function.
+//
+// The function takes the following parameters:
+//
+//    - major version to request.
+//    - minor version to request.
+//
+func (context *GLContext) SetRequiredVersion(major, minor int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(major)
+	_arg2 = C.int(minor)
+	*(**GLContext)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_required_version", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(major)
+	runtime.KeepAlive(minor)
+}
+
+// SetUseES requests that GDK create a OpenGL ES context instead of an OpenGL
+// one, if the platform and windowing system allows it.
+//
+// The context must not have been realized.
+//
+// By default, GDK will attempt to automatically detect whether the underlying
+// GL implementation is OpenGL or OpenGL ES once the context is realized.
+//
+// You should check the return value of gdk_gl_context_get_use_es() after
+// calling gdk_gl_context_realize() to decide whether to use the OpenGL or
+// OpenGL ES API, extensions, or shaders.
+//
+// The function takes the following parameters:
+//
+//    - useEs: whether the context should use OpenGL ES instead of OpenGL, or -1
+//      to allow auto-detection.
+//
+func (context *GLContext) SetUseES(useEs int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(useEs)
+	*(**GLContext)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_use_es", args[:], nil)
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(useEs)
+}
+
 // GLContextClearCurrent clears the current GLContext.
 //
 // Any OpenGL call after this function returns will be ignored until

@@ -142,7 +142,7 @@ func (self *FlattenListModel) Model() *gio.ListModel {
 //
 //    - listModel: model containing the item at position.
 //
-func (self *FlattenListModel) ModelForItem(position uint) *gio.ListModel {
+func (self *FlattenListModel) ModelForItem(position uint32) *gio.ListModel {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

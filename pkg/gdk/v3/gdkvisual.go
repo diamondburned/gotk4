@@ -147,7 +147,7 @@ func marshalVisual(p uintptr) (interface{}, error) {
 //
 //    - gint: number of significant bits per color value for visual.
 //
-func (visual *Visual) BitsPerRGB() int {
+func (visual *Visual) BitsPerRGB() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -160,9 +160,9 @@ func (visual *Visual) BitsPerRGB() int {
 
 	runtime.KeepAlive(visual)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -178,7 +178,7 @@ func (visual *Visual) BitsPerRGB() int {
 //
 //    - gint: size of a colormap that is suitable for visual.
 //
-func (visual *Visual) ColormapSize() int {
+func (visual *Visual) ColormapSize() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -191,9 +191,9 @@ func (visual *Visual) ColormapSize() int {
 
 	runtime.KeepAlive(visual)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -204,7 +204,7 @@ func (visual *Visual) ColormapSize() int {
 //
 //    - gint: bit depth of this visual.
 //
-func (visual *Visual) Depth() int {
+func (visual *Visual) Depth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -217,9 +217,9 @@ func (visual *Visual) Depth() int {
 
 	runtime.KeepAlive(visual)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -284,15 +284,15 @@ func VisualGetBest() *Visual {
 //
 //    - gint: best available depth.
 //
-func VisualGetBestDepth() int {
+func VisualGetBestDepth() int32 {
 	var _cret C.gint // in
 
 	_gret := girepository.MustFind("Gdk", "get_best_depth").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -313,13 +313,13 @@ func VisualGetBestDepth() int {
 //
 //    - visual: best visual for the given depth.
 //
-func VisualGetBestWithDepth(depth int) *Visual {
+func VisualGetBestWithDepth(depth int32) *Visual {
 	var args [1]girepository.Argument
 	var _arg0 C.gint  // out
 	var _cret *C.void // in
 
 	_arg0 = C.gint(depth)
-	*(*int)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gdk", "get_best_with_depth").Invoke(args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

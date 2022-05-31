@@ -34,7 +34,7 @@ import "C"
 //
 //    - gint: remainder of extra_space after redistributing space to sizes.
 //
-func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
+func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes *RequestedSize) int32 {
 	var args [3]girepository.Argument
 	var _arg0 C.gint  // out
 	var _arg1 C.guint // out
@@ -44,8 +44,8 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	_arg0 = C.gint(extraSpace)
 	_arg1 = C.guint(nRequestedSizes)
 	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(sizes)))
-	*(*int)(unsafe.Pointer(&args[0])) = _arg0
-	*(*uint)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
+	*(*uint32)(unsafe.Pointer(&args[1])) = _arg1
 	*(**RequestedSize)(unsafe.Pointer(&args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "distribute_natural_allocation").Invoke(args[:], nil)
@@ -55,9 +55,9 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	runtime.KeepAlive(nRequestedSizes)
 	runtime.KeepAlive(sizes)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

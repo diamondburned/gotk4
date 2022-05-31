@@ -606,7 +606,7 @@ func (application *Application) Menubar() gio.MenuModeller {
 //
 //    - window (optional) for the given id.
 //
-func (application *Application) WindowByID(id uint) *Window {
+func (application *Application) WindowByID(id uint32) *Window {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -840,7 +840,7 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 //
 //    - cookie that was returned by gtk.Application.Inhibit().
 //
-func (application *Application) Uninhibit(cookie uint) {
+func (application *Application) Uninhibit(cookie uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

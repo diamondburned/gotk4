@@ -448,7 +448,7 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 //
 //    - gint: maximum content height, or -1.
 //
-func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
+func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -461,9 +461,9 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -474,7 +474,7 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 //
 //    - gint: maximum content width, or -1.
 //
-func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
+func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -487,9 +487,9 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -501,7 +501,7 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 //
 //    - gint: minimal content height.
 //
-func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
+func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -514,9 +514,9 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -528,7 +528,7 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 //
 //    - gint: minimum content width.
 //
-func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
+func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -541,9 +541,9 @@ func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -797,7 +797,7 @@ func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool)
 //
 //    - height: maximum content height.
 //
-func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int) {
+func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -823,7 +823,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int) {
 //
 //    - width: maximum content width.
 //
-func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int) {
+func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -849,7 +849,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int) {
 //
 //    - height: minimal content height.
 //
-func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int) {
+func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -875,7 +875,7 @@ func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int) {
 //
 //    - width: minimal content width.
 //
-func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int) {
+func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

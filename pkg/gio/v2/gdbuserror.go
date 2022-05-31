@@ -249,9 +249,9 @@ type dBusErrorEntry struct {
 }
 
 // ErrorCode: error code.
-func (d *DBusErrorEntry) ErrorCode() int {
-	var v int // out
-	v = int(d.native.error_code)
+func (d *DBusErrorEntry) ErrorCode() int32 {
+	var v int32 // out
+	v = int32(d.native.error_code)
 	return v
 }
 

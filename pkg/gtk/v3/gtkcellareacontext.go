@@ -48,7 +48,7 @@ type CellAreaContextOverrider interface {
 	//    - height: allocated height for all TreeModel rows rendered with
 	//      context, or -1.
 	//
-	Allocate(width, height int)
+	Allocate(width, height int32)
 	// Reset resets any previously cached request and allocation data.
 	//
 	// When underlying TreeModel data changes its important to reset the context
@@ -101,7 +101,7 @@ func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
-	if _, ok := goval.(interface{ Allocate(width, height int) }); ok {
+	if _, ok := goval.(interface{ Allocate(width, height int32) }); ok {
 		pclass.allocate = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_allocate)
 	}
 
@@ -113,13 +113,13 @@ func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
 //export _gotk4_gtk3_CellAreaContextClass_allocate
 func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Allocate(width, height int) })
+	iface := goval.(interface{ Allocate(width, height int32) })
 
-	var _width int  // out
-	var _height int // out
+	var _width int32  // out
+	var _height int32 // out
 
-	_width = int(arg1)
-	_height = int(arg2)
+	_width = int32(arg1)
+	_height = int32(arg2)
 
 	iface.Allocate(_width, _height)
 }
@@ -161,7 +161,7 @@ func marshalCellAreaContext(p uintptr) (interface{}, error) {
 //    - height: allocated height for all TreeModel rows rendered with context, or
 //      -1.
 //
-func (context *CellAreaContext) Allocate(width, height int) {
+func (context *CellAreaContext) Allocate(width, height int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -171,7 +171,7 @@ func (context *CellAreaContext) Allocate(width, height int) {
 	_arg1 = C.gint(width)
 	_arg2 = C.gint(height)
 	*(**CellAreaContext)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("allocate", args[:], nil)
 
@@ -242,7 +242,7 @@ func (context *CellAreaContext) Area() CellAreaer {
 //    - minimumHeight: proposed new minimum height for context.
 //    - naturalHeight: proposed new natural height for context.
 //
-func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight int) {
+func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -252,7 +252,7 @@ func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight
 	_arg1 = C.gint(minimumHeight)
 	_arg2 = C.gint(naturalHeight)
 	*(**CellAreaContext)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("push_preferred_height", args[:], nil)
 
@@ -273,7 +273,7 @@ func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight
 //    - minimumWidth: proposed new minimum width for context.
 //    - naturalWidth: proposed new natural width for context.
 //
-func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth int) {
+func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -283,7 +283,7 @@ func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth in
 	_arg1 = C.gint(minimumWidth)
 	_arg2 = C.gint(naturalWidth)
 	*(**CellAreaContext)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "CellAreaContext").InvokeMethod("push_preferred_width", args[:], nil)
 

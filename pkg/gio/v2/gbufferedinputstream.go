@@ -437,6 +437,60 @@ func (stream *BufferedInputStream) BufferSize() uint {
 	return _gsize
 }
 
+// ReadByte tries to read a single byte from the stream or the buffer. Will
+// block during this read.
+//
+// On success, the byte read from the stream is returned. On end of stream -1 is
+// returned but it's not an exceptional error and error is not set.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// On error -1 is returned and error is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//
+// The function returns the following values:
+//
+//    - gint: byte read from the stream, or -1 on end of stream or error.
+//
+func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _cret C.int   // in
+	var _cerr *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(**BufferedInputStream)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("read_byte", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+
+	var _gint int32  // out
+	var _goerr error // out
+
+	_gint = int32(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gint, _goerr
+}
+
 // SetBufferSize sets the size of the internal buffer of stream to size, or to
 // the size of the contents of the buffer. The buffer can never be resized
 // smaller than its current contents.

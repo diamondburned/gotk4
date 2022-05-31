@@ -138,7 +138,7 @@ func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) coreglib
 //
 //    - radioAction: new RadioAction.
 //
-func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioAction {
+func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAction {
 	var args [5]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -166,7 +166,7 @@ func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioActio
 	*(*string)(unsafe.Pointer(&args[1])) = _arg1
 	*(*string)(unsafe.Pointer(&args[2])) = _arg2
 	*(*string)(unsafe.Pointer(&args[3])) = _arg3
-	*(*int)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
 
 	_gret := girepository.MustFind("Gtk", "RadioAction").InvokeMethod("new_RadioAction", args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -193,7 +193,7 @@ func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioActio
 //
 //    - gint: value of the currently active group member.
 //
-func (action *RadioAction) CurrentValue() int {
+func (action *RadioAction) CurrentValue() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -206,9 +206,9 @@ func (action *RadioAction) CurrentValue() int {
 
 	runtime.KeepAlive(action)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -313,7 +313,7 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 //
 //    - currentValue: new value.
 //
-func (action *RadioAction) SetCurrentValue(currentValue int) {
+func (action *RadioAction) SetCurrentValue(currentValue int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

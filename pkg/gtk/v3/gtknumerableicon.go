@@ -144,7 +144,7 @@ func (self *NumerableIcon) BackgroundIconName() string {
 //
 //    - gint: currently displayed value.
 //
-func (self *NumerableIcon) Count() int {
+func (self *NumerableIcon) Count() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -157,9 +157,9 @@ func (self *NumerableIcon) Count() int {
 
 	runtime.KeepAlive(self)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -307,7 +307,7 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 //
 //    - count: number between -99 and 99.
 //
-func (self *NumerableIcon) SetCount(count int) {
+func (self *NumerableIcon) SetCount(count int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

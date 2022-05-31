@@ -247,6 +247,8 @@ var (
 type Topleveller interface {
 	coreglib.Objector
 
+	// BeginMove begins an interactive move operation.
+	BeginMove(device Devicer, button int32, x, y float64, timestamp uint32)
 	// Focus sets keyboard focus to surface.
 	Focus(timestamp uint32)
 	// InhibitSystemShortcuts requests that the toplevel inhibit the system
@@ -297,6 +299,47 @@ func wrapToplevel(obj *coreglib.Object) *Toplevel {
 
 func marshalToplevel(p uintptr) (interface{}, error) {
 	return wrapToplevel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// BeginMove begins an interactive move operation.
+//
+// You might use this function to implement draggable titlebars.
+//
+// The function takes the following parameters:
+//
+//    - device used for the operation.
+//    - button being used to drag, or 0 for a keyboard-initiated drag.
+//    - x: surface X coordinate of mouse click that began the drag.
+//    - y: surface Y coordinate of mouse click that began the drag.
+//    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
+//
+func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, timestamp uint32) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void   // out
+	var _arg1 *C.void   // out
+	var _arg2 C.int     // out
+	var _arg3 C.double  // out
+	var _arg4 C.double  // out
+	var _arg5 C.guint32 // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg2 = C.int(button)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.guint32(timestamp)
+	*(**Toplevel)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Devicer)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float64)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float64)(unsafe.Pointer(&args[5])) = _arg5
+
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(timestamp)
 }
 
 // Focus sets keyboard focus to surface.

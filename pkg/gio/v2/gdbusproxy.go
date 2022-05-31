@@ -436,7 +436,7 @@ func (proxy *DBusProxy) Connection() *DBusConnection {
 //
 //    - gint: timeout to use for proxy.
 //
-func (proxy *DBusProxy) DefaultTimeout() int {
+func (proxy *DBusProxy) DefaultTimeout() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -449,9 +449,9 @@ func (proxy *DBusProxy) DefaultTimeout() int {
 
 	runtime.KeepAlive(proxy)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -673,7 +673,7 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 //
 //    - timeoutMsec: timeout in milliseconds.
 //
-func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int) {
+func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

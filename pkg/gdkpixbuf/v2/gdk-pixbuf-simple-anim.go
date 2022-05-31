@@ -69,7 +69,7 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 //
 //    - pixbufSimpleAnim: newly allocated PixbufSimpleAnim.
 //
-func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
+func NewPixbufSimpleAnim(width, height int32, rate float32) *PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
 	var _arg3 C.gfloat               // out

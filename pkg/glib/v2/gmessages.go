@@ -244,7 +244,7 @@ func _gotk4_glib2_LogWriterFunc(arg1 C.GLogLevelFlags, arg2 *C.GLogField, arg3 C
 //    - prettyFunction
 //    - expression
 //
-func AssertWarning(logDomain, file string, line int, prettyFunction, expression string) {
+func AssertWarning(logDomain, file string, line int32, prettyFunction, expression string) {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
 	var _arg3 C.int   // out
@@ -279,7 +279,7 @@ func AssertWarning(logDomain, file string, line int, prettyFunction, expression 
 //    - logDomain: log domain.
 //    - handlerId: id of the handler, which was returned in g_log_set_handler().
 //
-func LogRemoveHandler(logDomain string, handlerId uint) {
+func LogRemoveHandler(logDomain string, handlerId uint32) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.guint  // out
 
@@ -611,7 +611,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 //
 //    - ok: TRUE if output_fd points to the journal, FALSE otherwise.
 //
-func LogWriterIsJournald(outputFd int) bool {
+func LogWriterIsJournald(outputFd int32) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 
@@ -641,7 +641,7 @@ func LogWriterIsJournald(outputFd int) bool {
 //
 //    - ok: TRUE if ANSI color escapes are supported, FALSE otherwise.
 //
-func LogWriterSupportsColor(outputFd int) bool {
+func LogWriterSupportsColor(outputFd int32) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
 

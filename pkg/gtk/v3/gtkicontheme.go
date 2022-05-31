@@ -233,7 +233,7 @@ func NewIconInfoForPixbuf(iconTheme *IconTheme, pixbuf *gdkpixbuf.Pixbuf) *IconI
 //
 //    - gint: base scale.
 //
-func (iconInfo *IconInfo) BaseScale() int {
+func (iconInfo *IconInfo) BaseScale() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -246,9 +246,9 @@ func (iconInfo *IconInfo) BaseScale() int {
 
 	runtime.KeepAlive(iconInfo)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -265,7 +265,7 @@ func (iconInfo *IconInfo) BaseScale() int {
 //
 //    - gint: base size, or 0, if no base size is known for the icon.
 //
-func (iconInfo *IconInfo) BaseSize() int {
+func (iconInfo *IconInfo) BaseSize() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -278,9 +278,9 @@ func (iconInfo *IconInfo) BaseSize() int {
 
 	runtime.KeepAlive(iconInfo)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -869,7 +869,7 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 //      available. The array should be freed with g_free() when it is no longer
 //      needed.
 //
-func (iconTheme *IconTheme) IconSizes(iconName string) []int {
+func (iconTheme *IconTheme) IconSizes(iconName string) []int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -886,7 +886,7 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 	runtime.KeepAlive(iconTheme)
 	runtime.KeepAlive(iconName)
 
-	var _gints []int // out
+	var _gints []int32 // out
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
@@ -897,9 +897,9 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 		}
 
 		src := unsafe.Slice(_cret, i)
-		_gints = make([]int, i)
+		_gints = make([]int32, i)
 		for i := range src {
-			_gints[i] = int(src[i])
+			_gints[i] = int32(src[i])
 		}
 	}
 
@@ -1201,7 +1201,7 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 //      registered for the same icon name at different sizes.).
 //    - pixbuf that contains the image to use for icon_name.
 //
-func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf) {
+func IconThemeAddBuiltinIcon(iconName string, size int32, pixbuf *gdkpixbuf.Pixbuf) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -1212,7 +1212,7 @@ func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf
 	_arg1 = C.gint(size)
 	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	*(*string)(unsafe.Pointer(&args[0])) = _arg0
-	*(*int)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
 	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "add_builtin_icon").Invoke(args[:], nil)

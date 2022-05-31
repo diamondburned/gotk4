@@ -365,6 +365,34 @@ func (entry *Entry) ActivatesDefault() bool {
 	return _ok
 }
 
+// Alignment gets the value set by gtk_entry_set_alignment().
+//
+// See also: gtk.Editable:xalign.
+//
+// The function returns the following values:
+//
+//    - gfloat: alignment.
+//
+func (entry *Entry) Alignment() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_alignment", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(entry)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // Attributes gets the attribute list of the GtkEntry.
 //
 // See gtk.Entry.SetAttributes().
@@ -457,6 +485,34 @@ func (entry *Entry) Completion() *EntryCompletion {
 	return _entryCompletion
 }
 
+// CurrentIconDragSource returns the index of the icon which is the source of
+// the current DND operation, or -1.
+//
+// The function returns the following values:
+//
+//    - gint: index of the icon which is the source of the current DND operation,
+//      or -1.
+//
+func (entry *Entry) CurrentIconDragSource() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_current_icon_drag_source", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(entry)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // ExtraMenu gets the menu model set with gtk_entry_set_extra_menu().
 //
 // The function returns the following values:
@@ -526,6 +582,48 @@ func (entry *Entry) HasFrame() bool {
 	return _ok
 }
 
+// IconAtPos finds the icon at the given position and return its index.
+//
+// The position’s coordinates are relative to the entry’s top left corner. If x,
+// y doesn’t lie inside an icon, -1 is returned. This function is intended for
+// use in a gtk.Widget::query-tooltip signal handler.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of the position to find, relative to entry.
+//    - y coordinate of the position to find, relative to entry.
+//
+// The function returns the following values:
+//
+//    - gint: index of the icon at the given position, or -1.
+//
+func (entry *Entry) IconAtPos(x, y int32) int32 {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_icon_at_pos", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // InvisibleChar retrieves the character displayed in place of the actual text
 // in “password mode”.
 //
@@ -552,6 +650,35 @@ func (entry *Entry) InvisibleChar() uint32 {
 	_gunichar = uint32(_cret)
 
 	return _gunichar
+}
+
+// MaxLength retrieves the maximum allowed length of the text in entry.
+//
+// See gtk.Entry.SetMaxLength().
+//
+// The function returns the following values:
+//
+//    - gint: maximum allowed number of characters in GtkEntry, or 0 if there is
+//      no maximum.
+//
+func (entry *Entry) MaxLength() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_max_length", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(entry)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // OverwriteMode gets whether the GtkEntry is in overwrite mode.
@@ -612,6 +739,62 @@ func (entry *Entry) PlaceholderText() string {
 	}
 
 	return _utf8
+}
+
+// ProgressFraction returns the current fraction of the task that’s been
+// completed.
+//
+// See gtk.Entry.SetProgressFraction().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
+func (entry *Entry) ProgressFraction() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_progress_fraction", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(entry)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// ProgressPulseStep retrieves the pulse step set with
+// gtk_entry_set_progress_pulse_step().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
+func (entry *Entry) ProgressPulseStep() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	*(**Entry)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Entry").InvokeMethod("get_progress_pulse_step", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(entry)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // Tabs gets the tabstops of the `GtkEntry.
@@ -799,6 +982,33 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
+// SetAlignment sets the alignment for the contents of the entry.
+//
+// This controls the horizontal positioning of the contents when the displayed
+// text is shorter than the width of the entry.
+//
+// See also: gtk.Editable:xalign.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
+//      RTL layouts.
+//
+func (entry *Entry) SetAlignment(xalign float32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.float(xalign)
+	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_alignment", args[:], nil)
+
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(xalign)
+}
+
 // SetAttributes sets a PangoAttrList.
 //
 // The attributes in the list are applied to the entry text.
@@ -950,6 +1160,35 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 	runtime.KeepAlive(ch)
 }
 
+// SetMaxLength sets the maximum allowed length of the contents of the widget.
+//
+// If the current contents are longer than the given length, then they will be
+// truncated to fit.
+//
+// This is equivalent to getting entry's GtkEntryBuffer and calling
+// gtk.EntryBuffer.SetMaxLength() on it.
+//
+// The function takes the following parameters:
+//
+//    - max: maximum length of the entry, or 0 for no maximum. (other than the
+//      maximum length of entries.) The value passed in will be clamped to the
+//      range 0-65536.
+//
+func (entry *Entry) SetMaxLength(max int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.int(max)
+	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_max_length", args[:], nil)
+
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(max)
+}
+
 // SetOverwriteMode sets whether the text is overwritten when typing in the
 // GtkEntry.
 //
@@ -1000,6 +1239,54 @@ func (entry *Entry) SetPlaceholderText(text string) {
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(text)
+}
+
+// SetProgressFraction causes the entry’s progress indicator to “fill in” the
+// given fraction of the bar.
+//
+// The fraction should be between 0.0 and 1.0, inclusive.
+//
+// The function takes the following parameters:
+//
+//    - fraction of the task that’s been completed.
+//
+func (entry *Entry) SetProgressFraction(fraction float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.double(fraction)
+	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_progress_fraction", args[:], nil)
+
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(fraction)
+}
+
+// SetProgressPulseStep sets the fraction of total entry width to move the
+// progress bouncing block for each pulse.
+//
+// Use gtk.Entry.ProgressPulse() to pulse the progress.
+//
+// The function takes the following parameters:
+//
+//    - fraction between 0.0 and 1.0.
+//
+func (entry *Entry) SetProgressPulseStep(fraction float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.double(fraction)
+	*(**Entry)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Entry").InvokeMethod("set_progress_pulse_step", args[:], nil)
+
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(fraction)
 }
 
 // SetTabs sets a PangoTabArray.

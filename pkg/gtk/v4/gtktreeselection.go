@@ -192,6 +192,32 @@ func (selection *TreeSelection) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(selection, "changed", false, unsafe.Pointer(C._gotk4_gtk4_TreeSelection_ConnectChanged), f)
 }
 
+// CountSelectedRows returns the number of rows that have been selected in tree.
+//
+// The function returns the following values:
+//
+//    - gint: number of rows selected.
+//
+func (selection *TreeSelection) CountSelectedRows() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**TreeSelection)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("count_selected_rows", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(selection)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // SelectedRows creates a list of path of all selected rows. Additionally, if
 // you are planning on modifying the model after calling this function, you may
 // want to convert the returned list into a list of TreeRowReferences. To do

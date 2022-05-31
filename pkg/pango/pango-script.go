@@ -643,7 +643,7 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 }
 
 // NewScriptIter constructs a struct ScriptIter.
-func NewScriptIter(text string, length int) *ScriptIter {
+func NewScriptIter(text string, length int32) *ScriptIter {
 	var _arg1 *C.char            // out
 	var _arg2 C.int              // out
 	var _cret *C.PangoScriptIter // in

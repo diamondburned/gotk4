@@ -671,7 +671,7 @@ func RCParse(filename string) {
 //    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
 //      expected but not found.
 //
-func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
+func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -688,9 +688,9 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(priority)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -856,7 +856,7 @@ type RCStyleOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Parse(settings *Settings, scanner *glib.Scanner) uint
+	Parse(settings *Settings, scanner *glib.Scanner) uint32
 }
 
 // RCStyle is used to represent a set of information about the appearance of a
@@ -887,7 +887,7 @@ func classInitRCStyler(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Parse(settings *Settings, scanner *glib.Scanner) uint
+		Parse(settings *Settings, scanner *glib.Scanner) uint32
 	}); ok {
 		pclass.parse = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_parse)
 	}
@@ -909,7 +909,7 @@ func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
 func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.GtkRcStyle, arg1 *C.GtkSettings, arg2 *C.GScanner) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Parse(settings *Settings, scanner *glib.Scanner) uint
+		Parse(settings *Settings, scanner *glib.Scanner) uint32
 	})
 
 	var _settings *Settings    // out

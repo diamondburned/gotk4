@@ -161,6 +161,32 @@ func (box *Box) Homogeneous() bool {
 	return _ok
 }
 
+// Spacing gets the value set by gtk_box_set_spacing().
+//
+// The function returns the following values:
+//
+//    - gint: spacing between children.
+//
+func (box *Box) Spacing() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**Box)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_spacing", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(box)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // InsertChildAfter inserts child in the position after sibling in the list of
 // box children.
 //
@@ -291,4 +317,25 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(homogeneous)
+}
+
+// SetSpacing sets the number of pixels to place between children of box.
+//
+// The function takes the following parameters:
+//
+//    - spacing: number of pixels to put between children.
+//
+func (box *Box) SetSpacing(spacing int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.int(spacing)
+	*(**Box)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Box").InvokeMethod("set_spacing", args[:], nil)
+
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
 }

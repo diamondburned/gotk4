@@ -16,6 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern gboolean _gotk4_gtk4_TreeModelFilterClass_visible(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelFilterClass_modify(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*, GValue*, int);
 import "C"
 
 // glib.Type values for gtktreemodelfilter.go.
@@ -114,6 +115,14 @@ type TreeModelFilterOverrider interface {
 	//
 	//    - childModel
 	//    - iter
+	//    - value
+	//    - column
+	//
+	Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
+	// The function takes the following parameters:
+	//
+	//    - childModel
+	//    - iter
 	//
 	// The function returns the following values:
 	//
@@ -207,10 +216,52 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 	// pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface {
+		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
+	}); ok {
+		pclass.modify = (*[0]byte)(C._gotk4_gtk4_TreeModelFilterClass_modify)
+	}
+
+	if _, ok := goval.(interface {
 		Visible(childModel TreeModeller, iter *TreeIter) bool
 	}); ok {
 		pclass.visible = (*[0]byte)(C._gotk4_gtk4_TreeModelFilterClass_visible)
 	}
+}
+
+//export _gotk4_gtk4_TreeModelFilterClass_modify
+func _gotk4_gtk4_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GValue, arg4 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
+	})
+
+	var _childModel TreeModeller // out
+	var _iter *TreeIter          // out
+	var _value *coreglib.Value   // out
+	var _column int32            // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gtk.TreeModeller is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(TreeModeller)
+			return ok
+		})
+		rv, ok := casted.(TreeModeller)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
+		}
+		_childModel = rv
+	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(arg3))
+	_column = int32(arg4)
+
+	iface.Modify(_childModel, _iter, _value, _column)
 }
 
 //export _gotk4_gtk4_TreeModelFilterClass_visible
@@ -413,4 +464,31 @@ func (filter *TreeModelFilter) Refilter() {
 	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("refilter", args[:], nil)
 
 	runtime.KeepAlive(filter)
+}
+
+// SetVisibleColumn sets column of the child_model to be the column where filter
+// should look for visibility information. columns should be a column of type
+// G_TYPE_BOOLEAN, where TRUE means that a row is visible, and FALSE if not.
+//
+// Note that gtk_tree_model_filter_set_visible_func() or
+// gtk_tree_model_filter_set_visible_column() can only be called once for a
+// given filter model.
+//
+// The function takes the following parameters:
+//
+//    - column which is the column containing the visible information.
+//
+func (filter *TreeModelFilter) SetVisibleColumn(column int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg1 = C.int(column)
+	*(**TreeModelFilter)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("set_visible_column", args[:], nil)
+
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(column)
 }

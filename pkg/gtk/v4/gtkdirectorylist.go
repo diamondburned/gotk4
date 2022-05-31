@@ -222,6 +222,32 @@ func (self *DirectoryList) File() *gio.File {
 	return _file
 }
 
+// IOPriority gets the IO priority set via gtk_directory_list_set_io_priority().
+//
+// The function returns the following values:
+//
+//    - gint: IO priority.
+//
+func (self *DirectoryList) IOPriority() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**DirectoryList)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "DirectoryList").InvokeMethod("get_io_priority", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Monitored returns whether the directory list is monitoring the directory for
 // changes.
 //
@@ -333,6 +359,35 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(file)
+}
+
+// SetIOPriority sets the IO priority to use while loading directories.
+//
+// Setting the priority while self is loading will reprioritize the ongoing load
+// as soon as possible.
+//
+// The default IO priority is G_PRIORITY_DEFAULT, which is higher than the GTK
+// redraw priority. If you are loading a lot of directories in parallel,
+// lowering it to something like G_PRIORITY_DEFAULT_IDLE may increase
+// responsiveness.
+//
+// The function takes the following parameters:
+//
+//    - ioPriority: IO priority to use.
+//
+func (self *DirectoryList) SetIOPriority(ioPriority int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(ioPriority)
+	*(**DirectoryList)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "DirectoryList").InvokeMethod("set_io_priority", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ioPriority)
 }
 
 // SetMonitored sets whether the directory list will monitor the directory for

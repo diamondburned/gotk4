@@ -403,7 +403,7 @@ func (fontsel *FontSelection) PreviewText() string {
 //    - gint: n integer representing the selected font size, or -1 if no font
 //      size is selected.
 //
-func (fontsel *FontSelection) Size() int {
+func (fontsel *FontSelection) Size() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -416,9 +416,9 @@ func (fontsel *FontSelection) Size() int {
 
 	runtime.KeepAlive(fontsel)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

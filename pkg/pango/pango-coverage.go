@@ -149,7 +149,7 @@ func (coverage *Coverage) Copy() *Coverage {
 //
 //    - coverageLevel: coverage level of coverage for character index_.
 //
-func (coverage *Coverage) Get(index_ int) CoverageLevel {
+func (coverage *Coverage) Get(index_ int32) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
 	var _cret C.PangoCoverageLevel // in
@@ -197,7 +197,7 @@ func (coverage *Coverage) Max(other *Coverage) {
 //    - index_: index to modify.
 //    - level: new level for index_.
 //
-func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
+func (coverage *Coverage) Set(index_ int32, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
 	var _arg2 C.PangoCoverageLevel // out

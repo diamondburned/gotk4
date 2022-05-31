@@ -204,7 +204,7 @@ func (iter *TextIter) BackwardChar() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) BackwardChars(count int) bool {
+func (iter *TextIter) BackwardChars(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -267,7 +267,7 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) BackwardCursorPositions(count int) bool {
+func (iter *TextIter) BackwardCursorPositions(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -339,7 +339,7 @@ func (iter *TextIter) BackwardLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) BackwardLines(count int) bool {
+func (iter *TextIter) BackwardLines(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -406,7 +406,7 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) BackwardSentenceStarts(count int) bool {
+func (iter *TextIter) BackwardSentenceStarts(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -509,7 +509,7 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
+func (iter *TextIter) BackwardVisibleCursorPositions(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -582,7 +582,7 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) BackwardVisibleLines(count int) bool {
+func (iter *TextIter) BackwardVisibleLines(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -648,7 +648,7 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) BackwardVisibleWordStarts(count int) bool {
+func (iter *TextIter) BackwardVisibleWordStarts(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -713,7 +713,7 @@ func (iter *TextIter) BackwardWordStart() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) BackwardWordStarts(count int) bool {
+func (iter *TextIter) BackwardWordStarts(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -836,7 +836,7 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 //    - gint: -1 if lhs is less than rhs, 1 if lhs is greater, 0 if they are
 //      equal.
 //
-func (lhs *TextIter) Compare(rhs *TextIter) int {
+func (lhs *TextIter) Compare(rhs *TextIter) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -851,9 +851,9 @@ func (lhs *TextIter) Compare(rhs *TextIter) int {
 	runtime.KeepAlive(lhs)
 	runtime.KeepAlive(rhs)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1156,7 +1156,7 @@ func (iter *TextIter) ForwardChar() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) ForwardChars(count int) bool {
+func (iter *TextIter) ForwardChars(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1226,7 +1226,7 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) ForwardCursorPositions(count int) bool {
+func (iter *TextIter) ForwardCursorPositions(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1295,7 +1295,7 @@ func (iter *TextIter) ForwardLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) ForwardLines(count int) bool {
+func (iter *TextIter) ForwardLines(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1361,7 +1361,7 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) ForwardSentenceEnds(count int) bool {
+func (iter *TextIter) ForwardSentenceEnds(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1510,7 +1510,7 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) ForwardVisibleCursorPositions(count int) bool {
+func (iter *TextIter) ForwardVisibleCursorPositions(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1579,7 +1579,7 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) ForwardVisibleLines(count int) bool {
+func (iter *TextIter) ForwardVisibleLines(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1644,7 +1644,7 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) ForwardVisibleWordEnds(count int) bool {
+func (iter *TextIter) ForwardVisibleWordEnds(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1708,7 +1708,7 @@ func (iter *TextIter) ForwardWordEnd() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) ForwardWordEnds(count int) bool {
+func (iter *TextIter) ForwardWordEnds(count int32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.gint     // out
@@ -1764,7 +1764,7 @@ func (iter *TextIter) Buffer() *TextBuffer {
 //
 //    - gint: number of bytes in the line.
 //
-func (iter *TextIter) BytesInLine() int {
+func (iter *TextIter) BytesInLine() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1776,9 +1776,9 @@ func (iter *TextIter) BytesInLine() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1820,7 +1820,7 @@ func (iter *TextIter) Char() uint32 {
 //
 //    - gint: number of characters in the line.
 //
-func (iter *TextIter) CharsInLine() int {
+func (iter *TextIter) CharsInLine() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1832,9 +1832,9 @@ func (iter *TextIter) CharsInLine() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1905,7 +1905,7 @@ func (iter *TextIter) Language() *pango.Language {
 //
 //    - gint: line number.
 //
-func (iter *TextIter) Line() int {
+func (iter *TextIter) Line() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1917,9 +1917,9 @@ func (iter *TextIter) Line() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1932,7 +1932,7 @@ func (iter *TextIter) Line() int {
 //
 //    - gint: distance from start of line, in bytes.
 //
-func (iter *TextIter) LineIndex() int {
+func (iter *TextIter) LineIndex() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1944,9 +1944,9 @@ func (iter *TextIter) LineIndex() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1959,7 +1959,7 @@ func (iter *TextIter) LineIndex() int {
 //
 //    - gint: offset from start of line.
 //
-func (iter *TextIter) LineOffset() int {
+func (iter *TextIter) LineOffset() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1971,9 +1971,9 @@ func (iter *TextIter) LineOffset() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2021,7 +2021,7 @@ func (iter *TextIter) Marks() []*TextMark {
 //
 //    - gint: character offset.
 //
-func (iter *TextIter) Offset() int {
+func (iter *TextIter) Offset() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -2033,9 +2033,9 @@ func (iter *TextIter) Offset() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2236,7 +2236,7 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 //
 //    - gint: byte index of iter with respect to the start of the line.
 //
-func (iter *TextIter) VisibleLineIndex() int {
+func (iter *TextIter) VisibleLineIndex() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -2248,9 +2248,9 @@ func (iter *TextIter) VisibleLineIndex() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2263,7 +2263,7 @@ func (iter *TextIter) VisibleLineIndex() int {
 //
 //    - gint: offset in visible characters from the start of the line.
 //
-func (iter *TextIter) VisibleLineOffset() int {
+func (iter *TextIter) VisibleLineOffset() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -2275,9 +2275,9 @@ func (iter *TextIter) VisibleLineOffset() int {
 
 	runtime.KeepAlive(iter)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2608,7 +2608,7 @@ func (first *TextIter) Order(second *TextIter) {
 //
 //    - lineNumber: line number (counted from 0).
 //
-func (iter *TextIter) SetLine(lineNumber int) {
+func (iter *TextIter) SetLine(lineNumber int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2629,7 +2629,7 @@ func (iter *TextIter) SetLine(lineNumber int) {
 //
 //    - byteOnLine: byte index relative to the start of iter’s current line.
 //
-func (iter *TextIter) SetLineIndex(byteOnLine int) {
+func (iter *TextIter) SetLineIndex(byteOnLine int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2653,7 +2653,7 @@ func (iter *TextIter) SetLineIndex(byteOnLine int) {
 //    - charOnLine: character offset relative to the start of iter’s current
 //      line.
 //
-func (iter *TextIter) SetLineOffset(charOnLine int) {
+func (iter *TextIter) SetLineOffset(charOnLine int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2673,7 +2673,7 @@ func (iter *TextIter) SetLineOffset(charOnLine int) {
 //
 //    - charOffset: character number.
 //
-func (iter *TextIter) SetOffset(charOffset int) {
+func (iter *TextIter) SetOffset(charOffset int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2694,7 +2694,7 @@ func (iter *TextIter) SetOffset(charOffset int) {
 //
 //    - byteOnLine: byte index.
 //
-func (iter *TextIter) SetVisibleLineIndex(byteOnLine int) {
+func (iter *TextIter) SetVisibleLineIndex(byteOnLine int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -2715,7 +2715,7 @@ func (iter *TextIter) SetVisibleLineIndex(byteOnLine int) {
 //
 //    - charOnLine: character offset.
 //
-func (iter *TextIter) SetVisibleLineOffset(charOnLine int) {
+func (iter *TextIter) SetVisibleLineOffset(charOnLine int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

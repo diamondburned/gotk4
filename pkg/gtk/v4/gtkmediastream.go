@@ -21,6 +21,7 @@ import (
 // extern void _gotk4_gtk4_MediaStreamClass_realize(GtkMediaStream*, GdkSurface*);
 // extern void _gotk4_gtk4_MediaStreamClass_seek(GtkMediaStream*, gint64);
 // extern void _gotk4_gtk4_MediaStreamClass_unrealize(GtkMediaStream*, GdkSurface*);
+// extern void _gotk4_gtk4_MediaStreamClass_update_audio(GtkMediaStream*, gboolean, double);
 import "C"
 
 // glib.Type values for gtkmediastream.go.
@@ -88,6 +89,12 @@ type MediaStreamOverrider interface {
 	//    - surface: GdkSurface the stream was realized with.
 	//
 	Unrealize(surface gdk.Surfacer)
+	// The function takes the following parameters:
+	//
+	//    - muted
+	//    - volume
+	//
+	UpdateAudio(muted bool, volume float64)
 }
 
 // MediaStream: GtkMediaStream is the integration point for media playback
@@ -154,6 +161,12 @@ func classInitMediaStreamer(gclassPtr, data C.gpointer) {
 
 	if _, ok := goval.(interface{ Unrealize(surface gdk.Surfacer) }); ok {
 		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_unrealize)
+	}
+
+	if _, ok := goval.(interface {
+		UpdateAudio(muted bool, volume float64)
+	}); ok {
+		pclass.update_audio = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_update_audio)
 	}
 }
 
@@ -245,6 +258,24 @@ func _gotk4_gtk4_MediaStreamClass_unrealize(arg0 *C.GtkMediaStream, arg1 *C.GdkS
 	}
 
 	iface.Unrealize(_surface)
+}
+
+//export _gotk4_gtk4_MediaStreamClass_update_audio
+func _gotk4_gtk4_MediaStreamClass_update_audio(arg0 *C.GtkMediaStream, arg1 C.gboolean, arg2 C.double) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		UpdateAudio(muted bool, volume float64)
+	})
+
+	var _muted bool     // out
+	var _volume float64 // out
+
+	if arg1 != 0 {
+		_muted = true
+	}
+	_volume = float64(arg2)
+
+	iface.UpdateAudio(_muted, _volume)
 }
 
 func wrapMediaStream(obj *coreglib.Object) *MediaStream {
@@ -527,6 +558,34 @@ func (self *MediaStream) Timestamp() int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
+}
+
+// Volume returns the volume of the audio for the stream.
+//
+// See gtk.MediaStream.SetVolume() for details.
+//
+// The function returns the following values:
+//
+//    - gdouble: volume of the stream from 0.0 to 1.0.
+//
+func (self *MediaStream) Volume() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**MediaStream)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_volume", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // HasAudio returns whether the stream has audio.
@@ -942,6 +1001,36 @@ func (self *MediaStream) SetPlaying(playing bool) {
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(playing)
+}
+
+// SetVolume sets the volume of the audio stream.
+//
+// This function call will work even if the stream is muted.
+//
+// The given volume should range from 0.0 for silence to 1.0 for as loud as
+// possible. Values outside of this range will be clamped to the nearest value.
+//
+// If the stream has no audio or is muted, calling this function will still work
+// but it will not have an immediate audible effect. When the stream is unmuted,
+// the new volume setting will take effect.
+//
+// The function takes the following parameters:
+//
+//    - volume: new volume of the stream from 0.0 to 1.0.
+//
+func (self *MediaStream) SetVolume(volume float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.double(volume)
+	*(**MediaStream)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("set_volume", args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(volume)
 }
 
 // Unprepared resets a given media stream implementation.

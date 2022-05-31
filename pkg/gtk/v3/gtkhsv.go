@@ -165,6 +165,38 @@ func (hsv *HSV) IsAdjusting() bool {
 	return _ok
 }
 
+// SetColor sets the current color in an HSV color selector. Color component
+// values must be in the [0.0, 1.0] range.
+//
+// The function takes the following parameters:
+//
+//    - h: hue.
+//    - s: saturation.
+//    - v: value.
+//
+func (hsv *HSV) SetColor(h, s, v float64) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+	var _arg2 C.double // out
+	var _arg3 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
+	_arg1 = C.double(h)
+	_arg2 = C.double(s)
+	_arg3 = C.double(v)
+	*(**HSV)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_color", args[:], nil)
+
+	runtime.KeepAlive(hsv)
+	runtime.KeepAlive(h)
+	runtime.KeepAlive(s)
+	runtime.KeepAlive(v)
+}
+
 // SetMetrics sets the size and ring width of an HSV color selector.
 //
 // The function takes the following parameters:
@@ -172,7 +204,7 @@ func (hsv *HSV) IsAdjusting() bool {
 //    - size: diameter for the hue ring.
 //    - ringWidth: width of the hue ring.
 //
-func (hsv *HSV) SetMetrics(size, ringWidth int) {
+func (hsv *HSV) SetMetrics(size, ringWidth int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -182,7 +214,7 @@ func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	_arg1 = C.gint(size)
 	_arg2 = C.gint(ringWidth)
 	*(**HSV)(unsafe.Pointer(&args[1])) = _arg1
-	*(*int)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_metrics", args[:], nil)
 

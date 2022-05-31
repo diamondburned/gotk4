@@ -142,6 +142,41 @@ func (node *BlendNode) TopChild() RenderNoder {
 	return _renderNode
 }
 
+// NewBlurNode creates a render node that blurs the child.
+//
+// The function takes the following parameters:
+//
+//    - child node to blur.
+//    - radius: blur radius.
+//
+// The function returns the following values:
+//
+//    - blurNode: new GskRenderNode.
+//
+func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.float(radius)
+	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float32)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("new_BlurNode", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(radius)
+
+	var _blurNode *BlurNode // out
+
+	_blurNode = wrapBlurNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _blurNode
+}
+
 // Child retrieves the child GskRenderNode of the blur node.
 //
 // The function returns the following values:
@@ -182,6 +217,32 @@ func (node *BlurNode) Child() RenderNoder {
 	}
 
 	return _renderNode
+}
+
+// Radius retrieves the blur radius of the node.
+//
+// The function returns the following values:
+//
+//    - gfloat: blur radius.
+//
+func (node *BlurNode) Radius() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**BlurNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BlurNode").InvokeMethod("get_radius", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
 }
 
 // Colors retrieves the colors of the border.
@@ -235,6 +296,33 @@ func (node *BorderNode) Outline() *RoundedRect {
 	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _roundedRect
+}
+
+// Widths retrieves the stroke widths of the border.
+//
+// The function returns the following values:
+//
+//    - gfloats: array of 4 floats for the top, right, bottom and left stroke
+//      width of the border, respectively.
+//
+func (node *BorderNode) Widths() [4]float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret *C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**BorderNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "BorderNode").InvokeMethod("get_widths", args[:], nil)
+	_cret = *(**C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloats [4]float32 // out
+
+	_gfloats = *(*[4]float32)(unsafe.Pointer(&_cret))
+
+	return _gfloats
 }
 
 // NewCairoNode creates a GskRenderNode that will render a cairo surface into
@@ -642,6 +730,38 @@ func (node *ColorNode) Color() *gdk.RGBA {
 	return _rgbA
 }
 
+// Angle retrieves the angle for the gradient in radians, normalized in [0, 2 *
+// PI].
+//
+// The angle is starting at the top and going clockwise, as expressed in the css
+// specification:
+//
+//    angle = 90 - gsk_conic_gradient_node_get_rotation().
+//
+// The function returns the following values:
+//
+//    - gfloat: angle for the gradient.
+//
+func (node *ConicGradientNode) Angle() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**ConicGradientNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_angle", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // Center retrieves the center pointer for the gradient.
 //
 // The function returns the following values:
@@ -692,6 +812,32 @@ func (node *ConicGradientNode) NColorStops() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+// Rotation retrieves the rotation for the gradient in degrees.
+//
+// The function returns the following values:
+//
+//    - gfloat: rotation for the gradient.
+//
+func (node *ConicGradientNode) Rotation() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**ConicGradientNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "ConicGradientNode").InvokeMethod("get_rotation", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
 }
 
 // NewContainerNode creates a new GskRenderNode instance for holding the given
@@ -747,7 +893,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 //
 //    - renderNode: idx'th child of container.
 //
-func (node *ContainerNode) Child(idx uint) RenderNoder {
+func (node *ContainerNode) Child(idx uint32) RenderNoder {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -792,7 +938,7 @@ func (node *ContainerNode) Child(idx uint) RenderNoder {
 //
 //    - guint: number of children of the GskRenderNode.
 //
-func (node *ContainerNode) NChildren() uint {
+func (node *ContainerNode) NChildren() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -805,11 +951,53 @@ func (node *ContainerNode) NChildren() uint {
 
 	runtime.KeepAlive(node)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// NewCrossFadeNode creates a GskRenderNode that will do a cross-fade between
+// start and end.
+//
+// The function takes the following parameters:
+//
+//    - start node to be drawn.
+//    - end: node to be cross_fadeed onto the start node.
+//    - progress: how far the fade has progressed from start to end. The value
+//      will be clamped to the range [0 ... 1].
+//
+// The function returns the following values:
+//
+//    - crossFadeNode: new GskRenderNode.
+//
+func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(start).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(end).Native()))
+	_arg2 = C.float(progress)
+	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
+	*(*RenderNoder)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("new_CrossFadeNode", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(progress)
+
+	var _crossFadeNode *CrossFadeNode // out
+
+	_crossFadeNode = wrapCrossFadeNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _crossFadeNode
 }
 
 // EndChild retrieves the child GskRenderNode at the end of the cross-fade.
@@ -852,6 +1040,32 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 	}
 
 	return _renderNode
+}
+
+// Progress retrieves the progress value of the cross fade.
+//
+// The function returns the following values:
+//
+//    - gfloat progress value, between 0 and 1.
+//
+func (node *CrossFadeNode) Progress() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**CrossFadeNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "CrossFadeNode").InvokeMethod("get_progress", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
 }
 
 // StartChild retrieves the child GskRenderNode at the beginning of the
@@ -1118,7 +1332,7 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 //
 //    - renderNode: idx'th child of node.
 //
-func (node *GLShaderNode) Child(idx uint) RenderNoder {
+func (node *GLShaderNode) Child(idx uint32) RenderNoder {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -1163,7 +1377,7 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 //
 //    - guint: number of children.
 //
-func (node *GLShaderNode) NChildren() uint {
+func (node *GLShaderNode) NChildren() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1176,9 +1390,9 @@ func (node *GLShaderNode) NChildren() uint {
 
 	runtime.KeepAlive(node)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1209,6 +1423,88 @@ func (node *GLShaderNode) Shader() *GLShader {
 	return _glShader
 }
 
+// NewInsetShadowNode creates a GskRenderNode that will render an inset shadow
+// into the box given by outline.
+//
+// The function takes the following parameters:
+//
+//    - outline of the region containing the shadow.
+//    - color of the shadow.
+//    - dx: horizontal offset of shadow.
+//    - dy: vertical offset of shadow.
+//    - spread: how far the shadow spreads towards the inside.
+//    - blurRadius: how much blur to apply to the shadow.
+//
+// The function returns the following values:
+//
+//    - insetShadowNode: new GskRenderNode.
+//
+func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *InsetShadowNode {
+	var args [6]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.float // out
+	var _arg3 C.float // out
+	var _arg4 C.float // out
+	var _arg5 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg2 = C.float(dx)
+	_arg3 = C.float(dy)
+	_arg4 = C.float(spread)
+	_arg5 = C.float(blurRadius)
+	*(**RoundedRect)(unsafe.Pointer(&args[0])) = _arg0
+	*(**gdk.RGBA)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float32)(unsafe.Pointer(&args[5])) = _arg5
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("new_InsetShadowNode", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
+
+	var _insetShadowNode *InsetShadowNode // out
+
+	_insetShadowNode = wrapInsetShadowNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _insetShadowNode
+}
+
+// BlurRadius retrieves the blur radius to apply to the shadow.
+//
+// The function returns the following values:
+//
+//    - gfloat: blur radius, in pixels.
+//
+func (node *InsetShadowNode) BlurRadius() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_blur_radius", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // Color retrieves the color of the inset shadow.
 //
 // The function returns the following values:
@@ -1235,6 +1531,58 @@ func (node *InsetShadowNode) Color() *gdk.RGBA {
 	return _rgbA
 }
 
+// Dx retrieves the horizontal offset of the inset shadow.
+//
+// The function returns the following values:
+//
+//    - gfloat: offset, in pixels.
+//
+func (node *InsetShadowNode) Dx() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_dx", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Dy retrieves the vertical offset of the inset shadow.
+//
+// The function returns the following values:
+//
+//    - gfloat: offset, in pixels.
+//
+func (node *InsetShadowNode) Dy() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_dy", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // Outline retrieves the outline rectangle of the inset shadow.
 //
 // The function returns the following values:
@@ -1259,6 +1607,32 @@ func (node *InsetShadowNode) Outline() *RoundedRect {
 	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _roundedRect
+}
+
+// Spread retrieves how much the shadow spreads inwards.
+//
+// The function returns the following values:
+//
+//    - gfloat: size of the shadow, in pixels.
+//
+func (node *InsetShadowNode) Spread() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**InsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "InsetShadowNode").InvokeMethod("get_spread", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
 }
 
 // End retrieves the final point of the linear gradient.
@@ -1339,6 +1713,42 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 	return _point
 }
 
+// NewOpacityNode creates a GskRenderNode that will drawn the child with reduced
+// opacity.
+//
+// The function takes the following parameters:
+//
+//    - child: node to draw.
+//    - opacity to apply.
+//
+// The function returns the following values:
+//
+//    - opacityNode: new GskRenderNode.
+//
+func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.float(opacity)
+	*(*RenderNoder)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float32)(unsafe.Pointer(&args[1])) = _arg1
+
+	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("new_OpacityNode", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(opacity)
+
+	var _opacityNode *OpacityNode // out
+
+	_opacityNode = wrapOpacityNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _opacityNode
+}
+
 // Child gets the child node that is getting opacityed by the given node.
 //
 // The function returns the following values:
@@ -1381,6 +1791,114 @@ func (node *OpacityNode) Child() RenderNoder {
 	return _renderNode
 }
 
+// Opacity gets the transparency factor for an opacity node.
+//
+// The function returns the following values:
+//
+//    - gfloat: opacity factor.
+//
+func (node *OpacityNode) Opacity() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**OpacityNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OpacityNode").InvokeMethod("get_opacity", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// NewOutsetShadowNode creates a GskRenderNode that will render an outset shadow
+// around the box given by outline.
+//
+// The function takes the following parameters:
+//
+//    - outline of the region surrounded by shadow.
+//    - color of the shadow.
+//    - dx: horizontal offset of shadow.
+//    - dy: vertical offset of shadow.
+//    - spread: how far the shadow spreads towards the inside.
+//    - blurRadius: how much blur to apply to the shadow.
+//
+// The function returns the following values:
+//
+//    - outsetShadowNode: new GskRenderNode.
+//
+func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *OutsetShadowNode {
+	var args [6]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.float // out
+	var _arg3 C.float // out
+	var _arg4 C.float // out
+	var _arg5 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg2 = C.float(dx)
+	_arg3 = C.float(dy)
+	_arg4 = C.float(spread)
+	_arg5 = C.float(blurRadius)
+	*(**RoundedRect)(unsafe.Pointer(&args[0])) = _arg0
+	*(**gdk.RGBA)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*float32)(unsafe.Pointer(&args[5])) = _arg5
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("new_OutsetShadowNode", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(outline)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+	runtime.KeepAlive(spread)
+	runtime.KeepAlive(blurRadius)
+
+	var _outsetShadowNode *OutsetShadowNode // out
+
+	_outsetShadowNode = wrapOutsetShadowNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _outsetShadowNode
+}
+
+// BlurRadius retrieves the blur radius of the shadow.
+//
+// The function returns the following values:
+//
+//    - gfloat: blur radius, in pixels.
+//
+func (node *OutsetShadowNode) BlurRadius() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_blur_radius", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // Color retrieves the color of the outset shadow.
 //
 // The function returns the following values:
@@ -1405,6 +1923,58 @@ func (node *OutsetShadowNode) Color() *gdk.RGBA {
 	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rgbA
+}
+
+// Dx retrieves the horizontal offset of the outset shadow.
+//
+// The function returns the following values:
+//
+//    - gfloat: offset, in pixels.
+//
+func (node *OutsetShadowNode) Dx() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_dx", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Dy retrieves the vertical offset of the outset shadow.
+//
+// The function returns the following values:
+//
+//    - gfloat: offset, in pixels.
+//
+func (node *OutsetShadowNode) Dy() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_dy", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
 }
 
 // Outline retrieves the outline rectangle of the outset shadow.
@@ -1433,6 +2003,32 @@ func (node *OutsetShadowNode) Outline() *RoundedRect {
 	return _roundedRect
 }
 
+// Spread retrieves how much the shadow spreads outwards.
+//
+// The function returns the following values:
+//
+//    - gfloat: size of the shadow, in pixels.
+//
+func (node *OutsetShadowNode) Spread() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**OutsetShadowNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "OutsetShadowNode").InvokeMethod("get_spread", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // Center retrieves the center pointer for the gradient.
 //
 // The function returns the following values:
@@ -1459,6 +2055,58 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 	return _point
 }
 
+// End retrieves the end value for the gradient.
+//
+// The function returns the following values:
+//
+//    - gfloat: end value for the gradient.
+//
+func (node *RadialGradientNode) End() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_end", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Hradius retrieves the horizonal radius for the gradient.
+//
+// The function returns the following values:
+//
+//    - gfloat: horizontal radius for the gradient.
+//
+func (node *RadialGradientNode) Hradius() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_hradius", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
 // NColorStops retrieves the number of color stops in the gradient.
 //
 // The function returns the following values:
@@ -1483,6 +2131,58 @@ func (node *RadialGradientNode) NColorStops() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+// Start retrieves the start value for the gradient.
+//
+// The function returns the following values:
+//
+//    - gfloat: start value for the gradient.
+//
+func (node *RadialGradientNode) Start() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_start", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Vradius retrieves the vertical radius for the gradient.
+//
+// The function returns the following values:
+//
+//    - gfloat: vertical radius for the gradient.
+//
+func (node *RadialGradientNode) Vradius() float32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.float // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+	*(**RadialGradientNode)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gsk", "RadialGradientNode").InvokeMethod("get_vradius", args[:], nil)
+	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(node)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
 }
 
 // RenderNode: GskRenderNode is the basic block in a scene graph to be rendered
@@ -2082,7 +2782,7 @@ func (node *TextNode) Font() pango.Fonter {
 //
 //    - guint: number of glyphs.
 //
-func (node *TextNode) NumGlyphs() uint {
+func (node *TextNode) NumGlyphs() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -2095,9 +2795,9 @@ func (node *TextNode) NumGlyphs() uint {
 
 	runtime.KeepAlive(node)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }

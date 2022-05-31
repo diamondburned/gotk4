@@ -114,7 +114,7 @@ func (c CalendarDisplayOptions) Has(other CalendarDisplayOptions) bool {
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
 // appointments. The function returns NULL when no information is available.
-type CalendarDetailFunc func(calendar *Calendar, year, month, day uint) (utf8 string)
+type CalendarDetailFunc func(calendar *Calendar, year, month, day uint32) (utf8 string)
 
 //export _gotk4_gtk3_CalendarDetailFunc
 func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.GtkCalendar, arg2 C.guint, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) (cret *C.gchar) {
@@ -128,14 +128,14 @@ func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.GtkCalendar, arg2 C.guint, arg3 C.gu
 	}
 
 	var _calendar *Calendar // out
-	var _year uint          // out
-	var _month uint         // out
-	var _day uint           // out
+	var _year uint32        // out
+	var _month uint32       // out
+	var _day uint32         // out
 
 	_calendar = wrapCalendar(coreglib.Take(unsafe.Pointer(arg1)))
-	_year = uint(arg2)
-	_month = uint(arg3)
-	_day = uint(arg4)
+	_year = uint32(arg2)
+	_month = uint32(arg3)
+	_day = uint32(arg4)
 
 	utf8 := fn(_calendar, _year, _month, _day)
 
@@ -493,7 +493,7 @@ func (calendar *Calendar) ClearMarks() {
 //
 //    - ok: whether the day is marked.
 //
-func (calendar *Calendar) DayIsMarked(day uint) bool {
+func (calendar *Calendar) DayIsMarked(day uint32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out
@@ -525,7 +525,7 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 //
 //    - gint: height of detail cells, in rows.
 //
-func (calendar *Calendar) DetailHeightRows() int {
+func (calendar *Calendar) DetailHeightRows() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -538,9 +538,9 @@ func (calendar *Calendar) DetailHeightRows() int {
 
 	runtime.KeepAlive(calendar)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -552,7 +552,7 @@ func (calendar *Calendar) DetailHeightRows() int {
 //
 //    - gint: width of detail cells, in characters.
 //
-func (calendar *Calendar) DetailWidthChars() int {
+func (calendar *Calendar) DetailWidthChars() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -565,9 +565,9 @@ func (calendar *Calendar) DetailWidthChars() int {
 
 	runtime.KeepAlive(calendar)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -578,7 +578,7 @@ func (calendar *Calendar) DetailWidthChars() int {
 //
 //    - day number to mark between 1 and 31.
 //
-func (calendar *Calendar) MarkDay(day uint) {
+func (calendar *Calendar) MarkDay(day uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -599,7 +599,7 @@ func (calendar *Calendar) MarkDay(day uint) {
 //
 //    - day number between 1 and 31, or 0 to unselect the currently selected day.
 //
-func (calendar *Calendar) SelectDay(day uint) {
+func (calendar *Calendar) SelectDay(day uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -621,7 +621,7 @@ func (calendar *Calendar) SelectDay(day uint) {
 //    - month number between 0 and 11.
 //    - year the month is in.
 //
-func (calendar *Calendar) SelectMonth(month, year uint) {
+func (calendar *Calendar) SelectMonth(month, year uint32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -631,7 +631,7 @@ func (calendar *Calendar) SelectMonth(month, year uint) {
 	_arg1 = C.guint(month)
 	_arg2 = C.guint(year)
 	*(**Calendar)(unsafe.Pointer(&args[1])) = _arg1
-	*(*uint)(unsafe.Pointer(&args[2])) = _arg2
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("select_month", args[:], nil)
 
@@ -647,7 +647,7 @@ func (calendar *Calendar) SelectMonth(month, year uint) {
 //
 //    - rows: detail height in rows.
 //
-func (calendar *Calendar) SetDetailHeightRows(rows int) {
+func (calendar *Calendar) SetDetailHeightRows(rows int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -669,7 +669,7 @@ func (calendar *Calendar) SetDetailHeightRows(rows int) {
 //
 //    - chars: detail width in characters.
 //
-func (calendar *Calendar) SetDetailWidthChars(chars int) {
+func (calendar *Calendar) SetDetailWidthChars(chars int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -690,7 +690,7 @@ func (calendar *Calendar) SetDetailWidthChars(chars int) {
 //
 //    - day number to unmark between 1 and 31.
 //
-func (calendar *Calendar) UnmarkDay(day uint) {
+func (calendar *Calendar) UnmarkDay(day uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

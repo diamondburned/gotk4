@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -111,4 +112,36 @@ func wrapThreadedSocketService(obj *coreglib.Object) *ThreadedSocketService {
 
 func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	return wrapThreadedSocketService(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewThreadedSocketService creates a new SocketService with no listeners.
+// Listeners must be added with one of the Listener "add" methods.
+//
+// The function takes the following parameters:
+//
+//    - maxThreads: maximal number of threads to execute concurrently handling
+//      incoming clients, -1 means no limit.
+//
+// The function returns the following values:
+//
+//    - threadedSocketService: new Service.
+//
+func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
+	var args [1]girepository.Argument
+	var _arg0 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = C.int(maxThreads)
+	*(*int32)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gio", "ThreadedSocketService").InvokeMethod("new_ThreadedSocketService", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(maxThreads)
+
+	var _threadedSocketService *ThreadedSocketService // out
+
+	_threadedSocketService = wrapThreadedSocketService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _threadedSocketService
 }

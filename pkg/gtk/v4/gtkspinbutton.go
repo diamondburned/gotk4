@@ -412,6 +412,136 @@ func (spinButton *SpinButton) ConnectWrapped(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(spinButton, "wrapped", false, unsafe.Pointer(C._gotk4_gtk4_SpinButton_ConnectWrapped), f)
 }
 
+// NewSpinButton creates a new GtkSpinButton.
+//
+// The function takes the following parameters:
+//
+//    - adjustment (optional): GtkAdjustment that this spin button should use, or
+//      NULL.
+//    - climbRate specifies by how much the rate of change in the value will
+//      accelerate if you continue to hold down an up/down button or arrow key.
+//    - digits: number of decimal places to display.
+//
+// The function returns the following values:
+//
+//    - spinButton: new GtkSpinButton.
+//
+func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *SpinButton {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+	var _arg2 C.guint  // out
+	var _cret *C.void  // in
+
+	if adjustment != nil {
+		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	}
+	_arg1 = C.double(climbRate)
+	_arg2 = C.guint(digits)
+	*(**Adjustment)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
+	*(*uint32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("new_SpinButton", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(climbRate)
+	runtime.KeepAlive(digits)
+
+	var _spinButton *SpinButton // out
+
+	_spinButton = wrapSpinButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _spinButton
+}
+
+// NewSpinButtonWithRange creates a new GtkSpinButton with the given properties.
+//
+// This is a convenience constructor that allows creation of a numeric
+// GtkSpinButton without manually creating an adjustment. The value is initially
+// set to the minimum value and a page increment of 10 * step is the default.
+// The precision of the spin button is equivalent to the precision of step.
+//
+// Note that the way in which the precision is derived works best if step is a
+// power of ten. If the resulting precision is not suitable for your needs, use
+// gtk.SpinButton.SetDigits() to correct it.
+//
+// The function takes the following parameters:
+//
+//    - min: minimum allowable value.
+//    - max: maximum allowable value.
+//    - step: increment added or subtracted by spinning the widget.
+//
+// The function returns the following values:
+//
+//    - spinButton: new GtkSpinButton.
+//
+func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
+	var args [3]girepository.Argument
+	var _arg0 C.double // out
+	var _arg1 C.double // out
+	var _arg2 C.double // out
+	var _cret *C.void  // in
+
+	_arg0 = C.double(min)
+	_arg1 = C.double(max)
+	_arg2 = C.double(step)
+	*(*float64)(unsafe.Pointer(&args[0])) = _arg0
+	*(*float64)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("new_SpinButton_with_range", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+	runtime.KeepAlive(step)
+
+	var _spinButton *SpinButton // out
+
+	_spinButton = wrapSpinButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _spinButton
+}
+
+// Configure changes the properties of an existing spin button.
+//
+// The adjustment, climb rate, and number of decimal places are updated
+// accordingly.
+//
+// The function takes the following parameters:
+//
+//    - adjustment (optional): GtkAdjustment to replace the spin button’s
+//      existing adjustment, or NULL to leave its current adjustment unchanged.
+//    - climbRate: new climb rate.
+//    - digits: number of decimal places to display in the spin button.
+//
+func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 *C.void  // out
+	var _arg2 C.double // out
+	var _arg3 C.guint  // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	if adjustment != nil {
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	}
+	_arg2 = C.double(climbRate)
+	_arg3 = C.guint(digits)
+	*(**SpinButton)(unsafe.Pointer(&args[1])) = _arg1
+	*(**Adjustment)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float64)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("configure", args[:], nil)
+
+	runtime.KeepAlive(spinButton)
+	runtime.KeepAlive(adjustment)
+	runtime.KeepAlive(climbRate)
+	runtime.KeepAlive(digits)
+}
+
 // Adjustment: get the adjustment associated with a GtkSpinButton.
 //
 // The function returns the following values:
@@ -438,13 +568,39 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 	return _adjustment
 }
 
+// ClimbRate returns the acceleration rate for repeated changes.
+//
+// The function returns the following values:
+//
+//    - gdouble: acceleration rate.
+//
+func (spinButton *SpinButton) ClimbRate() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**SpinButton)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_climb_rate", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(spinButton)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // Digits fetches the precision of spin_button.
 //
 // The function returns the following values:
 //
 //    - guint: current precision.
 //
-func (spinButton *SpinButton) Digits() uint {
+func (spinButton *SpinButton) Digits() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -457,9 +613,9 @@ func (spinButton *SpinButton) Digits() uint {
 
 	runtime.KeepAlive(spinButton)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -520,6 +676,58 @@ func (spinButton *SpinButton) SnapToTicks() bool {
 	return _ok
 }
 
+// Value: get the value in the spin_button.
+//
+// The function returns the following values:
+//
+//    - gdouble: value of spin_button.
+//
+func (spinButton *SpinButton) Value() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**SpinButton)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_value", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(spinButton)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// ValueAsInt: get the value spin_button represented as an integer.
+//
+// The function returns the following values:
+//
+//    - gint: value of spin_button.
+//
+func (spinButton *SpinButton) ValueAsInt() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**SpinButton)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_value_as_int", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(spinButton)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // Wrap returns whether the spin button’s value wraps around to the opposite
 // limit when the upper or lower limit of the range is exceeded.
 //
@@ -570,6 +778,28 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 	runtime.KeepAlive(adjustment)
 }
 
+// SetClimbRate sets the acceleration rate for repeated changes when you hold
+// down a button or key.
+//
+// The function takes the following parameters:
+//
+//    - climbRate: rate of acceleration, must be >= 0.
+//
+func (spinButton *SpinButton) SetClimbRate(climbRate float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	_arg1 = C.double(climbRate)
+	*(**SpinButton)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_climb_rate", args[:], nil)
+
+	runtime.KeepAlive(spinButton)
+	runtime.KeepAlive(climbRate)
+}
+
 // SetDigits: set the precision to be displayed by spin_button.
 //
 // Up to 20 digit precision is allowed.
@@ -579,7 +809,7 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 //    - digits: number of digits after the decimal point to be displayed for the
 //      spin button’s value.
 //
-func (spinButton *SpinButton) SetDigits(digits uint) {
+func (spinButton *SpinButton) SetDigits(digits uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -592,6 +822,35 @@ func (spinButton *SpinButton) SetDigits(digits uint) {
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(digits)
+}
+
+// SetIncrements sets the step and page increments for spin_button.
+//
+// This affects how quickly the value changes when the spin button’s arrows are
+// activated.
+//
+// The function takes the following parameters:
+//
+//    - step: increment applied for a button 1 press.
+//    - page: increment applied for a button 2 press.
+//
+func (spinButton *SpinButton) SetIncrements(step, page float64) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+	var _arg2 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	_arg1 = C.double(step)
+	_arg2 = C.double(page)
+	*(**SpinButton)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_increments", args[:], nil)
+
+	runtime.KeepAlive(spinButton)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(page)
 }
 
 // SetNumeric sets the flag that determines if non-numeric text can be typed
@@ -618,6 +877,35 @@ func (spinButton *SpinButton) SetNumeric(numeric bool) {
 	runtime.KeepAlive(numeric)
 }
 
+// SetRange sets the minimum and maximum allowable values for spin_button.
+//
+// If the current value is outside this range, it will be adjusted to fit within
+// the range, otherwise it will remain unchanged.
+//
+// The function takes the following parameters:
+//
+//    - min: minimum allowable value.
+//    - max: maximum allowable value.
+//
+func (spinButton *SpinButton) SetRange(min, max float64) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+	var _arg2 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	_arg1 = C.double(min)
+	_arg2 = C.double(max)
+	*(**SpinButton)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float64)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_range", args[:], nil)
+
+	runtime.KeepAlive(spinButton)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+}
+
 // SetSnapToTicks sets the policy as to whether values are corrected to the
 // nearest step increment when a spin button is activated after providing an
 // invalid value.
@@ -641,6 +929,27 @@ func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(snapToTicks)
+}
+
+// SetValue sets the value of spin_button.
+//
+// The function takes the following parameters:
+//
+//    - value: new value.
+//
+func (spinButton *SpinButton) SetValue(value float64) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void  // out
+	var _arg1 C.double // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	_arg1 = C.double(value)
+	*(**SpinButton)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_value", args[:], nil)
+
+	runtime.KeepAlive(spinButton)
+	runtime.KeepAlive(value)
 }
 
 // SetWrap sets the flag that determines if a spin button value wraps around to

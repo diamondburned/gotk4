@@ -100,7 +100,7 @@ func _gotk4_gtk3_ListBoxForEachFunc(arg1 *C.GtkListBox, arg2 *C.GtkListBoxRow, a
 }
 
 // ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func(row1, row2 *ListBoxRow) (gint int)
+type ListBoxSortFunc func(row1, row2 *ListBoxRow) (gint int32)
 
 //export _gotk4_gtk3_ListBoxSortFunc
 func _gotk4_gtk3_ListBoxSortFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListBoxRow, arg3 C.gpointer) (cret C.gint) {
@@ -636,7 +636,7 @@ func (box *ListBox) Adjustment() *Adjustment {
 //
 //    - listBoxRow (optional): child Widget or NULL.
 //
-func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
+func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -672,7 +672,7 @@ func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 //    - listBoxRow (optional): row or NULL in case no row exists for the given y
 //      coordinate.
 //
-func (box *ListBox) RowAtY(y int) *ListBoxRow {
+func (box *ListBox) RowAtY(y int32) *ListBoxRow {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -771,7 +771,7 @@ func (box *ListBox) SelectedRows() []*ListBoxRow {
 //    - child to add.
 //    - position to insert child in.
 //
-func (box *ListBox) Insert(child Widgetter, position int) {
+func (box *ListBox) Insert(child Widgetter, position int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -1235,7 +1235,7 @@ func (row *ListBoxRow) Header() Widgetter {
 //
 //    - gint: index of the row, or -1 if the row is not in a listbox.
 //
-func (row *ListBoxRow) Index() int {
+func (row *ListBoxRow) Index() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -1248,9 +1248,9 @@ func (row *ListBoxRow) Index() int {
 
 	runtime.KeepAlive(row)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

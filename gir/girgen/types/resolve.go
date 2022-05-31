@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
@@ -22,18 +23,12 @@ type Resolved struct {
 	// TODO: move file.Header over to types.Header.
 	// TODO: replace {Publ,Impl}Import with types.Header to allow HashTable.
 
-	PublImport ResolvedImport
-	ImplImport ResolvedImport
+	PublImport file.Import
+	ImplImport file.Import
 
 	CType string
 	GType string
 	Ptr   uint8 // used ONLY for the Go type.
-}
-
-// ResolvedImport is a single import for the resolved type.
-type ResolvedImport struct {
-	Path    string // full path
-	Package string // package name, import alias
 }
 
 // These types contain an internal pointer in Go, so the pointer count
@@ -73,7 +68,7 @@ func builtinType(imp, typ string, girType gir.Type) *Resolved {
 	subtracted:
 	}
 
-	resolvedImport := ResolvedImport{
+	resolvedImport := file.Import{
 		Path:    imp,
 		Package: pkg,
 	}
@@ -94,7 +89,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *Resolved {
 		typ.CType = ctyp
 	}
 
-	imp := ResolvedImport{
+	imp := file.Import{
 		Path:    "github.com/diamondburned/gotk4/pkg/core/glib",
 		Package: "coreglib",
 	}
@@ -136,19 +131,19 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 		return nil
 	}
 
-	var resolvedImport ResolvedImport
+	var resolvedImport file.Import
 	var ignoreOpaque bool
 
 	switch result.Namespace.Name {
 	case "cairo":
 		// gotk3/cairo structs already contain a pointer.
 		ignoreOpaque = true
-		resolvedImport = ResolvedImport{
+		resolvedImport = file.Import{
 			Path:    "github.com/diamondburned/gotk4/pkg/cairo",
 			Package: "cairo",
 		}
 	default:
-		resolvedImport = ResolvedImport{
+		resolvedImport = file.Import{
 			Path:    gen.ModPath(result.Namespace),
 			Package: gir.GoNamespace(result.Namespace),
 		}
@@ -422,7 +417,7 @@ func (typ *Resolved) IsBuiltin(builtin string) bool {
 
 // HasImport returns true if the ResolvedType has an import.
 func (typ *Resolved) HasImport() bool {
-	var zeroi ResolvedImport
+	var zeroi file.Import
 	return typ.ImplImport != zeroi || typ.PublImport != zeroi
 }
 
@@ -644,6 +639,44 @@ func (typ *Resolved) WrapName(needsNamespace bool) string {
 	}
 
 	return wrapName
+}
+
+// ImportPubl adds the import for the public type of the Resolved type into the
+// file header.
+func (typ *Resolved) ImportPubl(h *file.Header) {
+	if typ == nil {
+		return
+	}
+
+	if typ.IsAbstract() {
+		h.ImportResolvedType(typ.PublImport)
+	} else {
+		h.ImportResolvedType(typ.ImplImport)
+	}
+
+	if typ.Extern != nil {
+		callback, ok := typ.Extern.Type.(*gir.Callback)
+		if ok {
+			AddCallbackHeader(h, typ.Extern.NamespaceFindResult, callback)
+		}
+	}
+}
+
+// ImportImpl adds the import for the implementing type of the Resolved type
+// into the file header.
+func (typ *Resolved) ImportImpl(h *file.Header) {
+	if typ == nil {
+		return
+	}
+
+	h.ImportResolvedType(typ.ImplImport)
+
+	if typ.Extern != nil {
+		callback, ok := typ.Extern.Type.(*gir.Callback)
+		if ok {
+			AddCallbackHeader(h, typ.Extern.NamespaceFindResult, callback)
+		}
+	}
 }
 
 // CGoType returns the CGo type. Its pointer count does not follow Ptr.

@@ -125,7 +125,7 @@ type CellLayoutOverrider interface {
 	//    - attribute on the renderer.
 	//    - column position on the model to get the attribute from.
 	//
-	AddAttribute(cell CellRendererer, attribute string, column int)
+	AddAttribute(cell CellRendererer, attribute string, column int32)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
@@ -191,7 +191,7 @@ type CellLayoutOverrider interface {
 	//    - cell to reorder.
 	//    - position: new position to insert cell at.
 	//
-	Reorder(cell CellRendererer, position int)
+	Reorder(cell CellRendererer, position int32)
 }
 
 // CellLayout is an interface to be implemented by all objects which want to
@@ -297,7 +297,7 @@ type CellLayouter interface {
 	coreglib.Objector
 
 	// AddAttribute adds an attribute mapping to the list in cell_layout.
-	AddAttribute(cell CellRendererer, attribute string, column int)
+	AddAttribute(cell CellRendererer, attribute string, column int32)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
@@ -314,7 +314,7 @@ type CellLayouter interface {
 	// PackStart packs the cell into the beginning of cell_layout.
 	PackStart(cell CellRendererer, expand bool)
 	// Reorder re-inserts cell at position.
-	Reorder(cell CellRendererer, position int)
+	Reorder(cell CellRendererer, position int32)
 }
 
 var _ CellLayouter = (*CellLayout)(nil)
@@ -338,7 +338,7 @@ func _gotk4_gtk3_CellLayoutIface_add_attribute(arg0 *C.GtkCellLayout, arg1 *C.Gt
 
 	var _cell CellRendererer // out
 	var _attribute string    // out
-	var _column int          // out
+	var _column int32        // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -358,7 +358,7 @@ func _gotk4_gtk3_CellLayoutIface_add_attribute(arg0 *C.GtkCellLayout, arg1 *C.Gt
 		_cell = rv
 	}
 	_attribute = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_column = int(arg3)
+	_column = int32(arg3)
 
 	iface.AddAttribute(_cell, _attribute, _column)
 }
@@ -500,7 +500,7 @@ func _gotk4_gtk3_CellLayoutIface_reorder(arg0 *C.GtkCellLayout, arg1 *C.GtkCellR
 	iface := goval.(CellLayoutOverrider)
 
 	var _cell CellRendererer // out
-	var _position int        // out
+	var _position int32      // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -519,7 +519,7 @@ func _gotk4_gtk3_CellLayoutIface_reorder(arg0 *C.GtkCellLayout, arg1 *C.GtkCellR
 		}
 		_cell = rv
 	}
-	_position = int(arg2)
+	_position = int32(arg2)
 
 	iface.Reorder(_cell, _position)
 }
@@ -547,7 +547,7 @@ func marshalCellLayout(p uintptr) (interface{}, error) {
 //    - attribute on the renderer.
 //    - column position on the model to get the attribute from.
 //
-func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int) {
+func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -762,7 +762,7 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 //    - cell to reorder.
 //    - position: new position to insert cell at.
 //
-func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
+func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out

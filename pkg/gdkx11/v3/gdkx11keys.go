@@ -70,7 +70,7 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 //
 //    - gint: index of the active keyboard group for the event.
 //
-func (keymap *X11Keymap) GroupForState(state uint) int {
+func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -86,9 +86,9 @@ func (keymap *X11Keymap) GroupForState(state uint) int {
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(state)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -107,7 +107,7 @@ func (keymap *X11Keymap) GroupForState(state uint) int {
 //
 //    - ok: TRUE if the hardware keycode is a modifier key.
 //
-func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
+func (keymap *X11Keymap) KeyIsModifier(keycode uint32) bool {
 	var args [2]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 C.guint    // out

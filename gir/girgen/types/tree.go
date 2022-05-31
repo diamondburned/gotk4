@@ -7,6 +7,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
 )
@@ -482,18 +483,13 @@ func (tree *Tree) walk(f func(*Tree, bool) []Tree, isRoot bool) {
 	}
 }
 
-// ImplImporter is an interface that describes file.Header.
-type ImplImporter interface {
-	ImportImpl(*Resolved)
-}
-
 // Wrap generates the wrapper for the implementation struct.
-func (tree *Tree) Wrap(obj string, h ImplImporter) string {
+func (tree *Tree) Wrap(obj string, h *file.Header) string {
 	return wrapRef(obj, tree.wrap(obj, h, tree.gen))
 }
 
 // WrapInNamespace wraps with the given current namespace.
-func (tree *Tree) WrapInNamespace(obj string, h ImplImporter, n *gir.NamespaceFindResult) string {
+func (tree *Tree) WrapInNamespace(obj string, h *file.Header, n *gir.NamespaceFindResult) string {
 	return wrapRef(obj, tree.wrap(obj, h, OverrideNamespace(tree.gen, n)))
 }
 
@@ -505,13 +501,13 @@ func wrapRef(obj, wrap string) string {
 	return "&" + wrap
 }
 
-func (tree *Tree) wrap(obj string, h ImplImporter, gen FileGenerator) string {
+func (tree *Tree) wrap(obj string, h *file.Header, gen FileGenerator) string {
 	if tree.Resolved.Builtin != nil {
 		switch {
 		case tree.Resolved.IsExternGLib("Object"):
 			return "obj"
 		case tree.Resolved.IsExternGLib("InitiallyUnowned"):
-			h.ImportImpl(tree.Resolved)
+			tree.Resolved.ImportImpl(h)
 			return fmt.Sprintf("coreglib.InitiallyUnowned{\nObject: %s,\n}", obj)
 		default:
 			tree.gen.Logln(logger.Debug, "unknown builtin wrap:", spew.Sdump(tree.Resolved))
@@ -521,7 +517,7 @@ func (tree *Tree) wrap(obj string, h ImplImporter, gen FileGenerator) string {
 
 	needsNamespace := tree.Resolved.NeedsNamespace(gen.Namespace())
 	if needsNamespace {
-		h.ImportImpl(tree.Resolved)
+		tree.Resolved.ImportImpl(h)
 	}
 
 	typName := tree.Resolved.ImplType(needsNamespace)

@@ -198,6 +198,44 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	return _roundedRect
 }
 
+// InitFromRect initializes self to the given bounds and sets the radius of all
+// four corners to radius.
+//
+// The function takes the following parameters:
+//
+//    - bounds: graphene_rect_t.
+//    - radius: border radius.
+//
+// The function returns the following values:
+//
+//    - roundedRect: initialized rectangle.
+//
+func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *RoundedRect {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = C.float(radius)
+	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
+	*(**graphene.Rect)(unsafe.Pointer(&args[2])) = _arg2
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(radius)
+
+	var _roundedRect *RoundedRect // out
+
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _roundedRect
+}
+
 // IntersectsRect checks if part of the given rect is contained inside the
 // rounded rectangle.
 //
@@ -284,6 +322,99 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
+
+	var _roundedRect *RoundedRect // out
+
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _roundedRect
+}
+
+// Offset offsets the bound's origin by dx and dy.
+//
+// The size and corners of the rectangle are unchanged.
+//
+// The function takes the following parameters:
+//
+//    - dx: horizontal offset.
+//    - dy: vertical offset.
+//
+// The function returns the following values:
+//
+//    - roundedRect: offset rectangle.
+//
+func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(dx)
+	_arg2 = C.float(dy)
+	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+
+	var _roundedRect *RoundedRect // out
+
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _roundedRect
+}
+
+// Shrink shrinks (or grows) the given rectangle by moving the 4 sides according
+// to the offsets given.
+//
+// The corner radii will be changed in a way that tries to keep the center of
+// the corner circle intact. This emulates CSS behavior.
+//
+// This function also works for growing rectangles if you pass negative values
+// for the top, right, bottom or left.
+//
+// The function takes the following parameters:
+//
+//    - top: how far to move the top side downwards.
+//    - right: how far to move the right side to the left.
+//    - bottom: how far to move the bottom side upwards.
+//    - left: how far to move the left side to the right.
+//
+// The function returns the following values:
+//
+//    - roundedRect: resized GskRoundedRect.
+//
+func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.float // out
+	var _arg2 C.float // out
+	var _arg3 C.float // out
+	var _arg4 C.float // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(top)
+	_arg2 = C.float(right)
+	_arg3 = C.float(bottom)
+	_arg4 = C.float(left)
+	*(**RoundedRect)(unsafe.Pointer(&args[1])) = _arg1
+	*(*float32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*float32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*float32)(unsafe.Pointer(&args[4])) = _arg4
+
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(bottom)
+	runtime.KeepAlive(left)
 
 	var _roundedRect *RoundedRect // out
 

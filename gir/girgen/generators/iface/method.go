@@ -102,7 +102,7 @@ func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 		// we're not yet converting these.
 		for _, result := range g.cgen.Results {
 			if result.NeedsNamespace {
-				g.header.ImportPubl(result.Resolved)
+				result.Resolved.ImportPubl(&g.header)
 			}
 		}
 

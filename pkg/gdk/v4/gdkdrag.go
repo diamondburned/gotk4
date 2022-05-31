@@ -404,3 +404,32 @@ func (drag *Drag) Surface() Surfacer {
 
 	return _surface
 }
+
+// SetHotspot sets the position of the drag surface that will be kept under the
+// cursor hotspot.
+//
+// Initially, the hotspot is at the top left corner of the drag surface.
+//
+// The function takes the following parameters:
+//
+//    - hotX: x coordinate of the drag surface hotspot.
+//    - hotY: y coordinate of the drag surface hotspot.
+//
+func (drag *Drag) SetHotspot(hotX, hotY int32) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	_arg1 = C.int(hotX)
+	_arg2 = C.int(hotY)
+	*(**Drag)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gdk", "Drag").InvokeMethod("set_hotspot", args[:], nil)
+
+	runtime.KeepAlive(drag)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
+}

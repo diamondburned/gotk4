@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -123,8 +124,8 @@ func _gotk4_gtk4_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.gchar, 
 //
 // It is the responsibility of the application to update the model and store
 // new_text at the position indicated by path.
-func (cellRendererText *CellRendererText) ConnectEdited(f func(path, newText string)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(cellRendererText, "edited", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererText_ConnectEdited), f)
+func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(renderer, "edited", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererText_ConnectEdited), f)
 }
 
 // NewCellRendererText creates a new CellRendererText. Adjust how text is drawn
@@ -149,4 +150,32 @@ func NewCellRendererText() *CellRendererText {
 	_cellRendererText = wrapCellRendererText(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererText
+}
+
+// SetFixedHeightFromFont sets the height of a renderer to explicitly be
+// determined by the “font” and “y_pad” property set on it. Further changes in
+// these properties do not affect the height, so they must be accompanied by a
+// subsequent call to this function. Using this function is inflexible, and
+// should really only be used if calculating the size of a cell is too slow (ie,
+// a massive number of cells displayed). If number_of_rows is -1, then the fixed
+// height is unset, and the height is determined by the properties again.
+//
+// The function takes the following parameters:
+//
+//    - numberOfRows: number of rows of text each cell renderer is allocated, or
+//      -1.
+//
+func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.int(numberOfRows)
+	*(**CellRendererText)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "CellRendererText").InvokeMethod("set_fixed_height_from_font", args[:], nil)
+
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(numberOfRows)
 }

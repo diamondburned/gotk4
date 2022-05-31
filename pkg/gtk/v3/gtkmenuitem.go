@@ -69,7 +69,7 @@ type MenuItemOverrider interface {
 	//
 	//    - allocation to use as signal data.
 	//
-	ToggleSizeAllocate(allocation int)
+	ToggleSizeAllocate(allocation int32)
 }
 
 // MenuItem widget and the derived widgets are the only valid children for
@@ -141,7 +141,7 @@ func classInitMenuItemmer(gclassPtr, data C.gpointer) {
 		pclass.set_label = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_set_label)
 	}
 
-	if _, ok := goval.(interface{ ToggleSizeAllocate(allocation int) }); ok {
+	if _, ok := goval.(interface{ ToggleSizeAllocate(allocation int32) }); ok {
 		pclass.toggle_size_allocate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_toggle_size_allocate)
 	}
 }
@@ -206,11 +206,11 @@ func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.GtkMenuItem, arg1 *C.gchar) {
 //export _gotk4_gtk3_MenuItemClass_toggle_size_allocate
 func _gotk4_gtk3_MenuItemClass_toggle_size_allocate(arg0 *C.GtkMenuItem, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ToggleSizeAllocate(allocation int) })
+	iface := goval.(interface{ ToggleSizeAllocate(allocation int32) })
 
-	var _allocation int // out
+	var _allocation int32 // out
 
-	_allocation = int(arg1)
+	_allocation = int32(arg1)
 
 	iface.ToggleSizeAllocate(_allocation)
 }
@@ -344,7 +344,7 @@ func (menuItem *MenuItem) ConnectSelect(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate
 func _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(object int)
+	var f func(object int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -352,17 +352,17 @@ func _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(arg0 C.gpointer, arg1 C.gint
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object int))
+		f = closure.Func.(func(object int32))
 	}
 
-	var _object int // out
+	var _object int32 // out
 
-	_object = int(arg1)
+	_object = int32(arg1)
 
 	f(_object)
 }
 
-func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int)) coreglib.SignalHandle {
+func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuItem, "toggle-size-allocate", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate), f)
 }
 
@@ -858,7 +858,7 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 //
 //    - allocation to use as signal data.
 //
-func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
+func (menuItem *MenuItem) ToggleSizeAllocate(allocation int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

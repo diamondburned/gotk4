@@ -615,7 +615,7 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 //    - gint: value associated with the key as an integer, or 0 if the key was
 //      not found or could not be parsed.
 //
-func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
+func (keyFile *KeyFile) Integer(groupName string, key string) (int32, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -633,10 +633,10 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
 
-	var _gint int    // out
+	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -663,7 +663,7 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 //      if the key was not found or could not be parsed. The returned list of
 //      integers should be freed with g_free() when no longer needed.
 //
-func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error) {
+func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int32, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -682,15 +682,15 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error)
 	runtime.KeepAlive(groupName)
 	runtime.KeepAlive(key)
 
-	var _gints []int // out
-	var _goerr error // out
+	var _gints []int32 // out
+	var _goerr error   // out
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
 		src := unsafe.Slice((*C.gint)(_cret), _arg3)
-		_gints = make([]int, _arg3)
+		_gints = make([]int32, _arg3)
 		for i := 0; i < int(_arg3); i++ {
-			_gints[i] = int(src[i])
+			_gints[i] = int32(src[i])
 		}
 	}
 	if _cerr != nil {
@@ -1757,7 +1757,7 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 //    - key: key.
 //    - value: integer value.
 //
-func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
+func (keyFile *KeyFile) SetInteger(groupName string, key string, value int32) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -1786,7 +1786,7 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 //    - key: key.
 //    - list: array of integer values.
 //
-func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int) {
+func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int32) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out

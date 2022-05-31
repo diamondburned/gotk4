@@ -82,7 +82,7 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 //
 //    - guint: button number, or 0 for any button.
 //
-func (gesture *GestureSingle) Button() uint {
+func (gesture *GestureSingle) Button() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -95,9 +95,9 @@ func (gesture *GestureSingle) Button() uint {
 
 	runtime.KeepAlive(gesture)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -109,7 +109,7 @@ func (gesture *GestureSingle) Button() uint {
 //
 //    - guint: current button number.
 //
-func (gesture *GestureSingle) CurrentButton() uint {
+func (gesture *GestureSingle) CurrentButton() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -122,9 +122,9 @@ func (gesture *GestureSingle) CurrentButton() uint {
 
 	runtime.KeepAlive(gesture)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -233,7 +233,7 @@ func (gesture *GestureSingle) TouchOnly() bool {
 //
 //    - button number to listen to, or 0 for any button.
 //
-func (gesture *GestureSingle) SetButton(button uint) {
+func (gesture *GestureSingle) SetButton(button uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

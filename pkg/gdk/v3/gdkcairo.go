@@ -67,6 +67,78 @@ func CairoCreate(window Windower) *cairo.Context {
 	return _context
 }
 
+// CairoDrawFromGL: this is the main way to draw GL content in GTK+. It takes a
+// render buffer ID (source_type == RENDERBUFFER) or a texture id (source_type
+// == TEXTURE) and draws it onto cr with an OVER operation, respecting the
+// current clip. The top left corner of the rectangle specified by x, y, width
+// and height will be drawn at the current (0,0) position of the cairo_t.
+//
+// This will work for *all* cairo_t, as long as window is realized, but the
+// fallback implementation that reads back the pixels from the buffer may be
+// used in the general case. In the case of direct drawing to a window with no
+// special effects applied to cr it will however use a more efficient approach.
+//
+// For RENDERBUFFER the code will always fall back to software for buffers with
+// alpha components, so make sure you use TEXTURE if using alpha.
+//
+// Calling this may change the current GL context.
+//
+// The function takes the following parameters:
+//
+//    - cr: cairo context.
+//    - window we're rendering for (not necessarily into).
+//    - source: GL ID of the source buffer.
+//    - sourceType: type of the source.
+//    - bufferScale: scale-factor that the source buffer is allocated for.
+//    - x: source x position in source to start copying from in GL coordinates.
+//    - y: source y position in source to start copying from in GL coordinates.
+//    - width of the region to draw.
+//    - height of the region to draw.
+//
+func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, bufferScale, x, y, width, height int32) {
+	var args [9]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 C.int   // out
+	var _arg5 C.int   // out
+	var _arg6 C.int   // out
+	var _arg7 C.int   // out
+	var _arg8 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg2 = C.int(source)
+	_arg3 = C.int(sourceType)
+	_arg4 = C.int(bufferScale)
+	_arg5 = C.int(x)
+	_arg6 = C.int(y)
+	_arg7 = C.int(width)
+	_arg8 = C.int(height)
+	*(**cairo.Context)(unsafe.Pointer(&args[0])) = _arg0
+	*(*Windower)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[5])) = _arg5
+	*(*int32)(unsafe.Pointer(&args[6])) = _arg6
+	*(*int32)(unsafe.Pointer(&args[7])) = _arg7
+	*(*int32)(unsafe.Pointer(&args[8])) = _arg8
+
+	girepository.MustFind("Gdk", "cairo_draw_from_gl").Invoke(args[:], nil)
+
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(sourceType)
+	runtime.KeepAlive(bufferScale)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
 // CairoGetDrawingContext retrieves the DrawingContext that created the Cairo
 // context cr.
 //
@@ -308,4 +380,50 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
+}
+
+// CairoSurfaceCreateFromPixbuf creates an image surface with the same contents
+// as the pixbuf.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: Pixbuf.
+//    - scale of the new surface, or 0 to use same as window.
+//    - forWindow (optional): window this will be drawn to, or NULL.
+//
+// The function returns the following values:
+//
+//    - surface: new cairo surface, must be freed with cairo_surface_destroy().
+//
+func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int32, forWindow Windower) *cairo.Surface {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 *C.void // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg1 = C.int(scale)
+	if forWindow != nil {
+		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(forWindow).Native()))
+	}
+	*(**gdkpixbuf.Pixbuf)(unsafe.Pointer(&args[0])) = _arg0
+	*(*int32)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Windower)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gdk", "cairo_surface_create_from_pixbuf").Invoke(args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(forWindow)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
+	})
+
+	return _surface
 }

@@ -23,6 +23,7 @@ import (
 // extern void _gotk4_gtk4_TextBufferClass_end_user_action(GtkTextBuffer*);
 // extern void _gotk4_gtk4_TextBufferClass_insert_child_anchor(GtkTextBuffer*, GtkTextIter*, GtkTextChildAnchor*);
 // extern void _gotk4_gtk4_TextBufferClass_insert_paintable(GtkTextBuffer*, GtkTextIter*, GdkPaintable*);
+// extern void _gotk4_gtk4_TextBufferClass_insert_text(GtkTextBuffer*, GtkTextIter*, char*, int);
 // extern void _gotk4_gtk4_TextBufferClass_mark_deleted(GtkTextBuffer*, GtkTextMark*);
 // extern void _gotk4_gtk4_TextBufferClass_mark_set(GtkTextBuffer*, GtkTextIter*, GtkTextMark*);
 // extern void _gotk4_gtk4_TextBufferClass_modified_changed(GtkTextBuffer*);
@@ -137,6 +138,13 @@ type TextBufferOverrider interface {
 	InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	// The function takes the following parameters:
 	//
+	//    - pos
+	//    - newText
+	//    - newTextLength
+	//
+	InsertText(pos *TextIter, newText string, newTextLength int32)
+	// The function takes the following parameters:
+	//
 	MarkDeleted(mark *TextMark)
 	// The function takes the following parameters:
 	//
@@ -223,6 +231,12 @@ func classInitTextBufferer(gclassPtr, data C.gpointer) {
 		InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	}); ok {
 		pclass.insert_paintable = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_paintable)
+	}
+
+	if _, ok := goval.(interface {
+		InsertText(pos *TextIter, newText string, newTextLength int32)
+	}); ok {
+		pclass.insert_text = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_text)
 	}
 
 	if _, ok := goval.(interface{ MarkDeleted(mark *TextMark) }); ok {
@@ -362,6 +376,24 @@ func _gotk4_gtk4_TextBufferClass_insert_paintable(arg0 *C.GtkTextBuffer, arg1 *C
 	}
 
 	iface.InsertPaintable(_iter, _paintable)
+}
+
+//export _gotk4_gtk4_TextBufferClass_insert_text
+func _gotk4_gtk4_TextBufferClass_insert_text(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.char, arg3 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		InsertText(pos *TextIter, newText string, newTextLength int32)
+	})
+
+	var _pos *TextIter       // out
+	var _newText string      // out
+	var _newTextLength int32 // out
+
+	_pos = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_newText = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	_newTextLength = int32(arg3)
+
+	iface.InsertText(_pos, _newText, _newTextLength)
 }
 
 //export _gotk4_gtk4_TextBufferClass_mark_deleted
@@ -701,7 +733,7 @@ func (buffer *TextBuffer) ConnectInsertPaintable(f func(location *TextIter, pain
 
 //export _gotk4_gtk4_TextBuffer_ConnectInsertText
 func _gotk4_gtk4_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.gchar, arg3 C.gint, arg4 C.guintptr) {
-	var f func(location *TextIter, text string, len int)
+	var f func(location *TextIter, text string, len int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -709,16 +741,16 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIt
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(location *TextIter, text string, len int))
+		f = closure.Func.(func(location *TextIter, text string, len int32))
 	}
 
 	var _location *TextIter // out
 	var _text string        // out
-	var _len int            // out
+	var _len int32          // out
 
 	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_len = int(arg3)
+	_len = int32(arg3)
 
 	f(_location, _text, _len)
 }
@@ -732,7 +764,7 @@ func _gotk4_gtk4_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIt
 // handler revalidates it to point to the end of the inserted text.
 //
 // See also: gtk,textbuffer.Insert, gtk.TextBuffer.InsertRange().
-func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text string, len int)) coreglib.SignalHandle {
+func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text string, len int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "insert-text", false, unsafe.Pointer(C._gotk4_gtk4_TextBuffer_ConnectInsertText), f)
 }
 
@@ -1633,6 +1665,37 @@ func (buffer *TextBuffer) CanUndo() bool {
 	return _ok
 }
 
+// CharCount gets the number of characters in the buffer.
+//
+// Note that characters and bytes are not the same, you can’t e.g. expect the
+// contents of the buffer in string form to be this many bytes long.
+//
+// The character count is cached, so this function is very fast.
+//
+// The function returns the following values:
+//
+//    - gint: number of characters in the buffer.
+//
+func (buffer *TextBuffer) CharCount() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**TextBuffer)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_char_count", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(buffer)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // EnableUndo gets whether the buffer is saving modifications to the buffer to
 // allow for undo and redo actions.
 //
@@ -1692,7 +1755,7 @@ func (buffer *TextBuffer) HasSelection() bool {
 	return _ok
 }
 
-// Insert returns the mark that represents the cursor (insertion point).
+// GetInsert returns the mark that represents the cursor (insertion point).
 //
 // Equivalent to calling gtk.TextBuffer.GetMark() to get the mark named
 // “insert”, but very slightly more efficient, and involves less typing.
@@ -1701,7 +1764,7 @@ func (buffer *TextBuffer) HasSelection() bool {
 //
 //    - textMark: insertion point mark.
 //
-func (buffer *TextBuffer) Insert() *TextMark {
+func (buffer *TextBuffer) GetInsert() *TextMark {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret *C.void // in
@@ -1719,6 +1782,34 @@ func (buffer *TextBuffer) Insert() *TextMark {
 	_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _textMark
+}
+
+// LineCount obtains the number of lines in the buffer.
+//
+// This value is cached, so the function is very fast.
+//
+// The function returns the following values:
+//
+//    - gint: number of lines in the buffer.
+//
+func (buffer *TextBuffer) LineCount() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**TextBuffer)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_line_count", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(buffer)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
 }
 
 // Mark returns the mark named name in buffer buffer, or NULL if no such mark
@@ -1766,7 +1857,7 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 //
 // The function returns the following values:
 //
-func (buffer *TextBuffer) MaxUndoLevels() uint {
+func (buffer *TextBuffer) MaxUndoLevels() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -1779,9 +1870,9 @@ func (buffer *TextBuffer) MaxUndoLevels() uint {
 
 	runtime.KeepAlive(buffer)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -2020,6 +2111,72 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 	return _utf8
 }
 
+// Insert inserts len bytes of text at position iter.
+//
+// If len is -1, text must be nul-terminated and will be inserted in its
+// entirety. Emits the “insert-text” signal; insertion actually occurs in the
+// default handler for the signal. iter is invalidated when insertion occurs
+// (because the buffer contents change), but the default signal handler
+// revalidates it to point to the end of the inserted text.
+//
+// The function takes the following parameters:
+//
+//    - iter: position in the buffer.
+//    - text in UTF-8 format.
+//
+func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.int
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg3 = (C.int)(len(text))
+	_arg2 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg2))
+	*(**TextBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TextIter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert", args[:], nil)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(text)
+}
+
+// InsertAtCursor inserts text in buffer.
+//
+// Simply calls gtk.TextBuffer.Insert(), using the current cursor position as
+// the insertion point.
+//
+// The function takes the following parameters:
+//
+//    - text in UTF-8 format.
+//
+func (buffer *TextBuffer) InsertAtCursor(text string) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg2 = (C.int)(len(text))
+	_arg1 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**TextBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_at_cursor", args[:], nil)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(text)
+}
+
 // InsertChildAnchor inserts a child widget anchor into the text buffer at iter.
 //
 // The anchor will be counted as one character in character counts, and when
@@ -2055,6 +2212,156 @@ func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnc
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(anchor)
+}
+
+// InsertInteractive inserts text in buffer.
+//
+// Like gtk.TextBuffer.Insert(), but the insertion will not occur if iter is at
+// a non-editable location in the buffer. Usually you want to prevent insertions
+// at ineditable locations if the insertion results from a user action (is
+// interactive).
+//
+// default_editable indicates the editability of text that doesn't have a tag
+// affecting editability applied to it. Typically the result of
+// gtk.TextView.GetEditable() is appropriate here.
+//
+// The function takes the following parameters:
+//
+//    - iter: position in buffer.
+//    - text: some UTF-8 text.
+//    - defaultEditable: default editability of buffer.
+//
+// The function returns the following values:
+//
+//    - ok: whether text was actually inserted.
+//
+func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, defaultEditable bool) bool {
+	var args [5]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.int
+	var _arg4 C.gboolean // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg3 = (C.int)(len(text))
+	_arg2 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg2))
+	if defaultEditable {
+		_arg4 = C.TRUE
+	}
+	*(**TextBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TextIter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+	*(*bool)(unsafe.Pointer(&args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_interactive", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(defaultEditable)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// InsertInteractiveAtCursor inserts text in buffer.
+//
+// Calls gtk.TextBuffer.InsertInteractive() at the cursor position.
+//
+// default_editable indicates the editability of text that doesn't have a tag
+// affecting editability applied to it. Typically the result of
+// gtk.TextView.GetEditable() is appropriate here.
+//
+// The function takes the following parameters:
+//
+//    - text in UTF-8 format.
+//    - defaultEditable: default editability of buffer.
+//
+// The function returns the following values:
+//
+//    - ok: whether text was actually inserted.
+//
+func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable bool) bool {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int
+	var _arg3 C.gboolean // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg2 = (C.int)(len(text))
+	_arg1 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg1))
+	if defaultEditable {
+		_arg3 = C.TRUE
+	}
+	*(**TextBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+	*(*bool)(unsafe.Pointer(&args[3])) = _arg3
+
+	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_interactive_at_cursor", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(defaultEditable)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// InsertMarkup inserts the text in markup at position iter.
+//
+// markup will be inserted in its entirety and must be nul-terminated and valid
+// UTF-8. Emits the gtk.TextBuffer::insert-text signal, possibly multiple times;
+// insertion actually occurs in the default handler for the signal. iter will
+// point to the end of the inserted text on return.
+//
+// The function takes the following parameters:
+//
+//    - iter: location to insert the markup.
+//    - markup: nul-terminated UTF-8 string containing Pango markup.
+//
+func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 *C.void // out
+	var _arg3 C.int
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg3 = (C.int)(len(markup))
+	_arg2 = (*C.void)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(markup)), markup)
+	defer C.free(unsafe.Pointer(_arg2))
+	*(**TextBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(**TextIter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*string)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_markup", args[:], nil)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(markup)
 }
 
 // InsertPaintable inserts an image into the text buffer at iter.
@@ -2528,7 +2835,7 @@ func (buffer *TextBuffer) SetEnableUndo(enableUndo bool) {
 //
 //    - maxUndoLevels: maximum number of undo actions to perform.
 //
-func (buffer *TextBuffer) SetMaxUndoLevels(maxUndoLevels uint) {
+func (buffer *TextBuffer) SetMaxUndoLevels(maxUndoLevels uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -2570,6 +2877,34 @@ func (buffer *TextBuffer) SetModified(setting bool) {
 
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(setting)
+}
+
+// SetText deletes current contents of buffer, and inserts text instead.
+//
+// If len is -1, text must be nul-terminated. text must be valid UTF-8.
+//
+// The function takes the following parameters:
+//
+//    - text: UTF-8 text to insert.
+//
+func (buffer *TextBuffer) SetText(text string) {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg2 = (C.int)(len(text))
+	_arg1 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
+	defer C.free(unsafe.Pointer(_arg1))
+	*(**TextBuffer)(unsafe.Pointer(&args[1])) = _arg1
+	*(*string)(unsafe.Pointer(&args[2])) = _arg2
+
+	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("set_text", args[:], nil)
+
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(text)
 }
 
 // Undo undoes the last undoable action on the buffer, if there is one.

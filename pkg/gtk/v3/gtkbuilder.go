@@ -482,7 +482,7 @@ func NewBuilderFromString(str string, length int) *Builder {
 //
 //    - guint: positive value on success, 0 if an error occurred.
 //
-func (builder *Builder) AddFromFile(filename string) (uint, error) {
+func (builder *Builder) AddFromFile(filename string) (uint32, error) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -500,10 +500,10 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(filename)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -530,7 +530,7 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 //
 //    - guint: positive value on success, 0 if an error occurred.
 //
-func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
+func (builder *Builder) AddFromResource(resourcePath string) (uint32, error) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -548,10 +548,10 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(resourcePath)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -579,7 +579,7 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 //
 //    - guint: positive value on success, 0 if an error occurred.
 //
-func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) {
+func (builder *Builder) AddFromString(buffer string, length uint) (uint32, error) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -601,10 +601,10 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(length)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -632,7 +632,7 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 //
 //    - guint: positive value on success, 0 if an error occurred.
 //
-func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
+func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint32, error) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
@@ -666,10 +666,10 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	runtime.KeepAlive(filename)
 	runtime.KeepAlive(objectIds)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -697,7 +697,7 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 //
 //    - guint: positive value on success, 0 if an error occurred.
 //
-func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
+func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint32, error) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
@@ -731,10 +731,10 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	runtime.KeepAlive(resourcePath)
 	runtime.KeepAlive(objectIds)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -763,7 +763,7 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 //
 //    - guint: positive value on success, 0 if an error occurred.
 //
-func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
+func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint32, error) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void  // out
 	var _arg1 *C.void  // out
@@ -801,10 +801,10 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(objectIds)
 
-	var _guint uint  // out
-	var _goerr error // out
+	var _guint uint32 // out
+	var _goerr error  // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

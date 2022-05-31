@@ -179,6 +179,130 @@ func NewGrid() *Grid {
 	return _grid
 }
 
+// Attach adds a widget to the grid.
+//
+// The position of child is determined by column and row. The number of “cells”
+// that child will occupy is determined by width and height.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - column number to attach the left side of child to.
+//    - row number to attach the top side of child to.
+//    - width: number of columns that child will span.
+//    - height: number of rows that child will span.
+//
+func (grid *Grid) Attach(child Widgetter, column, row, width, height int32) {
+	var args [6]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+	var _arg4 C.int   // out
+	var _arg5 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(column)
+	_arg3 = C.int(row)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
+	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
+	*(*Widgetter)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+	*(*int32)(unsafe.Pointer(&args[5])) = _arg5
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("attach", args[:], nil)
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// BaselineRow returns which row defines the global baseline of grid.
+//
+// The function returns the following values:
+//
+//    - gint: row index defining the global baseline.
+//
+func (grid *Grid) BaselineRow() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	*(**Grid)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_baseline_row", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(grid)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// ChildAt gets the child of grid whose area covers the grid cell at column,
+// row.
+//
+// The function takes the following parameters:
+//
+//    - column: left edge of the cell.
+//    - row: top edge of the cell.
+//
+// The function returns the following values:
+//
+//    - widget (optional): child at the given position, or NULL.
+//
+func (grid *Grid) ChildAt(column, row int32) Widgetter {
+	var args [3]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+	var _arg2 C.int   // out
+	var _cret *C.void // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(column)
+	_arg2 = C.int(row)
+	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+
+	_gret := girepository.MustFind("Gtk", "Grid").InvokeMethod("get_child_at", args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(row)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
 // ColumnHomogeneous returns whether all columns of grid have the same width.
 //
 // The function returns the following values:
@@ -213,7 +337,7 @@ func (grid *Grid) ColumnHomogeneous() bool {
 //
 //    - guint: column spacing of grid.
 //
-func (grid *Grid) ColumnSpacing() uint {
+func (grid *Grid) ColumnSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -226,9 +350,9 @@ func (grid *Grid) ColumnSpacing() uint {
 
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -267,7 +391,7 @@ func (grid *Grid) RowHomogeneous() bool {
 //
 //    - guint: row spacing of grid.
 //
-func (grid *Grid) RowSpacing() uint {
+func (grid *Grid) RowSpacing() uint32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.guint // in
@@ -280,11 +404,60 @@ func (grid *Grid) RowSpacing() uint {
 
 	runtime.KeepAlive(grid)
 
-	var _guint uint // out
+	var _guint uint32 // out
 
-	_guint = uint(_cret)
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// InsertColumn inserts a column at the specified position.
+//
+// Children which are attached at or to the right of this position are moved one
+// column to the right. Children which span across this position are grown to
+// span the new column.
+//
+// The function takes the following parameters:
+//
+//    - position to insert the column at.
+//
+func (grid *Grid) InsertColumn(position int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(position)
+	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("insert_column", args[:], nil)
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
+}
+
+// InsertRow inserts a row at the specified position.
+//
+// Children which are attached at or below this position are moved one row down.
+// Children which span across this position are grown to span the new row.
+//
+// The function takes the following parameters:
+//
+//    - position to insert the row at.
+//
+func (grid *Grid) InsertRow(position int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(position)
+	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("insert_row", args[:], nil)
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
 }
 
 // Remove removes a child from grid.
@@ -309,6 +482,81 @@ func (grid *Grid) Remove(child Widgetter) {
 
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(child)
+}
+
+// RemoveColumn removes a column from the grid.
+//
+// Children that are placed in this column are removed, spanning children that
+// overlap this column have their width reduced by one, and children after the
+// column are moved to the left.
+//
+// The function takes the following parameters:
+//
+//    - position of the column to remove.
+//
+func (grid *Grid) RemoveColumn(position int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(position)
+	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("remove_column", args[:], nil)
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
+}
+
+// RemoveRow removes a row from the grid.
+//
+// Children that are placed in this row are removed, spanning children that
+// overlap this row have their height reduced by one, and children below the row
+// are moved up.
+//
+// The function takes the following parameters:
+//
+//    - position of the row to remove.
+//
+func (grid *Grid) RemoveRow(position int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(position)
+	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("remove_row", args[:], nil)
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(position)
+}
+
+// SetBaselineRow sets which row defines the global baseline for the entire
+// grid.
+//
+// Each row in the grid can have its own local baseline, but only one of those
+// is global, meaning it will be the baseline in the parent of the grid.
+//
+// The function takes the following parameters:
+//
+//    - row index.
+//
+func (grid *Grid) SetBaselineRow(row int32) {
+	var args [2]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(row)
+	*(**Grid)(unsafe.Pointer(&args[1])) = _arg1
+
+	girepository.MustFind("Gtk", "Grid").InvokeMethod("set_baseline_row", args[:], nil)
+
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(row)
 }
 
 // SetColumnHomogeneous sets whether all columns of grid will have the same
@@ -341,7 +589,7 @@ func (grid *Grid) SetColumnHomogeneous(homogeneous bool) {
 //
 //    - spacing: amount of space to insert between columns.
 //
-func (grid *Grid) SetColumnSpacing(spacing uint) {
+func (grid *Grid) SetColumnSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out
@@ -385,7 +633,7 @@ func (grid *Grid) SetRowHomogeneous(homogeneous bool) {
 //
 //    - spacing: amount of space to insert between rows.
 //
-func (grid *Grid) SetRowSpacing(spacing uint) {
+func (grid *Grid) SetRowSpacing(spacing uint32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.guint // out

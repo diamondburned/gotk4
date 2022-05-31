@@ -416,7 +416,7 @@ func (device *Device) LastEventWindow() Windower {
 //
 //    - gint: number of axes.
 //
-func (device *Device) NAxes() int {
+func (device *Device) NAxes() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -429,9 +429,9 @@ func (device *Device) NAxes() int {
 
 	runtime.KeepAlive(device)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -442,7 +442,7 @@ func (device *Device) NAxes() int {
 //
 //    - gint: number of keys.
 //
-func (device *Device) NKeys() int {
+func (device *Device) NKeys() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -455,9 +455,9 @@ func (device *Device) NKeys() int {
 
 	runtime.KeepAlive(device)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -703,7 +703,7 @@ func (device *Device) Ungrab(time_ uint32) {
 //    - x: x coordinate of the destination.
 //    - y: y coordinate of the destination.
 //
-func (device *Device) Warp(screen *Screen, x, y int) {
+func (device *Device) Warp(screen *Screen, x, y int32) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -716,7 +716,7 @@ func (device *Device) Warp(screen *Screen, x, y int) {
 	_arg3 = C.gint(y)
 	*(**Device)(unsafe.Pointer(&args[1])) = _arg1
 	*(**Screen)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gdk", "Device").InvokeMethod("warp", args[:], nil)
 

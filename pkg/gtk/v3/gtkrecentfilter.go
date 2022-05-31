@@ -235,7 +235,7 @@ func NewRecentFilter() *RecentFilter {
 //
 //    - days: number of days.
 //
-func (filter *RecentFilter) AddAge(days int) {
+func (filter *RecentFilter) AddAge(days int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

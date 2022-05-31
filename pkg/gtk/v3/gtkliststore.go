@@ -268,7 +268,7 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 //      old position before the re-ordering, i.e. new_order[newpos] = oldpos. It
 //      must have exactly as many items as the list store’s length.
 //
-func (store *ListStore) Reorder(newOrder []int) {
+func (store *ListStore) Reorder(newOrder []int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -303,7 +303,7 @@ func (store *ListStore) Reorder(newOrder []int) {
 //    - column number to modify.
 //    - value: new value for the cell.
 //
-func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *coreglib.Value) {
+func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
 	var args [4]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -316,7 +316,7 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *coreglib
 	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
 	*(**ListStore)(unsafe.Pointer(&args[1])) = _arg1
 	*(**TreeIter)(unsafe.Pointer(&args[2])) = _arg2
-	*(*int)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("set_value", args[:], nil)
 

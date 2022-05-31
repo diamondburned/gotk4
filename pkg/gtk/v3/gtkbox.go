@@ -198,7 +198,7 @@ func (box *Box) Homogeneous() bool {
 //
 //    - gint: spacing between children.
 //
-func (box *Box) Spacing() int {
+func (box *Box) Spacing() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -211,9 +211,9 @@ func (box *Box) Spacing() int {
 
 	runtime.KeepAlive(box)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -238,7 +238,7 @@ func (box *Box) Spacing() int {
 //      property. If child is a widget at one of the reference ends of box, then
 //      padding pixels are also put between child and the reference edge of box.
 //
-func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
+func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
@@ -289,7 +289,7 @@ func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint) {
 //      property. If child is a widget at one of the reference ends of box, then
 //      padding pixels are also put between child and the reference edge of box.
 //
-func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint) {
+func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint32) {
 	var args [5]girepository.Argument
 	var _arg0 *C.void    // out
 	var _arg1 *C.void    // out
@@ -335,7 +335,7 @@ func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint) {
 //    - position: new position for child in the list of children of box, starting
 //      from 0. If negative, indicates the end of the list.
 //
-func (box *Box) ReorderChild(child Widgetter, position int) {
+func (box *Box) ReorderChild(child Widgetter, position int32) {
 	var args [3]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 *C.void // out
@@ -411,7 +411,7 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 //
 //    - spacing: number of pixels to put between children.
 //
-func (box *Box) SetSpacing(spacing int) {
+func (box *Box) SetSpacing(spacing int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

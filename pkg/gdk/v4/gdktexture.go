@@ -205,6 +205,58 @@ func NewTextureFromResource(resourcePath string) *Texture {
 	return _texture
 }
 
+// Height returns the height of the texture, in pixels.
+//
+// The function returns the following values:
+//
+//    - gint: height of the GdkTexture.
+//
+func (texture *Texture) Height() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	*(**Texture)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("get_height", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(texture)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// Width returns the width of texture, in pixels.
+//
+// The function returns the following values:
+//
+//    - gint: width of the GdkTexture.
+//
+func (texture *Texture) Width() int32 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void // out
+	var _cret C.int   // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	*(**Texture)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("get_width", args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(texture)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // SaveToPNG: store the given texture to the filename as a PNG file.
 //
 // This is a utility function intended for debugging and testing. If you want

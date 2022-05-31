@@ -331,7 +331,7 @@ func (_range *Range) Inverted() bool {
 //
 //    - gint: minimum size of the range’s slider.
 //
-func (_range *Range) MinSliderSize() int {
+func (_range *Range) MinSliderSize() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -344,9 +344,9 @@ func (_range *Range) MinSliderSize() int {
 
 	runtime.KeepAlive(_range)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -386,7 +386,7 @@ func (_range *Range) RestrictToFillLevel() bool {
 //
 //    - gint: number of digits to round to.
 //
-func (_range *Range) RoundDigits() int {
+func (_range *Range) RoundDigits() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -399,9 +399,9 @@ func (_range *Range) RoundDigits() int {
 
 	runtime.KeepAlive(_range)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -642,7 +642,7 @@ func (_range *Range) SetInverted(setting bool) {
 //
 //    - minSize slider’s minimum size.
 //
-func (_range *Range) SetMinSliderSize(minSize int) {
+func (_range *Range) SetMinSliderSize(minSize int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out
@@ -717,7 +717,7 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 //
 //    - roundDigits: precision in digits, or -1.
 //
-func (_range *Range) SetRoundDigits(roundDigits int) {
+func (_range *Range) SetRoundDigits(roundDigits int32) {
 	var args [2]girepository.Argument
 	var _arg0 *C.void // out
 	var _arg1 C.gint  // out

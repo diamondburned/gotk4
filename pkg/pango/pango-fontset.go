@@ -108,7 +108,7 @@ type FontsetOverrider interface {
 	//    - font: PangoFont. The caller must call g_object_unref() when finished
 	//      with the font.
 	//
-	Font(wc uint) Fonter
+	Font(wc uint32) Fonter
 	// The function returns the following values:
 	//
 	Language() *Language
@@ -160,7 +160,7 @@ func classInitFontsetter(gclassPtr, data C.gpointer) {
 	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
 	// pclass := (*C.PangoFontsetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
-	if _, ok := goval.(interface{ Font(wc uint) Fonter }); ok {
+	if _, ok := goval.(interface{ Font(wc uint32) Fonter }); ok {
 		pclass.get_font = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_font)
 	}
 
@@ -176,11 +176,11 @@ func classInitFontsetter(gclassPtr, data C.gpointer) {
 //export _gotk4_pango1_FontsetClass_get_font
 func _gotk4_pango1_FontsetClass_get_font(arg0 *C.PangoFontset, arg1 C.guint) (cret *C.PangoFont) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Font(wc uint) Fonter })
+	iface := goval.(interface{ Font(wc uint32) Fonter })
 
-	var _wc uint // out
+	var _wc uint32 // out
 
-	_wc = uint(arg1)
+	_wc = uint32(arg1)
 
 	font := iface.Font(_wc)
 
@@ -246,7 +246,7 @@ func BaseFontset(obj Fontsetter) *Fontset {
 //    - font: PangoFont. The caller must call g_object_unref() when finished with
 //      the font.
 //
-func (fontset *Fontset) Font(wc uint) Fonter {
+func (fontset *Fontset) Font(wc uint32) Fonter {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
 	var _cret *C.PangoFont    // in
@@ -399,7 +399,7 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 //
 //    - gint: size of fontset.
 //
-func (fontset *FontsetSimple) Size() int {
+func (fontset *FontsetSimple) Size() int32 {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
 
@@ -408,9 +408,9 @@ func (fontset *FontsetSimple) Size() int {
 	_cret = C.pango_fontset_simple_size(_arg0)
 	runtime.KeepAlive(fontset)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

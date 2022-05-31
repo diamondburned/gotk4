@@ -402,3 +402,95 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(content)
 }
+
+// SetIcon sets a paintable to use as icon during DND operations.
+//
+// The hotspot coordinates determine the point on the icon that gets aligned
+// with the hotspot of the cursor.
+//
+// If paintable is NULL, a default icon is used.
+//
+// This function can be called before a drag is started, or in a
+// gtk.DragSource::prepare or gtk.DragSource::drag-begin signal handler.
+//
+// The function takes the following parameters:
+//
+//    - paintable (optional) to use as icon, or NULL.
+//    - hotX: hotspot X coordinate on the icon.
+//    - hotY: hotspot Y coordinate on the icon.
+//
+func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int32) {
+	var args [4]girepository.Argument
+	var _arg0 *C.void // out
+	var _arg1 *C.void // out
+	var _arg2 C.int   // out
+	var _arg3 C.int   // out
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	if paintable != nil {
+		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	}
+	_arg2 = C.int(hotX)
+	_arg3 = C.int(hotY)
+	*(**DragSource)(unsafe.Pointer(&args[1])) = _arg1
+	*(*gdk.Paintabler)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+
+	girepository.MustFind("Gtk", "DragSource").InvokeMethod("set_icon", args[:], nil)
+
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(paintable)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
+}
+
+// DragCheckThreshold checks to see if a drag movement has passed the GTK drag
+// threshold.
+//
+// The function takes the following parameters:
+//
+//    - startX: x coordinate of start of drag.
+//    - startY: y coordinate of start of drag.
+//    - currentX: current X coordinate.
+//    - currentY: current Y coordinate.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drag threshold has been passed.
+//
+func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int32) bool {
+	var args [5]girepository.Argument
+	var _arg0 *C.void    // out
+	var _arg1 C.int      // out
+	var _arg2 C.int      // out
+	var _arg3 C.int      // out
+	var _arg4 C.int      // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(startX)
+	_arg2 = C.int(startY)
+	_arg3 = C.int(currentX)
+	_arg4 = C.int(currentY)
+	*(**Widget)(unsafe.Pointer(&args[1])) = _arg1
+	*(*int32)(unsafe.Pointer(&args[2])) = _arg2
+	*(*int32)(unsafe.Pointer(&args[3])) = _arg3
+	*(*int32)(unsafe.Pointer(&args[4])) = _arg4
+
+	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_check_threshold", args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(startX)
+	runtime.KeepAlive(startY)
+	runtime.KeepAlive(currentX)
+	runtime.KeepAlive(currentY)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}

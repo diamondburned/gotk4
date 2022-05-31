@@ -209,7 +209,7 @@ type FontChooserOverrider interface {
 	//    - gint: n integer representing the selected font size, or -1 if no font
 	//      size is selected.
 	//
-	FontSize() int
+	FontSize() int32
 	// SetFontMap sets a custom font map to use for this font chooser widget. A
 	// custom font map can be used to present application-specific fonts instead
 	// of or in addition to the normal system fonts.
@@ -273,7 +273,7 @@ type FontChooserer interface {
 	// it does not have one.
 	FontMap() pango.FontMapper
 	// FontSize: selected font size.
-	FontSize() int
+	FontSize() int32
 	// Language gets the language that is used for font features.
 	Language() string
 	// PreviewText gets the text displayed in the preview area.
@@ -683,7 +683,7 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 //    - gint: n integer representing the selected font size, or -1 if no font
 //      size is selected.
 //
-func (fontchooser *FontChooser) FontSize() int {
+func (fontchooser *FontChooser) FontSize() int32 {
 	var args [1]girepository.Argument
 	var _arg0 *C.void // out
 	var _cret C.gint  // in
@@ -695,9 +695,9 @@ func (fontchooser *FontChooser) FontSize() int {
 
 	runtime.KeepAlive(fontchooser)
 
-	var _gint int // out
+	var _gint int32 // out
 
-	_gint = int(_cret)
+	_gint = int32(_cret)
 
 	return _gint
 }

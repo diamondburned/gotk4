@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -87,8 +88,8 @@ func _gotk4_gtk4_GestureRotate_ConnectAngleChanged(arg0 C.gpointer, arg1 C.gdoub
 
 // ConnectAngleChanged is emitted when the angle between both tracked points
 // changes.
-func (v *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(v, "angle-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureRotate_ConnectAngleChanged), f)
+func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float64)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "angle-changed", false, unsafe.Pointer(C._gotk4_gtk4_GestureRotate_ConnectAngleChanged), f)
 }
 
 // NewGestureRotate returns a newly created GtkGesture that recognizes 2-touch
@@ -109,4 +110,34 @@ func NewGestureRotate() *GestureRotate {
 	_gestureRotate = wrapGestureRotate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureRotate
+}
+
+// AngleDelta gets the angle delta in radians.
+//
+// If gesture is active, this function returns the angle difference in radians
+// since the gesture was first recognized. If gesture is not active, 0 is
+// returned.
+//
+// The function returns the following values:
+//
+//    - gdouble: angle delta in radians.
+//
+func (gesture *GestureRotate) AngleDelta() float64 {
+	var args [1]girepository.Argument
+	var _arg0 *C.void  // out
+	var _cret C.double // in
+
+	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	*(**GestureRotate)(unsafe.Pointer(&args[0])) = _arg0
+
+	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("get_angle_delta", args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(gesture)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }

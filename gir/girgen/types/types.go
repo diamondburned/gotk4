@@ -232,7 +232,7 @@ func CountPtr(typ string) int {
 
 	sliceIx := strings.Index(typ, "[]")
 	if sliceIx == -1 {
-		sliceIx = len(typ) - 1
+		sliceIx = len(typ)
 	}
 
 	return strings.Count(typ[:sliceIx], "*")
@@ -333,6 +333,25 @@ func AnyTypeIsPtr(any gir.AnyType) bool {
 	return strings.Contains(AnyTypeC(any), "*")
 }
 
+// AnyTypePrimitive converts AnyType to a C primitive type.
+func AnyTypePrimitive(any gir.AnyType) string {
+	return CTypeToPrimitive(AnyTypeC(any))
+}
+
+// CTypeToPrimitive converts a C type to the primitive type.
+func CTypeToPrimitive(cType string) string {
+	if cType == "gpointer" || cType == "gconstpointer" || CountPtr(cType) > 0 {
+		return "gpointer"
+	}
+
+	if GIRIsPrimitive(cType) {
+		return cType
+	}
+
+	panic("unknown primitive " + cType)
+	return ""
+}
+
 // girCTypes maps some primitive GIR types to C types, because people who write
 // GIR generators are lazy fucks who can't be bothered to fill in the right
 // information.
@@ -385,7 +404,7 @@ var girToBuiltin = map[string]string{
 	"gboolean": "bool",
 	"gfloat":   "float32",
 	"gdouble":  "float64",
-	"gint":     "int",
+	"gint":     "int32", // in most compilers?
 	"gssize":   "int",
 	"gint8":    "int8",
 	"gint16":   "int16",
@@ -394,7 +413,7 @@ var girToBuiltin = map[string]string{
 	"glong":    "int32",
 	"int32":    "int32",
 	"gint64":   "int64",
-	"guint":    "uint",
+	"guint":    "uint32", // in most compilers?
 	"gsize":    "uint",
 	"guchar":   "byte",
 	"gchar":    "byte",
@@ -419,11 +438,20 @@ func GIRBuiltinGo(typ string) string {
 // GIRPrimitiveGo returns Go primitive types that can be copied by-value without
 // doing any pointer work. It returns an empty string if there's none.
 func GIRPrimitiveGo(typ string) string {
-	gp, ok := girToBuiltin[typ]
-	if !ok || gp == "string" {
-		return ""
+	switch typ {
+	case "utf8", "filename":
+		return "gpointer"
 	}
-	return gp
+
+	t, ok := girToBuiltin[typ]
+	if ok {
+		return t
+	}
+
+	if !strings.HasPrefix(typ, "g") {
+		return GIRPrimitiveGo("g" + typ) // maybe?
+	}
+	return ""
 }
 
 // GIRIsPrimitive returns true if the Go primitive type of the GIR type is valid
